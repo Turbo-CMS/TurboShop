@@ -1,6 +1,6 @@
 {$meta_title = $btr->reportstats_orders scope=global}
 
-{*Название страницы*}
+{* Page title *}
 <div class="row">
     <div class="col-lg-7 col-md-7">
         <div class="wrap_heading">
@@ -11,7 +11,7 @@
     </div>
 </div>
 
-{*Главная форма страницы*}
+{* Main page form *}
 <div class="boxed fn_toggle_wrap">
     <div class="row">
         <div class="col-lg-12 col-md-12">
@@ -25,7 +25,7 @@
                 <div class="boxed_sorting toggle_body_wrap off fn_card">
                     <div class="row">
                         <div class="col-md-11 col-lg-11 col-xl-7 col-sm-12 mb-1">
-                            {*Блок фильтров*}
+                             {* Filter block *}
                             <div class="date">
                                 <form class="date_filter row" method="get">
                                     <input type="hidden" name="module" value="ReportStatsAdmin">
@@ -122,7 +122,7 @@
         {assign 'total_summ' 0}
         {assign 'total_amount' 0}
         <div class="turbo_list products_list fn_sort_list">
-            {*Шапка таблицы*}
+            {* Table head *}
             <div class="turbo_list_head">
                 <div class="turbo_list_heading turbo_list_reportstats_categories">{$btr->general_category|escape}</div>
                 <div class="turbo_list_heading turbo_list_reportstats_products">{$btr->general_name|escape}</div>
@@ -130,7 +130,7 @@
                 <div class="turbo_list_heading turbo_list_reportstats_setting">{$btr->general_amount|escape}</div>
             </div>
 
-            {*Параметры элемента*}
+            {* Item parameters *}
             <div class="turbo_list_body">
                 {foreach $report_stat_purchases as $purchase}
                     {assign var='total_summ'  value=$total_summ+$purchase->sum_price}
@@ -143,7 +143,7 @@
                                 {/foreach}
                             </div>
                             <div class="turbo_list_boding turbo_list_reportstats_products">
-                                <a title="{$purchase->product_name|escape}" href="{url module=ProductAdmin id=$purchase->product_id return=$smarty.server.REQUEST_URI}">{$purchase->product_name}</a> {if $purchase->variant_color}{$purchase->variant_color|escape} / {/if} {$purchase->variant_name}
+                                <a title="{$purchase->product_name|escape}" href="{url module=ReportStatsProdAdmin id=$purchase->product_id return=$smarty.server.REQUEST_URI}">{$purchase->product_name}</a> {if $purchase->variant_color}{$purchase->variant_color|escape} / {/if} {$purchase->variant_name}
                                 <div class="hidden-md-up mt-q">
                                     <span class="text_dark text_600">
                                         <span class="hidden-xs-down">{$btr->general_sales_amount|escape}: </span>

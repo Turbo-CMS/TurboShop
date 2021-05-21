@@ -19,10 +19,7 @@ class ExportAjax extends Turbo {
     private $filename = 'export_stat_products.csv';
     
     public function fetch() {
-        if(!$this->managers->access('stats')) {
-            return false;
-        }
-
+        
         // Ёксель кушает только 1251
         setlocale(LC_ALL, 'ru_RU.1251');
         $this->db->query('SET NAMES cp1251');

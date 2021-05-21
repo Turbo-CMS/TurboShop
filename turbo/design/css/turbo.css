@@ -5865,6 +5865,26 @@ div.colorPicker-swatch {height: 20px; width: 20px; border: 1px solid #2a2a2a; ma
 .boxed_dashboard{
 	margin-bottom: 0px;
 }
+.boxed_dashboard_green {
+    background-color: #9bcd00;
+    color: #fff;
+    border-color: #9bcd00;
+}
+.boxed_dashboard_yellow {
+    background-color: #f5c12d;
+    color: #fff;
+    border-color: #f5c12d;
+}
+.boxed_dashboard_info {
+    background-color: #2dc5f5;
+    color: #fff;
+    border-color: #2dc5f5;
+}
+.boxed_dashboard_subscribes {
+    background-color: #f76c22;
+    color: #fff;
+    border-color: #f76c22;
+}
 .huge {
     font-size: 50px;
     line-height: normal;

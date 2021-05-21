@@ -4,14 +4,22 @@ require_once('Turbo.php');
 
 class ReportStat extends Turbo
 {
-
-    function get_stat($filter = array())
-    { //Выборка товара 
-
+    function get_stat($filter = array()) { //Выборка товара
+        
+		$weekdays = array(
+			' '.$this->backend_translations->general_days_su.' ',
+			' '.$this->backend_translations->general_days_mo.' ',
+			' '.$this->backend_translations->general_days_tu.' ',
+			' '.$this->backend_translations->general_days_we.' ',
+			' '.$this->backend_translations->general_days_th.' ',
+			' '.$this->backend_translations->general_days_fr.' ',
+			' '.$this->backend_translations->general_days_sa.' '
+		);
+    
         $all_filters = $this->make_filter($filter);
-
+        
         $query = $this->db->placehold("SELECT 
-                o.total_price, o.delivery_price,
+                o.total_price,
                 DATE_FORMAT(o.date,'%d.%m.%y') date, 
                 DATE_FORMAT(o.date,'%w') weekday, 
                 DATE_FORMAT(o.date,'%H') hour, 
@@ -21,57 +29,70 @@ class ReportStat extends Turbo
                 o.status
             FROM __orders o
             LEFT JOIN __orders_labels AS ol ON o.id=ol.order_id
-            LEFT JOIN t_purchases p ON p.order_id = o.id
             WHERE 1 $all_filters ORDER BY o.date");
 
         $this->db->query($query);
         $data = $this->db->results();
 
         $group = 'day';
+        if(isset($filter['date_filter']))
+        {
+            switch ($filter['date_filter']){
+                case 'today':       $group = 'hour';    break;
+                case 'yesterday':   $group = 'hour';    break;
+                case 'last_24hour': $group = 'hour';    break;
+                case 'this_year':   $group = 'month';   break;
+                case 'last_year':   $group = 'month';   break;
+                case 'all':         $group = 'month';   break;
+            }
+        }        
+        
         $results = array();
-
-        foreach ($data as $d) {
-            switch ($group) {
+        
+        foreach($data as $d)
+        {
+            switch($group) {
                 case 'hour':
-                    $date = $d->year . $d->month . $d->day . $d->hour;
-                    $results[$date]['title'] = $d->day . '.' . $d->month . ' ' . $d->hour . ':00';
-                    break;
+                    $date = $d->year.$d->month.$d->day.$d->hour;
+                    $results[$date]['title'] = $d->day.'.'.$d->month.' '.$d->hour.':00';
+                    break; 
                 case 'day':
-                    $date = $d->year . $d->month . $d->day;
-                    $results[$date]['title'] = $d->date . ' '[$d->weekday];
+                    $date = $d->year.$d->month.$d->day;
+                    $results[$date]['title'] = $d->date.' '.$weekdays[$d->weekday];
                     break;
                 case 'month':
-                    $date = $d->year . $d->month;
-                    $results[$date]['title'] = $d->month . '.' . $d->year;
-                    break;
+                    $date = $d->year.$d->month;
+                    $results[$date]['title'] = $d->month.'.'.$d->year;
+                    break;  
             }
 
-            if (!isset($results[$date]['new']))
-                $results[$date]['new'] = $results[$date]['confirm'] = $results[$date]['complite'] = $results[$date]['delete'] = 0;
+            if(!isset($results[$date]['new'])) 
+                $results[$date]['new'] = $results[$date]['confirm'] = $results[$date]['complite'] = $results[$date]['delete'] = 0;     
 
-            switch ($d->status) {
-                case 0:
-                    $results[$date]['new'] += $d->total_price;
-                    break;
-                case 1:
-                    $results[$date]['confirm'] += $d->total_price;
-                    break;
-                case 2:
-                    $results[$date]['complite'] += $d->total_price;
-                    break;
-                case 3:
-                    $results[$date]['delete'] += $d->total_price;
-                    break;
+            switch($d->status) {
+                case 0: $results[$date]['new'] += $d->total_price; break;
+                case 1: $results[$date]['confirm'] += $d->total_price; break;
+                case 2: $results[$date]['complite'] += $d->total_price; break;
+                case 3: $results[$date]['delete'] += $d->total_price; break;
             }
         }
         return $results;
     }
-
-    function get_stat_orders($filter = array())
-    { //Выборка товара 
-
+    
+    function get_stat_orders($filter = array()) { //Выборка товара
+        
+		$weekdays = array(
+			' '.$this->backend_translations->general_days_su.' ',
+			' '.$this->backend_translations->general_days_mo.' ',
+			' '.$this->backend_translations->general_days_tu.' ',
+			' '.$this->backend_translations->general_days_we.' ',
+			' '.$this->backend_translations->general_days_th.' ',
+			' '.$this->backend_translations->general_days_fr.' ',
+			' '.$this->backend_translations->general_days_sa.' '
+		);
+    
         $all_filters = $this->make_filter($filter);
-
+        
         $query = $this->db->placehold("SELECT 
                 o.id, 
                 DATE_FORMAT(o.date,'%d.%m.%y') date, 
@@ -80,38 +101,49 @@ class ReportStat extends Turbo
                 DATE_FORMAT(o.date,'%d') day, 
                 DATE_FORMAT(o.date,'%m') month, 
                 DATE_FORMAT(o.date,'%Y') year, 
-                o.status 
+                o.status
             FROM __orders o
             LEFT JOIN __orders_labels AS ol ON o.id=ol.order_id
-            LEFT JOIN t_purchases p ON p.order_id = o.id
-
             WHERE 1 $all_filters ORDER BY o.date");
         $this->db->query($query);
         $data = $this->db->results();
-
+        
         $group = 'day';
+        if(isset($filter['date_filter']))
+        {
+            switch ($filter['date_filter']){
+                case 'today':       $group = 'hour';    break;
+                case 'yesterday':   $group = 'hour';    break;
+                case 'last_24hour': $group = 'hour';    break;
+                case 'this_year':   $group = 'month';   break;
+                case 'last_year':   $group = 'month';   break;
+                case 'all':         $group = 'month';   break;
+            }
+        }        
+        
         $results = array();
-
-        foreach ($data as $d) {
-            switch ($group) {
+        
+        foreach($data as $d)
+        {
+            switch($group) {
                 case 'hour':
-                    $date = $d->year . $d->month . $d->day . $d->hour;
-                    $results[$date]['title'] = $d->day . '.' . $d->month . ' ' . $d->hour . ':00';
-                    break;
+                    $date = $d->year.$d->month.$d->day.$d->hour;
+                    $results[$date]['title'] = $d->day.'.'.$d->month.' '.$d->hour.':00';
+                    break; 
                 case 'day':
-                    $date = $d->year . $d->month . $d->day;
-                    $results[$date]['title'] = $d->date . ' '[$d->weekday];
+                    $date = $d->year.$d->month.$d->day;
+                    $results[$date]['title'] = $d->date.' '.$weekdays[$d->weekday];
                     break;
                 case 'month':
-                    $date = $d->year . $d->month;
-                    $results[$date]['title'] = $d->month . '.' . $d->year;
-                    break;
-            }
+                    $date = $d->year.$d->month;
+                    $results[$date]['title'] = $d->month.'.'.$d->year;
+                    break;  
+            }        
 
-            if (!isset($results[$date]['new']))
-                $results[$date]['new'] = $results[$date]['confirm'] = $results[$date]['complite'] = $results[$date]['delete'] = 0;
+            if(!isset($results[$date]['new'])) 
+                $results[$date]['new'] = $results[$date]['confirm'] = $results[$date]['complite'] = $results[$date]['delete'] = 0;     
 
-            switch ($d->status) {
+            switch($d->status) {
                 case 0:
                     $results[$date]['new']++;
                     break;
@@ -212,6 +244,38 @@ class ReportStat extends Turbo
         $this->db->query($query);
         return $this->db->result('count');
     }
+	
+	function get_report_product($filter = array(), $id) { //Выборка товара для страицы товара
+        // По умолчанию
+        $variant_id = '';
+
+        if(isset($filter['variant_id']))
+            $variant_id = $this->db->placehold('AND p.variant_id = ?', intval($filter['variant_id']));        
+
+        $all_filters = $this->make_filter($filter);
+        
+        // Выбираем заказы
+        $query = $this->db->placehold("SELECT 
+                o.id, 
+                DATE(o.date) as date, 
+                p.product_id, 
+                p.variant_id, 
+                p.product_name, 
+                p.variant_name,
+				p.variant_color,
+                SUM(p.price * p.amount) as price, 
+                SUM(p.amount) as amount, 
+                p.sku 
+            FROM __orders AS o 
+            LEFT JOIN __purchases AS p ON o.id = p.order_id 
+            LEFT JOIN __orders_labels AS ol ON o.id=ol.order_id 
+            WHERE 1 AND p.product_id=? $variant_id $all_filters 
+            GROUP BY DATE(o.date) 
+            ORDER BY o.date", $id);
+     
+        $this->db->query($query);
+        return $this->db->results();
+    }
 
     /*Фильтр статистики продаж*/
     private function make_filter($filter = array())
@@ -220,11 +284,16 @@ class ReportStat extends Turbo
         $period_filter = '';
         $date_filter = '';
         $status_filter = '';
+		$label_filter = ''; 
 
         if (isset($filter['status'])) {
             $status_filter = $this->db->placehold('AND o.status = ?', intval($filter['status']));
         }
-
+		
+		 if(isset($filter['label'])) {
+            $label_filter = $this->db->placehold('AND ol.label_id = ?', $filter['label']);
+		}
+		 
         if (isset($filter['date_from']) && !isset($filter['date_to'])) {
             $period_filter = $this->db->placehold('AND o.date > ?', $filter['date_from']);
         } elseif (isset($filter['date_to']) && !isset($filter['date_from'])) {
@@ -281,7 +350,7 @@ class ReportStat extends Turbo
                     }
             }
         }
-        return "$status_filter $date_filter $period_filter";
+        return "$status_filter $date_filter $period_filter $label_filter";
     }
 
     /*Выборка категоризации продаж*/

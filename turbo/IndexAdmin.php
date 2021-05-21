@@ -48,6 +48,8 @@ class IndexAdmin extends Turbo
 		'ClearAdmin'                => 'clear',
 		'ReportStatsAdmin'          => 'stats',
         'CategoryStatsAdmin'        => 'stats',
+		'ReportStatsProdAdmin'      => 'stats',
+		'StatsAdmin'                => 'stats',
 		'ThemeAdmin'                => 'design',
 		'StylesAdmin'               => 'design',
 		'TemplatesAdmin'            => 'design',
