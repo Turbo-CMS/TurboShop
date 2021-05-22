@@ -143,7 +143,7 @@
 								<span class="text_dark text_600">
 									<span class="hidden-xs-down">{$btr->general_sales_amount|escape}: </span>
 									<span class="text_primary">
-										{$prod_report->sum_price} {$currency->sign|escape}
+										{$prod_report->price} {$currency->sign|escape}
 									</span>
 								</span>
 							</div>
