@@ -75,6 +75,9 @@ class ReportStatsProdAdmin extends Turbo
 
         $product_report = $this->reportstat->get_report_product($filter, $id);
         $this->design->assign('product_report', $product_report);
+		
+		$product_report_stat = $this->reportstat->get_report_product_stat($filter, $id);
+        $this->design->assign('product_report_stat', $product_report_stat);
 
         // Labels
         $labels = $this->orders->get_labels();

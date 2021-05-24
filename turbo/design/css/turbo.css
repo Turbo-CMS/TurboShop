@@ -1009,7 +1009,6 @@ a.link:hover{
 .variant_input:focus,
 .form-control:focus {
     border-color: rgba(0,0,0,0.1);
-    background-color: #f0f0f0;
     outline: 0 !important;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -2122,7 +2121,7 @@ label.switch_label {
 }
 .turbo_list .turbo_list_categorystats_total,
 .turbo_list .turbo_list_reportstats_total{
-    width: 140px;
+    width: 151px;
     text-align: center;
 }
 .turbo_list .turbo_list_categorystats_setting,
@@ -2503,7 +2502,6 @@ label.switch_label {
 }
 .input-group .form-control:focus {
     border-color: rgba(0,0,0,0.1);
-    background-color: #f0f0f0;
     outline: 0 !important;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -4398,7 +4396,7 @@ input[type=range]:focus::-ms-fill-upper {
 	border: 1px solid #dfe2e5;
 }
 .feature_input:focus {
-    border-color: rgba(242,242,243, 0.8);
+    border-color: rgba(0,0,0,0.1);
     box-shadow: none;
     outline: 0 none;
     transition: none 0s ease 0s;

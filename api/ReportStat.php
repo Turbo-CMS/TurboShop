@@ -264,8 +264,38 @@ class ReportStat extends Turbo
                 p.variant_name,
 				p.variant_color,
                 SUM(p.price * p.amount) as price, 
-                SUM(p.amount) as amount, 
-                p.sku 
+                SUM(p.amount) as amount
+            FROM __orders AS o 
+            LEFT JOIN __purchases AS p ON o.id = p.order_id 
+            LEFT JOIN __orders_labels AS ol ON o.id=ol.order_id 
+            WHERE 1 AND p.product_id=? $variant_id $all_filters 
+			GROUP BY p.variant_id
+            ORDER BY o.date", $id);
+     
+        $this->db->query($query);
+        return $this->db->results();
+    }
+	
+	function get_report_product_stat($filter = array(), $id) { //Выборка товара для страицы товара
+        // По умолчанию
+        $variant_id = '';
+
+        if(isset($filter['variant_id']))
+            $variant_id = $this->db->placehold('AND p.variant_id = ?', intval($filter['variant_id']));        
+
+        $all_filters = $this->make_filter($filter);
+        
+        // Выбираем заказы
+        $query = $this->db->placehold("SELECT 
+                o.id, 
+                DATE(o.date) as date, 
+                p.product_id, 
+                p.variant_id, 
+                p.product_name, 
+                p.variant_name,
+				p.variant_color,
+                SUM(p.price * p.amount) as price, 
+                SUM(p.amount) as amount
             FROM __orders AS o 
             LEFT JOIN __purchases AS p ON o.id = p.order_id 
             LEFT JOIN __orders_labels AS ol ON o.id=ol.order_id 

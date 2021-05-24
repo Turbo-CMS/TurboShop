@@ -126,8 +126,14 @@
             <div class="turbo_list_head">
                 <div class="turbo_list_heading turbo_list_reportstats_categories">{$btr->general_category|escape}</div>
                 <div class="turbo_list_heading turbo_list_reportstats_products">{$btr->general_name|escape}</div>
-                <div class="turbo_list_heading turbo_list_reportstats_total">{$btr->general_sales_amount|escape}</div>
-                <div class="turbo_list_heading turbo_list_reportstats_setting">{$btr->general_amount|escape}</div>
+                <div class="turbo_list_heading turbo_list_reportstats_total">
+					<span>{$btr->general_sales_amount|escape}</span>
+					<a href="{if $sort_prod=='price'}{url sort_prod=price_in}{else}{url sort_prod=price}{/if}" {if $sort_prod=='price' || $sort_prod=='price_in'}class="selected"{/if}>{include file='svg_icon.tpl' svgId='sorts'}</a>
+				</div>
+                <div class="turbo_list_heading turbo_list_reportstats_setting">
+					<span>{$btr->general_amount|escape}</span>
+					<a href="{if $sort_prod=='amount'}{url sort_prod=amount_in}{else}{url sort_prod=amount}{/if}" {if $sort_prod=='amount' || $sort_prod=='amount_in'}class="selected"{/if}>{include file='svg_icon.tpl' svgId='sorts'}</a>
+				</div>
             </div>
 
             {* Item parameters *}

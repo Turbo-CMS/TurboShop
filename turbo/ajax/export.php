@@ -1,5 +1,6 @@
 <?php
 
+session_start();
 require_once('../../api/Turbo.php');
 
 class ExportAjax extends Turbo
@@ -36,7 +37,7 @@ class ExportAjax extends Turbo
 
 		if(!$this->managers->access('export'))
 			return false;
-
+		
 		// Ёксель кушает только 1251
 		setlocale(LC_ALL, 'ru_RU.1251');
 		$this->db->query('SET NAMES cp1251');

@@ -3,10 +3,13 @@
 
 <div class="row">
     <div class="col-lg-7 col-md-7">
-        <div class="wrap_heading">
+		<div class="wrap_heading">
             {if $orders_count}
 			<div class="box_heading heading_page">
 				{$btr->general_orders|escape} - {$orders_count}
+				<div class="export_block hint-bottom-middle-t-info-s-small-mobile hint-anim" data-hint="{$btr->orders_export|escape}">
+					<span class="fn_start_export fa fa-file-excel-o"></span>
+				</div>
 			</div>
             {else}
 			<div class="box_heading heading_page">{$btr->orders_no|escape}</div>
@@ -68,7 +71,7 @@
 							<option value="{url module=OrdersAdmin status=1 keyword=null id=null page=null label=null}" {if $status==1}selected=""{/if}>{$btr->general_accepted_order|escape}</option>
 							<option value="{url module=OrdersAdmin status=2 keyword=null id=null page=null label=null}" {if $status==2}selected=""{/if}>{$btr->general_closed_order|escape}</option>
 							<option value="{url module=OrdersAdmin status=3 keyword=null id=null page=null label=null}" {if $status==3}selected=""{/if}>{$btr->general_canceled_order|escape}</option>
-							<option value="{url module=OrdersAdmin status='all' keyword=null id=null page=null label=null from_date=null to_date=null}" {if $smarty.get.status && $status == "all" || !$status}selected{/if}>{$btr->general_all|escape}</option>
+							<option value="{url module=OrdersAdmin status=4 keyword=null id=null page=null label=null}" {if $status==4}selected=""{/if}>{$btr->general_all|escape}</option>
 						</select>
 					</div>
 				</div>
@@ -112,6 +115,7 @@
 							<option value="{url module=OrdersAdmin status=1 keyword=null id=null page=null label=null from_date=null to_date=null}" {if $status==1}selected{/if}>{$btr->general_accepted_order|escape}</option>
 							<option value="{url module=OrdersAdmin status=2 keyword=null id=null page=null label=null from_date=null to_date=null}" {if $status==2}selected{/if}>{$btr->general_closed_order|escape}</option>
 							<option value="{url module=OrdersAdmin status=3 keyword=null id=null page=null label=null from_date=null to_date=null}" {if $status==3}selected{/if}>{$btr->general_canceled_order|escape}</option>
+							<option value="{url module=OrdersAdmin status=4 keyword=null id=null page=null label=null from_date=null to_date=null}" {if $status==4}selected=""{/if}>{$btr->general_all|escape}</option>
 						</select>
 					</div>
 					{if $labels}
@@ -315,6 +319,9 @@
 	</div>
 	{/if}
 </div>
+
+<script src="{$config->root_url}/turbo/design/js/piecon/piecon.js"></script>
+
 {* On document load *}
 {literal}
 <script>
@@ -346,67 +353,63 @@
 			$(this).parents('.fn_row').find('.orders_purchases_block').slideToggle();
 		});
 		
-		$(".fn_labels_show").click(function(){
-			$(this).next('.fn_labels_hide').toggleClass("active_labels");
-		});
-		
-		$(".fn_delete_labels_hide").click(function(){
-			$(this).closest('.box_labels_hide').removeClass("active_labels");
-		});
-		
 		if($(window).width() >= 1199 ){
 			$(".fn_from_date, .fn_to_date ").datepicker({
 				dateFormat: 'dd-mm-yy'
 			});
-		}
+		};
 		
-		$(document).on("change", ".fn_change_orders", function () {
-			console.log($(this));
-			var item = $(this).find("option:selected").data("item");
-			if(item == "status") {
-				$(".fn_show_label").hide();
-				$(".fn_show_status").show();
-				} else if (item == "label") {
-				$(".fn_show_label").show();
-				$(".fn_show_status").hide();
-				} else {
-				$(".fn_show_label").hide();
-				$(".fn_show_status").hide();
-			}
+		{/literal}
+		var status = '{$status|escape}',
+			label='{$label->id|escape}',
+			from_date = '{$from_date}',
+			to_date = '{$to_date}';
+		{literal}
+		// On document load
+		$(document).on('click','.fn_start_export',function() {
+			
+			Piecon.setOptions({fallback: 'force'});
+			Piecon.setProgress(0);
+			var progress_item = $("#progressbar"); //указываем селектор элемента с анимацией
+			progress_item.show();
+			do_export('',progress_item);
 		});
-		
-		$(document).on("change", ".fn_ajax_labels input", function () {
-			elem = $(this);
-			var order_id = parseInt($(this).closest(".fn_ajax_labels").data("order_id"));
-			var state = "";
-			session_id = '{/literal}{$smarty.session.id}{literal}';
-			var label_id = parseInt($(this).closest(".fn_ajax_labels").find("input").val());
-			if($(this).closest(".fn_ajax_labels").find("input").is(":checked")){
-				state = "add";
-				} else {
-				state = "remove";
-			}
+
+		function do_export(page,progress) {
+			page = typeof(page) != 'undefined' ? page : 1;
+			label = typeof(label) != 'undefined' ? label : null;
+			status = typeof(status) != 'undefined' ? status : null;
+			from_date = typeof(from_date) != 'undefined' ? from_date : null;
+			to_date = typeof(to_date) != 'undefined' ? to_date : null;
 			$.ajax({
-				type: "POST",
-				dataType: 'json',
-				url: "ajax/update_order.php",
+				url: "ajax/export_orders.php",
 				data: {
-					order_id : order_id,
-					state : state,
-					label_id : label_id,
-					session_id : session_id
+					page:page, 
+					label:label,
+					status:status, 
+					from_date:from_date, 
+					to_date:to_date
 				},
+				dataType: 'json',
 				success: function(data){
-					var msg = "";
-					if(data){
-						elem.closest(".fn_ajax_label_wrapper").find(".fn_order_labels").html(data.data);
-						toastr.success(msg, "Готово");
-						} else {
-						toastr.error(msg, "Ошибка");
+					if(data && !data.end) {
+						Piecon.setProgress(Math.round(100*data.page/data.totalpages));
+						progress.attr('value',100*data.page/data.totalpages);
+						do_export(data.page*1+1,progress);
 					}
+					else {
+						Piecon.setProgress(100);
+						progress.attr('value','100');
+						window.location.href = 'files/export/export_orders.csv';
+						progress.fadeOut(500);
+					}
+				},
+				error:function(xhr, status, errorThrown) {
+					alert(errorThrown+'\n'+xhr.responseText);
 				}
 			});
-		});
+		}
+
 	});
 	
 </script>

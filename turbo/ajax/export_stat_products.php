@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 require_once('../../api/Turbo.php');
 
 class ExportAjax extends Turbo {
@@ -18,9 +20,13 @@ class ExportAjax extends Turbo {
     private $export_files_dir = '../files/export/';
     private $filename = 'export_stat_products.csv';
     
-    public function fetch() {
+    public function fetch() 
+	{
         
-        // Ёксель кушает только 1251
+        if(!$this->managers->access('stats'))
+			return false;
+		
+		// Ёксель кушает только 1251
         setlocale(LC_ALL, 'ru_RU.1251');
         $this->db->query('SET NAMES cp1251');
         

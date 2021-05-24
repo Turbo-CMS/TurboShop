@@ -203,7 +203,7 @@
         var data = google.visualization.arrayToDataTable([
             {/literal}
 			['{$btr->general_date|escape}', '{$btr->general_sum|escape} {$currency->sign|escape}', '{$btr->general_amount|escape}'],
-            {foreach $product_report as $prod_report}      
+            {foreach $product_report_stat as $prod_report}      
                 ['{$prod_report->date|date}', {$prod_report->price}, {$prod_report->amount}],
             {/foreach}
             {literal}

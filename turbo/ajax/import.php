@@ -2,7 +2,6 @@
 
 session_start();
 chdir('../../');
-
 require_once('api/Import.php');
 
 class ImportAjax extends Import
@@ -11,13 +10,12 @@ class ImportAjax extends Import
     public function import()
     {
 
-        if (!$this->managers->access('import'))
-            return false;
-
-        $fields = $_SESSION['csv_fields'];
+        if(!$this->managers->access('import'))
+			return false;
+		
+		$fields = $_SESSION['csv_fields'];
         session_write_close();
         unset($_SESSION['lang_id']);
-        unset($_SESSION['admin_lang_id']);
 
         // Для корректной работы установим локаль UTF-8
         setlocale(LC_ALL, $this->locale);

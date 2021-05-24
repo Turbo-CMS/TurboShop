@@ -15,6 +15,19 @@
             </div>
         </div>
     </div>
+	<div class="col-md-12 col-lg-5 col-xs-12 float-xs-right">
+        <div class="boxed_search">
+            <form class="search" method="get">
+                <input type="hidden" name="module" value="FeaturesAdmin">
+                <div class="input-group">
+                    <input name="keyword" class="form-control" placeholder="{$btr->features_search|escape}" type="text" value="{$keyword|escape}" >
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn_green"><i class="fa fa-search"></i> <span class="hidden-md-down"></span></button>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 <div class="boxed fn_toggle_wrap">
@@ -23,7 +36,7 @@
             <div class="boxed_sorting">
                 <div class="row">
                     <div class="col-md-3 col-lg-3 col-sm-12">
-                        <select id="id_categories" name="categories_filter" title="Фильтр по категориям" class="selectpicker form-control" data-live-search="true" data-size="10" onchange="location = this.value;">
+                        <select id="id_categories" name="categories_filter" title="{$btr->general_category_filter|escape}" class="selectpicker form-control" data-live-search="true" data-size="10" onchange="location = this.value;">
                             <option value="{url keyword=null brand_id=null page=null limit=null category_id=null}" {if !$category}selected{/if}>{$btr->general_all_categories|escape}</option>
                             {function name=category_select level=0}
                             {foreach $categories as $c}
@@ -122,6 +135,11 @@
             </div>
         </div>
     </form>
+	<div class="row">
+            <div class="col-lg-12 col-md-12 col-sm 12 txt_center">
+                {include file='pagination.tpl'}
+            </div>
+        </div>
     {else}
     <div class="heading_box mt-1">
         <div class="text_grey">{$btr->features_no|escape}</div>

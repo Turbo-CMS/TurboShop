@@ -45,7 +45,7 @@
                             <div class="mb-1">
                                 <input name="site_name" class="form-control" type="text" value="{$settings->site_name|escape}" />
                             </div>
-                        </div>
+							</div>
                         <div class="col-md-6">
                             <div class="heading_label">{$btr->settings_general_company_name|escape}</div>
                             <div class="mb-1">
@@ -205,6 +205,12 @@
                             <div class="heading_label">{$btr->settings_catalog_products_on_admin|escape}</div>
                             <div class="mb-1">
                                 <input name="products_num_admin" class="form-control" type="text" value="{$settings->products_num_admin|escape}" />
+                            </div>
+                        </div>
+						 <div class="col-lg-3 col-md-6">
+                            <div class="heading_label">{$btr->settings_features_on_admin|escape}</div>
+                            <div class="mb-1">
+                                <input name="features_num_admin" class="form-control" type="text" value="{$settings->features_num_admin|escape}" />
                             </div>
                         </div>
                         <div class="col-lg-3 col-md-6">

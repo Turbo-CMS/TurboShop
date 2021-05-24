@@ -45,6 +45,7 @@ class SettingsAdmin extends Turbo
 			
 			$this->settings->products_num = $this->request->post('products_num');
 			$this->settings->products_num_admin = $this->request->post('products_num_admin');
+			$this->settings->features_num_admin = $this->request->post('features_num_admin');
 			$this->settings->max_order_amount = $this->request->post('max_order_amount');
 			$this->settings->update('weight_units', $this->request->post('weight_units'));
 			$this->settings->update('units', $this->request->post('units'));

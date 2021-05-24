@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 require_once('../../api/Turbo.php');
 
 class ImportAjax extends Turbo

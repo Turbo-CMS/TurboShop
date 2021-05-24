@@ -105,17 +105,17 @@
     </div>
 	
 	<div class="row">
-		<div class="col-lg-6 col-md-6 pr-0">
-			<div class="boxed fn_toggle_wrap">
-				<div class="toggle_body_wrap fn_card on">
-					<div id="containerOrders" class="chart"></div>
-				</div>
-			</div>
-		</div>
-		<div class="col-lg-6 col-md-6">
+		<div class="col-lg-12 col-md-12">
 			<div class="boxed fn_toggle_wrap">
 				<div class="toggle_body_wrap fn_card on">
 					<div id="containerAmount" class="chart"></div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-12 col-md-12 pr-0">
+			<div class="boxed fn_toggle_wrap">
+				<div class="toggle_body_wrap fn_card on">
+					<div id="containerOrders" class="chart"></div>
 				</div>
 			</div>
 		</div>
@@ -153,7 +153,7 @@
 		var options = {
 			legend: { position: "bottom" },
 			colors: ['#2fc6f6', '#f9e900', '#9dcf00', '#bfc7d2'],
-			// bar: {groupWidth: '90%'},
+			bar: {groupWidth: '90%'},
 			// hAxis: {slantedText:true, slantedTextAngle:90, textStyle: {fontSize: 11}}, 
 			vAxis: {minValue: 0, textStyle: {fontSize: 11}},
 			backgroundColor: '#fff',
@@ -178,7 +178,7 @@
 		var options = {
 			legend: { position: "bottom" },
 			colors: ['#2fc6f6', '#f9e900', '#9dcf00', '#bfc7d2'],
-			// bar: {groupWidth: '90%'},
+			bar: {groupWidth: '90%'},
 			// hAxis: {slantedText:true, slantedTextAngle:90, textStyle: {fontSize: 11}}, 
 			vAxis: {minValue: 0, textStyle: {fontSize: 11}},
 			backgroundColor: '#fff',

@@ -2,10 +2,12 @@
 	
 require_once('../../../api/Turbo.php');	
 
-class StatAjax extends Turbo {
+class StatAjax extends Turbo 
+{
 
     /*Отображеие статистики заказов*/
-    public function fetch() {
+    public function fetch() 
+	{
         $query = $this->db->placehold('SELECT 
                 SUM( o.total_price ) AS total_price, 
                 MAX(DAY(date)) AS day, 

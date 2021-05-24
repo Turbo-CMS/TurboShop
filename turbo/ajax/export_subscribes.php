@@ -1,8 +1,10 @@
 <?php
     
+session_start();
 require_once('../../api/Turbo.php');
 
-class ExportAjax extends Turbo {
+class ExportAjax extends Turbo 
+{
     
     private $columns_names = array(
         'email'=>            'Email'
@@ -13,8 +15,10 @@ class ExportAjax extends Turbo {
     private $export_files_dir = '../files/export_users/';
     private $filename = 'subscribes.csv';
     
-    public function fetch() {
-        if(!$this->managers->access('subscribes')) {
+    public function fetch() 
+	{
+        
+		if(!$this->managers->access('subscribes')) {
             return false;
         }
         

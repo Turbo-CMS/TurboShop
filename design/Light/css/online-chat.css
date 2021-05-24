@@ -384,11 +384,6 @@ body .one_widget .i-trigger-open .chaty-widget-i-title.face_title {
         right: 90px;
 	}
 }
-@media screen and (max-width: 800px) {
-    .i-trigger-close .chaty-widget-i-title {
-        display: none;
-	}
-}
 @media screen and (max-width: 480px) {
     .mobile_none {
         display: none;

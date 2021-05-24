@@ -109,7 +109,8 @@ class OrdersAdmin extends Turbo
 		if(empty($keyword))
 		{
 			$status = $this->request->get('status', 'integer');
-			$filter['status'] = $status;
+			if($status<4)
+				$filter['status'] = $status;
 		 	$this->design->assign('status', $status);
 		}
 				  	
@@ -145,7 +146,6 @@ class OrdersAdmin extends Turbo
 	 	$this->design->assign('current_page', $filter['page']);
 	  	
 	 	$this->design->assign('orders_count', $orders_count);
-	
 	 	$this->design->assign('orders', $orders);
 	
 		// Метки заказов

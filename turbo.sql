@@ -2773,7 +2773,8 @@ INSERT INTO `t_settings` (`setting_id`, `name`, `value`) VALUES
 (46, 'chat_viber', '123456789'),
 (47, 'chat_whats_app', '123456789'),
 (48, 'chat_telegram', 'test'),
-(49, 'chat_facebook', 'test');
+(49, 'chat_facebook', 'test'),
+(50, 'features_num_admin', '25');
 
 -- --------------------------------------------------------
 
@@ -3744,7 +3745,7 @@ ALTER TABLE `t_seo`
 -- AUTO_INCREMENT для таблицы `t_settings`
 --
 ALTER TABLE `t_settings`
-  MODIFY `setting_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `setting_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 
 --
 -- AUTO_INCREMENT для таблицы `t_subscribes`

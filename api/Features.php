@@ -15,7 +15,32 @@ class Features extends Turbo
 	
 	function get_features($filter = array())
 	{
-		$category_id_filter = '';	
+		$limit = 100;
+        $page = 1;
+		$sql_limit = '';
+		$keyword_filter = '';
+		$category_id_filter = '';
+		
+		$lang_id  = $this->languages->lang_id();
+        $px = ($lang_id ? 'l' : 'f');
+		
+		if(isset($filter['limit'])) {
+            $limit = max(1, intval($filter['limit']));
+        }
+
+        if(isset($filter['page'])) {
+            $page = max(1, intval($filter['page']));
+        }
+		
+		if(isset($filter['keyword']))
+		{
+			$keywords = explode(' ', $filter['keyword']);
+			foreach($keywords as $keyword)
+				$keyword_filter .= $this->db->placehold('AND ('.$px.'.name LIKE "%'.$this->db->escape(trim($keyword)).'%") ');
+		}
+
+        $sql_limit = $this->db->placehold(' LIMIT ?, ? ', ($page-1)*$limit, $limit);
+
 		if(isset($filter['category_id']))
 		$category_id_filter = $this->db->placehold('AND id in(SELECT feature_id FROM __categories_features AS cf WHERE cf.category_id in(?@))', (array)$filter['category_id']);
 		
@@ -30,12 +55,48 @@ class Features extends Turbo
 		$lang_sql = $this->languages->get_query(array('object'=>'feature'));
 		
 		// Выбираем свойства
-		$query = $this->db->placehold("SELECT f.id, f.name, f.position, f.in_filter, f.url, f.url_in_product, f.is_color, ".$lang_sql->fields." FROM __features AS f ".$lang_sql->join."
+		$query = $this->db->placehold("SELECT f.id, f.name, f.position, f.in_filter, f.url, f.url_in_product, f.is_color, $lang_sql->fields FROM __features AS f $lang_sql->join
 									WHERE 1
-									$category_id_filter $in_filter_filter $id_filter ORDER BY f.position");
+									$category_id_filter $in_filter_filter $id_filter $keyword_filter ORDER BY f.position $sql_limit");
 		$this->db->query($query);
 		return $this->db->results();
 	}
+	
+	public function count_features($filter = array()) {
+        $category_id_filter = '';
+        if(isset($filter['category_id'])) {
+            $category_id_filter = $this->db->placehold('AND id in(SELECT feature_id FROM __categories_features AS cf WHERE cf.category_id in(?@))', (array)$filter['category_id']);
+        }
+
+        $in_filter_filter = '';
+        if(isset($filter['in_filter'])) {
+            $in_filter_filter = $this->db->placehold('AND f.in_filter=?', intval($filter['in_filter']));
+        }
+
+        $id_filter = '';
+        if(!empty($filter['id'])) {
+            $id_filter = $this->db->placehold('AND f.id in(?@)', (array)$filter['id']);
+        }
+		
+		if(isset($filter['keyword']))
+		{
+			$keywords = explode(' ', $filter['keyword']);
+			foreach($keywords as $keyword)
+				$keyword_filter .= $this->db->placehold('AND (f.name LIKE "%'.$this->db->escape(trim($keyword)).'%") ');
+		}
+
+        $lang_sql = $this->languages->get_query(array('object'=>'feature'));
+		
+        // Выбираем свойства
+        $query = $this->db->placehold("SELECT count(distinct f.id) as count FROM __features AS f $lang_sql->join
+            WHERE 1
+                $category_id_filter
+                $in_filter_filter
+				$keyword_filter
+                $id_filter");
+        $this->db->query($query);
+        return $this->db->result('count');
+    }
 		
 	function get_feature($id)
 	{

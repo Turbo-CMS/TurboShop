@@ -10,6 +10,19 @@ class FeaturesAdmin extends Turbo
 	function fetch()
 	{	
 	
+		$filter = array();
+		$filter['page'] = max(1, $this->request->get('page', 'integer'));
+			
+		$filter['limit'] = $this->settings->features_num_admin;
+		
+		// Поиск
+		$keyword = $this->request->get('keyword');
+		if(!empty($keyword))
+		{
+	  		$filter['keyword'] = $keyword;
+			$this->design->assign('keyword', $keyword);
+		}
+		
 		if($this->request->method('post'))
 		{  	
 			// Действия с выбранными
@@ -61,14 +74,26 @@ class FeaturesAdmin extends Turbo
 	
 		$categories = $this->categories->get_categories_tree();
 		$category = null;
-		
-		$filter = array();
 		$category_id = $this->request->get('category_id', 'integer');
 		if($category_id)
 		{
 			$category = $this->categories->get_category($category_id);
 			$filter['category_id'] = $category->id;
 		}
+		
+		$features_count = $this->features->count_features($filter);
+		// Показать все страницы сразу
+		if($this->request->get('page') == 'all')
+			$filter['limit'] = $features_count;
+		
+		if($filter['limit']>0)	  	
+		  	$pages_count = ceil($features_count/$filter['limit']);
+		else
+		  	$pages_count = 0;
+	  	$filter['page'] = min($filter['page'], $pages_count);
+	 	$this->design->assign('features_count', $features_count);
+	 	$this->design->assign('pages_count', $pages_count);
+	 	$this->design->assign('current_page', $filter['page']);
 		
 		$features = $this->features->get_features($filter);
 		

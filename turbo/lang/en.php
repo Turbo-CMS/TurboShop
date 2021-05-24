@@ -1164,3 +1164,5 @@ $backend_translations->general_days_sa = 'Sa';
 $backend_translations->sales_report = 'sales report';
 $backend_translations->sales_report_title = 'Sales report';
 $backend_translations->all_variants = 'All variants';
+$backend_translations->features_search = 'feature search...';
+$backend_translations->settings_features_on_admin = 'Features on the admin page';

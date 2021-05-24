@@ -1,5 +1,6 @@
 <?php
 
+session_start();
 require_once('../../api/Turbo.php');
 
 class Clear_Site_Ajax extends Turbo

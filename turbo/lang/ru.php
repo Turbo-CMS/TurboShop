@@ -1161,3 +1161,5 @@ $backend_translations->general_days_su = 'Вс';
 $backend_translations->sales_report = 'отчет по продажам';
 $backend_translations->sales_report_title = 'Отчет о продажах';
 $backend_translations->all_variants = 'Все варианты';
+$backend_translations->features_search = 'поиск свойства...';
+$backend_translations->settings_features_on_admin = 'Свойств на странице админки';

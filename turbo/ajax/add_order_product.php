@@ -3,6 +3,9 @@
 	require_once('../../api/Turbo.php');
 	$turbo = new Turbo();
     $limit = 30;
+	
+	if(!$turbo->managers->access('orders'))
+		return false;
 
     $lang_id  = $turbo->languages->lang_id();
     $px = ($lang_id ? 'l' : 'p');
