@@ -1,5 +1,6 @@
 <?php
 
+chdir(__DIR__);
 require_once('api/Turbo.php');
 $turbo = new Turbo();
 
@@ -27,12 +28,14 @@ $lastmod = date("Y-m-d");
 print "\t<url>"."\n";
 print "\t\t<loc>$url</loc>"."\n";
 print "\t\t<lastmod>$lastmod</lastmod>"."\n";
+print "\t\t<changefreq>daily</changefreq>"."\n";
+print "\t\t<priority>1.0</priority>"."\n";
 print "\t</url>"."\n";
 
 // Страницы
 foreach($turbo->pages->get_pages() as $p)
 {
-	if($p->visible && $p->menu_id == 1)
+	if($p->visible && $p->url && $p->url != '404') 
 	{
 		$url = $turbo->config->root_url.'/'.$lang_link.esc($p->url);
 		print "\t<url>"."\n";
@@ -42,6 +45,8 @@ foreach($turbo->pages->get_pages() as $p)
 		} else {	
 			print "\t\t<lastmod>".date('Y-m-d', strtotime($p->last_modified))."</lastmod>";
 		}
+		print "\t\t<changefreq>daily</changefreq>"."\n";
+		print "\t\t<priority>1.0</priority>"."\n";
 		print "\t</url>"."\n";
 	}
 }
@@ -53,6 +58,8 @@ foreach($turbo->blog->get_posts(array('visible'=>1)) as $p)
 	print "\t<url>"."\n";
 	print "\t\t<loc>$url</loc>"."\n";
     print "\t\t<lastmod>".date('Y-m-d', strtotime($p->last_modified))."</lastmod>";
+	print "\t\t<changefreq>daily</changefreq>"."\n";
+	print "\t\t<priority>1.0</priority>"."\n";
 	print "\t</url>"."\n";
 }
 
@@ -61,10 +68,12 @@ foreach($turbo->articles_categories->get_articles_categories() as $c)
 {
 	if($c->visible)
 	{
-		$url = $turbo->config->root_url.'/'.$lang_link.'/articles/'.esc($c->url);
+		$url = $turbo->config->root_url.'/'.$lang_link.'articles/'.esc($c->url);
 		print "\t<url>"."\n";
 		print "\t\t<loc>$url</loc>"."\n";
 		print "\t\t<lastmod>".date('Y-m-d', strtotime($c->last_modified))."</lastmod>";
+		print "\t\t<changefreq>daily</changefreq>"."\n";
+		print "\t\t<priority>1.0</priority>"."\n";
 		print "\t</url>"."\n";
 	}
 }
@@ -73,10 +82,12 @@ foreach($turbo->articles_categories->get_articles_categories() as $c)
 $turbo->db->query("SELECT url, last_modified FROM __articles WHERE visible=1");
 foreach($turbo->db->results() as $p)
 {
-	$url = $turbo->config->root_url.'/'.$lang_link.'/article/'.esc($p->url);
+	$url = $turbo->config->root_url.'/'.$lang_link.'article/'.esc($p->url);
 	print "\t<url>"."\n";
 	print "\t\t<loc>$url</loc>"."\n";
 	print "\t\t<lastmod>".date('Y-m-d', strtotime($p->last_modified))."</lastmod>";
+	print "\t\t<changefreq>daily</changefreq>"."\n";
+	print "\t\t<priority>1.0</priority>"."\n";
 	print "\t</url>"."\n";
 }
 
@@ -89,6 +100,8 @@ foreach($turbo->categories->get_categories() as $c)
 		print "\t<url>"."\n";
 		print "\t\t<loc>$url</loc>"."\n";
         print "\t\t<lastmod>".date('Y-m-d', strtotime($c->last_modified))."</lastmod>";
+		print "\t\t<changefreq>daily</changefreq>"."\n";
+		print "\t\t<priority>1.0</priority>"."\n";
 		print "\t</url>"."\n";
 	}
 }
@@ -100,6 +113,8 @@ foreach($turbo->brands->get_brands() as $b)
 	print "\t<url>"."\n";
 	print "\t\t<loc>$url</loc>"."\n";
     print "\t\t<lastmod>".date('Y-m-d', strtotime($b->last_modified))."</lastmod>";
+	print "\t\t<changefreq>daily</changefreq>"."\n";
+	print "\t\t<priority>1.0</priority>"."\n";
 	print "\t</url>"."\n";
 }
 
@@ -111,6 +126,8 @@ foreach($turbo->db->results() as $p)
 	print "\t<url>"."\n";
 	print "\t\t<loc>$url</loc>"."\n";
     print "\t\t<lastmod>".date('Y-m-d', strtotime($p->last_modified))."</lastmod>";
+	print "\t\t<changefreq>weekly</changefreq>"."\n";
+		print "\t\t<priority>0.5</priority>"."\n";
 	print "\t</url>"."\n";
 }
 

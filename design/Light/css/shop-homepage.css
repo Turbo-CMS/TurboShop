@@ -1,64 +1,80 @@
 #menu2 .list-group-item {
     padding-left: 30px;
 }
+
 #menu2sub1 .list-group-item {
     padding-left: 40px;
 }
+
 #menu2 .list-group-item:first-child {
     border-radius: 0px;
 }
+
 #menu2 .list-group-item:last-child {
     border-bottom: 0 none;
     border-radius: 0px;
 }
-#sidebar .list-group  a[aria-expanded=true] i {
+
+#sidebar .list-group a[aria-expanded=true] i {
     transform: rotate(180deg) translateZ(0px);
     transition: transform 0.4s ease 0s, -webkit-transform 0.4s ease 0s;
 }
+
 .fa-phone {
     transform: rotate(90deg);
 }
+
 .image {
     margin-bottom: 10px;
     padding: 5px;
     text-align: center;
     vertical-align: middle;
 }
+
 .image img {
     max-width: 100%;
     vertical-align: middle;
 }
+
 .icon-action {
     float: right;
     font-size: 80%;
     margin-top: 5px;
 }
+
 .thumbnail {
     max-height: 70px;
     min-height: 70px;
 }
+
 .img-thumbnail {
-	min-width: 100px;
+    min-width: 100px;
 }
-.carousel{
+
+.carousel {
     min-height: 320px;
 }
+
 .label-rating {
     padding: 0px 7px;
     color: #333;
     display: inline-block;
     vertical-align: middle
 }
+
 .stars-simple {
     margin-bottom: 7px
 }
+
 .stars-simple i {
     color: orange
 }
+
 .stars-simple small {
     color: #999;
     margin-left: 5px
 }
+
 .rating-stars {
     display: inline-block;
     vertical-align: middle;
@@ -70,17 +86,20 @@
     white-space: nowrap;
     clear: both
 }
+
 .rating-stars i {
     font-size: 14px;
     color: #ccc;
     display: inline
 }
+
 .rating-stars li {
     display: block;
     text-overflow: clip;
     white-space: nowrap;
     z-index: 1
 }
+
 .rating-stars li.stars-active {
     z-index: 2;
     position: absolute;
@@ -88,78 +107,108 @@
     left: 0;
     overflow: hidden
 }
+
 .rating-stars li.stars-active i {
     color: orange
 }
+
 .card-product .price-old {
     color: #999;
 }
-table.cart-table thead tr th + th{
-	text-align:center;
-} 
-table.cart-table tbody td{
-	padding:20px 4px 20px 0;
-	vertical-align:middle;
+
+table.cart-table thead tr th+th {
+    text-align: center;
 }
+
+table.cart-table tbody td {
+    padding: 20px 4px 20px 0;
+    vertical-align: middle;
+}
+
 table.cart-table tbody td span,
-table.cart-table tbody td img{
-	display:inline-block;
-	vertical-align:middle;
+table.cart-table tbody td img {
+    display: inline-block;
+    vertical-align: middle;
 }
-table.cart-table tbody td img{
-	margin-right:20px;
+
+table.cart-table tbody td img {
+    margin-right: 20px;
 }
-table.cart-table tbody td + td{
-	width:24%;
-	text-align:center;
+
+table.cart-table tbody td+td {
+    width: 24%;
+    text-align: center;
 }
-table.cart-table tbody td:last-child{
-	width:10%;
-	padding:20px 0 20px 4px;
-	text-align:right;
+
+table.cart-table tbody td:last-child {
+    width: 10%;
+    padding: 20px 0 20px 4px;
+    text-align: right;
 }
-table.cart-table tbody td .btn-delete-item{ float:right}
-table.cart-table tbody tr {border-bottom: 1px solid #f0f0f0;}
-table.cart-table tbody td span, table.cart-table tbody td img {
-	display: inline-block;
-	vertical-align: middle;
+
+table.cart-table tbody td .btn-delete-item {
+    float: right
 }
-@media (max-width:1199px){
-	table.cart-table tbody td img {margin: 0 20px 20px 0;}
+
+table.cart-table tbody tr {
+    border-bottom: 1px solid #f0f0f0;
 }
-@media (max-width:639px){
-	table.table.cart-table,
-	table.table.cart-table thead,
-	table.table.cart-table tbody,
-	table.table.cart-table th,
-	table.table.cart-table td,
-	table.table.cart-table tr {display: block;}
-	table.table.cart-table thead tr { 
-		position: absolute;
-		top: -9999px;
-		left: -9999px;
-	}
-	table.cart-table tbody td:last-child,
-    table.table.cart-table td { 
-		border: none;
-		position: relative;
-		padding-left: 50%; 
-		white-space: normal;
-		text-align:left;
-		width:100%;
-	}
-	table.cart-table tbody td:last-child{ overflow:hidden;}
-	table.cart-table tbody tr td{width:auto;}
-	table.table.cart-table td:before {
-		position: absolute;
-		top: 34%;
-		left: 6px;
-		width: 45%;
-		padding-right: 10px;
-		white-space: nowrap;
-		text-align:left;
-		font-weight: bold;
-	}
-	table.table.cart-table td:before { content: attr(data-title);}
-	table.cart-table tbody td .btn-delete-item{ float:left;}
+
+table.cart-table tbody td span,
+table.cart-table tbody td img {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+@media (max-width:1199px) {
+    table.cart-table tbody td img {
+        margin: 0 20px 20px 0;
+    }
+}
+
+@media (max-width:639px) {
+    table.table.cart-table,
+    table.table.cart-table thead,
+    table.table.cart-table tbody,
+    table.table.cart-table th,
+    table.table.cart-table td,
+    table.table.cart-table tr {
+        display: block;
+    }
+    table.table.cart-table thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+    table.cart-table tbody td:last-child,
+    table.table.cart-table td {
+        border: none;
+        position: relative;
+        padding-left: 50%;
+        white-space: normal;
+        text-align: left;
+        width: 100%;
+    }
+    table.cart-table tbody td:last-child {
+        overflow: hidden;
+    }
+    table.cart-table tbody tr td {
+        width: auto;
+    }
+    table.table.cart-table td:before {
+        position: absolute;
+        top: 34%;
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align: left;
+        font-weight: bold;
+    }
+    table.table.cart-table td:before {
+        content: attr(data-title);
+    }
+    table.cart-table tbody td .btn-delete-item {
+        float: left;
+    }
 }

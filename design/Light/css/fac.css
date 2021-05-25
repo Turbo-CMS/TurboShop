@@ -11,8 +11,8 @@
 .fac a {
     margin: 0em 1em 0em 0em;
     padding-left: 1.5em;
-    cursor:pointer;
-    font-weight:inherit;
+    cursor: pointer;
+    font-weight: inherit;
     color: #212529;
     font-size: 1rem;
     font-weight: 400;
@@ -20,43 +20,53 @@
     text-align: left;
 }
 
-.fac > a:before,
-.fac > a:after {
+.fac>a:before,
+.fac>a:after {
     font-family: 'Font Awesome 5 Free', 'Font Awesome 5 Brands';
     font-weight: 600;
-	font-size: 1.1rem;
-    position:absolute;
-    left:0;
+    font-size: 1.1rem;
+    position: absolute;
+    left: 0;
 }
 
-.fac > a:before { 
+.fac>a:before {
     -webkit-transition: opacity 0.3s ease-in-out;
     -o-transition: opacity 0.3s ease-in-out;
     transition: opacity 0.3s ease-in-out;
 }
+
+
 /********* Sizes ***********/
 
 .fac-2x {
     font-size: 2em;
 }
 
+
 /********* Colors ***********/
-.fac-primary > a:before,
-.fac-primary > a:after {
+
+.fac-primary>a:before,
+.fac-primary>a:after {
     color: #dfe0e1;
 }
+
+
 /********* Controls ***********/
 
-.fac-checkbox > a:after { 
+.fac-checkbox>a:after {
     content: "\f0c8";
 }
-.fac-checkbox > a:focus:after {
-    content: "\f14a"; /* active */
-	font-weight: 600;
-	color: #007bff;
+
+.fac-checkbox>a:focus:after {
+    content: "\f14a";
+    /* active */
+    font-weight: 600;
+    color: #007bff;
 }
-.fac-checkbox > a.selected:after {
-    content: "\f14a"; /* active */
-	font-weight: 600;
-	color: #007bff;
+
+.fac-checkbox>a.selected:after {
+    content: "\f14a";
+    /* active */
+    font-weight: 600;
+    color: #007bff;
 }

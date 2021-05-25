@@ -33,8 +33,8 @@
                     <label class="turbo_ckeckbox" for="check_all_1"></label>
                 </div>
                 <div class="turbo_list_heading turbo_list_backup_name">{$btr->general_backup|escape}</div>
-                <div class="turbo_list_heading turbo_list_setting">{$btr->general_enable|escape}</div>
-                <div class="turbo_list_heading turbo_list_close"></div>
+               <div class="turbo_list_heading turbo_list_setting">{$btr->general_activities|escape}</div>
+                <div class="turbo_list_heading turbo_list_backup_close"></div>
             </div>
             <div class="turbo_list_body sortable">
                 {foreach $backups as $backup}
@@ -52,13 +52,13 @@
                             ({if $backup->size>1024*1024}{($backup->size/1024/1024)|round:2} {$btr->general_mb|escape}{else}{($backup->size/1024)|round:2} {$btr->general_kb|escape}{/if})
                         </div>
                         
-                        <div class="turbo_list_boding turbo_list_close">
-                            <a href="#"  data-hint="{$btr->restore_backup|escape}" class="btn_close fn_remove hint-bottom-right-t-info-s-small-mobile  hint-anim restore">
-                                <i class="icon-reload icons font-xl"></i>
+                        <div class="turbo_list_boding turbo_list_setting">
+                            <a href="#" data-hint="{$btr->restore_backup|escape}" class="restore hint-bottom-middle-t-info-s-small-mobile hint-anim">
+                                <i class="icon-reload icons"></i>
                             </a>
                         </div>
                         
-                        <div class="turbo_list_boding turbo_list_close">
+                        <div class="turbo_list_boding turbo_list_close turbo_list_backup_close">
                             {*delete*}
                             <button data-hint="{$btr->general_delete|escape}" type="button" class="btn_close fn_remove hint-bottom-right-t-info-s-small-mobile  hint-anim" data-toggle="modal" data-target="#fn_action_modal" onclick="success_action($(this));">
                                 {include file='svg_icon.tpl' svgId='delete'}

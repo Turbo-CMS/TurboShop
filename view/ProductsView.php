@@ -18,10 +18,8 @@ class ProductsView extends View
 	 * SEO фильтр
 	 *
 	 */	
-    private $meta_array = array();
-    private $set_canonical = false;
-    private $meta = array('h1'=>'','title'=>'','keywords'=>'','description'=>'');
-    private $meta_delimiter = ', ';
+   
+    private $noindex_filter = false;
     
     public function __construct()
 	{
@@ -55,7 +53,7 @@ class ProductsView extends View
                         foreach(explode('_',$param_values) as $bv)
                             if($brand = $this->brands->get_brand((string)$bv)){
                                 $_GET['b'][] = $brand->id;
-                                $this->meta_array['brand'][] = ' '.$this->translations->ceo_filter_brend.' '. $brand->name;
+                                $this->noindex_filter = true;
                             }
                         break;
                     case 'page':
@@ -68,57 +66,13 @@ class ProductsView extends View
 
                         if($feature = $this->features->get_feature($param_name)){
                             $_GET[$feature->id] = explode('_',$param_values);
-                            foreach ($this->features->get_options(array('feature_id' => $feature->id)) as $fo){
-                                if(in_array($fo->translit,$_GET[$feature->id])){
-                                    if(!$feature->is_color)
-									$this->meta_array['options'][$feature->id][] = $feature->name . ' '. $fo->value;
-                                }
-                            }
+                            $this->noindex_filter = true;
                         }                  
                 }
             }
         }
-        
-        if(!empty($this->meta_array)){
-            foreach($this->meta_array as $type=>$_meta_array){
-                switch($type){
-                    case 'brand':
-                        if(count($_meta_array) > 1)
-                            $this->set_canonical = true;
-                        $this->meta['h1'] = $this->meta['title'] = $this->meta['keywords'] = $this->meta['description'] = implode($this->meta_delimiter,$_meta_array); 
-                        break;
-                    case 'options':
-                        foreach($_meta_array as $f_id=>$f_array){
-                            if(count($f_array) > 1)
-                                $this->set_canonical = true;
-                            $this->meta['h1']           .= (!empty($this->meta['h1'])           ? $this->meta_delimiter : '') . implode($this->meta_delimiter,$f_array);
-                            $this->meta['title']        .= (!empty($this->meta['title'])        ? $this->meta_delimiter : '') . implode($this->meta_delimiter,$f_array);
-                            $this->meta['keywords']     .= (!empty($this->meta['keywords'])     ? $this->meta_delimiter : '') . implode($this->meta_delimiter,$f_array);
-                            $this->meta['description']  .= (!empty($this->meta['description'])  ? $this->meta_delimiter : '') . implode($this->meta_delimiter,$f_array);
-                        }
-                        break;
-                }
-            }
-        }
-        
-        if(!empty($this->meta['h1']))
-            $this->meta['h1']           = ' '.$this->translations->ceo_filter_s_harakteristikami.' ' . $this->meta['h1']          . ' '.$this->translations->v_magazine.' ' . $this->settings->site_name;
-        if(!empty($this->meta['title']))
-            $this->meta['title']        = ' '.$this->translations->ceo_filter_s_harakteristikami.' ' . $this->meta['title']       . ' '.$this->translations->v_magazine.' ' . $this->settings->site_name;
-        if(!empty($this->meta['keywords']))
-            $this->meta['keywords']     = ' '.$this->translations->ceo_filter_s_harakteristikami.' ' . $this->meta['keywords']    . ' '.$this->translations->v_magazine.' ' . $this->settings->site_name;
-        if(!empty($this->meta['description']))
-            $this->meta['description']  = ' '.$this->translations->ceo_filter_s_harakteristikami.' ' . $this->meta['description'] . ' '.$this->translations->v_magazine.' ' . $this->settings->site_name;
-        
-        if($this->set_canonical)
-            $this->meta['h1'] = $this->meta['title'] = $this->meta['keywords'] = $this->meta['description'] = '';
-        
-        $this->design->assign('set_canonical',$this->set_canonical);
-        $this->design->assign('filter_meta',(object)$this->meta);
-        if (empty($this->meta_array)) {
-            $this->design->assign('self_canonical', true);
-        }
-        
+  
+        $this->design->assign('noindex_filter',$this->noindex_filter);
         $this->design->smarty->registerPlugin('function', 'furl', array($this, 'filter_chpu_url'));
         
     }
@@ -576,8 +530,7 @@ class ProductsView extends View
     		}
     		header('Last-Modified: '. $LastModified);
         }
-			
-		$this->design->assign('filter_canonical', $this->filter_chpu_url(array('sort'=>null), $this->design));	
+				
 		$this->body = $this->design->fetch('products.tpl');
 		return $this->body;
 	}

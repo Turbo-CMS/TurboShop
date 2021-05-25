@@ -44,5 +44,5 @@
         </ul>
     </nav>
     <!-- Pagination (The End) -->
-	
+
 {/if}

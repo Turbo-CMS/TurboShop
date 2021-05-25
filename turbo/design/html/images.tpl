@@ -12,23 +12,23 @@
 </div>
 
 {if $message_error}
-<div class="row">
-    <div class="col-lg-12 col-md-12 col-sm-12">
-        <div class="boxed boxed_warning">
-            <div class="">
-                {if $message_error == 'permissions'}
-					{$btr->general_permissions|escape} {$images_dir|escape}
-				{elseif $message_error == 'name_exists'}
-					{$btr->images_exists|escape}
-				{elseif $message_error == 'theme_locked'}
-					{$btr->general_protected|escape}
-				{else}
-					{$message_error|escape}
-				{/if}
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="boxed boxed_warning">
+                <div class="">
+                    {if $message_error == 'permissions'}
+                        {$btr->general_permissions|escape} {$images_dir|escape}
+                    {elseif $message_error == 'name_exists'}
+                        {$btr->images_exists|escape}
+                    {elseif $message_error == 'theme_locked'}
+                        {$btr->general_protected|escape}
+                    {else}
+                        {$message_error|escape}
+                    {/if}
+                </div>
             </div>
         </div>
     </div>
-</div>
 {/if}
 
 <div class="boxed fn_toggle_wrap">
@@ -42,51 +42,51 @@
                         <div class="heading_box">
                             {$btr->images_images|escape}
                             <div class="toggle_arrow_wrap fn_toggle_card text-primary">
-                                <a class="btn-minimize" href="javascript:;" ><i class="fa fn_icon_arrow fa-angle-down"></i></a>
+                                <a class="btn-minimize" href="javascript:;"><i class="fa fn_icon_arrow fa-angle-down"></i></a>
                             </div>
                         </div>
                         <div class="toggle_body_wrap fn_card on">
                             <div class="row">
                                 {foreach $images as $image}
-                                <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-                                    <div class="banner_card">
-                                        <div class="banner_card_header">
-                                            <input type="text" class="hidden" name="old_name[]" value="{$image->name|escape}">
-                                            <div class="form-group col-lg-9 col-md-8 px-0 fn_rename_value hidden mb-0">
-                                                <input type="text" class="form-control" name="new_name[]" value="{$image->name|escape}">
+                                    <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                                        <div class="banner_card">
+                                            <div class="banner_card_header">
+                                                <input type="text" class="hidden" name="old_name[]" value="{$image->name|escape}">
+                                                <div class="form-group col-lg-9 col-md-8 px-0 fn_rename_value hidden mb-0">
+                                                    <input type="text" class="form-control" name="new_name[]" value="{$image->name|escape}">
+                                                </div>
+                                                <span class="font-weight-bold">{$image->name|escape|truncate:20:'...'}</span>
+                                                <i class="fa fa-pencil fn_rename_theme rename_theme p-h" data-old_name="{$image->name|escape}"></i>
+
+                                                <button type="button" data-name="{$image->name}" class="fn_delete_image btn_close float-xs-right">
+                                                    {include file='svg_icon.tpl' svgId='delete'}
+                                                </button>
                                             </div>
-                                            <span class="font-weight-bold">{$image->name|escape|truncate:20:'...'}</span>
-                                            <i class="fa fa-pencil fn_rename_theme rename_theme p-h" data-old_name="{$image->name|escape}"></i>
-                                            
-                                            <button type="button" data-name="{$image->name}" class="fn_delete_image btn_close float-xs-right">
-                                                {include file='svg_icon.tpl' svgId='delete'}
-                                            </button>
-                                        </div>
-                                        <div class="banner_card_block">
-                                            <div class="wrap_bottom_tag_images">
-                                                <a class="theme_image_item" href='../{$images_dir}{$image->name|escape}'>
-                                                    <img src='../{$images_dir}{$image->name|escape}'>
-                                                </a>
-                                                <div class="tag tag-info">
-                                                    {if $image->size>1024*1024}
-                                                    {($image->size/1024/1024)|round:2} {$btr->general_mb|escape}
-                                                    {elseif $image->size>1024}
-                                                    {($image->size/1024)|round:2} {$btr->general_kb|escape}
-                                                    {else}
-                                                    {$image->size} {$btr->general_byte|escape}
-                                                    {/if},
-                                                    {$image->width}&times;{$image->height} px
+                                            <div class="banner_card_block">
+                                                <div class="wrap_bottom_tag_images">
+                                                    <a class="theme_image_item" href='../{$images_dir}{$image->name|escape}'>
+                                                        <img src='../{$images_dir}{$image->name|escape}'>
+                                                    </a>
+                                                    <div class="tag tag-info">
+                                                        {if $image->size>1024*1024}
+                                                            {($image->size/1024/1024)|round:2} {$btr->general_mb|escape}
+                                                        {elseif $image->size>1024}
+                                                            {($image->size/1024)|round:2} {$btr->general_kb|escape}
+                                                        {else}
+                                                            {$image->size} {$btr->general_byte|escape}
+                                                        {/if},
+                                                        {$image->width}&times;{$image->height} px
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
                                 {/foreach}
                             </div>
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="row">
                     <div class="col-lg-7 col-md-7">
                         <div class="">
@@ -113,31 +113,31 @@
     var general_confirm_delete = '{$btr->general_confirm_delete|escape}';
 </script>
 {literal}
-<script>
-    $(function() {
-        
-        $('.fn_rename_theme').on('click',function(){
-            $(this).parent().find('.fn_rename_value').toggleClass('hidden');
-            $(this).prev().toggleClass('hidden');
-            $(this).parent().find('.fn_rename_value > input').val($(this).data('old_name'))
+    <script>
+        $(function() {
+
+            $('.fn_rename_theme').on('click', function() {
+                $(this).parent().find('.fn_rename_value').toggleClass('hidden');
+                $(this).prev().toggleClass('hidden');
+                $(this).parent().find('.fn_rename_value > input').val($(this).data('old_name'))
+            });
+
+            // Delete
+            $('.fn_delete_image').on('click', function() {
+                $('input[name=delete_image]').val($(this).data('name'));
+                $('form').submit();
+            });
+
+            // Upload
+            $('.fn_add_image').on('click', function() {
+                $(this).closest('div').append($('<input class="import_file" type="file" name="upload_images[]">'));
+            });
+
+            $("form").submit(function() {
+                if ($('input[name="delete_image"]').val() != '' && !confirm(general_confirm_delete))
+                    return false;
+            });
+
         });
-		
-        // Delete
-        $('.fn_delete_image').on('click',function(){
-            $('input[name=delete_image]').val($(this).data('name'));
-            $('form').submit();
-        });
-        
-        // Upload
-        $('.fn_add_image').on('click',function(){
-            $(this).closest('div').append($('<input class="import_file" type="file" name="upload_images[]">'));
-        });
-        
-        $("form").submit(function() {
-            if($('input[name="delete_image"]').val()!='' && !confirm(general_confirm_delete))
-			return false;	
-        });
-        
-    });
-</script>
+    </script>
 {/literal}

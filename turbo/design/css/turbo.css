@@ -2185,7 +2185,7 @@ label.switch_label {
     text-align: left;
 }
 .turbo_list .turbo_list_backup_name{
-    width: calc(100% - 215px);
+    width: calc(100% - 70px);
     position: relative;
     text-align: left;
 }
@@ -2402,6 +2402,9 @@ label.switch_label {
 .turbo_list .turbo_list_close{
     width: 50px;
 }
+.turbo_list .turbo_list_backup_close{
+    width: 70px;
+}
 .turbo_list .turbo_list_menus_close{
     width: 100px;
 }                                         
@@ -2460,9 +2463,12 @@ label.switch_label {
     outline: none;
     color: #f82828;
 }
-.restore.delete_grey:hover svg,
-.restore:hover svg,
-.turbo_list .turbo_list_close .restore:hover{
+.turbo_list .turbo_list_setting .restore i{
+    color: #8c8c8c;
+	font-weight: 600;
+	font-size: 1.25rem !important
+}
+.turbo_list .turbo_list_setting .restore i:hover{
     background: none;
     border: none;
     outline: none;
