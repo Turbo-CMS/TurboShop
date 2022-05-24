@@ -1,0 +1,250 @@
+AddDefaultCharset UTF-8
+ErrorDocument 404 /404
+ErrorDocument 401 /password.php
+RewriteEngine on
+
+# WebP
+<IfModule mod_rewrite.c>
+# Check if browser supports WebP images
+RewriteCond %{HTTP_ACCEPT} image/webp
+
+# Check if WebP replacement image exists
+RewriteCond %{DOCUMENT_ROOT}/$1.webp -f
+
+# Serve WebP image instead
+RewriteRule (.+)\.(jpe?g|png)$ $1.webp [T=image/webp,E=REQUEST_image]
+</IfModule>
+
+<IfModule mod_headers.c>
+# Vary: Accept for all the requests to jpeg and png
+Header append Vary Accept env=REQUEST_image
+</IfModule>
+
+<IfModule mod_mime.c>
+  AddType image/webp .webp
+</IfModule>
+
+# Smarty_Minify
+<FilesMatch "(js|css).gz[1-9]$">
+<IfModule mod_headers.c>
+		Header set Content-Encoding: gzip
+	</IfModule>
+    <FilesMatch "css.gz[1-9]$">
+        ForceType text/css
+    </FilesMatch>
+    <FilesMatch "js.gz[1-9]$">
+        ForceType text/javascript
+    </FilesMatch>
+</FilesMatch>
+
+#RewriteCond %{REQUEST_FILENAME} !-d
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteRule ^cache/minify/(.+).gz([1-9])$ minify/gzip.php [L,END]
+
+# Cache
+<Ifmodule mod_expires.c>
+    <filesmatch "\.(jpg|jpeg|png|gif|js|css|swf|ico|pdf|webp|jp2|jxr|woff|woff2)$">
+        ExpiresActive on
+        ExpiresDefault "access plus 1 year"
+    </filesmatch>
+</Ifmodule>
+
+# Cache-Control
+<IfModule mod_headers.c>
+	<filesMatch "\.(ico|pdf|jpg|jpeg|png|gif|swf|css|js|webp|jp2|jxr)$">
+		Header set Cache-Control "max-age=31536000, public"
+	</filesMatch>
+</IfModule>
+
+<IfModule mod_gzip.c>
+	mod_gzip_on Yes
+	mod_gzip_dechunk Yes
+	mod_gzip_item_include file \.js$
+	mod_gzip_item_include file \.css$
+	mod_gzip_item_include mime ^application/x-font-woff.*
+	mod_gzip_item_include mime ^application/x-font-woff2.*
+	mod_gzip_item_exclude rspheader ^Content-Encoding:.*gzip.*
+</IfModule>
+
+# Gzip
+<ifmodule mod_deflate.c>
+    AddOutputFilterByType DEFLATE application/javascript text/javascript application/x-javascript text/css application/x-font-woff application/x-font-woff2
+    <ifmodule mod_setenvif.c>
+        BrowserMatch ^Mozilla/4 gzip-only-text/html
+        BrowserMatch ^Mozilla/4\.0[678] no-gzip
+        BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+    </ifmodule>
+	<FilesMatch "\.(ttf|woff|woff2|otf|eot|svg)$" >
+	    SetOutputFilter DEFLATE
+	</FilesMatch>
+</ifmodule>
+
+# Google PageSpeed Insights
+<IfModule pagespeed_module>
+	ModPagespeed on
+	ModPagespeedRewriteLevel CoreFilters
+	ModPagespeedEnableFilters make_google_analytics_async
+	ModPagespeedEnableFilters prioritize_critical_css
+	ModPagespeedEnableFilters sprite_images
+	ModPagespeedEnableFilters convert_png_to_jpeg,convert_jpeg_to_webp
+	ModPagespeedEnableFilters collapse_whitespace
+</IfModule>
+
+# Redirect with repeated slashes
+RewriteCond %{REQUEST_URI} ^(.*?)\/{2,}(.*?)$
+RewriteRule . %1/%2 [L,R=301]
+RewriteCond %{THE_REQUEST} //
+RewriteRule .* /$0 [R=301,L]
+
+# Redirect from slash at the end to without it
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} ^(.+)/$
+RewriteRule ^(.+)/$ %1 [R=301,L]
+
+# Redirect from page-1 to main page in friendly URL
+RewriteCond %{REQUEST_URI} ^(.*)/page-1(?![0-9])(.*)$
+RewriteRule ^(.*)$ %1%3 [R=301,L]
+
+# Redirect from page=1 to the main page without friendly URL
+RewriteCond %{QUERY_STRING} ^(.*)&?page=1(?![0-9])(.*)$
+RewriteRule ^(.*)/?$ /$1?%1%3 [R=301,L]
+
+# Redirect to HTTPS:
+#RewriteCond %{HTTPS} =off
+#RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+#!!!Attention, with a redirect, the entrance will be mandatory with a slash at the end of /turbo/
+
+# Redirect from www to without www:
+#RewriteCond %{HTTP_HOST} ^www\.(.*) [NC]
+#RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
+
+# Redirect from one domain to another:
+#RewriteCond %{HTTP_HOST} old.com
+#RewriteRule (.*) http://new.com/$1 [R=301,L]
+
+# 301 page redirect:
+#RewriteRule ^category/old-page.html$ category/new-page [R=301,NC,L]
+
+# Admin panel /turbo
+RewriteRule	^admin/?$  turbo [L]
+
+# Catlog
+RewriteRule ^([a-z]{2}/)?catalog/([^/]+)	index.php?module=ProductsView&category=$2&lang_label=$1 [L,QSA]
+RewriteRule ^([a-z]{2}/)?catalog/?$	index.php?module=ProductsView&lang_label=$1 [L,QSA]
+
+RewriteRule ^([a-z]{2}/)?products/([^/]+)/?$	index.php?module=ProductView&product_url=$2&lang_label=$1 [L,QSA]
+RewriteRule ^([a-z]{2}/)?all-products/([^/]+)/?$	index.php?module=ProductsView&lang_label=$1&page_url=all-products [L,QSA]
+RewriteRule ^([a-z]{2}/)?all-products/?	index.php?module=ProductsView&lang_label=$1 [L,QSA]
+
+RewriteRule ^([a-z]{2}/)?brands/?$	index.php?module=BrandsView&lang_label=$1 [L,QSA]
+RewriteRule ^([a-z]{2}/)?brands/([^/]+) index.php?module=ProductsView&brand=$2&lang_label=$1 [L,QSA]
+
+RewriteRule ^([a-z]{2}/)?(featured|new|sale|hit)/?$	    index.php?module=ProductsView&lang_label=$1&mode=$2 [L,QSA]
+RewriteRule ^([a-z]{2}/)?(featured|new|sale|hit)/([^/]+)   index.php?module=ProductsView&lang_label=$1&page_url=$2&mode=$2 [L,QSA]
+
+# Search
+RewriteRule ^([a-z]{2}/)?search/([^/]+)/?$	index.php?module=SearchView&keyword=$2&lang_label=$1 [L,QSA]
+RewriteRule ^([a-z]{2}/)?search/?$	index.php?module=SearchView&lang_label=$1 [L,QSA]
+
+# Blog
+RewriteRule ^([a-z]{2}/)?blog/([^/]+)/?$	index.php?module=BlogView&url=$2&lang_label=$1 [L,QSA]
+RewriteRule ^([a-z]{2}/)?blog/?$	index.php?module=BlogView&lang_label=$1 [L,QSA]
+RewriteRule ^([a-z]{2}/)?blog/([^/]+)/?$  index.php?module=BlogView&keyword_blog=$1&lang_label=$1 [L,QSA]
+
+# Articles
+RewriteRule ^([a-z]{2}/)?article/([^/]+)/?$	index.php?module=ArticlesView&article_url=$2&lang_label=$1 [L,QSA]
+RewriteRule ^([a-z]{2}/)?articles/([^/]+)/?$	index.php?module=ArticlesView&category=$2&lang_label=$1 [L,QSA]
+RewriteRule ^([a-z]{2}/)?articles/?$	index.php?module=ArticlesView&lang_label=$1 [L,QSA]
+
+# Compare
+RewriteRule ^([a-z]{2}/)?compare/?$	index.php?module=CompareView&lang_label=$1 [L]
+RewriteRule ^([a-z]{2}/)?compare/([^/]+)/?$	index.php?module=CompareView&product_url=$2&lang_label=$1 [L]
+RewriteRule ^([a-z]{2}/)?compare/remove/([^/]+)/?$	index.php?module=CompareView&remove_product_url=$2&lang_label=$1 [L]
+
+# Wishlist list
+RewriteRule ^([a-z]{2}/)?wishlist/?$	index.php?module=WishlistView&lang_label=$1 [L]
+RewriteRule ^([a-z]{2}/)?wishlist/([^/]+)/?$	index.php?module=WishlistView&product_url=$2&lang_label=$1 [L]
+RewriteRule ^([a-z]{2}/)?wishlist/remove/([^/]+)/?$	index.php?module=WishlistView&remove_product_url=$2&lang_label=$1 [L]
+
+# Cart and orders
+RewriteRule ^([a-z]{2}/)?cart/?$	index.php?module=CartView&lang_label=$1   [L,QSA]
+RewriteRule ^([a-z]{2}/)?cart/([^/]+)/?$	index.php?module=CartView&add_variant=$2&lang_label=$1  [L,QSA]
+RewriteRule ^([a-z]{2}/)?cart/remove/([^/]+)/?$	index.php?module=CartView&delete_variant=$2&lang_label=$1  [L,QSA]
+RewriteRule ^([a-z]{2}/)?order/([^/]+)/?$	index.php?module=OrderView&url=$2&lang_label=$1  [L,QSA]
+RewriteRule ^([a-z]{2}/)?order/?$	index.php?module=OrderView&lang_label=$1  [L,QSA]
+
+# For users
+RewriteRule ^([a-z]{2}/)?user/login/?$	index.php?module=LoginView&lang_label=$1  [L,QSA]
+RewriteRule ^([a-z]{2}/)?user/register/?$	index.php?module=RegisterView&lang_label=$1  [L,QSA]
+RewriteRule ^([a-z]{2}/)?user/logout/?$	index.php?module=LoginView&action=logout&lang_label=$1  [L,QSA]
+RewriteRule ^([a-z]{2}/)?user/password_remind/?$	index.php?module=LoginView&action=password_remind&lang_label=$1  [L,QSA]
+RewriteRule ^([a-z]{2}/)?user/password_remind/([0-9a-z]+)/?$	index.php?module=LoginView&action=password_remind&code=$2&lang_label=$1  [L,QSA]
+RewriteRule ^([a-z]{2}/)?user/?$	index.php?module=UserView&lang_label=$1  [L,QSA]
+
+# Reviews
+RewriteRule ^([a-z]{2}/)?reviews/?$ index.php?module=CommentsView&lang_label=$1 [L,QSA]
+
+# FAQ
+RewriteRule ^([a-z]{2}/)?faq/?$ index.php?module=FAQView&lang_label=$1 [L,QSA]
+
+# Google sitemap
+RewriteRule ^([a-z]{2}/)?sitemap.xml?$	sitemap.php?lang_label=$1  [L,QSA]
+
+# Sitemap
+RewriteRule ^([a-z]{2}/)?sitemap/?$    index.php?module=SitemapView&lang_label=$1  [L,QSA]
+
+# XML
+RewriteRule ^yandex.xml?$	yandex.php  [L,QSA]
+RewriteRule ^google.xml?$	google.php  [L,QSA]
+
+# RSS
+RewriteRule ^rss?$	rss.php  [L,QSA]
+RewriteRule ^turbo_blog.xml?$ turbo_blog.php  [L,QSA]
+RewriteRule ^turbo_articles.xml?$ turbo_articles.php  [L,QSA]
+
+# Feedback
+RewriteRule ^([a-z]{2}/)?contact/?$	index.php?module=FeedbackView&lang_label=$1  [L,QSA]
+
+# Static pages
+RewriteRule ^([a-z]{2}/?)?/?$	index.php?module=MainView&page_url=&lang_label=$1 [L,QSA]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([a-z]{2}/)?([^/]+)/?$ index.php?lang_label=$1&module=PageView&page_url=$2 [L,QSA]
+
+# Static pages
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^([^/]*)/?$	index.php?module=PageView&page_url=$1 [L,QSA]
+
+#RewriteRule ^([^/]*)/?$	index.php?module=PageView&page_url=$1 [L,QSA]
+#RewriteRule ^/?$	index.php?module=MainView&page_url= [L,QSA]
+
+# Article image resizing
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^files/articles/preview/(.+) resize/resize.php?file=$1&is_article=1&token=%{QUERY_STRING}
+
+# Image resizing blog
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^files/posts/preview/(.+) resize/resize.php?file=$1&is_post=1&token=%{QUERY_STRING}
+
+# Image resizing brands
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^files/brands/preview/(.+) resize/resize.php?file=$1&is_brands=1&token=%{QUERY_STRING}
+
+# Image resizing slider
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^files/slides/preview/(.+) resize/resize.php?file=$1&is_banners=1&token=%{QUERY_STRING}
+
+# Category image resizing
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^files/categories/preview/(.+) resize/resize.php?file=$1&is_category=1&token=%{QUERY_STRING}
+
+# Resizing pictures of products
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^files/products/(.+) resize/resize.php?file=$1&token=%{QUERY_STRING}

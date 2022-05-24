@@ -1,0 +1,466 @@
+body.hide-cht-widget .chaty-widget.one_widget .chaty-widget-i:not(.no-tooltip):before {
+    display: none;
+}
+
+#chaty-widget {
+    display: block;
+    left: auto;
+    bottom: 150px;
+    right: 15px;
+    opacity: 0;
+}
+
+#chaty-widget.show {
+    opacity: 1;
+}
+
+.widget-img {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 100%;
+}
+
+.get {
+    opacity: 0;
+}
+
+.chaty-widget-show .get {
+    opacity: 1;
+}
+
+.none-widget-show .get {
+    opacity: 0;
+}
+
+.get a {
+    color: #222 !important;
+    text-decoration: none !important;
+}
+
+.one_widget.chaty-widget:not(.chaty-widget-is-right) .chaty-widget-i:not(.no-tooltip) .chaty-widget-i-title {
+    font-size: 17px;
+    left: -3px;
+    top: 50%;
+    white-space: nowrap;
+    padding: 5px 15px;
+    line-height: 21px;
+    color: #333;
+    background-color: #fff;
+    -webkit-box-shadow: 0 1.93465px 7.73859px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 1.93465px 7.73859px rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+}
+
+.chaty-widget-i .chaty-widget-i-title p {
+    color: #222 !important;
+    text-decoration: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.chaty-widget-i .i-trigger a {
+    color: #222 !important;
+    text-decoration: none !important;
+}
+
+* {
+    -webkit-tap-highlight-color: transparent !important;
+}
+
+.i-trigger-open svg,
+.i-trigger-close svg {
+    -webkit-transition: all 0.5s;
+    transition: all 0.5s;
+}
+
+.chaty-widget-show .i-trigger-open svg,
+.chaty-widget-show .i-trigger-close svg {
+    -webkit-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+
+.none-widget-show .i-trigger-open {
+    -webkit-animation: fadein 1.5s;
+    animation: fadein 1.5s;
+}
+
+.chaty-widget-show .i-trigger-close {
+    -webkit-animation: fadein 1.5s;
+    animation: fadein 1.5s;
+}
+
+.chaty-widget .i-trigger-open.chaty-widget-i:not(.no-tooltip) .chaty-widget-i-title {
+    -webkit-transform: translate(calc(-100% - 12px), -50%);
+    transform: translate(calc(-100% - 12px), -50%);
+}
+
+.chaty-widget-is-right.chaty-widget .i-trigger-open.chaty-widget-i:not(.no-tooltip) .chaty-widget-i-title {
+    right: 0;
+    left: auto;
+    -webkit-transform: translate(calc(100% + 12px), -50%);
+    transform: translate(calc(100% + 12px), -50%);
+}
+
+.chaty-widget-is-right.chaty-widget .chaty-widget-i:not(.no-tooltip) .chaty-widget-i-title {
+    right: 0;
+    left: auto;
+    -webkit-transform: translate(calc(100% + 13px), -50%);
+    transform: translate(calc(100% + 13px), -50%);
+}
+
+.one_widget .i-trigger-open .chaty-widget-i-title {
+    padding: 10px 10px 9px 12px !important;
+}
+
+.one_widget .i-trigger-open.hidetooltip .chaty-widget-i-title {
+    display: none;
+}
+
+.one_widget .i-trigger-open.hidetooltip .chaty-widget-i:before {
+    display: none;
+}
+
+.chaty-widget .chaty-widget-i.before.facebook:not(.no-tooltip):hover:before {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.chaty-widget .chaty-widget-i:not(.no-tooltip) .chaty-widget-i-title,
+.chaty-widget .chaty-widget-i:not(.no-tooltip).before:before {
+    opacity: 1;
+}
+
+.one_widget .chaty-widget-i svg {
+    position: relative;
+}
+
+body .chaty-widget-i-title.true {
+    opacity: 1 !important;
+}
+
+.chaty-widget {
+    position: fixed;
+    z-index: 1029;
+}
+
+.chaty-widget .chaty-widget-is {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    overflow: hidden;
+    height: 0;
+    position: absolute;
+    pointer-events: none;
+    left: 0;
+    right: auto;
+    bottom: 65px;
+    opacity: 0;
+}
+
+#transition_disabled {
+    -webkit-animation: none !important;
+    animation: none !important;
+}
+
+@-webkit-keyframes fadeout {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes fadeout {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+.chaty-widget .i-trigger {
+    position: relative;
+}
+
+.chaty-widget .i-trigger .i-trigger-open,
+.chaty-widget .i-trigger .i-trigger-close {
+    -webkit-transition: all 0.2s;
+    transition: all 0.2s;
+}
+
+.chaty-widget .i-trigger .i-trigger-close {
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    background-color: #28a745;
+}
+
+.chaty-widget .i-trigger .i-trigger-open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.chaty-widget .i-trigger .i-trigger-close {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.chaty-widget.chaty-widget-show .i-trigger .i-trigger-open {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.chaty-widget.chaty-widget-show .i-trigger .i-trigger-close {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.chaty-widget.chaty-widget-show .chaty-widget-is {
+    pointer-events: auto;
+    overflow: visible;
+    opacity: 1;
+    visibility: visible;
+}
+
+@-webkit-keyframes fadein {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.chaty-widget.chaty-widget-show .chaty-widget-is .chaty-widget-i {
+    opacity: 1;
+    overflow: visible;
+}
+
+.chaty-widget .chaty-widget-i .chaty-widget-i {
+    margin: 0;
+}
+
+.chaty-widget .chaty-widget-i {
+    border-radius: 50%;
+    vertical-align: top;
+    width: 54px;
+    height: 54px;
+    font-size: 0;
+    position: relative;
+    -webkit-box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.25);
+    margin: 4px;
+}
+
+.chaty-widget .chaty-widget-i svg {
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: relative;
+}
+
+body .i-trigger-open .chaty-widget-i-title {
+    padding: 5px 16px 5px 17px !important;
+}
+
+.chaty-widget:not(.chaty-widget-is-right) .i-trigger-open:before {
+    left: -13px !important;
+}
+
+.one_widget.chaty-widget.chaty-widget-is-right .i-trigger-open:before {
+    right: -12px !important;
+}
+
+body .one_widget .i-trigger-open .chaty-widget-i-title.face_title {
+    padding: 0 !important;
+}
+
+.one_widget.chaty-widget .chaty-widget-i:not(.no-tooltip) .chaty-widget-i-title {
+    -webkit-transform: translate(calc(-100% - 14px), -50%);
+    transform: translate(calc(-100% - 14px), -50%);
+}
+
+.chaty-widget .chaty-widget-i:not(.no-tooltip) .chaty-widget-i-title,
+.chaty-widget .chaty-widget-i:not(.no-tooltip):before {
+    content: none;
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.chaty-widget .chaty-widget-i:not(.no-tooltip):before {
+    content: "";
+    left: -14px;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    height: 0;
+    width: 0;
+    z-index: 11;
+    border-width: 5px 0 5px 10px;
+    border-style: solid;
+    border-color: transparent transparent transparent #fff;
+}
+
+.chaty-widget .chaty-widget-i:not(.no-tooltip) .chaty-widget-i-title {
+    text-align: center;
+    font-size: 17px;
+    left: 0;
+    top: 50%;
+    -webkit-transform: translate(calc(-100% - 13px), -50%);
+    transform: translate(calc(-100% - 13px), -50%);
+    white-space: nowrap;
+    padding: 5px 15px;
+    line-height: 21px;
+    color: #333;
+    background-color: #fff;
+    -webkit-box-shadow: 0 1.93465px 7.73859px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 1.93465px 7.73859px rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+}
+
+.chaty-widget .chaty-widget-i:not(.no-tooltip):hover .chaty-widget-i-title,
+.chaty-widget .chaty-widget-i:not(.no-tooltip):hover:before {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.chaty-widget .chaty-widget-i.facebook:not(.no-tooltip):hover .chaty-widget-i-title,
+.chaty-widget .chaty-widget-i.facebook:not(.no-tooltip):hover:before {
+    opacity: 0;
+    pointer-events: auto;
+}
+
+.chaty-widget .chaty-widget-i .color-element {
+    -webkit-transition: all 0.2s;
+    transition: all 0.2s;
+}
+
+.chaty-widget:not(.chaty-widget-is-right) .chaty-widget-is {
+    position: absolute;
+    right: 0;
+    left: auto;
+    bottom: 65px;
+    -webkit-box-pack: end;
+    -ms-flex-pack: end;
+    justify-content: flex-end;
+}
+
+.chaty-widget.chaty-widget-is-right .i-trigger-open.chaty-widget-i:before {
+    right: -13px;
+    left: auto;
+    border-width: 5px 10px 5px 0;
+    border-color: transparent #fff transparent transparent;
+}
+
+.chaty-widget.chaty-widget-is-right .chaty-widget-i:before {
+    right: -14px;
+    left: auto;
+    border-width: 5px 10px 5px 0;
+    border-color: transparent #fff transparent transparent;
+}
+
+.chaty-widget.chaty-widget-is-right .chaty-widget-i.facebook.active .chaty-widget-i-title {
+    position: fixed;
+    -webkit-transform: initial !important;
+    transform: initial !important;
+    right: auto;
+    top: calc(100% - 484px);
+}
+
+.one_widget.chaty-widget.chaty-widget-is-right .chaty-widget-i .chaty-widget-i-title {
+    right: 0;
+    left: auto;
+    -webkit-transform: translate(calc(100% + 17px), -50%) !important;
+    transform: translate(calc(100% + 17px), -50%) !important;
+}
+
+.none-widget-show .i-trigger-open svg {
+    -webkit-animation: pulsing 3s infinite;
+    animation: pulsing 3s infinite;
+}
+
+@-webkit-keyframes pulsing {
+    0% {
+        -webkit-transform: scale(0.9, 0.9);
+        transform: scale(0.9, 0.9);
+    }
+    50% {
+        -webkit-transform: scale(1.1, 1.1);
+        transform: scale(1.1, 1.1);
+        -webkit-animation-delay: 1s;
+        animation-delay: 1s;
+    }
+    100% {
+        -webkit-transform: scale(0.9, 0.9);
+        transform: scale(0.9, 0.9);
+    }
+}
+
+@keyframes pulsing {
+    0% {
+        -webkit-transform: scale(0.9, 0.9);
+        transform: scale(0.9, 0.9);
+    }
+    50% {
+        -webkit-transform: scale(1.1, 1.1);
+        transform: scale(1.1, 1.1);
+        -webkit-animation-delay: 1s;
+        animation-delay: 1s;
+    }
+    100% {
+        -webkit-transform: scale(0.9, 0.9);
+        transform: scale(0.9, 0.9);
+    }
+}
+
+@media (min-width: 1024px) {
+    .chaty-widget-i:hover .snap-wee-title {
+        opacity: 1;
+    }
+    #chaty-widget {
+        bottom: 65px;
+        right: 90px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .mobile_none {
+        display: none;
+    }
+    .chaty-widget.mobile_active {
+        display: block !important;
+    }
+    .chaty-widget .chaty-widget-i {
+        width: 50px;
+        height: 50px;
+    }
+    .chaty-widget.desktop_active {
+        display: block !important;
+    }
+}

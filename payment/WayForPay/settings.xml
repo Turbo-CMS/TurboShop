@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+	<name>
+        WayForPay
+	</name>
+	<settings>
+		<variable>wayforpay_merchant</variable>
+		<name>Merchant ID</name>
+	</settings>
+	<settings>
+		<variable>wayforpay_secretkey</variable>
+		<name>Merchant secret key</name>
+	</settings>
+	<settings>
+		<variable>wayforpay_language</variable>
+		<name>Payment page language</name>
+        <options>
+            <name>Ukrainian</name>
+            <value>UA</value>
+        </options>
+		<options>
+			<name>English</name>
+			<value>EN</value>
+		</options>
+		<options>
+			<name>Russian </name>
+			<value>RU</value>
+		</options>
+	</settings>
+</module>

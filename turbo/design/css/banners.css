@@ -1,0 +1,101 @@
+.icons a.edit {
+    background-image: url(../images/pencil.png);
+}
+
+#imageThumb {
+    width: 450px;
+    min-height: 180px;
+    border: 1px #9b9b9b dashed;
+    background: #e5e5e5;
+    text-align: center;
+    vertical-align: middle;
+    font: bold 40px Arial, Helvetica, sans-serif;
+    color: #d6d6d6;
+    text-shadow: 1px 0px 2px #9b9b9b;
+}
+
+#imageThumb span {
+    display: block;
+    font-size: 14px;
+    color: silver;
+    text-shadow: 1px 0px 1px #ffffff;
+}
+
+#imageThumb img {
+    position: relative;
+    display: block;
+    margin: auto auto;
+    margin-top: 5px;
+    max-width: 440px;
+    max-height: 170px;
+}
+
+a.button_yellow {
+    display: block;
+    float: right;
+    height: 16px;
+    text-decoration: none;
+    padding: 5px 20px;
+    font-size: 13px;
+}
+
+.cell.banner,
+.cell.group {
+    width: 830px;
+    text-align: center;
+}
+
+.banner_wrapper {
+    position: relative;
+    margin: 0 auto;
+    width: 450px;
+    border: 15px solid #fff;
+    box-shadow: 1px 1px 4px #B4B4B4;
+    background: #fff;
+    border-radius: 3px;
+}
+
+.banner_wrapper .title {
+    border-bottom: 1px dashed #d0d0d0;
+}
+
+.banner_wrapper .title a,
+.banner_wrapper .title a:visited {
+    position: relative;
+    display: block;
+    margin: -15px -15px 0 -15px;
+    padding: 5px 10px;
+    font: bold 12px Arial;
+    color: #ffffff;
+    text-align: left;
+    text-decoration: none;
+    border-radius: 3px 3px 0 0;
+    background: #595858;
+}
+
+.group .banner_wrapper .title span {
+    display: block;
+    padding: 5px 0;
+    font: normal 11px Arial;
+    color: #777777;
+}
+
+.banner_wrapper img {
+    max-width: 420px;
+    max-height: 200px;
+    vertical-align: middle;
+}
+
+.banner_wrapper .banner {
+    margin: 15px 0;
+}
+
+.banner_wrapper .tip {
+    position: relative;
+    margin: 0 -10px -10px -10px;
+    padding: 5px;
+    font: normal 12px monospace;
+    color: #000000;
+    border-top: 1px dashed #8a8a8a;
+    background: #e9e5e5;
+}

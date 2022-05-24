@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>&laquo;TimeTo&raquo; jQuery plug-in example</title>
+
+    <!--[if lt IE 9]>
+    <script>
+        document.createElement('figure');
+        document.createElement('figcaption');
+    </script>
+    <![endif]-->
+    <link href="timeTo.css" type="text/css" rel="stylesheet"/>
+
+    <style>
+        pre {
+            margin-bottom: 10px;
+            padding-left: 10px;
+            border-left: 3px #DDD solid;
+        }
+    </style>
+</head>
+<body>
+    <h1>&laquo;TimeTo&raquo; jQuery plugin demo</h1>
+
+    <h2>Countdown timer</h2>
+
+    <h3>Set countdown in seconds with callback</h3>
+    <pre>
+$('#countdown').timeTo(120, function() { alert('Countdown finished'); }); </pre>
+
+    <div id="countdown-1"></div>
+    <p><button id="reset-1" type="button">Reset this timer</button></p>
+
+    <div class="clock"></div>
+    <div class="clock"></div>
+
+    <h3>Hide hours</h3>
+    <pre>
+$('#countdown').timeTo({
+    seconds: 100,
+    displayHours: false
+}); </pre>
+
+    <div id="countdown-11"></div>
+
+    <h3>Set countdown to specified date-time</h3>
+    <pre>
+$('#countdown').timeTo(new Date('<span id="date-str"></span>')); </pre>
+
+    <div id="countdown-2"></div>
+
+    <h3>Set captions and dark theme</h3>
+    <pre>
+$('#countdown').timeTo({
+    time: '<span id="date2-str"></span>',
+    displayDays: 2,
+    theme: "black",
+    displayCaptions: true,
+    fontSize: 48,
+    captionSize: 14,
+    lang: 'es'
+}); </pre>
+
+    <div id="countdown-3"></div>
+
+    <br/><br/>
+    <h2>Digital clock</h2>
+    <pre>
+$('#clock-1').timeTo();</pre>
+
+    <div id="clock-1"></div>
+
+        <p>&nbsp;</p>
+    <h2>Digital clock with Step Setting and Step Callback</h2>
+    <pre>
+    $('#clock-w-step-cb').timeTo(
+        {
+            step: function() {
+                console.log('Executing every 3 ticks');
+            },
+            stepCount: 3
+        }
+    );
+    </pre>
+
+    <div id="clock-w-step-cb"></div>
+
+
+
+
+
+
+
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="node_modules/jquery/dist/jquery.min.js"><\/script>')</script>
+    <script src="jquery.time-to.js"></script>
+    <script>
+        /**
+         * Set timer countdown in seconds with callback
+         */
+        $('#countdown-1').timeTo(120, function(){
+            alert('Countdown finished');
+        });
+        $('#reset-1').click(function() {
+            $('#countdown-1').timeTo('reset');
+        });
+
+        /**
+         * Hide hours
+         */
+        $('#countdown-11').timeTo({
+            seconds: 100,
+            displayHours: false
+        });
+
+        $('#clock-w-step-cb').timeTo({
+          step: function() {
+              console.log('Executing every 3 ticks');
+          },
+          stepCount: 3
+        });
+
+        var date = getRelativeDate(2);
+
+        document.getElementById('date-str').innerHTML = date.toISOString();
+
+        /**
+         * Set timer countdown to specyfied date
+         */
+        $('#countdown-2').timeTo(date);
+
+        var time = '23:59:54';
+        document.getElementById('date2-str').innerHTML = time;
+
+        /**
+         * Set theme and captions
+         */
+        $('#countdown-3').timeTo({
+            time: time,
+            displayDays: 2,
+            theme: "black",
+            displayCaptions: true,
+            fontSize: 48,
+            captionSize: 14,
+            lang: 'es'
+        });
+
+        /**
+         * Simple digital clock
+         */
+        $('#clock-1').timeTo();
+
+        function getRelativeDate(days, hours, minutes) {
+            var d = new Date(Date.now() + 60000 /* milisec */ * 60 /* minutes */ * 24 /* hours */ * days /* days */);
+
+            d.setHours(hours || 0);
+            d.setMinutes(minutes || 0);
+            d.setSeconds(0);
+
+            return d;
+        }
+    </script>
+</body>
+</html>

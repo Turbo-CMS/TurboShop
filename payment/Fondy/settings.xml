@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<module>
+	<name>
+		Fondy
+	</name>
+	<settings>
+		<variable>fondy_merchantid</variable>
+		<name>Merchant ID</name>
+	</settings>
+	<settings>
+		<variable>fondy_secret</variable>
+		<name>The secret key</name>
+	</settings>
+     
+        <settings>
+		<variable>fondy_paymode</variable>
+		<name>Payment method</name>
+	</settings>
+	<settings>
+		<variable>fondy_lang</variable>
+		<name>Window Language</name>
+	</settings>
+	<settings>
+		<variable>mode</variable>
+		<name>Mode</name>
+		<options>
+			<name>Display on the page</name>
+			<value>onpage</value>
+		</options>
+		<options>
+			<name>Redirect to payment page</name>
+			<value>redirect</value>
+		</options>
+	</settings>
+</module>

@@ -1,0 +1,46 @@
+/*
+  MDN-LIKE Theme - Mozilla
+  Ported to CodeMirror by Peter Kroon <plakroon@gmail.com>
+  Report bugs/issues here: https://github.com/marijnh/CodeMirror/issues
+  GitHub: @peterkroon
+
+  The style theme is inspired on the displayed code examples at: https://developer.mozilla.org/en-US/docs/Web/CSS/animation
+
+*/
+.cm-s-style.CodeMirror { font-family: monospace; background-color: #fff;border: 1px solid #c0c0c0;}
+.cm-s-style .cm-keyword {color: #708;}
+.cm-s-style .cm-atom {color: #219;}
+.cm-s-style .cm-number {color: #164;}
+.cm-s-style .cm-def {color: #00f;}
+.cm-s-style .cm-variable {color: black;}
+.cm-s-style .cm-variable-2 {color: #05a;}
+.cm-s-style .cm-variable-3 {color: #085;}
+.cm-s-style .cm-property {color: black;}
+.cm-s-style .cm-operator {color: black;}
+.cm-s-style .cm-comment {color: #a50;}
+.cm-s-style .cm-string {color: #a11;}
+.cm-s-style .cm-string-2 {color: #f50;}
+.cm-s-style .cm-meta {color: #555;}
+.cm-s-style .cm-qualifier {color: #555;}
+.cm-s-style .cm-builtin {color: #30a;}
+.cm-s-style .cm-bracket {color: #997;}
+.cm-s-style .cm-tag {color: #170;}
+.cm-s-style .cm-attribute {color: #00c;}
+.cm-s-style .cm-header {color: blue;}
+.cm-s-style .cm-quote {color: #090;}
+.cm-s-style .cm-hr {color: #999;}
+.cm-s-style .cm-link {color: #00c;}
+
+.cm-negative {color: #d44;}
+.cm-positive {color: #292;}
+.cm-header, .cm-strong {font-weight: bold;}
+.cm-em {font-style: italic;}
+.cm-link {text-decoration: underline;}
+
+.cm-s-style .cm-error {color: #f00;}
+.cm-invalidchar {color: #f00;}
+
+div.CodeMirror span.CodeMirror-matchingbracket {color: #0f0;}
+div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #f22;}
+.CodeMirror-activeline-background {background: #e8f2ff;}
+
