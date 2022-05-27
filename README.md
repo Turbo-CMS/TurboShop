@@ -1,8 +1,8 @@
 [![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%208.0-8892BF.svg?style=flat-square)](https://php.net/)
 
-<img src="./turbo_admin.jpg" style="max-width: 100%; margin-left: auto; margin-right: auto;" />
-
 # TurboShop
+
+<img src="./turbo_admin.jpg" style="max-width: 100%; display: block; margin: 0 auto;" />
 
 ## Server Requirements
 - Apache
