@@ -603,7 +603,7 @@
                 <!-- Grid column -->
                 <div class="col-md-4 col-lg-4">
                     <!--Copyright-->
-                    <p class="text-center text-md-left text-muted">© <span itemprop="copyrightYear">{$smarty.now|date_format:"%Y"}</span>
+                    <p class="text-center text-md-left text-muted">© <span itemprop="copyrightYear">{$smarty.now|date_format:"Y"}</span>
                         <a href="https://turbo-cms.com">
                             <strong>TurboCMS</strong>
                         </a>

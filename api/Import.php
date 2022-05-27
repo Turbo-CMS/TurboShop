@@ -39,7 +39,7 @@ class Import extends Turbo
     protected $column_delimiter      = ';';
     protected $products_count        = 100;
     protected $columns               = array();
-    protected $locale                = 'en_EN.UTF-8';
+	protected $locale                = 'en_US.UTF-8';
     protected $values_ids            = array();
 
     // Returns the internal column name based on the column name in the file

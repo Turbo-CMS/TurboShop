@@ -12,8 +12,8 @@ class ImportAdmin extends Import
         if (!is_writable($this->import_files_dir)) {
             $this->design->assign('message_error', 'no_permission');
         }
-
-        // Checking the locale
+		
+		// Checking locale
         $old_locale = setlocale(LC_ALL, 0);
         setlocale(LC_ALL, $this->locale);
         if (setlocale(LC_ALL, 0) != $this->locale) {
@@ -86,7 +86,7 @@ class ImportAdmin extends Import
     private function convert_file($source, $dest)
     {
         // Find out what encoding the file has
-        $teststring = file_get_contents($source, null, null, null, 1000000);
+        @$teststring = file_get_contents($source, null, null, null, 1000000);
 
         // Encoding - UTF8 
         if (preg_match('//u', $teststring)) {

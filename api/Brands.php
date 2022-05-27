@@ -95,7 +95,7 @@ class Brands extends Turbo
 	public function add_brand($brand)
 	{
 		$brand = (object)$brand;
-		$brand->url = preg_replace("/[\s]+/ui", '', $brand->url);
+		@$brand->url = preg_replace("/[\s]+/ui", '', $brand->url);
 		$brand->url = strtolower(preg_replace("/[^0-9a-z]+/ui", '', $brand->url));
 		if (empty($brand->url)) {
 			$brand->url = $this->translit($brand->name);

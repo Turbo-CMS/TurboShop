@@ -12,7 +12,6 @@ class ExportAjax extends Turbo {
         'product_name'      =>    'Name',
         'sum_price'         =>    'Price',
         'amount'            =>    'Amount'
-        
     );
     
     private $column_delimiter = ';';
@@ -27,7 +26,6 @@ class ExportAjax extends Turbo {
 			return false;
 		
 		// Excel only eats 1251
-        setlocale(LC_ALL, 'en_EN.cp1251');
         $this->db->query('SET NAMES cp1251');
         
         // Page to be exported

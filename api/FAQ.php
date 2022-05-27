@@ -127,7 +127,7 @@ class FAQ extends Turbo
 		}
 
 		$query = "SELECT COUNT(distinct f.id) as count
-		          FROM faq f WHERE 1 $faq_id_filter $visible_filter $keyword_filter";
+		          FROM __faq f WHERE 1 $faq_id_filter $visible_filter $keyword_filter";
 
 		if ($this->settings->cached == 1 && empty($_SESSION['admin'])) {
 			if ($result = $this->cache->get($query)) {

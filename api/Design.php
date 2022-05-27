@@ -26,7 +26,7 @@ class Design extends Turbo
 		$this->smarty->caching = $this->config->smarty_caching;
 		$this->smarty->cache_lifetime = $this->config->smarty_cache_lifetime;
 		$this->smarty->debugging = $this->config->smarty_debugging;
-		$this->smarty->error_reporting = E_ALL & ~E_NOTICE;
+		$this->smarty->error_reporting = E_ALL & ~E_WARNING & ~E_NOTICE;
 
 		// We take the theme from the settings
 		$theme = $this->settings->theme;

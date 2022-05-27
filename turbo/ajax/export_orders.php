@@ -34,7 +34,6 @@ class ExportAjax extends Turbo {
         unset($_SESSION['lang_id']);
 
         // Excel only eats 1251
-        setlocale(LC_ALL, 'en_EN.cp1251');
         $this->db->query('SET NAMES cp1251');
         
         // Page to be exported

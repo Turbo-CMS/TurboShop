@@ -275,7 +275,7 @@ class ReportStat extends Turbo
         return $this->db->result('count');
     }
 
-    function get_report_product($filter = array(), $id)
+    function get_report_product($id, $filter = array())
     { // Selecting a product for the product page
         // Default
         $variant_id = '';
@@ -307,7 +307,7 @@ class ReportStat extends Turbo
         return $this->db->results();
     }
 
-    function get_report_product_stat($filter = array(), $id)
+    function get_report_product_stat($id, $filter = array())
     { // Selecting a product for the product page
         // Default
         $variant_id = '';

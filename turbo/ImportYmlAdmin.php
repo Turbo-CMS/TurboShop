@@ -8,7 +8,7 @@ class ImportYmlAdmin extends Turbo
     public $import_file = 'import.yml';
     public $import_file_csv = 'import.csv';
     public $allowed_extensions = array('yml', 'gz');
-    private $locale = 'ru_RU.UTF-8';
+	private $locale = 'en_US.UTF-8';
 
     private $columns = array(
         'name' =>             'name',
@@ -66,6 +66,7 @@ class ImportYmlAdmin extends Turbo
         'stock' => 'stock',
         'vendor' => 'brand',
         'model' => 'name',
+		'name' => 'name',
         'description' => 'description',
     );
 
@@ -75,9 +76,9 @@ class ImportYmlAdmin extends Turbo
         if (!is_writable($this->import_files_dir)) {
             $this->design->assign('message_error', 'no_permission');
         }
-
-        // Checking the locale 
-        $old_locale = setlocale(LC_ALL, 0);
+		
+		// Checking locale
+		$old_locale = setlocale(LC_ALL, 0);
         setlocale(LC_ALL, $this->locale);
         if (setlocale(LC_ALL, 0) != $this->locale) {
             $this->design->assign('message_error', 'locale_error');
@@ -215,7 +216,7 @@ class ImportYmlAdmin extends Turbo
 
     private function is_gzip($realpath)
     {
-        $mystery_string = file_get_contents($realpath, null, null, null, 50);
+        @$mystery_string = file_get_contents($realpath, null, null, null, 50);
 
         if (mb_strpos($mystery_string, "\x1f" . "\x8b" . "\x08") !== false) {;
             return true;
@@ -241,7 +242,7 @@ class ImportYmlAdmin extends Turbo
     private function convert_file($source, $dest)
     {
         // Find out what encoding the file has
-        $teststring = file_get_contents($source, null, null, null, 1000000);
+        @$teststring = file_get_contents($source, null, null, null, 1000000);
 
         // Encoding - UTF8
         if (mb_detect_encoding($teststring, 'UTF-8')) {
@@ -419,7 +420,7 @@ class ImportYmlAdmin extends Turbo
 
         // File encoding
         $codepages = array('UTF-8', 'CP1251');
-        $codepage = strtoupper($codepage);
+        @$codepage = strtoupper($codepage);
 
         // If the encoding is set, the conversion will be performed
         if (isset($codepage) && in_array($codepage, $codepages)) {

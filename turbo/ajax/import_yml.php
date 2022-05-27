@@ -44,7 +44,7 @@ class ImportAjax extends Turbo
             return false;
 
         // For correct operation, set the locale to UTF-8
-        setlocale(LC_ALL, 'en_EN.UTF-8');
+        setlocale(LC_ALL, 'en_US.UTF-8');
 
         $result = new stdClass;
 
