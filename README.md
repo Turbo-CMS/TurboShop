@@ -2,7 +2,7 @@
 
 # TurboShop
 
-<img src="./turbo_admin.jpg" style="max-width: 100%;display: block;margin: 0 auto;" />
+<img src="./turbo_admin.jpg" style="max-width: 100%; margin-left: auto; margin-right: auto;" />
 
 ## Server Requirements
 - Apache
