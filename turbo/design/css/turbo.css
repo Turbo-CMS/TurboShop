@@ -2907,9 +2907,9 @@ label.switch_label {
 }
 
 .turbo_list .turbo_list_languages_photo a img {
-	max-height: 30px;
-	max-width: 39px;
-	border: 1px solid rgba(0, 0, 0, 0.05);
+    max-height: 30px;
+    max-width: 39px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .turbo_list .turbo_list_name_brand {
@@ -3049,7 +3049,7 @@ label.switch_label {
     line-height: 18px;
     font-weight: 500;
     color: #495057;
-	letter-spacing: -0.02em;
+    letter-spacing: -0.02em;
 }
 
 .turbo_list .turbo_list_coupon_disposable {
@@ -6200,7 +6200,7 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 .tab_navigation_link.selected {
-    color: #495057;
+    color: #3f80ea;
     text-decoration: none;
 }
 
@@ -6209,17 +6209,7 @@ input[type=range]:focus::-ms-fill-upper {
 }
 
 .tab_navigation_link:hover {
-    color: #495057;
-}
-
-.tab_navigation_link.selected:before {
-    position: absolute;
-    bottom: -14px;
-    left: 0;
-    display: block;
-    width: 100%;
-    content: '';
-    border-bottom: 3px solid #3f80ea;
+    color: #3f80ea;
 }
 
 .show_more_images {
@@ -7800,9 +7790,17 @@ div.colorPicker-swatch {
     margin-bottom: 15px;
 }
 
-.bootstrap-select .flag-icon{
-	max-height: 14px;
-	max-width: 18px;
-	border: 1px solid rgba(0, 0, 0, 0.05);
-	margin-bottom: 3px;
+.bootstrap-select .flag-icon {
+    max-height: 14px;
+    max-width: 18px;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    line-height: 12px;
+}
+
+.tox-tinymce.tox-fullscreen {
+    border-radius: 0px !important;
+}
+
+.bootstrap-select .btn span{
+    vertical-align: baseline !important;
 }

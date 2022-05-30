@@ -8,16 +8,16 @@
     $(function() {
         tinyMCE.init({literal}{{/literal}
         selector: "textarea.editor_large, textarea.editor_small",
-		theme: 'silver',
         min_height: 560,
         plugins: [
-            "advlist autolink lists link image preview anchor responsivefilemanager",
-            "codesample code fullscreen save textcolor colorpicker charmap nonbreaking",
-            "insertdatetime media table contextmenu paste imagetools emoticons"
+            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+            'insertdatetime', 'media', 'table', 'help', 'wordcount', 'emoticons'
         ],
+        editimage_cors_hosts: ['picsum.photos'],
         toolbar_items_size: 'small',
         menubar: 'file edit insert view format table tools',
-        toolbar: 'undo redo | formatselect | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist | forecolor backcolor emoticons | link unlink  media image | removeformat preview fullscreen codesample code',
+        toolbar: 'undo redo | blocks  | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist | forecolor backcolor emoticons | link unlink  media image | removeformat preview fullscreen code',
 
         {literal}
             image_class_list: [
@@ -50,15 +50,49 @@
 
         image_advtab: true,
         image_caption: true,
-        {if $config->subfolder !='/'}
-            external_filemanager_path:"/{$config->subfolder}turbo/design/js/filemanager/",
-            filemanager_title:"{$btr->tinymce_init_filemanager|escape}" ,
-            external_plugins: { "filemanager" : "/{$config->subfolder}turbo/design/js/filemanager/plugin.min.js"},
-        {else}
-            external_filemanager_path: "/turbo/design/js/filemanager/",
-            filemanager_title:"{$btr->tinymce_init_filemanager|escape}" ,
-            external_plugins: { "filemanager": "/turbo/design/js/filemanager/plugin.min.js" },
-        {/if}
+
+        file_picker_types: 'file image media',
+        file_picker_callback: (callback, value, meta) => {
+
+            var width = window.innerWidth - 30;
+            var height = window.innerHeight - 60;
+            if (width > 1800) width = 1800;
+            if (height > 1200) height = 1200;
+            if (width > 600) {
+                var width_reduce = (width - 20) % 138;
+                width = width - width_reduce + 10;
+            }
+
+            var akey = "## ACCESS_KEY ##";
+            var sort_by = "";
+            var descending = 0;
+            var fldr = "";
+            var crossdomain = "";
+            var language="{$settings->lang}";
+
+            urltype = 2;
+            if (meta.filetype === 'image' || meta.mediaType === 'image') { urltype = 1; }
+            if (meta.filetype === 'media' || meta.mediaType === 'media') { urltype = 3; }
+
+            tinymce.activeEditor.windowManager.openUrl({
+                title: '{$btr->tinymce_init_filemanager|escape}',
+                {if $config->subfolder !='/'}
+                    url: '/{$config->subfolder}turbo/design/js/filemanager/dialog.php?type='+urltype+'&descending='+descending+sort_by+fldr+crossdomain+'&lang='+language+'&akey='+akey,
+                {else}
+                    url: '/turbo/design/js/filemanager/dialog.php?type=' + urltype + '&descending=' + descending + sort_by + fldr + crossdomain + '&lang=' + language + '&akey=' + akey,
+                {/if}
+                width: width,
+                height: height
+            });
+
+            window.addEventListener('message', function receiveMessage(event) {
+                window.removeEventListener('message', receiveMessage, false);
+                if (event.data.sender === 'responsivefilemanager') {
+                    callback(event.data.url);
+                }
+            }, false);
+
+        },
 
         save_enablewhendirty: true,
         save_title: "save",
