@@ -1,0 +1,134 @@
+/* =====================================================================================================================
+// Skin details */
+
+.irs {
+	height: 55px;
+}
+
+.irs-with-grid {
+	height: 75px;
+}
+
+.irs-line {
+	height: 7px;
+	top: 33px;
+	background: #dee2e6;
+	border: 1px solid #dee2e6;
+	border-radius: 16px;
+	-moz-border-radius: 16px;
+}
+
+.irs-line-left {
+	height: 8px;
+}
+
+.irs-line-mid {
+	height: 8px;
+}
+
+.irs-line-right {
+	height: 8px;
+}
+
+.irs-bar {
+	height: 7px;
+	top: 33px;
+	border-top: 1px solid #dee2e6;
+	border-bottom: 1px solid #dee2e6;
+	background: #dee2e6;
+}
+
+.irs-bar-edge {
+	height: 10px;
+	top: 33px;
+	width: 14px;
+	border: 1px solid #dee2e6;
+	border-right: 0;
+	background: #dee2e6;
+	border-radius: 16px 0 0 16px;
+	-moz-border-radius: 16px 0 0 16px;
+}
+
+.irs-shadow {
+	height: 2px;
+	top: 38px;
+	background: #000;
+	opacity: 0.3;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+}
+
+.lt-ie9 .irs-shadow {
+	filter: alpha(opacity=30);
+}
+
+.irs-slider {
+	top: 28px;
+	width: 16px;
+	height: 16px;
+	border: 1px solid #0d6efd;
+	background: #0d6efd;
+	border-radius: 27px;
+	-moz-border-radius: 27px;
+	cursor: pointer;
+}
+
+.irs-slider.state_hover,
+.irs-slider:focus {
+	box-shadow: 0 0 0 1px #fff, 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.irs-min,
+.irs-max {
+	color: #333;
+	font-size: 12px;
+	line-height: 1.333;
+	text-shadow: none;
+	top: 0;
+	padding: 1px 5px;
+	background: rgba(0, 0, 0, 0.1);
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+}
+
+.lt-ie9 .irs-min,
+.lt-ie9 .irs-max {
+	background: #ccc;
+}
+
+.irs-from,
+.irs-to,
+.irs-single {
+	color: #fff;
+	font-size: 14px;
+	line-height: 1.333;
+	text-shadow: none;
+	padding: 1px 5px;
+	background: #0d6efd;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+}
+
+.lt-ie9 .irs-from,
+.lt-ie9 .irs-to,
+.lt-ie9 .irs-single {
+	background: #999;
+}
+
+.irs-grid {
+	height: 27px;
+}
+
+.irs-grid-pol {
+	opacity: 0.5;
+	background: #0d6efd;
+}
+
+.irs-grid-pol.small {
+	background: #999;
+}
+
+.irs-grid-text {
+	bottom: 5px;
+	color: #99a4ac;
+}

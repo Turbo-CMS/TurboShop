@@ -6,8 +6,8 @@
 
 ## Server Requirements
 - Apache
-- PHP 5.2 > 8.1
-- MySQL 4.1 > 8.0
+- PHP 7+ > 8+
+- MySQL 
 
 ## How to install
 

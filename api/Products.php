@@ -12,7 +12,6 @@ require_once('Turbo.php');
 
 class Products extends Turbo
 {
-
 	/**
 	 * The function returns goods
 	 * Possible filter values:

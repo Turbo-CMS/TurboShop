@@ -8,10 +8,8 @@
  *
  */
 
-
 class Stylesheet extends Turbo
 {
-
 	protected $events = array();
 
 	protected $gzip_level = null;
@@ -84,7 +82,6 @@ class Stylesheet extends Turbo
 	{
 		unset($this->events[$id]);
 	}
-
 
 	/*
 	* Output css file(s) or code

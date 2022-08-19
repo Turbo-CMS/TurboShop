@@ -37,8 +37,6 @@ class OrderAdmin extends Turbo
 				$this->design->assign('message_success', 'updated');
 			}
 
-			$this->orders->update_order_labels($order->id, $order_labels);
-
 			if ($order->id) {
 				// Purchases
 				$purchases = array();

@@ -192,7 +192,7 @@ class Image extends Turbo
 		$quality = 100;
 
 		// Source image options
-		@list($src_w, $src_h, $src_type) = array_values(getimagesize($src_file));
+		@list($src_w, $src_h, $src_type) = is_array(getimagesize($src_file)) ? array_values(getimagesize($src_file)) : array();
 		$src_type = image_type_to_mime_type($src_type);
 
 		if (empty($src_w) || empty($src_h) || empty($src_type))
@@ -231,6 +231,7 @@ class Image extends Turbo
 		$src_colors = imagecolorstotal($src_img);
 
 		if ($this->settings->smart_resize) {
+
 			// create destination image (indexed, if possible)
 			if ($src_colors > 0 && $src_colors <= 256)
 				$dst_img = imagecreate($max_w, $max_h);
@@ -267,7 +268,6 @@ class Image extends Turbo
 					return false;
 				if (!imagefill($dst_img, 0, 0, $transparent_index))
 					return false;
-				imagecolortransparent($dst_img, $transparent_index);
 			}
 
 			$xpos = 0;
@@ -287,7 +287,22 @@ class Image extends Turbo
 			// resample the image with new sizes
 			if (!imagecopyresampled($dst_img, $src_img, $xpos, $ypos, 0, 0, $new_width, $new_height, $src_w, $src_h))
 				return false;
+
+			// Watermark
+			if (!empty($watermark) && is_readable($watermark)) {
+				$overlay = imagecreatefrompng($watermark);
+
+				// Get the size of overlay 
+				$owidth = imagesx($overlay);
+				$oheight = imagesy($overlay);
+
+				$watermark_x = min(($max_w - $owidth) * $watermark_offet_x / 100, $max_w);
+				$watermark_y = min(($max_h - $oheight) * $watermark_offet_y / 100, $max_h);
+
+				$this->imagecopymerge_alpha($dst_img, $overlay, $watermark_x, $watermark_y, 0, 0, $owidth, $oheight, $watermark_opacity * 100);
+			}
 		} else {
+
 			// create destination image (indexed, if possible)
 			if ($src_colors > 0 && $src_colors <= 256)
 				$dst_img = imagecreate($dst_w, $dst_h);
@@ -323,22 +338,20 @@ class Image extends Turbo
 			// resample the image with new sizes
 			if (!@imagecopyresampled($dst_img, $src_img, 0, 0, 0, 0, $dst_w, $dst_h, $src_w, $src_h))
 				return false;
-		}
 
-		// Watermark
-		if (!empty($watermark) && is_readable($watermark)) {
-			$overlay = imagecreatefrompng($watermark);
+			// Watermark
+			if (!empty($watermark) && is_readable($watermark)) {
+				$overlay = imagecreatefrompng($watermark);
 
-			// Get the size of overlay 
-			$owidth = imagesx($overlay);
-			$oheight = imagesy($overlay);
+				// Get the size of overlay 
+				$owidth = imagesx($overlay);
+				$oheight = imagesy($overlay);
 
-			$watermark_x = min(($dst_w - $owidth) * $watermark_offet_x / 100, $dst_w);
-			$watermark_y = min(($dst_h - $oheight) * $watermark_offet_y / 100, $dst_h);
+				$watermark_x = min(($dst_w - $owidth) * $watermark_offet_x / 100, $dst_w);
+				$watermark_y = min(($dst_h - $oheight) * $watermark_offet_y / 100, $dst_h);
 
-			imagecopy($dst_img, $overlay, $watermark_x, $watermark_y, 0, 0, $owidth, $oheight);
-			//imagecopymerge($dst_img, $overlay, $watermark_x, $watermark_y, 0, 0, $owidth, $oheight, $watermark_opacity*100); 
-
+				$this->imagecopymerge_alpha($dst_img, $overlay, $watermark_x, $watermark_y, 0, 0, $owidth, $oheight, $watermark_opacity * 100);
+			}
 		}
 
 		// recalculate quality value for png image
@@ -398,15 +411,15 @@ class Image extends Turbo
 
 		// We reduce
 		$thumb->thumbnailImage($dst_w, $dst_h);
+
 		if ($this->settings->smart_resize) {
+
 			$canvas = new Imagick();
 			$canvas->newImage($max_w, $max_h, new ImagickPixel("white"));
 
 			// Setting up a watermark
 			if ($watermark && is_readable($watermark)) {
 				$overlay = new Imagick($watermark);
-				//$overlay->setImageOpacity($watermark_opacity);
-				//$overlay_compose = $overlay->getImageCompose();
 				$overlay->evaluateImage(Imagick::EVALUATE_MULTIPLY, $watermark_opacity, Imagick::CHANNEL_ALPHA);
 
 				// Get the size of overlay 
@@ -428,17 +441,14 @@ class Image extends Turbo
 				// Focusing
 				if ($sharpen > 0)
 					$thumb->adaptiveSharpenImage($sharpen, $sharpen);
-				$canvas->compositeImage($frame, $frame->getImageCompose(), ($max_w - $dst_w) / 2, ($max_h - $dst_h) / 2);
+					$canvas->compositeImage($frame, $frame->getImageCompose(), ($max_w - $dst_w) / 2, ($max_h - $dst_h) / 2);
 				if (isset($overlay) && is_object($overlay)) {
-					// $frame->compositeImage($overlay, $overlay_compose, $watermark_x, $watermark_y, imagick::COLOR_ALPHA);
-					$canvas->compositeImage($overlay, imagick::COMPOSITE_OVER, $watermark_x, $watermark_y, imagick::COLOR_ALPHA);
+					$canvas->compositeImage($overlay, imagick::COMPOSITE_OVER, $watermark_x, $watermark_y);
 				}
 			}
 
 			// We remove comments, etc. from the picture
 			$canvas->stripImage();
-
-			//$thumb->setImageCompressionQuality(100);
 
 			// Recording a picture
 			if (!$canvas->writeImages($dst_file, true))
@@ -448,13 +458,12 @@ class Image extends Turbo
 			$thumb->destroy();
 			if (isset($overlay) && is_object($overlay))
 				$overlay->destroy();
-			$canvas->destroy();
+				$canvas->destroy();
 		} else {
+
 			// Setting up a watermark
 			if ($watermark && is_readable($watermark)) {
 				$overlay = new Imagick($watermark);
-				//$overlay->setImageOpacity($watermark_opacity);
-				//$overlay_compose = $overlay->getImageCompose();
 				$overlay->evaluateImage(Imagick::EVALUATE_MULTIPLY, $watermark_opacity, Imagick::CHANNEL_ALPHA);
 
 				// Get the size of overlay 
@@ -478,15 +487,12 @@ class Image extends Turbo
 					$thumb->adaptiveSharpenImage($sharpen, $sharpen);
 
 				if (isset($overlay) && is_object($overlay)) {
-					// $frame->compositeImage($overlay, $overlay_compose, $watermark_x, $watermark_y, imagick::COLOR_ALPHA);
-					$frame->compositeImage($overlay, imagick::COMPOSITE_OVER, $watermark_x, $watermark_y, imagick::COLOR_ALPHA);
+					$frame->compositeImage($overlay, imagick::COMPOSITE_OVER, $watermark_x, $watermark_y);
 				}
 			}
 
 			// We remove comments, etc. from the picture 
 			$thumb->stripImage();
-
-			// $thumb->setImageCompressionQuality(100);
 
 			// Recording a picture
 			if (!$thumb->writeImages($dst_file, true))
@@ -499,7 +505,6 @@ class Image extends Turbo
 		}
 		return true;
 	}
-
 
 	/**
 	 * Calculates the dimensions of the image to which it must be proportionally reduced in order to fit into the square $max_w x $max_h
@@ -528,43 +533,48 @@ class Image extends Turbo
 		return array($dst_w, $dst_h);
 	}
 
-
-	private function files_identical($fn1, $fn2)
-	{
-		$buffer_len = 1024;
-		if (!$fp1 = fopen(dirname(dirname(__FILE__)) . '/' . $fn1, 'rb'))
-			return FALSE;
-
-		if (!$fp2 = fopen($fn2, 'rb')) {
-			fclose($fp1);
-			return FALSE;
-		}
-
-		$same = TRUE;
-		while (!feof($fp1) and !feof($fp2))
-			if (fread($fp1, $buffer_len) !== fread($fp2, $buffer_len)) {
-				$same = FALSE;
-				break;
-			}
-
-		if (feof($fp1) !== feof($fp2))
-			$same = FALSE;
-
-		fclose($fp1);
-		fclose($fp2);
-
-		return $same;
-	}
-
 	private function correct_filename($filename)
 	{
-		$ru = explode('-', "А-а-Б-б-В-в-Ґ-ґ-Г-г-Д-д-Е-е-Ё-ё-Є-є-Ж-ж-З-з-И-и-І-і-Ї-ї-Й-й-К-к-Л-л-М-м-Н-н-О-о-П-п-Р-р-С-с-Т-т-У-у-Ф-ф-Х-х-Ц-ц-Ч-ч-Ш-ш-Щ-щ-Ъ-ъ-Ы-ы-Ь-ь-Э-э-Ю-ю-Я-я");
-		$en = explode('-', "A-a-B-b-V-v-G-g-G-g-D-d-E-e-E-e-E-e-ZH-zh-Z-z-I-i-I-i-I-i-J-j-K-k-L-l-M-m-N-n-O-o-P-p-R-r-S-s-T-t-U-u-F-f-H-h-TS-ts-CH-ch-SH-sh-SCH-sch---Y-y---E-e-YU-yu-YA-ya");
+		$cyr = explode('-', "А-а-Б-б-В-в-Ґ-ґ-Г-г-Д-д-Е-е-Ё-ё-Є-є-Ж-ж-З-з-И-и-І-і-Ї-ї-Й-й-К-к-Л-л-М-м-Н-н-О-о-П-п-Р-р-С-с-Т-т-У-у-Ф-ф-Х-х-Ц-ц-Ч-ч-Ш-ш-Щ-щ-Ъ-ъ-Ы-ы-Ь-ь-Э-э-Ю-ю-Я-я");
+		$lat = explode('-', "A-a-B-b-V-v-G-g-G-g-D-d-E-e-E-e-E-e-ZH-zh-Z-z-I-i-I-i-I-i-J-j-K-k-L-l-M-m-N-n-O-o-P-p-R-r-S-s-T-t-U-u-F-f-H-h-TS-ts-CH-ch-SH-sh-SCH-sch---Y-y---E-e-YU-yu-YA-ya");
 
-		$res = str_replace($ru, $en, $filename);
+		$res = str_replace($cyr, $lat, $filename);
 		$res = preg_replace("/[\s]+/ui", '-', $res);
 		$res = preg_replace("/[^a-zA-Z0-9\.\-\_]+/ui", '', $res);
 		$res = strtolower($res);
 		return $res;
+	}
+
+	/**
+	 * merge two true colour images while maintaining alpha transparency of both
+	 * images.
+	 *
+	 * known issues : Opacity values other than 100% get a bit screwy, the source
+	 *                composition determines how much this issue will annoy you.
+	 *                if in doubt, use as you would imagecopy_alpha (i.e. keep
+	 *                opacity at 100%)
+	 *
+	 * @param resource $dst_im Destination image link resource
+	 * @param resource $src_im Source image link resource
+	 * @param int $dst_x x-coordinate of destination point
+	 * @param int $dst_y y-coordinate of destination point
+	 * @param int $src_x x-coordinate of source point
+	 * @param int $src_y y-coordinate of source point
+	 * @param int $src_w Source width
+	 * @param int $src_h Source height
+	 * @param int $pct Opacity or source image
+	 */
+	private function imagecopymerge_alpha($dst_im, $src_im, $dst_x, $dst_y, $src_x, $src_y, $src_w, $src_h, $pct)
+	{
+		// creating a cut resource
+		$cut = imagecreatetruecolor($src_w, $src_h);
+		// copying relevant section from background to the cut resource
+		imagecopy($cut, $dst_im, 0, 0, $dst_x, $dst_y, $src_w, $src_h);
+
+		// copying relevant section from watermark to the cut resource
+		imagecopy($cut, $src_im, 0, 0, $src_x, $src_y, $src_w, $src_h);
+
+		// insert cut resource to destination image
+		imagecopymerge($dst_im, $cut, $dst_x, $dst_y, 0, 0, $src_w, $src_h, $pct);
 	}
 }

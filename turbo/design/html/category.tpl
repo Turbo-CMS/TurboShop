@@ -156,7 +156,7 @@
     </div>
 
     <div class="row">
-        <div class="col-lg-4 col-md-12 pr-0">
+        <div class="col-lg-3 col-md-12 pr-0">
             <div class="boxed fn_toggle_wrap min_height_230px">
                 <div class="heading_box">
                     {$btr->general_image|escape}
@@ -178,7 +178,7 @@
                             {else}
                                 <div class="fn_parent_image"></div>
                             {/if}
-                            <div class="fn_upload_image dropzone_block_image {if $category->image} hidden{/if}">
+                            <div class="fn_upload_image dropzone_block_image {if $category->image}hidden{/if}">
                                 {include file='svg_icon.tpl' svgId='plus_big'}
                                 <input class="dropzone_image" name="image" type="file" />
                             </div>
@@ -191,7 +191,46 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-8 col-md-12">
+        <div class="col-lg-3 col-md-12 pr-0">
+            <div class="boxed fn_toggle_wrap min_height_230px">
+                <div class="heading_box">
+                    {$btr->general_icon|escape}
+                    <div class="toggle_arrow_wrap fn_toggle_card text-primary">
+                        <a class="btn-minimize" href="javascript:;"><i class="fn_icon_arrow icon-chevron-down"></i></a>
+                    </div>
+                </div>
+                <div class="toggle_body_wrap on fn_card">
+                    <ul class="category_images_list">
+                        <li class="category_image_item border_image_item2 icons {if $category->icon}border{/if}">
+                            {if $category->icon}
+                                <input type="hidden" class="fn_accept_delete2" name="delete_icon" value="">
+                                <div class="fn_parent_image2">
+                                    <div class="category_image image_wrapper fn_image_wrapper2 text-xs-center">
+                                        <a href="javascript:;" class="fn_delete_item2 remove_image"></a>
+                                        <img src="../{$config->categories_images_dir}{$category->icon}" alt="" />
+                                    </div>
+                                </div>
+                            {else}
+                                <div class="fn_parent_image2"></div>
+                            {/if}
+                            <div class="fn_upload_image2 dropzone_block_image {if $category->icon}hidden{/if}">
+                                {include file='svg_icon.tpl' svgId='plus_big'}
+                                <input class="dropzone_image2" name="icon" type="file" />
+                            </div>
+                            <div class="category_image image_wrapper fn_image_wrapper fn_new_image2 text-xs-center">
+                                <a href="javascript:;" class="fn_delete_item2 remove_image"></a>
+                                <img src="" alt="" />
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="heading_label mt-1">{$btr->icon_code|escape}</div>
+                    <div class="form-group">
+                        <input class="form-control" name="code" type="text" value="{$category->code|escape}">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-12">
             <div class="boxed match fn_toggle_wrap min_height_230px">
                 <div class="heading_box">
                     {$btr->general_metatags|escape}

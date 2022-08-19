@@ -2,12 +2,10 @@
 
 require_once('api/Turbo.php');
 
-########################################
 class SubscribesAdmin extends Turbo
 {
 	function fetch()
 	{
-
 		// Action processing 	
 		if ($this->request->method('post')) {
 			// Actions with selected
@@ -33,6 +31,7 @@ class SubscribesAdmin extends Turbo
 		$filter['limit'] = 40;
 
 		$subscribes_count = $this->subscribes->count_subscribes($filter);
+		
 		// Show all pages at once
 		if ($this->request->get('page') == 'all')
 			$filter['limit'] = $subscribes_count;

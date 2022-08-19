@@ -12,7 +12,6 @@ require_once('Turbo.php');
 
 class Orders extends Turbo
 {
-
 	public function get_order($id)
 	{
 		if (is_int($id))
@@ -263,7 +262,6 @@ class Orders extends Turbo
 					$label_id_filter   
 					ORDER BY position       
 					");
-
 		$this->db->query($query);
 		return $this->db->results();
 	}

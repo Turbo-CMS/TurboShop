@@ -24,7 +24,7 @@ class Categories extends Turbo
 			$featured_filter = $this->db->placehold('AND c.featured = ?', intval($filter['featured']));
 			$visible_filter = $this->db->placehold('AND c.visible = ?', intval($filter['visible']));
 
-			$query = $this->db->placehold("SELECT c.id, c.name, c.name_h1, c.description, c.featured, c.url, c.image, c.last_modified
+			$query = $this->db->placehold("SELECT c.id, c.name, c.name_h1, c.description, c.featured, c.url, c.image, c.icon, c.code, c.last_modified
 											FROM __categories c WHERE 1 $featured_filter $visible_filter ORDER BY c.position");
 			$this->db->query($query);
 			$categories_ids = $this->db->results('id');
@@ -151,8 +151,10 @@ class Categories extends Turbo
 	{
 		$ids = (array) $ids;
 		foreach ($ids as $id) {
-			if ($category = $this->get_category(intval($id)))
+			if ($category = $this->get_category(intval($id))){
 				$this->delete_image($category->children);
+				$this->delete_icon($category->children);
+			}	
 			if (!empty($category->children)) {
 				$query = $this->db->placehold("DELETE FROM __categories WHERE id in(?@)", $category->children);
 				$this->db->query($query);
@@ -222,6 +224,33 @@ class Categories extends Turbo
 		}
 	}
 
+	/**
+	 * Delete category icon
+	 *
+	 * @param $categories_ids
+	 */
+	public function delete_icon($categories_ids)
+	{
+		$categories_ids = (array) $categories_ids;
+		$query = $this->db->placehold("SELECT icon FROM __categories WHERE id in(?@)", $categories_ids);
+		$this->db->query($query);
+		$files_name = $this->db->results('icon');
+		if (!empty($files_name)) {
+			$query = $this->db->placehold("UPDATE __categories SET icon=NULL WHERE id in(?@)", $categories_ids);
+			$this->db->query($query);
+			foreach ($files_name as $filename) {
+				$query = $this->db->placehold("SELECT COUNT(*) AS count FROM __categories WHERE icon=?", $filename);
+				$this->db->query($query);
+				$count = $this->db->result('count');
+				if ($count == 0) {
+					@unlink($this->config->root_dir . $this->config->categories_images_dir . $filename);
+				}
+			}
+			unset($this->categories_tree);
+			unset($this->all_categories);
+		}
+	}
+
 	// Initialization of categories, after which categories will be selected from a local variable
 	private function init_categories()
 	{
@@ -239,11 +268,11 @@ class Categories extends Turbo
 
 		if ($this->settings->category_count) {
 			// Select categories with a count of the number of products for each. Can slow down with a large number of goods.
-			$query = $this->db->placehold("SELECT c.id, c.parent_id, c.name, c.name_h1, c.description, c.featured, c.url, c.meta_title, c.meta_keywords, c.meta_description, c.image, c.visible, c.position, c.last_modified, $lang_sql->fields, COUNT(p.id) as products_count
+			$query = $this->db->placehold("SELECT c.id, c.parent_id, c.name, c.name_h1, c.description, c.featured, c.url, c.meta_title, c.meta_keywords, c.meta_description, c.image, c.icon, c.code, c.visible, c.position, c.last_modified, $lang_sql->fields, COUNT(p.id) as products_count
 											FROM __categories c $lang_sql->join LEFT JOIN __products_categories pc ON pc.category_id=c.id LEFT JOIN __products p ON p.id=pc.product_id AND p.visible GROUP BY c.id ORDER BY c.parent_id, c.position");
 		} else {
 			// Select all categories
-			$query = $this->db->placehold("SELECT c.id, c.parent_id, c.name, c.name_h1, c.description, c.featured, c.url, c.meta_title, c.meta_keywords, c.meta_description, c.image, c.visible, c.position, c.last_modified, $lang_sql->fields
+			$query = $this->db->placehold("SELECT c.id, c.parent_id, c.name, c.name_h1, c.description, c.featured, c.url, c.meta_title, c.meta_keywords, c.meta_description, c.image, c.icon, c.code, c.visible, c.position, c.last_modified, $lang_sql->fields
 											FROM __categories c $lang_sql->join ORDER BY c.parent_id, c.position");
 		}
 

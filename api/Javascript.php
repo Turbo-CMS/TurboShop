@@ -8,10 +8,8 @@
  *
  */
 
-
 class Javascript extends Turbo
 {
-
 	protected $events = array();
 
 	protected $gzip_level = null;
@@ -167,7 +165,6 @@ class Javascript extends Turbo
 				$result = $this->proteced($events_data, $prefix, $minify);
 			}
 		}
-
 
 		return $result;
 	}

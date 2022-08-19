@@ -12,7 +12,6 @@ require_once('Turbo.php');
 
 class Feedbacks extends Turbo
 {
-
 	public function get_feedback($id)
 	{
 		$query = $this->db->placehold("SELECT f.id, f.name, f.processed, f.email, f.ip, f.message, f.date FROM __feedbacks f WHERE id=? LIMIT 1", intval($id));

@@ -4,7 +4,6 @@ require_once('api/Turbo.php');
 
 class FAQAdmin extends Turbo
 {
-
 	public function fetch()
 	{
 		$faq = new stdClass;

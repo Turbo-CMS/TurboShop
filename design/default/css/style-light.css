@@ -1,0 +1,107 @@
+.price {
+	color: #212529;
+}
+
+.card-filter .card-header a {
+	color: #212529;
+}
+
+.breadcrumb {
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
+	padding: 0.75rem 1rem;
+	margin-bottom: 1rem;
+	list-style: none;
+	background-color: #f8f9fa;
+	border-radius: 0.25rem;
+}
+
+.secret-number {
+	border: 1px solid #ced4da;
+	color: #495057;
+}
+
+.table-of-contents {
+	background: #f8f9fa;
+}
+
+#back-to-top {
+	background-color: #0d6efd;
+	border-color: #0d6efd;
+}
+
+#back-to-top:hover {
+	background-color: #0b5ed7;
+	border-color: #0b5ed7;
+}
+
+.online-chat {
+	fill: #198754;
+}
+
+.chaty-widget .i-trigger .i-trigger-close {
+	background-color: #198754;
+}
+
+.btn-group .sort-comments {
+	color: #212529;
+}
+
+.btn-group .sort-comments.active {
+	border-bottom: 3px solid #0d6efd;
+}
+
+.search-item .font-13 {
+	color: #198754;
+}
+
+.autocomplete-suggestions strong {
+	color: #0d6efd;
+}
+
+/* Variants */
+
+.variants label {
+	border: solid 1px #ddd;
+}
+
+.variants label.active {
+	color: #0d6efd;
+	border: solid 2px #0d6efd;
+}
+
+.variants label:active {
+	box-shadow: 0 0 0 0.2rem rgba(49, 132, 253, 0.25);
+	border: solid 2px #0d6efd;
+}
+
+.variants label:focus {
+	box-shadow: 0 0 0 0.2rem rgba(49, 132, 253, 0.25);
+	border: solid 2px #0d6efd;
+}
+
+.variants label:active:focus {
+	box-shadow: 0 0 0 0.2rem rgba(49, 132, 253, 0.25);
+	border: solid 2px #0d6efd;
+}
+
+/* Carusel images */
+
+.img-thumbnail:hover {
+	border: 1px solid #0d6efd;
+}
+
+.img-thumbnail.selected {
+	border: 1px solid #0d6efd;
+}
+
+.img-thumbnail.selected:focus {
+	box-shadow: 0 0 0 0.2rem rgba(49, 132, 253, 0.25);
+}
+
+.owl-carousel .owl-dots .owl-dot.active span,
+.owl-carousel .owl-dots .owl-dot:hover span {
+	background: #0d6efd;
+}

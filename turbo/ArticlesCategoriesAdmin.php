@@ -2,7 +2,6 @@
 
 require_once('api/Turbo.php');
 
-
 class ArticlesCategoriesAdmin extends Turbo
 {
 	function fetch()

@@ -79,6 +79,7 @@ class SettingsAdmin extends Turbo
 
 				// Watermark
 				$clear_image_cache = false;
+				$this->settings->watermark_enable = $this->request->post('watermark_enable', 'boolean');
 				$watermark = $this->request->files('watermark_file', 'tmp_name');
 				if (!empty($watermark) && in_array(pathinfo($this->request->files('watermark_file', 'name'), PATHINFO_EXTENSION), $this->allowed_image_extentions)) {
 					if (@move_uploaded_file($watermark, $this->config->root_dir . $this->config->watermark_file))

@@ -2,12 +2,10 @@
 
 require_once('api/Turbo.php');
 
-########################################
 class PaymentMethodsAdmin extends Turbo
 {
 	public function fetch()
 	{
-
 		// Action processing
 		if ($this->request->method('post')) {
 			// Sorting

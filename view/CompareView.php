@@ -26,7 +26,7 @@ class CompareView extends View
 
 		if ($this->request->get('product_url', 'string')) {
 			$_SESSION['compared_products'][$this->request->get('product_url', 'string')] = $this->request->get('product_url', 'string');
-			header('location: ' . $this->config->root_url . '/compare/');
+			header('location: ' . $this->config->root_url . '/' . $this->lang_link . 'compare/');
 		}
 		if (isset($_SESSION['compared_products'])) {
 			if (count($_SESSION['compared_products']) > $this->max_products)
@@ -76,9 +76,19 @@ class CompareView extends View
 				else
 					$product->variant = reset($variants);
 
-				@$product->features = $this->features->get_product_options(array('product_id' => $product->id));
-				foreach ($product->features as $k => $feature) {
-					$_SESSION['compare_features'][$feature->feature_id]	=	$feature->feature_id;
+				if ($product_values = $this->features->get_product_options(array('product_id' => $product->id))) {
+					foreach ($product_values as $pv) {
+						if (!isset($product->features[$pv->feature_id])) {
+							$product->features[$pv->feature_id] = $pv;
+						}
+						$product->features[$pv->feature_id]->values[] = $pv;
+					}
+				}
+
+				if (!empty($product->features)) {
+					foreach ($product->features as $k => $feature) {
+						$_SESSION['compare_features'][$feature->feature_id]	= $feature->feature_id;
+					}
 				}
 			}
 		}
@@ -90,6 +100,7 @@ class CompareView extends View
 			$this->design->assign('compare_features', $compare_features);
 		}
 		unset($_SESSION['compare_features']);
+
 		// And pass it to the template
 		if (isset($products)) {
 			$this->design->assign('products', $products);

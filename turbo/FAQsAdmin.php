@@ -1,14 +1,5 @@
 <?php
 
-/**
- * Turbo CMS
- *
- * @copyright	Turbo CMS
- * @link		https://turbo-cms.com
- * @author		Turbo CMS
- *
- */
-
 require_once('api/Turbo.php');
 
 class FAQsAdmin extends Turbo

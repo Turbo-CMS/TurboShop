@@ -12,7 +12,6 @@ require_once('Turbo.php');
 
 class Articles extends Turbo
 {
-
 	/*
 	*
 	* The function returns an article by its id or url

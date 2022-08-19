@@ -76,34 +76,32 @@
                                             {if $c@first}
                                                 <span data-hint="{$btr->currency_base|escape}" class="currency_name_active hint-bottom-middle-t-info-s-small-mobile  hint-anim">{include file='svg_icon.tpl' svgId='checked'}</span>
                                             {/if}
-                                            {if $is_mobile == true}
-                                                <div class="hidden-md-up mt-q">
-                                                    <div class="turbo_list_currency_exchange_item">
-                                                        {if !$c@first}
-                                                            <div class="input-group">
-                                                                <div class="input-group-qw cur_input_exchange">
-                                                                    <div class="input-group">
-                                                                        <input class="form-control" name="currency[rate_from][{$c->id}]" type="text" value="{$c->rate_from|escape}" />
-                                                                        <span class="input-group-addon">{$c->sign|escape}</span>
-                                                                    </div>
-                                                                </div>
+											<div class="hidden-md-up mt-q">
+												<div class="turbo_list_currency_exchange_item">
+													{if !$c@first}
+														<div class="input-group">
+															<div class="input-group-qw cur_input_exchange">
+																<div class="input-group">
+																	<input class="form-control" name="currency[rate_from][{$c->id}]" type="text" value="{$c->rate_from|escape}" />
+																	<span class="input-group-addon">{$c->sign|escape}</span>
+																</div>
+															</div>
 
-                                                                <div class="input-group-qw"><span class="equality">=</span></div>
+															<div class="input-group-qw"><span class="equality">=</span></div>
 
-                                                                <div class="input-group-qw cur_input_exchange">
-                                                                    <div class="input-group">
-                                                                        <input class="form-control" name="currency[rate_to][{$c->id}]" type="text" value="{$c->rate_to|escape}" />
-                                                                        <span class="input-group-addon">{$currency->sign|escape}</span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        {else}
-                                                            <input name="currency[rate_from][{$c->id}]" type="hidden" value="{$c->rate_from|escape}" />
-                                                            <input name="currency[rate_to][{$c->id}]" type="hidden" value="{$c->rate_to|escape}" />
-                                                        {/if}
-                                                    </div>
-                                                </div>
-                                            {/if}
+															<div class="input-group-qw cur_input_exchange">
+																<div class="input-group">
+																	<input class="form-control" name="currency[rate_to][{$c->id}]" type="text" value="{$c->rate_to|escape}" />
+																	<span class="input-group-addon">{$currency->sign|escape}</span>
+																</div>
+															</div>
+														</div>
+													{else}
+														<input name="currency[rate_from][{$c->id}]" type="hidden" value="{$c->rate_from|escape}" />
+														<input name="currency[rate_to][{$c->id}]" type="hidden" value="{$c->rate_to|escape}" />
+													{/if}
+												</div>
+											</div>
                                         </div>
                                         <div class="turbo_list_boding turbo_list_currency_iso">
                                             <input class="form-control" name="currency[sign][{$c->id}]" type="text" value="{$c->sign|escape}" />
@@ -111,34 +109,32 @@
                                         <div class="turbo_list_boding turbo_list_currency_sign">
                                             <input class="form-control" name="currency[code][{$c->id}]" type="text" value="{$c->code|escape}" />
                                         </div>
-                                        {if $is_mobile == false}
-                                            <div class="turbo_list_boding turbo_list_currency_exchange">
-                                                <div class="turbo_list_currency_exchange_item">
-                                                    {if !$c@first}
-                                                        <div class="input-group">
-                                                            <div class="input-group-qw cur_input_exchange">
-                                                                <div class="input-group">
-                                                                    <input class="form-control" name="currency[rate_from][{$c->id}]" type="text" value="{$c->rate_from|escape}" />
-                                                                    <span class="input-group-addon">{$c->sign}</span>
-                                                                </div>
-                                                            </div>
+										<div class="turbo_list_boding turbo_list_currency_exchange">
+											<div class="turbo_list_currency_exchange_item">
+												{if !$c@first}
+													<div class="input-group">
+														<div class="input-group-qw cur_input_exchange">
+															<div class="input-group">
+																<input class="form-control" name="currency[rate_from][{$c->id}]" type="text" value="{$c->rate_from|escape}" />
+																<span class="input-group-addon">{$c->sign}</span>
+															</div>
+														</div>
 
-                                                            <div class="input-group-qw"> <span class="equality">=</span> </div>
+														<div class="input-group-qw"> <span class="equality">=</span> </div>
 
-                                                            <div class="input-group-qw cur_input_exchange">
-                                                                <div class="input-group">
-                                                                    <input class="form-control" name="currency[rate_to][{$c->id}]" type="text" value="{$c->rate_to|escape}" />
-                                                                    <span class="input-group-addon">{$currency->sign}</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    {else}
-                                                        <input name="currency[rate_from][{$c->id}]" type="hidden" value="{$c->rate_from|escape}" />
-                                                        <input name="currency[rate_to][{$c->id}]" type="hidden" value="{$c->rate_to|escape}" />
-                                                    {/if}
-                                                </div>
-                                            </div>
-                                        {/if}
+														<div class="input-group-qw cur_input_exchange">
+															<div class="input-group">
+																<input class="form-control" name="currency[rate_to][{$c->id}]" type="text" value="{$c->rate_to|escape}" />
+																<span class="input-group-addon">{$currency->sign}</span>
+															</div>
+														</div>
+													</div>
+												{else}
+													<input name="currency[rate_from][{$c->id}]" type="hidden" value="{$c->rate_from|escape}" />
+													<input name="currency[rate_to][{$c->id}]" type="hidden" value="{$c->rate_to|escape}" />
+												{/if}
+											</div>
+										</div>
                                         <div class="turbo_list_boding turbo_list_status hidden-md-down">
                                             <div class="form-check form-switch">
                                                 <input class="form-check-input fn_ajax_action {if $c->enabled}fn_active_class{/if}" id="id_{$c->id}" data-module="currency" data-action="enabled" data-id="{$c->id}" name="enabled" value="1" type="checkbox" {if $c->enabled}checked="" {/if}>
@@ -274,7 +270,6 @@
 
 {* On document load *}
 {literal}
-
     <script>
         $(function() {
 

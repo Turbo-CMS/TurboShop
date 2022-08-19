@@ -48,7 +48,7 @@ function smarty_modifier_date_format($string, $format = null, $default_date = ''
     } else {
         return;
     }
-    if ($formatter === 'date' || ($formatter === 'auto' && strpos($format, '%') !== false)) {
+    if ($formatter === 'strftime' || ($formatter === 'auto' && strpos($format, '%') !== false)) {
         if (Smarty::$_IS_WINDOWS) {
             $_win_from = array(
                 '%D',
@@ -78,7 +78,7 @@ function smarty_modifier_date_format($string, $format = null, $default_date = ''
             }
             $format = str_replace($_win_from, $_win_to, $format);
         }
-        return date($format, $timestamp);
+        return strftime($format, $timestamp);
     } else {
         return date($format, $timestamp);
     }

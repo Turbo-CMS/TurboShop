@@ -115,8 +115,6 @@ class ArticlesCategories extends Turbo
 				$this->delete_image($id);
 				$query = $this->db->placehold("DELETE FROM __articles_categories WHERE id=? LIMIT 1", $id);
 				$this->db->query($query);
-				$query = $this->db->placehold("DELETE FROM __articles_categories WHERE category_id=?", $id);
-				$this->db->query($query);
 				$this->init_articles_categories();
 				$this->db->query($query);
 				$this->db->query("DELETE FROM __lang_articles_categories WHERE article_category_id in(?@)", $category->children);

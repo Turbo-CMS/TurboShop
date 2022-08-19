@@ -1,5 +1,13 @@
 <?php
 
+/**
+ * Turbo CMS
+ *
+ * @author	Turbo CMS
+ * @link	https://turbo-cms.com
+ *
+ */
+
 require_once('Turbo.php');
 
 class Translations extends Turbo

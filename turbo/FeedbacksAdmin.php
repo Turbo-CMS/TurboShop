@@ -2,13 +2,10 @@
 
 require_once('api/Turbo.php');
 
-########################################
 class FeedbacksAdmin extends Turbo
 {
-
 	function fetch()
 	{
-
 		// Action processing 	
 		if ($this->request->method('post')) {
 			// Actions with selected

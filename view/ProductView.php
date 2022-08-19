@@ -12,10 +12,8 @@
 
 require_once('View.php');
 
-
 class ProductView extends View
 {
-
 	function fetch()
 	{
 		$product_url = $this->request->get('product_url', 'string');
@@ -65,22 +63,14 @@ class ProductView extends View
 		else
 			$product->variant = reset($variants);
 
-		$product->features = $this->features->get_product_options(array('product_id' => $product->id));
-
-		$temp_options = array();
-		foreach ($product->features as $option) {
-			if (empty($temp_options[$option->feature_id]))
-				$temp_options[$option->feature_id] = new stdClass;
-			$temp_options[$option->feature_id]->feature_id = $option->feature_id;
-			$temp_options[$option->feature_id]->name = $option->name;
-			$temp_options[$option->feature_id]->translit = $option->translit;
-			$temp_options[$option->feature_id]->values[] = $option->value;
+		if ($product_values = $this->features->get_product_options(array('product_id' => $product->id))) {
+			foreach ($product_values as $pv) {
+				if (!isset($product->features[$pv->feature_id])) {
+					$product->features[$pv->feature_id] = $pv;
+				}
+				$product->features[$pv->feature_id]->values[] = $pv;
+			}
 		}
-
-		foreach ($temp_options as $id => $option)
-			$temp_options[$id]->value = implode(', ', $temp_options[$id]->values);
-
-		$product->features = $temp_options;
 
 		if (!empty($product->features)) {
 			foreach ($product->features as &$f) {
@@ -220,7 +210,7 @@ class ProductView extends View
 		// Promotional item timer
 		if (!empty($product->sale_to) && strtotime($product->sale_to) <= time()) {
 			$product->sale_to = null;
-			if (isset($product->variant) && isset($product->variant->compare_price)) {
+			if ($product->variant && $product->variant->compare_price) {
 				$product->variant->price = $product->variant->compare_price;
 				$product->variant->compare_price = 0;
 				$v = new stdClass();

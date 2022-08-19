@@ -1,0 +1,135 @@
+.navbar {
+	padding-top: 0.5rem;
+	padding-bottom: 0.5rem;
+}
+
+@media (min-width: 1200px) {
+
+	.h1,
+	h1 {
+		font-size: 2.5rem;
+	}
+}
+
+.price {
+	color: #fff;
+}
+
+.card-filter .card-header a {
+	color: #fff;
+}
+
+.breadcrumb {
+	display: -ms-flexbox;
+	display: flex;
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
+	padding: 0.75rem 1rem;
+	margin-bottom: 1rem;
+	list-style: none;
+	border-radius: 0.25rem;
+}
+
+.border-start {
+	border-left: 1px solid #444 !important;
+}
+
+.secret-number {
+	border: 1px solid #fff;
+	color: #fff;
+}
+
+.table-of-contents {
+	background: #303030;
+}
+
+#back-to-top {
+	background-color: #375a7f;
+	border-color: #375a7f;
+}
+
+#back-to-top:hover {
+	background-color: #2f4d6c;
+	border-color: #2c4866;
+}
+
+.online-chat {
+	fill: #00bc8c;
+}
+
+.chaty-widget .i-trigger .i-trigger-close {
+	background-color: #00bc8c;
+}
+
+.btn-group .sort-comments {
+	color: #fff;
+}
+
+.btn-group .sort-comments.active {
+	border-bottom: 3px solid #00bc8c;
+}
+
+.search-item .font-13 {
+	color: #375a7f;
+}
+
+.autocomplete-suggestions strong {
+	color: #00bc8c;
+}
+
+.quickview .img-thumbnail {
+	background-color: #303030;
+}
+
+.btn-link:focus {
+	box-shadow: none !important;
+}
+
+/* Variants */
+
+.variants label {
+	border: solid 1px #444;
+}
+
+.variants label.active {
+	color: #2a7aaf;
+	border: solid 2px #2a7aaf;
+}
+
+.variants label:active {
+	box-shadow: 0 0 0 0.2rem rgba(85, 115, 146, 0.25);
+	border: solid 2px #2a7aaf;
+}
+
+.variants label:focus {
+	box-shadow: 0 0 0 0.2rem rgba(85, 115, 146, 0.25);
+	border: solid 2px #2a7aaf;
+}
+
+.variants label:active:focus {
+	box-shadow: 0 0 0 0.2rem rgba(85, 115, 146, 0.25);
+	border: solid 2px #2a7aaf;
+}
+
+/* Carusel images */
+
+.img-thumbnail {
+	border: 1px solid #444;
+}
+
+.img-thumbnail:hover {
+	border: 1px solid #2a7aaf;
+}
+
+.img-thumbnail.selected {
+	border: 1px solid #2a7aaf;
+}
+
+.img-thumbnail.selected:focus {
+	box-shadow: 0 0 0 0.2rem rgba(85, 115, 146, 0.25);
+}
+
+.owl-carousel .owl-dots .owl-dot.active span,
+.owl-carousel .owl-dots .owl-dot:hover span {
+	background: #375a7f;
+}

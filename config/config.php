@@ -6,10 +6,10 @@
 db_server = "localhost";
 
 ;Database User
-db_user = "admin";
+db_user = "root";
 
 ;Database password
-db_password = "admin";
+db_password = "root";
 
 ;Database name
 db_name = "turboshop";
@@ -49,7 +49,7 @@ debug = false;
 minify_js = false; compress javascript (true=yes, false=no)
 minify_css = false; compress css (true=yes, false=no)
 minify_gzip_level = 0; compression level (gzip) from 0 to 9
-minify_cache_dir = cache/minify/; cache folder
+minify_cache_dir = /cache/minify/; cache folder
 
 [smarty]
 
@@ -64,7 +64,7 @@ debug_translation = false;
 [images]
 
 ;Use imagemagick for image processing (instead of gd)
-use_imagick = false;
+use_imagick = true;
 
 ;Directory of original images
 original_images_dir = files/originals/;

@@ -4,10 +4,8 @@ require_once('api/Turbo.php');
 
 class LanguagesAdmin extends Turbo
 {
-
 	public function fetch()
 	{
-
 		// Action processing
 		if ($this->request->method('post')) {
 			// Actions with selected

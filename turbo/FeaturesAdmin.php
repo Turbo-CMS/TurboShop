@@ -1,15 +1,11 @@
 <?php
-	
+
 require_once('api/Turbo.php');
 
-############################################
-# Class Properties displays a list of product parameters
-############################################
 class FeaturesAdmin extends Turbo
 {
 	function fetch()
 	{
-
 		$filter = array();
 		$filter['page'] = max(1, $this->request->get('page', 'integer'));
 

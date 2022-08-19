@@ -3,10 +3,10 @@
 /**
  * Turbo CMS
  *
- * This class uses the template main.tpl
- *
  * @author	Turbo CMS
  * @link	https://turbo-cms.com
+ *
+ * This class uses the template main.tpl
  *
  */
 
@@ -14,7 +14,6 @@ require_once('View.php');
 
 class MainView extends View
 {
-
     function fetch()
     {
         if ($this->page) {

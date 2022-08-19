@@ -6,6 +6,7 @@
  * @author	Turbo CMS
  * @link	https://turbo-cms.com/
  *
+ * This class uses the template faq.tpl
  *
  */
 
@@ -15,7 +16,6 @@ class FAQView extends View
 {
 	public function fetch()
 	{
-
 		$filter = array();
 
 		// If the keyword is set

@@ -12,7 +12,6 @@ require_once('Turbo.php');
 
 class Cart extends Turbo
 {
-
 	/*
 	*
 	* The function returns a cart

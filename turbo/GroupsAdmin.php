@@ -1,10 +1,7 @@
 <?php
-
+	
 require_once('api/Turbo.php');
 
-############################################
-# Class Properties displays a list of product parameters
-############################################
 class GroupsAdmin extends Turbo
 {
 	function fetch()

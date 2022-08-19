@@ -59,7 +59,6 @@ class ArticlesView extends View
 		if (!empty($this->user))
 			$this->design->assign('comment_name', $this->user->name);
 
-
 		// Accept comment
 		if ($this->request->method('post') && $this->request->post('comment')) {
 			$comment = new stdClass;
@@ -186,7 +185,6 @@ class ArticlesView extends View
 	// Display list of articles 
 	private function fetch_articles()
 	{
-
 		$filter = array();
 
 		// If the keyword is set

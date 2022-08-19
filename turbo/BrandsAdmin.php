@@ -6,7 +6,6 @@ class BrandsAdmin extends Turbo
 {
 	function fetch()
 	{
-
 		// Action processing 	
 		if ($this->request->method('post')) {
 

@@ -2719,7 +2719,7 @@ class imageLib {
         };
 
         // *** Get extension / image type
-        $extension = mime_content_type($file);
+        $extension = pathinfo($file, PATHINFO_EXTENSION);
         $extension = fix_strtolower($extension);
         $extension = str_replace('image/', '', $extension);
         switch ($extension)

@@ -1,10 +1,9 @@
 <?php
-	
+
 require_once('api/Turbo.php');
 
 class FeatureAdmin extends Turbo
 {
-
 	function fetch()
 	{
 		$feature = new stdClass;

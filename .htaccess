@@ -24,7 +24,7 @@ Header append Vary Accept env=REQUEST_image
   AddType image/webp .webp
 </IfModule>
 
-# Smarty_Minify
+# Smarty Minify
 <FilesMatch "(js|css).gz[1-9]$">
 <IfModule mod_headers.c>
 		Header set Content-Encoding: gzip
@@ -49,7 +49,7 @@ Header append Vary Accept env=REQUEST_image
     </filesmatch>
 </Ifmodule>
 
-# Cache-Control
+# Cache Control
 <IfModule mod_headers.c>
 	<filesMatch "\.(ico|pdf|jpg|jpeg|png|gif|swf|css|js|webp|jp2|jxr)$">
 		Header set Cache-Control "max-age=31536000, public"
@@ -194,7 +194,7 @@ RewriteRule ^([a-z]{2}/)?sitemap.xml?$	sitemap.php?lang_label=$1  [L,QSA]
 RewriteRule ^([a-z]{2}/)?sitemap/?$    index.php?module=SitemapView&lang_label=$1  [L,QSA]
 
 # XML
-RewriteRule ^yandex.xml?$	yandex.php  [L,QSA]
+RewriteRule ^export.xml?$	export.php  [L,QSA]
 RewriteRule ^google.xml?$	google.php  [L,QSA]
 
 # RSS
@@ -248,3 +248,63 @@ RewriteRule ^files/categories/preview/(.+) resize/resize.php?file=$1&is_category
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^files/products/(.+) resize/resize.php?file=$1&token=%{QUERY_STRING}
+
+# Security
+<IfModule mod_rewrite.c>
+# XSS blocking
+RewriteCond %{QUERY_STRING} (\<|%3C).*script.*(\>|%3E) [NC,OR]
+# Blocking PHP GLOBALS variable from being exposed via URL
+RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
+# Blocking the ability to change the _REQUEST variable through the URL
+RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2})
+# Blocking MySQL injections, RFI, base64, etc.
+RewriteCond %{QUERY_STRING} (javascript:)(.*)(;) [NC,OR]
+RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=http:// [OR]
+RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=(\.\.//?)+ [OR]
+RewriteCond %{QUERY_STRING} [a-zA-Z0-9_]=/([a-z0-9_.]//?)+ [NC,OR]
+RewriteCond %{QUERY_STRING} \=PHP[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12} [NC,OR]
+RewriteCond %{QUERY_STRING} (\.\./|\.\.) [OR]
+RewriteCond %{QUERY_STRING} ftp\: [NC,OR]
+RewriteCond %{QUERY_STRING} http\: [NC,OR]
+RewriteCond %{QUERY_STRING} https\: [NC,OR]
+RewriteCond %{QUERY_STRING} \=\|w\| [NC,OR]
+RewriteCond %{QUERY_STRING} ^(.*)/self/(.*)$ [NC,OR]
+RewriteCond %{QUERY_STRING} ^(.*)cPath=http://(.*)$ [NC,OR]
+RewriteCond %{QUERY_STRING} (\<|%3C).*script.*(\>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} (<|%3C)([^s]*s)+cript.*(>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} (\<|%3C).*iframe.*(\>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} (<|%3C)([^i]*i)+frame.*(>|%3E) [NC,OR]
+RewriteCond %{QUERY_STRING} mosConfig_[a-zA-Z_]{1,21}(=|%3D) [OR]
+RewriteCond %{QUERY_STRING} base64_encode.*\(.*\) [NC,OR]
+RewriteCond %{QUERY_STRING} base64_(en|de)code[^(]*\([^)]*\) [NC,OR]
+RewriteCond %{QUERY_STRING} ^.*(\[|\]|\(|\)|<|>).* [NC,OR]
+RewriteCond %{QUERY_STRING} (NULL|OUTFILE|LOAD_FILE) [OR]
+RewriteCond %{QUERY_STRING} (\./|\../|\.../)+(motd|etc|bin) [NC,OR]
+RewriteCond %{QUERY_STRING} (localhost|loopback|127\.0\.0\.1) [NC,OR]
+RewriteCond %{QUERY_STRING} (<|>|'|%0A|%0D|%27|%3C|%3E|%00) [NC,OR]
+RewriteCond %{QUERY_STRING} concat[^\(]*\( [NC,OR]
+RewriteCond %{QUERY_STRING} union([^s]*s)+elect [NC,OR]
+RewriteCond %{QUERY_STRING} union([^a]*a)+ll([^s]*s)+elect [NC,OR]
+RewriteCond %{QUERY_STRING} (;|<|>|'|"|\)|%0A|%0D|%22|%27|%3C|%3E|%00).*(/\*|union|select|insert|drop|delete|update|cast|create|char|convert|alter|declare|order|script|set|md5|benchmark|encode) [NC,OR]
+RewriteCond %{QUERY_STRING} (\\|\.\.\.|\.\./|~|`|<|>|\|) [NC,OR]
+RewriteCond %{QUERY_STRING} (boot\.ini|etc/passwd|self/environ) [NC,OR]
+RewriteCond %{QUERY_STRING} (thumbs?(_editor|open)?|tim(thumb)?)\.php [NC,OR]
+RewriteCond %{QUERY_STRING} (sp_executesql) [NC]
+RewriteCond %{QUERY_STRING} (eval\() [NC,OR]
+RewriteCond %{QUERY_STRING} ([a-z0-9]{2000,}) [NC,OR]
+RewriteRule ^(.*)$ - [F,L]
+# Known Shell Lock
+RewriteCond %{REQUEST_URI} .*((php|my)?shell|remview.*|phpremoteview.*|sshphp.*|pcom|nstview.*|c99|r57|webadmin.*|phpget.*|phpwriter.*|fileditor.*|locus7.*|storm7.*).(p?s?x?htm?l?|txt|aspx?|cfml?|cgi|pl|php[3-9]{0,1}|jsp?|sql|xml) [NC,OR]
+RewriteCond %{REQUEST_METHOD} (GET|POST) [NC]
+RewriteCond %{QUERY_STRING} ^(.*)=(/|%2F)(h|%68|%48)(o|%6F|%4F)(m|%6D|%4D)(e|%65|%45)(.+)?(/|%2F)(.*)(/|%2F)(.*)$ [OR]
+RewriteCond %{QUERY_STRING} ^work_dir=.*$ [OR]
+RewriteCond %{QUERY_STRING} ^command=.*&output.*$ [OR]
+RewriteCond %{QUERY_STRING} ^nts_[a-z0-9_]{0,10}=.*$ [OR]
+RewriteCond %{QUERY_STRING} ^c=(t|setup|codes)$ [OR]
+RewriteCond %{QUERY_STRING} ^act=((about|cmd|selfremove|chbd|trojan|backc|massbrowsersploit|exploits|grablogins|upload.*)|((chmod|f)&f=.*))$ [OR]
+RewriteCond %{QUERY_STRING} ^act=(ls|search|fsbuff|encoder|tools|processes|ftpquickbrute|security|sql|eval|update|feedback|cmd|gofile|mkfile)&d=.*$ [OR]
+RewriteCond %{QUERY_STRING} ^&?c=(l?v?i?&d=|v&fnot=|setup&ref=|l&r=|d&d=|tree&d|t&d=|e&d=|i&d=|codes|md5crack).*$ [OR]
+RewriteCond %{QUERY_STRING} ^(.*)([-_a-z]{1,15})=(chmod|chdir|mkdir|rmdir|clear|whoami|uname|unzip|gzip|gunzip|grep|more|umask|telnet|ssh|ftp|head|tail|which|mkmode|touch|logname|edit_file|search_text|find_text|php_eval|download_file|ftp_file_down|ftp_file_up|ftp_brute|mail_file|mysql|mysql_dump|db_query)([^a-zA-Z0-9].+)*$ [OR]
+RewriteCond %{QUERY_STRING} ^(.*)(wget|shell_exec|passthru|system|exec|popen|proc_open)(.*)$
+RewriteRule .* - [F]
+</IfModule>

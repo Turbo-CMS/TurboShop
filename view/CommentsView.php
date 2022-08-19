@@ -6,6 +6,7 @@
  * @author	Turbo CMS
  * @link	https://turbo-cms.com/
  *
+ * This class uses the templates comments.tpl
  *
  */
 
@@ -21,7 +22,6 @@ class CommentsView extends View
 			$this->design->assign('comment_name', $this->user->name);
 		}
 		$this->design->assign('comment_rating', 5);
-
 
 		// Accept comment
 		if ($this->request->method('post') && $this->request->post('comment')) {

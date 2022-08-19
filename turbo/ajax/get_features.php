@@ -33,7 +33,7 @@ foreach ($features as &$f) {
 		$f->value = $options[$f->id]->value;
 	else
 		$f->value = '';
-	if (isset($options[$f->id]))
+	if (isset($options[$f->id]) && isset($options[$f->id]->translit))
 		$f->translit = $options[$f->id]->translit;
 	else
 		$f->translit = '';

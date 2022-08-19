@@ -2,13 +2,10 @@
 
 require_once('api/Turbo.php');
 
-########################################
 class CallbacksAdmin extends Turbo
 {
-
 	function fetch()
 	{
-
 		// Action processing 	
 		if ($this->request->method('post')) {
 			// Actions with selected
@@ -33,8 +30,8 @@ class CallbacksAdmin extends Turbo
 		$filter['page'] = max(1, $this->request->get('page', 'integer'));
 		$filter['limit'] = 40;
 
-
 		$callbacks_count = $this->callbacks->count_callbacks($filter);
+		
 		// Show all pages at once
 		if ($this->request->get('page') == 'all')
 			$filter['limit'] = $callbacks_count;

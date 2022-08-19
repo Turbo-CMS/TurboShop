@@ -10,7 +10,6 @@
 
 require_once('Turbo.php');
 
-
 class Money extends Turbo
 {
 	private $currencies = array();

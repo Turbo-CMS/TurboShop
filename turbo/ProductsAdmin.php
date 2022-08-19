@@ -6,7 +6,6 @@ class ProductsAdmin extends Turbo
 {
 	function fetch()
 	{
-
 		$filter = array();
 		$filter['page'] = max(1, $this->request->get('page', 'integer'));
 
@@ -64,7 +63,7 @@ class ProductsAdmin extends Turbo
 
 		// Action processing 	
 		if ($this->request->method('post')) {
-			
+
 			// Saving prices and availability
 			$prices = $this->request->post('price');
 			$stocks = $this->request->post('stock');
@@ -73,7 +72,6 @@ class ProductsAdmin extends Turbo
 				$stock = $stocks[$id];
 				if ($stock == '∞' || $stock == '')
 					$stock = null;
-
 				$this->variants->update_variant($id, array('price' => $price, 'stock' => $stock));
 			}
 
@@ -238,7 +236,7 @@ class ProductsAdmin extends Turbo
 			$this->design->assign('category', $category);
 
 		$products_count = $this->products->count_products($filter);
-		
+
 		// Show all pages at once
 		if ($this->request->get('page') == 'all')
 			$filter['limit'] = $products_count;

@@ -4,7 +4,6 @@ require_once('api/Turbo.php');
 
 class TranslationsAdmin extends Turbo
 {
-
 	public function fetch()
 	{
 		$admin_theme = $this->settings->admin_theme;
@@ -30,18 +29,6 @@ class TranslationsAdmin extends Turbo
 				}
 		}
 
-		/*
-        $languages    = $this->languages->get_languages();
-	  	$translations = $this->languages->get_translations();
-
-        if($translations){
-            foreach($translations as $t){
-                foreach($languages as $l)
-                    $lang[$l->label] = $t->
-            }
-        }
-        */
-
 		// Display
 		$filter = array();
 		$filter['page'] = max(1, $this->request->get('page', 'integer'));
@@ -64,7 +51,7 @@ class TranslationsAdmin extends Turbo
 		$this->design->assign('sort', $filter['sort']);
 
 		$translations_count = $this->languages->count_translations($filter);
-		
+
 		// Show all pages at once
 		if ($this->request->get('page') == 'all')
 			$filter['limit'] = $translations_count;

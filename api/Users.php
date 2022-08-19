@@ -3,8 +3,8 @@
 /**
  * Turbo CMS
  *
- * @author		Turbo CMS
- * @link		https://turbo-cms.com
+ * @author	Turbo CMS
+ * @link	https://turbo-cms.com
  *
  */
 
@@ -50,7 +50,6 @@ class Users extends Turbo
 					$order = 'u.email';
 					break;
 			}
-
 
 		$sql_limit = $this->db->placehold(' LIMIT ?, ? ', ($page - 1) * $limit, $limit);
 		// Select users
@@ -163,7 +162,6 @@ class Users extends Turbo
 
 		return $group;
 	}
-
 
 	public function add_group($group)
 	{

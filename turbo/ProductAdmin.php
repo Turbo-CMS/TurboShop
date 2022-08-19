@@ -2,14 +2,10 @@
 
 require_once('api/Turbo.php');
 
-############################################
-# Class Product - edit the static section
-############################################
 class ProductAdmin extends Turbo
 {
 	public function fetch()
 	{
-
 		$options = array();
 		$product_categories = array();
 		$variants = array();
@@ -55,7 +51,7 @@ class ProductAdmin extends Turbo
 						$variants[$i]->$n = $v;
 					}
 				}
-			}	
+			}
 
 			// Product categories
 			$product_categories = $this->request->post('categories');
@@ -208,7 +204,7 @@ class ProductAdmin extends Turbo
 							$i++;
 						}
 					}
-					
+
 					// Image upload
 					if ($images = $this->request->files('images')) {
 						for ($i = 0; $i < count($images['name']); $i++) {
@@ -219,7 +215,7 @@ class ProductAdmin extends Turbo
 							}
 						}
 					}
-					
+
 					// Image upload from the internet and drag-n-drop files
 					if ($images = $this->request->post('images_urls')) {
 						foreach ($images as $url) {
@@ -329,7 +325,6 @@ class ProductAdmin extends Turbo
 				}
 			}
 
-			// header('Location: '.$this->request->url(array('message_success'=>'updated')));
 		} else {
 			$id = $this->request->get('id', 'integer');
 			$product = $this->products->get_product(intval($id));

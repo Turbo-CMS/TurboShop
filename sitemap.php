@@ -64,7 +64,7 @@ foreach ($turbo->blog->get_posts(array('visible' => 1)) as $p) {
 	print "\t</url>" . "\n";
 }
 
-// Categories of articles
+// Categories articles
 foreach ($turbo->articles_categories->get_articles_categories() as $c) {
 	if ($c->visible) {
 		$url = $turbo->config->root_url . '/' . $lang_link . 'articles/' . esc($c->url);

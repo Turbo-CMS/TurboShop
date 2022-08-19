@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+	<name>
+		ConcordPay
+	</name>
+	<settings>
+		<variable>concordpay_merchant</variable>
+		<name>Идентификатор продавца</name>
+	</settings>
+	<settings>
+		<variable>concordpay_secretkey</variable>
+		<name>Секретный ключ</name>
+	</settings>
+</module>

@@ -12,7 +12,6 @@ require_once('Turbo.php');
 
 class Subscribes extends Turbo
 {
-
 	public function get_subscribe($id)
 	{
 		$query = $this->db->placehold("SELECT c.id, c.email, c.processed, c.date FROM __subscribes c WHERE id=? LIMIT 1", intval($id));

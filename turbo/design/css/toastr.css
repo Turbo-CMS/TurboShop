@@ -3,18 +3,22 @@
 	font-size: 14px;
 	line-height: 2;
 }
+
 .toast-message {
 	-ms-word-wrap: break-word;
 	word-wrap: break-word;
 }
+
 .toast-message a,
 .toast-message label {
 	color: #FFFFFF;
 }
+
 .toast-message a:hover {
 	color: #CCCCCC;
 	text-decoration: none;
 }
+
 .toast-close-button {
 	position: relative;
 	right: -0.3em;
@@ -28,6 +32,7 @@
 	filter: alpha(opacity=80);
 	line-height: 1;
 }
+
 .toast-close-button:hover,
 .toast-close-button:focus {
 	color: #FFFFFF;
@@ -37,11 +42,13 @@
 	-ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=40);
 	filter: alpha(opacity=40);
 }
+
 .rtl .toast-close-button {
 	left: -0.3em;
 	float: left;
 	right: 0.3em;
 }
+
 /*Additional properties for button version
 	iOS requires the button element instead of an anchor tag.
 If you want the anchor version, it requires `href="#"`.*/
@@ -52,54 +59,65 @@ button.toast-close-button {
 	border: 0;
 	-webkit-appearance: none;
 }
+
 .toast-top-center {
 	top: 0;
 	right: 0;
 	width: 100%;
 }
+
 .toast-bottom-center {
 	bottom: 0;
 	right: 0;
 	width: 100%;
 }
+
 .toast-top-full-width {
 	top: 0;
 	right: 0;
 	width: 100%;
 }
+
 .toast-bottom-full-width {
 	bottom: 0;
 	right: 0;
 	width: 100%;
 }
+
 .toast-top-left {
 	top: 12px;
 	left: 12px;
 }
+
 .toast-top-right {
 	top: 12px;
 	right: 12px;
 }
+
 .toast-bottom-right {
 	right: 12px;
 	bottom: 12px;
 }
+
 .toast-bottom-left {
 	bottom: 12px;
 	left: 12px;
 }
+
 #toast-container {
 	position: fixed;
 	z-index: 999999;
 	pointer-events: none;
 	/*overrides*/
 }
+
 #toast-container * {
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
 }
-#toast-container > div {
+
+#toast-container>div {
 	position: relative;
 	pointer-events: auto;
 	overflow: hidden;
@@ -119,12 +137,14 @@ button.toast-close-button {
 	-ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
 	filter: alpha(opacity=80);
 }
-#toast-container > div.rtl {
+
+#toast-container>div.rtl {
 	direction: rtl;
 	padding: 15px 50px 15px 15px;
 	background-position: right 15px center;
 }
-#toast-container > div:hover {
+
+#toast-container>div:hover {
 	-moz-box-shadow: 0 0 12px #999999;
 	-webkit-box-shadow: 0 0 12px #999999;
 	box-shadow: 0 0 12px #999999;
@@ -133,45 +153,57 @@ button.toast-close-button {
 	filter: alpha(opacity=100);
 	cursor: pointer;
 }
-#toast-container > .toast-info {
+
+#toast-container>.toast-info {
 	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGwSURBVEhLtZa9SgNBEMc9sUxxRcoUKSzSWIhXpFMhhYWFhaBg4yPYiWCXZxBLERsLRS3EQkEfwCKdjWJAwSKCgoKCcudv4O5YLrt7EzgXhiU3/4+b2ckmwVjJSpKkQ6wAi4gwhT+z3wRBcEz0yjSseUTrcRyfsHsXmD0AmbHOC9Ii8VImnuXBPglHpQ5wwSVM7sNnTG7Za4JwDdCjxyAiH3nyA2mtaTJufiDZ5dCaqlItILh1NHatfN5skvjx9Z38m69CgzuXmZgVrPIGE763Jx9qKsRozWYw6xOHdER+nn2KkO+Bb+UV5CBN6WC6QtBgbRVozrahAbmm6HtUsgtPC19tFdxXZYBOfkbmFJ1VaHA1VAHjd0pp70oTZzvR+EVrx2Ygfdsq6eu55BHYR8hlcki+n+kERUFG8BrA0BwjeAv2M8WLQBtcy+SD6fNsmnB3AlBLrgTtVW1c2QN4bVWLATaIS60J2Du5y1TiJgjSBvFVZgTmwCU+dAZFoPxGEEs8nyHC9Bwe2GvEJv2WXZb0vjdyFT4Cxk3e/kIqlOGoVLwwPevpYHT+00T+hWwXDf4AJAOUqWcDhbwAAAAASUVORK5CYII=") !important;
 }
-#toast-container > .toast-error {
+
+#toast-container>.toast-error {
 	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-alert-circle'%3E%3Ccircle cx='12' cy='12' r='10'%3E%3C/circle%3E%3Cline x1='12' y1='8' x2='12' y2='12'%3E%3C/line%3E%3Cline x1='12' y1='16' x2='12.01' y2='16'%3E%3C/line%3E%3C/svg%3E") !important;
 }
-#toast-container > .toast-success {
+
+#toast-container>.toast-success {
 	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-check-circle'%3E%3Cpath d='M22 11.08V12a10 10 0 1 1-5.93-9.14'%3E%3C/path%3E%3Cpolyline points='22 4 12 14.01 9 11.01'%3E%3C/polyline%3E%3C/svg%3E") !important;
 }
-#toast-container > .toast-warning {
+
+#toast-container>.toast-warning {
 	background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGYSURBVEhL5ZSvTsNQFMbXZGICMYGYmJhAQIJAICYQPAACiSDB8AiICQQJT4CqQEwgJvYASAQCiZiYmJhAIBATCARJy+9rTsldd8sKu1M0+dLb057v6/lbq/2rK0mS/TRNj9cWNAKPYIJII7gIxCcQ51cvqID+GIEX8ASG4B1bK5gIZFeQfoJdEXOfgX4QAQg7kH2A65yQ87lyxb27sggkAzAuFhbbg1K2kgCkB1bVwyIR9m2L7PRPIhDUIXgGtyKw575yz3lTNs6X4JXnjV+LKM/m3MydnTbtOKIjtz6VhCBq4vSm3ncdrD2lk0VgUXSVKjVDJXJzijW1RQdsU7F77He8u68koNZTz8Oz5yGa6J3H3lZ0xYgXBK2QymlWWA+RWnYhskLBv2vmE+hBMCtbA7KX5drWyRT/2JsqZ2IvfB9Y4bWDNMFbJRFmC9E74SoS0CqulwjkC0+5bpcV1CZ8NMej4pjy0U+doDQsGyo1hzVJttIjhQ7GnBtRFN1UarUlH8F3xict+HY07rEzoUGPlWcjRFRr4/gChZgc3ZL2d8oAAAAASUVORK5CYII=") !important;
 }
-#toast-container.toast-top-center > div,
-#toast-container.toast-bottom-center > div {
+
+#toast-container.toast-top-center>div,
+#toast-container.toast-bottom-center>div {
 	width: 300px;
 	margin-left: auto;
 	margin-right: auto;
 }
-#toast-container.toast-top-full-width > div,
-#toast-container.toast-bottom-full-width > div {
+
+#toast-container.toast-top-full-width>div,
+#toast-container.toast-bottom-full-width>div {
 	width: 96%;
 	margin-left: auto;
 	margin-right: auto;
 }
+
 .toast {
 	background-color: #030303;
 }
+
 .toast-success {
 	background-color: #4bbf73;
 }
+
 .toast-error {
 	background-color: #d9534f;
 }
+
 .toast-info {
 	background-color: #2F96B4;
 }
+
 .toast-warning {
 	background-color: #F89406;
 }
+
 .toast-progress {
 	position: absolute;
 	left: 0;
@@ -182,47 +214,57 @@ button.toast-close-button {
 	-ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=40);
 	filter: alpha(opacity=40);
 }
+
 /*Responsive Design*/
 @media all and (max-width: 240px) {
-	#toast-container > div {
+	#toast-container>div {
 		padding: 8px 8px 8px 50px;
 		width: 11em;
 	}
-	#toast-container > div.rtl {
+
+	#toast-container>div.rtl {
 		padding: 8px 50px 8px 8px;
 	}
+
 	#toast-container .toast-close-button {
 		right: -0.2em;
 		top: -0.2em;
 	}
+
 	#toast-container .rtl .toast-close-button {
 		left: -0.2em;
 		right: 0.2em;
 	}
 }
+
 @media all and (min-width: 241px) and (max-width: 480px) {
-	#toast-container > div {
+	#toast-container>div {
 		padding: 8px 8px 8px 50px;
 		width: 18em;
 	}
-	#toast-container > div.rtl {
+
+	#toast-container>div.rtl {
 		padding: 8px 50px 8px 8px;
 	}
+
 	#toast-container .toast-close-button {
 		right: -0.2em;
 		top: -0.2em;
 	}
+
 	#toast-container .rtl .toast-close-button {
 		left: -0.2em;
 		right: 0.2em;
 	}
 }
+
 @media all and (min-width: 481px) and (max-width: 768px) {
-	#toast-container > div {
+	#toast-container>div {
 		padding: 15px 15px 15px 50px;
 		width: 25em;
 	}
-	#toast-container > div.rtl {
+
+	#toast-container>div.rtl {
 		padding: 15px 50px 15px 15px;
 	}
 }

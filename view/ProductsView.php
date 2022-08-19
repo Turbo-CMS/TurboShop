@@ -3,8 +3,8 @@
 /**
  * Turbo CMS
  *
- * @author 		Turbo CMS
- * @link 		https://turbo-cms.com
+ * @author	Turbo CMS
+ * @link	https://turbo-cms.com
  *
  * This class uses the template products.tpl
  *

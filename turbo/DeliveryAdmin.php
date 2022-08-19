@@ -4,7 +4,6 @@ require_once('api/Turbo.php');
 
 class DeliveryAdmin extends Turbo
 {
-
 	public function fetch()
 	{
 		$delivery = new stdClass;

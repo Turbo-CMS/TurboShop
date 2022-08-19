@@ -27,11 +27,12 @@ if (is_readable($resized_filename)) {
 				imagewebp($imagetoconvert, $webp_filename, 80);
 			} elseif ($info['mime'] == 'image/png') {
 				$imagetoconvert = imagecreatefrompng($resized_filename);
+				imagepalettetotruecolor($imagetoconvert);
 				imagewebp($imagetoconvert, $webp_filename, 80);
 			}
 		}
 	}
 } else {
-	header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found");
+	header($_SERVER["SERVER_PROTOCOL"] . "404 Not Found");
 	exit('404 Not Found');
 }

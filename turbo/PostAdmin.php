@@ -62,7 +62,6 @@ class PostAdmin extends Turbo
 
 		$this->design->assign('post', $post);
 
-
 		return $this->design->fetch('post.tpl');
 	}
 }

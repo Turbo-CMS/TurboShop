@@ -12,7 +12,6 @@ require_once('Turbo.php');
 
 class Comments extends Turbo
 {
-
 	// Returns comment by id
 	public function get_comment($id)
 	{

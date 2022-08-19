@@ -5,32 +5,32 @@ require_once('../../../api/Turbo.php');
 class StatAjax extends Turbo
 {
 
-    // Displaying order statistics
-    public function fetch()
-    {
-        $query = $this->db->placehold('SELECT 
-                SUM( o.total_price ) AS total_price, 
-                MAX(DAY(date)) AS day, 
-                MAX(MONTH(date)) as month, 
-                MAX(YEAR(date)) as year 
-            FROM __orders o 
-            WHERE 
-                o.closed 
-            GROUP BY YEAR(o.date), MONTH(o.date),  DATE(o.date)
-        ');
-        $this->db->query($query);
-        $data = $this->db->results();
+	// Displaying order statistics
+	public function fetch()
+	{
+		$query = $this->db->placehold('SELECT 
+				SUM( o.total_price ) AS total_price, 
+				MAX(DAY(date)) AS day, 
+				MAX(MONTH(date)) as month, 
+				MAX(YEAR(date)) as year 
+			FROM __orders o 
+			WHERE 
+				o.closed 
+			GROUP BY YEAR(o.date), MONTH(o.date),  DATE(o.date)
+		');
+		$this->db->query($query);
+		$data = $this->db->results();
 
-        $results = array();
-        foreach ($data as $d) {
-            $result['day'] = $d->day;
-            $result['month'] = $d->month;
-            $result['year'] = $d->year;
-            $result['y'] = $d->total_price;
-            $results[] = $result;
-        }
-        return $results;
-    }
+		$results = array();
+		foreach ($data as $d) {
+			$result['day'] = $d->day;
+			$result['month'] = $d->month;
+			$result['year'] = $d->year;
+			$result['y'] = $d->total_price;
+			$results[] = $result;
+		}
+		return $results;
+	}
 }
 
 $stat_ajax = new StatAjax();

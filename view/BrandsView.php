@@ -14,7 +14,6 @@ require_once('View.php');
 
 class BrandsView extends View
 {
-
 	public function fetch()
 	{
 		$brands = $this->brands->get_brands();

@@ -1,4 +1,4 @@
-<?PHP
+<?php
 
 require_once('view/View.php');
 

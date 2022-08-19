@@ -7,10 +7,8 @@ require_once('turbo/pclzip/pclzip.lib.php');
 
 class BackupAdmin extends Turbo
 {
-
 	public function fetch()
 	{
-
 		$dir = 'turbo/files/backup/';
 		// Action processing
 		if ($this->request->method('post')) {

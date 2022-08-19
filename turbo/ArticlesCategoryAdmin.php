@@ -2,9 +2,6 @@
 
 require_once('api/Turbo.php');
 
-############################################
-# Class Category - Edit the good gategory
-############################################
 class ArticlesCategoryAdmin extends Turbo
 {
 	private	$allowed_image_extentions = array('png', 'gif', 'jpg', 'jpeg', 'ico');

@@ -9,6 +9,7 @@ class Clear_Admin_Ajax extends Turbo
 	{
 		// Cleanup directories
 		$this->clean_admin($_SERVER['DOCUMENT_ROOT'] . '/turbo/design/compiled');
+		$this->clean_admin($_SERVER['DOCUMENT_ROOT'] . '/cache/');
 	}
 
 	// Cleaning function

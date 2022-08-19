@@ -574,7 +574,7 @@ $backend_translations->settings_general_sites = 'Настройки сайта';
 $backend_translations->settings_general_tech_message = 'Техническое сообщение';
 $backend_translations->settings_general_turn_off = 'Выключить';
 $backend_translations->settings_general_turn_on = 'Включить';
-$backend_translations->settings_notify_emails = 'E-mail оповещения о заказах';
+$backend_translations->settings_notify_emails = 'Оповещения о заказах';
 $backend_translations->settings_notify_smtp = 'Настройки SMTP';
 $backend_translations->settings_notify_auto_approved = 'Автоматическое одобрение комментариев';
 $backend_translations->settings_notify_notifications = 'Настройки уведомлений';
@@ -716,9 +716,9 @@ $backend_translations->currency_message = 'Количество десятичн
 Все расчеты ведутся с неокругленными данными.
 Это может привести к визуальным ошибкам при конвертации валют и применении скидок.
 В качестве примера рассмотрим такую ситуацию.
-Стоимость товара 98,10 руб.
-Если задать количество десятичных знаков равным 0, цена будет показана как 98 руб.
-Однако стоимость 10 единиц в корзине будет показана как 981 руб.';
+Стоимость товара 98,10.
+Если задать количество десятичных знаков равным 0, цена будет показана как 98.
+Однако стоимость 10 единиц в корзине будет показана как 981.';
 $backend_translations->currency_name = 'Название валюты';
 $backend_translations->currency_rate = 'Курс';
 $backend_translations->currency_recalculate = 'Пересчитать все цены в';
@@ -866,6 +866,8 @@ $backend_translations->import_field_category = 'Категория';
 $backend_translations->import_field_brand = 'Бренд';
 $backend_translations->import_field_name = 'Название товара';
 $backend_translations->import_field_variant = 'Название варианта';
+$backend_translations->import_field_color = 'Цвет варианта';
+$backend_translations->import_field_color_code = 'Код цвета';
 $backend_translations->import_field_sku = 'Артикул';
 $backend_translations->import_field_price = 'Цена';
 $backend_translations->import_field_compare_price = 'Старая цена';
@@ -1016,6 +1018,7 @@ $backend_translations->delete_selected_orders = 'Удалить выбранны
 $backend_translations->product_does_not_exist = 'Товар был удалён';
 $backend_translations->product_variant_does_not_exist = 'Вариант товара был удалён';
 $backend_translations->in_stock_left = 'На складе осталось';
+$backend_translations->in_stock_products = 'На складе осталось';
 $backend_translations->no_labels = 'Нет меток';
 $backend_translations->orders_new_label = 'Новая метка';
 $backend_translations->orders_added_label = 'Метка добавлена';
@@ -1108,7 +1111,7 @@ $backend_translations->email_comments_unapproved = 'Ожидает одобре�
 $backend_translations->email_comment_new = 'Новый комментарий от';
 $backend_translations->email_comment_from = 'Комментарий от';
 $backend_translations->subscribe_mailing_new = 'Новый подписчик';
-$backend_translations->settings_notify_comments = 'Email оповещение о комментариях';
+$backend_translations->settings_notify_comments = 'Оповещение о комментариях';
 $backend_translations->translations_search = 'Поиск перевода...';
 $backend_translations->translations_no = 'Нет переводов';
 $backend_translations->comments_blog = 'блогу';
@@ -1206,3 +1209,6 @@ $backend_translations->cache_lifetime = 'Время жизни кэша';
 $backend_translations->cache_cleared = 'Кэш очищен';
 $backend_translations->not_specified = 'Не указана';
 $backend_translations->general_articles_filter = 'Фильтр по статьям';
+$backend_translations->general_icon = 'Иконка';
+$backend_translations->icon_code = 'Код иконки';
+$backend_translations->settings_watermark_enable = 'Включить водяной знак';

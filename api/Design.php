@@ -9,8 +9,8 @@
  */
 
 require_once(dirname(__FILE__) . '/' . 'Turbo.php');
-require_once(dirname(dirname(__FILE__)) . '/Smarty/libs/Smarty.class.php');
-require_once 'Mobile_Detect.php';
+require_once(dirname(dirname(__FILE__)) . '/smarty/libs/Smarty.class.php');
+require_once 'MobileDetect.php';
 class Design extends Turbo
 {
 	public $smarty;
@@ -293,7 +293,7 @@ class Design extends Turbo
 
 	public function time_modifier($date, $format = null)
 	{
-		return date(empty($format) ? 'H:i' : $format, strtotime($date));
+		return date(empty($format) ? 'H:i' : $format, @strtotime($date));
 	}
 
 	public function api_plugin($params, &$smarty)

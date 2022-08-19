@@ -251,7 +251,6 @@ if (!function_exists('http_build_url')) {
 				unset($parse_url[$key]);
 		}
 
-
 		$new_url = $parse_url;
 
 		return ((isset($parse_url['scheme'])) ? $parse_url['scheme'] . '://' : '')

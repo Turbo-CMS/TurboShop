@@ -50,7 +50,7 @@ class View extends Turbo
 			foreach ($languages as $l)
 				$lang_labels[] = $l->label;
 
-			$get_lang = $_GET['lang_label'];
+			$get_lang = $_GET['lang_label'] ?? null;
 
 			if (!isset($get_lang) && !empty($lang_labels) && !in_array($get_lang, $lang_labels)) {
 				$_GET['page_url'] = '404';
@@ -75,14 +75,6 @@ class View extends Turbo
 
 			$this->design->assign('lang_link', $lang_link);
 			$this->lang_link = $lang_link;
-
-			//if(!empty($languages) && (empty($get_lang) || !isset($get_lang) || !in_array($get_lang, $lang_labels)))
-			/*if(!empty($languages) && $_SERVER['REQUEST_URI'] == '/')
-            {
-                header("HTTP/1.1 301 Moved Permanently");
-                header('Location: '.$this->config->root_url.'/'.reset($lang_labels));
-                exit();
-            }*/
 
 			if (!empty($languages)) {
 				$first_lang = reset($languages);
@@ -221,7 +213,7 @@ class View extends Turbo
 	{
 		if (!isset($params['featured']))
 			$params['featured'] = 1;
-			$params['visible'] = 1;
+		$params['visible'] = 1;
 		if (!empty($params['var']))
 			$smarty->assign($params['var'], $this->categories->get_categories($params));
 	}
@@ -314,13 +306,13 @@ class View extends Turbo
 			$smarty->assign($params['var'], $this->comments->get_comments($params));
 	}
 
-	public function get_brands_plugin($params, $smarty) 
+	public function get_brands_plugin($params, $smarty)
 	{
-        if(!isset($params['visible']))
-            $params['visible'] = 1;
-        if(!empty($params['var'])) 
-            $smarty->assign($params['var'], $this->brands->get_brands($params));
-    }
+		if (!isset($params['visible']))
+			$params['visible'] = 1;
+		if (!empty($params['var']))
+			$smarty->assign($params['var'], $this->brands->get_brands($params));
+	}
 
 	public function get_products_plugin($params, $smarty)
 	{
@@ -415,7 +407,7 @@ class View extends Turbo
 	{
 		if (!isset($params['visible']))
 			$params['visible'] = 1;
-			$params['featured'] = 1;
+		$params['featured'] = 1;
 		if (!empty($params['var'])) {
 			foreach ($this->products->get_products($params) as $p) {
 				$products[$p->id] = $p;

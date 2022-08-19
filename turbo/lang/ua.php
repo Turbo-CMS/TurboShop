@@ -241,7 +241,7 @@ $backend_translations->general_recommended = 'Рекомендовані тов�
 $backend_translations->general_recommended_add = 'Додати рекомендований товар';
 $backend_translations->general_registration_date = 'Дата реєстрації';
 $backend_translations->general_remove_xml = 'Прибрати з експорту';
-$backend_translations->general_request_sent = 'Заявка була відправлена о';
+$backend_translations->general_request_sent = 'Заявка була відправлена';
 $backend_translations->general_sales_amount = 'Сума продажів';
 $backend_translations->general_amount = 'К-сть';
 $backend_translations->general_search = 'Пошук...';
@@ -574,11 +574,11 @@ $backend_translations->settings_general_sites = 'Налаштування сай
 $backend_translations->settings_general_tech_message = 'Технічне повідомлення';
 $backend_translations->settings_general_turn_off = 'Вимкнути';
 $backend_translations->settings_general_turn_on = 'Увімкнути';
-$backend_translations->settings_notify_emails = 'Email-сповіщення про замовлення';
+$backend_translations->settings_notify_emails = 'Оповіщення про замовлення';
 $backend_translations->settings_notify_smtp = 'Налаштування SMTP';
 $backend_translations->settings_notify_auto_approved = 'Автоматичне схвалення коментарів';
 $backend_translations->settings_notify_notifications = 'Налаштування сповіщень';
-$backend_translations->settings_notify_reverce = 'Зворотна адреса сповіщень';
+$backend_translations->settings_notify_reverce = 'Зворотна адреса';
 $backend_translations->settings_notify_sender_name = 'Ім\'я відправника листа';
 $backend_translations->settings_notify_email_lang = 'Мова листів адміністратору';
 $backend_translations->settings_notify_comments = 'Email-сповіщення про коментарі';
@@ -716,9 +716,9 @@ $backend_translations->currency_message = 'Кількість десяткови
 Усі розрахунки ведуться з неокругленими даними.
 Це може призвести до візуальних помилок при конвертації валют і застосуванні знижок.
 Як приклад розглянемо таку ситуацію.
-Вартість товару – 98,10 руб.
-Якщо задати кількість десяткових знаків рівним 0, ціна буде показана як 98 руб.
-Проте вартість 10 одиниць у кошику буде показана як 981 руб.';
+Вартість товару – 98,10.
+Якщо задати кількість десяткових знаків рівним 0, ціна буде показана як 98.
+Проте вартість 10 одиниць у кошику буде показана як 981.';
 $backend_translations->currency_name = 'Назва валюти';
 $backend_translations->currency_rate = 'Курс';
 $backend_translations->currency_recalculate = 'Перерахувати всі ціни у';
@@ -741,7 +741,6 @@ $backend_translations->email_new_order = 'Нове замовлення';
 $backend_translations->email_new_reques = 'Нова заявка в зворотний зв\'язок';
 $backend_translations->email_new_review = 'Новий відгук';
 $backend_translations->email_order = 'Замовлення';
-$backend_translations->email_paid = 'сплачено';
 $backend_translations->email_request_from = 'Питання від покупця';
 $backend_translations->email_request_page = 'Сторінка звернення';
 $backend_translations->email_time = 'Час';
@@ -867,6 +866,8 @@ $backend_translations->import_field_category = 'Категорія';
 $backend_translations->import_field_brand = 'Бренд';
 $backend_translations->import_field_name = 'Назва товару';
 $backend_translations->import_field_variant = 'Назва варіанта';
+$backend_translations->import_field_color = 'Колір варіанта';
+$backend_translations->import_field_color_code = 'Код кольору';
 $backend_translations->import_field_sku = 'Артикул';
 $backend_translations->import_field_price = 'Ціна';
 $backend_translations->import_field_compare_price = 'Стара ціна';
@@ -904,6 +905,7 @@ $backend_translations->import_info = 'При завантаженні файлу
 $backend_translations->settings_general_gathering_data = 'Збір даних';
 $backend_translations->settings_general_gather_enabled = 'Дозволити збір і обробку даних про мої дії в адмінпанелі для покращення роботи системи.';
 $backend_translations->catalog_fixation = 'Фіксація каталогу';
+$backend_translations->catalog_hide = 'Приховати каталог';
 $backend_translations->products_without_brand = 'Без бренду';
 $backend_translations->products_without_category = 'Без категорії';
 $backend_translations->settings_general_callback = 'У зворотному дзвінку';
@@ -1016,6 +1018,7 @@ $backend_translations->delete_selected_orders = 'Видалити вибрані
 $backend_translations->product_does_not_exist = 'Товар був вилучений';
 $backend_translations->product_variant_does_not_exist = 'Варіант товару був видалений';
 $backend_translations->in_stock_left = 'На складі залишилося';
+$backend_translations->in_stock_products = 'На складі залишилося';
 $backend_translations->no_labels = 'Немає міток';
 $backend_translations->orders_new_label = 'Нова мітка';
 $backend_translations->orders_added_label = 'Мітка добавлена';
@@ -1108,7 +1111,7 @@ $backend_translations->email_comments_unapproved = 'Очікує схвален�
 $backend_translations->email_comment_new = 'Новий коментар від';
 $backend_translations->email_comment_from = 'Коментар від';
 $backend_translations->subscribe_mailing_new = 'Новий підписник';
-$backend_translations->settings_notify_comments = 'Email оповіщення про коментарі';
+$backend_translations->settings_notify_comments = 'Оповіщення про коментарі';
 $backend_translations->translations_search = 'Пошук перекладу...';
 $backend_translations->translations_no = 'немає перекладів';
 $backend_translations->comments_blog = 'блогу';
@@ -1176,7 +1179,7 @@ $backend_translations->restore_password = 'Відновити пароль';
 $backend_translations->message_password_recovery_1 = 'Ви або хтось інший зробив запит посилання на відновлення пароля адміністратора.';
 $backend_translations->message_password_recovery_2 = 'Для зміни пароля перейдіть за посиланням';
 $backend_translations->message_password_recovery_3 = 'Якщо лист прийшов вам помилково, ігноруйте його.';
-$backend_translations->message_password_recovery_4 = 'Вам надіслане посилання для відновлення пароля. Якщо лист вам не прийшло, значить ви невірно вказали email або щось не так з хостингом '; 
+$backend_translations->message_password_recovery_4 = 'Вам надіслане посилання для відновлення пароля. Якщо лист вам не прийшло, значить ви невірно вказали email або щось не так з хостингом ';
 $backend_translations->general_review = 'Відгуки';
 $backend_translations->left_faq_title = 'FAQ';
 $backend_translations->faq_title = 'FAQ';
@@ -1206,3 +1209,6 @@ $backend_translations->cache_lifetime = 'Час життя кешу';
 $backend_translations->cache_cleared = 'Кеш очищений';
 $backend_translations->not_specified = 'Не вказана';
 $backend_translations->general_articles_filter = 'Фільтр за статтями';
+$backend_translations->general_icon = 'Іконка';
+$backend_translations->icon_code = 'Код іконки';
+$backend_translations->settings_watermark_enable = 'Увімкнути водяний знак';

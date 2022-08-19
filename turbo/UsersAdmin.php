@@ -1,15 +1,11 @@
 <?php
-
+	
 require_once('api/Turbo.php');
 
-############################################
-# Class Properties displays a list of product parameters
-############################################
 class UsersAdmin extends Turbo
 {
 	function fetch()
 	{
-
 		if ($this->request->method('post')) {
 			// Actions with selected
 			$ids = $this->request->post('check');
@@ -70,7 +66,7 @@ class UsersAdmin extends Turbo
 		$this->design->assign('sort', $filter['sort']);
 
 		$users_count = $this->users->count_users($filter);
-		
+
 		// Show all pages at once
 		if ($this->request->get('page') == 'all')
 			$filter['limit'] = $users_count;
@@ -79,7 +75,7 @@ class UsersAdmin extends Turbo
 		foreach ($users as $user_item) {
 			$user_item->orders = $this->orders->get_orders(array('user_id' => $user_item->id));
 		}
-		
+
 		$this->design->assign('pages_count', ceil($users_count / $filter['limit']));
 		$this->design->assign('current_page', $filter['page']);
 		$this->design->assign('groups', $groups);

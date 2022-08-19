@@ -4,7 +4,6 @@ require_once('api/Turbo.php');
 
 class LanguageAdmin extends Turbo
 {
-
 	public function fetch()
 	{
 		$lang_list = $this->languages->lang_list();
@@ -17,11 +16,6 @@ class LanguageAdmin extends Turbo
 			$language->enabled = $this->request->post('enabled', 'boolean');
 			$language->name    = $lang->name;
 			$language->label   = $lang->label;
-
-			/*
-			$language->name  = $this->request->post('name');
-			$language->label = trim($this->request->post('label'));
-            */
 
 			$this->db->query("SELECT * FROM __languages WHERE label=? LIMIT 1", $language->label);
 			$exist_label = $this->db->result();

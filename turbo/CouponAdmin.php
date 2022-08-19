@@ -40,9 +40,6 @@ class CouponAdmin extends Turbo
 			$coupon = $this->coupons->get_coupon($coupon->id);
 		}
 
-		//if(empty($coupon->id))
-		//$coupon->expire = date($this->settings->date_format, time());
-
 		$this->design->assign('coupon', $coupon);
 		return $this->design->fetch('coupon.tpl');
 	}

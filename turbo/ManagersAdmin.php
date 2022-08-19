@@ -2,9 +2,6 @@
 
 require_once('api/Turbo.php');
 
-############################################
-# Class Properties displays a list of product parameters
-############################################
 class ManagersAdmin extends Turbo
 {
 	function fetch()
