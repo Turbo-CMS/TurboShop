@@ -20,7 +20,7 @@ class SettingsCounterAdmin extends Turbo
 				}
 			}
 
-			$this->settings->counters = $counters;
+			@$this->settings->counters = $counters;
 			$this->design->assign('message_success', 'saved');
 		}
 

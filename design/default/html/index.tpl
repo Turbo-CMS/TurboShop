@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 {* General Page *}
-<html {if $language->label}lang="{$language->label|escape}" {/if}>
+<html {if $language->label}lang="{$language->label|escape}"{/if}>
 
 <head>
-	<base href="{$config->root_url}/" />
+	<base href="{$config->root_url}/">
 
 	{if $seo->seo_automation == "on"}
 		<title>{($meta_title|default:$auto_meta->title)|escape}</title>
@@ -16,15 +16,15 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
 	{if $seo->seo_automation == "on"}
-		<meta name="description" content="{($meta_description|default:$auto_meta->description)|escape}" />
+		<meta name="description" content="{($meta_description|default:$auto_meta->description)|escape}">
 	{else}
-		<meta name="description" content="{($auto_meta->description|default:$meta_description)|escape}" />
+		<meta name="description" content="{($auto_meta->description|default:$meta_description)|escape}">
 	{/if}
 
 	{if $seo->seo_automation == "on"}
-		<meta name="keywords" content="{($meta_keywords|default:$auto_meta->keywords)|escape}" />
+		<meta name="keywords" content="{($meta_keywords|default:$auto_meta->keywords)|escape}">
 	{else}
-		<meta name="keywords" content="{($auto_meta->keywords|default:$meta_keywords)|escape}" />
+		<meta name="keywords" content="{($auto_meta->keywords|default:$meta_keywords)|escape}">
 	{/if}
 
 	<meta name="author" content="Turbo CMS">
@@ -38,7 +38,7 @@
 		<meta property="og:image" content="{$product->image->filename|resize:330:300}">
 		<link rel="image_src" href="{$product->image->filename|resize:330:300}">
 		{* Twitter *}
-		<meta name="twitter:card" content="product" />
+		<meta name="twitter:card" content="product">
 		<meta name="twitter:url" content="{$config->root_url}{$canonical}">
 		<meta name="twitter:site" content="{$settings->site_name|escape}">
 		<meta name="twitter:title" content="{$product->name|escape}">
@@ -87,18 +87,18 @@
 		<meta property="og:image" content="{$config->root_url}/design/{$settings->theme|escape}/images/logo.png">
 		<meta property="og:site_name" content="{$settings->site_name|escape}">
 		{if $seo->seo_automation == "on"}
-			<meta property="og:description" content="{($meta_description|default:$auto_meta->description)|escape}" />
+			<meta property="og:description" content="{($meta_description|default:$auto_meta->description)|escape}">
 		{else}
-			<meta property="og:description" content="{($auto_meta->description|default:$meta_description)|escape}" />
+			<meta property="og:description" content="{($auto_meta->description|default:$meta_description)|escape}">
 		{/if}
 		<link rel="image_src" href="{$config->root_url}/design/{$settings->theme|escape}/images/logo.png">
 		{* Twitter *}
 		<meta name="twitter:card" content="summary">
 		<meta name="twitter:title" content="{$settings->site_name|escape}">
 		{if $seo->seo_automation == "on"}
-			<meta name="twitter:description" content="{($meta_description|default:$auto_meta->description)|escape}" />
+			<meta name="twitter:description" content="{($meta_description|default:$auto_meta->description)|escape}">
 		{else}
-			<meta name="twitter:description" content="{($auto_meta->description|default:$meta_description)|escape}" />
+			<meta name="twitter:description" content="{($auto_meta->description|default:$meta_description)|escape}">
 		{/if}
 		<meta name="twitter:image" content="{$config->root_url}/design/{$settings->theme|escape}/images/logo.png">
 	{/if}
@@ -176,8 +176,13 @@
 	{/if}
 
 	{* Favicon *}
-	<link href="design/{$settings->theme|escape}/images/favicon.ico" rel="icon" type="image/x-icon" />
-	<link href="design/{$settings->theme|escape}/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link rel="icon" type="image/x-icon" href="design/{$settings->theme|escape}/images/favicon.ico">
+	<link rel="shortcut icon" type="image/x-icon" href="design/{$settings->theme|escape}/images/favicon.ico">
+	<link rel="apple-touch-icon" sizes="180x180" href="design/{$settings->theme|escape}/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="design/{$settings->theme|escape}/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="design/{$settings->theme|escape}/images/favicon-16x16.png">
+    <link rel="manifest" href="design/{$settings->theme|escape}/images/site.webmanifest">
+    <link rel="mask-icon" color="#198754" href="design/{$settings->theme|escape}/images/safari-pinned-tab.svg">
 
 	{* Custom Scripts *}
 	{if $counters['head']}
@@ -212,7 +217,7 @@
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<form class="form fast_order_form" method="post">
-					<input id="fast-order-product-id" class="fast-order-inputarea" value="" name="variant_id" type="hidden" />
+					<input type="hidden" class="fast-order-inputarea" name="variant_id" id="fast-order-product-id" value="">
 					<input type="hidden" name="IsFastOrder" value="true">
 					<div class="modal-body">
 						{if $fastorder_error}
@@ -232,41 +237,41 @@
 						<div class="form-group has-feedback">
 							<div class="input-group mb-3">
 								<div class="input-group-text"><i class="fv-icon-no-has fal fa-user"></i></div>
-								<input type="text" name="name" required value="{if $name}{$name|escape}{else}{$user->name|escape}{/if}" class="form-control" placeholder="{$lang->name}" />
+								<input type="text" class="form-control" name="name" value="{if $name}{$name|escape}{else}{$user->name|escape}{/if}" placeholder="{$lang->name}" required>
 							</div>
 						</div>
 						<div class="form-group">
 							<div class="input-group mb-3">
 								<div class="input-group-text"><i class="fv-icon-no-has fal fa-phone-alt"></i></div>
-								<input required id="fastorder-mask" value="{if $phone}{$phone|escape}{else}{$user->phone|escape}{/if}" name="phone" maxlength="255" type="text" class="form-control" placeholder="{$lang->phone}" />
+								<input type="text" class="form-control" name="phone" id="fastorder-mask" value="{if $phone}{$phone|escape}{else}{$user->phone|escape}{/if}" placeholder="{$lang->phone}" maxlength="255" required>
 							</div>
 						</div>
 						<div class="form-group">
 							<div class="input-group mb-3">
 								<div class="input-group-text"><i class="fv-icon-no-has fal fa-at"></i></div>
-								<input value="{if $email}{$email|escape}{else}{$user->email|escape}{/if}" name="email" maxlength="255" required type="text" class="form-control" placeholder="Email" />
+								<input type="text" class="form-control" name="email" value="{if $email}{$email|escape}{else}{$user->email|escape}{/if}" placeholder="Email" maxlength="255" required>
 							</div>
 						</div>
 						<div class="form-group">
 							<div class="input-group mb-3">
 								<div class="input-group-text"><i class="fv-icon-no-has fal fa-map-marker-alt"></i></div>
-								<input value="{if $address}{$address|escape}{else}{$user->address|escape}{/if}" name="address" maxlength="255" type="text" class="form-control" placeholder="{$lang->address}" />
+								<input type="text" class="form-control" name="address" value="{if $address}{$address|escape}{else}{$user->address|escape}{/if}" placeholder="{$lang->address}" maxlength="255">
 							</div>
 						</div>
 						{if $settings->captcha_fastorder}
 							<div class="row">
-								<div class="form-group col-sm-6">
+								<div class="form-group col-sm-6 pb-3">
 									{get_captcha var="captcha_fastorder"}
 									<div class="secret-number">{$captcha_fastorder[0]|escape} + ? = {$captcha_fastorder[1]|escape}</div>
 								</div>
 								<div class="form-group col-sm-6">
-									<input class="form-control" type="text" name="captcha_code" placeholder="{$lang->enter_captcha}" required="" autocomplete="off" value="" />
+									<input type="text" class="form-control" name="captcha_code" value="" placeholder="{$lang->enter_captcha}" autocomplete="off" required>
 								</div>
 							</div>
 						{/if}
 					</div>
 					<div class="modal-footer">
-						<input class="btn btn-success mx-auto" type="submit" name="checkout" value="{$lang->send}" />
+						<input type="submit" class="btn btn-success mx-auto" name="checkout" value="{$lang->send}">
 					</div>
 				</form>
 			</div>
@@ -317,7 +322,7 @@
 							</div>
 						</li>
 						{* Languages *}
-						{if $languages|count > 1}
+						{if $languages|count> 1}
 							{$cnt = 0}
 							{foreach $languages as $ln}
 								{if $ln->enabled}
@@ -432,7 +437,7 @@
 					<a href="{$lang_link}brands" class="btn btn-outline-primary float-end">{$lang->see_all}</a>
 					<h2 class="section-title my-2">{$lang->index_brands}</h2>
 				</header>
-				<hr>
+				<hr class="text-black-50">
 				<div class="row">
 					{foreach $all_brands as $b}
 						{if $b@iteration < 7}
@@ -456,22 +461,22 @@
 		{get_browsed_products var=browsed_products limit=4}
 		{if $browsed_products}
 			<h2 class="my-2">{$lang->viewed_products}</h2>
-			<hr>
+			<hr class="text-black-50">
 			<div class="row">
 				{foreach $browsed_products as $product}
 					<div class="col-md-4 col-lg-3">
 						<figure class="card card-product-grid product">
 							<div class="img-wrap">
 								<span class="badges">
-									{if $product->variants[0]->compare_price > 0}<span class="notify-badge badge bg-danger">{$lang->badge_sale}</span>{/if}
+									{if $product->variants[0]->compare_price> 0}<span class="notify-badge badge bg-danger">{$lang->badge_sale}</span>{/if}
 									{if $product->featured}<span class="notify-badge badge bg-primary">{$lang->badge_featured}</span>{/if}
 									{if $product->is_hit}<span class="notify-badge badge bg-success">{$lang->badge_hit}</span>{/if}
 									{if $product->is_new}<span class="notify-badge badge bg-warning">{$lang->badge_new}</span>{/if}
 								</span>
 								{if $product->image}
-									<a class="image" href="{$lang_link}products/{$product->url}"><img src="{$product->image->filename|resize:240:240}" alt="{$product->name|escape}" /></a>
+									<a class="image" href="{$lang_link}products/{$product->url}"><img src="{$product->image->filename|resize:240:240}" alt="{$product->name|escape}"></a>
 								{else}
-									<a class="image" href="{$lang_link}products/{$product->url}"><img style="width: 170px; height: 170px;" src="design/{$settings->theme|escape}/images/no-photo.svg" alt="{$product->name|escape}" /></a>
+									<a class="image" href="{$lang_link}products/{$product->url}"><img style="width: 170px; height: 170px;" src="design/{$settings->theme|escape}/images/no-photo.svg" alt="{$product->name|escape}"></a>
 								{/if}
 							</div>
 							<figcaption class="info-wrap">
@@ -497,19 +502,19 @@
 										<div class="label-rating">{$product->votes|string_format:"%.0f"} {$product->votes|plural:$lang->vote:$lang->votes:$lang->of_vote}</div>
 									</div>
 									<div class="price-wrap mt-2">
-										{if $product->variants|count > 0}
-											{if $product->variants[0]->compare_price > 0}<del class="price-old"><small><span class="compare_price">{$product->variants[0]->compare_price|convert}</span> {$currency->sign|escape}</small></del>{/if}
+										{if $product->variants|count> 0}
+											{if $product->variants[0]->compare_price> 0}<del class="price-old"><small><span class="compare_price">{$product->variants[0]->compare_price|convert}</span> {$currency->sign|escape}</small></del>{/if}
 											<span class="price">{$product->variants[0]->price|convert} {$currency->sign|escape}</span>
 										{/if}
 									</div>
 								</div>
 								<div class="btn-toolbar justify-content-between">
-									{if $product->variants|count > 0}
+									{if $product->variants|count> 0}
 										<form class="variants" action="{$lang_link}cart">
 											{foreach $product->variants as $v}
-												<input id="featured_{$v->id}" name="variant" value="{$v->id}" type="radio" class="variant_radiobutton" {if $v@first}checked{/if} style="display:none;" />
+												<input id="featured_{$v->id}" name="variant" value="{$v->id}" type="radio" class="variant_radiobutton" {if $v@first}checked{/if} style="display:none;">
 											{/foreach}
-											<input type="submit" data-result-text="{$lang->added_cart}" class="btn btn-primary" value="{$lang->add_cart}" title="{$lang->add_cart}" />
+											<input type="submit" data-result-text="{$lang->added_cart}" class="btn btn-primary" value="{$lang->add_cart}" title="{$lang->add_cart}">
 										</form>
 									{else}
 										{$lang->not_available}
@@ -544,7 +549,7 @@
 					<a href="{$lang_link}blog" class="btn btn-outline-primary float-end">{$lang->see_all}</a>
 					<h2 class="section-title my-2">{$lang->index_blog}</h2>
 				</header>
-				<hr>
+				<hr class="text-black-50">
 				<div class="row">
 					{foreach $last_posts as $post}
 						<div class="col-md-6 col-lg-4 mb-5">
@@ -553,7 +558,7 @@
 									<img class="card-img-top" src="{$post->image|resize_posts:750:300}" alt="{$post->name|escape}">
 								{else}
 									<span class="text-center mt-4">
-										<img style="width: 210px; height: 210px;" src="design/{$settings->theme|escape}/images/no-photo.svg" alt="{$article->name|escape}" />
+										<img style="width: 210px; height: 210px;" src="design/{$settings->theme|escape}/images/no-photo.svg" alt="{$article->name|escape}">
 									</span>
 								{/if}
 								<div class="card-body">
@@ -576,7 +581,7 @@
 					<a href="{$lang_link}articles" class="btn btn-outline-primary float-end">{$lang->see_all}</a>
 					<h2 class="section-title my-2">{$lang->index_articles}</h2>
 				</header>
-				<hr>
+				<hr class="text-black-50">
 				<div class="row">
 					{foreach $last_articles as $article}
 						<div class="col-md-6 col-lg-4 mb-5">
@@ -585,7 +590,7 @@
 									<img class="card-img-top" src="{$article->image|resize_articles:750:300}" alt="{$article->name|escape}">
 								{else}
 									<span class="text-center mt-4">
-										<img style="width: 210px; height: 210px;" src="design/{$settings->theme|escape}/images/no-photo.svg" alt="{$article->name|escape}" />
+										<img style="width: 210px; height: 210px;" src="design/{$settings->theme|escape}/images/no-photo.svg" alt="{$article->name|escape}">
 									</span>
 								{/if}
 								<div class="card-body">
@@ -608,7 +613,7 @@
 	<div class="container-fluid bg-dark mt-4">
 		<div class="row">
 			<div class="col-md-4 offset-md-4">
-				<form class="form-group my-5" id="FormValidation" novalidate="" method="post">
+				<form class="form-group my-5" id="FormValidation" method="post" novalidate>
 					{if $subscribe_error}
 						<label class="error text-danger">
 							{if $subscribe_error == 'email_exist'}
@@ -625,8 +630,8 @@
 						</label>
 					{/if}
 					<div class="input-group mb-2">
-						<input type="email" name="subscribe_email" class="form-control {if $subscribe_error}border-danger{/if} {if $subscribe_success}border-success{/if}" required size="20" value="" placeholder="{$lang->enter_your_email}">
-						<button type="submit" name="subscribe" value="{$lang->subscribe_to}" id="btnValidation" class="btn btn-warning"><i class="fa fa-envelope"></i></button>
+						<input type="email" class="form-control {if $subscribe_error}border-danger{/if} {if $subscribe_success}border-success{/if}" name="subscribe_email" value="" placeholder="{$lang->enter_your_email}" size="20" required>
+						<button type="submit" class="btn btn-warning" name="subscribe" id="btnValidation" value="{$lang->subscribe_to}"><i class="fa fa-envelope"></i></button>
 					</div>
 				</form>
 			</div>
@@ -635,15 +640,15 @@
 	</div>
 
 	<!-- Footer -->
-	<footer itemscope itemtype="https://schema.org/WPFooter" class="page-footer font-small bg-dark text-white pt-4">
+	<footer itemscope itemtype="https://schema.org/WPFooter" class="page-footer font-small bg-dark text-white">
 		<div class="container text-center text-md-start">
-			<div class="row text-center text-md-start mt-3 pb-3">
+			<div class="row text-center text-md-start">
 				<!-- Footer Description -->
 				<div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
 					<h6 class="text-uppercase mb-4 font-weight-bold">{$settings->company_name|escape}</h6>
 					<p>{$lang->main_description}</p>
 				</div>
-				<hr class="w-100 clearfix d-md-none">
+				<hr class="text-black-50 w-100 clearfix d-md-none">
 				<!-- Footer Links -->
 				<div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
 					<h6 class="text-uppercase mb-4 font-weight-bold">{$lang->about_shop}</h6>
@@ -655,7 +660,7 @@
 						{/if}
 					{/foreach}
 				</div>
-				<hr class="w-100 clearfix d-md-none">
+				<hr class="text-black-50 w-100 clearfix d-md-none">
 				<!-- Footer Links -->
 				<div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
 					<h6 class="text-uppercase mb-4 font-weight-bold">{$lang->information}</h6>
@@ -667,7 +672,7 @@
 						{/if}
 					{/foreach}
 				</div>
-				<hr class="w-100 clearfix d-md-none">
+				<hr class="text-black-50 w-100 clearfix d-md-none">
 				<div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
 					<!-- Footer Contacts -->
 					<h6 class="text-uppercase mb-4 font-weight-bold">{$lang->contacts}</h6>
@@ -771,26 +776,26 @@
 						<p class="modal-caption">{$lang->leave_your_phone_number}</p>
 						<div class="input-group mb-3">
 							<div class="input-group-text"><i class="fal fa-user"></i></div>
-							<input type="text" name="name" data-format=".+" data-notice="{$lang->enter_your_name}" value="{if $callname}{$callname|escape}{else}{$user->name|escape}{/if}" class="form-control" placeholder="{$lang->name}" required />
+							<input type="text" class="form-control" name="name" value="{if $callname}{$callname|escape}{else}{$user->name|escape}{/if}" placeholder="{$lang->name}" required>
 						</div>
 						<div class="input-group mb-3">
 							<div class="input-group-text"><i class="fal fa-phone-alt"></i></div>
-							<input data-format=".+" data-notice="{$lang->enter_phone_number}" required value="{if $callphone}{$callphone|escape}{else}{$user->phone|escape}{/if}" id="call-mask" name="phone" maxlength="255" type="text" class="form-control" placeholder="{$lang->phone}" />
+							<input type="text" class="form-control" name="phone" id="call-mask" value="{if $callphone}{$callphone|escape}{else}{$user->phone|escape}{/if}" placeholder="{$lang->phone}" maxlength="255" required>
 						</div>
 						{if $settings->captcha_callback}
 							<div class="row">
-								<div class="form-group col-sm-6">
+								<div class="form-group col-sm-6 pb-3">
 									{get_captcha var="captcha_callback"}
 									<div class="secret-number">{$captcha_callback[0]|escape} + ? = {$captcha_callback[1]|escape}</div>
 								</div>
 								<div class="form-group col-sm-6">
-									<input class="form-control" type="text" name="captcha_code" placeholder="{$lang->captcha}" required="" autocomplete="off" value="" data-format=".+" data-notice="{$lang->enter_captcha}" />
+									<input type="text" class="form-control" name="captcha_code" value="" placeholder="{$lang->captcha}" autocomplete="off" required>
 								</div>
 							</div>
 						{/if}
 					</div>
 					<div class="modal-footer">
-						<input class="btn btn-primary mx-auto" type="submit" name="callback" value="{$lang->send}" />
+						<input type="submit" class="btn btn-primary mx-auto" name="callback" value="{$lang->send}">
 					</div>
 				</form>
 			</div>
@@ -799,7 +804,7 @@
 
 	<!-- Subscribe Modal -->
 	<div class="position-fixed top-0 start-50 translate-middle-x p-3 mt-5" style="z-index: 1060">
-		<div id="Subscribe" class="toast fade hide align-items-center text-white {if $subscribe_error}bg-danger{/if}{if $subscribe_success}bg-success{/if} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+		<div id="Subscribe" class="toast fade hide align-items-center text-white {if $subscribe_error}bg-danger{/if} {if $subscribe_success}bg-success{/if} border-0" role="alert" aria-live="assertive" aria-atomic="true">
 			<div class="d-flex">
 				<div class="toast-body">
 					{if $subscribe_error}
@@ -862,7 +867,7 @@
 	{javascript minify=true}
 
 	{* Reviews *}
-	{if $module == 'CommentsView'}
+	{if $module == 'ReviewsView'}
 		{js id="reviews" priority=99 include=[
 		"design/{$settings->theme|escape}/js/rating.js"
 		]}{/js}
@@ -899,7 +904,6 @@
 	
 	{* Filter *}
 	{if $module == 'ProductsView'}
-
 		{css id="filter" include=[
 		"design/{$settings->theme|escape}/css/filter.css"
 		]}{/css}
@@ -931,7 +935,6 @@
 
 	{* Product *}
 	{if $module=='ProductView'}
-
 		{js id="product" priority=99 include=[
 		"design/{$settings->theme|escape}/js/product.js",
 		"design/{$settings->theme|escape}/js/rating-product.js"
@@ -979,7 +982,6 @@
 				});
 			</script>
 		{/if}
-
 	{/if}
 
 	{if $call_sent}
@@ -1013,7 +1015,6 @@
 
 	{* Online Chat *}
 	{if $settings->chat_viber || $settings->chat_whats_app || $settings->chat_telegram || $settings->chat_facebook}
-
 		{css id="chat" include=[
 		"design/{$settings->theme|escape}/css/online-chat.css"
 		]}{/css}

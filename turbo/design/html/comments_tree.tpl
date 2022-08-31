@@ -189,7 +189,8 @@
 		</div>
 	{/if}
 </div>
-{*Message reply form*}
+
+{* Message reply form *}
 <div id="answer_popup" class="modal fade show" role="dialog">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -217,6 +218,7 @@
 		</div>
 	</div>
 </div>
+
 {literal}
 	<script>
 		$(function() {

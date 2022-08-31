@@ -113,7 +113,6 @@
 				elem = $("#" + $(this).val());
 				$(".export_options").addClass("hidden");
 				elem.removeClass("hidden");
-
 			});
 
 			$('button#fn_start').click(function() {
@@ -125,9 +124,7 @@
 				Piecon.setProgress(0);
 				var progress_item = $("#progressbar"); //specify an element selector with animation
 				$(".progress").show();
-
 				do_export('', progress_item);
-
 			});
 
 			function do_export(page, progress) {

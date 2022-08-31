@@ -67,7 +67,7 @@
 		<div class="row">
 			<div class="col-lg-12 col-md-12 col-sm-12">
 				<form class="fn_form_list" method="post">
-					<div id="main_list" class=" turbo_list products_list fn_sort_list">
+					<div id="main_list" class="turbo_list fn_sort_list">
 						<input type="hidden" name="session_id" value="{$smarty.session.id}" />
 						<div class="turbo_list_head">
 							<div class="turbo_list_heading turbo_list_drag"></div>

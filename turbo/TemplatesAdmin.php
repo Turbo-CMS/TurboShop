@@ -10,7 +10,7 @@ class TemplatesAdmin extends Turbo
 		$templates = array();
 
 		// File order in the menu
-		$sort = array('index.tpl', 'page.tpl', 'products.tpl', 'main.tpl', 'product.tpl', 'blog.tpl', 'post.tpl', 'cart.tpl', 'cart_informer.tpl', 'order.tpl', 'login.tpl', 'register.tpl', 'user.tpl', 'feedback.tpl', 'password_remind.tpl', 'email_order.tpl', 'email_password_remind.tpl', 'pagination.tpl');
+		$sort = array('index.tpl', 'main.tpl');
 
 		// Reading all tpl files
 		if ($handle = opendir($templates_dir)) {

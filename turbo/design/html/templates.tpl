@@ -17,7 +17,7 @@
 	<div class="row">
 		<div class="col-lg-12 col-md-12 col-sm-12">
 			<div class="boxed boxed_warning">
-				<div class="">
+				<div>
 					{if $message_error == 'permissions'}
 						{$btr->general_permission|escape} {$template_file}
 					{elseif $message_error == 'theme_locked'}
@@ -34,7 +34,7 @@
 <div class="row">
 	<div class="col-lg-12 col-md-12 col-sm-12">
 		<div class="boxed boxed_attention">
-			<div class="">
+			<div>
 				{$btr->general_design_message|escape}
 				{$btr->general_design_message2|escape}
 			</div>

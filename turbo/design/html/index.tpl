@@ -22,7 +22,7 @@
 	"turbo/design/js/bootstrap.min.js",
 	"turbo/design/js/bootstrap-select.js",
 	"turbo/design/js/toastr.min.js",
-	"turbo/design/js/Sortable.js"
+	"turbo/design/js/sortable.min.js"
 	]}{/js}
 	{javascript minify=true}
 </head>
@@ -64,28 +64,28 @@
 								</a>
 								<ul class="fn_submenu_toggle submenu">
 									{if in_array('products', $manager->permissions)}
-										<li {if in_array($smarty.get.module, array("ProductsAdmin", "ProductAdmin"))}class="active" {/if}>
+										<li {if in_array($smarty.get.module, array("ProductsAdmin", "ProductAdmin"))}class="active"{/if}>
 											<a class="nav-link" href="index.php?module=ProductsAdmin">
 												<span class="left_products_title title">{$btr->general_products|escape}</span>
 											</a>
 										</li>
 									{/if}
 									{if in_array('categories', $manager->permissions)}
-										<li {if in_array($smarty.get.module, array("CategoriesAdmin","CategoryAdmin"))}class="active" {/if}>
+										<li {if in_array($smarty.get.module, array("CategoriesAdmin","CategoryAdmin"))}class="active"{/if}>
 											<a class="nav-link" href="index.php?module=CategoriesAdmin">
 												<span class="left_categories_title title">{$btr->general_categories|escape}</span>
 											</a>
 										</li>
 									{/if}
 									{if in_array('brands', $manager->permissions)}
-										<li {if in_array($smarty.get.module, array("BrandsAdmin","BrandAdmin"))}class="active" {/if}>
+										<li {if in_array($smarty.get.module, array("BrandsAdmin","BrandAdmin"))}class="active"{/if}>
 											<a class="nav-link" href="index.php?module=BrandsAdmin">
 												<span class="left_brands_title title">{$btr->brands_brands|escape}</span>
 											</a>
 										</li>
 									{/if}
 									{if in_array('features', $manager->permissions)}
-										<li {if in_array($smarty.get.module, array("FeaturesAdmin","FeatureAdmin"))}class="active" {/if}>
+										<li {if in_array($smarty.get.module, array("FeaturesAdmin","FeatureAdmin"))}class="active"{/if}>
 											<a class="nav-link" href="index.php?module=FeaturesAdmin">
 												<span class="left_features_title title">{$btr->general_features|escape}</span>
 											</a>
@@ -155,21 +155,21 @@
 								</a>
 								<ul class="fn_submenu_toggle submenu">
 									{if in_array('users', $manager->permissions)}
-										<li {if in_array($smarty.get.module, array("UsersAdmin","UserAdmin"))}class="active" {/if}>
+										<li {if in_array($smarty.get.module, array("UsersAdmin","UserAdmin"))}class="active"{/if}>
 											<a class="nav-link" href="index.php?module=UsersAdmin">
 												<span class="left_users_title title">{$btr->left_users_title|escape}</span>
 											</a>
 										</li>
 									{/if}
 									{if in_array('groups', $manager->permissions)}
-										<li {if in_array($smarty.get.module, array("GroupsAdmin","GroupAdmin"))}class="active" {/if}>
+										<li {if in_array($smarty.get.module, array("GroupsAdmin","GroupAdmin"))}class="active"{/if}>
 											<a class="nav-link" href="index.php?module=GroupsAdmin">
 												<span class="left_groups_title title">{$btr->left_groups_title|escape}</span>
 											</a>
 										</li>
 									{/if}
 									{if in_array('coupons', $manager->permissions)}
-										<li {if in_array($smarty.get.module, array("CouponsAdmin","CouponAdmin"))}class="active" {/if}>
+										<li {if in_array($smarty.get.module, array("CouponsAdmin","CouponAdmin"))}class="active"{/if}>
 											<a class="nav-link" href="index.php?module=CouponsAdmin">
 												<span class="left_coupons_title title">{$btr->left_coupons_title|escape}</span>
 											</a>
@@ -198,7 +198,7 @@
 										{/foreach}
 									{/if}
 									{if in_array('menus', $manager->permissions)}
-										<li {if in_array($smarty.get.module, array("MenuAdmin"))}class="active" {/if}>
+										<li {if in_array($smarty.get.module, array("MenuAdmin"))}class="active"{/if}>
 											<a class="nav-link" href="index.php?module=MenuAdmin">
 												<span class="left_managers_title title">{$btr->menus_settings|escape}</span>
 											</a>
@@ -218,19 +218,19 @@
 								</a>
 								<ul class="fn_submenu_toggle submenu">
 									{if in_array('blog', $manager->permissions)}
-										<li {if in_array($smarty.get.module, array("BlogAdmin","PostAdmin"))}class="active" {/if}>
+										<li {if in_array($smarty.get.module, array("BlogAdmin","PostAdmin"))}class="active"{/if}>
 											<a class="nav-link" href="index.php?module=BlogAdmin">
 												<span class="left_book-open title">{$btr->blog_posts|escape}</span>
 											</a>
 										</li>
 									{/if}
 									{if in_array('articles', $manager->permissions)}
-										<li {if in_array($smarty.get.module, array("ArticlesCategoriesAdmin","ArticlesCategoryAdmin"))}class="active" {/if}>
+										<li {if in_array($smarty.get.module, array("ArticlesCategoriesAdmin","ArticlesCategoryAdmin"))}class="active"{/if}>
 											<a class="nav-link" href="index.php?module=ArticlesCategoriesAdmin">
 												<span class="left_book-open title">{$btr->article_categories|escape}</span>
 											</a>
 										</li>
-										<li {if in_array($smarty.get.module, array("ArticlesAdmin","ArticleAdmin"))}class="active" {/if}>
+										<li {if in_array($smarty.get.module, array("ArticlesAdmin","ArticleAdmin"))}class="active"{/if}>
 											<a class="nav-link" href="index.php?module=ArticlesAdmin">
 												<span class="left_book-open title">{$btr->left_articles_title|escape}</span>
 											</a>
@@ -251,7 +251,7 @@
 								</a>
 								<ul class="fn_submenu_toggle submenu">
 									{if in_array('comments', $manager->permissions)}
-										<li {if in_array($smarty.get.module, array("CommentsAdmin","CommentAdmin"))}class="active" {/if}>
+										<li {if in_array($smarty.get.module, array("CommentsAdmin","CommentAdmin"))}class="active"{/if}>
 											<a class="nav-link" href="index.php?module=CommentsAdmin">
 												<span class="left_comments_title title">{$btr->general_comments|escape}</span>
 												{if $new_comments_counter > 0}<span class="menu_counters comments">{$new_comments_counter}</span>{/if}
@@ -259,7 +259,7 @@
 										</li>
 									{/if}
 									{if in_array('feedbacks', $manager->permissions)}
-										<li {if in_array($smarty.get.module, array("FeedbacksAdmin"))}class="active" {/if}>
+										<li {if in_array($smarty.get.module, array("FeedbacksAdmin"))}class="active"{/if}>
 											<a class="nav-link" href="index.php?module=FeedbacksAdmin">
 												<span class="left_feedbacks_title title">{$btr->general_feedback|escape}</span>
 												{if $new_feedbacks_counter > 0}<span class="menu_counters feedback">{$new_feedbacks_counter}</span>{/if}
@@ -267,7 +267,7 @@
 										</li>
 									{/if}
 									{if in_array('callbacks', $manager->permissions)}
-										<li {if in_array($smarty.get.module, array("CallbacksAdmin"))}class="active" {/if}>
+										<li {if in_array($smarty.get.module, array("CallbacksAdmin"))}class="active"{/if}>
 											<a class="nav-link" href="index.php?module=CallbacksAdmin">
 												<span class="left_callbacks_title title">{$btr->callbacks_requests|escape}</span>
 												{if $new_callbacks_counter > 0}<span class="menu_counters callbacks">{$new_callbacks_counter}</span>{/if}
@@ -275,7 +275,7 @@
 										</li>
 									{/if}
 									{if in_array('subscribes', $manager->permissions)}
-										<li {if in_array($smarty.get.module, array("SubscribesAdmin"))}class="active" {/if}>
+										<li {if in_array($smarty.get.module, array("SubscribesAdmin"))}class="active"{/if}>
 											<a class="nav-link" href="index.php?module=SubscribesAdmin">
 												<span class="left_callbacks_title title">{$btr->subscribe_mailing_subscribes|escape}</span>
 												{if $new_subscribes_counter > 0}<span class="menu_counters subscribes">{$new_subscribes_counter}</span>{/if}
@@ -295,7 +295,7 @@
 									<span class="arrow"></span>
 								</a>
 								<ul class="fn_submenu_toggle submenu fn_sort_menu_item">
-									<li {if in_array($smarty.get.module, array("FAQsAdmin","FAQAdmin"))}class="active" {/if}>
+									<li {if in_array($smarty.get.module, array("FAQsAdmin","FAQAdmin"))}class="active"{/if}>
 										<a class="nav-link" href="index.php?module=FAQsAdmin">
 											<span class="left_faq_patterns_title title">{$btr->list_questions|escape}</span>
 										</a>
@@ -304,7 +304,7 @@
 							</li>
 						{/if}
 						{if in_array('import', $manager->permissions) || in_array('export', $manager->permissions) || in_array('backup', $manager->permissions)}
-							<li class="{if in_array($smarty.get.module, array("ImportAdmin","ImportYmlAdmin","ExportAdmin","BackupAdmin","ClearAdmin"))}open active{/if}  fn_item_sub_switch nav-dropdown">
+							<li class="{if in_array($smarty.get.module, array("ImportAdmin","ImportYmlAdmin","ExportAdmin","BackupAdmin","ClearAdmin"))}open active{/if} fn_item_sub_switch nav-dropdown">
 								<a class="nav-link fn_item_switch nav-dropdown-toggle" href="javascript:;">
 									<span class="icon-thumbnail">
 										{include file='svg_icon.tpl' svgId='left_auto'}
@@ -314,35 +314,35 @@
 								</a>
 								<ul class="fn_submenu_toggle submenu">
 									{if in_array('import', $manager->permissions)}
-										<li {if in_array($smarty.get.module, array("ImportAdmin"))}class="active" {/if}>
+										<li {if in_array($smarty.get.module, array("ImportAdmin"))}class="active"{/if}>
 											<a class="nav-link" href="index.php?module=ImportAdmin">
 												<span class="left_import_title title">{$btr->left_import_title|escape}</span>
 											</a>
 										</li>
 									{/if}
 									{if in_array('import', $manager->permissions)}
-										<li {if in_array($smarty.get.module, array("ImportYmlAdmin"))}class="active" {/if}>
+										<li {if in_array($smarty.get.module, array("ImportYmlAdmin"))}class="active"{/if}>
 											<a class="nav-link" href="index.php?module=ImportYmlAdmin">
 												<span class="left_import_title title">{$btr->yml_import_global|escape}</span>
 											</a>
 										</li>
 									{/if}
 									{if in_array('export', $manager->permissions)}
-										<li {if in_array($smarty.get.module, array("ExportAdmin"))}class="active" {/if}>
+										<li {if in_array($smarty.get.module, array("ExportAdmin"))}class="active"{/if}>
 											<a class="nav-link" href="index.php?module=ExportAdmin">
 												<span class="left_export_title title">{$btr->left_export_title|escape}</span>
 											</a>
 										</li>
 									{/if}
 									{if in_array('backup', $manager->permissions)}
-										<li {if in_array($smarty.get.module, array("BackupAdmin"))}class="active" {/if}>
+										<li {if in_array($smarty.get.module, array("BackupAdmin"))}class="active"{/if}>
 											<a class="nav-link" href="index.php?module=BackupAdmin">
 												<span class="left_multiimport_title title">{$btr->general_backup|escape}</span>
 											</a>
 										</li>
 									{/if}
 									{if in_array('backup', $manager->permissions)}
-										<li {if in_array($smarty.get.module, array("ClearAdmin"))}class="active" {/if}>
+										<li {if in_array($smarty.get.module, array("ClearAdmin"))}class="active"{/if}>
 											<a class="nav-link" href="index.php?module=ClearAdmin">
 												<span class="left_multiimport_title title">{$btr->left_clear_title|escape}</span>
 											</a>
@@ -352,7 +352,7 @@
 							</li>
 						{/if}
 						{if in_array('stats', $manager->permissions)}
-							<li class="{if in_array($smarty.get.module, array("StatsAdmin","ReportStatsAdmin","ReportStatsProdAdmin","CategoryStatsAdmin"))}open active{/if}  fn_item_sub_switch nav-dropdown">
+							<li class="{if in_array($smarty.get.module, array("StatsAdmin","ReportStatsAdmin","ReportStatsProdAdmin","CategoryStatsAdmin"))}open active{/if} fn_item_sub_switch nav-dropdown">
 								<a class="nav-link fn_item_switch nav-dropdown-toggle" href="javascript:;">
 									<span class="icon-thumbnail">
 										{include file='svg_icon.tpl' svgId='left_stats'}
@@ -361,17 +361,17 @@
 									<span class="arrow"></span>
 								</a>
 								<ul class="fn_submenu_toggle submenu">
-									<li {if in_array($smarty.get.module, array("StatsAdmin"))}class="active" {/if}>
+									<li {if in_array($smarty.get.module, array("StatsAdmin"))}class="active"{/if}>
 										<a class="nav-link" href="index.php?module=StatsAdmin">
 											<span class="left_multiimport_title title">{$btr->stats_orders|escape}</span>
 										</a>
 									</li>
-									<li {if in_array($smarty.get.module, array("ReportStatsAdmin","ReportStatsProdAdmin"))}class="active" {/if}>
+									<li {if in_array($smarty.get.module, array("ReportStatsAdmin","ReportStatsProdAdmin"))}class="active"{/if}>
 										<a class="nav-link" href="index.php?module=ReportStatsAdmin">
 											<span class="left_multiimport_title title">{$btr->left_products_stat_title|escape}</span>
 										</a>
 									</li>
-									<li {if in_array($smarty.get.module, array("CategoryStatsAdmin"))}class="active" {/if}>
+									<li {if in_array($smarty.get.module, array("CategoryStatsAdmin"))}class="active"{/if}>
 										<a class="nav-link" href="index.php?module=CategoryStatsAdmin">
 											<span class="left_multiimport_title title">{$btr->left_categories_stat_title|escape}</span>
 										</a>
@@ -380,7 +380,7 @@
 							</li>
 						{/if}
 						{if in_array('seo', $manager->permissions)}
-							<li class="{if in_array($smarty.get.module, array("SeoAdmin","SettingsCounterAdmin"))}open active{/if}  fn_item_sub_switch nav-dropdown">
+							<li class="{if in_array($smarty.get.module, array("SeoAdmin","SettingsCounterAdmin"))}open active{/if} fn_item_sub_switch nav-dropdown">
 								<a class="nav-link fn_item_switch nav-dropdown-toggle" href="javascript:;">
 									<span class="icon-thumbnail">
 										{include file='svg_icon.tpl' svgId='left_seo'}
@@ -389,12 +389,12 @@
 									<span class="arrow"></span>
 								</a>
 								<ul class="fn_submenu_toggle submenu fn_sort_menu_item">
-									<li {if in_array($smarty.get.module, array("SeoAdmin"))}class="active" {/if}>
+									<li {if in_array($smarty.get.module, array("SeoAdmin"))}class="active"{/if}>
 										<a class="nav-link" href="index.php?module=SeoAdmin">
 											<span class="left_seo_patterns_title title">{$btr->seo_automation|escape}</span>
 										</a>
 									</li>
-									<li {if in_array($smarty.get.module, array("SettingsCounterAdmin"))}class="active" {/if}>
+									<li {if in_array($smarty.get.module, array("SettingsCounterAdmin"))}class="active"{/if}>
 										<a class="nav-link" href="index.php?module=SettingsCounterAdmin">
 											<span class="left_seo_patterns_title title">{$btr->left_script_title|escape}</span>
 										</a>
@@ -412,27 +412,27 @@
 									<span class="arrow"></span>
 								</a>
 								<ul class="fn_submenu_toggle submenu">
-									<li {if in_array($smarty.get.module, array("ThemeAdmin"))}class="active" {/if}>
+									<li {if in_array($smarty.get.module, array("ThemeAdmin"))}class="active"{/if}>
 										<a class="nav-link" href="index.php?module=ThemeAdmin">
 											<span class="left_theme_title title">{$btr->left_theme_title|escape}</span>
 										</a>
 									</li>
-									<li {if in_array($smarty.get.module, array("TemplatesAdmin"))}class="active" {/if}>
+									<li {if in_array($smarty.get.module, array("TemplatesAdmin"))}class="active"{/if}>
 										<a class="nav-link" href="index.php?module=TemplatesAdmin">
 											<span class="left_template_title title">{$btr->left_template_title|escape}</span>
 										</a>
 									</li>
-									<li {if in_array($smarty.get.module, array("StylesAdmin"))}class="active" {/if}>
+									<li {if in_array($smarty.get.module, array("StylesAdmin"))}class="active"{/if}>
 										<a class="nav-link" href="index.php?module=StylesAdmin">
 											<span class="left_style_title title">{$btr->left_style_title|escape}</span>
 										</a>
 									</li>
-									<li {if in_array($smarty.get.module, array("ImagesAdmin"))}class="active" {/if}>
+									<li {if in_array($smarty.get.module, array("ImagesAdmin"))}class="active"{/if}>
 										<a class="nav-link" href="index.php?module=ImagesAdmin">
 											<span class="left_images_title title">{$btr->left_images_title|escape}</span>
 										</a>
 									</li>
-									<li {if in_array($smarty.get.module, array("TranslationsAdmin","TranslationAdmin"))}class="active" {/if}>
+									<li {if in_array($smarty.get.module, array("TranslationsAdmin","TranslationAdmin"))}class="active"{/if}>
 										<a class="nav-link" href="index.php?module=TranslationsAdmin">
 											<span class="left_images_title title">{$btr->left_translations_title|escape}</span>
 										</a>
@@ -441,7 +441,7 @@
 							</li>
 						{/if}
 						{if in_array('banners', $manager->permissions)}
-							<li class="{if in_array($smarty.get.module, array("BannersAdmin","BannerAdmin","BannersImagesAdmin","BannersImageAdmin"))}open active{/if} {if $banners_image->id}open active{/if}  fn_item_sub_switch nav-dropdown">
+							<li class="{if in_array($smarty.get.module, array("BannersAdmin","BannerAdmin","BannersImagesAdmin","BannersImageAdmin"))}open active{/if} {if $banners_image->id}open active{/if} fn_item_sub_switch nav-dropdown">
 								<a class="nav-link fn_item_switch nav-dropdown-toggle" href="javascript:;">
 									<span class="icon-thumbnail">
 										{include file='svg_icon.tpl' svgId='left_banners'}
@@ -450,12 +450,12 @@
 									<span class="arrow"></span>
 								</a>
 								<ul class="fn_submenu_toggle submenu">
-									<li {if in_array($smarty.get.module, array("BannersAdmin","BannerAdmin"))}class="active" {/if}>
+									<li {if in_array($smarty.get.module, array("BannersAdmin","BannerAdmin"))}class="active"{/if}>
 										<a class="nav-link" href="index.php?module=BannersAdmin&do=groups">
 											<span class="left_banners_title title">{$btr->left_banners_title|escape}</span>
 										</a>
 									</li>
-									<li {if in_array($smarty.get.module, array("BannersImagesAdmin","BannersImageAdmin"))}class="active" {/if} {if $banners_image->id}class="active" {/if}>
+									<li {if in_array($smarty.get.module, array("BannersImagesAdmin","BannersImageAdmin"))}class="active" {/if} {if $banners_image->id}class="active"{/if}>
 										<a class="nav-link" href="index.php?module=BannersImagesAdmin">
 											<span class="left_banners_images_title title">{$btr->left_banners_images_title|escape}</span>
 										</a>
@@ -474,56 +474,56 @@
 								</a>
 								<ul class="fn_submenu_toggle submenu">
 									{if in_array('settings', $manager->permissions)}
-										<li {if in_array($smarty.get.module, array("SettingsAdmin"))}class="active" {/if}>
+										<li {if in_array($smarty.get.module, array("SettingsAdmin"))}class="active"{/if}>
 											<a class="nav-link" href="index.php?module=SettingsAdmin">
 												<span class="left_setting_general_title title">{$btr->left_settings|escape}</span>
 											</a>
 										</li>
 									{/if}
 									{if in_array('settings', $manager->permissions)}
-										<li {if in_array($smarty.get.module, array("SettingsFeedAdmin"))}class="active" {/if}>
+										<li {if in_array($smarty.get.module, array("SettingsFeedAdmin"))}class="active"{/if}>
 											<a class="nav-link" href="index.php?module=SettingsFeedAdmin">
 												<span class="left_setting_feed_title title">{$btr->left_setting_feed_title|escape}</span>
 											</a>
 										</li>
 									{/if}
 									{if in_array('currency', $manager->permissions)}
-										<li {if in_array($smarty.get.module, array("CurrencyAdmin"))}class="active" {/if}>
+										<li {if in_array($smarty.get.module, array("CurrencyAdmin"))}class="active"{/if}>
 											<a class="nav-link" href="index.php?module=CurrencyAdmin">
 												<span class="left_currency_title title">{$btr->left_currency_title|escape}</span>
 											</a>
 										</li>
 									{/if}
 									{if in_array('delivery', $manager->permissions)}
-										<li {if in_array($smarty.get.module, array("DeliveriesAdmin","DeliveryAdmin"))}class="active" {/if}>
+										<li {if in_array($smarty.get.module, array("DeliveriesAdmin","DeliveryAdmin"))}class="active"{/if}>
 											<a class="nav-link" href="index.php?module=DeliveriesAdmin">
 												<span class="left_delivery_title title">{$btr->general_shipping|escape}</span>
 											</a>
 										</li>
 									{/if}
 									{if in_array('payment', $manager->permissions)}
-										<li {if in_array($smarty.get.module, array("PaymentMethodsAdmin","PaymentMethodAdmin"))}class="active" {/if}>
+										<li {if in_array($smarty.get.module, array("PaymentMethodsAdmin","PaymentMethodAdmin"))}class="active"{/if}>
 											<a class="nav-link" href="index.php?module=PaymentMethodsAdmin">
 												<span class="left_payment_title title">{$btr->order_payment_selected|escape}</span>
 											</a>
 										</li>
 									{/if}
 									{if in_array('managers', $manager->permissions)}
-										<li {if in_array($smarty.get.module, array("ManagersAdmin","ManagerAdmin"))}class="active" {/if}>
+										<li {if in_array($smarty.get.module, array("ManagersAdmin","ManagerAdmin"))}class="active"{/if}>
 											<a class="nav-link" href="index.php?module=ManagersAdmin">
 												<span class="left_managers_title title">{$btr->left_managers_title|escape}</span>
 											</a>
 										</li>
 									{/if}
 									{if in_array('languages', $manager->permissions)}
-										<li {if in_array($smarty.get.module, array("LanguagesAdmin","LanguageAdmin"))}class="active" {/if}>
+										<li {if in_array($smarty.get.module, array("LanguagesAdmin","LanguageAdmin"))}class="active"{/if}>
 											<a class="nav-link" href="index.php?module=LanguagesAdmin">
 												<span class="left_managers_title title">{$btr->left_languages_title|escape}</span>
 											</a>
 										</li>
 									{/if}
 									{if in_array('settings', $manager->permissions)}
-										<li {if in_array($smarty.get.module, array("SystemAdmin"))}class="active" {/if}>
+										<li {if in_array($smarty.get.module, array("SystemAdmin"))}class="active"{/if}>
 											<a class="nav-link" href="index.php?module=SystemAdmin">
 												<span class="left_managers_title title">{$btr->left_system_title|escape}</span>
 											</a>
@@ -725,7 +725,7 @@
 		<footer id="footer" class="app-footer">
 			<div class="col-md-12 font_12 text_dark">
 				<div class="float-md-right">
-					<a href="https://turbo-cms.com">TurboCMS </a> &copy; TurboShop {$smarty.now|date_format:"Y"} v.{$config->version} | {$manager->login|escape}
+					<a href="https://turbo-cms.com">TurboCMS</a> &copy; TurboShop {$smarty.now|date_format:"Y"} v.{$config->version} | {$manager->login|escape}
 				</div>
 			</div>
 		</footer>
@@ -952,7 +952,7 @@
 				}
 			}
 			if ($(".fn_parent_image2").size() > 0) {
-				var image_wrapper = $(".fn_new_image2").clone(true);
+				var image_wrapper2 = $(".fn_new_image2").clone(true);
 				$(".fn_new_image2").remove();
 				$(document).on("click", '.fn_delete_item2', function() {
 					$(".fn_upload_image2").removeClass("hidden");
@@ -969,7 +969,7 @@
 						$(this).css('background', '#f8f8f8');
 					});
 
-					function handleFileSelect(evt) {
+					function handleFileSelect2(evt) {
 						var parent = $(".fn_parent_image2");
 						var files = evt.target.files;
 						for (var i = 0, f; f = files[i]; i++) {
@@ -979,7 +979,7 @@
 							var reader = new FileReader();
 							reader.onload = (function(theFile) {
 								return function(e) {
-									clone_image = image_wrapper.clone(true);
+									clone_image = image_wrapper2.clone(true);
 									clone_image.find("img").attr("src", e.target.result);
 									clone_image.find("img").attr("onerror", '$(this).closest(\"div\").remove()');
 									clone_image.appendTo(parent);
@@ -991,7 +991,7 @@
 						}
 						$(".fn_upload_image2").removeAttr("style");
 					}
-					$(document).on('change', '.dropzone_image2', handleFileSelect);
+					$(document).on('change', '.dropzone_image2', handleFileSelect2);
 				}
 			}
 		});

@@ -23,8 +23,6 @@ class TranslationAdmin extends Turbo
 			$translation->label = trim($this->request->post('label'));
 			$translation->label = str_replace(" ", '_', $translation->label);
 
-			$translation->in_config = $this->request->post('in_config', 'boolean');
-
 			if ($languages) {
 				foreach ($languages as $lang) {
 					$field = 'lang_' . $lang->label;
@@ -47,30 +45,6 @@ class TranslationAdmin extends Turbo
 					$this->languages->update_translation($translation->id, $translation);
 					$this->design->assign('message_success', 'updated');
 				}
-
-				$translations = $this->languages->get_translations();
-
-				$theme_dir = 'design/' . $this->settings->theme;
-
-				// All
-				$filephp = $theme_dir . '/translation.php';
-				$filephp = fopen($filephp, 'w');
-				$row = "<?php\n\n";
-				foreach ($languages as $l) {
-					$row .= "$" . "languages[" . $l->label . "]='" . $l->name . "';\n";
-				}
-				foreach ($languages as $l) {
-					$row .= "\n//" . $l->name . "\n\n";
-
-					foreach ($translations as $t) {
-						$lang = 'lang_' . $l->label;
-						$row .= "$" . "lang[" . $l->label . "][" . $t->label . "] = '" . $this->db->escape($t->$lang) . "';\n";
-					}
-				}
-				fwrite($filephp, $row);
-				fclose($filephp);
-
-				$this->languages->update_translation_config_js();
 			}
 		} else {
 			$translation->id = $this->request->get('id', 'integer');

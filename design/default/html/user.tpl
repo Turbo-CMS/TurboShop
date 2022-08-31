@@ -32,28 +32,30 @@
 <div class="col-md-6 offset-md-3">
 	<form class="form-horizontal mt-4" role="form" method="post">
 		<div class="mb-3">
-			<label for="comment_name">{$lang->name}</label>
-			<input class="form-control" placeholder="{$lang->enter_your_name}" value="{$name|escape}" name="name" maxlength="255" type="text" />
+			<label for="name">{$lang->name}</label>
+			<input type="text" class="form-control" name="name" id="name" value="{$name|escape}" placeholder="{$lang->enter_your_name}" maxlength="255">
 		</div>
 		<div class="mb-3">
-			<label for="comment_name">Email</label>
-			<input data-format="email" class="form-control" data-notice="{$lang->enter_your_email}" placeholder="{$lang->enter_your_email}" value="{$email|escape}" name="email" maxlength="255" type="text" />
+			<label for="email">Email</label>
+			<input type="text" class="form-control" name="email" id="email" value="{$email|escape}" placeholder="{$lang->enter_your_email}" maxlength="255">
 		</div>
 		<div class="mb-3">
-			<label for="comment_name">{$lang->phone}</label>
-			<input class="form-control" placeholder="{$lang->enter_phone_number}" value="{$phone|escape}" name="phone" maxlength="255" type="text" />
+			<label for="phone">{$lang->phone}</label>
+			<input type="text" class="form-control" name="phone" id="phone" value="{$phone|escape}" placeholder="{$lang->enter_phone_number}" maxlength="255">
 		</div>
 		<div class="mb-3">
-			<label for="comment_name">{$lang->address}</label>
-			<input class="form-control" placeholder="{$lang->enter_the_address}" value="{$address|escape}" name="address" maxlength="255" type="text" />
+			<label for="address">{$lang->address}</label>
+			<input type="text" class="form-control" name="address" id="address" value="{$address|escape}" placeholder="{$lang->enter_the_address}" maxlength="255">
 		</div>
 		<div class="mb-3">
-			<label for="comment_name"><a href='#' onclick="$('#password').show();return false;">{$lang->change_password}</a></label>
-			<input id="password" class="form-control" value="" name="password" type="password" style="display:none;" />
+			<label for="password"><a class="text-decoration-none" data-bs-toggle="collapse" href="#collapsePassword" role="button" aria-expanded="false" aria-controls="collapsePassword">{$lang->change_password}</a></label>
+			<div class="collapse" id="collapsePassword">
+				<input type="password" class="form-control" name="password" id="password" value="">
+			</div>	
 		</div>
 		<div class="mt-3">
 			<div class="col-sm-offset-2">
-				<input class="btn btn-primary" type="submit" value="{$lang->save}" />
+				<input type="submit" class="btn btn-primary" value="{$lang->save}">
 			</div>
 		</div>
 	</form>

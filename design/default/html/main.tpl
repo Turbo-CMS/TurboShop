@@ -12,7 +12,7 @@
 		<a href="{$lang_link}featured" class="btn btn-outline-primary float-end">{$lang->see_all}</a>
 		<h2 class="section-title my-2">{$lang->featured_products}</h2>
 	</header>
-	<hr>
+	<hr class="text-black-50">
 	<div class="row">
 		{foreach $featured_products as $product}
 			{include file='grid.tpl'}
@@ -27,7 +27,7 @@
 		<a href="{$lang_link}new" class="btn btn-outline-primary float-end">{$lang->see_all}</a>
 		<h2 class="section-title my-2">{$lang->new_arrivals}</h2>
 	</header>
-	<hr>
+	<hr class="text-black-50">
 	<div class="row">
 		{foreach $new_products as $product}
 			{include file='grid.tpl'}
@@ -42,7 +42,7 @@
 		<a href="{$lang_link}sale" class="btn btn-outline-primary float-end">{$lang->see_all}</a>
 		<h2 class="section-title my-2">{$lang->sale}</h2>
 	</header>
-	<hr>
+	<hr class="text-black-50">
 	<div class="row">
 		{foreach $discounted_products as $product}
 			{include file='grid.tpl'}
@@ -57,7 +57,7 @@
 		<a href="{$lang_link}hit" class="btn btn-outline-primary float-end">{$lang->see_all}</a>
 		<h2 class="section-title my-2">{$lang->bestsellers}</h2>
 	</header>
-	<hr>
+	<hr class="text-black-50">
 	<div class="row">
 		{foreach $hit_products as $product}
 			{include file='grid.tpl'}
@@ -69,7 +69,7 @@
 {get_featured_categories var=featured_categories}
 {if $featured_categories}
 	<h2 class="my-2">{$lang->popular_categories}</h2>
-	<hr>
+	<hr class="text-black-50">
 	<div class="row">
 		{foreach $categories as $c}
 			{if $c->featured}
@@ -83,7 +83,7 @@
 									</div>
 								{else}
 									<div class="image">
-										<a href="{$lang_link}catalog/{$c->url}"><img style="width: 170px; height: 170px;" src="design/{$settings->theme|escape}/images/no-photo.svg" alt="{$c->name}" /></a>
+										<a href="{$lang_link}catalog/{$c->url}"><img style="width: 170px; height: 170px;" src="design/{$settings->theme|escape}/images/no-photo.svg" alt="{$c->name}"></a>
 									</div>
 								{/if}
 							</div>

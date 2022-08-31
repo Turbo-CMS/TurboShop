@@ -41,7 +41,7 @@
 <div class="boxed fn_toggle_wrap">
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12">
-            <form method=post class="fn_form_list">
+            <form method="post" class="fn_form_list">
                 <input type="hidden" name="session_id" value="{$smarty.session.id}">
                 <input type="hidden" name="lang_id" value="{$lang_id}" />
                 <div class="turbo_list">

@@ -14,43 +14,43 @@
 	<ol itemscope itemtype="https://schema.org/BreadcrumbList" class="breadcrumb">
 		<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item">
 			<a itemprop="item" class="text-decoration-none" href="{if $lang_link}{$lang_link}{else}/{/if}"><span itemprop="name" title="{$lang->home}">{$lang->home}</span></a>
-			<meta itemprop="position" content="{$level++}" />
+			<meta itemprop="position" content="{$level++}">
 		</li>
 		<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="breadcrumb-item active" aria-current="page">
 			<a itemprop="item" class="text-decoration-none" href="{$lang_link}catalog"><span itemprop="name">{$lang->catalog}</span></a>
-			<meta itemprop="position" content="{$level++}" />
+			<meta itemprop="position" content="{$level++}">
 		</li>
 		{foreach $category->path as $cat}
 			<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item">
 				<a itemprop="item" class="text-decoration-none" href="{$lang_link}catalog/{$cat->url}"><span itemprop="name">{$cat->name|escape}</span></a>
-				<meta itemprop="position" content="{$level++}" />
+				<meta itemprop="position" content="{$level++}">
 			</li>
 		{/foreach}
 		{if $brand}
 			<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item">
 				<a itemprop="item" class="text-decoration-none" href="{$lang_link}catalog/{$cat->url}/{$brand->url}"><span itemprop="name">{$brand->name|escape}</a>
-				<meta itemprop="position" content="{$level++}" />
+				<meta itemprop="position" content="{$level++}">
 			</li>
 		{/if}
 		<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item active" aria-current="page">
 			<span itemprop="name">{$product->name|escape}</span>
-			<meta itemprop="position" content="{$level++}" />
+			<meta itemprop="position" content="{$level++}">
 		</li>
 	</ol>
 </nav>
 <!-- Breadcrumb #End /-->
 
 <div itemscope itemtype="http://schema.org/Product">
-	<link itemprop="image" href="{$product->image->filename|resize:570:570}" />
-	<meta itemprop="category" content="{$category->name|escape}" />
-	<meta itemprop="name" content="{$product->name|escape}" />
+	<link itemprop="image" href="{$product->image->filename|resize:570:570}">
+	<meta itemprop="category" content="{$category->name|escape}">
+	<meta itemprop="name" content="{$product->name|escape}">
 	<!-- Page title -->
 	<div class="row product">
 		<div class="col-md-8">
 			<div id="ProductImages" class="carousel slide my-4" data-bs-ride="false">
 				<div class="carousel-inner" role="listbox">
 					<span class="icons">
-						{if $product->variant->compare_price > 0}<span class="notify-badge badge bg-danger">{$lang->badge_sale}</span>{/if}
+						{if $product->variant->compare_price> 0}<span class="notify-badge badge bg-danger">{$lang->badge_sale}</span>{/if}
 						{if $product->featured}<span class="notify-badge badge bg-primary">{$lang->badge_featured}</span>{/if}
 						{if $product->is_hit}<span class="notify-badge badge bg-success">{$lang->badge_hit}</span>{/if}
 						{if $product->is_new}<span class="notify-badge badge bg-warning">{$lang->badge_new}</span>{/if}
@@ -66,14 +66,14 @@
 						{/foreach}
 					{else}
 						<div class="image">
-							<img src="design/{$settings->theme|escape}/images/no-photo.svg" alt="{$product->name|escape}" />
+							<img src="design/{$settings->theme|escape}/images/no-photo.svg" alt="{$product->name|escape}">
 						</div>
 					{/if}
 				</div>
 			</div>
 			{if $product->images|count>1}
 				<span class="d-sm-none d-md-block d-none">
-					<div id="product-slider-pagination" class="row text-center text-lg-start {if $product->colors|count > 1}loader-container{/if}" {if $product->colors|count > 1}style="display: none;" {/if}>
+					<div id="product-slider-pagination" class="row text-center text-lg-start {if $product->colors|count> 1}loader-container{/if}" {if $product->colors|count> 1}style="display: none;" {/if}>
 						{foreach $product->images as $i=>$image name=images}
 							<div id="image{$image->id}" class="col-lg-3 col-md-4 col-xs-6 mb-4">
 								<a href="#" id="carousel-selector-{$image->id}" data-bs-target="#ProductImages" data-bs-slide-to="{$smarty.foreach.images.index}" class="d-block text-center img-thumbnail {if $smarty.foreach.images.first}selected{/if}">
@@ -87,15 +87,15 @@
 		</div>
 		<div class="col-md-4 mb-4">
 			<h1 data-product="{$product->id}" class="h3">{$product->name|escape}</h1>
-			<div rel="{$product->id}" class="rating-wrap mb-2 ratings" {if $product->rating > 0}itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating" {/if}>
+			<div rel="{$product->id}" class="rating-wrap mb-2 ratings" {if $product->rating> 0}itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating" {/if}>
 				<div class="rating-wrap">
 					{if $smarty.session.rating_ids && in_array($product->id, $smarty.session.rating_ids)}
-						<div class="raty raty-read" data-score="{if $product->rating > 0}{$product->rating|string_format:"%.1f"}{/if}" data-id="{$product->id}" data-readonly="true"></div>
+						<div class="raty raty-read" data-score="{if $product->rating> 0}{$product->rating|string_format:"%.1f"}{/if}" data-id="{$product->id}" data-readonly="true"></div>
 					{else}
-						<div class="raty raty-write" data-score="{if $product->rating > 0}{$product->rating|string_format:"%.1f"}{/if}" data-id="{$product->id}" data-readonly="true"></div>
+						<div class="raty raty-write" data-score="{if $product->rating> 0}{$product->rating|string_format:"%.1f"}{/if}" data-id="{$product->id}" data-readonly="true"></div>
 					{/if}
 				</div>
-				{if $product->rating > 0}
+				{if $product->rating> 0}
 					<div class="label-rating">
 						<span class="test-text">
 							<span itemprop="ratingValue" class="rater-rating">{$product->rating|string_format:"%.1f"}</span>&#160;(<span itemprop="reviewCount" class="rater-rateCount">{$product->votes|string_format:"%.0f"} {$product->votes|plural:$lang->vote:$lang->votes:$lang->of_vote}</span>)
@@ -117,21 +117,21 @@
 				<div class="mb-4" id="countdown" sale_to="{strtotime($product->sale_to) * 1000}"></div>
 			{/if}
 			{if $product->variant->sku}<span class="article"><span class="block_title">{$lang->sku}: </span><span itemprop="sku" class="value">{$product->variant->sku}</span></span>{/if}
-			{if $product->variants|count > 0}
+			{if $product->variants|count> 0}
 				<div itemprop="offers" itemscope="" itemtype="http://schema.org/Offer">
-					<link itemprop="url" href="{$config->root_url}/products/{$product->url}" />
+					<link itemprop="url" href="{$config->root_url}/products/{$product->url}">
 					<!-- Selecting a product option -->
 					<form class="variants" action="{$lang_link}cart">
 						<h3 class="offers_price"><span itemprop="price" content="{$product->variant->price|convert:'':false}" class="price_value">{$product->variant->price|convert}</span> <span itemprop="priceCurrency" content="{$currency->code|escape}" class="currency">{$currency->sign|escape}</span></h3>
-						{if $product->variant->compare_price > 0}<h5 class="mb-3 text-muted offers_price_old"><del><span class="price_value">{$product->variant->compare_price|convert}</span> <span class="currency">{$currency->sign|escape}</span></del></h5>{/if}
-						{if $product->colors|count > 1}
+						{if $product->variant->compare_price> 0}<h5 class="mb-3 text-muted offers_price_old"><del><span class="price_value">{$product->variant->compare_price|convert}</span> <span class="currency">{$currency->sign|escape}</span></del></h5>{/if}
+						{if $product->colors|count> 1}
 							<div class="loader-container circle-pulse-multiple" style="display: none;">
 								<table class="variations mb-2" {if $product->variants|count==1  && !$product->variant->name}display:none;{/if}' cellspacing="0">
 									<tr {if $product->colors|count < 2}style="display:none;" {/if}>
 										<td id="colors">
 											<div class="detail-parameter-block-title">{$lang->colour}:</div>
 											{foreach $product->colors as $k=>$v}
-												<label tabindex="0" title="{$k}" {if $v['code']}style="background: {$v['code']}" {/if} {if $v@first}class="active" {/if}><input type="radio" name="color" value="{$k}" {if $v@first}checked{/if} />{if $v['code']}&nbsp;&nbsp;&nbsp;&nbsp;{else}{$k}{/if}</label>
+												<label tabindex="0" title="{$k}" {if $v['code']}style="background: {$v['code']}" {/if} {if $v@first}class="active" {/if}><input type="radio" name="color" value="{$k}" {if $v@first}checked{/if}>{if $v['code']}&nbsp;&nbsp;&nbsp;&nbsp;{else}{$k}{/if}</label>
 											{/foreach}
 										</td>
 									</tr>
@@ -139,7 +139,7 @@
 										<td id="variants">
 											<div class="detail-parameter-block-title">{$lang->option}:</div>
 											{foreach $product->variants as $v}
-												<label tabindex="0" {if $v@first}class="active" {/if}><input type="radio" name="variant" value="{$v->id}" {if $v@first}checked{/if} />{$v->name}</label>
+												<label tabindex="0" {if $v@first}class="active" {/if}><input type="radio" name="variant" value="{$v->id}" {if $v@first}checked{/if}>{$v->name}</label>
 											{/foreach}
 										</td>
 									</tr>
@@ -159,7 +159,7 @@
 								{/foreach}
 							</select>
 						{/if}
-						<input data-result-text="{$lang->added_cart}" type="submit" class="btn btn-primary btn-lg" value="{$lang->add_cart}" />
+						<input data-result-text="{$lang->added_cart}" type="submit" class="btn btn-primary btn-lg" value="{$lang->add_cart}">
 						<div class="btn-group" role="group" aria-label="Product button">
 							{if $wishlist_products && in_array($product->url, $wishlist_products)}
 								<a class="btn btn-lg btn-link mr-1" href="wishlist"><i class="fal fa-heart text-danger"></i></a>
@@ -177,12 +177,12 @@
 					<!-- Selecting a product option (The End) -->
 					<span style="display:none;">
 						<time itemprop="priceValidUntil" datetime="{$product->created|date:'Ymd'}"></time>
-						{if $product->variant->stock > 0}
-							<link itemprop="availability" href="https://schema.org/InStock" />
+						{if $product->variant->stock> 0}
+							<link itemprop="availability" href="https://schema.org/InStock">
 						{else}
-							<link itemprop="availability" href="http://schema.org/OutOfStock" />
+							<link itemprop="availability" href="http://schema.org/OutOfStock">
 						{/if}
-						<link itemprop="itemCondition" href="https://schema.org/NewCondition" />
+						<link itemprop="itemCondition" href="https://schema.org/NewCondition">
 						<span itemprop="seller" itemscope itemtype="http://schema.org/Organization">
 							<span itemprop="name">{$settings->site_name}</span>
 						</span>
@@ -278,7 +278,7 @@
 </div>
 
 {if $prev_product || $next_product}
-	<hr>
+	<hr class="text-black-50">
 	<div class="row">
 		<div class="col-lg-6 col-sm-6 col-6 text-start">
 			{if $prev_product}
@@ -291,13 +291,13 @@
 			{/if}
 		</div>
 	</div>
-	<hr>
+	<hr class="text-black-50">
 {/if}
 
 {* Related products *}
 {if $related_products}
 	<h2 class="my-4">{$lang->related_products}</h2>
-	<hr>
+	<hr class="text-black-50">
 	<div class="row">
 		{foreach $related_products as $product}
 			{include file='grid.tpl'}
@@ -309,7 +309,7 @@
 	{get_products var=brand_products brand_id=$brand->id no_id=$no_id limit=3 sort=random}
 	{if $brand_products}
 		<h2 class="my-4">{$lang->products_from_brand}</h2>
-		<hr>
+		<hr class="text-black-50">
 		<div class="row">
 			{foreach $brand_products as $product}
 				{include file='grid.tpl'}
@@ -321,7 +321,7 @@
 {get_products var=cat_products category_id=$category->id  no_id=$no_id limit=3}
 {if $cat_products}
 	<h2 class="my-4">{$lang->products_from_category}</h2>
-	<hr>
+	<hr class="text-black-50">
 	<div class="row">
 		{foreach $cat_products as $product}
 			{include file='grid.tpl'}

@@ -3,8 +3,8 @@
 {$subject = $lang->new_password scope=global}
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{$lang->password_remind_title}</title>
     <meta name="x-apple-disable-message-reformatting">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -377,7 +377,7 @@
                                   <tr>
                                     <td align="center">
                                       <a target="_blank" href="{$config->root_url}">
-                                        <img src="{$config->root_url}/design/{$settings->theme}/images/logo.png" width="207" align="center" style="display: block; margin: 0 auto" />
+                                        <img src="{$config->root_url}/design/{$settings->theme}/images/logo.png" width="207" align="center" style="display: block; margin: 0 auto">
                                       </a>
                                     </td>
                                   </tr>

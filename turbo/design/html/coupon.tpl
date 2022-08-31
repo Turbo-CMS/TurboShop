@@ -68,7 +68,7 @@
 <div class="boxed fn_toggle_wrap">
 	<form method="post" id="product" class="clearfix" enctype="multipart/form-data">
 		<input type="hidden" name="session_id" value="{$smarty.session.id}">
-		<div class="turbo_list products_list fn_sort_list turbo_list_order">
+		<div class="turbo_list fn_sort_list turbo_list_order">
 			<div class="turbo_list_head">
 				<div class="turbo_list_heading turbo_list_coupon_name">{$btr->coupons_name|escape}</div>
 				<div class="turbo_list_heading turbo_list_coupon_sale">{$btr->general_discount|escape}</div>

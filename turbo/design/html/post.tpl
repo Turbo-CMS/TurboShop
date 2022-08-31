@@ -71,7 +71,7 @@
 	</div>
 {/if}
 
-<form method=post enctype="multipart/form-data" class="fn_fast_button">
+<form method="post" enctype="multipart/form-data" class="fn_fast_button">
 	<input type="hidden" name="session_id" value="{$smarty.session.id}" />
 
 	<div class="row">

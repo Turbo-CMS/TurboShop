@@ -1,7 +1,6 @@
 {* Title *}
 {$meta_title=$btr->translations_translate scope=global}
 
-{*Page name*}
 <div class="row">
 	<div class="col-lg-7 col-md-7">
 		<div class="wrap_heading">
@@ -37,7 +36,7 @@
 	<div class="row">
 		<div class="col-lg-12 col-md-12 col-sm-12">
 			<div class="boxed boxed_warning">
-				<div class="">
+				<div>
 					{$btr->general_protected|escape}
 				</div>
 			</div>
@@ -51,7 +50,7 @@
 		<form class="fn_form_list" method="post">
 			<input type="hidden" name="session_id" value="{$smarty.session.id}">
 
-			<div class="translation_wrap turbo_list products_list fn_sort_list">
+			<div class="translation_wrap turbo_list fn_sort_list">
 				<div class="turbo_list_head">
 					<div class="turbo_list_heading turbo_list_check">
 						<label class="form-check">

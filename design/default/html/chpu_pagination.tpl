@@ -10,11 +10,11 @@
 
 			{$page_from = 1}
 
-			{if $current_page_num > floor($visible_pages/2)}
+			{if $current_page_num> floor($visible_pages/2)}
 				{$page_from = max(1, $current_page_num-floor($visible_pages/2)-1)}
 			{/if}
 
-			{if $current_page_num > $total_pages_num-ceil($visible_pages/2)}
+			{if $current_page_num> $total_pages_num-ceil($visible_pages/2)}
 				{$page_from = max(1, $total_pages_num-$visible_pages-1)}
 			{/if}
 

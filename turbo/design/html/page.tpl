@@ -70,7 +70,7 @@
 {/if}
 
 <form method="post" enctype="multipart/form-data">
-	<input type=hidden name="session_id" value="{$smarty.session.id}">
+	<input type="hidden" name="session_id" value="{$smarty.session.id}">
 	<div class="row">
 		<div class="col-xs-12">
 			<div class="boxed match_matchHeight_true">

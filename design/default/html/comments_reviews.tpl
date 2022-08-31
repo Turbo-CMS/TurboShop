@@ -22,7 +22,7 @@
 				</li>
 			</ul>
 		</div>
-		<hr>
+		<hr class="text-black-50">
 	{/foreach}
 	<!-- Single Comment (The End)-->
 {else}
@@ -53,29 +53,29 @@
 		</div>
 		<div class="mb-3">
 			<label for="comment">{$lang->comment}</label>
-			<textarea class="form-control" rows="4" name="text" placeholder="{$lang->enter_a_comment}" data-format=".+" required="" data-notice="{$lang->enter_a_comment}">{$comment_text}</textarea>
+			<textarea class="form-control" name="text" id="comment" placeholder="{$lang->enter_a_comment}" rows="4" required>{$comment_text}</textarea>
 			<div class="invalid-feedback">{$lang->enter_a_comment}</div>
 		</div>
 		<div class="mb-3">
 			<label for="comment_name">{$lang->name}</label>
-			<input class="form-control" type="text" id="comment_name" name="name" placeholder="{$lang->enter_your_name}" required="" value="{$comment_name}" data-format=".+" data-notice="{$lang->enter_your_name}" />
+			<input type="text" class="form-control" name="name" id="comment_name" value="{$comment_name|escape}" placeholder="{$lang->enter_your_name}" required>
 			<div class="invalid-feedback">{$lang->name}</div>
 		</div>
 		{if $settings->captcha_review}
 			<div class="row mt-4">
-				<div class="col-md-2">
+				<div class="col-md-2 pb-3">
 					{get_captcha var="captcha_review"}
 					<div class="secret-number">{$captcha_review[0]|escape} + ? = {$captcha_review[1]|escape}</div>
 				</div>
 				<div class="col-md-10">
-					<input class="form-control" type="text" autocomplete="off" name="captcha_code" required="" placeholder="{$lang->enter_captcha}" value="" data-format=".+" data-notice="{$lang->enter_captcha}" />
+					<input type="text" class="form-control" name="captcha_code" value="" placeholder="{$lang->enter_captcha}" autocomplete="off" required>
 					<div class="invalid-feedback">{$lang->enter_captcha}</div>
 				</div>
 			</div>
 		{/if}
 		<div class="mt-3">
 			<div class="col-sm-offset-2">
-				<input class="btn btn-primary" type="submit" id="btnValidation" name="comment" value="{$lang->send}" />
+				<input type="submit" class="btn btn-primary" name="comment" id="btnValidation" value="{$lang->send}">
 			</div>
 		</div>
 	</form>

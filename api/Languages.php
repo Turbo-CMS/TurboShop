@@ -13,20 +13,20 @@ require_once('Turbo.php');
 class Languages extends Turbo
 {
 	public $tables = array(
-		'product' => 'products',
-		'variant'          => 'variants',
-		'file'             => 'files',
-		'brand'            => 'brands',
-		'category'         => 'categories',
-		'feature'          => 'features',
+		'faq'              => 'faq',
 		'blog'             => 'blog',
 		'page'             => 'pages',
-		'faq'              => 'faq',
-		'currency'         => 'currencies',
-		'delivery'         => 'delivery',
-		'payment'          => 'payment_methods',
-		'banner_image'     => 'banners_images',
+		'file'             => 'files',
+		'brand'            => 'brands',
 		'article'          => 'articles',
+		'product'          => 'products',
+		'variant'          => 'variants',
+		'feature'          => 'features',
+		'delivery'         => 'delivery',
+		'category'         => 'categories',
+		'currency'         => 'currencies',
+		'banner_image'     => 'banners_images',
+		'payment'          => 'payment_methods',
 		'article_category' => 'articles_categories'
 	);
 
@@ -52,21 +52,21 @@ class Languages extends Turbo
 
 	public function get_fields($object = '')
 	{
-		$fields['categories']                  = array('name', 'name_h1', 'meta_title', 'meta_keywords', 'meta_description', 'description');
-		$fields['brands']                      = array('name', 'name_h1', 'meta_title', 'meta_keywords', 'meta_description', 'description');
-		$fields['products']                    = array('name', 'meta_title', 'meta_keywords', 'meta_description', 'annotation', 'body');
-		$fields['variants']                    = array('name', 'color');
 		$fields['files']                       = array('name');
-		$fields['blog']                        = array('name', 'meta_title', 'meta_keywords', 'meta_description', 'annotation', 'text');
-		$fields['pages']                       = array('name', 'meta_title', 'meta_keywords', 'meta_description', 'header', 'body');
-		$fields['faq']                         = array('name', 'answer');
 		$fields['features']                    = array('name');
+		$fields['currencies']                  = array('name', 'sign');
+		$fields['variants']                    = array('name', 'color');
+		$fields['faq']                         = array('name', 'answer');
 		$fields['delivery']                    = array('name', 'description');
 		$fields['payment_methods']             = array('name', 'description');
-		$fields['currencies']                  = array('name', 'sign');
 		$fields['banners_images']              = array('name', 'alt', 'title', 'description', 'url', 'button');
-		$fields['articles']                    = array('name', 'author', 'meta_title', 'meta_keywords', 'meta_description', 'annotation', 'text');
+		$fields['pages']                       = array('name', 'meta_title', 'meta_keywords', 'meta_description', 'header', 'body');
+		$fields['blog']                        = array('name', 'meta_title', 'meta_keywords', 'meta_description', 'annotation', 'text');
+		$fields['products']                    = array('name', 'meta_title', 'meta_keywords', 'meta_description', 'annotation', 'body');
+		$fields['categories']                  = array('name', 'name_h1', 'meta_title', 'meta_keywords', 'meta_description', 'description');
+		$fields['brands']                      = array('name', 'name_h1', 'meta_title', 'meta_keywords', 'meta_description', 'description');
 		$fields['articles_categories']         = array('name', 'name_h1', 'meta_title', 'meta_keywords', 'meta_description', 'description');
+		$fields['articles']                    = array('name', 'author',  'meta_title', 'meta_keywords', 'meta_description', 'annotation', 'text');
 
 		if ($object && !empty($fields[$object]))
 			return $fields[$object];
@@ -84,8 +84,6 @@ class Languages extends Turbo
 
 		$this->db->query("SHOW TABLES LIKE '%__languages%'");
 		$exist = $this->db->result();
-
-		if (!isset($lang) && $this->settings->lang_default) $lang = $this->settings->lang_default;
 
 		if (isset($lang)  && $exist && !empty($this->languages)) {
 			$f = 'l';
@@ -190,11 +188,7 @@ class Languages extends Turbo
 		if (!$this->db->result())
 			return false;
 
-		$not_default = '';
-		if (!empty($filter['not_default'])) {
-			$not_default = 'AND `is_default` != 1';
-		}
-		$query = "SELECT * FROM __languages WHERE 1 $not_default ORDER BY position";
+		$query = "SELECT * FROM __languages WHERE 1 ORDER BY position";
 		if ($this->db->query($query))
 			return $this->db->results();
 		else
@@ -206,11 +200,6 @@ class Languages extends Turbo
 		$data = (object)$data;
 
 		$language = $this->get_language($id);
-
-		if (isset($data->is_default) && ($data->is_default)) {
-			$this->db->query("UPDATE __languages SET is_default=0 WHERE is_default=1");
-			$this->settings->lang_default = $id;
-		}
 
 		$query = $this->db->placehold("UPDATE __languages SET ?% WHERE id in(?@)", $data, (array)$id);
 		$this->db->query($query);
@@ -283,14 +272,13 @@ class Languages extends Turbo
 				$this->db->query("UPDATE __settings_lang SET lang_id=?", $last_id);
 				$this->db->query("UPDATE __seo_lang SET lang_id=?", $last_id);
 			}
-
+			$this->dump_translation();
 			return $last_id;
 		}
 	}
 
 	public function delete_language($id)
 	{
-
 		if (!empty($id)) {
 			$lang = $this->get_language($id);
 			if (isset($lang->is_default) && (!$lang->is_default)) {
@@ -304,44 +292,9 @@ class Languages extends Turbo
 				$this->db->query("DELETE FROM __settings_lang WHERE lang_id=?", intval($id));
 				$this->db->query("DELETE FROM __seo_lang WHERE lang_id=?", intval($id));
 				$this->db->query("ALTER TABLE __translations DROP COLUMN `lang_$lang->label`");
+				$this->dump_translation();
 			}
 		}
-	}
-
-	public function get_data_lang($object_id, $object, $object_ids = array())
-	{
-		if (!$object_id)
-			if (empty($object_ids))
-				return false;
-
-		$tables['product']  = 'products';
-		$tables['category'] = 'categories';
-		$tables['feature']  = 'features';
-		$tables['blog']     = 'blog';
-		$tables['page']     = 'pages';
-		$tables['article_category'] = 'articles_categories';
-
-		if (!in_array($object, array_keys($tables)))
-			return false;
-
-		if (!empty($object_ids))
-			$where = $this->db->placehold($object . "_id in(?@)", $object_ids);
-		else
-			$where = $object . "_id=?";
-
-		$query = $this->db->placehold("SELECT * FROM __lang_" . $tables[$object] . " WHERE " . $where . "", $object_id);
-		$this->db->query($query);
-		$data_lang = $this->db->results();
-
-		$langs = array();
-		if (!empty($data_lang) && $object_id) {
-			foreach ($data_lang as $dl)
-				$langs[$dl->lang_id] = $dl;
-		}
-		if (!empty($data_lang) && !$object_id && !empty($object_ids)) {
-			$langs = $data_lang;
-		}
-		return $langs;
 	}
 
 	public function action_data($object_id, $data, $object)
@@ -385,7 +338,7 @@ class Languages extends Turbo
 					unset($data->$f);
 				}
 			}
-			$result = new \stdClass();
+			$result = new stdClass();
 			$result->description = $description;
 
 			return $result;
@@ -467,15 +420,12 @@ class Languages extends Turbo
 				case 'label_asc':
 					$order = 'label';
 					break;
-
 				case 'label_desc':
 					$order = 'label DESC';
 					break;
-
 				case 'lang_asc':
 					$order = $lg;
 					break;
-
 				case 'lang_desc':
 					$order = '' . $lg . ' DESC';
 					break;
@@ -550,35 +500,12 @@ class Languages extends Turbo
 		return $last_id;
 	}
 
-	public function update_translation_config_js()
-	{
-		$translations = $this->get_translations();
-
-		// THEME JS
-		$js = "";
-		$theme_dir = 'design/' . $this->settings->theme;
-		$filejs = $theme_dir . '/lang.js';
-		$filejs = fopen($filejs, 'w');
-		$js .= "var lang = new Array();\n";
-
-		$lang_id  = $this->lang_id();
-		$set_lang = $this->languages(array('id' => $lang_id));
-
-		foreach ($translations as $t) {
-			if ($t->in_config) {
-				$lang = 'lang_' . $set_lang->label;
-				$js .= "\nlang['" . $t->label . "'] = '" . mysql_escape_string($t->$lang) . "';";
-			}
-		}
-		fwrite($filejs, $js);
-		fclose($filejs);
-	}
-
 	public function delete_translation($id)
 	{
 		if (!empty($id)) {
 			$query = $this->db->placehold("DELETE FROM __translations WHERE id=? LIMIT 1", intval($id));
 			$this->db->query($query);
+			$this->dump_translation();
 		}
 	}
 
@@ -598,7 +525,6 @@ class Languages extends Turbo
 		$theme_dir = 'design/' . $this->settings->theme;
 		$filename = $theme_dir . '/translation.sql';
 		$filename = fopen($filename, 'w');
-
 		$this->db->dump_table('t_translations', $filename);
 	}
 }

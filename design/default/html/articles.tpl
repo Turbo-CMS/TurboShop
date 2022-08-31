@@ -15,16 +15,16 @@
 	<ol itemscope itemtype="https://schema.org/BreadcrumbList" class="breadcrumb">
 		<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item">
 			<a itemprop="item" class="text-decoration-none" href="{if $lang_link}{$lang_link}{else}/{/if}"><span itemprop="name" title="{$lang->home}">{$lang->home}</span></a>
-			<meta itemprop="position" content="{$level++}" />
+			<meta itemprop="position" content="{$level++}">
 		</li>
 		<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item">
 			<a itemprop="item" class="text-decoration-none" href="{$lang_link}articles"><span itemprop="name">{$lang->index_articles}</span></a>
-			<meta itemprop="position" content="{$level++}" />
+			<meta itemprop="position" content="{$level++}">
 		</li>
 		{foreach from=$articles_category->path item=cat}
 			<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item">
 				<a itemprop="item" class="text-decoration-none" href="{$lang_link}articles/{$cat->url}"><span itemprop="name">{$cat->name|escape}</span></a>
-				<meta itemprop="position" content="{$level++}" />
+				<meta itemprop="position" content="{$level++}">
 			</li>
 		{/foreach}
 	</ol>
@@ -55,19 +55,25 @@
 			<div itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
 				<meta itemprop="name" content="{$settings->site_name|escape}">
 				<span itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
-					<meta itemprop="image url" content="{$config->root_url}/design/{$settings->theme|escape}/images/logo.png" />
-					<meta property="url" content="{$config->root_url}/" />
+					<meta itemprop="image url" content="{$config->root_url}/design/{$settings->theme|escape}/images/logo.png">
+					<meta property="url" content="{$config->root_url}/">
 				</span>
 			</div>
 			<meta itemprop="dateModified" content="{$post->date}">
 			<meta itemprop="author" content="{$post->author|escape}">
-			<meta itemscope itemprop="mainEntityOfPage" itemType="https://schema.org/WebPage" itemid="/article/{$post->url}" />
-			<link itemprop="url" href="/article/{$post->url}" />
+			<meta itemscope itemprop="mainEntityOfPage" itemType="https://schema.org/WebPage" itemid="/article/{$post->url}">
+			<link itemprop="url" href="/article/{$post->url}">
 			<div class="card-body">
 				<a href="{$lang_link}article/{$post->url}" class="text-decoration-none">
 					<h2 data-article="{$post->id}" itemprop="name headline" class="card-title">{$post->name|escape}</h2>
 				</a>
-				<p class="card-text"><small class="text-muted"><i class="fal fa-calendar-alt"></i> <span itemprop="datePublished" class="text-muted" content="{$post->date}">{$post->date|date}</span> {if $post->author}<i class="fal fa-user-edit"></i> <a class="mr-2 text-decoration-none" href="{$lang_link}articles/?keyword={$post->author|escape}">{$post->author|escape}</a>{/if} {if $post->category->name}<span class="ml-2"><i class="fal fa-edit"></i></span> <a href="{$lang_link}articles/{$post->category->url}" class="text-decoration-none">{$post->category->name}</a>{/if}</small></p>
+				<p class="card-text">
+					<small class="text-muted">
+						<i class="fal fa-calendar-alt"></i><span itemprop="datePublished" class="me-1" content="{$post->date}">{$post->date|date}</span> 
+						{if $post->author}<i class="fal fa-user-edit"></i><a class="text-decoration-none" href="{$lang_link}articles/?keyword={$post->author|escape}">{$post->author|escape}</a>{/if} 
+						{if $post->category->name}<span class="ms-1"><i class="fal fa-edit"></i></span> <a href="{$lang_link}articles/{$post->category->url}" class="text-decoration-none">{$post->category->name}</a>{/if}
+					</small>
+				</p>
 				{if $post->image}<img itemprop="image" class="card-img-top" src="{$post->image|resize_articles:750:750}" alt="{$post->name|escape}">{/if}
 				<p itemprop="description" class="card-text">{$post->annotation}</p>
 				<div class="btn-group" role="group" aria-label="Article group">

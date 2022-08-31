@@ -72,7 +72,7 @@
 				<form class="fn_form_list" method="post">
 					<input type="hidden" name="session_id" value="{$smarty.session.id}">
 
-					<div class="users_wrap turbo_list products_list fn_sort_list">
+					<div class="users_wrap turbo_list fn_sort_list">
 						<div class="turbo_list_head">
 							<div class="turbo_list_heading turbo_list_check">
 								<label class="form-check">

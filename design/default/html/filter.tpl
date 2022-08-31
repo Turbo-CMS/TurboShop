@@ -19,8 +19,8 @@
 							<input type="hidden" value=" {$currency->sign}" id="f_postfix">
 							<span type="text" id="price-slider"></span>
 							<form class="mcf_form" method="post">
-								<input type="hidden" name="rate_from" id="rate_from" value="{$currency->rate_from}" />
-								<input type="hidden" name="rate_to" id="rate_to" value="{$currency->rate_to}" />
+								<input type="hidden" name="rate_from" id="rate_from" value="{$currency->rate_from}">
+								<input type="hidden" name="rate_to" id="rate_to" value="{$currency->rate_to}">
 								<input type="hidden" name="min_price" id="min_price" value="{$current_minprice|convert|regex_replace:'/[ ]/':''|regex_replace:'/[,]/':'.'|floor}">
 								<input type="hidden" name="max_price" id="max_price" value="{$current_maxprice|convert|regex_replace:'/[ ]/':''|regex_replace:'/[,]/':'.'|ceil}">
 								<div class="d-grid gap-2 mt-2">

@@ -21,55 +21,55 @@
 	<ol itemscope itemtype="https://schema.org/BreadcrumbList" class="breadcrumb">
 		<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item">
 			<a itemprop="item" class="text-decoration-none" href="{if $lang_link}{$lang_link}{else}/{/if}"><span itemprop="name" title="{$lang->home}">{$lang->home}</span></a>
-			<meta itemprop="position" content="{$level++}" />
+			<meta itemprop="position" content="{$level++}">
 		</li>
 		{if $page && !$category}
 			<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="breadcrumb-item active" aria-current="page">
 				<a itemprop="item" class="text-decoration-none" href="{$lang_link}{$page->url}"><span itemprop="name">{$page->header|escape}</span></a>
-				<meta itemprop="position" content="{$level++}" />
+				<meta itemprop="position" content="{$level++}">
 			</li>
 		{/if}
 		{if $category}
 			<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="breadcrumb-item active" aria-current="page">
 				<a itemprop="item" class="text-decoration-none" href="{$lang_link}catalog"><span itemprop="name">{$lang->catalog}</span></a>
-				<meta itemprop="position" content="{$level++}" />
+				<meta itemprop="position" content="{$level++}">
 			</li>
 			{foreach $category->path as $cat}
 				<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item">
 					<a itemprop="item" class="text-decoration-none" href="{$lang_link}catalog/{$cat->url}"><span itemprop="name">{$cat->name|escape}</span></a>
-					<meta itemprop="position" content="{$level++}" />
+					<meta itemprop="position" content="{$level++}">
 				</li>
 			{/foreach}
 			{if $brand}
 				<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item">
 					<a itemprop="item" class="text-decoration-none" href="{$lang_link}catalog/{$cat->url}/{$brand->url}"><span itemprop="name">{$brand->name|escape}</span></a>
-					<meta itemprop="position" content="{$level++}" />
+					<meta itemprop="position" content="{$level++}">
 				</li>
 			{/if}
 			{if $page}
 				<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="breadcrumb-item active" aria-current="page">
 					<a itemprop="item" class="text-decoration-none" href="{$lang_link}{$page->url}"><span itemprop="name">{$page->header|escape}</span></a>
-					<meta itemprop="position" content="{$level++}" />
+					<meta itemprop="position" content="{$level++}">
 				</li>
 			{/if}
 		{elseif $brand}
 			<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="breadcrumb-item active" aria-current="page">
 				<a itemprop="item" class="text-decoration-none" href="{$lang_link}brands"><span itemprop="name">{$lang->index_brands}</span></a>
-				<meta itemprop="position" content="{$level++}" />
+				<meta itemprop="position" content="{$level++}">
 			</li>
 			<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item">
 				<a itemprop="item" class="text-decoration-none" href="{$lang_link}brands/{$brand->url}"><span itemprop="name">{$brand->name|escape}</span></a>
-				<meta itemprop="position" content="{$level++}" />
+				<meta itemprop="position" content="{$level++}">
 			</li>
 		{elseif $wishlist}
 			<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item active">
 				<a itemprop="item" class="text-decoration-none" href="{$lang_link}wishlist/"><span itemprop="name">{$lang->compare}</span></a>
-				<meta itemprop="position" content="{$level++}" />
+				<meta itemprop="position" content="{$level++}">
 			</li>
 		{elseif $keyword}
 			<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item active">
 				<a itemprop="item" class="text-decoration-none" href="{$lang_link}products?keyword={$keyword|escape}"><span itemprop="name">{$lang->search}</span></a>
-				<meta itemprop="position" content="{$level++}" />
+				<meta itemprop="position" content="{$level++}">
 			</li>
 		{/if}
 	</ol>

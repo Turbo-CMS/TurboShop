@@ -217,7 +217,7 @@
                                 {include file='svg_icon.tpl' svgId='plus_big'}
                                 <input class="dropzone_image2" name="icon" type="file" />
                             </div>
-                            <div class="category_image image_wrapper fn_image_wrapper fn_new_image2 text-xs-center">
+                            <div class="category_image image_wrapper fn_image_wrapper2 fn_new_image2 text-xs-center">
                                 <a href="javascript:;" class="fn_delete_item2 remove_image"></a>
                                 <img src="" alt="" />
                             </div>

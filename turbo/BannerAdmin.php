@@ -6,9 +6,9 @@ class BannerAdmin extends Turbo
 {
 	public function fetch()
 	{
-		$pages      = $this->pages->get_pages();
+		$pages = $this->pages->get_pages();
+		$brands = $this->brands->get_brands();
 		$categories = $this->categories->get_categories_tree();
-		$brands     = $this->brands->get_brands();
 		$articles_categories = $this->articles_categories->get_articles_categories_tree();
 		$banner = new stdClass;
 		if ($this->request->method('POST')) {

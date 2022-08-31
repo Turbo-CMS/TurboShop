@@ -60,7 +60,7 @@
 {/if}
 
 <form method="post" enctype="multipart/form-data" class="fn_fast_button">
-	<input type=hidden name="session_id" value="{$smarty.session.id}">
+	<input type="hidden" name="session_id" value="{$smarty.session.id}">
 	<div class="row">
 		<div class="col-xs-12">
 			<div class="boxed">

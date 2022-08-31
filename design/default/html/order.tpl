@@ -76,7 +76,7 @@
 		</tbody>
 	</table>
 	{* Discount if available *}
-	{if $order->discount > 0}
+	{if $order->discount> 0}
 		<div class="cart-foot text-end">
 			<div class="cart-total">
 				<div class="order-total">
@@ -87,7 +87,7 @@
 		</div>
 	{/if}
 	{* Weight *}
-	{if $order->weight > 0}
+	{if $order->weight> 0}
 		<div class="cart-foot text-end">
 			<div class="cart-total">
 				<div class="order-total">
@@ -98,7 +98,7 @@
 		</div>
 	{/if}
 	{* Coupon if any *}
-	{if $order->coupon_discount > 0}
+	{if $order->coupon_discount> 0}
 		<div class="cart-foot text-end">
 			<div class="cart-total">
 				<div class="order-total">

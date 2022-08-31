@@ -8,11 +8,11 @@
 	<ol itemscope itemtype="https://schema.org/BreadcrumbList" class="breadcrumb">
 		<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item">
 			<a itemprop="item" class="text-decoration-none" href="{if $lang_link}{$lang_link}{else}/{/if}"><span itemprop="name" title="{$lang->home}">{$lang->home}</span></a>
-			<meta itemprop="position" content="{$level++}" />
+			<meta itemprop="position" content="{$level++}">
 		</li>
 		<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item active" aria-current="page">
 			<a itemprop="item" class="text-decoration-none" href="{$lang_link}cart/"><span itemprop="name">{$lang->global_cart}</span></a>
-			<meta itemprop="position" content="{$level++}" />
+			<meta itemprop="position" content="{$level++}">
 		</li>
 	</ol>
 </nav>
@@ -157,7 +157,7 @@
 											{$delivery->name}
 											{if $cart->total_price < $delivery->free_from && $delivery->price>0}
 												({$delivery->price|convert}&nbsp;{$currency->sign})
-											{elseif $cart->total_price >= $delivery->free_from}
+											{elseif $cart->total_price>= $delivery->free_from}
 												({$lang->free})
 											{/if}
 										</label>
@@ -185,41 +185,41 @@
 			{/if}
 			<div class="mb-3">
 				<label for="order-name">{$lang->general_full_name}</label>
-				<input name="name" id="order-name" class="form-control" type="text" value="{$name|escape}" placeholder="{$lang->enter_your_name}" required="" />
+				<input type="text" class="form-control" name="name" id="order-name" value="{$name|escape}" placeholder="{$lang->enter_your_name}" required>
 				<div class="invalid-feedback">{$lang->enter_your_name}</div>
 			</div>
 			<div class="mb-3">
 				<label for="order-email">Email</label>
-				<input name="email" id="order-email" class="form-control" type="text" value="{$email|escape}" placeholder="{$lang->enter_your_email}" required="" />
+				<input type="text" class="form-control" name="email" id="order-email" value="{$email|escape}" placeholder="{$lang->enter_your_email}" required>
 				<div class="invalid-feedback">{$lang->enter_your_email}</div>
 			</div>
 			<div class="mb-3">
 				<label for="order-phone">{$lang->phone}</label>
-				<input name="phone" id="order-phone" class="form-control" type="text" value="{$phone|escape}" placeholder="{$lang->enter_phone_number}" />
+				<input type="text" class="form-control" name="phone" id="order-phone" value="{$phone|escape}" placeholder="{$lang->enter_phone_number}">
 			</div>
 			<div class="mb-3">
 				<label for="order-address">{$lang->delivery_address}</label>
-				<input name="address" id="order-address" class="form-control" type="text" value="{$address|escape}" placeholder="{$lang->enter_the_address}" />
+				<input type="text" class="form-control" name="address" id="order-address" value="{$address|escape}" placeholder="{$lang->enter_the_address}">
 			</div>
 			<div class="mb-3">
 				<label for="order-comment">{$lang->comment}</label>
-				<textarea class="form-control" rows="4" id="order-comment" name="comment" placeholder="{$lang->enter_a_comment}">{$comment|escape}</textarea>
+				<textarea class="form-control" name="comment" id="order-comment" placeholder="{$lang->enter_a_comment}" rows="4">{$comment|escape}</textarea>
 				<div class="invalid-feedback">{$lang->enter_a_comment}</div>
 			</div>
 			{if $settings->captcha_cart}
 				<div class="row mt-4">
-					<div class="col-md-2">
+					<div class="col-md-2 pb-3">
 						{get_captcha var="captcha_cart"}
 						<div class="secret-number">{$captcha_cart[0]|escape} + ? = {$captcha_cart[1]|escape}</div>
 					</div>
 					<div class="col-md-10">
-						<input class="form-control" type="text" name="captcha_code" placeholder="{$lang->enter_captcha}" required="" autocomplete="off" value="" />
+						<input type="text" class="form-control" name="captcha_code" value="" placeholder="{$lang->enter_captcha}" autocomplete="off" required>
 						<div class="invalid-feedback">{$lang->enter_captcha}</div>
 					</div>
 				</div>
 			{/if}
 			<div class="mt-3">
-				<button name="checkout" id="btnValidation" class="btn btn-primary btn-lg float-end" type="submit">{$lang->checkout}</button>
+				<button type="submit" class="btn btn-primary btn-lg float-end" name="checkout" id="btnValidation">{$lang->checkout}</button>
 			</div>
 		</form>
 	{else}

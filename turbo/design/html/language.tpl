@@ -57,7 +57,7 @@
 {if $message_success !== 'added'}
 	{*Main page form*}
 	<form method="post" enctype="multipart/form-data">
-		<input type=hidden name="session_id" value="{$smarty.session.id}">
+		<input type="hidden" name="session_id" value="{$smarty.session.id}">
 		<input type="hidden" name="id" value="{$language->id|escape}" />
 		<div class="row">
 			<div class="col-lg-12 col-md-12">

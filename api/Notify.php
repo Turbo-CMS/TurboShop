@@ -185,6 +185,8 @@ class Notify extends Turbo
 
 		if ($comment->type == 'product')
 			$comment->product = $this->products->get_product(intval($comment->object_id));
+		if ($comment->type == 'article')
+			$comment->article = $this->articles->get_article(intval($comment->object_id));
 		if ($comment->type == 'blog')
 			$comment->post = $this->blog->get_post(intval($comment->object_id));
 

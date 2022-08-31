@@ -77,7 +77,7 @@
 								<div class="turbo_switch clearfix">
 									<label class="switch_label">{$btr->general_enable|escape}</label>
 									<div class="form-check form-switch">
-										<input class="form-check-input" id="visible_checkbox" name="enabled" value="1" type="checkbox" {if $user->enabled}checked="" {/if}>
+										<input class="form-check-input" id="visible_checkbox" name="enabled" value="1" type="checkbox" {if $user->enabled}checked=""{/if}>
 										<label class="form-check-label" for="visible_checkbox"></label>
 									</div>
 								</div>
@@ -162,7 +162,7 @@
 					</div>
 					<div class="toggle_body_wrap on fn_card">
 						<div class="scrollbar-inner">
-							<div class="turbo_list products_list turbo_list_order user_orders_scroll">
+							<div class="turbo_list turbo_list_order user_orders_scroll">
 								<div class="turbo_list_head">
 									<div class="turbo_list_heading turbo_list_user_number">№ </div>
 									<div class="turbo_list_heading turbo_list_user_name">{$btr->general_full_name|escape}</div>

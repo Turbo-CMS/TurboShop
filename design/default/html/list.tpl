@@ -5,15 +5,15 @@
 				<aside class="col-md-3">
 					<div class="img-wrap">
 						<span class="badges">
-							{if $product->variant->compare_price > 0}<span class="notify-badge badge bg-danger">{$lang->badge_sale}</span>{/if}
+							{if $product->variant->compare_price> 0}<span class="notify-badge badge bg-danger">{$lang->badge_sale}</span>{/if}
 							{if $product->featured}<span class="notify-badge badge bg-primary">{$lang->badge_featured}</span>{/if}
 							{if $product->is_new}<span class="notify-badge badge bg-warning">{$lang->badge_new}</span>{/if}
 							{if $product->is_hit}<span class="notify-badge badge bg-success">{$lang->badge_hit}</span>{/if}
 						</span>
 						{if $product->image}
-							<a class="image" href="{$lang_link}products/{$product->url}"><img src="{$product->image->filename|resize:170:170}" alt="{$product->name|escape}" /></a>
+							<a class="image" href="{$lang_link}products/{$product->url}"><img src="{$product->image->filename|resize:170:170}" alt="{$product->name|escape}"></a>
 						{else}
-							<a href="{$lang_link}products/{$product->url}"><img style="width: 170px; height: 170px;" src="design/{$settings->theme|escape}/images/no-photo.svg" alt="{$c->name}" /></a>
+							<a href="{$lang_link}products/{$product->url}"><img style="width: 170px; height: 170px;" src="design/{$settings->theme|escape}/images/no-photo.svg" alt="{$c->name}"></a>
 						{/if}
 					</div>
 				</aside>
@@ -42,18 +42,18 @@
 				</article>
 				<aside class="col-md-3 border-start">
 					<div class="action-wrap">
-						{if $product->variants|count > 0}
+						{if $product->variants|count> 0}
 							<form class="variants" action="{$lang_link}cart">
 								{foreach $product->variants as $v}
-									<input id="featured_{$v->id}" name="variant" value="{$v->id}" type="radio" class="variant_radiobutton" {if $v@first}checked{/if} style="display:none;" />
+									<input id="featured_{$v->id}" name="variant" value="{$v->id}" type="radio" class="variant_radiobutton" {if $v@first}checked{/if} style="display:none;">
 								{/foreach}
 								<div class="price-wrap h4">
 									<span class="price"> {$product->variant->price|convert} {$currency->sign|escape}</span>
-									{if $product->variant->compare_price > 0}<del class="price-old"> {$product->variant->compare_price|convert} {$currency->sign|escape}</del>{/if}
+									{if $product->variant->compare_price> 0}<del class="price-old"> {$product->variant->compare_price|convert} {$currency->sign|escape}</del>{/if}
 								</div>
 								<p class="text-success">{$lang->In_stock}</p>
 								<p>
-									<input type="submit" data-result-text="{$lang->added_cart}" class="btn btn-primary mb-1 me-1" value="{$lang->add_cart}" title="{$lang->add_cart}" />
+									<input type="submit" data-result-text="{$lang->added_cart}" class="btn btn-primary mb-1 me-1" value="{$lang->add_cart}" title="{$lang->add_cart}">
 									<a href="{$lang_link}products/{$product->url}" class="btn btn-secondary mb-1">{$lang->more_details}</a>
 								</p>
 							</form>

@@ -3,8 +3,8 @@
 {$subject = "`$lang->email_order_title` `$order->id`" scope=global}
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{$lang->email_order_title} {$order->id}</title>
     <meta name="x-apple-disable-message-reformatting">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -378,7 +378,7 @@
                                   <tr>
                                     <td align="center">
                                       <a target="_blank" href="{$config->root_url}">
-                                        <img src="{$config->root_url}/design/{$settings->theme}/images/logo.png" width="207" align="center" style="display: block; margin: 0 auto" />
+                                        <img src="{$config->root_url}/design/{$settings->theme}/images/logo.png" width="207" align="center" style="display: block; margin: 0 auto">
                                       </a>
                                     </td>
                                   </tr>
@@ -648,7 +648,7 @@
                                                         <tbody>
                                                           <tr>
                                                             <td>
-                                                              <a href="{$config->root_url}/products/{$purchase->product->url}" style="font-family: 'Trebuchet MS';font-size: 16px;color: #495057;text-decoration: none;line-height: normal;">{$purchase->product_name|escape}</a><br />
+                                                              <a href="{$config->root_url}/products/{$purchase->product->url}" style="font-family: 'Trebuchet MS';font-size: 16px;color: #495057;text-decoration: none;line-height: normal;">{$purchase->product_name|escape}</a><br>
                                                               <span class="es-p5t"><em><span style="color: rgb(128, 128, 128); font-size: 12px;">{if $purchase->variant->color}{$purchase->variant->color|escape} / {/if}{$purchase->variant_name|escape}</span></em></span>
                                                             </td>
                                                             <td style="text-align: center;" width="60">

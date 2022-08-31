@@ -62,7 +62,7 @@
 {/if}
 
 <form method="post" enctype="multipart/form-data">
-	<input type=hidden name="session_id" value="{$smarty.session.id}">
+	<input type="hidden" name="session_id" value="{$smarty.session.id}">
 	<div class="row">
 		<div class="col-xs-12">
 			<div class="boxed match_matchHeight_true">
@@ -249,7 +249,6 @@
 					$('input[name="url"]').val(generate_url());
 				}
 			});
-
 		});
 
 		function generate_url() {
@@ -271,6 +270,7 @@
 			}
 			return res;
 		}
+		
 		$(function() {
 			/* Call an ajax entity update */
 			if ($(".fn_ajax_update_options").size() > 0) {
@@ -302,22 +302,22 @@
 					dataType: 'json',
 					url: "ajax/update_options.php",
 					data: {feature_id: '{/literal}{$feature->id}{literal}', value: value, translit: translit, old_value: old_value, session_id : session_id},
-						success: function(data) {
-							var msg = "";
-							if (data) {
-								$this.removeClass('unapproved');
-								toastr.success(msg, "{/literal}{$btr->general_success|escape}{literal}");
-								if (value == "approved" || value == "processed") {
-									$this.closest("div").find(".fn_answer_btn").show();
-									$this.closest(".fn_row").removeClass('unapproved');
-								}
-							} else {
-								toastr.error(msg, "{/literal}{$btr->general_error|escape}{literal}");
+					success: function(data) {
+						var msg = "";
+						if (data) {
+							$this.removeClass('unapproved');
+							toastr.success(msg, "{/literal}{$btr->general_success|escape}{literal}");
+							if (value == "approved" || value == "processed") {
+								$this.closest("div").find(".fn_answer_btn").show();
+								$this.closest(".fn_row").removeClass('unapproved');
 							}
+						} else {
+							toastr.error(msg, "{/literal}{$btr->general_error|escape}{literal}");
 						}
-					});
-					return false;
-				}
+					}
+				});
+				return false;
 			}
-		</script>
-	{/literal}
+		}
+	</script>
+{/literal}

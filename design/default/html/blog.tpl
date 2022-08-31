@@ -44,14 +44,14 @@
 				<div itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
 					<meta itemprop="name" content="{$settings->site_name|escape}">
 					<span itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
-						<meta itemprop="image url" content="{$config->root_url}/design/{$settings->theme|escape}/images/logo.png" />
-						<meta property="url" content="{$config->root_url}/" />
+						<meta itemprop="image url" content="{$config->root_url}/design/{$settings->theme|escape}/images/logo.png">
+						<meta property="url" content="{$config->root_url}/">
 					</span>
 				</div>
 				<meta itemprop="dateModified" content="{$post->date}">
 				<meta itemprop="author" content="{$settings->site_name|escape}">
-				<meta itemscope itemprop="mainEntityOfPage" itemType="https://schema.org/WebPage" itemid="/blog/{$post->url}" />
-				<link itemprop="url" href="/blog/{$post->url}" />
+				<meta itemscope itemprop="mainEntityOfPage" itemType="https://schema.org/WebPage" itemid="/blog/{$post->url}">
+				<link itemprop="url" href="/blog/{$post->url}">
 				<div class="card-body">
 					<a href="{$lang_link}blog/{$post->url}" class="text-decoration-none">
 						<h2 itemprop="name headline" data-post="{$post->id}" class="card-title">{$post->name|escape}</h2>

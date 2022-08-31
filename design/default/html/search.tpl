@@ -22,7 +22,7 @@
 		<div class="col-md-8 offset-md-2 mt-4">
 			<div class="pt-3 pb-4">
 				<form class="input-group my-4" action="{$lang_link}search">
-					<input class="form-control" autocomplete="off" type="text" name="keyword" value="{$keyword|escape}" placeholder="{$lang->search}..." />
+					<input class="form-control" autocomplete="off" type="text" name="keyword" value="{$keyword|escape}" placeholder="{$lang->search}...">
 					<button type="submit" class="btn btn-success"><i class="fal fa-search me-1"></i> {$lang->search}</button>
 				</form>
 				<div class="mt-4 text-center">

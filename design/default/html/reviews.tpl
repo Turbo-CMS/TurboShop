@@ -9,11 +9,11 @@
 	<ol itemscope itemtype="http://schema.org/BreadcrumbList" class="breadcrumb">
 		<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="breadcrumb-item">
 			<a itemprop="item" class="text-decoration-none" href="{if $lang_link}{$lang_link}{else}/{/if}"><span itemprop="name" title="{$lang->home}">{$lang->home}</span></a>
-			<meta itemprop="position" content="{$level++}" />
+			<meta itemprop="position" content="{$level++}">
 		</li>
 		<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="breadcrumb-item active" aria-current="page">
 			<a itemprop="item" class="text-decoration-none" href="{$lang_link}{$page->url}"><span itemprop="name">{$page->header|escape}</span></a>
-			<meta itemprop="position" content="{$level++}" />
+			<meta itemprop="position" content="{$level++}">
 		</li>
 	</ol>
 </nav>
@@ -38,7 +38,7 @@
 			<i class="far fa-star"></i>
 		</li>
 	</ul>
-	{if $ratings > 0}
+	{if $ratings> 0}
 		<div class="label-rating">
 			<span class="test-text">
 				<span class="rater-rating h3">{$ratings|string_format:"%.1f"}</span>

@@ -44,7 +44,7 @@
 	</div>
 {/if}
 
-<form method=post enctype="multipart/form-data" class="fn_fast_button">
+<form method="post" enctype="multipart/form-data" class="fn_fast_button">
 	<input type="hidden" name="session_id" value="{$smarty.session.id}" />
 
 	<div class="row">
@@ -57,10 +57,10 @@
 						</div>
 						<div class="form-group">
 							<input class="form-control" name="name" type="text" value="{$comment->name|escape}" />
-							<input name=id type="hidden" value="{$comment->id|escape}" />
+							<input name="id" type="hidden" value="{$comment->id|escape}" />
 							<input name="type" type="hidden" value="{$comment->type}" />
-							<input name=object_id type="hidden" value="{$comment->object_id|escape}" />
-							<input name=parent_id type="hidden" value="{$comment->parent_id|escape}" />
+							<input name="object_id" type="hidden" value="{$comment->object_id|escape}" />
+							<input name="parent_id" type="hidden" value="{$comment->parent_id|escape}" />
 						</div>
 					</div>
 					<div class="col-lg-2 col-md-3 col-sm-12">
@@ -104,7 +104,7 @@
 							<div class="col-md-4">
 								<div>
 									<div class="heading_label">{$btr->general_date|escape}</div>
-									<div class="">
+									<div>
 										<input name="date" class="form-control" type="text" value="{$comment->date|date}" />
 									</div>
 								</div>
@@ -112,7 +112,7 @@
 							<div class="col-md-4">
 								<div>
 									<div class="heading_label">{$btr->support_time|escape}</div>
-									<div class="">
+									<div>
 										<input name="time" class="form-control" type="text" value="{$comment->date|time}" />
 									</div>
 								</div>
@@ -120,7 +120,7 @@
 							<div class="col-md-4">
 								<div>
 									<div class="heading_label">IP</div>
-									<div class="">
+									<div>
 										<input name="ip" class="form-control" type="text" value="{$comment->ip}" />
 									</div>
 								</div>

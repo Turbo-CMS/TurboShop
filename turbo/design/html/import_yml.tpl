@@ -16,7 +16,7 @@
 	<div class="row">
 		<div class="col-lg-12 col-md-12 col-sm-12">
 			<div class="boxed boxed_warning">
-				<div class="">
+				<div>
 					{if $message_error == 'no_permission'}
 						{$btr->general_permissions|escape} {$import_files_dir|escape}
 					{elseif $message_error == 'convert_error'}
@@ -95,7 +95,7 @@
 														</optgroup>
 														<optgroup label="{$btr->import_main_fields}">
 															{foreach $columns as $k=>$f}
-																<option value="{$k}" {if $columns_compared[$pkey] == $k} selected{/if}>{$btr->get_translation('import_field_'|cat:$f)}</option>
+																<option value="{$k}" {if $columns_compared[$pkey] == $k}selected{/if}>{$btr->get_translation('import_field_'|cat:$f)}</option>
 															{/foreach}
 														</optgroup>
 														<optgroup label="{$btr->import_shop_features}">

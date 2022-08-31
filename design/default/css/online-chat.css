@@ -146,7 +146,7 @@ body .chaty-widget-i-title.true {
 
 .chaty-widget {
 	position: fixed;
-	z-index: 9999;
+	z-index: 1000;
 }
 
 .chaty-widget .chaty-widget-is {

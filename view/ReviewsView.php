@@ -12,7 +12,7 @@
 
 require_once('View.php');
 
-class CommentsView extends View
+class ReviewsView extends View
 {
 	// Display list of comments
 	function fetch()
@@ -92,7 +92,7 @@ class CommentsView extends View
 			$filter['sort'] = $_SESSION['sort'];
 		else
 			$filter['sort'] = 'rate';
-		$this->design->assign('sort', $filter['sort']);
+			$this->design->assign('sort', $filter['sort']);
 
 		// Current page in pagination
 		$current_page = $this->request->get('page', 'integer');
@@ -175,7 +175,7 @@ class CommentsView extends View
 		}
 		header('Last-Modified: ' . $LastModified);
 
-		$body = $this->design->fetch('comments.tpl');
+		$body = $this->design->fetch('reviews.tpl');
 
 		return $body;
 	}

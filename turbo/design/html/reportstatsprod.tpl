@@ -110,7 +110,7 @@
 
 	{assign 'total_summ' 0}
 	{assign 'total_amount' 0}
-	<div class="turbo_list products_list fn_sort_list">
+	<div class="turbo_list fn_sort_list">
 		{* Table head *}
 		<div class="turbo_list_head">
 			<div class="turbo_list_heading turbo_list_reportstats_categories">{$btr->general_date|escape}</div>

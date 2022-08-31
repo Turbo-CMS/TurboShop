@@ -26,7 +26,7 @@
 	{if $backups}
 		<form method="post" class="fn_form_list">
 			<input type="hidden" name="session_id" value="{$smarty.session.id}">
-			<div class="turbo_list products_list fn_sort_list">
+			<div class="turbo_list fn_sort_list">
 				<div class="turbo_list_head">
 					<div class="turbo_list_heading turbo_list_check">
 						<label class="form-check">

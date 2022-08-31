@@ -11,11 +11,11 @@
 	<ol itemscope itemtype="http://schema.org/BreadcrumbList" class="breadcrumb">
 		<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="breadcrumb-item">
 			<a itemprop="item" class="text-decoration-none" href="{if $lang_link}{$lang_link}{else}/{/if}"><span itemprop="name" title="{$lang->home}">{$lang->home}</span></a>
-			<meta itemprop="position" content="{$level++}" />
+			<meta itemprop="position" content="{$level++}">
 		</li>
 		<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="breadcrumb-item active" aria-current="page">
 			<a itemprop="item" class="text-decoration-none" href="{$lang_link}user/login"><span itemprop="name">{$lang->login}</span></a>
-			<meta itemprop="position" content="{$level++}" />
+			<meta itemprop="position" content="{$level++}">
 		</li>
 	</ol>
 </nav>
@@ -42,15 +42,15 @@
 			<h3 class="mb-0">{$lang->login}</h3>
 		</div>
 		<div class="card-body">
-			<form class="form" role="form" autocomplete="off" id="FormValidation" novalidate="" method="post">
+			<form class="form" id="FormValidation" role="form" autocomplete="off" method="post" novalidate>
 				<div class="mb-3">
 					<label for="login-email">Email</label>
-					<input type="text" class="form-control" id="login-email" name="email" value="{$email|escape}" maxlength="255" required="">
+					<input type="text" class="form-control" name="email" id="login-email" value="{$email|escape}" maxlength="255" required>
 					<div class="invalid-feedback">{$lang->enter_your_email}</div>
 				</div>
 				<div class="mb-3">
 					<label for="login-password">{$lang->password}</label>
-					<input type="password" class="form-control" id="login-password" name="password" value="" required="" autocomplete="off">
+					<input type="password" class="form-control" name="password" id="login-password" value="" autocomplete="off" required>
 					<div class="invalid-feedback">{$lang->enter_password}</div>
 				</div>
 				<a class="text-decoration-none" href="{$lang_link}user/password_remind">{$lang->forgot_password}</a>

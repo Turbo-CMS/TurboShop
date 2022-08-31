@@ -4,7 +4,6 @@
 	{$meta_title = $btr->translation_new scope=global}
 {/if}
 
-{*Page name*}
 <div class="row">
 	<div class="col-lg-6 col-md-6">
 		{if !$translation->id}
@@ -20,7 +19,7 @@
 	<div class="row">
 		<div class="col-lg-12 col-md-12 col-sm-12">
 			<div class="boxed boxed_warning">
-				<div class="">
+				<div>
 					{$btr->general_protected|escape}
 				</div>
 			</div>
@@ -77,8 +76,8 @@
 
 {*Main page form*}
 <form method="post" enctype="multipart/form-data">
-	<input type=hidden name="session_id" value="{$smarty.session.id}">
-	<input name=id type="hidden" value="{$translation->id}" />
+	<input type="hidden" name="session_id" value="{$smarty.session.id}">
+	<input name="id" type="hidden" value="{$translation->id}" />
 
 	<div class="row">
 		<div class="col-lg-12 ">
@@ -90,7 +89,7 @@
 							{$btr->translation_name|escape}
 						</div>
 						<div class="form-group">
-							<input name="label" class="form-control" type="text" value="{$translation->label}" {if $locked_theme}readonly="" {/if} />
+							<input name="label" class="form-control" type="text" value="{$translation->label}" {if $locked_theme}readonly=""{/if} />
 						</div>
 					</div>
 				</div>
@@ -104,7 +103,7 @@
 								{$lang->name|escape}
 							</div>
 							<div class="">
-								<textarea name="lang_{$lang->label}" class="form-control turbo_textarea" {if $locked_theme}readonly="" {/if}>{$translation->lang_{$lang->label}}</textarea>
+								<textarea name="lang_{$lang->label}" class="form-control turbo_textarea" {if $locked_theme}readonly=""{/if}>{$translation->lang_{$lang->label}}</textarea>
 							</div>
 						</div>
 					{/foreach}

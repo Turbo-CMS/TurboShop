@@ -90,7 +90,7 @@ class Users extends Turbo
 			$where = $this->db->placehold(' WHERE u.id=? ', intval($id));
 
 		// Select user
-		$query = $this->db->placehold("SELECT u.id, u.email, u.password, u.name,  u.phone, u.address, u.group_id, u.enabled, u.last_ip, u.created, g.discount, g.name as group_name FROM __users u LEFT JOIN __groups g ON u.group_id=g.id $where LIMIT 1", $id);
+		$query = $this->db->placehold("SELECT u.id, u.email, u.password, u.name, u.phone, u.address, u.group_id, u.enabled, u.last_ip, u.created, g.discount, g.name as group_name FROM __users u LEFT JOIN __groups g ON u.group_id=g.id $where LIMIT 1", $id);
 		$this->db->query($query);
 		$user = $this->db->result();
 		if (empty($user))
