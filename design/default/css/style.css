@@ -20,6 +20,11 @@ small {
 	vertical-align: middle;
 }
 
+.block-description img {
+	max-width: 100%;
+	height: auto; 
+}
+
 .btn-toolbar h1 {
 	font-size: 1.6rem;
 }

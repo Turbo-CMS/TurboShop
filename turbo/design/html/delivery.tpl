@@ -198,7 +198,7 @@
 	</div>
 </form>
 {* We connect Tiny MCE *}
-{include file='tinymce_init_2.tpl'}
+{include file='tinymce_init_two.tpl'}
 <script>
 	$(document).on("click", ".fn_type_delivery", function() {
 		var action = $(this).data("type");

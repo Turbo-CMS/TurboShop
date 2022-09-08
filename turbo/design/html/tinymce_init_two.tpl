@@ -22,6 +22,7 @@
 		{literal}
 			image_class_list: [
 				{title: 'None', value: ''},
+				{title: 'img-fluid', value: 'img-fluid'},
 				{title: 'image-zoom', value: 'img-zoom img-fluid'},
 				{title: 'image-slider', value: 'img-slider img-fluid'},
 				{title: 'image-gallery', value: 'img-gallery img-fluid'},

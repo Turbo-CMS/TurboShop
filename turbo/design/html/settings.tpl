@@ -273,25 +273,25 @@
 				</div>
 				<div class="toggle_body_wrap on fn_card">
 					<div class="row">
-						<div class="col-lg-3 col-md-3">
+						<div class="col-lg-3 col-md-6">
 							<div class="heading_label">{$btr->settings_blog_posts_site|escape}</div>
 							<div class="mb-1">
 								<input name="blog_num" class="form-control" type="text" value="{$settings->blog_num|escape}" />
 							</div>
 						</div>
-						<div class="col-lg-3 col-md-3">
+						<div class="col-lg-3 col-md-6">
 							<div class="heading_label">{$btr->settings_blog_posts_admin|escape}</div>
 							<div class="mb-1">
 								<input name="blog_num_admin" class="form-control" type="text" value="{$settings->blog_num_admin|escape}" />
 							</div>
 						</div>
-						<div class="col-lg-3 col-md-3">
+						<div class="col-lg-3 col-md-6">
 							<div class="heading_label">{$btr->settings_articles_on_site|escape}</div>
 							<div class="mb-1">
 								<input name="articles_num" class="form-control" type="text" value="{$settings->articles_num|escape}" />
 							</div>
 						</div>
-						<div class="col-lg-3 col-md-3">
+						<div class="col-lg-3 col-md-6">
 							<div class="heading_label">{$btr->settings_articles_on_admin|escape}</div>
 							<div class="mb-1">
 								<input name="articles_num_admin" class="form-control" type="text" value="{$settings->articles_num_admin|escape}" />

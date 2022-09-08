@@ -38,7 +38,7 @@ class Liqpay extends Turbo
 						<input type="hidden" name="server_url" value="'.$server_url.'" />  
 						<input type="hidden" name="type" value="buy" />
 						<input type="hidden" name="signature" value="'.$sign.'" />
-						<input type=submit class=checkout_button value="'.$button_text.'">
+						<input type=submit class="btn btn-success" value="'.$button_text.'">
 					</form>';
 		return $button;
 	}

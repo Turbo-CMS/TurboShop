@@ -31,7 +31,7 @@ class Platon extends Turbo
 					'<input type="hidden" name="data" value="'.$data.'" />'.
 					'<input type="hidden" name="url" value="'.$return_url.'" />'.
 					'<input type="hidden" name="sign" value="'.$sign.'" />'.
-					'<input type=submit class=checkout_button value="'.$button_text.'">'.
+					'<input type=submit class="btn btn-success" value="'.$button_text.'">'.
 					'</form>';
 		return $button;
 	}

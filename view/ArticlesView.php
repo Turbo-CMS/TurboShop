@@ -6,7 +6,7 @@
  * @author	Turbo CMS
  * @link	https://turbo-cms.com/
  *
- * This class uses the templates article.tpl и post.tpl
+ * This class uses the templates articles.tpl и article.tpl
  *
  */
 
@@ -139,7 +139,8 @@ class ArticlesView extends View
 		$this->design->assign('post', $post);
 
 		// Category
-		$this->design->assign('articles_category', $this->articles_categories->get_articles_category(intval($post->category_id)));
+		$category = $this->articles_categories->get_articles_category(intval($post->category_id));
+		$this->design->assign('category', $category);
 
 		// Tags
 		$tags = explode(',', $post->meta_keywords);
@@ -162,6 +163,7 @@ class ArticlesView extends View
 
 		$auto_meta_parts = array(
 			'{post}' => ($post ? $post->name : ''),
+			'{category}' => ($category ? $category->name : ''),
 			'{page}' => ($this->page ? $this->page->header : ''),
 			'{site_url}' => ($this->seo->am_url ? $this->seo->am_url : ''),
 			'{site_name}' => ($this->seo->am_name ? $this->seo->am_name : ''),
@@ -202,7 +204,7 @@ class ArticlesView extends View
 			$category = $this->articles_categories->get_articles_category((string)$category_url);
 			if (empty($category) || (!$category->visible && empty($_SESSION['admin'])))
 				return false;
-			$this->design->assign('articles_category', $category);
+			$this->design->assign('category', $category);
 
 			$filter['category_id'] = $category->children;
 		}

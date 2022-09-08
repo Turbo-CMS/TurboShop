@@ -9,6 +9,16 @@
 	</div>
 </div>
 
+<div id="success" class="row" style="display: none">
+	<div class="col-lg-12 col-md-12 col-sm-12">
+		<div class="boxed boxed_success">
+			<div class="heading_box">
+				{$btr->general_success|escape}!
+			</div>
+		</div>
+	</div>
+</div>
+
 <div id="import_error" class="boxed boxed_warning" style="display: none;"></div>
 
 {*Error output*}
@@ -276,7 +286,7 @@
 						} else {
 							Piecon.setProgress(100);
 							$("#progressbar").hide('fast');
-							$("ul#import_result").append(' <span class="text_success">{/literal}{$btr->general_success|escape}{literal}!</span>');
+							$('#success').show();
 							in_process = false;
 						}
 					},

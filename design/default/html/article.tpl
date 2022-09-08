@@ -15,7 +15,7 @@
 			<a itemprop="item" class="text-decoration-none" href="{$lang_link}articles"><span itemprop="name">{$lang->index_articles}</span></a>
 			<meta itemprop="position" content="{$level++}">
 		</li>
-		{foreach from=$articles_category->path item=cat}
+		{foreach from=$category->path item=cat}
 			<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item">
 				<a itemprop="item" class="text-decoration-none" href="{$lang_link}articles/{$cat->url}"><span itemprop="name">{$cat->name|escape}</span></a>
 				<meta itemprop="position" content="{$level++}">

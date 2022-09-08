@@ -521,9 +521,7 @@
 									{/if}
 									<div class="btn-group" role="group" aria-label="Button footer">
 										<button class="btn btn-link product-card-quickview" type="button" data-url="{$lang_link}products/{$product->url}"><i class="far fa-eye text-muted"></i></button>
-										{if $wishlist}
-											<a class="btn btn-link" href='{$lang_link}wishlist/remove/{$product->url}'><i class="fal fa-heart text-danger"></i></a>
-										{elseif $wishlist_products && in_array($product->url, $wishlist_products)}
+										{if $wishlist_products && in_array($product->url, $wishlist_products)}
 											<a class="btn btn-link" href='{$lang_link}wishlist'><i class="fal fa-heart text-danger"></i></a>
 										{else}
 											<a class="btn btn-link wishlist" href='{$lang_link}wishlist/{$product->url}'><i class="fal fa-heart text-muted"></i></a>

@@ -6,7 +6,7 @@
  * @author	Turbo CMS
  * @link	https://turbo-cms.com/
  *
- * This class uses the templates comments.tpl
+ * This class uses the templates reviews.tpl
  *
  */
 

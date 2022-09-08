@@ -199,7 +199,7 @@
 														<li><b>{$btr->left_pages|escape}</b> - {ldelim}page{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>
 														<li><b>{$btr->left_blog_title|escape}</b> - {ldelim}post{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>
 														<li><b>{$btr->article_categories|escape}</b> - {ldelim}category{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>
-														<li><b>{$btr->left_articles_title|escape}</b> - {ldelim}post{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>
+														<li><b>{$btr->left_articles_title|escape}</b> - {ldelim}post{rdelim}, {ldelim}category{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>
 													</ul>
 												</div>
 											</div>
@@ -305,7 +305,7 @@
 														<li><b>{$btr->left_pages|escape}</b> - {ldelim}page{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>
 														<li><b>{$btr->left_blog_title|escape}</b> - {ldelim}post{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>
 														<li><b>{$btr->article_categories|escape}</b> - {ldelim}category{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>
-														<li><b>{$btr->left_articles_title|escape}</b> - {ldelim}post{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>
+														<li><b>{$btr->left_articles_title|escape}</b> - {ldelim}post{rdelim}, {ldelim}category{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>
 													</ul>
 												</div>
 											</div>
@@ -411,7 +411,7 @@
 														<li><b>{$btr->left_pages|escape}</b> - {ldelim}page{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>
 														<li><b>{$btr->left_blog_title|escape}</b> - {ldelim}post{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>
 														<li><b>{$btr->article_categories|escape}</b> - {ldelim}category{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>
-														<li><b>{$btr->left_articles_title|escape}</b> - {ldelim}post{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>
+														<li><b>{$btr->left_articles_title|escape}</b> - {ldelim}post{rdelim}, {ldelim}category{rdelim}, {ldelim}site_name{rdelim}, {ldelim}site_url{rdelim}, {ldelim}site_phone{rdelim}, {ldelim}site_email{rdelim}</li>
 													</ul>
 												</div>
 											</div>

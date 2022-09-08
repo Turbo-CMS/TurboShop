@@ -1,8 +1,8 @@
 {* List of articles *}
 
 {* Canonical page address *}
-{if $articles_category}
-	{$canonical="/articles/{$articles_category->url}" scope=global}
+{if $category}
+	{$canonical="/articles/{$category->url}" scope=global}
 {elseif $keyword}
 	{$canonical="/articles/?keyword={$keyword|escape}" scope=global}
 {else}
@@ -21,7 +21,7 @@
 			<a itemprop="item" class="text-decoration-none" href="{$lang_link}articles"><span itemprop="name">{$lang->index_articles}</span></a>
 			<meta itemprop="position" content="{$level++}">
 		</li>
-		{foreach from=$articles_category->path item=cat}
+		{foreach from=$category->path item=cat}
 			<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item">
 				<a itemprop="item" class="text-decoration-none" href="{$lang_link}articles/{$cat->url}"><span itemprop="name">{$cat->name|escape}</span></a>
 				<meta itemprop="position" content="{$level++}">
@@ -38,7 +38,7 @@
 		{elseif $page}
 			<h1>{$page->name|escape}</h1>
 		{else}
-			<h1>{if $articles_category->name_h1}{$articles_category->name_h1|escape}{else}{$articles_category->name|escape}{/if}</h1>
+			<h1>{if $category->name_h1}{$category->name_h1|escape}{else}{$category->name|escape}{/if}</h1>
 		{/if}
 		<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownSortLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 			{$lang->sort_by}

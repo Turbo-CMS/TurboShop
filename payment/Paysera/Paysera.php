@@ -50,7 +50,7 @@ class Paysera extends Turbo
 		$button = "<form method='POST' action='".WebToPay::PAY_URL."'>
 					<input type='hidden' name='data' value='".$request['data']."'>
 					<input type='hidden' name='sign' value='".$request['sign']."'>
-					<input class=checkout_button type='submit' value='".$button_text."' />
+					<input class="btn btn-success" type='submit' value='".$button_text."' />
 					</form>";
 		return $button;
 	}

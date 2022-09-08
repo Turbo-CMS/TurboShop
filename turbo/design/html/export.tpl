@@ -7,6 +7,16 @@
 	<div class="col-lg-5 col-md-5 float-xs-right"></div>
 </div>
 
+<div id="success-export" class="row" style="display: none">
+	<div class="col-lg-12 col-md-12 col-sm-12">
+		<div class="boxed boxed_success">
+			<div class="heading_box">
+				{$btr->general_export_successful|escape}!
+			</div>
+		</div>
+	</div>
+</div>
+
 {if $message_error}
 	<div class="row">
 		<div class="col-lg-12 col-md-12 col-sm-12">
@@ -73,7 +83,7 @@
 								<div class="heading_label">{$btr->general_from_brand|escape}</div>
 								<select class="selectpicker" data-size="10" name="brand_id">
 									{foreach $brands as $b}
-										<option value="{$b->id}" {if $b@first}selected="" {/if}>{$b->name|escape}</option>
+										<option value="{$b->id}" {if $b@first}selected=""{/if}>{$b->name|escape}</option>
 									{/foreach}
 								</select>
 							</div>
@@ -85,10 +95,6 @@
 							</button>
 						</div>
 					</div>
-				</div>
-
-				<div id="success_export" class="" style="display: none">
-					<div class="text_success font_20 text_600">{$btr->general_export_successful|escape}</div>
 				</div>
 			</div>
 		</div>
@@ -149,7 +155,7 @@
 								progress.css('width', '100%');
 								window.location.href = 'files/export/export.csv';
 								$(".progress").fadeOut(500);
-								$('#success_export').show();
+								$('#success-export').show();
 							}
 						}
 					},

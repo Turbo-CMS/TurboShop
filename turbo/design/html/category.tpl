@@ -201,24 +201,24 @@
                 </div>
                 <div class="toggle_body_wrap on fn_card">
                     <ul class="category_images_list">
-                        <li class="category_image_item border_image_item2 icons {if $category->icon}border{/if}">
+                        <li class="category_image_item border_image_item_two icons {if $category->icon}border{/if}">
                             {if $category->icon}
-                                <input type="hidden" class="fn_accept_delete2" name="delete_icon" value="">
-                                <div class="fn_parent_image2">
-                                    <div class="category_image image_wrapper fn_image_wrapper2 text-xs-center">
-                                        <a href="javascript:;" class="fn_delete_item2 remove_image"></a>
+                                <input type="hidden" class="fn_accept_delete_two" name="delete_icon" value="">
+                                <div class="fn_parent_image_two">
+                                    <div class="category_image image_wrapper fn_image_wrapper_two text-xs-center">
+                                        <a href="javascript:;" class="fn_delete_item_two remove_image"></a>
                                         <img src="../{$config->categories_images_dir}{$category->icon}" alt="" />
                                     </div>
                                 </div>
                             {else}
-                                <div class="fn_parent_image2"></div>
+                                <div class="fn_parent_image_two"></div>
                             {/if}
-                            <div class="fn_upload_image2 dropzone_block_image {if $category->icon}hidden{/if}">
+                            <div class="fn_upload_image_two dropzone_block_image {if $category->icon}hidden{/if}">
                                 {include file='svg_icon.tpl' svgId='plus_big'}
-                                <input class="dropzone_image2" name="icon" type="file" />
+                                <input class="dropzone_image_two" name="icon" type="file" />
                             </div>
-                            <div class="category_image image_wrapper fn_image_wrapper2 fn_new_image2 text-xs-center">
-                                <a href="javascript:;" class="fn_delete_item2 remove_image"></a>
+                            <div class="category_image image_wrapper fn_image_wrapper_two fn_new_image_two text-xs-center">
+                                <a href="javascript:;" class="fn_delete_item_two remove_image"></a>
                                 <img src="" alt="" />
                             </div>
                         </li>

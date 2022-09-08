@@ -136,24 +136,24 @@
 				</div>
 				<div class="toggle_body_wrap on fn_card">
 					<ul class="post_images_list">
-						<li class="post_image_item border_image_item2 {if $post->image}border{/if}">
+						<li class="post_image_item border_image_item_two {if $post->image}border{/if}">
 							{if $post->image}
-								<input type="hidden" class="fn_accept_delete2" name="delete_image" value="">
-								<div class="fn_parent_image2">
-									<div class="image_wrapper fn_image_wrapper2 text-xs-center">
-										<a href="javascript:;" class="fn_delete_item2 remove_image"></a>
+								<input type="hidden" class="fn_accept_delete_two" name="delete_image" value="">
+								<div class="fn_parent_image_two">
+									<div class="image_wrapper fn_image_wrapper_two text-xs-center">
+										<a href="javascript:;" class="fn_delete_item_two remove_image"></a>
 										<img src="{$post->image|resize_articles:200:100}" alt="" />
 									</div>
 								</div>
 							{else}
-								<div class="fn_parent_image2"></div>
+								<div class="fn_parent_image_two"></div>
 							{/if}
-							<div class="fn_upload_image2 dropzone_block_image {if $post->image} hidden{/if}">
+							<div class="fn_upload_image_two dropzone_block_image {if $post->image} hidden{/if}">
 								{include file='svg_icon.tpl' svgId='plus_big'}
-								<input class="dropzone_image2" name="image" type="file" />
+								<input class="dropzone_image_two" name="image" type="file" />
 							</div>
-							<div class="image_wrapper fn_image_wrapper2 fn_new_image2 text-xs-center">
-								<a href="javascript:;" class="fn_delete_item2 remove_image"></a>
+							<div class="image_wrapper fn_image_wrapper_two fn_new_image_two text-xs-center">
+								<a href="javascript:;" class="fn_delete_item_two remove_image"></a>
 								<img src="" alt="" />
 							</div>
 						</li>

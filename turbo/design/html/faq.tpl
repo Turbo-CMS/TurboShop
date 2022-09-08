@@ -111,4 +111,4 @@
 </form>
 
 {* Connect Tiny MCE *}
-{include file='tinymce_init_2.tpl'}
+{include file='tinymce_init_two.tpl'}

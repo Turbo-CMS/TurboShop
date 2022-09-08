@@ -951,26 +951,26 @@
 					$(document).on('change', '.dropzone_image', handleFileSelect);
 				}
 			}
-			if ($(".fn_parent_image2").size() > 0) {
-				var image_wrapper2 = $(".fn_new_image2").clone(true);
-				$(".fn_new_image2").remove();
-				$(document).on("click", '.fn_delete_item2', function() {
-					$(".fn_upload_image2").removeClass("hidden");
-					$(".border_image_item2").removeClass("border");
-					$(".fn_accept_delete2").val(1);
-					$(this).closest(".fn_image_wrapper2").remove()
+			if ($(".fn_parent_image_two").size() > 0) {
+				var image_wrapper_two = $(".fn_new_image_two").clone(true);
+				$(".fn_new_image_two").remove();
+				$(document).on("click", '.fn_delete_item_two', function() {
+					$(".fn_upload_image_two").removeClass("hidden");
+					$(".border_image_item_two").removeClass("border");
+					$(".fn_accept_delete_two").val(1);
+					$(this).closest(".fn_image_wrapper_two").remove()
 				});
 				if (window.File && window.FileReader && window.FileList) {
-					$(".fn_upload_image2").on('dragover', function(e) {
+					$(".fn_upload_image_two").on('dragover', function(e) {
 						e.preventDefault();
 						$(this).css('background', '#bababa');
 					});
-					$(".fn_upload_image2").on('dragleave', function() {
+					$(".fn_upload_image_two").on('dragleave', function() {
 						$(this).css('background', '#f8f8f8');
 					});
 
-					function handleFileSelect2(evt) {
-						var parent = $(".fn_parent_image2");
+					function handleFileSelectTwo(evt) {
+						var parent = $(".fn_parent_image_two");
 						var files = evt.target.files;
 						for (var i = 0, f; f = files[i]; i++) {
 							if (!f.type.match('image.*')) {
@@ -979,19 +979,19 @@
 							var reader = new FileReader();
 							reader.onload = (function(theFile) {
 								return function(e) {
-									clone_image = image_wrapper2.clone(true);
+									clone_image = image_wrapper_two.clone(true);
 									clone_image.find("img").attr("src", e.target.result);
 									clone_image.find("img").attr("onerror", '$(this).closest(\"div\").remove()');
 									clone_image.appendTo(parent);
-									$(".fn_upload_image2").addClass("hidden");
-									$(".border_image_item2").addClass("border");
+									$(".fn_upload_image_two").addClass("hidden");
+									$(".border_image_item_two").addClass("border");
 								};
 							})(f);
 							reader.readAsDataURL(f);
 						}
-						$(".fn_upload_image2").removeAttr("style");
+						$(".fn_upload_image_two").removeAttr("style");
 					}
-					$(document).on('change', '.dropzone_image2', handleFileSelect2);
+					$(document).on('change', '.dropzone_image_two', handleFileSelectTwo);
 				}
 			}
 		});

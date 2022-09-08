@@ -28,7 +28,7 @@ class Interkassa extends Turbo
 					<input type='hidden' name='ik_payment_amount' value='$price'>
 					<input type='hidden' name='ik_payment_id' value='$order->id'>
 					<input type='hidden' name='ik_payment_desc' value='$desc'>
-					<input type='submit' name='process' value='$button_text' class='checkout_button'>
+					<input type='submit' name='process' value='$button_text' class='btn btn-success'>
 					</form>";
 		return $button;
 	}

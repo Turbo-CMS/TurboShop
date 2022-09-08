@@ -73,7 +73,7 @@
 			</div>
 			{if $product->images|count>1}
 				<span class="d-sm-none d-md-block d-none">
-					<div id="product-slider-pagination" class="row text-center text-lg-start {if $product->colors|count> 1}loader-container{/if}" {if $product->colors|count> 1}style="display: none;" {/if}>
+					<div id="product-slider-pagination" class="row text-center text-lg-start {if $product->colors|count> 1}loader-container{/if}" {if $product->colors|count> 1}style="display: none;"{/if}>
 						{foreach $product->images as $i=>$image name=images}
 							<div id="image{$image->id}" class="col-lg-3 col-md-4 col-xs-6 mb-4">
 								<a href="#" id="carousel-selector-{$image->id}" data-bs-target="#ProductImages" data-bs-slide-to="{$smarty.foreach.images.index}" class="d-block text-center img-thumbnail {if $smarty.foreach.images.first}selected{/if}">
@@ -113,7 +113,7 @@
 			{/if}
 			<p>{$product->annotation}</p>
 			{if !empty($product->sale_to)}
-				<span id="countdown_title" class="block_title">{$lang->until_the_end_of_the_promotion_is_left} </span>
+				<span id="countdown_title" class="block_title">{$lang->end_promotion} </span>
 				<div class="mb-4" id="countdown" sale_to="{strtotime($product->sale_to) * 1000}"></div>
 			{/if}
 			{if $product->variant->sku}<span class="article"><span class="block_title">{$lang->sku}: </span><span itemprop="sku" class="value">{$product->variant->sku}</span></span>{/if}
