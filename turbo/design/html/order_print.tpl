@@ -4,11 +4,11 @@
 <html>
 
 <head>
-	<base href="{$config->root_url}/" />
+	<base href="{$config->root_url}/">
 	<title>{$btr->general_order_number|escape} {$order->id}</title>
 	{* Meta tags *}
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<meta name="description" content="{$meta_description|escape}" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="description" content="{$meta_description|escape}">
 	<style>
 		body {
 			width: 1000px;

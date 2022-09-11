@@ -80,21 +80,21 @@
 							{$btr->general_name|escape}
 						</div>
 						<div class="form-group">
-							<input class="form-control" name="name" type="text" value="{$page->name|escape}" />
-							<input name="id" type="hidden" value="{$page->id|escape}" />
+							<input class="form-control" name="name" type="text" value="{$page->name|escape}">
+							<input name="id" type="hidden" value="{$page->id|escape}">
 						</div>
 						<div class="heading_label">
 							{$btr->page_menu_name|escape}
 						</div>
 						<div class="form-group">
-							<input class="form-control" name="header" type="text" value="{$page->header|escape}" />
+							<input class="form-control" name="header" type="text" value="{$page->header|escape}">
 						</div>
 						<div class="row">
 							<div class="col-xs-12 col-lg-6 col-md-10">
 								<div class="mt-h mb-h">
 									<div class="input-group">
 										<span class="input-group-addon input-group-addon-left">URL</span>
-										<input name="url" class="fn_meta_field form-control fn_url {if $page->id}fn_disabled{/if}" {if $page->id}readonly="" {/if} type="text" value="{$page->url|escape}" />
+										<input name="url" class="fn_meta_field form-control fn_url {if $page->id}fn_disabled{/if}" {if $page->id}readonly="" {/if} type="text" value="{$page->url|escape}">
 										<input type="checkbox" id="block_translit" class="hidden" value="1" {if $page->id}checked="" {/if}>
 										<span class="input-group-addon fn_disable_url">
 											{if $page->id}
@@ -168,9 +168,9 @@
 				<div class="toggle_body_wrap on fn_card row">
 					<div class="col-lg-6 col-md-6">
 						<div class="heading_label">Meta-title <span id="fn_meta_title_counter"></span></div>
-						<input name="meta_title" class="form-control fn_meta_field mb-h" type="text" value="{$page->meta_title|escape}" />
+						<input name="meta_title" class="form-control fn_meta_field mb-h" type="text" value="{$page->meta_title|escape}">
 						<div class="heading_label">Meta-keywords</div>
-						<input name="meta_keywords" class="form-control fn_meta_field mb-h" type="text" value="{$page->meta_keywords|escape}" />
+						<input name="meta_keywords" class="form-control fn_meta_field mb-h" type="text" value="{$page->meta_keywords|escape}">
 					</div>
 
 					<div class="col-lg-6 col-md-6 pl-0">

@@ -51,8 +51,8 @@
 								{$btr->general_name|escape}
 							</div>
 							<div class="form-group">
-								<input class="form-control" name="name" type="text" value="{$label->name|escape}" />
-								<input name="id" type="hidden" value="{$label->id|escape}" />
+								<input class="form-control" name="name" type="text" value="{$label->name|escape}">
+								<input name="id" type="hidden" value="{$label->id|escape}">
 							</div>
 						</div>
 						<div class="col-lg-6 col-md-6 col-sm-12">
@@ -61,7 +61,7 @@
 							</div>
 							<div class="form-group">
 								<div id="cp" class="input-group colorpicker-component">
-									<input type="text" name="color" value="{$label->color|escape}" class="form-control" />
+									<input type="text" name="color" value="{$label->color|escape}" class="form-control">
 									<span class="input-group-addon"><i></i></span>
 								</div>
 							</div>

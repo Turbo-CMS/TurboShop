@@ -121,7 +121,7 @@
 										<div class="turbo_list_boding turbo_list_photo">
 											{if $post->image}
 												<a href="{url module=ArticleAdmin id=$post->id return=$smarty.server.REQUEST_URI}">
-													<img src="{$post->image|resize_articles:45:45}" />
+													<img src="{$post->image|resize_articles:45:45}">
 												</a>
 											{else}
 												<a href="{url module=ArticleAdmin id=$post->id return=$smarty.server.REQUEST_URI}">

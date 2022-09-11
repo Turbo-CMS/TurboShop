@@ -72,14 +72,14 @@
 							{$btr->general_name|escape}
 						</div>
 						<div class="form-group">
-							<input class="form-control" name="name" type="text" value="{$feature->name|escape}" />
-							<input name="id" type="hidden" value="{$feature->id|escape}" />
+							<input class="form-control" name="name" type="text" value="{$feature->name|escape}">
+							<input name="id" type="hidden" value="{$feature->id|escape}">
 						</div>
 						<div class="row">
 							<div class="col-xs-12 col-lg-6 col-md-6">
 								<div class="input-group">
 									<span class="input-group-addon input-group-addon-left">URL</span>
-									<input name="url" class="form-control fn_url {if $feature->id}fn_disabled{/if}" {if $feature->id}readonly="" {/if} type="text" value="{$feature->url|escape}" />
+									<input name="url" class="form-control fn_url {if $feature->id}fn_disabled{/if}" {if $feature->id}readonly="" {/if} type="text" value="{$feature->url|escape}">
 									<input type="checkbox" id="block_translit" class="hidden" value="1" {if $feature->id}checked="" {/if}>
 									<span class="input-group-addon fn_disable_url">
 										{if $feature->id}

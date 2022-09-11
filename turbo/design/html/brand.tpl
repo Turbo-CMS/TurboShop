@@ -83,21 +83,21 @@
 							{$btr->general_name|escape}
 						</div>
 						<div class="form-group">
-							<input class="form-control" name="name" type="text" value="{$brand->name|escape}" />
-							<input name="id" type="hidden" value="{$brand->id|escape}" />
+							<input class="form-control" name="name" type="text" value="{$brand->name|escape}">
+							<input name="id" type="hidden" value="{$brand->id|escape}">
 						</div>
 						<div class="heading_label">
 							{$btr->page_h1|escape}
 						</div>
 						<div class="form-group">
-							<input name="name_h1" class="form-control" type="text" value="{$brand->name_h1|escape}" />
+							<input name="name_h1" class="form-control" type="text" value="{$brand->name_h1|escape}">
 						</div>
 						<div class="row">
 							<div class="col-xs-12 col-lg-6 col-md-10">
 								<div class="">
 									<div class="input-group">
 										<span class="input-group-addon input-group-addon-left">URL</span>
-										<input name="url" class="fn_meta_field form-control fn_url {if $brand->id}fn_disabled{/if}" {if $brand->id}readonly="" {/if} type="text" value="{$brand->url|escape}" />
+										<input name="url" class="fn_meta_field form-control fn_url {if $brand->id}fn_disabled{/if}" {if $brand->id}readonly="" {/if} type="text" value="{$brand->url|escape}">
 										<input type="checkbox" id="block_translit" class="hidden" value="1" {if $brand->id}checked="" {/if}>
 										<span class="input-group-addon fn_disable_url">
 											{if $brand->id}
@@ -146,7 +146,7 @@
 								<div class="fn_parent_image">
 									<div class="brand_image image_wrapper fn_image_wrapper text-xs-center">
 										<a href="javascript:;" class="fn_delete_item remove_image"></a>
-										<img src="{$brand->image|resize_brands:180:100}" alt="" />
+										<img src="{$brand->image|resize_brands:180:100}" alt="">
 									</div>
 								</div>
 							{else}
@@ -154,11 +154,11 @@
 							{/if}
 							<div class="fn_upload_image dropzone_block_image {if $brand->image} hidden{/if}">
 								{include file='svg_icon.tpl' svgId='plus_big'}
-								<input class="dropzone_image" name="image" type="file" />
+								<input class="dropzone_image" name="image" type="file">
 							</div>
 							<div class="brand_image image_wrapper fn_image_wrapper fn_new_image text-xs-center">
 								<a href="javascript:;" class="fn_delete_item remove_image"></a>
-								<img src="" alt="" />
+								<img src="" alt="">
 							</div>
 						</li>
 					</ul>
@@ -177,9 +177,9 @@
 				<div class="toggle_body_wrap on fn_card row">
 					<div class="col-lg-6 col-md-6">
 						<div class="heading_label">Meta-title <span id="fn_meta_title_counter"></span></div>
-						<input name="meta_title" class="form-control fn_meta_field mb-h" type="text" value="{$brand->meta_title|escape}" />
+						<input name="meta_title" class="form-control fn_meta_field mb-h" type="text" value="{$brand->meta_title|escape}">
 						<div class="heading_label">Meta-keywords</div>
-						<input name="meta_keywords" class="form-control fn_meta_field mb-h" type="text" value="{$brand->meta_keywords|escape}" />
+						<input name="meta_keywords" class="form-control fn_meta_field mb-h" type="text" value="{$brand->meta_keywords|escape}">
 					</div>
 					<div class="col-lg-6 col-md-6 pl-0">
 						<div class="heading_label">Meta-description <span id="fn_meta_description_counter"></span></div>

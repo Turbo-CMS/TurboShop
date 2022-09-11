@@ -2,6 +2,8 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
+-- --------------------------------------------------------
+
 --
 -- Table structure for table `t_articles`
 --
@@ -2791,7 +2793,11 @@ INSERT INTO `t_settings` (`setting_id`, `name`, `value`) VALUES
 (60, 'cache_type', '0'),
 (61, 'cache_time', '86400'),
 (63, 'counters', ''),
-(64, 'watermark_enable', '1');
+(64, 'watermark_enable', '1'),
+(65, 'tg_notify', ''),
+(66, 'tg_token', ''),
+(67, 'tg_apiurl', 'https://api.telegram.org/bot'),
+(68, 'tg_channel', '');
 
 -- --------------------------------------------------------
 
@@ -3784,7 +3790,7 @@ ALTER TABLE `t_seo`
 -- AUTO_INCREMENT for table `t_settings`
 --
 ALTER TABLE `t_settings`
-  MODIFY `setting_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
+  MODIFY `setting_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
 
 --
 -- AUTO_INCREMENT for table `t_subscribes`

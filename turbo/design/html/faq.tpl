@@ -60,8 +60,8 @@
 							{$btr->faq_question|escape}
 						</div>
 						<div class="form-group">
-							<input class="form-control" name="name" type="text" value="{$faq->name|escape}" />
-							<input name="id" type="hidden" value="{$faq->id|escape}" />
+							<input class="form-control" name="name" type="text" value="{$faq->name|escape}">
+							<input name="id" type="hidden" value="{$faq->id|escape}">
 						</div>
 					</div>
 					<div class="col-lg-2 col-md-3 col-sm-12">

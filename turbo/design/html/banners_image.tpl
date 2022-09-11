@@ -54,8 +54,8 @@
 							{$btr->general_name|escape}
 						</div>
 						<div class="form-group">
-							<input class="form-control" name="name" type="text" value="{$banners_image->name|escape}" />
-							<input name="id" type="hidden" value="{$banners_image->id|escape}" />
+							<input class="form-control" name="name" type="text" value="{$banners_image->name|escape}">
+							<input name="id" type="hidden" value="{$banners_image->id|escape}">
 						</div>
 					</div>
 					<div class="col-lg-2 col-md-3 col-sm-12">
@@ -93,7 +93,7 @@
 								<div class="fn_parent_image">
 									<div class="banner_image image_wrapper fn_image_wrapper text-xs-center">
 										<a href="javascript:;" class="fn_delete_item remove_image"></a>
-										<img src="{$banners_image->image|resize_banners:800:400}" alt="" />
+										<img src="{$banners_image->image|resize_banners:800:400}" alt="">
 									</div>
 								</div>
 							{else}
@@ -101,11 +101,11 @@
 							{/if}
 							<div class="fn_upload_image dropzone_block_image {if $banners_image->image} hidden{/if}">
 								{include file='svg_icon.tpl' svgId='plus_big'}
-								<input class="dropzone_image" name="image" type="file" />
+								<input class="dropzone_image" name="image" type="file">
 							</div>
 							<div class="banner_image image_wrapper fn_image_wrapper fn_new_image text-xs-center">
 								<a href="javascript:;" class="fn_delete_item remove_image"></a>
-								<img src="" alt="" />
+								<img src="" alt="">
 							</div>
 						</li>
 					</ul>
@@ -134,28 +134,28 @@
 					<div class="">
 						<div class="heading_label">{$btr->banners_image_url|escape}</div>
 						<div class="">
-							<input name="url" class="form-control" type="text" value="{$banners_image->url|escape}" />
+							<input name="url" class="form-control" type="text" value="{$banners_image->url|escape}">
 						</div>
 					</div>
 
 					<div class="">
 						<div class="heading_label">{$btr->banners_image_button|escape}</div>
 						<div class="">
-							<input name="button" class="form-control" type="text" value="{$banners_image->button|escape}" />
+							<input name="button" class="form-control" type="text" value="{$banners_image->button|escape}">
 						</div>
 					</div>
 
 					<div class="">
 						<div class="heading_label">{$btr->banners_image_alt|escape}</div>
 						<div class="">
-							<input name="alt" class="form-control" type="text" value="{$banners_image->alt|escape}" />
+							<input name="alt" class="form-control" type="text" value="{$banners_image->alt|escape}">
 						</div>
 					</div>
 
 					<div class="">
 						<div class="heading_label">{$btr->banners_image_title|escape}</div>
 						<div class="">
-							<input name="title" class="form-control" type="text" value="{$banners_image->title|escape}" />
+							<input name="title" class="form-control" type="text" value="{$banners_image->title|escape}">
 						</div>
 					</div>
 

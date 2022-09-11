@@ -45,19 +45,19 @@
 						<div class="col-md-12">
 							<div class="heading_label">{$btr->settings_general_sitename|escape}</div>
 							<div class="mb-1">
-								<input name="site_name" class="form-control" type="text" value="{$settings->site_name|escape}" />
+								<input name="site_name" class="form-control" type="text" value="{$settings->site_name|escape}">
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="heading_label">{$btr->settings_general_company_name|escape}</div>
 							<div class="mb-1">
-								<input name="company_name" class="form-control" type="text" value="{$settings->company_name|escape}" />
+								<input name="company_name" class="form-control" type="text" value="{$settings->company_name|escape}">
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="heading_label">{$btr->settings_general_date|escape}</div>
 							<div class="mb-1">
-								<input name="date_format" class="form-control" type="text" value="{$settings->date_format|escape}" />
+								<input name="date_format" class="form-control" type="text" value="{$settings->date_format|escape}">
 							</div>
 						</div>
 						<div class="col-md-6">
@@ -96,25 +96,25 @@
 						<div class="col-md-6">
 							<div class="heading_label">{$btr->settings_notify_emails|escape}</div>
 							<div class="mb-1">
-								<input name="order_email" class="form-control" type="text" value="{$settings->order_email|escape}" />
+								<input name="order_email" class="form-control" type="text" value="{$settings->order_email|escape}">
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="heading_label">{$btr->settings_notify_comments|escape}</div>
 							<div class="mb-1">
-								<input name="comment_email" class="form-control" type="text" value="{$settings->comment_email|escape}" />
+								<input name="comment_email" class="form-control" type="text" value="{$settings->comment_email|escape}">
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="heading_label">{$btr->settings_notify_reverce|escape}</div>
 							<div class="mb-1">
-								<input name="notify_from_email" class="form-control" type="text" value="{$settings->notify_from_email|escape}" />
+								<input name="notify_from_email" class="form-control" type="text" value="{$settings->notify_from_email|escape}">
 							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="heading_label">{$btr->settings_admin_email|escape}</div>
 							<div class="mb-1">
-								<input name="admin_email" class="form-control" type="text" value="{$settings->admin_email|escape}" />
+								<input name="admin_email" class="form-control" type="text" value="{$settings->admin_email|escape}">
 							</div>
 						</div>
 						<div class="col-md-6">
@@ -130,7 +130,7 @@
 						<div class="col-md-6">
 							<div class="heading_label">{$btr->settings_notify_sender_name|escape}</div>
 							<div class="mb-1">
-								<input name="notify_from_name" class="form-control" type="text" value="{$settings->notify_from_name|escape}" />
+								<input name="notify_from_name" class="form-control" type="text" value="{$settings->notify_from_name|escape}">
 							</div>
 						</div>
 					</div>
@@ -182,6 +182,53 @@
 		<div class="col-lg-12 col-md-12">
 			<div class="boxed fn_toggle_wrap">
 				<div class="heading_box">
+					{$btr->notifications_telegram|escape}
+					<div class="toggle_arrow_wrap fn_toggle_card text-primary">
+						<a class="btn-minimize" href="javascript:;"><i class="fn_icon_arrow icon-chevron-down"></i></a>
+					</div>
+				</div>
+				<div class="toggle_body_wrap on fn_card">
+					<div class="permission_block">
+						<div class="permission_boxes row">
+							<div class="col-xl-3 col-lg-4 col-md-6">
+								<div class="permission_box">
+									<span>{$btr->enable_notifications|escape}</span>
+									<div class="form-check form-switch">
+										<input class="form-check-input" id="tg_notify" name="tg_notify" value="1" type="checkbox" {if $settings->tg_notify|escape}checked=""{/if}>
+										<label class="form-check-label" for="tg_notify"></label>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<div class="heading_label">Token</div>
+							<div class="mb-1">
+								<input name="tg_token" class="form-control" type="text" value="{$settings->tg_token|escape}">
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="heading_label">API URL</div>
+							<div class="mb-1">
+								<input name="tg_apiurl" class="form-control" type="text" value="{$settings->tg_apiurl|escape}">
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="heading_label">Chat ID</div>
+							<div class="mb-1">
+								<input name="tg_channel" class="form-control" type="text" value="{$settings->tg_channel|escape}">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-lg-12 col-md-12">
+			<div class="boxed fn_toggle_wrap">
+				<div class="heading_box">
 					{$btr->settings_catalog_catalog|escape}
 					<div class="toggle_arrow_wrap fn_toggle_card text-primary">
 						<a class="btn-minimize" href="javascript:;"><i class="fn_icon_arrow icon-chevron-down"></i></a>
@@ -192,37 +239,37 @@
 						<div class="col-lg-3 col-md-6">
 							<div class="heading_label">{$btr->settings_catalog_products_on_page|escape}</div>
 							<div class="mb-1">
-								<input name="products_num" class="form-control" type="text" value="{$settings->products_num|escape}" />
+								<input name="products_num" class="form-control" type="text" value="{$settings->products_num|escape}">
 							</div>
 						</div>
 						<div class="col-lg-3 col-md-6">
 							<div class="heading_label">{$btr->settings_catalog_products_max|escape}</div>
 							<div class="mb-1">
-								<input name="max_order_amount" class="form-control" type="text" value="{$settings->max_order_amount|escape}" />
+								<input name="max_order_amount" class="form-control" type="text" value="{$settings->max_order_amount|escape}">
 							</div>
 						</div>
 						<div class="col-lg-3 col-md-6">
 							<div class="heading_label">{$btr->settings_catalog_products_on_admin|escape}</div>
 							<div class="mb-1">
-								<input name="products_num_admin" class="form-control" type="text" value="{$settings->products_num_admin|escape}" />
+								<input name="products_num_admin" class="form-control" type="text" value="{$settings->products_num_admin|escape}">
 							</div>
 						</div>
 						<div class="col-lg-3 col-md-6">
 							<div class="heading_label">{$btr->settings_features_on_admin|escape}</div>
 							<div class="mb-1">
-								<input name="features_num_admin" class="form-control" type="text" value="{$settings->features_num_admin|escape}" />
+								<input name="features_num_admin" class="form-control" type="text" value="{$settings->features_num_admin|escape}">
 							</div>
 						</div>
 						<div class="col-lg-3 col-md-6">
 							<div class="heading_label">{$btr->settings_catalog_units|escape}</div>
 							<div class="mb-1">
-								<input name="units" class="form-control" type="text" value="{$settings->units|escape}" />
+								<input name="units" class="form-control" type="text" value="{$settings->units|escape}">
 							</div>
 						</div>
 						<div class="col-lg-3 col-md-6">
 							<div class="heading_label">{$btr->settings_catalog_weight_units|escape}</div>
 							<div class="mb-1">
-								<input name="weight_units" class="form-control" type="text" value="{$settings->weight_units|escape}" />
+								<input name="weight_units" class="form-control" type="text" value="{$settings->weight_units|escape}">
 							</div>
 						</div>
 						<div class="col-lg-3 col-md-6">
@@ -251,7 +298,7 @@
 								<div class="permission_box">
 									<span>{$btr->count_products_category|escape}</span>
 									<div class="form-check form-switch">
-										<input class="form-check-input" id="category_count" name="category_count" value="1" type="checkbox" {if $settings->category_count}checked="" {/if}>
+										<input class="form-check-input" id="category_count" name="category_count" value="1" type="checkbox" {if $settings->category_count}checked=""{/if}>
 										<label class="form-check-label" for="category_count"></label>
 									</div>
 								</div>
@@ -276,25 +323,25 @@
 						<div class="col-lg-3 col-md-6">
 							<div class="heading_label">{$btr->settings_blog_posts_site|escape}</div>
 							<div class="mb-1">
-								<input name="blog_num" class="form-control" type="text" value="{$settings->blog_num|escape}" />
+								<input name="blog_num" class="form-control" type="text" value="{$settings->blog_num|escape}">
 							</div>
 						</div>
 						<div class="col-lg-3 col-md-6">
 							<div class="heading_label">{$btr->settings_blog_posts_admin|escape}</div>
 							<div class="mb-1">
-								<input name="blog_num_admin" class="form-control" type="text" value="{$settings->blog_num_admin|escape}" />
+								<input name="blog_num_admin" class="form-control" type="text" value="{$settings->blog_num_admin|escape}">
 							</div>
 						</div>
 						<div class="col-lg-3 col-md-6">
 							<div class="heading_label">{$btr->settings_articles_on_site|escape}</div>
 							<div class="mb-1">
-								<input name="articles_num" class="form-control" type="text" value="{$settings->articles_num|escape}" />
+								<input name="articles_num" class="form-control" type="text" value="{$settings->articles_num|escape}">
 							</div>
 						</div>
 						<div class="col-lg-3 col-md-6">
 							<div class="heading_label">{$btr->settings_articles_on_admin|escape}</div>
 							<div class="mb-1">
-								<input name="articles_num_admin" class="form-control" type="text" value="{$settings->articles_num_admin|escape}" />
+								<input name="articles_num_admin" class="form-control" type="text" value="{$settings->articles_num_admin|escape}">
 							</div>
 						</div>
 					</div>
@@ -370,7 +417,7 @@
 								<div class="permission_box">
 									<span>{$btr->settings_general_product|escape}</span>
 									<div class="form-check form-switch">
-										<input class="form-check-input" id="captcha_product" name="captcha_product" value="1" type="checkbox" {if $settings->captcha_product}checked="" {/if}>
+										<input class="form-check-input" id="captcha_product" name="captcha_product" value="1" type="checkbox" {if $settings->captcha_product}checked=""{/if}>
 										<label class="form-check-label" for="captcha_product"></label>
 									</div>
 								</div>
@@ -379,7 +426,7 @@
 								<div class="permission_box">
 									<span>{$btr->settings_general_blog|escape}</span>
 									<div class="form-check form-switch">
-										<input class="form-check-input" id="captcha_post" name="captcha_post" value="1" type="checkbox" {if $settings->captcha_post}checked="" {/if}>
+										<input class="form-check-input" id="captcha_post" name="captcha_post" value="1" type="checkbox" {if $settings->captcha_post}checked=""{/if}>
 										<label class="form-check-label" for="captcha_post"></label>
 									</div>
 								</div>
@@ -388,7 +435,7 @@
 								<div class="permission_box">
 									<span>{$btr->settings_general_article|escape}</span>
 									<div class="form-check form-switch">
-										<input class="form-check-input" id="captcha_article" name="captcha_article" value="1" type="checkbox" {if $settings->captcha_article}checked="" {/if}>
+										<input class="form-check-input" id="captcha_article" name="captcha_article" value="1" type="checkbox" {if $settings->captcha_article}checked=""{/if}>
 										<label class="form-check-label" for="captcha_article"></label>
 									</div>
 								</div>
@@ -397,7 +444,7 @@
 								<div class="permission_box">
 									<span>{$btr->settings_general_cart|escape}</span>
 									<div class="form-check form-switch">
-										<input class="form-check-input" id="captcha_cart" name="captcha_cart" value="1" type="checkbox" {if $settings->captcha_cart}checked="" {/if}>
+										<input class="form-check-input" id="captcha_cart" name="captcha_cart" value="1" type="checkbox" {if $settings->captcha_cart}checked=""{/if}>
 										<label class="form-check-label" for="captcha_cart"></label>
 									</div>
 								</div>
@@ -406,7 +453,7 @@
 								<div class="permission_box">
 									<span>{$btr->settings_general_register|escape}</span>
 									<div class="form-check form-switch">
-										<input class="form-check-input" id="captcha_register" name="captcha_register" value="1" type="checkbox" {if $settings->captcha_register}checked="" {/if}>
+										<input class="form-check-input" id="captcha_register" name="captcha_register" value="1" type="checkbox" {if $settings->captcha_register}checked=""{/if}>
 										<label class="form-check-label" for="captcha_register"></label>
 									</div>
 								</div>
@@ -424,7 +471,7 @@
 								<div class="permission_box">
 									<span>{$btr->settings_general_callback|escape}</span>
 									<div class="form-check form-switch">
-										<input class="form-check-input" id="captcha_callback" name="captcha_callback" value="1" type="checkbox" {if $settings->captcha_callback}checked="" {/if}>
+										<input class="form-check-input" id="captcha_callback" name="captcha_callback" value="1" type="checkbox" {if $settings->captcha_callback}checked=""{/if}>
 										<label class="form-check-label" for="captcha_callback"></label>
 									</div>
 								</div>
@@ -433,7 +480,7 @@
 								<div class="permission_box">
 									<span>{$btr->settings_general_fastorder|escape}</span>
 									<div class="form-check form-switch">
-										<input class="form-check-input" id="captcha_review" name="captcha_fastorder" value="1" type="checkbox" {if $settings->captcha_review}checked="" {/if}>
+										<input class="form-check-input" id="captcha_review" name="captcha_fastorder" value="1" type="checkbox" {if $settings->captcha_review}checked=""{/if}>
 										<label class="form-check-label" for="captcha_review"></label>
 									</div>
 								</div>
@@ -442,7 +489,7 @@
 								<div class="permission_box">
 									<span>{$btr->settings_general_review|escape}</span>
 									<div class="form-check form-switch">
-										<input class="form-check-input" id="captcha_review" name="captcha_review" value="1" type="checkbox" {if $settings->captcha_review}checked="" {/if}>
+										<input class="form-check-input" id="captcha_review" name="captcha_review" value="1" type="checkbox" {if $settings->captcha_review}checked=""{/if}>
 										<label class="form-check-label" for="captcha_review"></label>
 									</div>
 								</div>
@@ -485,7 +532,7 @@
 						<div class="col-lg-3 col-md-3">
 							<div class="heading_label">{$btr->cache_lifetime|escape}</div>
 							<div class="mb-1">
-								<input name="cache_time" class="form-control" type="text" value="{$settings->cache_time|escape}" />
+								<input name="cache_time" class="form-control" type="text" value="{$settings->cache_time|escape}">
 							</div>
 						</div>
 						<div class="col-lg-3 col-md-3">
@@ -518,7 +565,7 @@
 								<div class="permission_box">
 									<span>{$btr->settings_precise_resizing_images|escape}</span>
 									<div class="form-check form-switch">
-										<input class="form-check-input" id="smart_resize" name="smart_resize" value="1" type="checkbox" {if $settings->smart_resize}checked="" {/if}>
+										<input class="form-check-input" id="smart_resize" name="smart_resize" value="1" type="checkbox" {if $settings->smart_resize}checked=""{/if}>
 										<label class="form-check-label" for="smart_resize"></label>
 									</div>
 								</div>
@@ -527,7 +574,7 @@
 								<div class="permission_box">
 									<span>{$btr->settings_enable_webp|escape}</span>
 									<div class="form-check form-switch">
-										<input class="form-check-input" id="webp_support" name="webp_support" value="1" type="checkbox" {if $settings->webp_support}checked="" {/if}>
+										<input class="form-check-input" id="webp_support" name="webp_support" value="1" type="checkbox" {if $settings->webp_support}checked=""{/if}>
 										<label class="form-check-label" for="webp_support"></label>
 									</div>
 								</div>
@@ -536,7 +583,7 @@
 								<div class="permission_box">
 									<span>{$btr->settings_watermark_enable|escape}</span>
 									<div class="form-check form-switch">
-										<input class="form-check-input" id="watermark_enable" name="watermark_enable" value="1" type="checkbox" {if $settings->watermark_enable}checked="" {/if}>
+										<input class="form-check-input" id="watermark_enable" name="watermark_enable" value="1" type="checkbox" {if $settings->watermark_enable}checked=""{/if}>
 										<label class="form-check-label" for="watermark_enable"></label>
 									</div>
 								</div>
@@ -568,7 +615,7 @@
 												<div class="fn_parent_image">
 													<div class="watermark_image image_wrapper fn_image_wrapper text-xs-center">
 														<a href="javascript:;" class="fn_delete_item remove_image"></a>
-														<img src="{$config->root_url}/{$config->watermark_file}?{math equation='rand(10,10000)'}" alt="" />
+														<img src="{$config->root_url}/{$config->watermark_file}?{math equation='rand(10,10000)'}" alt="">
 													</div>
 												</div>
 											{else}
@@ -576,11 +623,11 @@
 											{/if}
 											<div class="fn_upload_image dropzone_block_image {if $config->watermark_file} hidden{/if}">
 												{include file='svg_icon.tpl' svgId='plus_big'}
-												<input class="dropzone_image" name="watermark_file" type="file" />
+												<input class="dropzone_image" name="watermark_file" type="file">
 											</div>
 											<div class="watermark_image image_wrapper fn_image_wrapper fn_new_image text-xs-center">
 												<a href="javascript:;" class="fn_delete_item remove_image"></a>
-												<img src="" alt="" />
+												<img src="" alt="">
 											</div>
 										</li>
 									</ul>
@@ -595,8 +642,8 @@
 										<span class="font-weight-bold fn_show_range">{$settings->watermark_offset_x|escape}</span>
 									</div>
 									<div class="raiting_boxed">
-										<input class="fn_range_value" type="hidden" value="{$settings->watermark_offset_x|escape}" name="watermark_offset_x" />
-										<input class="fn_rating range_input" type="range" min="0" max="100" step="1" value="{$settings->watermark_offset_x|escape}" />
+										<input class="fn_range_value" type="hidden" value="{$settings->watermark_offset_x|escape}" name="watermark_offset_x">
+										<input class="fn_rating range_input" type="range" min="0" max="100" step="1" value="{$settings->watermark_offset_x|escape}">
 										<div class="raiting_range_number">
 											<span class="float-xs-left">1%</span>
 											<span class="float-xs-right">100%</span>
@@ -609,8 +656,8 @@
 										<span class="font-weight-bold fn_show_range">{$settings->watermark_offset_y|escape}</span>
 									</div>
 									<div class="raiting_boxed">
-										<input class="fn_range_value" type="hidden" value="{$settings->watermark_offset_y|escape}" name="watermark_offset_y" />
-										<input class="fn_rating range_input" type="range" min="0" max="100" step="1" value="{$settings->watermark_offset_y|escape}" />
+										<input class="fn_range_value" type="hidden" value="{$settings->watermark_offset_y|escape}" name="watermark_offset_y">
+										<input class="fn_rating range_input" type="range" min="0" max="100" step="1" value="{$settings->watermark_offset_y|escape}">
 										<div class="raiting_range_number">
 											<span class="float-xs-left">1</span>
 											<span class="float-xs-right">100</span>
@@ -623,8 +670,8 @@
 										<span class="font-weight-bold fn_show_range">{$settings->watermark_transparency}</span>
 									</div>
 									<div class="raiting_boxed">
-										<input class="fn_range_value" type="hidden" value="{$settings->watermark_transparency}" name="watermark_transparency" />
-										<input class="fn_rating range_input" type="range" min="0" max="100" step="1" value="{$settings->watermark_transparency|escape}" />
+										<input class="fn_range_value" type="hidden" value="{$settings->watermark_transparency}" name="watermark_transparency">
+										<input class="fn_rating range_input" type="range" min="0" max="100" step="1" value="{$settings->watermark_transparency|escape}">
 										<div class="raiting_range_number">
 											<span class="float-xs-left">1</span>
 											<span class="float-xs-right">100</span>
@@ -637,8 +684,8 @@
 										<span class="font-weight-bold fn_show_range">{$settings->images_sharpen}</span>
 									</div>
 									<div class="raiting_boxed">
-										<input class="fn_range_value" type="hidden" value="{$settings->images_sharpen}" name="images_sharpen" />
-										<input class="fn_rating range_input" type="range" min="0" max="100" step="1" value="{$settings->images_sharpen|escape}" />
+										<input class="fn_range_value" type="hidden" value="{$settings->images_sharpen}" name="images_sharpen">
+										<input class="fn_rating range_input" type="range" min="0" max="100" step="1" value="{$settings->images_sharpen|escape}">
 										<div class="raiting_range_number">
 											<span class="float-xs-left">1</span>
 											<span class="float-xs-right">100</span>

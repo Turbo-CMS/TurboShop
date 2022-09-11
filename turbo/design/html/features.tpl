@@ -63,7 +63,7 @@
 	</div>
 	{if $features}
 		<form method="post" class="fn_form_list">
-			<input type="hidden" name="session_id" value="{$smarty.session.id}" />
+			<input type="hidden" name="session_id" value="{$smarty.session.id}">
 			<div class="turbo_list fn_sort_list">
 				<div class="turbo_list_head">
 					<div class="turbo_list_heading turbo_list_drag"></div>
@@ -82,7 +82,7 @@
 					{foreach $features as $feature}
 						<div class="fn_row turbo_list_body_item fn_sort_item body_narrow">
 							<div class="turbo_list_row narrow">
-								<input type="hidden" name="positions[{$feature->id}]" value="{$feature->position}" />
+								<input type="hidden" name="positions[{$feature->id}]" value="{$feature->position}">
 								<div class="turbo_list_boding turbo_list_drag move_zone">
 									{include file='svg_icon.tpl' svgId='drag_vertical'}
 								</div>

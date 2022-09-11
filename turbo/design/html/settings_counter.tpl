@@ -53,7 +53,7 @@
 												<div class="col-md-12">
 													<div class="heading_label">{$btr->counters_counter_name|escape}</div>
 													<div class="mb-1">
-														<input name="counters[name][]" class="form-control mb-h" value="{$c->name|escape}" />
+														<input name="counters[name][]" class="form-control mb-h" value="{$c->name|escape}">
 													</div>
 												</div>
 												<div class="col-md-12">
@@ -99,7 +99,7 @@
 									<div class="col-md-12">
 										<div class="heading_label">{$btr->counters_counter_name|escape}</div>
 										<div class="mb-1">
-											<input name="counters[name][]" class="form-control mb-h" value="" />
+											<input name="counters[name][]" class="form-control mb-h" value="">
 										</div>
 									</div>
 									<div class="col-md-12">

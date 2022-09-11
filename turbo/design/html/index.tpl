@@ -2,12 +2,12 @@
 <html>
 
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<META HTTP-EQUIV="Pragma" CONTENT="no-cache" />
-	<META HTTP-EQUIV="Expires" CONTENT="-1" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+	<META HTTP-EQUIV="Expires" CONTENT="-1">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 	<title>{$meta_title|escape}</title>
-	<link rel="icon" href="design/images/favicon.svg" type="image/x-icon" />
+	<link rel="icon" href="design/images/favicon.svg" type="image/x-icon">
 	{* Styles *}
 	{css id="admin" include=[
 	"turbo/design/css/turbo.css",
@@ -33,7 +33,7 @@
 		<div id="mob_menu"></div>
 		<div class="sidebar_header">
 			<a class="logo_box" href="index.php?module=DashboardAdmin">
-				<img src="design/images/logo_title.svg" alt="TurboCMS" />
+				<img src="design/images/logo_title.svg" alt="TurboCMS">
 			</a>
 			<span class="fn_switch_menu hidden-xl-up menu_close">
 				{include file='svg_icon.tpl' svgId='close'}
@@ -106,22 +106,22 @@
 								</a>
 								<ul class="fn_submenu_toggle submenu">
 									{if in_array('orders', $manager->permissions)}
-										<li {if $status===0}class="active" {/if} {if in_array($smarty.get.module, array("OrderAdmin"))}{if $order->status==0}class="active" {/if}{/if}>
+										<li {if $status===0}class="active"{/if} {if in_array($smarty.get.module, array("OrderAdmin"))}{if $order->status==0}class="active"{/if}{/if}>
 											<a class="nav-link" href="index.php?module=OrdersAdmin&status=0">
 												<span class="left_orders_title title">{$btr->general_new_order}</span>
 											</a>
 										</li>
-										<li {if $status==1 || $order->status==1}class="active" {/if}>
+										<li {if $status==1 || $order->status==1}class="active"{/if}>
 											<a class="nav-link" href="index.php?module=OrdersAdmin&status=1">
 												<span class="left_orders_settings_title title">{$btr->general_accepted_order|escape}</span>
 											</a>
 										</li>
-										<li {if $status==2 || $order->status==2}class="active" {/if}>
+										<li {if $status==2 || $order->status==2}class="active"{/if}>
 											<a class="nav-link" href="index.php?module=OrdersAdmin&status=2">
 												<span class="left_orders_settings_title title">{$btr->general_closed_order|escape}</span>
 											</a>
 										</li>
-										<li {if $status==3 || $order->status==3}class="active" {/if}>
+										<li {if $status==3 || $order->status==3}class="active"{/if}>
 											<a class="nav-link" href="index.php?module=OrdersAdmin&status=3">
 												<span class="left_orders_settings_title title">{$btr->general_canceled_order|escape}</span>
 											</a>
@@ -135,7 +135,7 @@
 										</li>
 									{/if}
 									{if in_array('labels', $manager->permissions)}
-										<li {if in_array($smarty.get.module, array("OrdersLabelsAdmin","OrdersLabelAdmin"))}class="active" {/if}>
+										<li {if in_array($smarty.get.module, array("OrdersLabelsAdmin","OrdersLabelAdmin"))}class="active"{/if}>
 											<a class="nav-link" href="index.php?module=OrdersLabelsAdmin">
 												<span class="left_orders_settings_title title">{$btr->general_labels}</span>
 											</a>
@@ -455,7 +455,7 @@
 											<span class="left_banners_title title">{$btr->left_banners_title|escape}</span>
 										</a>
 									</li>
-									<li {if in_array($smarty.get.module, array("BannersImagesAdmin","BannersImageAdmin"))}class="active" {/if} {if $banners_image->id}class="active"{/if}>
+									<li {if in_array($smarty.get.module, array("BannersImagesAdmin","BannersImageAdmin"))}class="active"{/if} {if $banners_image->id}class="active"{/if}>
 										<a class="nav-link" href="index.php?module=BannersImagesAdmin">
 											<span class="left_banners_images_title title">{$btr->left_banners_images_title|escape}</span>
 										</a>

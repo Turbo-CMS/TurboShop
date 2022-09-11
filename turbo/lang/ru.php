@@ -1212,3 +1212,5 @@ $backend_translations->general_articles_filter = 'Фильтр по статья
 $backend_translations->general_icon = 'Иконка';
 $backend_translations->icon_code = 'Код иконки';
 $backend_translations->settings_watermark_enable = 'Включить водяной знак';
+$backend_translations->notifications_telegram = 'Уведомления в Telegram';
+$backend_translations->enable_notifications = 'Включить уведомления';

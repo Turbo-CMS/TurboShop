@@ -33,6 +33,7 @@ class Turbo
 		'request'               => 'Request',
 		'payment'               => 'Payment',
 		'banners'               => 'Banners',
+		'tgnotify'              => 'TgNotify',
 		'db'                    => 'Database',
 		'settings'              => 'Settings',
 		'comments'              => 'Comments',

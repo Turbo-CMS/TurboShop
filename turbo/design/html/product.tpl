@@ -74,7 +74,7 @@
 {/if}
 <form method="post" id="product" enctype="multipart/form-data" class="clearfix fn_fast_button">
 	<input type="hidden" name="session_id" value="{$smarty.session.id}">
-	<input type="hidden" name="lang_id" value="{$lang_id}" />
+	<input type="hidden" name="lang_id" value="{$lang_id}">
 	<div class="row">
 		<div class="col-xs-12">
 			<div class="boxed">
@@ -84,15 +84,15 @@
 							{$btr->general_name|escape}
 						</div>
 						<div class="form-group">
-							<input class="form-control" name="name" type="text" value="{$product->name|escape}" />
-							<input name="id" type="hidden" value="{$product->id|escape}" />
+							<input class="form-control" name="name" type="text" value="{$product->name|escape}">
+							<input name="id" type="hidden" value="{$product->id|escape}">
 						</div>
 						<div class="row">
 							<div class="col-xs-12 col-lg-6 col-md-10">
 								<div class="mt-h mb-h">
 									<div class="input-group">
 										<span class="input-group-addon input-group-addon-left">URL</span>
-										<input name="url" class="fn_meta_field form-control fn_url {if $product->id}fn_disabled{/if}" {if $product->id}readonly="" {/if} type="text" value="{$product->url|escape}" />
+										<input name="url" class="fn_meta_field form-control fn_url {if $product->id}fn_disabled{/if}" {if $product->id}readonly="" {/if} type="text" value="{$product->url|escape}">
 										<input type="checkbox" id="block_translit" class="hidden" value="1" {if $product->id}checked="" {/if}>
 										<span class="input-group-addon fn_disable_url">
 											{if $product->id}
@@ -190,8 +190,8 @@
 						<span class="font-weight-bold fn_show_rating">{$product->rating}</span>
 					</div>
 					<div class="raiting_boxed">
-						<input class="fn_rating_value" type="hidden" value="{$product->rating}" name="rating" />
-						<input class="fn_rating range_input" type="range" min="1" max="5" step="0.1" value="{$product->rating}" />
+						<input class="fn_rating_value" type="hidden" value="{$product->rating}" name="rating">
+						<input class="fn_rating range_input" type="range" min="1" max="5" step="0.1" value="{$product->rating}">
 
 						<div class="raiting_range_number">
 							<span class="float-xs-left">1</span>
@@ -226,7 +226,7 @@
 								<button type="button" class="fn_remove_image remove_image"></button>
 								<i class="move_zone">
 									{if $image}
-										<img class="product_icon" src="{$image->filename|resize:200:100}" alt="" />
+										<img class="product_icon" src="{$image->filename|resize:200:100}" alt="">
 									{else}
 										<img class="product_icon" src="design/images/no_image.svg" width="50">
 									{/if}
@@ -236,7 +236,7 @@
 						{/foreach}
 						<li class="fn_new_image_item product_image_item fn_sort_item">
 							<button type="button" class="fn_remove_image remove_image"></button>
-							<img src="" alt="" />
+							<img src="" alt="">
 							<input type="hidden" name='images_urls[]' value="">
 						</li>
 					</ul>
@@ -251,7 +251,7 @@
 				<div class="row">
 					<div class="col-lg-12 toggle_body_wrap on fn_card">
 						<div class="heading_label">{$btr->product_sale_to|escape}</div>
-						<p><input id="sale_to" name="sale_to" class="form-control" autocomplete="off" type="text" value="{$product->sale_to}" /></p>
+						<p><input id="sale_to" name="sale_to" class="form-control" autocomplete="off" type="text" value="{$product->sale_to}"></p>
 						<div class="heading_label">{$btr->general_brand|escape}</div>
 						<select name="brand_id" class="selectpicker mb-1 fn_meta_brand" data-live-search="true">
 							<option value="0" {if !$product->brand_id}selected="" {/if} data-brand_name="">{$btr->general_not_set|escape}</option>
@@ -318,36 +318,36 @@
 										</div>
 										<div class="turbo_list_boding variants_item_sku">
 											<div class="heading_label">{$btr->general_sku|escape}</div>
-											<input class="variant_input" name="variants[sku][]" type="text" value="{$variant->sku|escape}" />
+											<input class="variant_input" name="variants[sku][]" type="text" value="{$variant->sku|escape}">
 										</div>
 										<div class="turbo_list_boding variants_item_name">
 											<div class="heading_label">{$btr->general_option_name|escape}</div>
-											<input name="variants[id][]" type="hidden" value="{$variant->id|escape}" />
-											<input class="variant_input" name="variants[name][]" type="text" value="{$variant->name|escape}" />
+											<input name="variants[id][]" type="hidden" value="{$variant->id|escape}">
+											<input class="variant_input" name="variants[name][]" type="text" value="{$variant->name|escape}">
 										</div>
 										<div class="turbo_list_boding variants_item_height color-picker">
 											<div class="heading_label"></div>
 											<span data-hint="{$btr->select_color|escape}" class="hint-top-right-t-info-s-small-mobile hint-anim">
-												<input name="variants[color_code][]" type="hidden" value="{$variant->color_code|escape}" class="" />
+												<input name="variants[color_code][]" type="hidden" value="{$variant->color_code|escape}" class="">
 												<div class="add-on colorPicker-picker"></div>
 											</span>
 										</div>
 										<div class="turbo_list_boding variants_item_color">
 											<div class="heading_label">{$btr->general_color|escape}</div>
-											<input name="variants[color][]" class="variant_input" type="text" value="{$variant->color|escape}" />
+											<input name="variants[color][]" class="variant_input" type="text" value="{$variant->color|escape}">
 										</div>
 										<div class="turbo_list_boding variants_item_image">
 											<div class="heading_label"></div>
-											<a href='javascript:;' data-hint="{$btr->select_color_image|escape}" class="hint-top-right-t-info-s-small-mobile hint-anim add_images"><img src="design/images/picture{if !$variant->images_ids}_empty{/if}.svg" title="{$btr->select_color_image|escape}" /></a>
-											<input name="variants[images_ids][]" type="hidden" value="{$variant->images_ids|escape}" />
+											<a href='javascript:;' data-hint="{$btr->select_color_image|escape}" class="hint-top-right-t-info-s-small-mobile hint-anim add_images"><img src="design/images/picture{if !$variant->images_ids}_empty{/if}.svg" title="{$btr->select_color_image|escape}"></a>
+											<input name="variants[images_ids][]" type="hidden" value="{$variant->images_ids|escape}">
 										</div>
 										<div class="turbo_list_boding variants_item_price">
 											<div class="heading_label">{$btr->general_price|escape}, {if isset($currencies[$variant->currency_id])}{$currencies[$variant->currency_id]->sign|escape}{else}{$currency->sign}{/if}</div>
-											<input class="variant_input" name="variants[price][]" type="text" value="{$variant->oprice|escape}" />
+											<input class="variant_input" name="variants[price][]" type="text" value="{$variant->oprice|escape}">
 										</div>
 										<div class="turbo_list_boding variants_item_discount">
 											<div class="heading_label">{$btr->general_old_price|escape}, {if isset($currencies[$variant->currency_id])}{$currencies[$variant->currency_id]->sign|escape}{else}{$currency->sign}{/if}</div>
-											<input class="variant_input text_grey" name="variants[compare_price][]" type="text" value="{$variant->compare_oprice|escape}" />
+											<input class="variant_input text_grey" name="variants[compare_price][]" type="text" value="{$variant->compare_oprice|escape}">
 										</div>
 										<div class="turbo_list_boding variants_item_currency">
 											<div class="heading_label">{$btr->general_currency|escape}</div>
@@ -359,12 +359,12 @@
 										</div>
 										<div class="turbo_list_boding variants_item_weight">
 											<div class="heading_label">{$btr->general_weight|escape}, {$settings->weight_units}</div>
-											<input class="variant_input" name="variants[weight][]" type="text" value="{$variant->weight|escape}" />
+											<input class="variant_input" name="variants[weight][]" type="text" value="{$variant->weight|escape}">
 										</div>
 										<div class="turbo_list_boding variants_item_amount">
 											<div class="heading_label">{$btr->general_qty|escape}</div>
 											<div class="input-group">
-												<input class="form-control" name="variants[stock][]" type="text" value="{if $variant->infinity || $variant->stock == ''}∞{else}{$variant->stock|escape}{/if}" />
+												<input class="form-control" name="variants[stock][]" type="text" value="{if $variant->infinity || $variant->stock == ''}∞{else}{$variant->stock|escape}{/if}">
 												<span class="input-group-addon p-0">
 													{$settings->units|escape}
 												</span>
@@ -391,36 +391,36 @@
 									</div>
 									<div class="turbo_list_boding variants_item_sku">
 										<div class="heading_label">{$btr->general_sku|escape}</div>
-										<input class="variant_input" name="variants[sku][]" type="text" value="" />
+										<input class="variant_input" name="variants[sku][]" type="text" value="">
 									</div>
 									<div class="turbo_list_boding variants_item_name">
 										<div class="heading_label">{$btr->general_option_name|escape}</div>
-										<input name="variants[id][]" type="hidden" value="" />
-										<input class="variant_input" name="variants[name][]" type="text" value="" />
+										<input name="variants[id][]" type="hidden" value="">
+										<input class="variant_input" name="variants[name][]" type="text" value="">
 									</div>
 									<div class="turbo_list_boding variants_item_height">
 										<div class="heading_label"></div>
 										<span data-hint="{$btr->select_color|escape}" class="hint-top-right-t-info-s-small-mobile hint-anim">
-											<input name="variants[color_code][]" type="hidden" value="" />
+											<input name="variants[color_code][]" type="hidden" value="">
 											<div class="add-on colorPicker-picker"></div>
 										</span>
 									</div>
 									<div class="turbo_list_boding variants_item_color">
 										<div class="heading_label">{$btr->general_color|escape}</div>
-										<input name="variants[color][]" class="variant_input" type="text" value="" />
+										<input name="variants[color][]" class="variant_input" type="text" value="">
 									</div>
 									<div class="turbo_list_boding variants_item_image">
 										<div class="heading_label"></div>
-										<a href='javascript:;' data-hint="{$btr->select_color_image|escape}" class="hint-top-right-t-info-s-small-mobile hint-anim add_images"><img src="design/images/picture_empty.svg" title="{$btr->select_color_image|escape}" /></a>
-										<input name="variants[images_ids][]" type="hidden" value="" />
+										<a href='javascript:;' data-hint="{$btr->select_color_image|escape}" class="hint-top-right-t-info-s-small-mobile hint-anim add_images"><img src="design/images/picture_empty.svg" title="{$btr->select_color_image|escape}"></a>
+										<input name="variants[images_ids][]" type="hidden" value="">
 									</div>
 									<div class="turbo_list_boding variants_item_price">
 										<div class="heading_label">{$btr->general_price|escape}, {$currency->sign}</div>
-										<input class="variant_input" name="variants[price][]" type="text" value="" />
+										<input class="variant_input" name="variants[price][]" type="text" value="">
 									</div>
 									<div class="turbo_list_boding variants_item_discount">
 										<div class="heading_label">{$btr->general_old_price|escape}, {$currency->sign}</div>
-										<input class="variant_input" name="variants[compare_price][]" type="text" value="" />
+										<input class="variant_input" name="variants[compare_price][]" type="text" value="">
 									</div>
 									<div class="turbo_list_boding variants_item_currency">
 										<div class="heading_label">{$btr->general_currency|escape}</div>
@@ -432,12 +432,12 @@
 									</div>
 									<div class="turbo_list_boding variants_item_weight">
 										<div class="heading_label">{$btr->general_weight|escape}, {$settings->weight_units}</div>
-										<input class="variant_input" name="variants[weight][]" type="text" value="" />
+										<input class="variant_input" name="variants[weight][]" type="text" value="">
 									</div>
 									<div class="turbo_list_boding variants_item_amount">
 										<div class="heading_label">{$btr->general_qty|escape}</div>
 										<div class="input-group">
-											<input class="form-control" name="variants[stock][]" type="text" value="∞" />
+											<input class="form-control" name="variants[stock][]" type="text" value="∞">
 											<span class="input-group-addon p-0">
 												{$settings->units|escape}
 											</span>
@@ -490,7 +490,7 @@
 													{/if}
 												</div>
 											<div class="feature_value {if $feature->is_color}color-picker{/if}">
-												<input class="feature_input fn_auto_option {if !$feature_value@first}feature_input_single{/if}" data-id="{$feature_id}" type="text" name="options[{$feature_id}][]" value="{$feature_value|escape}" />
+												<input class="feature_input fn_auto_option {if !$feature_value@first}feature_input_single{/if}" data-id="{$feature_id}" type="text" name="options[{$feature_id}][]" value="{$feature_value|escape}">
 												{if $feature->is_color}<div class="add-on colorPicker-picker"></div>{/if}
 												<button type="button" class="btn btn_mini{if $feature_value@first} btn-feature {if $feature->is_color}fn_add_color{else}fn_add{/if}{else} btn-danger-feature fn_remove{/if} fn_feature_multi_values feature_multi_values">
 													<span class="fn_plus" {if !$feature_value@first}style="display: none;" {/if}>
@@ -514,7 +514,7 @@
 												</span>
 											</div>
 											<div class="feature_value {if $feature->is_color}color-picker{/if}">
-												<input class="feature_input fn_auto_option" data-id="{$feature_id}" type="text" name="options[{$feature_id}][]" value="" />
+												<input class="feature_input fn_auto_option" data-id="{$feature_id}" type="text" name="options[{$feature_id}][]" value="">
 												{if $feature->is_color}<div class="add-on colorPicker-picker"></div>{/if}
 												<button type="button" class="btn btn_mini btn-feature fn_add fn_feature_multi_values feature_multi_values">
 													<span class="fn_plus">
@@ -533,8 +533,8 @@
 						<div class="fn_new_feature">
 							<div feature_id="" class="new_feature_row clearfix">
 								<div class="wrap_inner_new_feature">
-									<input type="text" class="new_feature new_feature_name" name="new_features_names[]" placeholder="{$btr->product_features_enter|escape}" />
-									<input type="text" class="new_feature new_feature_value" name="new_features_values[]" placeholder="{$btr->product_features_value_enter|escape}" />
+									<input type="text" class="new_feature new_feature_name" name="new_features_names[]" placeholder="{$btr->product_features_enter|escape}">
+									<input type="text" class="new_feature new_feature_value" name="new_features_values[]" placeholder="{$btr->product_features_value_enter|escape}">
 								</div>
 								<span class="fn_delete_feature btn_close delete_feature">
 									{include file='svg_icon.tpl' svgId='delete'}
@@ -549,7 +549,7 @@
 									</span>
 								</div>
 								<div class="feature_value">
-									<input class="feature_input fn_auto_option" data-id="" type="text" name="" value="" />
+									<input class="feature_input fn_auto_option" data-id="" type="text" name="" value="">
 									<button type="button" class="btn btn_mini btn-feature fn_add fn_feature_multi_values feature_multi_values">
 										<span class="fn_plus">
 											{include file='svg_icon.tpl' svgId='plus'}
@@ -569,7 +569,7 @@
 										</span>
 									</div>
 								<div class="feature_value">
-									<input class="feature_input fn_auto_option" data-id="" type="text" name="" value="" />
+									<input class="feature_input fn_auto_option" data-id="" type="text" name="" value="">
 									<button type="button" class="btn btn_mini btn-feature fn_add fn_feature_multi_values feature_multi_values">
 										<span class="fn_plus">
 											{include file='svg_icon.tpl' svgId='plus'}
@@ -734,7 +734,7 @@
 										</div>
 										<div class="turbo_list_boding turbo_list_related_photo">
 											<a href="https://www.youtube.com/embed/{$video->vid}" data-fancybox class="iframe fancybox.iframe">
-												<img class="product_icon" src="https://img.youtube.com/vi/{$video->vid}/mqdefault.jpg" />
+												<img class="product_icon" src="https://img.youtube.com/vi/{$video->vid}/mqdefault.jpg">
 											</a>
 										</div>
 										<div class="turbo_list_boding turbo_list_related_name">
@@ -788,9 +788,9 @@
 				<div class="toggle_body_wrap on fn_card row">
 					<div class="col-lg-6 col-md-6">
 						<div class="heading_label">Meta-title <span id="fn_meta_title_counter"></span></div>
-						<input name="meta_title" class="form-control fn_meta_field mb-h" type="text" value="{$product->meta_title|escape}" />
+						<input name="meta_title" class="form-control fn_meta_field mb-h" type="text" value="{$product->meta_title|escape}">
 						<div class="heading_label">Meta-keywords</div>
-						<input name="meta_keywords" class="form-control fn_meta_field mb-h" type="text" value="{$product->meta_keywords|escape}" />
+						<input name="meta_keywords" class="form-control fn_meta_field mb-h" type="text" value="{$product->meta_keywords|escape}">
 					</div>
 					<div class="col-lg-6 col-md-6 pl-0">
 						<div class="heading_label">Meta-description <span id="fn_meta_description_counter"></span></div>
@@ -839,7 +839,7 @@
 		{foreach from=$product_images item=image}
 			<li>
 				<label>
-					<img src="{$image->filename|resize:80:80}" alt="" />
+					<img src="{$image->filename|resize:80:80}" alt="">
 					<input type="hidden" name='images[]' value='{$image->id}'>
 					<span class="start">
 						{include file='svg_icon.tpl' svgId='circle'}
@@ -1062,8 +1062,8 @@
 				$('.images ul').clone().appendTo('#popup_images');
 				$('#popup_images input[type=hidden]').each(function() {
 					id = $(this).val() + '';
-					if ($.inArray(id, ids) >= 0) $('<input type="checkbox" value="' + $(this).val() + '" style="display:none" checked="checked" />').insertAfter(this);
-					else $('<input type="checkbox" value="' + $(this).val() + '" style="display:none" />').insertAfter(this);
+					if ($.inArray(id, ids) >= 0) $('<input type="checkbox" value="' + $(this).val() + '" style="display:none" checked="checked">').insertAfter(this);
+					else $('<input type="checkbox" value="' + $(this).val() + '" style="display:none">').insertAfter(this);
 					$(this).remove();
 				});
 				$('#popup_images :checkbox:checked').closest('li').addClass('active');

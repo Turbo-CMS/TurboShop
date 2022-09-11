@@ -45,25 +45,25 @@
 								<div class="col-md-12">
 									<div class="heading_label">{$btr->url_site|escape}</div>
 									<div class="mb-1">
-										<input name="am_url" class="form-control mb-h" type="text" value="{$seo->am_url|escape}" />
+										<input name="am_url" class="form-control mb-h" type="text" value="{$seo->am_url|escape}">
 									</div>
 								</div>
 								<div class="col-md-12">
 									<div class="heading_label">{$btr->seo_patterns_ajax_site_name|escape}</div>
 									<div class="mb-1">
-										<input name="am_name" class="form-control mb-h" type="text" value="{$seo->am_name|escape}" />
+										<input name="am_name" class="form-control mb-h" type="text" value="{$seo->am_name|escape}">
 									</div>
 								</div>
 								<div class="col-md-12">
 									<div class="heading_label">{$btr->general_phone|escape}</div>
 									<div class="mb-1">
-										<input name="am_phone" class="form-control mb-h" type="text" value="{$seo->am_phone|escape}" />
+										<input name="am_phone" class="form-control mb-h" type="text" value="{$seo->am_phone|escape}">
 									</div>
 								</div>
 								<div class="col-md-12">
 									<div class="heading_label">E-mail</div>
 									<div class="mb-1">
-										<input name="am_email" class="form-control mb-h" type="text" value="{$seo->am_email|escape}" />
+										<input name="am_email" class="form-control mb-h" type="text" value="{$seo->am_email|escape}">
 									</div>
 								</div>
 								<div class="col-md-12">
@@ -129,49 +129,49 @@
 								<div class="col-md-12">
 									<div class="heading_label">{$btr->general_categories|escape}</div>
 									<div class="mb-1">
-										<input name="category_meta_title" class="form-control mb-h" type="text" value="{$seo->category_meta_title|escape}" />
+										<input name="category_meta_title" class="form-control mb-h" type="text" value="{$seo->category_meta_title|escape}">
 									</div>
 								</div>
 								<div class="col-md-12">
 									<div class="heading_label">{$btr->categories_brands|escape}</div>
 									<div class="mb-1">
-										<input name="category_brand_meta_title" class="form-control mb-h" type="text" value="{$seo->category_brand_meta_title|escape}" />
+										<input name="category_brand_meta_title" class="form-control mb-h" type="text" value="{$seo->category_brand_meta_title|escape}">
 									</div>
 								</div>
 								<div class="col-md-12">
 									<div class="heading_label">{$btr->seo_brands|escape}</div>
 									<div class="mb-1">
-										<input name="brand_meta_title" class="form-control mb-h" type="text" value="{$seo->brand_meta_title|escape}" />
+										<input name="brand_meta_title" class="form-control mb-h" type="text" value="{$seo->brand_meta_title|escape}">
 									</div>
 								</div>
 								<div class="col-md-12">
 									<div class="heading_label">{$btr->seo_products|escape}</div>
 									<div class="mb-1">
-										<input name="product_meta_title" class="form-control mb-h" type="text" value="{$seo->product_meta_title|escape}" />
+										<input name="product_meta_title" class="form-control mb-h" type="text" value="{$seo->product_meta_title|escape}">
 									</div>
 								</div>
 								<div class="col-md-12">
 									<div class="heading_label">{$btr->left_pages|escape}</div>
 									<div class="mb-1">
-										<input name="page_meta_title" class="form-control mb-h" type="text" value="{$seo->page_meta_title|escape}" />
+										<input name="page_meta_title" class="form-control mb-h" type="text" value="{$seo->page_meta_title|escape}">
 									</div>
 								</div>
 								<div class="col-md-12">
 									<div class="heading_label">{$btr->left_blog_title|escape}</div>
 									<div class="mb-1">
-										<input name="post_meta_title" class="form-control mb-h" type="text" value="{$seo->post_meta_title|escape}" />
+										<input name="post_meta_title" class="form-control mb-h" type="text" value="{$seo->post_meta_title|escape}">
 									</div>
 								</div>
 								<div class="col-md-12">
 									<div class="heading_label">{$btr->article_categories|escape}</div>
 									<div class="mb-1">
-										<input name="category_article_meta_title" class="form-control mb-h" type="text" value="{$seo->category_article_meta_title|escape}" />
+										<input name="category_article_meta_title" class="form-control mb-h" type="text" value="{$seo->category_article_meta_title|escape}">
 									</div>
 								</div>
 								<div class="col-md-12">
 									<div class="heading_label">{$btr->left_articles_title|escape}</div>
 									<div class="mb-1">
-										<input name="article_meta_title" class="form-control mb-h" type="text" value="{$seo->article_meta_title|escape}" />
+										<input name="article_meta_title" class="form-control mb-h" type="text" value="{$seo->article_meta_title|escape}">
 									</div>
 								</div>
 							</div>
@@ -235,49 +235,49 @@
 								<div class="col-md-12">
 									<div class="heading_label">{$btr->general_categories|escape}</div>
 									<div class="mb-1">
-										<input name="category_meta_keywords" class="form-control mb-h" type="text" value="{$seo->category_meta_keywords|escape}" />
+										<input name="category_meta_keywords" class="form-control mb-h" type="text" value="{$seo->category_meta_keywords|escape}">
 									</div>
 								</div>
 								<div class="col-md-12">
 									<div class="heading_label">{$btr->categories_brands|escape}</div>
 									<div class="mb-1">
-										<input name="category_brand_meta_keywords" class="form-control mb-h" type="text" value="{$seo->category_brand_meta_keywords|escape}" />
+										<input name="category_brand_meta_keywords" class="form-control mb-h" type="text" value="{$seo->category_brand_meta_keywords|escape}">
 									</div>
 								</div>
 								<div class="col-md-12">
 									<div class="heading_label">{$btr->seo_brands|escape}</div>
 									<div class="mb-1">
-										<input name="brand_meta_keywords" class="form-control mb-h" type="text" value="{$seo->brand_meta_keywords|escape}" />
+										<input name="brand_meta_keywords" class="form-control mb-h" type="text" value="{$seo->brand_meta_keywords|escape}">
 									</div>
 								</div>
 								<div class="col-md-12">
 									<div class="heading_label">{$btr->seo_products|escape}</div>
 									<div class="mb-1">
-										<input name="product_meta_keywords" class="form-control mb-h" type="text" value="{$seo->product_meta_keywords|escape}" />
+										<input name="product_meta_keywords" class="form-control mb-h" type="text" value="{$seo->product_meta_keywords|escape}">
 									</div>
 								</div>
 								<div class="col-md-12">
 									<div class="heading_label">{$btr->left_pages|escape}</div>
 									<div class="mb-1">
-										<input name="page_meta_keywords" class="form-control mb-h" type="text" value="{$seo->page_meta_keywords|escape}" />
+										<input name="page_meta_keywords" class="form-control mb-h" type="text" value="{$seo->page_meta_keywords|escape}">
 									</div>
 								</div>
 								<div class="col-md-12">
 									<div class="heading_label">{$btr->left_blog_title|escape}</div>
 									<div class="mb-1">
-										<input name="post_meta_title_keywords" class="form-control mb-h" type="text" value="{$seo->post_meta__keywords|escape}" />
+										<input name="post_meta_title_keywords" class="form-control mb-h" type="text" value="{$seo->post_meta__keywords|escape}">
 									</div>
 								</div>
 								<div class="col-md-12">
 									<div class="heading_label">{$btr->article_categories|escape}</div>
 									<div class="mb-1">
-										<input name="category_article_meta_keywords" class="form-control mb-h" type="text" value="{$seo->category_article_meta_keywords|escape}" />
+										<input name="category_article_meta_keywords" class="form-control mb-h" type="text" value="{$seo->category_article_meta_keywords|escape}">
 									</div>
 								</div>
 								<div class="col-md-12">
 									<div class="heading_label">{$btr->left_articles_title|escape}</div>
 									<div class="mb-1">
-										<input name="article_meta_keywords" class="form-control mb-h" type="text" value="{$seo->article_meta_keywords|escape}" />
+										<input name="article_meta_keywords" class="form-control mb-h" type="text" value="{$seo->article_meta_keywords|escape}">
 									</div>
 								</div>
 							</div>

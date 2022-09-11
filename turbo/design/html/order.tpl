@@ -6,7 +6,7 @@
 
 <form method="post" id="order" enctype="multipart/form-data" class="fn_fast_button">
 	<input type="hidden" name="session_id" value="{$smarty.session.id}">
-	<input name="id" type="hidden" value="{$order->id|escape}" />
+	<input name="id" type="hidden" value="{$order->id|escape}">
 	<div class="row">
 		<div class="col-lg-12 col-md-12">
 			<div class="wrap_heading">
@@ -184,7 +184,7 @@
 													</div>
 												</div>
 												{if !$purchase->variant}
-													<input class="form-control" type="hidden" name="purchases[variant_id][{$purchase->id}]" value="" />
+													<input class="form-control" type="hidden" name="purchases[variant_id][{$purchase->id}]" value="">
 												{else}
 													<div class="boxes_inline mt-q">
 														<select name="purchases[variant_id][{$purchase->id}]" class="selectpicker {if $purchase->product->variants|count == 1}hidden{/if} fn_purchase_variant">
@@ -209,7 +209,7 @@
 											</div>
 											<div class="turbo_list_boding turbo_list_count">
 												<div class="input-group">
-													<input class="form-control fn_purchase_amount" type="text" name="purchases[amount][{$purchase->id}]" value="{$purchase->amount}" />
+													<input class="form-control fn_purchase_amount" type="text" name="purchases[amount][{$purchase->id}]" value="{$purchase->amount}">
 													<span class="input-group-addon p-0">
 														{$settings->units|escape}
 													</span>
@@ -235,7 +235,7 @@
 								<div class="fn_row turbo_list_body_item ">
 									<div class="turbo_list_row">
 										<div class="turbo_list_boding turbo_list_photo">
-											<input type="hidden" name="purchases[id][]" value="" />
+											<input type="hidden" name="purchases[id][]" value="">
 											<img class="fn_new_image" src="">
 										</div>
 										<div class="turbo_list_boding turbo_list_order_name">
@@ -255,7 +255,7 @@
 										</div>
 										<div class="turbo_list_boding turbo_list_count">
 											<div class="input-group">
-												<input class="form-control fn_purchase_amount" type="text" name="purchases[amount][]" value="1" />
+												<input class="form-control fn_purchase_amount" type="text" name="purchases[amount][]" value="1">
 												<span class="input-group-addon p-0">
 													{$settings->units|escape}
 												</span>
@@ -332,7 +332,7 @@
 											</div>
 											<div class="turbo_list_boding turbo_list_ordfig_val">
 												<div class="input-group">
-													<input type="text" class="form-control" name="coupon_discount" value="{$order->coupon_discount}" />
+													<input type="text" class="form-control" name="coupon_discount" value="{$order->coupon_discount}">
 													<span class="input-group-addon p-0">{$currency->sign|escape}</span>
 												</div>
 											</div>
@@ -439,15 +439,15 @@
 						</div>
 						<div class="mb-1">
 							<div class="heading_label">{$btr->general_full_name|escape}</div>
-							<input name="name" class="form-control" type="text" value="{$order->name|escape}" />
+							<input name="name" class="form-control" type="text" value="{$order->name|escape}">
 						</div>
 						<div class="mb-1">
 							<div class="heading_label">{$btr->general_phone|escape}</div>
-							<input name="phone" class="form-control" type="text" value="{$order->phone|escape}" />
+							<input name="phone" class="form-control" type="text" value="{$order->phone|escape}">
 						</div>
 						<div class="mb-1">
 							<div class="heading_label">E-mail</div>
-							<input name="email" class="form-control" type="text" value="{$order->email|escape}" />
+							<input name="email" class="form-control" type="text" value="{$order->email|escape}">
 						</div>
 						<div class="mb-1">
 							<div class="heading_label">{$btr->general_adress|escape} <a href="https://www.google.com/maps/search/{$order->address|escape}?hl={$settings->lang}" target="_blank">{include file='svg_icon.tpl' svgId='marker'} {$btr->order_on_map|escape}</a></div>
@@ -470,8 +470,8 @@
 										{$btr->order_buyer_not_registred|escape}
 									</div>
 									<div style="position:relative;">
-										<input type="hidden" name="user_id" value="{$user->id}" />
-										<input type="text" class="fn_user_complite form-control" placeholder="{$btr->order_user_select|escape}" />
+										<input type="hidden" name="user_id" value="{$user->id}">
+										<input type="text" class="fn_user_complite form-control" placeholder="{$btr->order_user_select|escape}">
 									</div>
 								{else}
 									<div class="fn_user_row">

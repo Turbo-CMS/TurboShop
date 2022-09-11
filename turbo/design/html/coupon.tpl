@@ -82,12 +82,12 @@
 				<div class="turbo_list_body_item">
 					<div class="turbo_list_row ">
 						<div class="turbo_list_boding turbo_list_coupon_name">
-							<input class="form-control" name="code" type="text" value="{$coupon->code|escape}" placeholder="{$btr->coupons_enter_name|escape}" />
-							<input name="id" class="name" type="hidden" value="{$coupon->id|escape}" />
+							<input class="form-control" name="code" type="text" value="{$coupon->code|escape}" placeholder="{$btr->coupons_enter_name|escape}">
+							<input name="id" class="name" type="hidden" value="{$coupon->id|escape}">
 						</div>
 						<div class="turbo_list_boding turbo_list_coupon_sale">
 							<div class="input-group">
-								<input class="form-control" name="value" type="text" value="{$coupon->value|escape}" />
+								<input class="form-control" name="value" type="text" value="{$coupon->value|escape}">
 								<select class="selectpicker form-control" name="type">
 									<option value="percentage" {if $coupon->type=='percentage'}selected{/if}>%</option>
 									<option value="absolute" {if $coupon->type=='absolute'}selected{/if}>{$currency->sign}</option>

@@ -70,8 +70,8 @@
 							{$btr->general_name|escape}
 						</div>
 						<div class="form-group">
-							<input class="form-control mb-h" name="name" type="text" value="{$banner->name|escape}" />
-							<input name="id" type="hidden" value="{$banner->id|escape}" />
+							<input class="form-control mb-h" name="name" type="text" value="{$banner->name|escape}">
+							<input name="id" type="hidden" value="{$banner->id|escape}">
 						</div>
 						<div class="row">
 							<div class="col-lg-6 col-sm-12">
@@ -89,7 +89,7 @@
 								<div class="input-group">
 									<span class="boxes_inline heading_label">{$btr->banner_id_enter|escape}</span>
 									<span class="boxes_inline bnr_id_grup">
-										<input name="group_id" class="form-control" type="text" value="{$banner->group_id|escape}" />
+										<input name="group_id" class="form-control" type="text" value="{$banner->group_id|escape}">
 									</span>
 								</div>
 							</div>

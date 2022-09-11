@@ -31,7 +31,7 @@
 			{/if}
 			<div class="col-lg-12 col-md-12 col-sm-12">
 				<form class="fn_form_list" method="post">
-					<input type="hidden" name="session_id" value="{$smarty.session.id}" />
+					<input type="hidden" name="session_id" value="{$smarty.session.id}">
 					<div class="users_wrap turbo_list">
 						<div class="turbo_list_head">
 							<div class="turbo_list_heading turbo_list_check">

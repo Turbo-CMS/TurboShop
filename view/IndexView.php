@@ -70,6 +70,9 @@ class IndexView extends View
 				$callback_id = $this->callbacks->add_callback($callback);
 				// Send email
 				$this->notify->email_callback_admin($callback_id);
+				// Send notification Telegram
+				if($this->settings->tg_notify==1)
+				$this->tgnotify->message_callback($callback_id);
 			}
 		}
 

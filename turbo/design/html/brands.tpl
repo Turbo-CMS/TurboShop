@@ -20,7 +20,7 @@
 <div class="boxed fn_toggle_wrap">
 	{if $brands}
 		<form method="post" class="fn_form_list">
-			<input type="hidden" name="session_id" value="{$smarty.session.id}" />
+			<input type="hidden" name="session_id" value="{$smarty.session.id}">
 
 			<div class="turbo_list fn_sort_list">
 				<div class="turbo_list_head">

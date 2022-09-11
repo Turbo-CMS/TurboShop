@@ -181,7 +181,7 @@
 										</div>
 										<div class="turbo_list_boding turbo_list_count">
 											<div class="input-group">
-												<input class="form-control" type="text" name="stock[{$product->variants[0]->id}]" value="{if $product->variants[0]->infinity}∞{else}{$product->variants[0]->stock}{/if}" />
+												<input class="form-control" type="text" name="stock[{$product->variants[0]->id}]" value="{if $product->variants[0]->infinity}∞{else}{$product->variants[0]->stock}{/if}">
 												<span class="input-group-addon p-0">
 													{$settings->units|escape}
 												</span>
@@ -256,7 +256,7 @@
 														</div>
 														<div class="turbo_list_boding turbo_list_count">
 															<div class="input-group">
-																<input class="form-control" type="text" name="stock[{$variant->id}]" value="{if $variant->infinity}∞{else}{$variant->stock}{/if}" />
+																<input class="form-control" type="text" name="stock[{$variant->id}]" value="{if $variant->infinity}∞{else}{$variant->stock}{/if}">
 																<span class="input-group-addon p-0">
 																	{$settings->units|escape}
 																</span>
@@ -339,7 +339,7 @@
 											<option value="1">{$btr->products_percent|escape}</option>
 										</select>
 										<div class="col-lg-12 col-md-12 col-sm-12 group_price_change form-group">
-											<input type="text" name="value" class="col-lg-12 col-md-12 col-sm-12 form-control text_form" placeholder="{$btr->enter_numeric_value|escape}" />
+											<input type="text" name="value" class="col-lg-12 col-md-12 col-sm-12 form-control text_form" placeholder="{$btr->enter_numeric_value|escape}">
 											<div data-hint="{$btr->save_old_price|escape}" class="checkbox_change_price float-sm-right text_dark hint-bottom-left-t-info-s-small-mobile hint-anim">
 												<label class="form-check mr-h">
 													<input class="form-check-input fn_check_all_single" type="checkbox" checked="checked" name="save_old" value="1">

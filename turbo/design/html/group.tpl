@@ -71,8 +71,8 @@
 							{$btr->user_group_name|escape}
 						</div>
 						<div class="form-group">
-							<input class="form-control" name="name" type="text" value="{$group->name|escape}" />
-							<input name="id" type="hidden" value="{$group->id|escape}" />
+							<input class="form-control" name="name" type="text" value="{$group->name|escape}">
+							<input name="id" type="hidden" value="{$group->id|escape}">
 						</div>
 					</div>
 					<div class="col-lg-6 col-md-12">
@@ -80,7 +80,7 @@
 							{$btr->general_discount|escape}
 						</div>
 						<div class="form-group">
-							<input name="discount" class="form-control" type="text" value="{$group->discount|escape}" />
+							<input name="discount" class="form-control" type="text" value="{$group->discount|escape}">
 						</div>
 					</div>
 					<div class="col-lg-12 col-md-12 mt-1">

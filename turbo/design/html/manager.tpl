@@ -74,15 +74,15 @@
 					<div class="mb-1">
 						<div class="heading_label">{$btr->manager_login|escape}</div>
 						<div class="">
-							<input class="form-control" name="login" autocomplete="off" type="text" value="{$m->login|escape}" />
-							<input name="old_login" type="hidden" value="{$m->login|escape}" />
-							<input name="id" type="hidden" value="{$m->id|escape}" />
+							<input class="form-control" name="login" autocomplete="off" type="text" value="{$m->login|escape}">
+							<input name="old_login" type="hidden" value="{$m->login|escape}">
+							<input name="id" type="hidden" value="{$m->id|escape}">
 						</div>
 					</div>
 					<div class="mb-1">
 						<div class="heading_label">{$btr->manager_pass|escape}</div>
 						<div class="">
-							<input class="form-control" autocomplete="off" name="password" type="password" value="" placeholder="••••••" />
+							<input class="form-control" autocomplete="off" name="password" type="password" value="" placeholder="••••••">
 						</div>
 					</div>
 				</div>

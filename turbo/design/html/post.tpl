@@ -72,7 +72,7 @@
 {/if}
 
 <form method="post" enctype="multipart/form-data" class="fn_fast_button">
-	<input type="hidden" name="session_id" value="{$smarty.session.id}" />
+	<input type="hidden" name="session_id" value="{$smarty.session.id}">
 
 	<div class="row">
 		<div class="col-xs-12 ">
@@ -83,15 +83,15 @@
 							{$btr->general_name|escape}
 						</div>
 						<div class="form-group">
-							<input class="form-control" name="name" type="text" value="{$post->name|escape}" />
-							<input name="id" type="hidden" value="{$post->id|escape}" />
+							<input class="form-control" name="name" type="text" value="{$post->name|escape}">
+							<input name="id" type="hidden" value="{$post->id|escape}">
 						</div>
 						<div class="row">
 							<div class="col-xs-12 col-lg-6 col-md-10">
 								<div class="">
 									<div class="input-group">
 										<span class="input-group-addon input-group-addon-left">URL</span>
-										<input name="url" class="fn_meta_field form-control fn_url {if $post->id}fn_disabled{/if}" {if $post->id}readonly="" {/if} type="text" value="{$post->url|escape}" />
+										<input name="url" class="fn_meta_field form-control fn_url {if $post->id}fn_disabled{/if}" {if $post->id}readonly="" {/if} type="text" value="{$post->url|escape}">
 										<input type="checkbox" id="block_translit" class="hidden" value="1" {if $post->id}checked="" {/if}>
 										<span class="input-group-addon fn_disable_url">
 											{if $post->id}
@@ -139,7 +139,7 @@
 								<div class="fn_parent_image_two">
 									<div class="image_wrapper fn_image_wrapper_two text-xs-center">
 										<a href="javascript:;" class="fn_delete_item_two remove_image"></a>
-										<img src="{$post->image|resize_posts:200:100}" alt="" />
+										<img src="{$post->image|resize_posts:200:100}" alt="">
 									</div>
 								</div>
 							{else}
@@ -147,11 +147,11 @@
 							{/if}
 							<div class="fn_upload_image_two dropzone_block_image {if $post->image} hidden{/if}">
 								{include file='svg_icon.tpl' svgId='plus_big'}
-								<input class="dropzone_image_two" name="image" type="file" />
+								<input class="dropzone_image_two" name="image" type="file">
 							</div>
 							<div class="image_wrapper fn_image_wrapper_two fn_new_image_two text-xs-center">
 								<a href="javascript:;" class="fn_delete_item_two remove_image"></a>
-								<img src="" alt="" />
+								<img src="" alt="">
 							</div>
 						</li>
 					</ul>
@@ -173,7 +173,7 @@
 								<div>
 									<div class="heading_label">{$btr->general_date|escape}</div>
 									<div class="">
-										<input name="date" class="form-control" type="text" value="{$post->date|date}" />
+										<input name="date" class="form-control" type="text" value="{$post->date|date}">
 									</div>
 								</div>
 							</div>
@@ -193,9 +193,9 @@
 				<div class="toggle_body_wrap on fn_card row">
 					<div class="col-lg-6 col-md-6">
 						<div class="heading_label">Meta-title <span id="fn_meta_title_counter"></span></div>
-						<input name="meta_title" class="form-control fn_meta_field mb-h" type="text" value="{$post->meta_title|escape}" />
+						<input name="meta_title" class="form-control fn_meta_field mb-h" type="text" value="{$post->meta_title|escape}">
 						<div class="heading_label">Meta-keywords</div>
-						<input name="meta_keywords" class="form-control fn_meta_field mb-h" type="text" value="{$post->meta_keywords|escape}" />
+						<input name="meta_keywords" class="form-control fn_meta_field mb-h" type="text" value="{$post->meta_keywords|escape}">
 					</div>
 
 					<div class="col-lg-6 col-md-6 pl-0">

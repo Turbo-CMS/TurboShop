@@ -67,8 +67,8 @@
 							{$btr->index_name|escape}
 						</div>
 						<div class="form-group">
-							<input class="form-control" name="name" type="text" value="{$user->name|escape}" />
-							<input name="id" type="hidden" value="{$user->id|escape}" />
+							<input class="form-control" name="name" type="text" value="{$user->name|escape}">
+							<input name="id" type="hidden" value="{$user->id|escape}">
 						</div>
 					</div>
 					<div class="col-lg-2 col-md-3 col-sm-12">
@@ -103,20 +103,20 @@
 							<div class="mb-1">
 								<div class="heading_label">E-mail</div>
 								<div>
-									<input name="email" class="form-control" type="text" value="{$user->email|escape}" />
+									<input name="email" class="form-control" type="text" value="{$user->email|escape}">
 								</div>
 							</div>
 							<div class="mb-1">
 								<div class="heading_label">{$btr->general_phone|escape}</div>
 								<div>
-									<input class="form-control mb-h" name="phone" type="text" value="{$user->phone|escape}" />
-									<input name="id" type="hidden" value="{$user->id|escape}" />
+									<input class="form-control mb-h" name="phone" type="text" value="{$user->phone|escape}">
+									<input name="id" type="hidden" value="{$user->id|escape}">
 								</div>
 							</div>
 							<div class="mb-1">
 								<div class="heading_label">{$btr->general_adress|escape}</div>
 								<div>
-									<input name="address" class="form-control" type="text" value="{$user->address|escape}" />
+									<input name="address" class="form-control" type="text" value="{$user->address|escape}">
 								</div>
 							</div>
 						</div>
@@ -135,13 +135,13 @@
 							<div class="mb-1">
 								<div class="heading_label">{$btr->general_registration_date|escape}</div>
 								<div>
-									<input name="" class="form-control" type="text" disabled value="{$user->created|date}" />
+									<input name="" class="form-control" type="text" disabled value="{$user->created|date}">
 								</div>
 							</div>
 							<div class="mb-1">
 								<div class="heading_label">{$btr->user_last_ip|escape}</div>
 								<div>
-									<input name="" class="form-control" type="text" disabled value="{$user->last_ip|escape}" />
+									<input name="" class="form-control" type="text" disabled value="{$user->last_ip|escape}">
 								</div>
 							</div>
 						</div>

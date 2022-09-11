@@ -1213,3 +1213,5 @@ $backend_translations->general_articles_filter = 'Article filter';
 $backend_translations->general_icon = 'Icon';
 $backend_translations->icon_code = 'Icon code';
 $backend_translations->settings_watermark_enable = 'Enable watermark';
+$backend_translations->notifications_telegram = 'Notifications Telegram';
+$backend_translations->enable_notifications = 'Enable notifications';

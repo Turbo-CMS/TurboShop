@@ -110,7 +110,7 @@
 	</div>
 
 	<form method="post" class="fn_form_list">
-		<input type="hidden" name="session_id" value="{$smarty.session.id}" />
+		<input type="hidden" name="session_id" value="{$smarty.session.id}">
 		{assign 'total_summ' 0}
 		{assign 'total_amount' 0}
 		<div class="turbo_list fn_sort_list">

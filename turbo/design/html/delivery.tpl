@@ -59,7 +59,7 @@
 
 <form method="post" enctype="multipart/form-data" class="fn_fast_button">
 	<input type="hidden" name="session_id" value="{$smarty.session.id}">
-	<input type="hidden" name="lang_id" value="{$lang_id}" />
+	<input type="hidden" name="lang_id" value="{$lang_id}">
 
 	<div class="row">
 		<div class="col-xs-12">
@@ -70,8 +70,8 @@
 							{$btr->general_name|escape}
 						</div>
 						<div class="form-group">
-							<input class="form-control mb-h" name="name" type="text" value="{$delivery->name|escape}" />
-							<input name="id" type="hidden" value="{$delivery->id|escape}" />
+							<input class="form-control mb-h" name="name" type="text" value="{$delivery->name|escape}">
+							<input name="id" type="hidden" value="{$delivery->id|escape}">
 						</div>
 					</div>
 					<div class="col-lg-2 col-md-3 col-sm-12">
@@ -119,7 +119,7 @@
 									<span class="boxes_inline heading_label">{$btr->delivery_cost|escape}</span>
 									<span class="boxes_inline bnr_dl_price">
 										<div class="input-group">
-											<input name="price" class="form-control" type="text" value="{$delivery->price|escape}" />
+											<input name="price" class="form-control" type="text" value="{$delivery->price|escape}">
 											<span class="input-group-addon">{$currency->sign|escape}</span>
 										</div>
 									</span>
@@ -131,7 +131,7 @@
 									<span class="boxes_inline bnr_dl_price">
 										<div class="input-group">
 											<div class="input-group">
-												<input name="free_from" class="form-control" type="text" value="{$delivery->free_from|escape}" />
+												<input name="free_from" class="form-control" type="text" value="{$delivery->free_from|escape}">
 												<span class="input-group-addon">{$currency->sign|escape}</span>
 											</div>
 										</div>

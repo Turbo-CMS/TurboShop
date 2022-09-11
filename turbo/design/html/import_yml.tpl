@@ -203,7 +203,7 @@
 							<div class="row">
 								<div class="col-md-7 col-lg-7 col-sm-12 mb-h">
 									<div class="heading_label">{$btr->link_to_yml|escape}</div>
-									<input name="file_url" class="form-control" type="text" value="" />
+									<input name="file_url" class="form-control" type="text" value="">
 								</div>
 								<div class="col-md-3 col-sm-3 col-lg-3 col-sm-12 float-sm-right mt-2">
 									<button type="submit" class="btn btn_small btn-primary float-md-right">
@@ -231,7 +231,7 @@
 					<div class="toggle_body_wrap on fn_card">
 						<form method="post" enctype="multipart/form-data">
 							<input type="hidden" name="session_id" value="{$smarty.session.id}">
-							<input type="hidden" name="file_fields" value="{$filename_yml}" />
+							<input type="hidden" name="file_fields" value="{$filename_yml}">
 							<button type="submit" class="btn btn_small btn-primary">{$btr->read_field_names|escape}</button>
 						</form>
 					</div>

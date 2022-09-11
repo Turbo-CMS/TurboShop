@@ -105,6 +105,10 @@ class CartView extends View
 
 				// Send an email to the administrator
 				$this->notify->email_order_admin($order->id);
+				
+				// Let's notify in Telegram
+				if($this->settings->tg_notify==1)
+				$this->tgnotify->message($order->id);
 
 				// Empty the trash (session)
 				$this->cart->empty_cart();

@@ -68,7 +68,7 @@
 			<div class="col-lg-12 col-md-12 col-sm-12">
 				<form class="fn_form_list" method="post">
 					<div id="main_list" class="turbo_list fn_sort_list">
-						<input type="hidden" name="session_id" value="{$smarty.session.id}" />
+						<input type="hidden" name="session_id" value="{$smarty.session.id}">
 						<div class="turbo_list_head">
 							<div class="turbo_list_heading turbo_list_drag"></div>
 							<div class="turbo_list_heading turbo_list_check">
@@ -102,7 +102,7 @@
 										<div class="turbo_list_boding turbo_list_banners_photo">
 											{if $banners_image->image}
 												<a href="{url module=BannersImageAdmin id=$banners_image->id return=$smarty.server.REQUEST_URI}">
-													<img src="{$banners_image->image|resize_banners:90:60}" />
+													<img src="{$banners_image->image|resize_banners:90:60}">
 												</a>
 											{else}
 												<a href="{url module=BannersImageAdmin id=$banners_image->id return=$smarty.server.REQUEST_URI}">

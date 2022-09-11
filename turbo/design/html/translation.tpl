@@ -77,7 +77,7 @@
 {*Main page form*}
 <form method="post" enctype="multipart/form-data">
 	<input type="hidden" name="session_id" value="{$smarty.session.id}">
-	<input name="id" type="hidden" value="{$translation->id}" />
+	<input name="id" type="hidden" value="{$translation->id}">
 
 	<div class="row">
 		<div class="col-lg-12 ">
@@ -98,7 +98,7 @@
 						<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 mb-h">
 							<div class="heading_label mb-h">
 								<div class="translation_icon">
-									<img src="design/flags/4x3/{$lang->label}.svg" />
+									<img src="design/flags/4x3/{$lang->label}.svg">
 								</div>
 								{$lang->name|escape}
 							</div>

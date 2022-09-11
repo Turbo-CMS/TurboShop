@@ -43,7 +43,7 @@
         <div class="col-lg-12 col-md-12 col-sm-12">
             <form method="post" class="fn_form_list">
                 <input type="hidden" name="session_id" value="{$smarty.session.id}">
-                <input type="hidden" name="lang_id" value="{$lang_id}" />
+                <input type="hidden" name="lang_id" value="{$lang_id}">
                 <div class="turbo_list">
                     <div class="currencies_wrap clearfix">
                         {*Table header*}
@@ -70,8 +70,8 @@
                                             <span>{$c->id}</span>
                                         </div>
                                         <div class="turbo_list_boding turbo_list_currency_name">
-                                            <input class="form-control" name="currency[id][{$c->id}]" type="hidden" value="{$c->id|escape}" />
-                                            <input name="currency[name][{$c->id}]" class="form-control" type="text" value="{$c->name|escape}" />
+                                            <input class="form-control" name="currency[id][{$c->id}]" type="hidden" value="{$c->id|escape}">
+                                            <input name="currency[name][{$c->id}]" class="form-control" type="text" value="{$c->name|escape}">
 
                                             {if $c@first}
                                                 <span data-hint="{$btr->currency_base|escape}" class="currency_name_active hint-bottom-middle-t-info-s-small-mobile  hint-anim">{include file='svg_icon.tpl' svgId='checked'}</span>
@@ -82,7 +82,7 @@
 														<div class="input-group">
 															<div class="input-group-qw cur_input_exchange">
 																<div class="input-group">
-																	<input class="form-control" name="currency[rate_from][{$c->id}]" type="text" value="{$c->rate_from|escape}" />
+																	<input class="form-control" name="currency[rate_from][{$c->id}]" type="text" value="{$c->rate_from|escape}">
 																	<span class="input-group-addon">{$c->sign|escape}</span>
 																</div>
 															</div>
@@ -91,23 +91,23 @@
 
 															<div class="input-group-qw cur_input_exchange">
 																<div class="input-group">
-																	<input class="form-control" name="currency[rate_to][{$c->id}]" type="text" value="{$c->rate_to|escape}" />
+																	<input class="form-control" name="currency[rate_to][{$c->id}]" type="text" value="{$c->rate_to|escape}">
 																	<span class="input-group-addon">{$currency->sign|escape}</span>
 																</div>
 															</div>
 														</div>
 													{else}
-														<input name="currency[rate_from][{$c->id}]" type="hidden" value="{$c->rate_from|escape}" />
-														<input name="currency[rate_to][{$c->id}]" type="hidden" value="{$c->rate_to|escape}" />
+														<input name="currency[rate_from][{$c->id}]" type="hidden" value="{$c->rate_from|escape}">
+														<input name="currency[rate_to][{$c->id}]" type="hidden" value="{$c->rate_to|escape}">
 													{/if}
 												</div>
 											</div>
                                         </div>
                                         <div class="turbo_list_boding turbo_list_currency_iso">
-                                            <input class="form-control" name="currency[sign][{$c->id}]" type="text" value="{$c->sign|escape}" />
+                                            <input class="form-control" name="currency[sign][{$c->id}]" type="text" value="{$c->sign|escape}">
                                         </div>
                                         <div class="turbo_list_boding turbo_list_currency_sign">
-                                            <input class="form-control" name="currency[code][{$c->id}]" type="text" value="{$c->code|escape}" />
+                                            <input class="form-control" name="currency[code][{$c->id}]" type="text" value="{$c->code|escape}">
                                         </div>
 										<div class="turbo_list_boding turbo_list_currency_exchange">
 											<div class="turbo_list_currency_exchange_item">
@@ -115,7 +115,7 @@
 													<div class="input-group">
 														<div class="input-group-qw cur_input_exchange">
 															<div class="input-group">
-																<input class="form-control" name="currency[rate_from][{$c->id}]" type="text" value="{$c->rate_from|escape}" />
+																<input class="form-control" name="currency[rate_from][{$c->id}]" type="text" value="{$c->rate_from|escape}">
 																<span class="input-group-addon">{$c->sign}</span>
 															</div>
 														</div>
@@ -124,14 +124,14 @@
 
 														<div class="input-group-qw cur_input_exchange">
 															<div class="input-group">
-																<input class="form-control" name="currency[rate_to][{$c->id}]" type="text" value="{$c->rate_to|escape}" />
+																<input class="form-control" name="currency[rate_to][{$c->id}]" type="text" value="{$c->rate_to|escape}">
 																<span class="input-group-addon">{$currency->sign}</span>
 															</div>
 														</div>
 													</div>
 												{else}
-													<input name="currency[rate_from][{$c->id}]" type="hidden" value="{$c->rate_from|escape}" />
-													<input name="currency[rate_to][{$c->id}]" type="hidden" value="{$c->rate_to|escape}" />
+													<input name="currency[rate_from][{$c->id}]" type="hidden" value="{$c->rate_from|escape}">
+													<input name="currency[rate_to][{$c->id}]" type="hidden" value="{$c->rate_to|escape}">
 												{/if}
 											</div>
 										</div>
@@ -166,21 +166,21 @@
                                         </div>
                                         <div class="turbo_list_boding turbo_list_currency_num"></div>
                                         <div class="turbo_list_boding turbo_list_currency_name">
-                                            <input name="currency[id][]" type="hidden" value="" />
-                                            <input name="currency[name][]" class="form-control" type="text" value="" />
+                                            <input name="currency[id][]" type="hidden" value="">
+                                            <input name="currency[name][]" class="form-control" type="text" value="">
                                         </div>
                                         <div class="turbo_list_boding turbo_list_currency_iso">
-                                            <input class="form-control" name="currency[sign][]" type="text" value="" />
+                                            <input class="form-control" name="currency[sign][]" type="text" value="">
                                         </div>
                                         <div class="turbo_list_boding turbo_list_currency_sign">
-                                            <input class="form-control" name="currency[code][]" type="text" value="" />
+                                            <input class="form-control" name="currency[code][]" type="text" value="">
                                         </div>
                                         <div class="turbo_list_boding turbo_list_currency_exchange">
                                             <div class="turbo_list_currency_exchange_item">
                                                 <div class="input-group">
                                                     <div class="input-group-qw cur_input_exchange">
                                                         <div class="input-group">
-                                                            <input class="form-control" name="currency[rate_from][]" type="text" value="" />
+                                                            <input class="form-control" name="currency[rate_from][]" type="text" value="">
                                                             <span class="input-group-addon"></span>
                                                         </div>
                                                     </div>
@@ -189,7 +189,7 @@
 
                                                     <div class="input-group-qw cur_input_exchange">
                                                         <div class="input-group">
-                                                            <input class="form-control" name="currency[rate_to][]" type="text" value="" />
+                                                            <input class="form-control" name="currency[rate_to][]" type="text" value="">
                                                             <span class="input-group-addon">{$currency->sign}</span>
                                                         </div>
                                                     </div>

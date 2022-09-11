@@ -207,7 +207,7 @@
 			<div class="modal-body">
 				<form class="form-horizontal " method="post">
 					<input type="hidden" name="session_id" value="{$smarty.session.id}">
-					<input id="fn_parent_id" type="hidden" name="parent_id" value="" />
+					<input id="fn_parent_id" type="hidden" name="parent_id" value="">
 					<div class="form-group">
 						<textarea id="fn_comment_area" class="form-control turbo_textarea" placeholder="{$btr->general_enter_answer|escape}" name="text" rows="10" cols="50"></textarea>
 					</div>

@@ -52,8 +52,8 @@
 											<span>{$m->id}</span>
 										</div>
 										<div class="turbo_list_boding turbo_list_menus_name">
-											<input name="menu[id][{$m->id}]" type="hidden" value="{$m->id|escape}" />
-											<input name="menu[name][{$m->id}]" class="form-control" type="text" value="{$m->name|escape}" />
+											<input name="menu[id][{$m->id}]" type="hidden" value="{$m->id|escape}">
+											<input name="menu[name][{$m->id}]" class="form-control" type="text" value="{$m->name|escape}">
 										</div>
 										<div class="turbo_list_boding turbo_list_close turbo_list_menus_close">
 											{*delete*}
@@ -72,8 +72,8 @@
 										</div>
 										<div class="turbo_list_boding turbo_list_menu_num"></div>
 										<div class="turbo_list_boding turbo_list_menus_name">
-											<input name="menu[id][]" type="hidden" value="" />
-											<input name="menu[name][]" class="form-control" type="text" value="" />
+											<input name="menu[id][]" type="hidden" value="">
+											<input name="menu[name][]" class="form-control" type="text" value="">
 										</div>
 										<div class="turbo_list_boding turbo_list_close turbo_list_menus_close"></div>
 									</div>

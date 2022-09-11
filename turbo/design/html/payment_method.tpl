@@ -67,8 +67,8 @@
 							{$btr->general_name|escape}
 						</div>
 						<div class="form-group">
-							<input class="form-control mb-h" name="name" type="text" value="{$payment_method->name|escape}" />
-							<input name="id" type="hidden" value="{$payment_method->id|escape}" />
+							<input class="form-control mb-h" name="name" type="text" value="{$payment_method->name|escape}">
+							<input name="id" type="hidden" value="{$payment_method->id|escape}">
 						</div>
 					</div>
 					<div class="col-lg-2 col-md-3 col-sm-12">
@@ -158,7 +158,7 @@
 													<div class="form-group clearfix">
 														<div class="heading_label" for="{$setting->variable}">{$setting->name|escape}</div>
 														<div class="">
-															<input name="payment_settings[{$setting->variable}]" class="form-control" type="text" value="{$payment_settings[$setting->variable]|escape}" id="{$setting->variable}" />
+															<input name="payment_settings[{$setting->variable}]" class="form-control" type="text" value="{$payment_settings[$setting->variable]|escape}" id="{$setting->variable}">
 														</div>
 													</div>
 												</div>

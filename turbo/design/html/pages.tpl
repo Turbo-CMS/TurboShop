@@ -20,7 +20,7 @@
 <div class="boxed fn_toggle_wrap">
 	{if $pages}
 		<form method="post" class="fn_form_list">
-			<input type="hidden" name="session_id" value="{$smarty.session.id}" />
+			<input type="hidden" name="session_id" value="{$smarty.session.id}">
 			<div class="turbo_list fn_sort_list">
 				<div class="turbo_list_head">
 					<div class="turbo_list_heading turbo_list_subicon"></div>
@@ -45,7 +45,7 @@
 									{/if}
 									<div class="fn_row {if $level == 1}turbo_list_body_item{/if} fn_sort_item body_narrow row_narrow">
 										<div class="turbo_list_row {if $level > 1}fn_sort_item{/if} narrow">
-											<input type="hidden" name="positions[{$page->id}]" value="{$page->position}" />
+											<input type="hidden" name="positions[{$page->id}]" value="{$page->position}">
 											{if $page->subpages}
 												<div class="turbo_list_heading turbo_list_subicon">
 													<a href="javascript:;" class="fn_ajax_toggle" data-toggle="0" data-category_id="{$page->id}">

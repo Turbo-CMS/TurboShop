@@ -113,7 +113,7 @@
 								<strong>sales notes</strong> * <span class="text_warning">{$btr->settings_feed_max_lenth|escape}</span>
 							</div>
 							<div class="mb-1">
-								<input id="export_sales_notes" name="export_sales_notes" class="form-control" type="text" value="{$settings->export_sales_notes}" />
+								<input id="export_sales_notes" name="export_sales_notes" class="form-control" type="text" value="{$settings->export_sales_notes}">
 							</div>
 						</div>
 					</div>

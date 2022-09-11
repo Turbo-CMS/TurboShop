@@ -28,7 +28,7 @@
 							<div class="date">
 								{*Filter box*}
 								<form class="date_filter row" method="get">
-									<input type="hidden" name="module" value="CategoryStatsAdmin" />
+									<input type="hidden" name="module" value="CategoryStatsAdmin">
 									<div class="col-md-5 col-lg-5 pr-0 pl-0">
 										<div class="input-group mobile_input-group">
 											<span class=" input-group-addon-date">{$btr->general_from|escape}</span>
@@ -91,7 +91,7 @@
 	</div>
 
 	<form method="post" class="fn_form_list">
-		<input type="hidden" name="session_id" value="{$smarty.session.id}" />
+		<input type="hidden" name="session_id" value="{$smarty.session.id}">
 		<div class="turbo_list fn_sort_list">
 			{*Table header*}
 			<div class="turbo_list_head">

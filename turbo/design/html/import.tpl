@@ -88,7 +88,7 @@
 												</div>
 											</div>
 											<div class="push-lg-2 col-lg-3 col-md-6 col-sm-6 col-xs-6 text-xs-left fn_row">
-												<input type="hidden" name="csv_fields[{$column->name|escape}]" value="{$column->value|escape}" />
+												<input type="hidden" name="csv_fields[{$column->name|escape}]" value="{$column->value|escape}">
 												<a href="javascript:;" class="fn_edit_column {if empty($column->value)}text_warning{elseif $column->is_nf_selected}text_green{/if}" data-column_name="{$column->name|escape}" data-is_exist="{if $column->is_exist}1{else}0{/if}">
 													{if in_array($column->value, $columns_names)}
 														{$btr->get_translation('import_field_'|cat:$column->value)}

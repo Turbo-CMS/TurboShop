@@ -2,7 +2,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>{$btr->email_callback_request|escape} {$callback->name|escape}</title>
     <meta name="x-apple-disable-message-reformatting">
@@ -377,7 +377,7 @@
 													<tr>
 														<td align="center">
 															<a target="_blank" href="{$config->root_url}">
-																<img src="{$config->root_url}/design/{$settings->theme}/images/logo.png" width="207" align="center" style="display: block; margin: 0 auto" />
+																<img src="{$config->root_url}/design/{$settings->theme}/images/logo.png" width="207" align="center" style="display: block; margin: 0 auto">
 															</a>
 														</td>
 													</tr>
