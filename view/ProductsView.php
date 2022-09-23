@@ -486,7 +486,7 @@ class ProductsView extends View
 
 		// Select brands, we need them in the template	
 		if (!empty($category)) {
-			$brands = $this->brands->get_brands(array('category_id' => $category->children, 'visible' => 1));
+			$brands = $this->brands->get_brands($filter);
 			$category->brands = $brands;
 		}
 
