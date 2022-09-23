@@ -34,8 +34,16 @@ class Brands extends Turbo
 		if (isset($filter['visible_brand']))
 			$visible_brand_filter = $this->db->placehold('WHERE 1 AND b.visible=?', intval($filter['visible_brand']));
 
-		if(!empty($filter['category_id']))
+		if (!empty($filter['category_id'])) {
 			$category_id_filter = $this->db->placehold("LEFT JOIN __products p ON p.brand_id=b.id LEFT JOIN __products_categories pc ON p.id = pc.product_id WHERE pc.category_id in(?@) $visible_filter $in_stock_filter", (array)$filter['category_id']);
+
+			if (!empty($filter['features']) && !empty($filter['features']))
+				foreach ($filter['features'] as $feature => $value)
+					$category_id_filter .= $this->db->placehold('AND p.id in (SELECT product_id FROM __options WHERE feature_id=? AND translit in(?@) ) ', $feature, (array)$value);
+
+			if (!empty($filter['brand_id']))
+				$category_id_filter .= $this->db->placehold(" OR b.id in(?@)", (array)$filter['brand_id']);
+		}
 
 		$lang_sql = $this->languages->get_query(array('object' => 'brand'));
 
