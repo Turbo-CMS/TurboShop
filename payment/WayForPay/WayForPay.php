@@ -127,7 +127,7 @@ class WayForPay extends Turbo
             }
         }
 
-        $form .= '<input type="submit" class="btn btn-success" value="' . $button_text . '">';
+        $form .= '<input type="submit" class="btn btn-success btn-checkout" value="' . $button_text . '">';
         $form .= '</form>';
         return $form;
     }

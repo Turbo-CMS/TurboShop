@@ -394,8 +394,8 @@ class View extends Turbo
 				if (isset($products[$id])) {
 					if (isset($products[$id]->images[0]))
 						$products[$id]->image = $products[$id]->images[0];
-					if (isset($product[$id]->variants[0]))
-						$product[$id]->variant = $products[$id]->variants[0];
+					if (isset($products[$id]->variants[0]))
+						$products[$id]->variant = $products[$id]->variants[0];
 					$result[] = $products[$id];
 				}
 			}

@@ -24,7 +24,7 @@ db_charset = "UTF8MB4";
 db_sql_mode = "NO_ZERO_DATE,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION";
 
 ;Time zone offset
-;db_timezone = "+02:00";
+;db_timezone = "+03:00";
 
 [php]
 

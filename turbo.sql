@@ -3326,7 +3326,8 @@ ALTER TABLE `t_faq`
 ALTER TABLE `t_features`
   ADD PRIMARY KEY (`id`),
   ADD KEY `position` (`position`),
-  ADD KEY `in_filter` (`in_filter`);
+  ADD KEY `in_filter` (`in_filter`),
+  ADD KEY `is_color` (`is_color`);
 
 --
 -- Indexes for table `t_feedbacks`

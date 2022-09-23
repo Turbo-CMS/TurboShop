@@ -79,8 +79,8 @@
 							<div class="col-xs-12 col-lg-6 col-md-6">
 								<div class="input-group">
 									<span class="input-group-addon input-group-addon-left">URL</span>
-									<input name="url" class="form-control fn_url {if $feature->id}fn_disabled{/if}" {if $feature->id}readonly="" {/if} type="text" value="{$feature->url|escape}">
-									<input type="checkbox" id="block_translit" class="hidden" value="1" {if $feature->id}checked="" {/if}>
+									<input name="url" class="form-control fn_url {if $feature->id}fn_disabled{/if}" {if $feature->id}readonly=""{/if} type="text" value="{$feature->url|escape}">
+									<input type="checkbox" id="block_translit" class="hidden" value="1" {if $feature->id}checked=""{/if}>
 									<span class="input-group-addon fn_disable_url">
 										{if $feature->id}
 											<i class="url-lock"></i>
@@ -95,7 +95,7 @@
 								<div class="boxes_inline">
 									<div class="turbo_switch clearfix">
 										<div class="form-check form-switch">
-											<input class="form-check-input" id="url_in_product" name="url_in_product" value="1" type="checkbox" {if $feature->url_in_product}checked="" {/if}>
+											<input class="form-check-input" id="url_in_product" name="url_in_product" value="1" type="checkbox" {if $feature->url_in_product}checked=""{/if}>
 											<label class="form-check-label" for="url_in_product"></label>
 										</div>
 									</div>
@@ -109,7 +109,7 @@
 								<div class="turbo_switch clearfix">
 									<label class="switch_label">{$btr->feature_filter|escape}</label>
 									<div class="form-check form-switch">
-										<input class="form-check-input" id="in_filter" name="in_filter" value="1" type="checkbox" {if $feature->in_filter}checked="" {/if}>
+										<input class="form-check-input" id="in_filter" name="in_filter" value="1" type="checkbox" {if $feature->in_filter}checked=""{/if}>
 										<label class="form-check-label" for="in_filter"></label>
 									</div>
 								</div>
@@ -118,7 +118,7 @@
 								<div class="turbo_switch clearfix">
 									<label class="switch_label">{$btr->color_filter|escape}</label>
 									<div class="form-check form-switch">
-										<input class="form-check-input" id="is_color" name="is_color" value="1" type="checkbox" {if $feature->is_color}checked="" {/if}>
+										<input class="form-check-input" id="is_color" name="is_color" value="1" type="checkbox" {if $feature->is_color}checked=""{/if}>
 										<label class="form-check-label" for="is_color"></label>
 									</div>
 								</div>

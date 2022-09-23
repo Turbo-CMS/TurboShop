@@ -100,14 +100,14 @@
 								<div class="turbo_list_boding turbo_list_url_status">
 									{*url_in_product*}
 									<div class="form-check form-switch">
-										<input class="form-check-input fn_ajax_action {if $feature->url_in_product}fn_active_class{/if}" id="id_{$feature->id}" data-module="feature" data-action="url_in_product" data-id="{$feature->id}" name="url_in_product" value="1" type="checkbox" {if $feature->url_in_product}checked="" {/if}>
+										<input class="form-check-input fn_ajax_action {if $feature->url_in_product}fn_active_class{/if}" id="id_{$feature->id}" data-module="feature" data-action="url_in_product" data-id="{$feature->id}" name="url_in_product" value="1" type="checkbox" {if $feature->url_in_product}checked=""{/if}>
 										<label class="form-check-label" for="id_{$feature->id}"></label>
 									</div>
 								</div>
 								<div class="turbo_list_boding turbo_list_status">
 									{*visible*}
 									<div class="form-check form-switch">
-										<input class="form-check-input fn_ajax_action {if $feature->in_filter}fn_active_class{/if}" id="id_{$feature->id}" data-module="feature" data-action="in_filter" data-id="{$feature->id}" name="in_filter" value="1" type="checkbox" {if $feature->in_filter}checked="" {/if}>
+										<input class="form-check-input fn_ajax_action {if $feature->in_filter}fn_active_class{/if}" id="id_{$feature->id}" data-module="feature" data-action="in_filter" data-id="{$feature->id}" name="in_filter" value="1" type="checkbox" {if $feature->in_filter}checked=""{/if}>
 										<label class="form-check-label" for="id_{$feature->id}"></label>
 									</div>
 								</div>

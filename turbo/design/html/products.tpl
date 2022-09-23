@@ -190,7 +190,7 @@
 										{* Visible *}
 										<div class="turbo_list_boding turbo_list_status">
 											<div class="form-check form-switch">
-												<input class="form-check-input fn_ajax_action {if $product->visible}fn_active_class{/if}" id="id_{$product->id}" data-module="product" data-action="visible" data-id="{$product->id}" name="visible" value="1" type="checkbox" {if $product->visible}checked="" {/if}>
+												<input class="form-check-input fn_ajax_action {if $product->visible}fn_active_class{/if}" id="id_{$product->id}" data-module="product" data-action="visible" data-id="{$product->id}" name="visible" value="1" type="checkbox" {if $product->visible}checked=""{/if}>
 												<label class="form-check-label" for="id_{$product->id}"></label>
 											</div>
 										</div>

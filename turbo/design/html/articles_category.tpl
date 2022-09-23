@@ -96,8 +96,8 @@
 								<div class="mt-h mb-h">
 									<div class="input-group">
 										<span class="input-group-addon input-group-addon-left">URL</span>
-										<input name="url" class="fn_meta_field form-control fn_url {if $category->id}fn_disabled{/if}" {if $category->id}readonly="" {/if} type="text" value="{$category->url|escape}">
-										<input type="checkbox" id="block_translit" class="hidden" value="1" {if $category->id}checked="" {/if}>
+										<input name="url" class="fn_meta_field form-control fn_url {if $category->id}fn_disabled{/if}" {if $category->id}readonly=""{/if} type="text" value="{$category->url|escape}">
+										<input type="checkbox" id="block_translit" class="hidden" value="1" {if $category->id}checked=""{/if}>
 										<span class="input-group-addon fn_disable_url">
 											{if $category->id}
 												<i class="url-lock"></i>
@@ -134,7 +134,7 @@
 								<div class="turbo_switch clearfix">
 									<label class="switch_label">{$btr->general_enable|escape}</label>
 									<div class="form-check form-switch">
-										<input class="form-check-input" id="featured_checkbox" name="visible" value="1" type="checkbox" {if $category->visible}checked="" {/if}>
+										<input class="form-check-input" id="featured_checkbox" name="visible" value="1" type="checkbox" {if $category->visible}checked=""{/if}>
 										<label class="form-check-label" for="featured_checkbox"></label>
 									</div>
 								</div>

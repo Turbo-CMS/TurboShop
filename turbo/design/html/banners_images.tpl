@@ -135,7 +135,7 @@
 										<div class="turbo_list_boding turbo_list_status">
 											{*visible*}
 											<div class="form-check form-switch">
-												<input class="form-check-input fn_ajax_action {if $banners_image->visible}fn_active_class{/if}" id="id_{$banners_image->id}" data-module="banners_image" data-action="visible" data-id="{$banners_image->id}" name="visible" value="1" type="checkbox" {if $banners_image->visible}checked="" {/if}>
+												<input class="form-check-input fn_ajax_action {if $banners_image->visible}fn_active_class{/if}" id="id_{$banners_image->id}" data-module="banners_image" data-action="visible" data-id="{$banners_image->id}" name="visible" value="1" type="checkbox" {if $banners_image->visible}checked=""{/if}>
 												<label class="form-check-label" for="id_{$banners_image->id}"></label>
 											</div>
 										</div>

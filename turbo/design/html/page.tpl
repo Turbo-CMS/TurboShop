@@ -136,24 +136,13 @@
 				</div>
 				<div class="toggle_body_wrap on fn_card">
 					<div class="heading_label">{$btr->page_menu|escape}</div>
-					<select name="menu_id" class="selectpicker mb-1">
+					<select name="menu_id" class="selectpicker mb-1" id="menu_id">
 						{foreach $menus as $m}
 							<option value='{$m->id}' {if $page->menu_id == $m->id}selected{/if}>{$m->name|escape}</option>
 						{/foreach}
 					</select>
 					<div class="heading_label">{$btr->page_root|escape}</div>
-					<select name="parent_id" class="selectpicker">
-						<option value='0'>{$btr->page_not_selected|escape}</option>
-						{function name=page_select level=0}
-							{foreach from=$pages item=p}
-								{if $page->id != $p->id}
-									<option value='{$p->id}' {if $page->parent_id == $p->id}selected{/if}>{section name=sp loop=$level}--{/section}{$p->name}</option>
-									{page_select pages=$p->subpages level=$level+1}
-								{/if}
-							{/foreach}
-						{/function}
-						{page_select pages=$pages}
-					</select>
+					<select name="parent_id" class="selectpicker" id="parent_id"></select>
 				</div>
 			</div>
 		</div>
@@ -212,3 +201,38 @@
 
 {* Connect Tiny MCE *}
 {include file='tinymce_init.tpl'}
+
+<script>
+	$(document).ready(function() {
+		$('#menu_id').trigger('change');
+	});
+
+	$('#menu_id').change(function() {
+		$('#parent_id').html('');
+		var option = $(this).find('option:selected');
+		$.ajax({
+			type: 'POST',
+			url: 'ajax/get_pages.php',
+			data: {
+				'menu_id': option.val(),
+				'exclude': {if $page->id}{$page->id}{else}0{/if},
+				'session_id': '{$smarty.session.id}'
+			},
+			success: function(data) {
+				if (data.success) {
+					for (var index in data.data) {
+						var row = data.data[index];
+						var option = $('<option></option>');
+						option.val(row.id);
+						option.addClass(row.class);
+						option.html(row.text);
+						{if $page->id}if (row.id == {$page->parent_id})
+						option.prop('selected', true);{/if}
+						$('#parent_id').append(option);
+						$('.selectpicker').selectpicker('refresh');
+					}
+				}
+			}
+		});
+	});
+</script>

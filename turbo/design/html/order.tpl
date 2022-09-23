@@ -40,7 +40,7 @@
 									<ul class="option_labels_box">
 										{foreach $labels as $l}
 											<li class="fn_ajax_labels" data-order_id="{$order->id}" style="background-color: {$l->color|escape}">
-												<input id="l{$order->id}_{$l->id}" type="checkbox" class="hidden_check_1" name="order_labels[]" value="{$l->id}" {if in_array($l->id, $order_labels) && is_array($order_labels)}checked="" {/if} />
+												<input id="l{$order->id}_{$l->id}" type="checkbox" class="hidden_check_1" name="order_labels[]" value="{$l->id}" {if in_array($l->id, $order_labels) && is_array($order_labels)}checked=""{/if} />
 												<label for="l{$order->id}_{$l->id}" class="label_labels"><span>{$l->name|escape}</span></label>
 											</li>
 										{/foreach}
@@ -412,7 +412,7 @@
 								<div class="col-lg-12 col-md-12 mt-1">
 									<label class="switch_label">{$btr->order_paid|escape}</label>
 									<div class="form-check form-switch">
-										<input class="form-check-input" id="paid" name="paid" value="1" type="checkbox" {if $order->paid}checked="" {/if}>
+										<input class="form-check-input" id="paid" name="paid" value="1" type="checkbox" {if $order->paid}checked=""{/if}>
 										<label class="form-check-label" for="paid"></label>
 									</div>
 								</div>

@@ -48,13 +48,13 @@ class Fondy extends Turbo
 		$out = '';
 		if ($settings['mode'] == 'redirect'){
 			$out .='<style>
-			.btn btn-success{
+			.btn btn-success btn-checkout{
 				text-decoration: none;
 				top: 10px;
 				position: relative;
 			}
 			</style>';
-			$out .='<a href="'. $url . '"class="btn btn-success">'.$button_text.'</a>';
+			$out .='<a href="'. $url . '"class="btn btn-success btn-checkout">'.$button_text.'</a>';
 		}else{
 			$out = '<script src="https://api.fondy.eu/static_common/v1/checkout/ipsp.js"></script>
 			<div id="checkout">

@@ -462,7 +462,7 @@
 								<div class="permission_box">
 									<span>{$btr->settings_general_contact_form|escape}</span>
 									<div class="form-check form-switch">
-										<input class="form-check-input" id="captcha_feedback" name="captcha_feedback" value="1" type="checkbox" {if $settings->captcha_feedback}checked="" {/if}>
+										<input class="form-check-input" id="captcha_feedback" name="captcha_feedback" value="1" type="checkbox" {if $settings->captcha_feedback}checked=""{/if}>
 										<label class="form-check-label" for="captcha_feedback"></label>
 									</div>
 								</div>

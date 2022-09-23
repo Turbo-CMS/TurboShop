@@ -63,7 +63,7 @@
 								<div class="turbo_list_boding turbo_list_status">
 									{*visible*}
 									<div class="form-check form-switch">
-										<input class="form-check-input fn_ajax_action {if $payment_method->enabled}fn_active_class{/if}" id="id_{$payment_method->id}" data-module="payment" data-action="enabled" data-id="{$payment_method->id}" name="visible" value="1" type="checkbox" {if $payment_method->enabled}checked="" {/if}>
+										<input class="form-check-input fn_ajax_action {if $payment_method->enabled}fn_active_class{/if}" id="id_{$payment_method->id}" data-module="payment" data-action="enabled" data-id="{$payment_method->id}" name="visible" value="1" type="checkbox" {if $payment_method->enabled}checked=""{/if}>
 										<label class="form-check-label" for="id_{$payment_method->id}"></label>
 									</div>
 								</div>

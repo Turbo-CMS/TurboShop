@@ -116,7 +116,7 @@ class ConcordPay extends Turbo
             $form .= $this->print_input($name, $value);
         }
 
-        $form .= '<input type="submit" class="btn btn-success" value="' . $button_text . '">';
+        $form .= '<input type="submit" class="btn btn-success btn-checkout" value="' . $button_text . '">';
         $form .= '</form>';
 
         return $form;

@@ -67,11 +67,11 @@
 					<div class="row mb-1">
 						<div class=" col-md-6 col-sm-12">
 							<select name="status" class="selectpicker" onchange="location = this.value;">
-								<option value="{url module=OrdersAdmin status=0 keyword=null id=null page=null label=null}" {if $status==0}selected="" {/if}>{$btr->general_new_order|escape}</option>
-								<option value="{url module=OrdersAdmin status=1 keyword=null id=null page=null label=null}" {if $status==1}selected="" {/if}>{$btr->general_accepted_order|escape}</option>
-								<option value="{url module=OrdersAdmin status=2 keyword=null id=null page=null label=null}" {if $status==2}selected="" {/if}>{$btr->general_closed_order|escape}</option>
-								<option value="{url module=OrdersAdmin status=3 keyword=null id=null page=null label=null}" {if $status==3}selected="" {/if}>{$btr->general_canceled_order|escape}</option>
-								<option value="{url module=OrdersAdmin status=4 keyword=null id=null page=null label=null}" {if $status==4}selected="" {/if}>{$btr->general_all|escape}</option>
+								<option value="{url module=OrdersAdmin status=0 keyword=null id=null page=null label=null}" {if $status==0}selected=""{/if}>{$btr->general_new_order|escape}</option>
+								<option value="{url module=OrdersAdmin status=1 keyword=null id=null page=null label=null}" {if $status==1}selected=""{/if}>{$btr->general_accepted_order|escape}</option>
+								<option value="{url module=OrdersAdmin status=2 keyword=null id=null page=null label=null}" {if $status==2}selected=""{/if}>{$btr->general_closed_order|escape}</option>
+								<option value="{url module=OrdersAdmin status=3 keyword=null id=null page=null label=null}" {if $status==3}selected=""{/if}>{$btr->general_canceled_order|escape}</option>
+								<option value="{url module=OrdersAdmin status=4 keyword=null id=null page=null label=null}" {if $status==4}selected=""{/if}>{$btr->general_all|escape}</option>
 							</select>
 						</div>
 					</div>
@@ -115,7 +115,7 @@
 								<option value="{url module=OrdersAdmin status=1 keyword=null id=null page=null label=null from_date=null to_date=null}" {if $status==1}selected{/if}>{$btr->general_accepted_order|escape}</option>
 								<option value="{url module=OrdersAdmin status=2 keyword=null id=null page=null label=null from_date=null to_date=null}" {if $status==2}selected{/if}>{$btr->general_closed_order|escape}</option>
 								<option value="{url module=OrdersAdmin status=3 keyword=null id=null page=null label=null from_date=null to_date=null}" {if $status==3}selected{/if}>{$btr->general_canceled_order|escape}</option>
-								<option value="{url module=OrdersAdmin status=4 keyword=null id=null page=null label=null from_date=null to_date=null}" {if $status==4}selected="" {/if}>{$btr->general_all|escape}</option>
+								<option value="{url module=OrdersAdmin status=4 keyword=null id=null page=null label=null from_date=null to_date=null}" {if $status==4}selected=""{/if}>{$btr->general_all|escape}</option>
 							</select>
 						</div>
 						{if $labels}
@@ -236,7 +236,7 @@
 													<ul class="option_labels_box">
 														{foreach $labels as $l}
 															<li class="fn_ajax_labels" data-order_id="{$order->id}" style="background-color: {$l->color|escape}">
-																<input id="l{$order->id}_{$l->id}" type="checkbox" class="hidden_check_1" value="{$l->id}" {if is_array($order->labels_ids) && in_array($l->id,$order->labels_ids)}checked="" {/if} />
+																<input id="l{$order->id}_{$l->id}" type="checkbox" class="hidden_check_1" value="{$l->id}" {if is_array($order->labels_ids) && in_array($l->id,$order->labels_ids)}checked=""{/if} />
 																<label for="l{$order->id}_{$l->id}" class="label_labels"><span>{$l->name|escape}</span></label>
 															</li>
 														{/foreach}

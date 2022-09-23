@@ -162,10 +162,10 @@ class Notify extends Turbo
 		$this->design->assign('main_currency', $this->money->get_currency());
 
 		$backend_translations = $this->backend_translations;
-		$file = "turbo/lang/" . $this->settings->email_lang . ".php";
+		$file = $_SERVER['DOCUMENT_ROOT'] . 'turbo/lang/' . $this->settings->email_lang . '.php';
 		if (!file_exists($file)) {
-			foreach (glob("turbo/lang/??.php") as $f) {
-				$file = "turbo/lang/" . pathinfo($f, PATHINFO_FILENAME) . ".php";
+			foreach (glob($_SERVER['DOCUMENT_ROOT'] . 'turbo/lang/??.php') as $f) {
+				$file = $_SERVER['DOCUMENT_ROOT'] . 'turbo/lang/' . pathinfo($f, PATHINFO_FILENAME) . '.php';
 				break;
 			}
 		}
@@ -191,11 +191,12 @@ class Notify extends Turbo
 			$comment->post = $this->blog->get_post(intval($comment->object_id));
 
 		$this->design->assign('comment', $comment);
+		
 		$backend_translations = $this->backend_translations;
-		$file = "turbo/lang/" . $this->settings->email_lang . ".php";
+		$file = $_SERVER['DOCUMENT_ROOT'] . 'turbo/lang/' . $this->settings->email_lang . '.php';
 		if (!file_exists($file)) {
-			foreach (glob("turbo/lang/??.php") as $f) {
-				$file = "turbo/lang/" . pathinfo($f, PATHINFO_FILENAME) . ".php";
+			foreach (glob($_SERVER['DOCUMENT_ROOT'] . 'turbo/lang/??.php') as $f) {
+				$file = $_SERVER['DOCUMENT_ROOT'] . 'turbo/lang/' . pathinfo($f, PATHINFO_FILENAME) . '.php';
 				break;
 			}
 		}
@@ -232,11 +233,12 @@ class Notify extends Turbo
 			return false;
 
 		$this->design->assign('feedback', $feedback);
+		
 		$backend_translations = $this->backend_translations;
-		$file = "turbo/lang/" . $this->settings->email_lang . ".php";
+		$file = $_SERVER['DOCUMENT_ROOT'] . 'turbo/lang/' . $this->settings->email_lang . '.php';
 		if (!file_exists($file)) {
-			foreach (glob("turbo/lang/??.php") as $f) {
-				$file = "turbo/lang/" . pathinfo($f, PATHINFO_FILENAME) . ".php";
+			foreach (glob($_SERVER['DOCUMENT_ROOT'] . 'turbo/lang/??.php') as $f) {
+				$file = $_SERVER['DOCUMENT_ROOT'] . 'turbo/lang/' . pathinfo($f, PATHINFO_FILENAME) . '.php';
 				break;
 			}
 		}
@@ -254,11 +256,12 @@ class Notify extends Turbo
 		if (!($callback = $this->callbacks->get_callback(intval($callback_id))))
 			return false;
 		$this->design->assign('callback', $callback);
+		
 		$backend_translations = $this->backend_translations;
-		$file = "turbo/lang/" . $this->settings->email_lang . ".php";
+		$file = $_SERVER['DOCUMENT_ROOT'] . 'turbo/lang/' . $this->settings->email_lang . '.php';
 		if (!file_exists($file)) {
-			foreach (glob("turbo/lang/??.php") as $f) {
-				$file = "turbo/lang/" . pathinfo($f, PATHINFO_FILENAME) . ".php";
+			foreach (glob($_SERVER['DOCUMENT_ROOT'] . 'turbo/lang/??.php') as $f) {
+				$file = $_SERVER['DOCUMENT_ROOT'] . 'turbo/lang/' . pathinfo($f, PATHINFO_FILENAME) . '.php';
 				break;
 			}
 		}
@@ -267,29 +270,6 @@ class Notify extends Turbo
 
 		// Sending a letter
 		$email_template = $this->design->fetch($this->config->root_dir . 'turbo/design/html/email_callback_admin.tpl');
-		$subject = $this->design->get_var('subject');
-		$this->email($this->settings->comment_email, $subject, $email_template, $this->settings->notify_from_email);
-	}
-
-	public function email_subscribe_admin($subscribe_id)
-	{
-		if (!($subscribe = $this->subscribes->get_subscribe(intval($subscribe_id))))
-			return false;
-
-		$this->design->assign('subscribe', $subscribe);
-		$backend_translations = $this->backend_translations;
-		$file = "turbo/lang/" . $this->settings->email_lang . ".php";
-		if (!file_exists($file)) {
-			foreach (glob("turbo/lang/??.php") as $f) {
-				$file = "turbo/lang/" . pathinfo($f, PATHINFO_FILENAME) . ".php";
-				break;
-			}
-		}
-		require_once($file);
-		$this->design->assign('btr', $backend_translations);
-
-		// Sending a letter
-		$email_template = $this->design->fetch($this->config->root_dir . 'turbo/design/html/email_subscribe_admin.tpl');
 		$subject = $this->design->get_var('subject');
 		$this->email($this->settings->comment_email, $subject, $email_template, $this->settings->notify_from_email);
 	}

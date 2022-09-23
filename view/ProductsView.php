@@ -197,7 +197,6 @@ class ProductsView extends View
 
 		if (!empty($result_array['brand'])) {
 			$result_string .= '/brand-' . implode('_', $this->filter_chpu_sort_brands($result_array['brand'])); // - sorted by brand
-			//$result_string .= '/brand-' . implode('_',$result_array['brand']); // - this is not sorted by brands
 		}
 		foreach ($result_array['features'] as $k => $v) {
 			if (empty($result_array['features'][$k])) {
@@ -295,14 +294,14 @@ class ProductsView extends View
 		$filter['max_price'] = $current_max_price / $rate_from * $rate_to;
 
 		// If the brand is set, select it from the database
-		if (!empty($brand_url)) {
+		if ($val = $this->request->get('b'))
+			$filter['brand_id'] = $val;
+		elseif (!empty($brand_url)) {
 			$brand = $this->brands->get_brand((string)$brand_url);
 			if (empty($brand))
 				return false;
 			$this->design->assign('brand', $brand);
 			$filter['brand_id'] = $brand->id;
-		} elseif ($this->request->get('b')) {
-			$filter['brand_id'] = (array)$this->request->get('b');
 		}
 
 		// Select the current category
@@ -357,7 +356,7 @@ class ProductsView extends View
 				$options_filter['features'] = $filter['features'];
 			if (!empty($brand))
 				$options_filter['brand_id'] = $brand->id;
-			elseif (isset($filter['brand_id']))
+			elseif (!empty($filter['brand_id']))
 				$options_filter['brand_id'] = $filter['brand_id'];
 			if (!empty($price_products_ids))
 				$options_filter['product_id'] = $price_products_ids;
@@ -375,7 +374,6 @@ class ProductsView extends View
 			}
 
 			$this->design->assign('features', $features);
-			$this->design->assign('filter_features', $filter['features']);
 		}
 
 		// Pagination
@@ -488,7 +486,7 @@ class ProductsView extends View
 
 		// Select brands, we need them in the template	
 		if (!empty($category)) {
-			$brands = $this->brands->get_brands($filter);
+			$brands = $this->brands->get_brands(array('category_id' => $category->children, 'visible' => 1));
 			$category->brands = $brands;
 		}
 

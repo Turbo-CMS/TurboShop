@@ -32,23 +32,65 @@
 				</div>
 			</article>
 		{/if}
-		<form method="get" action="{url page=null}">
-			{if !$brand}
-				{if $category->brands}
-					<article class="card-group-item">
+		{if !$brand}
+			{if $category->brands}
+				<article class="card-group-item">
+					<header class="card-header">
+						<a href="#" class="text-decoration-none" data-bs-toggle="collapse" data-bs-target="#collapseBrands">
+							<i class="icon-action fa fa-chevron-down"></i>
+							<b>{$lang->index_brands}</b>
+						</a>
+					</header>
+					<div class="filter-content collapse show" id="collapseBrands">
+						<div class="card-body">
+							{foreach $category->brands as $b}
+								<label class="form-check">
+									<input type="checkbox" class="form-check-input" onclick="location.href = '{furl params=[brand=>$b->url, page=>null]}'" value="" {if $brand->id == $b->id || $smarty.get.b && in_array($b->id,$smarty.get.b)}checked{/if}>
+									<span class="form-check-label">
+										{$b->name|escape}
+									</span>
+								</label>
+							{/foreach}
+						</div>
+					</div>
+				</article>
+			{/if}
+		{/if}
+		{if $features}
+			{foreach $features as $f}
+				{if $f->is_color}
+					<article class="card-group-item color-filter">
 						<header class="card-header">
-							<a href="#" class="text-decoration-none" data-bs-toggle="collapse" data-bs-target="#collapseBrands">
+							<a href="#" class="text-decoration-none" data-bs-toggle="collapse" data-bs-target="#collapse{$f->id}">
 								<i class="icon-action fa fa-chevron-down"></i>
-								<b>{$lang->index_brands}</b>
+								<b>{$f->name}</b>
 							</a>
 						</header>
-						<div class="filter-content collapse show" id="collapseBrands">
+						<div class="filter-content collapse show" id="collapse{$f->id}">
 							<div class="card-body">
-								{foreach name=brands item=b from=$category->brands}
+								{foreach $f->options as $k=>$o}
+									<a href="{furl params=[$f->url=>$o->translit, page=>null]}" style="background-color:{$o->value|escape}" class="btn btn-sm mt-1 {if $o->value == '#ffffff'}white{/if} {if $smarty.get.{$f@key} && in_array($o->translit,$smarty.get.{$f@key})}active{/if}">
+										<span class="fas fa-check"></span>
+									</a>
+								{/foreach}
+							</div>
+						</div>
+					</article>
+				{else}
+					<article class="card-group-item">
+						<header class="card-header">
+							<a href="#" class="text-decoration-none" data-bs-toggle="collapse" data-bs-target="#collapse{$f->id}">
+								<i class="icon-action fa fa-chevron-down"></i>
+								<b>{$f->name}</b>
+							</a>
+						</header>
+						<div class="filter-content collapse show" id="collapse{$f->id}">
+							<div class="card-body">
+								{foreach $f->options as $k=>$o}
 									<label class="form-check">
-										<input type="checkbox" class="form-check-input" onclick="location.href = '{furl params=[brand=>$b->url, page=>null]}'" {if $brand->id == $b->id || $smarty.get.b && in_array($b->id,$smarty.get.b)}checked{/if}>
+										<input class="form-check-input" type="checkbox" onclick="location.href = '{furl params=[$f->url=>$o->translit, page=>null]}'" value="" {if $smarty.get.{$f@key} && in_array($o->translit,$smarty.get.{$f@key})}checked{/if}>
 										<span class="form-check-label">
-											{$b->name|escape}
+											{$o->value|escape}
 										</span>
 									</label>
 								{/foreach}
@@ -56,52 +98,8 @@
 						</div>
 					</article>
 				{/if}
-			{/if}
-			{if $features}
-				{foreach $features as $f}
-					{if $f->is_color}
-						<article class="card-group-item color-filter">
-							<header class="card-header">
-								<a href="#" class="text-decoration-none" data-bs-toggle="collapse" data-bs-target="#collapse{$f->id}">
-									<i class="icon-action fa fa-chevron-down"></i>
-									<b>{$f->name}</b>
-								</a>
-							</header>
-							<div class="filter-content collapse show" id="collapse{$f->id}">
-								<div class="card-body">
-									{foreach $f->options as $k=>$o}
-										<a href="{furl params=[$f->url=>$o->translit, page=>null]}" style="background-color:{$o->value|escape}" class="btn btn-sm mt-1 {if $o->value == '#ffffff'}white{/if} {if $smarty.get.{$f@key} && in_array($o->translit,$smarty.get.{$f@key})}active{/if}">
-											<span class="fas fa-check"></span>
-										</a>
-									{/foreach}
-								</div>
-							</div>
-						</article>
-					{else}
-						<article class="card-group-item">
-							<header class="card-header">
-								<a href="#" class="text-decoration-none" data-bs-toggle="collapse" data-bs-target="#collapse{$f->id}">
-									<i class="icon-action fa fa-chevron-down"></i>
-									<b>{$f->name}</b>
-								</a>
-							</header>
-							<div class="filter-content collapse show" id="collapse{$f->id}">
-								<div class="card-body">
-									{foreach $f->options as $k=>$o}
-										<label class="form-check">
-											<input class="form-check-input" type="checkbox" onclick="location.href = '{furl params=[$f->url=>$o->translit, page=>null]}'" {if $smarty.get.{$f@key} && in_array($o->translit,$smarty.get.{$f@key})}checked{/if}>
-											<span class="form-check-label">
-												{$o->value|escape}
-											</span>
-										</label>
-									{/foreach}
-								</div>
-							</div>
-						</article>
-					{/if}
-				{/foreach}
-			{/if}
-		</form>
+			{/foreach}
+		{/if}
 	</div>
 	<div class="d-grid gap-2 card-body">
 		<a class="btn btn-outline-secondary" href="{$lang_link}catalog/{$category->url}">{$lang->reset}</a>

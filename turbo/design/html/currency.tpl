@@ -137,7 +137,7 @@
 										</div>
                                         <div class="turbo_list_boding turbo_list_status hidden-md-down">
                                             <div class="form-check form-switch">
-                                                <input class="form-check-input fn_ajax_action {if $c->enabled}fn_active_class{/if}" id="id_{$c->id}" data-module="currency" data-action="enabled" data-id="{$c->id}" name="enabled" value="1" type="checkbox" {if $c->enabled}checked="" {/if}>
+                                                <input class="form-check-input fn_ajax_action {if $c->enabled}fn_active_class{/if}" id="id_{$c->id}" data-module="currency" data-action="enabled" data-id="{$c->id}" name="enabled" value="1" type="checkbox" {if $c->enabled}checked=""{/if}>
                                                 <label class="form-check-label" for="id_{$c->id}"></label>
                                             </div>
                                         </div>

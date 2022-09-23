@@ -411,17 +411,17 @@ class Products extends Turbo
 	public function update_product($id, $product)
 	{
 		$product = (object)$product;
-		$result = $this->languages->get_description($product, 'product');
-		if (!empty($result->data)) $product = $result->data;
 
-		$query = $this->db->placehold("UPDATE __products SET `last_modified`=NOW(), ?% WHERE id in (?@) LIMIT ?", $product, (array)$id, count((array)$id));
+		$query = $this->db->placehold("UPDATE __products SET ?%, last_modified=NOW() WHERE id in (?@) LIMIT ?", $product, (array)$id, count((array)$id));
 		if ($this->db->query($query)) {
+			$result = $this->languages->get_description($product, 'product');
 			if (!empty($result->description)) {
 				$this->languages->action_description($id, $result->description, 'product', $this->languages->lang_id());
 			}
 			return $id;
-		} else
+		} else {
 			return false;
+		}
 	}
 
 	public function add_product($product)

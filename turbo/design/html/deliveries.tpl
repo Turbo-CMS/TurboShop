@@ -92,7 +92,7 @@
 								<div class="turbo_list_boding turbo_list_status">
 									{*visible*}
 									<div class="form-check form-switch">
-										<input class="form-check-input fn_ajax_action {if $delivery->enabled}fn_active_class{/if}" id="id_{$delivery->id}" data-module="delivery" data-action="enabled" data-id="{$delivery->id}" name="enabled" value="1" type="checkbox" {if $delivery->enabled}checked="" {/if}>
+										<input class="form-check-input fn_ajax_action {if $delivery->enabled}fn_active_class{/if}" id="id_{$delivery->id}" data-module="delivery" data-action="enabled" data-id="{$delivery->id}" name="enabled" value="1" type="checkbox" {if $delivery->enabled}checked=""{/if}>
 										<label class="form-check-label" for="id_{$delivery->id}"></label>
 									</div>
 								</div>

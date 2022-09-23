@@ -134,6 +134,9 @@ class IndexView extends View
 					$this->notify->email_order_user($order->id);
 					// Send an email to the administrator
 					$this->notify->email_order_admin($order->id);
+					// Let's notify in Telegram
+					if($this->settings->tg_notify==1)
+					$this->tgnotify->message($order->id);
 					// Redirect to order page
 					header('Location: ' . $this->config->root_url . '/order/' . $order->url);
 				}

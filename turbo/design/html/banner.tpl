@@ -78,7 +78,7 @@
 								<div class="mt-h">
 									<span class="boxes_inline">
 										<div class="form-check form-switch">
-											<input class="form-check-input" id="show_all_pages" name="show_all_pages" value="1" type="checkbox" {if $banner->show_all_pages}checked="" {/if}>
+											<input class="form-check-input" id="show_all_pages" name="show_all_pages" value="1" type="checkbox" {if $banner->show_all_pages}checked=""{/if}>
 											<label class="form-check-label" for="show_all_pages"></label>
 										</div>
 									</span>
@@ -101,7 +101,7 @@
 								<div class="turbo_switch clearfix">
 									<label class="switch_label">{$btr->general_enable|escape}</label>
 									<div class="form-check form-switch">
-										<input class="form-check-input" id="visible_checkbox" name="visible" value="1" type="checkbox" {if $banner->visible}checked="" {/if}>
+										<input class="form-check-input" id="visible_checkbox" name="visible" value="1" type="checkbox" {if $banner->visible}checked=""{/if}>
 										<label class="form-check-label" for="visible_checkbox"></label>
 									</div>
 								</div>

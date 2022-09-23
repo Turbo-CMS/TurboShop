@@ -111,35 +111,35 @@ class TgNotify extends Turbo
 		$currency = $this->money->get_currency();
 		$total = $this->money->convert($order->total_price) . ' ' . $currency->sign;
 
-		$text_string = ''. $this->backend_translations->email_new_order .' №' . $order->id . ' '. $this->backend_translations->email_for_sum .' ' . $total . PHP_EOL;
+		$text_string = '' . $this->backend_translations->email_new_order . ' №' . $order->id . ' ' . $this->backend_translations->email_for_sum . ' ' . $total . PHP_EOL;
 		if ($order->status == 0)
-			$status = ''. $this->backend_translations->email_status_waiting .'';
+			$status = '' . $this->backend_translations->email_status_waiting . '';
 		elseif ($order->status == 1)
-			$status = ''. $this->backend_translations->email_status_in .'';
+			$status = '' . $this->backend_translations->email_status_in . '';
 		elseif ($order->status == 2)
-			$status = ''. $this->backend_translations->email_status_completed .'';
-		$text_string .= '<b>'. $this->backend_translations->email_order_status_s .':</b> ' . $status . PHP_EOL;
+			$status = '' . $this->backend_translations->email_status_completed . '';
+		$text_string .= '<b>' . $this->backend_translations->email_order_status_s . ':</b> ' . $status . PHP_EOL;
 
 		if ($order->paid == 1)
-			$paid = ''. $this->backend_translations->order_paid .'';
+			$paid = '' . $this->backend_translations->order_paid . '';
 		else {
-			$paid = ''. $this->backend_translations->order_not_paid .'';
+			$paid = '' . $this->backend_translations->order_not_paid . '';
 		}
 
-		$text_string .= '<b>'. $this->backend_translations->email_payment_status .':</b> ' . $paid . PHP_EOL;
+		$text_string .= '<b>' . $this->backend_translations->email_payment_status . ':</b> ' . $paid . PHP_EOL;
 
 		if ($order->name)
-			$text_string .= '<b>'. $this->backend_translations->email_order_name .':</b> ' . $order->name . PHP_EOL;
+			$text_string .= '<b>' . $this->backend_translations->email_order_name . ':</b> ' . $order->name . PHP_EOL;
 		if ($order->phone)
-			$text_string .= '<b>'. $this->backend_translations->email_order_phone .':</b> ' . $order->phone . PHP_EOL;
+			$text_string .= '<b>' . $this->backend_translations->email_order_phone . ':</b> ' . $order->phone . PHP_EOL;
 		if ($order->email)
-			$text_string .= '<b>'. $this->backend_translations->email_order_email .':</b> ' . $order->email . PHP_EOL;
+			$text_string .= '<b>' . $this->backend_translations->email_order_email . ':</b> ' . $order->email . PHP_EOL;
 		if ($order->address)
-			$text_string .= '<b>'. $this->backend_translations->email_order_address .':</b> ' . $order->address . PHP_EOL;
+			$text_string .= '<b>' . $this->backend_translations->email_order_address . ':</b> ' . $order->address . PHP_EOL;
 		if ($order->comment)
-			$text_string .= '<b>'. $this->backend_translations->email_order_comment .':</b> ' . $order->comment . PHP_EOL;
+			$text_string .= '<b>' . $this->backend_translations->email_order_comment . ':</b> ' . $order->comment . PHP_EOL;
 
-		$text_string .= '<b>'. $this->backend_translations->email_order_purchases .':</b> ' . PHP_EOL;
+		$text_string .= '<b>' . $this->backend_translations->email_order_purchases . ':</b> ' . PHP_EOL;
 		foreach ($purchases as &$purchase) {
 			$text_string .= $purchase->product_name . ' ' . $purchase->variant_color . ' ' . $purchase->variant_name . PHP_EOL;
 
@@ -147,24 +147,27 @@ class TgNotify extends Turbo
 			$text_string .= $purchase->amount . ' x ' . $item_price . PHP_EOL;
 		}
 		$delivery = $this->delivery->get_delivery($order->delivery_id);
-		$text_string .= '<b>'. $this->backend_translations->general_shipping .':</b> ' . $delivery->name . PHP_EOL;
+		$text_string .= '<b>' . $this->backend_translations->general_shipping . ':</b> ' . $delivery->name . PHP_EOL;
 		$delivery_price = $this->money->convert($order->delivery_price) . ' ' . $currency->sign;
-		$text_string .= '<b>'. $this->backend_translations->delivery_cost .':</b> ' . $delivery_price;
+		$text_string .= '<b>' . $this->backend_translations->delivery_cost . ':</b> ' . $delivery_price . PHP_EOL;
+		$text_string .= $this->config->root_url . '/turbo/index.php?module=OrderAdmin&id=' . $order->id;
 		$this->apiRequest("sendMessage", array('chat_id' => $this->settings->tg_channel, 'parse_mode' => 'HTML', "text" => $text_string));
 	}
-	
-	public function message_callback($callback_id) 
+
+	public function message_callback($callback_id)
 	{
-		if(!($callback = $this->callbacks->get_callback(intval($callback_id))))
+		if (!($callback = $this->callbacks->get_callback(intval($callback_id))))
 			return false;
-	
-		$text_string = ''. $this->backend_translations->callbacks_order .''.PHP_EOL;
-		
-		if($callback->name)
-		   $text_string .='<b>'. $this->backend_translations->index_name .':</b> ' . $callback->name . PHP_EOL;
-		if($callback->phone)
-		   $text_string .='<b>'. $this->backend_translations->email_order_phone .':</b> ' . $callback->phone . PHP_EOL;
-	   
-		$this->apiRequest("sendMessage", array('chat_id' => $this->settings->tg_channel, 'parse_mode'=>'HTML', "text" => $text_string));
+
+		$text_string = '' . $this->backend_translations->callbacks_order . '' . PHP_EOL;
+
+		if ($callback->name)
+			$text_string .= '<b>' . $this->backend_translations->index_name . ':</b> ' . $callback->name . PHP_EOL;
+		if ($callback->phone)
+			$text_string .= '<b>' . $this->backend_translations->email_order_phone . ':</b> ' . $callback->phone . PHP_EOL;
+		if ($callback->message)
+			$text_string .= '<b>' . $this->backend_translations->email_message . ':</b> ' . $callback->message;
+
+		$this->apiRequest("sendMessage", array('chat_id' => $this->settings->tg_channel, 'parse_mode' => 'HTML', "text" => $text_string));
 	}
 }

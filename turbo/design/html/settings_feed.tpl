@@ -45,7 +45,7 @@
 								<div class="permission_box">
 									<span>{$btr->settings_feed_ava_false|escape}</span>
 									<div class="form-check form-switch">
-										<input class="form-check-input" id="export_export_not_in_stock" name="export_export_not_in_stock" value="1" type="checkbox" {if $settings->export_export_not_in_stock}checked="" {/if}>
+										<input class="form-check-input" id="export_export_not_in_stock" name="export_export_not_in_stock" value="1" type="checkbox" {if $settings->export_export_not_in_stock}checked=""{/if}>
 										<label class="form-check-label" for="export_export_not_in_stock"></label>
 									</div>
 								</div>
@@ -54,7 +54,7 @@
 								<div class="permission_box">
 									<span>{$btr->settings_feed_store|escape}</span>
 									<div class="form-check form-switch">
-										<input class="form-check-input" id="export_available_for_retail_store" name="export_available_for_retail_store" value="1" type="checkbox" {if $settings->export_available_for_retail_store}checked="" {/if}>
+										<input class="form-check-input" id="export_available_for_retail_store" name="export_available_for_retail_store" value="1" type="checkbox" {if $settings->export_available_for_retail_store}checked=""{/if}>
 										<label class="form-check-label" for="export_available_for_retail_store"></label>
 									</div>
 								</div>
@@ -63,7 +63,7 @@
 								<div class="permission_box">
 									<span>{$btr->settings_feed_pickup|escape}</span>
 									<div class="form-check form-switch">
-										<input class="form-check-input" id="export_available_for_reservation" name="export_available_for_reservation" value="1" type="checkbox" {if $settings->export_available_for_reservation}checked="" {/if}>
+										<input class="form-check-input" id="export_available_for_reservation" name="export_available_for_reservation" value="1" type="checkbox" {if $settings->export_available_for_reservation}checked=""{/if}>
 										<label class="form-check-label" for="export_available_for_reservation"></label>
 									</div>
 								</div>
@@ -72,7 +72,7 @@
 								<div class="permission_box">
 									<span>{$btr->settings_feed_descr|escape}</span>
 									<div class="form-check form-switch">
-										<input class="form-check-input" id="export_short_description" name="export_short_description" value="1" type="checkbox" {if $settings->export_short_description}checked="" {/if}>
+										<input class="form-check-input" id="export_short_description" name="export_short_description" value="1" type="checkbox" {if $settings->export_short_description}checked=""{/if}>
 										<label class="form-check-label" for="export_short_description"></label>
 									</div>
 								</div>
@@ -81,7 +81,7 @@
 								<div class="permission_box">
 									<span>{$btr->settings_feed_manufacturer_warranty|escape}</span>
 									<div class="form-check form-switch">
-										<input class="form-check-input" id="export_has_manufacturer_warranty" name="export_has_manufacturer_warranty" value="1" type="checkbox" {if $settings->export_has_manufacturer_warranty}checked="" {/if}>
+										<input class="form-check-input" id="export_has_manufacturer_warranty" name="export_has_manufacturer_warranty" value="1" type="checkbox" {if $settings->export_has_manufacturer_warranty}checked=""{/if}>
 										<label class="form-check-label" for="export_has_manufacturer_warranty"></label>
 									</div>
 								</div>
@@ -90,7 +90,7 @@
 								<div class="permission_box">
 									<span>{$btr->settings_feed_seller_warranty|escape}</span>
 									<div class="form-check form-switch">
-										<input class="form-check-input" id="export_has_seller_warranty" name="export_has_seller_warranty" value="1" type="checkbox" {if $settings->export_has_seller_warranty}checked="" {/if}>
+										<input class="form-check-input" id="export_has_seller_warranty" name="export_has_seller_warranty" value="1" type="checkbox" {if $settings->export_has_seller_warranty}checked=""{/if}>
 										<label class="form-check-label" for="export_has_seller_warranty"></label>
 									</div>
 								</div>
@@ -99,7 +99,7 @@
 								<div class="permission_box">
 									<span>{$btr->settings_feed_no_export_without_price|escape}</span>
 									<div class="form-check form-switch">
-										<input class="form-check-input" id="export_no_export_without_price" name="export_no_export_without_price" value="1" type="checkbox" {if $settings->export_no_export_without_price}checked="" {/if}>
+										<input class="form-check-input" id="export_no_export_without_price" name="export_no_export_without_price" value="1" type="checkbox" {if $settings->export_no_export_without_price}checked=""{/if}>
 										<label class="form-check-label" for="export_no_export_without_price"></label>
 									</div>
 								</div>

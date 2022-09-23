@@ -70,7 +70,7 @@
 								<div class="turbo_switch clearfix">
 									<label class="switch_label">{$btr->general_enable|escape}</label>
 									<div class="form-check form-switch">
-										<input class="form-check-input" id="visible_checkbox" name="visible" value="1" type="checkbox" {if $faq->visible}checked="" {/if}>
+										<input class="form-check-input" id="visible_checkbox" name="visible" value="1" type="checkbox" {if $faq->visible}checked=""{/if}>
 										<label class="form-check-label" for="visible_checkbox"></label>
 									</div>
 								</div>

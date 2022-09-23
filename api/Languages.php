@@ -281,19 +281,17 @@ class Languages extends Turbo
 	{
 		if (!empty($id)) {
 			$lang = $this->get_language($id);
-			if (isset($lang->is_default) && (!$lang->is_default)) {
-				$query = $this->db->placehold("DELETE FROM __languages WHERE id=? LIMIT 1", intval($id));
-				$this->db->query($query);
+			$query = $this->db->placehold("DELETE FROM __languages WHERE id=? LIMIT 1", intval($id));
+			$this->db->query($query);
 
-				foreach ($this->tables as $table)
-					$this->db->query("DELETE FROM  __lang_" . $table . " WHERE lang_id=?", intval($id));
+			foreach ($this->tables as $table)
+				$this->db->query("DELETE FROM  __lang_" . $table . " WHERE lang_id=?", intval($id));
 
-				$this->db->query("DELETE FROM  __options WHERE lang_id=?", intval($id));
-				$this->db->query("DELETE FROM __settings_lang WHERE lang_id=?", intval($id));
-				$this->db->query("DELETE FROM __seo_lang WHERE lang_id=?", intval($id));
-				$this->db->query("ALTER TABLE __translations DROP COLUMN `lang_$lang->label`");
-				$this->dump_translation();
-			}
+			$this->db->query("DELETE FROM  __options WHERE lang_id=?", intval($id));
+			$this->db->query("DELETE FROM __settings_lang WHERE lang_id=?", intval($id));
+			$this->db->query("DELETE FROM __seo_lang WHERE lang_id=?", intval($id));
+			$this->db->query("ALTER TABLE __translations DROP COLUMN `lang_$lang->label`");
+			$this->dump_translation();
 		}
 	}
 

@@ -20,7 +20,7 @@ class PageAdmin extends Turbo
 			$page->menu_id = $this->request->post('menu_id', 'integer');
 			$page->visible = $this->request->post('visible', 'boolean');
 
-			## Do not allow duplicate section URLs
+			// Do not allow duplicate section URLs
 			if (($p = $this->pages->get_page($page->url)) && $p->id != $page->id) {
 				$this->design->assign('message_error', 'url_exists');
 			} else {
@@ -56,10 +56,7 @@ class PageAdmin extends Turbo
 			$menu = reset($menus);
 		}
 
-		$pages = $this->pages->get_pages_tree(array('menu_id' => $menu->id));
-
 		$this->design->assign('menu', $menu);
-		$this->design->assign('pages', $pages);
 
 		return $this->design->fetch('page.tpl');
 	}

@@ -101,8 +101,11 @@ class Variants extends Turbo
 		$result = $this->languages->get_description($variant, 'variant');
 		if (!empty($result->data)) $variant = $result->data;
 
-		$query = $this->db->placehold("UPDATE __variants SET ?% WHERE id=? LIMIT 1", $variant, intval($id));
-		$this->db->query($query);
+		$v = (array)$variant;
+		if (!empty($v)) {
+			$query = $this->db->placehold("UPDATE __variants SET ?% WHERE id=? LIMIT 1", $variant, intval($id));
+			$this->db->query($query);
+		}
 
 		if (!empty($result->description)) {
 			$this->languages->action_description($id, $result->description, 'variant', $this->languages->lang_id());

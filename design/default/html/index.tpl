@@ -503,8 +503,8 @@
 									</div>
 									<div class="price-wrap mt-2">
 										{if $product->variants|count> 0}
-											{if $product->variants[0]->compare_price> 0}<del class="price-old"><small><span class="compare_price">{$product->variants[0]->compare_price|convert}</span> {$currency->sign|escape}</small></del>{/if}
-											<span class="price">{$product->variants[0]->price|convert} {$currency->sign|escape}</span>
+											{if $product->variant->compare_price> 0}<del class="price-old"><small><span class="compare_price">{$product->variant->compare_price|convert}</span> {$currency->sign|escape}</small></del>{/if}
+											<span class="price">{$product->variant->price|convert} {$currency->sign|escape}</span>
 										{/if}
 									</div>
 								</div>

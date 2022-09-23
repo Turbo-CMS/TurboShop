@@ -92,8 +92,8 @@
 								<div class="mt-h mb-h">
 									<div class="input-group">
 										<span class="input-group-addon input-group-addon-left">URL</span>
-										<input name="url" class="fn_meta_field form-control fn_url {if $product->id}fn_disabled{/if}" {if $product->id}readonly="" {/if} type="text" value="{$product->url|escape}">
-										<input type="checkbox" id="block_translit" class="hidden" value="1" {if $product->id}checked="" {/if}>
+										<input name="url" class="fn_meta_field form-control fn_url {if $product->id}fn_disabled{/if}" {if $product->id}readonly=""{/if} type="text" value="{$product->url|escape}">
+										<input type="checkbox" id="block_translit" class="hidden" value="1" {if $product->id}checked=""{/if}>
 										<span class="input-group-addon fn_disable_url">
 											{if $product->id}
 												<i class="url-lock"></i>
@@ -112,7 +112,7 @@
 								<div class="turbo_switch clearfix">
 									<label class="switch_label">{$btr->general_enable|escape}</label>
 									<div class="form-check form-switch">
-										<input class="form-check-input" id="visible_checkbox" name="visible" value="1" type="checkbox" {if $product->visible}checked="" {/if}>
+										<input class="form-check-input" id="visible_checkbox" name="visible" value="1" type="checkbox" {if $product->visible}checked=""{/if}>
 										<label class="form-check-label" for="visible_checkbox"></label>
 									</div>
 								</div>
@@ -139,7 +139,7 @@
 								<div class="permission_box">
 									<span>{$btr->general_bestseller|escape}</span>
 									<div class="form-check form-switch">
-										<input class="form-check-input" id="featured_checkbox" name="featured" value="1" type="checkbox" {if $product->featured}checked="" {/if}>
+										<input class="form-check-input" id="featured_checkbox" name="featured" value="1" type="checkbox" {if $product->featured}checked=""{/if}>
 										<label class="form-check-label" for="featured_checkbox"></label>
 									</div>
 								</div>
@@ -148,7 +148,7 @@
 								<div class="permission_box">
 									<span>{$btr->general_new|escape}</span>
 									<div class="form-check form-switch">
-										<input class="form-check-input" id="new_checkbox" name="is_new" value="1" type="checkbox" {if $product->is_new}checked="" {/if}>
+										<input class="form-check-input" id="new_checkbox" name="is_new" value="1" type="checkbox" {if $product->is_new}checked=""{/if}>
 										<label class="form-check-label" for="new_checkbox"></label>
 									</div>
 								</div>
@@ -157,7 +157,7 @@
 								<div class="permission_box">
 									<span>{$btr->general_hit|escape}</span>
 									<div class="form-check form-switch">
-										<input class="form-check-input" id="hit_checkbox" name="is_hit" value="1" type="checkbox" {if $product->is_hit}checked="" {/if}>
+										<input class="form-check-input" id="hit_checkbox" name="is_hit" value="1" type="checkbox" {if $product->is_hit}checked=""{/if}>
 										<label class="form-check-label" for="hit_checkbox"></label>
 									</div>
 								</div>
@@ -166,7 +166,7 @@
 								<div class="permission_box">
 									<span>{$btr->feature_xml|escape}</span>
 									<div class="form-check form-switch">
-										<input class="form-check-input" id="export_checkbox" name="to_export" value="1" type="checkbox" {if $product->to_export}checked="" {/if}>
+										<input class="form-check-input" id="export_checkbox" name="to_export" value="1" type="checkbox" {if $product->to_export}checked=""{/if}>
 										<label class="form-check-label" for="export_checkbox"></label>
 									</div>
 								</div>
@@ -254,9 +254,9 @@
 						<p><input id="sale_to" name="sale_to" class="form-control" autocomplete="off" type="text" value="{$product->sale_to}"></p>
 						<div class="heading_label">{$btr->general_brand|escape}</div>
 						<select name="brand_id" class="selectpicker mb-1 fn_meta_brand" data-live-search="true">
-							<option value="0" {if !$product->brand_id}selected="" {/if} data-brand_name="">{$btr->general_not_set|escape}</option>
+							<option value="0" {if !$product->brand_id}selected=""{/if} data-brand_name="">{$btr->general_not_set|escape}</option>
 							{foreach $brands as $brand}
-								<option value="{$brand->id}" {if $product->brand_id == $brand->id}selected="" {/if} data-brand_name="{$brand->name|escape}">{$brand->name|escape}</option>
+								<option value="{$brand->id}" {if $product->brand_id == $brand->id}selected=""{/if} data-brand_name="{$brand->name|escape}">{$brand->name|escape}</option>
 							{/foreach}
 						</select>
 						<div class="heading_label">{$btr->general_category|escape}</div>
@@ -353,7 +353,7 @@
 											<div class="heading_label">{$btr->general_currency|escape}</div>
 											<select name="variants[currency_id][]" class="selectpicker">
 												{foreach $currencies as $c}
-													<option value="{$c->id}" {if $c->id == $variant->currency_id}selected="" {/if}>{$c->code|escape}</option>
+													<option value="{$c->id}" {if $c->id == $variant->currency_id}selected=""{/if}>{$c->code|escape}</option>
 												{/foreach}
 											</select>
 										</div>

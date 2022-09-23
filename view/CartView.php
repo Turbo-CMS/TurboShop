@@ -6,7 +6,7 @@
  * @author	Turbo CMS
  * @link	https://turbo-cms.com/
  *
- * Корзина покупок
+ * Shopping basket
  * This class uses the template cart.tpl
  *
  */

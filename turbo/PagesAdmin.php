@@ -47,7 +47,17 @@ class PagesAdmin extends Turbo
 		}
 
 		// Display
-		$pages = $this->pages->get_pages_tree(array('menu_id' => $menu->id));
+		$tree = $this->pages->get_pages_tree();
+		$pages = array();
+		foreach ($tree as $t) {
+			if ($t->menu_id != $menu->id)
+				continue;
+
+			if (count(array_intersect($t->children)) == 0)
+				continue;
+
+			$pages[] = $t;
+		}
 
 		$this->design->assign('pages', $pages);
 		return $this->design->fetch('pages.tpl');

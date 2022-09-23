@@ -69,7 +69,7 @@
 								<div class="turbo_switch clearfix">
 									<label class="switch_label">{$btr->email_comments_approved|escape}</label>
 									<div class="form-check form-switch">
-										<input class="form-check-input" id="approved_checkbox" name="approved" value="1" type="checkbox" {if $comment->approved}checked="" {/if}>
+										<input class="form-check-input" id="approved_checkbox" name="approved" value="1" type="checkbox" {if $comment->approved}checked=""{/if}>
 										<label class="form-check-label" for="approved_checkbox"></label>
 									</div>
 								</div>
@@ -78,7 +78,7 @@
 								<div class="turbo_switch clearfix">
 									<label class="switch_label">{$btr->comment_from_admin|escape}</label>
 									<div class="form-check form-switch">
-										<input class="form-check-input" id="admin_checkbox" name="admin" value="1" type="checkbox" {if $comment->admin}checked="" {/if}>
+										<input class="form-check-input" id="admin_checkbox" name="admin" value="1" type="checkbox" {if $comment->admin}checked=""{/if}>
 										<label class="form-check-label" for="admin_checkbox"></label>
 									</div>
 								</div>

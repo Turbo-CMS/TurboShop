@@ -45,7 +45,7 @@ class SettingsAdmin extends Turbo
 				$this->settings->notify_from_email = $this->request->post('notify_from_email');
 				$this->settings->update('notify_from_name', $this->request->post('notify_from_name'));
 				$this->settings->email_lang = $this->request->post('email_lang');
-				
+
 				$this->settings->tg_notify = $this->request->post('tg_notify', 'boolean');
 				$this->settings->tg_token = $this->request->post('tg_token');
 				$this->settings->tg_apiurl = $this->request->post('tg_apiurl');
