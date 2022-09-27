@@ -15,7 +15,7 @@
 							<input type="hidden" value="{$maxprice|convert|regex_replace:'/[ ]/':''|regex_replace:'/[,]/':'.'|ceil}" id="f_maxPrice">
 							<input type="hidden" value="{$current_minprice|convert|regex_replace:'/[ ]/':''|regex_replace:'/[,]/':'.'|floor}" id="f_currentMinPrice">
 							<input type="hidden" value="{$current_maxprice|convert|regex_replace:'/[ ]/':''|regex_replace:'/[,]/':'.'|ceil}" id="f_currentMaxPrice">
-							<input type="hidden" value="10" id="f_priceStep">
+							<input type="hidden" value="10{if $currency->code == 'UAH'}0{/if}" id="f_priceStep">
 							<input type="hidden" value=" {$currency->sign}" id="f_postfix">
 							<span type="text" id="price-slider"></span>
 							<form class="mcf_form" method="post">

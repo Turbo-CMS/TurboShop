@@ -4,6 +4,10 @@
 	border: 1px solid rgba(0, 0, 0, 0.125);
 }
 
+.color-filter .btn:hover {
+	border: 1px solid rgba(0, 0, 0, 0.125);
+}
+
 .btn span.fa-check {
 	opacity: 0;
 }
@@ -11,10 +15,6 @@
 .btn.active span.fa-check {
 	opacity: 1;
 	color: #fff;
-}
-
-.btn.white {
-	border: 1px solid rgba(0, 0, 0, 0.125);
 }
 
 .btn.white.active span.fa-check {

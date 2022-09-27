@@ -418,9 +418,9 @@ CREATE TABLE `t_currencies` (
 --
 
 INSERT INTO `t_currencies` (`id`, `name`, `sign`, `code`, `rate_from`, `rate_to`, `cents`, `position`, `enabled`) VALUES
-(1, 'USD', '$', 'USD', '8.98', '8.98', 0, 1, 1),
-(2, 'UAH', '₴', 'UAH', '30.00', '1.00', 0, 2, 1),
-(3, 'EUR', '€', 'EUR', '0.96', '1.00', 0, 3, 1);
+(1, 'USD', '$', 'USD', '8.98', '8.98', 2, 1, 1),
+(2, 'UAH', '₴', 'UAH', '30.00', '1.00', 2, 2, 1),
+(3, 'EUR', '€', 'EUR', '0.96', '1.00', 2, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -3327,7 +3327,8 @@ ALTER TABLE `t_features`
   ADD PRIMARY KEY (`id`),
   ADD KEY `position` (`position`),
   ADD KEY `in_filter` (`in_filter`),
-  ADD KEY `is_color` (`is_color`);
+  ADD KEY `is_color` (`is_color`),
+  ADD KEY `url_in_product` (`url_in_product`);
 
 --
 -- Indexes for table `t_feedbacks`

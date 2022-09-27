@@ -43,6 +43,15 @@ class Brands extends Turbo
 
 			if (!empty($filter['brand_id']))
 				$category_id_filter .= $this->db->placehold(" OR b.id in(?@)", (array)$filter['brand_id']);
+
+			$currency = $this->money->get_currencies(array('enabled' => 1));
+			$currency = reset($currency);
+
+			if (!empty($filter['min_price']))
+				$category_id_filter .= $this->db->placehold(' AND p.id in (SELECT product_id FROM __variants WHERE IF((currency_id !=' . $currency->id . ' AND currency_id > 0), (price*(SELECT rate_to FROM __currencies AS c WHERE c.id =currency_id)/(SELECT rate_from FROM __currencies AS c WHERE c.id = currency_id)), price) >= ? ) ', floatval($filter['min_price']));
+
+			if (!empty($filter['max_price']))
+				$category_id_filter .= $this->db->placehold(' AND p.id in (SELECT product_id FROM __variants WHERE IF((currency_id !=' . $currency->id . ' AND currency_id > 0), (price*(SELECT rate_to FROM __currencies AS c WHERE c.id =currency_id)/(SELECT rate_from FROM __currencies AS c WHERE c.id = currency_id)), price) <= ? ) ', floatval($filter['max_price']));
 		}
 
 		$lang_sql = $this->languages->get_query(array('object' => 'brand'));

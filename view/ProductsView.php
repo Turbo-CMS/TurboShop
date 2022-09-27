@@ -453,7 +453,14 @@ class ProductsView extends View
 
 			$this->design->assign('products', $products);
 		}
+		
+		// Select brands, we need them in the template	
+		if (!empty($category)) {
+			$brands = $this->brands->get_brands($filter);
+			$category->brands = $brands;
+		}
 
+		// Filter by price
 		unset($filter['min_price']);
 		unset($filter['max_price']);
 		unset($filter['limit']);
@@ -483,12 +490,6 @@ class ProductsView extends View
 		$this->design->assign('maxprice', $max_price);
 		$this->design->assign('current_minprice', $current_min_price * $rate_to / $rate_from);
 		$this->design->assign('current_maxprice', $current_max_price * $rate_to / $rate_from);
-
-		// Select brands, we need them in the template	
-		if (!empty($category)) {
-			$brands = $this->brands->get_brands($filter);
-			$category->brands = $brands;
-		}
 
 		// Set meta tags depending on the request
 		$auto_meta = new StdClass;

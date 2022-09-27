@@ -9,6 +9,7 @@
 		tinyMCE.init({literal}{{/literal}
 		selector: "textarea.editor_large, textarea.editor_small",
 		min_height: 560,
+		promotion: false,
 		plugins: [
 			'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
 			'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',

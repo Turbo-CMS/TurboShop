@@ -333,7 +333,7 @@
 
 {* Piecon *}
 {js id="piecon" priority=99 include=[
-"turbo/design/js/piecon/piecon.js"
+"turbo/design/js/piecon/piecon.min.js"
 ]}{/js}
 {javascript minify=true}
 
