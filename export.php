@@ -127,7 +127,6 @@ foreach ($products as $p) {
 	$old_price
 	<currencyId>" . $currency_code . "</currencyId>
 	<categoryId>" . $p->category_id . "</categoryId>
-	<market_category>" . $categories[$p->category_id]->export_name . "</market_category>
 	";
 
 	if (!empty($p_images[$p->product_id])) {
