@@ -643,10 +643,10 @@
 									</div>
 									<div class="raiting_boxed">
 										<input class="fn_range_value" type="hidden" value="{$settings->watermark_offset_x|escape}" name="watermark_offset_x">
-										<input class="fn_rating range_input" type="range" min="0" max="100" step="1" value="{$settings->watermark_offset_x|escape}">
+										<input class="fn_range range_input" type="range" min="0" max="100" step="1" value="{$settings->watermark_offset_x|escape}">
 										<div class="raiting_range_number">
-											<span class="float-xs-left">1%</span>
-											<span class="float-xs-right">100%</span>
+											<span class="float-xs-left">0</span>
+											<span class="float-xs-right">100</span>
 										</div>
 									</div>
 								</div>
@@ -657,9 +657,9 @@
 									</div>
 									<div class="raiting_boxed">
 										<input class="fn_range_value" type="hidden" value="{$settings->watermark_offset_y|escape}" name="watermark_offset_y">
-										<input class="fn_rating range_input" type="range" min="0" max="100" step="1" value="{$settings->watermark_offset_y|escape}">
+										<input class="fn_range range_input" type="range" min="0" max="100" step="1" value="{$settings->watermark_offset_y|escape}">
 										<div class="raiting_range_number">
-											<span class="float-xs-left">1</span>
+											<span class="float-xs-left">0</span>
 											<span class="float-xs-right">100</span>
 										</div>
 									</div>
@@ -671,9 +671,9 @@
 									</div>
 									<div class="raiting_boxed">
 										<input class="fn_range_value" type="hidden" value="{$settings->watermark_transparency}" name="watermark_transparency">
-										<input class="fn_rating range_input" type="range" min="0" max="100" step="1" value="{$settings->watermark_transparency|escape}">
+										<input class="fn_range range_input" type="range" min="0" max="100" step="1" value="{$settings->watermark_transparency|escape}">
 										<div class="raiting_range_number">
-											<span class="float-xs-left">1</span>
+											<span class="float-xs-left">0</span>
 											<span class="float-xs-right">100</span>
 										</div>
 									</div>
@@ -685,9 +685,9 @@
 									</div>
 									<div class="raiting_boxed">
 										<input class="fn_range_value" type="hidden" value="{$settings->images_sharpen}" name="images_sharpen">
-										<input class="fn_rating range_input" type="range" min="0" max="100" step="1" value="{$settings->images_sharpen|escape}">
+										<input class="fn_range range_input" type="range" min="0" max="100" step="1" value="{$settings->images_sharpen|escape}">
 										<div class="raiting_range_number">
-											<span class="float-xs-left">1</span>
+											<span class="float-xs-left">0</span>
 											<span class="float-xs-right">100</span>
 										</div>
 									</div>
@@ -714,7 +714,7 @@
 ]}{/css}
 {stylesheet minify=true}
 <script>
-	$(document).on("input", ".fn_rating", function() {
+	$(document).on("input", ".fn_range", function() {
 		$(this).closest(".fn_range_wrap").find(".fn_show_range").html($(this).val());
 		$(this).closest(".fn_range_wrap").find(".fn_range_value").val($(this).val());
 	});
