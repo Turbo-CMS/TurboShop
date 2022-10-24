@@ -52,10 +52,6 @@ class PagesAdmin extends Turbo
 		foreach ($tree as $t) {
 			if ($t->menu_id != $menu->id)
 				continue;
-
-			if (count(array_intersect($t->children)) == 0)
-				continue;
-
 			$pages[] = $t;
 		}
 

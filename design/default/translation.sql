@@ -154,7 +154,7 @@ INSERT INTO `t_translations` (`id`, `label`, `lang_ru`, `lang_en`, `lang_ua`) VA
 ('171','order_details','Детали заказа','Order details','Деталі замовлення'),
 ('172','order_date','Дата заказа','Order date','Дата замовлення'),
 ('173','delivery_address','Адрес доставки','Delivery address','Адреса доставки'),
-('174','finish_the_order','Закончить заказ','Finish the order','Закінчити замовлення'),
+('174','finish_order','Закончить заказ','Finish the order','Закінчити замовлення'),
 ('175','to_pay','К оплате','To pay','До оплати'),
 ('176','to_pay_small','к оплате','to pay','до оплати'),
 ('177','proceed_to_checkout','Перейти к оплате','Proceed to checkout','Перейти до оплати'),

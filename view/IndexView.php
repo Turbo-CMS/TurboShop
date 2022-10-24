@@ -48,12 +48,10 @@ class IndexView extends View
 		// Callback
 		if ($this->request->method('post') && $this->request->post('callback')) {
 			$callback = new stdClass();
-			$callback->name         = $this->request->post('name');
-			$callback->phone        = $this->request->post('phone');
-			$captcha_code           = $this->request->post('captcha_code', 'string');
-			//$callback->message      = $this->request->post('message');
-			//$callback->message      = "___";
-			//$callback->name         = "no_name";
+			$callback->name = $this->request->post('name');
+			$callback->phone = $this->request->post('phone');
+			$captcha_code = $this->request->post('captcha_code', 'string');
+			//$callback->message = $this->request->post('message');
 
 			$this->design->assign('callname',  $callback->name);
 			$this->design->assign('callphone', $callback->phone);
@@ -82,12 +80,12 @@ class IndexView extends View
 			if (isset($_POST['checkout'])) {
 				$order = new stdClass();
 				//$order->delivery_id = $this->request->post('delivery_id', 'integer');
-				$order->name        = $this->request->post('name');
-				$order->email       = $this->request->post('email');
-				$order->address     = $this->request->post('address');
-				$order->phone       = $this->request->post('phone');
-				$order->comment     = $this->request->post('comment');
-				$order->ip          = $_SERVER['REMOTE_ADDR'];
+				$order->name = $this->request->post('name');
+				$order->email = $this->request->post('email');
+				$order->address = $this->request->post('address');
+				$order->phone = $this->request->post('phone');
+				$order->comment = $this->request->post('comment');
+				$order->ip = $_SERVER['REMOTE_ADDR'];
 
 				//$this->design->assign('delivery_id', $order->delivery_id);
 				$this->design->assign('name', $order->name);
@@ -95,11 +93,9 @@ class IndexView extends View
 				$this->design->assign('phone', $order->phone);
 				$this->design->assign('address', $order->address);
 
-				//$order->email="_______";
-				//$order->address = "_______";
 				$order->comment = $this->translations->fast_order;
 
-				$captcha_code =  $this->request->post('captcha_code', 'string');
+				$captcha_code = $this->request->post('captcha_code', 'string');
 
 				// Discount
 				$cart = $this->cart->get_cart();
@@ -109,7 +105,6 @@ class IndexView extends View
 					$order->coupon_discount = $cart->coupon_discount;
 					$order->coupon_code = $cart->coupon->code;
 				}
-				//                        
 
 				if (!empty($this->user->id))
 					$order->user_id = $this->user->id;

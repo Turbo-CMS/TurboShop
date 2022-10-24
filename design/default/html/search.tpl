@@ -42,7 +42,7 @@
 					{foreach $posts as $post}
 						<div class="search-item mt-3">
 							<h4 class="mb-1"><a data-post="{$post->id}" class="text-decoration-none" href="{$lang_link}blog/{$post->url}">{$post->name|escape}</a></h4>
-							<div class="font-13 mb-3">{$config->root_url}/blog/{$post->url}</div>
+							<div class="font-13 mb-3">{$config->root_url}/{$lang_link}blog/{$post->url}</div>
 							<small>{$post->date|date}</small>
 							<p class="mb-0 text-muted">{$post->annotation|strip_tags|truncate:250}</p>
 						</div>
@@ -52,7 +52,7 @@
 					{foreach $articles as $article}
 						<div class="search-item mt-3">
 							<h4 class="mb-1"><a data-article="{$article->id}" class="text-decoration-none" href="{$lang_link}article/{$article->url}">{$article->name|escape}</a></h4>
-							<div class="font-13 mb-3">{$config->root_url}/article/{$article->url}</div>
+							<div class="font-13 mb-3">{$config->root_url}/{$lang_link}article/{$article->url}</div>
 							<small>{$article->date|date}</small>
 							<p class="mb-0 text-muted">{$article->annotation|strip_tags|truncate:250}</p>
 						</div>
@@ -63,7 +63,7 @@
 						{if $page->visible}
 							<div class="search-item mt-3">
 								<h4 class="mb-1"><a data-page="{$page->id}" class="text-decoration-none" href="{$lang_link}{$page->url}">{$page->name|escape}</a></h4>
-								<div class="font-13 mb-3">{$config->root_url}/{$page->url}</div>
+								<div class="font-13 mb-3">{$config->root_url}/{$lang_link}{$page->url}</div>
 								<p class="mb-0 text-muted">{$page->body|strip_tags|truncate:250}</p>
 							</div>
 						{/if}
