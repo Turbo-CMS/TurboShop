@@ -26,7 +26,7 @@
 					{if $c->subcategories}
 						<div class="collapse cat {if in_array($category->id, $c->children)}show{/if}" id="menu{$c->id}">
 							{foreach $c->subcategories as $cat}
-								{if $c->visible}
+								{if $cat->visible}
 									<span class="hidden-sm-down list-group-item {if $category->id == $cat->id}bg-primary{/if}">
 										<a data-articles-category="{$cat->id}" class="text-decoration-none" href="{$lang_link}articles/{$cat->url}">
 											{$cat->name|escape}
@@ -78,7 +78,7 @@
 						{if $c->subcategories}
 							<div class="collapse cat {if in_array($category->id, $c->children)}show{/if}" id="menu{$c->id}">
 								{foreach $c->subcategories as $cat}
-									{if $c->visible}
+									{if $cat->visible}
 										<span class="hidden-sm-down list-group-item {if $category->id == $cat->id}bg-primary{/if}">
 											<a data-category="{$cat->id}" class="text-decoration-none" href="{$lang_link}catalog/{$cat->url}">
 												{if $cat->code}<i class="fal fa-{$cat->code|escape} me-1"></i>{/if} {$cat->name|escape}
@@ -171,7 +171,7 @@
 						{if $c->subcategories}
 							<div class="collapse cat {if in_array($category->id, $c->children)}show{/if}" id="menu{$c->id}">
 								{foreach $c->subcategories as $cat}
-									{if $c->visible}
+									{if $cat->visible}
 										<span class="hidden-sm-down list-group-item {if $category->id == $cat->id}bg-primary{/if}">
 											<a data-category="{$cat->id}" class="text-decoration-none" href="{$lang_link}catalog/{$cat->url}">
 												{if $cat->code}<i class="fal fa-{$cat->code|escape} me-1"></i>{/if} {$cat->name|escape}
