@@ -49,7 +49,7 @@
 	</div>
 	<div class="card-body">
 		<div class="row">
-			<div class="col-lg-12 col-md-12">
+			<div class="col-12">
 				<div class="collapse-card boxed-sorting">
 					<div class="row">
 						<div class="col-md-3 col-lg-3 col-sm-12 mb-3">

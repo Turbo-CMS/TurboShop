@@ -24,7 +24,7 @@
 			<option value='3' {if $order->status == 3}selected{/if}>{$btr->global_canceled_order|escape}</option>
 		</select>
 	</div>
-	<div class="d-inline-block me-3 mb-3" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->order_print|escape}">
+	<div class="d-none d-lg-inline-block d-inline-block me-3 mb-3" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->order_print|escape}">
 		<a href="{url view=print id=$order->id}" target="_blank" class="heading-block text-dark">
 			<i class="align-middle" data-feather="printer"></i>
 		</a>

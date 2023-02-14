@@ -44,16 +44,16 @@
 	<div class="card-body">
 		<div class="row">
 			{if $users_count>0}
-				<div class="col-lg-12 col-md-12">
+				<div class="col-12">
 					<div class="progress mb-1" style="display: none;">
 						<div id="progressbar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
 					</div>
 				</div>
 			{/if}
-			<div class="col-lg-12 col-md-12 col-sm-12 mb-3">
+			<div class="col-12">
 				<div class="collapse-card boxed-sorting">
 					<div class="row">
-						<div class="col-md-3 col-lg-3 col-sm-12">
+						<div class="col-md-3 col-lg-3 col-sm-12 mb-3">
 							<select class="selectpicker" onchange="location = this.value;">
 								<option value="{url group_id=null}">{$btr->global_filter|escape}</option>
 								{foreach $groups as $g}
@@ -67,7 +67,7 @@
 		</div>
 		{if $users}
 			<div class="row">
-				<div class="col-lg-12 col-md-12 col-sm-12">
+				<div class="col-12">
 					<form class="js-form-list" method="post">
 						<input type="hidden" name="session_id" value="{$smarty.session.id}">
 						<div class="users-wrap turbo-list">

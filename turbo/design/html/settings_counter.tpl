@@ -113,7 +113,7 @@
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-12">
+							<div class="col-12 mb-3 d-grid gap-2 d-sm-block">
 								<button type="button" class="btn btn-danger float-end js-delete-counter">
 									<i class="align-middle" data-feather="trash-2"></i>
 									{$btr->global_delete|escape}
@@ -121,14 +121,14 @@
 							</div>
 						</div>
 					</div>
-					<div class="row mt-3">
-						<div class="col-lg-6 col-md-12">
+					<div class="row">
+						<div class="col-lg-6 col-md-6 col-sm-6 mb-3 d-grid gap-2 d-sm-block">
 							<button type="button" class="btn btn-success js-add-counter">
 								<i class="align-middle" data-feather="plus"></i>
 								{$btr->counters_add_counter|escape}
 							</button>
 						</div>
-						<div class="col-lg-6 col-md-12">
+						<div class="col-lg-6 col-md-6 col-sm-6 mb-3 d-grid gap-2 d-sm-block">
 							<button type="submit" class="btn btn_small btn-primary float-end">
 								<i class="align-middle" data-feather="check"></i>
 								<span>{$btr->global_apply|escape}</span>

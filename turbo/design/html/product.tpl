@@ -439,7 +439,7 @@
 							<div class="js-feature-block-{$feature->id}">
 								{assign var="feature_id" value=$feature->id}
 								{foreach $options[$feature->id]->values as $feature_value}
-									<div class="feature-row">
+									<div class="feature-row clearfix">
 										<span feature_id={$feature_id}>
 											<div class="feature-name {if !$feature_value@first}additional-values{/if} {if !$feature_value@first}feature-value-mobile{/if}">
 												{if $feature_value@first}
@@ -465,7 +465,7 @@
 										</span>
 									</div>
 								{foreachelse}
-									<div class="feature-row">
+									<div class="feature-row clearfix">
 										<span feature_id={$feature_id}>
 											<div class="feature-name">
 												<span title="{$feature->name|escape}">
@@ -492,7 +492,7 @@
 							</div>
 						{/foreach}
 						<div class="js-new-feature" style="display:none;">
-							<div feature_id="" class="new-feature-row">
+							<div feature_id="" class="new-feature-row clearfix">
 								<div class="wrap-inner-new-feature">
 									<input type="text" class="new-feature new-feature-name" name="new_features_names[]" placeholder="{$btr->product_features_enter|escape}">
 									<input type="text" class="new-feature new-feature-value" name="new_features_values[]" placeholder="{$btr->product_features_value_enter|escape}">
@@ -503,7 +503,7 @@
 							</div>
 						</div>
 						<div class="js-new-feature-category">
-							<div class="feature-row">
+							<div class="feature-row clearfix">
 								<div class="feature-name">
 									<span title="" class="js-feature-name">
 										<a href="" target="_blank"></a>
@@ -523,7 +523,7 @@
 							</div>
 						</div>
 						<div class="js-new-value" style="display:none;">
-							<div class="feature-row">
+							<div class="feature-row clearfix">
 								<div class="feature-name feature-value-mobile">
 									<span title="" class="js-feature-name">
 										<a href="" target="_blank"></a>
