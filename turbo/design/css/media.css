@@ -263,6 +263,14 @@
 		border-bottom-right-radius: 0;
 		border-bottom-left-radius: 0;
 	}
+	
+	body[data-theme=dark] .feature-name {
+		border-right: 1px solid #7a828a;
+	}
+	
+	body[data-theme=dark] .new-feature-row .new-feature.new-feature-name {
+		border-bottom: 1px solid #7a828a;
+	}
 
 	.feature-input {
 		border-radius: 0.2rem;
