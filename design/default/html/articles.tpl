@@ -69,8 +69,8 @@
 				</a>
 				<p class="card-text">
 					<small class="text-muted">
-						<i class="fal fa-calendar-alt"></i><span itemprop="datePublished" class="me-1" content="{$post->date}">{$post->date|date}</span> 
-						{if $post->author}<i class="fal fa-user-edit"></i><a class="text-decoration-none" href="{$lang_link}articles/?keyword={$post->author|escape}">{$post->author|escape}</a>{/if} 
+						<i class="fal fa-calendar-alt"></i> <span itemprop="datePublished" class="me-1" content="{$post->date}">{$post->date|date}</span> 
+						{if $post->author}<i class="fal fa-user-edit"></i> <a class="text-decoration-none" href="{$lang_link}articles/?keyword={$post->author|escape}">{$post->author|escape}</a>{/if} 
 						{if $post->category->name}<span class="ms-1"><i class="fal fa-edit"></i></span> <a href="{$lang_link}articles/{$post->category->url}" class="text-decoration-none">{$post->category->name}</a>{/if}
 					</small>
 				</p>

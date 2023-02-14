@@ -1,13 +1,5 @@
 <?php
 
-/**
- * The main Turbo class for accessing the Turbo API
- *
- * @author		Turbo CMS
- * @link		https://turbo-cms.com
- *
- */
-
 class Turbo
 {
 	// Properties - API Classes

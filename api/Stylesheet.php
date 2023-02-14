@@ -1,13 +1,5 @@
 <?php
 
-/**
- * Turbo CMS
- *
- * @author	Turbo CMS
- * @link	https://turbo-cms.com
- *
- */
-
 class Stylesheet extends Turbo
 {
 	protected $events = array();

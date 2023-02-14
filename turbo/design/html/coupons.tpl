@@ -1,112 +1,96 @@
-{* Title *}
-{$meta_title=$btr->coupons_coupons scope=global}
+{$meta_title=$btr->global_coupons scope=global}
 
-<div class="row">
-	<div class="col-lg-7 col-md-7">
-		<div class="wrap_heading">
-			<div class="box_heading heading_page">
-				{if $coupons_count}
-					{$btr->coupons_coupons} - {$coupons_count}
-				{else}
-					{$btr->coupons_coupons}
-				{/if}
-			</div>
-			<div class="box_btn_heading">
-				<a class="btn btn_small btn-primary" href="{url module=CouponAdmin return=$smarty.server.REQUEST_URI}">
-					{include file='svg_icon.tpl' svgId='plus'}
-					<span>{$btr->coupons_add|escape}</span>
-				</a>
-			</div>
-		</div>
+<div class="d-md-flex mb-3">
+	<h1 class="d-inline align-middle me-3">
+		{if $coupons_count}
+			{$btr->global_coupons} - {$coupons_count}
+		{else}
+			{$btr->global_coupons}
+		{/if}
+	</h1>
+	<div class="d-grid gap-2 d-sm-block mt-2 mt-md-0">
+		<a class="btn btn-primary" href="{url module=CouponAdmin return=$smarty.server.REQUEST_URI}"><i data-feather="plus"></i> {$btr->coupons_add|escape}</a>
 	</div>
 </div>
 
-<div class="boxed fn_toggle_wrap">
-	{if $coupons}
-		<form class="fn_form_list" method="post">
-			<input type="hidden" name="session_id" value="{$smarty.session.id}">
-
-			<div class="turbo_list fn_sort_list">
-				<div class="turbo_list_head">
-					<div class="turbo_list_heading turbo_list_check">
-						<label class="form-check">
-							<input class="form-check-input fn_check_all fn_check_all_single" type="checkbox" value="">
-						</label>
+<div class="card">
+	<div class="card-body">
+		{if $coupons}
+			<form class="js-form-list" method="post">
+				<input type="hidden" name="session_id" value="{$smarty.session.id}">
+				<div class="turbo-list">
+					<div class="turbo-list-head">
+						<div class="turbo-list-heading turbo-list-check">
+							<label class="form-check">
+								<input class="form-check-input js-check-all js-check-all-single" type="checkbox" value="">
+							</label>
+						</div>
+						<div class="turbo-list-heading turbo-list-coupon-name">{$btr->coupons_name|escape}</div>
+						<div class="turbo-list-heading turbo-list-coupon-sale">{$btr->global_discount|escape}</div>
+						<div class="turbo-list-heading turbo-list-coupon-condit">{$btr->global_conditions|escape}</div>
+						<div class="turbo-list-heading turbo-list-coupon-validity">{$btr->coupons_terms|escape}</div>
+						<div class="turbo-list-heading turbo-list-coupon-disposable">{$btr->coupons_one_off|escape}</div>
+						<div class="turbo-list-heading turbo-list-delete"></div>
 					</div>
-					<div class="turbo_list_heading turbo_list_coupon_name">{$btr->coupons_name|escape}</div>
-					<div class="turbo_list_heading turbo_list_coupon_sale">{$btr->general_discount|escape}</div>
-					<div class="turbo_list_heading turbo_list_coupon_condit">{$btr->general_conditions|escape}</div>
-					<div class="turbo_list_heading turbo_list_coupon_validity">{$btr->coupons_terms|escape}</div>
-					<div class="turbo_list_heading turbo_list_coupon_disposable">{$btr->coupons_one_off|escape}</div>
-
-					<div class="turbo_list_heading turbo_list_close"></div>
-				</div>
-
-				<div class="turbo_list_body fn_coupon_wrap">
-					{foreach $coupons as $coupon}
-						<div class="fn_row turbo_list_body_item body_narrow">
-							<div class="turbo_list_row narrow">
-								<div class="turbo_list_boding turbo_list_check">
-									<label class="form-check">
-										<input class="form-check-input fn_check_all_single" type="checkbox" name="check[]" value="{$coupon->id}">
-									</label>
-								</div>
-								<div class="turbo_list_boding turbo_list_coupon_name">
-									<span class="text_dark">
-										<a href="{url module=CouponAdmin id=$coupon->id return=$smarty.server.REQUEST_URI}">{$coupon->code}</a>
-									</span>
-									<div class="hidden-lg-up mt-q">
-										{if $coupon->expire}
-											{if $smarty.now|date_format:'Ymd' <= $coupon->expire|date_format:'Ymd'}
-												<span class="tag tag-primary">
-													{$btr->coupons_valid_until|escape} {$coupon->expire|date}
-												</span>
-											{else}
-												<span class="tag tag-danger">
-													{$btr->coupons_expired|escape} {$coupon->expire|date}
-												</span>
-											{/if}
-										{else}
-											<span class="tag tag-warning">
-												{include file='svg_icon.tpl' svgId='infinity'}
-											</span>
-										{/if}
-										{if $coupon->min_order_price>0}
-											<span class="tag tag-success">
-												{$btr->coupons_order_from|escape} {$coupon->min_order_price|escape} {$currency->sign|escape}
-											</span>
-										{/if}
-										<div class="mt-q">
-											{if $coupon->single}
-												{$btr->coupons_one_off|escape}
-											{else}
-												{$btr->coupons_many|escape}
-											{/if}
-										</div>
-
+					<div class="turbo-list-body js-coupon_wrap">
+						{foreach $coupons as $coupon}
+							<div class="js-row turbo-list-body-item body-narrow">
+								<div class="turbo-list-row narrow">
+									<div class="turbo-list-boding turbo-list-check">
+										<label class="form-check">
+											<input class="form-check-input js-check-all-single" type="checkbox" name="check[]" value="{$coupon->id}">
+										</label>
 									</div>
-								</div>
-								<div class="turbo_list_boding turbo_list_coupon_sale">
-									{$coupon->value*1}
-									{if $coupon->type=='absolute'}
-										{$currency->sign|escape}
-									{else}
-										%
-									{/if}
-								</div>
-								<div class="turbo_list_boding turbo_list_coupon_condit">
-									{if $coupon->min_order_price>0}
-										<div>
+									<div class="turbo-list-boding turbo-list-coupon-name">
+										<span class="text_dark">
+											<a href="{url module=CouponAdmin id=$coupon->id return=$smarty.server.REQUEST_URI}" class="fw-bold text-body text-decoration-none">{$coupon->code}</a>
+										</span>
+										<div class="d-block d-lg-none mt-1">
+											{if $coupon->expire}
+												{if $smarty.now|date_format:'Ymd' <= $coupon->expire|date_format:'Ymd'}
+													<span class="badge badge-primary-light">
+														{$btr->coupons_valid_until|escape} {$coupon->expire|date}
+													</span>
+												{else}
+													<span class="badge badge-danger-light">
+														{$btr->coupons_expired|escape} {$coupon->expire|date}
+													</span>
+												{/if}
+											{else}
+												<span class="badge badge-warning-light">
+													{include file='svg_icon.tpl' svgId='infinity'}
+												</span>
+											{/if}
+											{if $coupon->min_order_price>0}
+												<span class="badge badge-success-light">
+													{$btr->coupons_order_from|escape} {$coupon->min_order_price|escape} {$currency->sign|escape}
+												</span>
+											{/if}
+											<div class="mt-1">
+												{if $coupon->single}
+													{$btr->coupons_one_off|escape}
+												{else}
+													{$btr->coupons_many|escape}
+												{/if}
+											</div>
+										</div>
+									</div>
+									<div class="turbo-list-boding turbo-list-coupon-sale">
+										{$coupon->value*1}
+										{if $coupon->type=='absolute'}
+											{$currency->sign|escape}
+										{else}
+											%
+										{/if}
+									</div>
+									<div class="turbo-list-boding turbo-list-coupon-condit">
+										{if $coupon->min_order_price>0}
 											{$btr->coupons_order_from|escape} {$coupon->min_order_price|escape} {$currency->sign|escape}
-										</div>
-									{else}
-										<div>
+										{else}
 											-
-										</div>
-									{/if}
-								</div>
-								<div class="turbo_list_boding turbo_list_coupon_validity">
-									<div>
+										{/if}
+									</div>
+									<div class="turbo-list-boding turbo-list-coupon-validity">
 										{if $coupon->expire}
 											{if $smarty.now|date_format:'Ymd' <= $coupon->expire|date_format:'Ymd'}
 												{$btr->coupons_valid_until|escape} {$coupon->expire|date}
@@ -117,53 +101,51 @@
 											{include file='svg_icon.tpl' svgId='infinity'}
 										{/if}
 									</div>
-								</div>
-								<div class="turbo_list_boding turbo_list_coupon_disposable">
-									{if $coupon->single}
-										{$btr->coupons_yes|escape}
-									{else}
-										{$btr->coupons_no|escape}
-									{/if}
-								</div>
-
-								<div class="turbo_list_boding turbo_list_close">
-									{*delete*}
-									<button data-hint="{$btr->coupons_delete|escape}" type="button" class="btn_close fn_remove hint-bottom-right-t-info-s-small-mobile  hint-anim" data-toggle="modal" data-target="#fn_action_modal" onclick="success_action($(this));">
-										{include file='svg_icon.tpl' svgId='delete'}
-									</button>
+									<div class="turbo-list-boding turbo-list-coupon-disposable">
+										{if $coupon->single}
+											{$btr->coupons_yes|escape}
+										{else}
+											{$btr->coupons_no|escape}
+										{/if}
+									</div>
+									<div class="turbo-list-boding turbo-list-delete">
+										<div data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->coupons_delete|escape}">
+											<button type="button" class="btn-delete js-remove" data-bs-toggle="modal" data-bs-target="#actionModal" onclick="success_action($(this));">
+												<i class="align-middle" data-feather="trash-2"></i>
+											</button>
+										</div>
+									</div>
 								</div>
 							</div>
-						</div>
-					{/foreach}
-				</div>
-				<div class="turbo_list_footer fn_action_block">
-					<div class="turbo_list_foot_left">
-						<div class="turbo_list_heading turbo_list_check">
-							<label class="form-check">
-								<input class="form-check-input fn_check_all fn_check_all_single" type="checkbox" value="">
-							</label>
-						</div>
-						<div class="turbo_list_option">
-							<select name="action" class="selectpicker">
-								<option value="delete">{$btr->general_delete|escape}</option>
-							</select>
-						</div>
+						{/foreach}
 					</div>
-					<button type="submit" class="btn btn_small btn-primary">
-						{include file='svg_icon.tpl' svgId='checked'}
-						<span>{$btr->general_apply|escape}</span>
-					</button>
+					<div class="turbo-list-footer js-action-block">
+						<div class="turbo-list-foot-left">
+							<div class="turbo-list-heading turbo-list-check">
+								<label class="form-check">
+									<input class="form-check-input js-check-all js-check-all-single" type="checkbox" value="">
+								</label>
+							</div>
+							<div class="turbo-list-option">
+								<select name="action" class="selectpicker">
+									<option value="delete">{$btr->global_delete|escape}</option>
+								</select>
+							</div>
+						</div>
+						<button type="submit" class="btn btn-primary">
+							<i class="align-middle" data-feather="check"></i>
+							{$btr->global_apply|escape}
+						</button>
+					</div>
+				</div>
+			</form>
+			<div class="row">
+				<div class="col-12">
+					{include file='pagination.tpl'}
 				</div>
 			</div>
-		</form>
-		<div class="row">
-			<div class="col-lg-12 col-md-12 col-sm 12 txt_center">
-				{include file='pagination.tpl'}
-			</div>
-		</div>
-	{else}
-		<div class="heading_box mt-1">
-			<div class="text_grey">{$btr->no_coupons|escape}</div>
-		</div>
-	{/if}
+		{else}
+			<h5 class="card-title ms-1 my-3">{$btr->coupons_no|escape}</h5>
+		{/if}
+	</div>
 </div>

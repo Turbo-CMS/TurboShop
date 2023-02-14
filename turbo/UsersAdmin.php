@@ -1,5 +1,5 @@
 <?php
-	
+
 require_once('api/Turbo.php');
 
 class UsersAdmin extends Turbo
@@ -76,9 +76,12 @@ class UsersAdmin extends Turbo
 			$user_item->orders = $this->orders->get_orders(array('user_id' => $user_item->id));
 		}
 
+		if (!empty($groups)) {
+			$this->design->assign('groups', $groups);
+		}
+
 		$this->design->assign('pages_count', ceil($users_count / $filter['limit']));
 		$this->design->assign('current_page', $filter['page']);
-		$this->design->assign('groups', $groups);
 		$this->design->assign('group', $group);
 		$this->design->assign('users', $users);
 		$this->design->assign('users_count', $users_count);

@@ -68,16 +68,16 @@ class OrdersAdmin extends Turbo
 							}
 							break;
 						}
-					case (preg_match('/^set_label_([0-9]+)/', $this->request->post('action'), $a) ? true : false): {
-							$l_id = intval($a[1]);
+					case 'set_label': {
+							$l_id = $this->request->post('change_label_id', 'integer');
 							if ($l_id > 0)
 								foreach ($ids as $id) {
 									$this->orders->add_order_labels($id, $l_id);
 								}
 							break;
 						}
-					case (preg_match('/^unset_label_([0-9]+)/', $this->request->post('action'), $a) ? true : false): {
-							$l_id = intval($a[1]);
+					case 'unset_label': {
+							$l_id = $this->request->post('change_label_id', 'integer');
 							if ($l_id > 0)
 								foreach ($ids as $id) {
 									$this->orders->delete_order_labels($id, $l_id);

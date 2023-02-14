@@ -1,16 +1,5 @@
 <?php
 
-/**
- * Turbo CMS
- *
- * @author	Turbo CMS
- * @link	https://turbo-cms.com
- *
- * Shopping basket
- * This class uses the template cart.tpl
- *
- */
-
 require_once('View.php');
 
 class OrderView extends View
@@ -20,10 +9,7 @@ class OrderView extends View
 		parent::__construct();
 		$this->design->smarty->registerPlugin("function", "checkout_form", array($this, 'checkout_form'));
 	}
-
-	//////////////////////////////////////////
-	// Main function
-	//////////////////////////////////////////
+	
 	function fetch()
 	{
 		return $this->fetch_order();

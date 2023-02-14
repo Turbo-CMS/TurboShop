@@ -1,16 +1,5 @@
 <?php
 
-/**
- * Turbo CMS
- *
- * @copyright 	Turbo CMS
- * @link 		https://turbo-cms.com
- * @author 		Turbo CMS
- *
- * This script is called by Liqpay during the payment process
- *
- */
-
 // Working in the root directory
 chdir ('../../');
 require_once('api/Turbo.php');

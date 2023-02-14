@@ -429,7 +429,7 @@ echo $view; ?>"/>
 <input type="hidden" id="subdir" value="<?php
 echo $subdir; ?>"/>
 <input type="hidden" id="field_id" value="<?php
-echo @str_replace(['[', ']'], ['\[', '\]'], $field_id); ?>"/>
+echo $field_id; ?>"/>
 <input type="hidden" id="multiple" value="<?php
 echo $multiple; ?>"/>
 <input type="hidden" id="type_param" value="<?php
@@ -623,7 +623,7 @@ if ($config['upload_files']) { ?>
                                         <input type="file" name="files[]" multiple="multiple" accept="<?php
                                         echo '.' . implode(',.', $config['ext']); ?>">
                                     </span>
-                                            <button type="submit" class="btn btn-primary start">
+                                            <button type="submit" class="btn btn-warning start">
                                                 <i class="glyphicon glyphicon-upload"></i>
                                                 <span><?php
                                                     echo trans('Upload_start'); ?></span>
@@ -957,8 +957,8 @@ if ($config['upload_files']) { ?>
                             <div class="span4 half">
                                 <?php
                                 if ($config['upload_files']) { ?>
-                                    <button class="tip btn upload-btn" title="<?php
-                                    echo trans('Upload_file'); ?>"><i class="rficon-upload"></i></button>
+                                    <button class="tip btn btn-success upload-btn" title="<?php
+                                    echo trans('Upload_file'); ?>"><i class="rficon-upload"></i> <?php echo trans('Upload_file'); ?></button>
                                 <?php
                                 } ?>
                                 <?php

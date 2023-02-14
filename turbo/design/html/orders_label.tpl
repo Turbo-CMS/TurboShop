@@ -4,99 +4,101 @@
 	{$meta_title =$btr->orders_new_label scope=global}
 {/if}
 
-<div class="row">
-	<div class="col-lg-6 col-md-6">
-		<div class="heading_page">
-			{if $label->id}
-				{$btr->orders_label|escape}: {$label->name|escape}
-			{else}
-				{$btr->orders_new_label|escape}
-			{/if}
-		</div>
-	</div>
-	<div class="col-lg-4 col-md-3 text-xs-right float-xs-right"></div>
+<div class="d-md-flex mb-3">
+	<h1 class="d-inline align-middle me-3">
+		{if $label->id}
+			{$btr->orders_label|escape}: {$label->name|escape}
+		{else}
+			{$btr->orders_new_label|escape}
+		{/if}
+	</h1>
 </div>
 
 {if $message_success}
 	<div class="row">
-		<div class="col-lg-12 col-md-12 col-sm-12">
-			<div class="boxed boxed_success">
-				<div class="heading_box">
+		<div class="col-12">
+			<div class="alert alert-success alert-dismissible fade show" role="alert">
+				<div class="alert-message">
 					{if $message_success == 'added'}
 						{$btr->orders_added_label|escape}
 					{elseif $message_success == 'updated'}
 						{$btr->orders_updated_label|escape}
 					{/if}
-					{if $smarty.get.return}
-						<a class="btn btn_return float-xs-right" href="{$smarty.get.return}">
-							{include file='svg_icon.tpl' svgId='return'}
-							<span>{$btr->general_back|escape}</span>
-						</a>
-					{/if}
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>
 			</div>
 		</div>
 	</div>
 {/if}
 
-<div class="boxed fn_toggle_wrap">
-	<div class="toggle_body_wrap on fn_card">
-		<form class="fn_form_list" enctype="multipart/form-data" method="post">
-			<input type="hidden" name="session_id" value="{$smarty.session.id}">
-			<div class="row">
-				<div class="col-xs-12">
-					<div class="row d_flex">
+<form class="js-form-list" enctype="multipart/form-data" method="post">
+	<input type="hidden" name="session_id" value="{$smarty.session.id}">
+	<div class="row">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-body">
+					<div class="row d-flex">
 						<div class="col-lg-6 col-md-6 col-sm-12">
-							<div class="heading_label">
-								{$btr->general_name|escape}
-							</div>
-							<div class="form-group">
+							<div class="mb-3">
+								<div class="form-label">{$btr->global_title|escape}</div>
 								<input class="form-control" name="name" type="text" value="{$label->name|escape}">
 								<input name="id" type="hidden" value="{$label->id|escape}">
 							</div>
 						</div>
 						<div class="col-lg-6 col-md-6 col-sm-12">
-							<div class="heading_label">
-								{$btr->general_color|escape}
-							</div>
-							<div class="form-group">
-								<div id="cp" class="input-group colorpicker-component">
+							<div class="mb-3">
+								<div class="form-label">{$btr->global_color|escape}</div>
+								<div id="cp" class="input-group color-picker">
 									<input type="text" name="color" value="{$label->color|escape}" class="form-control">
-									<span class="input-group-addon"><i></i></span>
+									<span class="input-group-text add-on"><i></i></span>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="row">
-				<div class="col-lg-12 col-md-12 mt-1">
-					<button type="submit" value="labels" class="btn btn_small btn-primary float-md-right">
-						{include file='svg_icon.tpl' svgId='checked'}
-						<span>{$btr->general_apply|escape}</span>
-					</button>
-				</div>
-			</div>
-		</form>
+		</div>
 	</div>
-</div>
-{* On document load *}
+	<div class="row">
+		<div class="col-12">
+			<div class="d-grid d-sm-block mt-1">
+				<button type="submit" class="btn btn-primary float-end">
+					<i class="align-middle" data-feather="check"></i>
+					<span>{$btr->global_apply|escape}</span>
+				</button>
+			</div>
+		</div>
+	</div>
+</form>
 
 {* Colorpicker *}
 {css id="colorpicker" include=[
-"turbo/design/js/colorpicker/css/bootstrap-colorpicker.min.css"
+	"turbo/design/js/colorpicker/css/bootstrap-colorpicker.min.css"
 ]}{/css}
 {stylesheet minify=true}
 
 {js id="colorpicker" priority=99 include=[
-"turbo/design/js/colorpicker/js/bootstrap-colorpicker.min.js"
+	"turbo/design/js/colorpicker/js/bootstrap-colorpicker.min.js"
 ]}{/js}
 {javascript minify=true}
 
 {literal}
 	<script>
 		$(function() {
-			$('#cp').colorpicker();
+			$('#cp').colorpicker({
+				colorSelectors: {
+					'primary': '#3b7ddd',
+					'secondary': '#6c757d',
+					'success': '#1cbb8c',
+					'info': '#17a2b8',
+					'warning': '#fcb92c',
+					'danger': '#dc3545',
+					'dark': '#212529',
+					'purple': '#6f42c1',
+					'pink': '#e83e8c',
+				},
+				format: "hex"
+			});
 		});
 	</script>
 {/literal}

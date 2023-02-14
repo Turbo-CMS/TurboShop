@@ -1,17 +1,15 @@
 {$meta_title=$btr->export_products scope=global}
 
-<div class="row">
-	<div class="col-lg-7 col-md-7">
-		<div class="heading_page">{$btr->export_products|escape}</div>
-	</div>
-	<div class="col-lg-5 col-md-5 float-xs-right"></div>
-</div>
+<h1 class="mb-3">
+	{$btr->export_products|escape}
+</h1>
 
 <div id="success-export" class="row" style="display: none">
-	<div class="col-lg-12 col-md-12 col-sm-12">
-		<div class="boxed boxed_success">
-			<div class="heading_box">
-				{$btr->general_export_successful|escape}!
+	<div class="col-12">
+		<div class="alert alert-success alert-dismissible fade show" role="alert">
+			<div class="alert-message">
+				{$btr->global_export_successful|escape}!
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 			</div>
 		</div>
 	</div>
@@ -19,14 +17,15 @@
 
 {if $message_error}
 	<div class="row">
-		<div class="col-lg-12 col-md-12 col-sm-12">
-			<div class="boxed boxed_warning">
-				<div class="heading_box">
+		<div class="col-12">
+			<div class="alert alert-danger alert-dismissible fade show" role="alert">
+				<div class="alert-message">
 					{if $message_error == 'no_permission'}
-						{$btr->general_permissions|escape} {$export_files_dir}
+						{$btr->global_permissions|escape} {$export_files_dir}
 					{else}
 						{$message_error|escape}
 					{/if}
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>
 			</div>
 		</div>
@@ -34,66 +33,68 @@
 {/if}
 
 {if $message_error != 'no_permission'}
-	<div class="row">
-		<div class="col-lg-12 col-md-12 col-sm-12">
-			<div class="boxed boxed_attention">
-				<div class="">
-					{$btr->export_message|escape}
-				</div>
-			</div>
+	<div class="alert alert-primary alert-dismissible" role="alert">
+		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+		<div class="alert-message">
+			{$btr->export_message|escape}
 		</div>
 	</div>
 
-	<div class="boxed fn_toggle_wrap">
-		<div class="row">
-			<div class="col-lg-12 col-md-12">
-				<div id="fn_start" class="">
-					<div class="row">
-						<div class="col-lg-12 col-md-12">
-							<div class="progress my-1" style="display: none;">
-								<div id="progressbar" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%"></div>
-							</div>
-						</div>
-						<div class="col-md-3 col-sm-3 col-lg-3 col-sm-12 mb-h">
-							<div class="option_export_wrap">
-								<div class="heading_label">{$btr->general_export|escape}</div>
-								<select class="selectpicker fn_type_export">
-									<option value="all_products">{$btr->general_all_products|escape}</option>
-									<option value="category_products">{$btr->general_from_category|escape}</option>
-									<option value="brands_products">{$btr->general_from_brand|escape}</option>
-								</select>
-							</div>
-						</div>
-						{if $categories}
-							<div id="category_products" class="col-md-3 col-sm-3 col-lg-3 col-sm-12 export_options hidden mb-h">
-								<div class="heading_label">{$btr->general_from_category|escape}</div>
-								<select class="selectpicker" data-live-search="true" data-size="10" name="category_id">
-									{function name=categories_tree}
-										{foreach $categories as $c}
-											<option value="{$c->id}">{section name=sp loop=$level}&nbsp;{/section}{$c->name|escape}</option>
-											{categories_tree categories=$c->subcategories level=$level+1}
-										{/foreach}
-									{/function}
-									{categories_tree categories=$categories level=0}
-								</select>
-							</div>
-						{/if}
-						{if $brands}
-							<div id="brands_products" class="col-md-3 col-sm-3 col-lg-3 col-sm-12 export_options hidden mb-h">
-								<div class="heading_label">{$btr->general_from_brand|escape}</div>
-								<select class="selectpicker" data-size="10" name="brand_id">
-									{foreach $brands as $b}
-										<option value="{$b->id}" {if $b@first}selected=""{/if}>{$b->name|escape}</option>
+	<div class="card">
+		<div class="card-header">
+			<div class="card-actions float-end">
+				<div class="d-block d-lg-none position-relative collapse-icon">
+					<a href="javascript:;" class="collapse-chevron">
+						<i class="align-middle" data-feather="chevron-up"></i>
+					</a>
+				</div>
+			</div>
+			<h5 class="card-title mb-0">{$btr->global_export|escape}</h5>
+		</div>
+		<div class="collapse-card">
+			<div id="js-start" class="card-body">
+				<div class="progress mb-3" style="display: none;">
+					<div id="progressbar" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%"></div>
+				</div>
+				<div class="row mb-3">
+					<div class="col-md-6 col-lg-4 col-sm-12 mb-3 mb-md-0">
+						<div class="form-label">{$btr->global_export|escape}</div>
+						<select class="selectpicker js-type-export">
+							<option value="all_products">{$btr->global_all_products|escape}</option>
+							<option value="category_products">{$btr->global_from_category|escape}</option>
+							<option value="brands_products">{$btr->global_from_brand|escape}</option>
+						</select>
+					</div>
+					{if $categories}
+						<div id="category_products" class="col-md-6 col-lg-4 col-sm-12 export-options d-none mb-3 mb-md-0">
+							<div class="form-label">{$btr->global_from_category|escape}</div>
+							<select class="selectpicker" data-live-search="true" data-size="10" name="category_id">
+								{function name=categories_tree}
+									{foreach $categories as $c}
+										<option value="{$c->id}">{section name=sp loop=$level}&nbsp;{/section}{$c->name|escape}</option>
+										{categories_tree categories=$c->subcategories level=$level+1}
 									{/foreach}
-								</select>
-							</div>
-						{/if}
-						<div class="col-md-3 col-sm-3 col-lg-3 col-sm-12 float-sm-right mt-2">
-							<button id="fn_start" type="submit" class="btn btn_small btn-primary float-md-right">
-								{include file='svg_icon.tpl' svgId='upload'}
-								<span>{$btr->general_export|escape}</span>
-							</button>
+								{/function}
+								{categories_tree categories=$categories level=0}
+							</select>
 						</div>
+					{/if}
+					{if $brands}
+						<div id="brands_products" class="col-md-6 col-lg-4 col-sm-12 export-options d-none mb-3 mb-md-0">
+							<div class="form-label">{$btr->global_from_brand|escape}</div>
+							<select class="selectpicker" data-size="10" name="brand_id">
+								{foreach $brands as $b}
+									<option value="{$b->id}" {if $b@first}selected=""{/if}>{$b->name|escape}</option>
+								{/foreach}
+							</select>
+						</div>
+					{/if}
+					<div class="col-md-6 col-lg-4 col-sm-12 d-grid d-sm-block mt-n3 mt-md-0">
+						<div class="form-label">&nbsp;</div>
+						<button id="js-start" type="submit" class="btn btn-primary">
+							<i class="align-middle" data-feather="download"></i>
+							{$btr->global_export|escape}
+						</button>
 					</div>
 				</div>
 			</div>
@@ -103,28 +104,27 @@
 
 {* Piecon *}
 {js id="piecon" priority=99 include=[
-"turbo/design/js/piecon/piecon.min.js"
+	"turbo/design/js/piecon/piecon.min.js"
 ]}{/js}
 {javascript minify=true}
 
-<script>
-	{literal}
-
+{literal}
+	<script>
 		var in_process = false;
 		var field = '',
 			value = '';
 
 		$(function() {
-			$(".fn_type_export").on("change", function() {
+			$(".js-type-export").on("change", function() {
 				elem = $("#" + $(this).val());
-				$(".export_options").addClass("hidden");
-				elem.removeClass("hidden");
+				$(".export-options").addClass("d-none");
+				elem.removeClass("d-none");
 			});
 
-			$('button#fn_start').click(function() {
-				if ($(".export_options:visible")) {
-					field = $(".export_options:visible").find('select').attr('name');
-					value = $(".export_options:visible").find('select').val();
+			$('button#js-start').click(function() {
+				if ($(".export-options:visible")) {
+					field = $(".export-options:visible").find('select').attr('name');
+					value = $(".export-options:visible").find('select').val();
 				}
 				Piecon.setOptions({fallback: 'force'});
 				Piecon.setProgress(0);
@@ -165,5 +165,5 @@
 				});
 			}
 		});
-	{/literal}
-</script>
+	</script>
+{/literal}

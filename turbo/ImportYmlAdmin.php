@@ -144,7 +144,10 @@ class ImportYmlAdmin extends Turbo
 			//print_r($yml_params);
 
 			// Select the available parameters from the database
-			$this->db->query("SELECT name FROM __features ORDER BY position");
+			$lang_id = $this->languages->lang_id();
+			$px = ($lang_id ? 'l' : 'f');
+			$lang_sql = $this->languages->get_query(array('object' => 'feature', 'px' => 'f'));
+			$this->db->query('SELECT ' . $px . '.name FROM __features f ' . $lang_sql->join . ' ORDER BY f.position');
 			$features = $this->db->results('name');
 
 			// Add variables to access them from the tpl template

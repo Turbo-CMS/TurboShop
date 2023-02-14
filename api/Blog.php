@@ -1,23 +1,14 @@
 <?php
 
-/**
- * Turbo CMS
- *
- * @author	Turbo CMS
- * @link	https://turbo-cms.com
- *
- */
-
 require_once('Turbo.php');
 
 class Blog extends Turbo
 {
-
 	/*
 	*
 	* // For each category, we find out the id of all its children. The function returns a post by its id or url
 	* (depending on the argument type, int - id, string - url)
-	* @param $id id или url поста
+	* @param $id id or post url
 	*
 	*/
 	public function get_post($id)

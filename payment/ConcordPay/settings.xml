@@ -5,10 +5,10 @@
 	</name>
 	<settings>
 		<variable>concordpay_merchant</variable>
-		<name>Идентификатор продавца</name>
+		<name>Vendor ID</name>
 	</settings>
 	<settings>
 		<variable>concordpay_secretkey</variable>
-		<name>Секретный ключ</name>
+		<name>Secret key</name>
 	</settings>
 </module>

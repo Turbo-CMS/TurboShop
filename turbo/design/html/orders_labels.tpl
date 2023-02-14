@@ -1,91 +1,80 @@
-{* Title *}
 {$meta_title=$btr->order_settings_labels scope=global}
 
-<div class="row">
-	<div class="col-lg-7 col-md-12">
-		<div class="wrap_heading">
-			<div class="box_heading heading_page">
-				{$btr->order_settings_labels|escape}
-			</div>
-			<div class="box_btn_heading">
-				<a class="btn btn_small btn-primary" href="{url module=OrdersLabelAdmin}">
-					{include file='svg_icon.tpl' svgId='plus'}
-					<span>{$btr->order_settings_add_label|escape}</span>
-				</a>
-			</div>
-
-		</div>
+<div class="d-md-flex mb-3">
+	<h1 class="d-inline align-middle me-3">{$btr->order_settings_labels|escape}</h1>
+	<div class="d-grid gap-2 d-sm-block mt-2 mt-md-0">
+		<a class="btn btn-primary" href="{url module=OrdersLabelAdmin}"><i data-feather="plus"></i> {$btr->order_settings_add_label|escape}</a>
 	</div>
 </div>
 
-<div class="boxed fn_toggle_wrap">
-	{if $labels}
-		<div class="toggle_body_wrap on fn_card">
-			<form class="fn_form_list" method="post">
+<div class="card">
+	<div class="card-body">
+		{if $labels}
+			<form class="js-form-list" method="post">
 				<input type="hidden" value="labels" name="labels">
 				<input type="hidden" name="session_id" value="{$smarty.session.id}">
-				<div class="turbo_list">
-					<div class="turbo_list_head">
-						<div class="turbo_list_heading turbo_list_check">
+				<div class="turbo-list">
+					<div class="turbo-list-head">
+						<div class="turbo-list-heading turbo-list-check">
 							<label class="form-check">
-								<input class="form-check-input fn_check_all fn_check_all_single" type="checkbox" value="">
+								<input class="form-check-input js-check-all js-check-all-single" type="checkbox" value="">
 							</label>
 						</div>
-						<div class="turbo_list_heading turbo_list_order_stg_lbl_name">{$btr->general_name|escape}</div>
-						<div class="turbo_list_heading turbo_list_order_stg_sts_label">{$btr->general_color|escape}</div>
-						<div class="turbo_list_heading turbo_list_close"></div>
+						<div class="turbo-list-heading turbo-list-order-stg-lbl-name">{$btr->global_title|escape}</div>
+						<div class="turbo-list-heading turbo-list-order-stg-sts-label">{$btr->global_color|escape}</div>
+						<div class="turbo-list-heading turbo-list-delete"></div>
 					</div>
-					<div class="fn_labels_list turbo_list_body sortable fn_sort_list">
+					<div class="js-labels_list turbo-list-body sortable">
 						{foreach $labels as $label}
-							<div class="fn_row turbo_list_body_item body_narrow">
-								<div class="turbo_list_row fn_sort_item narrow">
+							<div class="js-row turbo-list-body-item body-narrow">
+								<div class="turbo-list-row js-sort-item narrow">
 									<input type="hidden" name="positions[{$label->id}]" value="{$label->position}">
 									<input type="hidden" name="id[]" value="{$label->id}">
-									<div class="cturbo_list_boding turbo_list_check">
+									<div class="cturbo-list-boding turbo-list-check">
 										<label class="form-check">
-											<input class="form-check-input fn_check_all_single" type="checkbox" name="check[]" value="{$label->id}">
+											<input class="form-check-input js-check-all-single" type="checkbox" name="check[]" value="{$label->id}">
 										</label>
 									</div>
-									<div class="turbo_list_boding turbo_list_order_stg_lbl_name">
-										<a href="{url module=OrdersLabelAdmin id=$label->id return=$smarty.server.REQUEST_URI}">{$label->name|escape}</a>
+									<div class="turbo-list-boding turbo-list-order-stg-lbl-name">
+										<a href="{url module=OrdersLabelAdmin id=$label->id return=$smarty.server.REQUEST_URI}" class="fw-bold text-body text-decoration-none">{$label->name|escape}</a>
 									</div>
-									<div class="turbo_list_boding turbo_list_order_stg_sts_label">
-										<a href="{url module=OrdersLabelAdmin id=$label->id return=$smarty.server.REQUEST_URI}" data-hint="{$label->color}" class="label_color_item hint-bottom-middle-t-info-s-small-mobile  hint-anim" style="background-color:{$label->color};"></a>
+									<div class="turbo-list-boding turbo-list-order-stg-sts-label">
+										<a href="{url module=OrdersLabelAdmin id=$label->id return=$smarty.server.REQUEST_URI}" data-hint="{$label->color}" class="label-color-item" data-bs-toggle="tooltip" data-bs-placement="top" title="{$label->color}" style="background-color:{$label->color};"></a>
 									</div>
-									<div class="turbo_list_boding turbo_list_close">
+									<div class="turbo-list-boding turbo-list-delete">
 										{*delete*}
-										<button data-hint="{$btr->general_delete|escape}" type="button" class="btn_close fn_remove hint-bottom-right-t-info-s-small-mobile  hint-anim" data-toggle="modal" data-target="#fn_action_modal" onclick="success_action($(this));">
-											{include file='svg_icon.tpl' svgId='delete'}
-										</button>
+										<div data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
+											<button type="button" class="btn-delete js-remove" data-bs-toggle="modal" data-bs-target="#actionModal" onclick="success_action($(this));">
+												<i class="align-middle" data-feather="trash-2"></i>
+											</button>
+										</div>
 									</div>
 								</div>
 							</div>
 						{/foreach}
 					</div>
-					<div class="turbo_list_footer ">
-						<div class="turbo_list_foot_left">
-							<div class="turbo_list_heading turbo_list_check">
+					<div class="turbo-list-footer">
+						<div class="turbo-list-foot-left">
+							<div class="turbo-list-heading turbo-list-check">
 								<label class="form-check">
-									<input class="form-check-input fn_check_all fn_check_all_single" type="checkbox" value="">
+									<input class="form-check-input js-check-all js-check-all-single" type="checkbox" value="">
 								</label>
 							</div>
-							<div class="turbo_list_option">
+							<div class="turbo-list-option">
 								<select name="action" class="selectpicker">
-									<option value="delete">{$btr->general_delete|escape}</option>
+									<option value="delete">{$btr->global_delete|escape}</option>
 								</select>
 							</div>
 						</div>
-						<button type="submit" value="labels" class="btn btn_small btn-primary">
-							{include file='svg_icon.tpl' svgId='checked'}
-							<span>{$btr->general_apply|escape}</span>
+						<button type="submit" value="labels" class="btn btn-primary">
+							<i class="align-middle" data-feather="check"></i>
+							{$btr->global_apply|escape}
 						</button>
 					</div>
 				</div>
 			</form>
-		</div>
-	{else}
-		<div class="heading_box mt-1">
-			<div class="text_grey">{$btr->no_labels|escape}</div>
-		</div>
-	{/if}
+		{else}
+			<h5 class="card-title ms-1 my-3">{$btr->no_labels|escape}</h5>
+		{/if}
+	</div>
 </div>

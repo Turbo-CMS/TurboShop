@@ -1,15 +1,5 @@
 <?php
 
-/**
- * Turbo CMS
- *
- * @author	Turbo CMS
- * @link	https://turbo-cms.com/
- *
- * This class uses the templates blog.tpl и post.tpl
- *
- */
-
 require_once('View.php');
 
 class BlogView extends View

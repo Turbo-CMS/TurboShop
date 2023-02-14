@@ -1,15 +1,5 @@
 <?php
 
-/**
- * Turbo CMS
- *
- * @author	Turbo CMS
- * @link	https://turbo-cms.com
- *
- * Base class for everyone View
- *
- */
-
 require_once('api/Turbo.php');
 
 class View extends Turbo

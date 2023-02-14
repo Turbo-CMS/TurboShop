@@ -56,7 +56,7 @@
 	<!-- Post Content -->
 	<article class="block-description content entry-content" itemprop="articleBody">
 		{if $post->text|stristr:"h2" || $post->text|stristr:"h3" || $post->text|stristr:"h4"}
-			<div class="table-of-contents open">
+			<div class="table-of-contents bg-body-tertiary rounded open">
 				<div class="table-of-contents-header"><span class="js-table-of-contents-hide table-of-contents__hide">{$lang->table_of_contents} <i class="icon-action fa fa-chevron-down"></i></span></div>
 				<ol data-toc=".content" data-toc-headings="h2,h3,h4" class="table-of-contents-list js-table-of-contents-list"></ol>
 			</div>
@@ -99,7 +99,7 @@
 
 {* Comments *}
 {if $settings->comments_tree_blog == "on"}
-	{include file='comments_tree_blog.tpl'}
+	{include file='comments/comments_tree_blog.tpl'}
 {else}
-	{include file='comments_blog.tpl'}
+	{include file='comments/comments_blog.tpl'}
 {/if}

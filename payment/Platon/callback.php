@@ -1,28 +1,17 @@
 <?php
 
-/**
- * Turbo CMS
- *
- * @author	Turbo CMS
- * @link	https://turbo-cms.com
- *
- * К этому скрипту обращается Platon в процессе оплаты
- *
- */
-
-// Работаем в корневой директории
 chdir ('../../');
 require_once('api/Turbo.php');
 $turbo = new Turbo();
 
-// Сумма, которую заплатил покупатель. Дробная часть отделяется точкой.
+// The amount the buyer paid. The fractional part is separated by a dot.
 $amount = $_POST['amount'];
 
-// Внутренний номер покупки продавца
-// В этом поле передается id заказа в нашем магазине.
+// Seller's internal purchase number
+// In this field, the id of the order in our store is passed.
 $order_id = intval($_POST['order']);
 
-// Контрольная подпись
+// Control signature
 $sign = $_POST['sign'];
 
 // Проверим статус
@@ -30,27 +19,27 @@ if($_POST['status'] !== 'SALE')
 	die('Incorrect Status');
 
 ////////////////////////////////////////////////
-// Выберем заказ из базы
+// Select an order from the database
 ////////////////////////////////////////////////
 $order = $turbo->orders->get_order(intval($order_id));
 if(empty($order))
 	die('Оплачиваемый заказ не найден');
  
-// Нельзя оплатить уже оплаченный заказ  
+// You can not pay for an already paid order 
 if($order->paid)
-	die('Этот заказ уже оплачен');
+	die('This order has already been paid.');
 
 
 ////////////////////////////////////////////////
-// Выбираем из базы соответствующий метод оплаты
+// Select the appropriate payment method from the database
 ////////////////////////////////////////////////
 $method = $turbo->payment->get_payment_method(intval($order->payment_method_id));
 if(empty($method))
-	die("Неизвестный метод оплаты");
+	die("Unknown payment method");
  
 $settings = unserialize($method->settings);
 
-// Проверяем контрольную подпись
+// Checking the control signature
 $my_sign = md5(strtoupper(strrev($_POST['email']).$settings['platon_password'].$order->id.strrev(substr($_POST['card'],0,6).substr($_POST['card'],-4))));
 if($sign !== $my_sign)
 	die("bad sign\n");
@@ -59,7 +48,7 @@ if($amount != $turbo->money->convert($order->total_price, $method->currency_id, 
 	die("incorrect price\n");
 	
 ////////////////////////////////////
-// Проверка наличия товара
+// Product Availability Check
 ////////////////////////////////////
 $purchases = $turbo->orders->get_purchases(array('order_id'=>intval($order->id)));
 foreach($purchases as $purchase)
@@ -67,14 +56,14 @@ foreach($purchases as $purchase)
 	$variant = $turbo->variants->get_variant(intval($purchase->variant_id));
 	if(empty($variant) || (!$variant->infinity && $variant->stock < $purchase->amount))
 	{
-		die("Нехватка товара $purchase->product_name $purchase->variant_name");
+		die("Shortage of products $purchase->product_name $purchase->variant_name");
 	}
 }
        
-// Установим статус оплачен
+// Set status paid
 $turbo->orders->update_order(intval($order->id), array('paid'=>1));
 
-// Спишем товары  
+// Write off products  
 $turbo->orders->close(intval($order->id));
 $turbo->notify->email_order_user(intval($order->id));
 $turbo->notify->email_order_admin(intval($order->id));

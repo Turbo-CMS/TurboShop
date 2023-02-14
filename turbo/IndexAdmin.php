@@ -57,7 +57,7 @@ class IndexAdmin extends Turbo
 		'TemplatesAdmin'            => 'design',
 		'ImagesAdmin'               => 'design',
 		'SeoAdmin'                  => 'seo',
-		'SettingsCounterAdmin'      => 'seo',
+		'SettingsCounterAdmin'      => 'scripts',
 		'SettingsAdmin'             => 'settings',
 		'SettingsFeedAdmin'         => 'settings',
 		'SystemAdmin'               => 'settings',
@@ -201,7 +201,7 @@ class IndexAdmin extends Turbo
 		$new_subscribes_counter = $this->subscribes->count_subscribes(array('processed' => 0));
 		$this->design->assign("new_subscribes_counter", $new_subscribes_counter);
 
-		$this->design->assign("all_counter", $new_comments_counter + $new_feedbacks_counter + $new_callbacks_counter + $new_subscribes_counter);
+		$this->design->assign("all_counter", $new_orders_counter + $new_comments_counter + $new_feedbacks_counter + $new_callbacks_counter + $new_subscribes_counter);
 
 		// Current menu
 		$menu_id = $this->request->get('menu_id', 'integer');

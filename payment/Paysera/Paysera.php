@@ -1,16 +1,5 @@
 <?php
 
-/**
- * Turbo CMS
- *
- * @copyright 	Turbo CMS
- * @link 		https://turbo-cms.com
- * @author 		Turbo CMS
- *
- * Payment module Paysera
- *
- */
-
 require_once('WebToPay.php');
 require_once('api/Turbo.php');
 

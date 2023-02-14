@@ -1,23 +1,9 @@
 <?php
 
-/**
- * Turbo CMS
- *
- * @author	Turbo CMS
- * @link	https://turbo-cms.com/
- *
- * Shopping basket
- * This class uses the template cart.tpl
- *
- */
-
 require_once('View.php');
 
 class CartView extends View
 {
-	//////////////////////////////////////////
-	// Changes to items in the cart
-	//////////////////////////////////////////
 	public function __construct()
 	{
 		parent::__construct();
@@ -116,6 +102,7 @@ class CartView extends View
 				// Redirect to order page
 				header('Location: ' . $this->config->root_url . '/' . $this->language->label . '/order/' . $order->url);
 			}
+			
 		} else {
 
 			// If we have posted amounts, update them
@@ -143,9 +130,6 @@ class CartView extends View
 		}
 	}
 
-	//////////////////////////////////////////
-	// Main function
-	//////////////////////////////////////////
 	function fetch()
 	{
 		// Delivery methods

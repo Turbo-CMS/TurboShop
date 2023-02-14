@@ -233,7 +233,7 @@
 					{/foreach}
 				</div>
 				<div class="mt-3">
-					<input type="submit" class="btn btn-success btn-lg float-end" value="{$lang->finish_order}">
+					<input type="submit" class="btn btn-success btn-lg float-end" value="{$lang->finish_the_order}">
 				</div>
 			</form>
 			{* Selected payment method *}

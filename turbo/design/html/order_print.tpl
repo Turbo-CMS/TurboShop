@@ -1,12 +1,10 @@
 <!DOCTYPE html>
-{* Print order *}
 {$wrapper='' scope=global}
 <html>
 
 <head>
 	<base href="{$config->root_url}/">
-	<title>{$btr->general_order_number|escape} {$order->id}</title>
-	{* Meta tags *}
+	<title>{$btr->global_order_number|escape} {$order->id}</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<meta name="description" content="{$meta_description|escape}">
 	<style>
@@ -150,7 +148,7 @@
 
 <body _onload="window.print();">
 	<div id="header">
-		<h1>{$btr->general_order_number|escape} {$order->id}</h1>
+		<h1>{$btr->global_order_number|escape} {$order->id}</h1>
 		<p>{$btr->order_print_from|escape} {$order->date|date}</p>
 	</div>
 	<div id="company">
@@ -187,21 +185,21 @@
 		{/if}
 	</div>
 	<div id="map">
-		<iframe width="550" height="370" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="http://maps.google.com/maps?ie=UTF8&iwloc=near&hl=ru&t=m&z=16&mrt=loc&geocode=&q={$order->address|escape|urlencode}&output=embed"></iframe>
+		<iframe width="550" height="370" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?ie=UTF8&iwloc=near&hl=ru&t=m&z=16&mrt=loc&geocode=&q={$order->address|escape|urlencode}&output=embed"></iframe>
 	</div>
 	<div id="purchases">
 		<table>
 			<tr>
 				<th>{$btr->order_print_product|escape}</th>
-				<th class="align_right">{$btr->general_price|escape}</th>
-				<th class="align_right">{$btr->general_amt|escape}</th>
-				<th class="align_right">{$btr->order_print_total|escape}</th>
+				<th class="align_right">{$btr->global_price|escape}</th>
+				<th class="align_right">{$btr->global_amt|escape}</th>
+				<th class="align_right">{$btr->global_total|escape}</th>
 			</tr>
 			{foreach $purchases as $purchase}
 				<tr>
 					<td>
 						<span class=view_purchase>
-							{$purchase->product_name|escape} {$purchase->variant_color|escape} {$purchase->variant_name|escape} {if $purchase->sku} ({$btr->general_sku|escape} {$purchase->sku|escape}){/if}
+							{$purchase->product_name|escape} {$purchase->variant_color|escape} {$purchase->variant_name|escape} {if $purchase->sku} ({$btr->global_sku|escape} {$purchase->sku|escape}){/if}
 						</span>
 					</td>
 					<td class="align_right">
@@ -217,10 +215,9 @@
 					</td>
 				</tr>
 			{/foreach}
-			{* If the shipping cost is included in the order amount *}
 			{if $order->delivery_price>0}
 				<tr>
-					<td colspan=3>{$delivery->name|escape}{if $order->separate_delivery} ({$btr->general_paid_separately|escape}){/if}</td>
+					<td colspan=3>{$delivery->name|escape}{if $order->separate_delivery} ({$btr->global_paid_separately|escape}){/if}</td>
 					<td class="align_right">{$order->delivery_price|convert}&nbsp;{$currency->sign|escape}</td>
 				</tr>
 			{/if}
@@ -230,24 +227,24 @@
 		<table>
 			{if $order->weight>0}
 				<tr>
-					<th>{$btr->general_weight|escape}:</th>
+					<th>{$btr->global_weight|escape}:</th>
 					<td>{$order->weight} {$settings->weight_units}</td>
 				</tr>
 			{/if}
 			{if $order->discount>0}
 				<tr>
-					<th>{$btr->general_discount|escape}</th>
+					<th>{$btr->global_discount|escape}</th>
 					<td>{$order->discount} %</td>
 				</tr>
 			{/if}
 			{if $order->coupon_discount>0}
 				<tr>
-					<th>{$btr->general_coupon|escape} {if $order->coupon_code} ({$order->coupon_code}){/if}</th>
+					<th>{$btr->global_coupon|escape} {if $order->coupon_code} ({$order->coupon_code}){/if}</th>
 					<td>{$order->coupon_discount}&nbsp;{$currency->sign|escape}</td>
 				</tr>
 			{/if}
 			<tr>
-				<th>{$btr->general_total|escape}</th>
+				<th>{$btr->global_total|escape}</th>
 				<td class="total">{$order->total_price}&nbsp;{$currency->sign|escape}</td>
 			</tr>
 			{if $payment_method}

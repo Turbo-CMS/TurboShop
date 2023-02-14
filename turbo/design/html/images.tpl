@@ -1,164 +1,153 @@
 {$meta_title = $btr->images_images scope=global}
 
-<div class="row">
-	<div class="col-lg-10 col-md-10">
-		<div class="wrap_heading">
-			<div class="box_heading heading_page">
-				{$btr->images_theme|escape} {$theme|escape}
-			</div>
-		</div>
-	</div>
-	<div class="col-md-2 col-lg-2 col-sm-12 float-xs-right"></div>
-</div>
+<h1 class="mb-3">{$btr->images_theme|escape} {$theme|escape}</h1>
 
 {if $message_error}
 	<div class="row">
-		<div class="col-lg-12 col-md-12 col-sm-12">
-			<div class="boxed boxed_warning">
-				<div class="">
+		<div class="col-12">
+			<div class="alert alert-danger alert-dismissible fade show" role="alert">
+				<div class="alert-message">
 					{if $message_error == 'permissions'}
-						{$btr->general_permissions|escape} {$images_dir|escape}
+						{$btr->global_permissions|escape} {$images_dir|escape}
 					{elseif $message_error == 'name_exists'}
 						{$btr->images_exists|escape}
 					{elseif $message_error == 'theme_locked'}
-						{$btr->general_protected|escape}
+						{$btr->global_protected|escape}
 					{else}
 						{$message_error|escape}
 					{/if}
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>
 			</div>
 		</div>
 	</div>
 {/if}
 
-<div class="boxed fn_toggle_wrap">
-	<div class="row">
-		<div class="col-lg-12 col-md-12 col-sm-12">
-			<form method="post" enctype="multipart/form-data">
-				<input type="hidden" name="session_id" value="{$smarty.session.id}">
-				<input type="hidden" name="delete_image" value="">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="heading_box">
-							{$btr->images_images|escape}
-							<div class="toggle_arrow_wrap fn_toggle_card text-primary">
-								<a class="btn-minimize" href="javascript:;"><i class="fn_icon_arrow icon-chevron-down"></i></a>
-							</div>
+<form method="post" enctype="multipart/form-data">
+	<input type="hidden" name="session_id" value="{$smarty.session.id}">
+	<input type="hidden" name="delete_image" value="">
+	<div class="row gx-2">
+		{foreach $images as $image}
+			<div class="col-12 col-md-6 col-lg-4 col-xl-3">
+				<div class="card">
+					<div class="card-header px-4 pt-4">
+						<div class="card-actions float-end">
+							{if $message_error == 'theme_locked'}
+								<span class="btn-delete" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->theme_close|escape}">
+									<i class="align-middle" data-feather="lock"></i>
+								</span>
+							{else}
+								<span data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_edit|escape}">
+									<i class="js-rename-image align-middle cursor-pointer me-1" data-feather="edit-2" data-old-name="{$image->name|escape}"></i>
+								</span>
+								<div class="btn-delete float-end js-delete-img" data-name="{$image->name}" data-bs-toggle="modal" data-bs-target="#js-delete-image">
+									<span data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
+										<i class="align-middle" data-feather="trash-2"></i>
+									</span>
+								</div>
+							{/if}
 						</div>
-						<div class="toggle_body_wrap fn_card on">
-							<div class="row">
-								{foreach $images as $image}
-									<div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
-										<div class="banner_card">
-											<div class="banner_card_header">
-												<input type="text" class="hidden" name="old_name[]" value="{$image->name|escape}">
-												<div class="form-group col-lg-9 col-md-8 px-0 fn_rename_value hidden mb-0">
-													<input type="text" class="form-control" name="new_name[]" value="{$image->name|escape}">
-												</div>
-												<span class="font-weight-bold">{$image->name|escape|truncate:15:'...'}</span>
-												<i class="pencil-icon fn_rename_theme rename_theme p-h" data-old_name="{$image->name|escape}"></i>
-
-												<button type="button" data-name="{$image->name}" class="btn_close float-xs-right fn_delete_img" data-toggle="modal" data-target="#fn_delete_image">
-													{include file='svg_icon.tpl' svgId='delete'}
-												</button>
-											</div>
-											<div class="banner_card_block">
-												<div class="wrap_bottom_tag_images">
-													<a class="theme_image_item" href='../{$images_dir}{$image->name|escape}'>
-														<img src='../{$images_dir}{$image->name|escape}'>
-													</a>
-													<div class="tag tag-default">
-														{if $image->size>1024*1024}
-															{($image->size/1024/1024)|round:2} {$btr->general_mb|escape}
-														{elseif $image->size>1024}
-															{($image->size/1024)|round:2} {$btr->general_kb|escape}
-														{else}
-															{$image->size} {$btr->general_byte|escape}
-														{/if},
-														{$image->width}&times;{$image->height} px
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								{/foreach}
-							</div>
+						<input type="text" class="d-none" name="old_name[]" value="{$image->name|escape}">
+						<div class="js-rename-value d-none position-absolute w-auto mt-n2">
+							<input type="text" class="form-control" name="new_name[]" value="{$image->name|escape}">
+						</div>
+						<h5 class="card-title mb-0">{$image->name|escape|truncate:33:'...'}</h5>
+					</div>
+					<div class="card-body px-4 pt-2">
+						<a class="theme-image-item" href="../{$images_dir}{$image->name|escape}" data-fancybox="gallery">
+							<img class="" src="../{$images_dir}{$image->name|escape}" alt="{$image->name|escape}">
+						</a>
+						<div class="badge badge-secondary-light mt-1">
+							{if $image->size>1024*1024}
+								{($image->size/1024/1024)|round:2} {$btr->global_mb|escape}
+							{elseif $image->size>1024}
+								{($image->size/1024)|round:2} {$btr->global_kb|escape}
+							{else}
+								{$image->size} {$btr->global_byte|escape}
+							{/if},
+							{$image->width}&times;{$image->height} px
 						</div>
 					</div>
 				</div>
-
-				<div class="row">
-					<div class="col-lg-7 col-md-7">
-						<div class="">
-							<button type="button" class="fn_add_image btn btn_small btn-primary mb-1 btn_images_add">
-								{include file='svg_icon.tpl' svgId='plus'}
-								{$btr->images_add|escape}
-							</button>
-						</div>
-					</div>
-					<div class="col-lg-5 col-md-5 pull-right">
-						<button type="submit" name="save" class="btn btn_small btn-primary float-md-right">
-							{include file='svg_icon.tpl' svgId='checked'}
-							<span>{$btr->general_apply|escape}</span>
-						</button>
-					</div>
-				</div>
-			</form>
-		</div>
+			</div>
+		{/foreach}
 	</div>
-</div>
+	{if !$message_error == 'theme_locked'}
+		<div class="row mt-2">
+			<div class="col-12">
+				<div class="upload-image"></div>
+			</div>
+			<div class="col-12 col-lg-6 col-md-6 mb-3 d-grid gap-2 d-sm-block">
+				<button type="button" class="btn btn-success js-add-image">
+					<i class="align-middle" data-feather="plus"></i>
+					{$btr->images_add|escape}
+				</button>
+			</div>
+			<div class="col-12 col-lg-6 col-md-6 d-grid gap-2 d-sm-block">
+				<button type="submit" name="save" class="btn btn-primary js-chek-all float-end">
+					<i class="align-middle" data-feather="check"></i>
+					{$btr->global_apply|escape}
+				</button>
+			</div>
+		</div>
+	{/if}
+</form>
 
-<div id="fn_delete_image" class="modal fade show" role="document">
-	<div class="modal-dialog modal-md">
+<div class="modal fade" id="js-delete-image" tabindex="-1" style="display: none;" aria-hidden="true">
+	<div class="modal-dialog modal-sm" role="document">
 		<div class="modal-content">
-			<div class="card-header">
-				<div class="heading_modal">{$btr->index_confirm|escape}</div>
+			<div class="modal-header">
+				<h5 class="modal-title">{$btr->global_confirm|escape}</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
-			<div class="modal-body">
-				<button type="submit" class="btn btn_small btn-success fn_submit_delete mx-h">
-					{include file='svg_icon.tpl' svgId='checked'}
-					<span>{$btr->index_yes|escape}</span>
-				</button>
-				<button type="button" class="btn btn_small btn-danger fn_dismiss_delete mx-h" data-dismiss="modal">
-					{include file='svg_icon.tpl' svgId='close'}
-					<span>{$btr->index_no|escape}</span>
-				</button>
+			<div class="modal-body text-center">
+				<div class="d-grid gap-2 d-sm-block">
+					<button type="submit" class="btn btn-success js-submit-delete me-sm-1"><i class="align-middle" data-feather="check"></i> {$btr->global_yes|escape}</button>
+					<button type="button" class="btn btn-danger js-dismiss-delete" data-bs-dismiss="modal"><i class="align-middle" data-feather="x"></i> {$btr->global_no|escape}</button>
+				</div>
 			</div>
 		</div>
 	</div>
 </div>
 
-{* On document load *}
-<script>
-	var general_confirm_delete = '{$btr->general_confirm_delete|escape}';
-</script>
+{* Fancybox *}
+{css id="fancybox" include=[
+	"turbo/design/js/fancybox/jquery.fancybox.min.css"
+]}{/css}
+{stylesheet minify=true}
+
+{js id="fancybox" priority=99 include=[
+	"turbo/design/js/fancybox/jquery.fancybox.min.js"
+]}{/js}
+{javascript minify=true}
+
 {literal}
 	<script>
-		$(function() {
+		$(window).on("load", function() {
 
-			$('.fn_rename_theme').on('click', function() {
-				$(this).parent().find('.fn_rename_value').toggleClass('hidden');
-				$(this).prev().toggleClass('hidden');
-				$(this).parent().find('.fn_rename_value > input').val($(this).data('old_name'))
+			$('.js-rename-image').on('click', function() {
+				$(this).closest('.card-header').find('.js-rename-value').toggleClass('d-none');
+				$(this).closest('.card-header').find('.card-title').toggleClass('d-none');
+				$(this).parent().find('.js-rename-value > input').val($(this).data('old-name'))
 			});
 
 			// Delete
-			$(".fn_delete_img").on("click", function() {
+			$(".js-delete-img").on("click", function() {
 				image_name = $(this).data("name");
 			});
 
-			$('.fn_submit_delete').on('click', function() {
+			$('.js-submit-delete').on('click', function() {
 				$('input[name=delete_image]').val(image_name);
 				$('form').submit();
 			});
 
-			$('.fn_dismiss_delete').on('click', function() {
+			$('.js-dismiss-delete').on('click', function() {
 				$('input[name=delete_image]').val("");
 			});
 
 			// Upload
-			$('.fn_add_image').on('click', function() {
-				$(this).closest('div').append($('<input class="import_file" type="file" name="upload_images[]">'));
+			$('.js-add-image').on('click', function() {
+				$('.upload-image').append($('<div class="mb-3"><input class="form-control" type="file" name="upload_images[]"></div>'));
 			});
 
 		});

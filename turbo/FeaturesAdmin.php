@@ -34,10 +34,10 @@ class FeaturesAdmin extends Turbo
 					case 'delete': {
 							$current_cat = $this->request->get('category_id', 'integer');
 							foreach ($ids as $id) {
-								// текущие категории
+								// Current categories
 								$cats = $this->features->get_feature_categories($id);
 
-								// В каких категориях оставлять
+								// Which categories to leave
 								$diff = array_diff($cats, (array)$current_cat);
 								if (!empty($current_cat) && !empty($diff)) {
 									$this->features->update_feature_categories($id, $diff);

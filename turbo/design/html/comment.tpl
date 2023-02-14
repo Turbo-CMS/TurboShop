@@ -1,31 +1,20 @@
-{* Title *}
-{$meta_title=$btr->general_comment scope=global}
+{$meta_title=$btr->global_comment scope=global}
 
-<div class="row">
-	<div class="col-lg-12 col-md-12">
-		<div class="wrap_heading">
-			<div class="box_heading heading_page">
-				{$btr->edit_comment|escape}
-			</div>
-		</div>
-	</div>
-	<div class="col-md-12 col-lg-12 col-sm-12 float-xs-right"></div>
+<div class="d-md-flex mb-3">
+	<h1 class="d-inline align-middle me-3">
+		{$btr->edit_comment|escape}
+	</h1>
 </div>
 
 {if $message_success}
 	<div class="row">
-		<div class="col-lg-12 col-md-12 col-sm-12">
-			<div class="boxed boxed_success">
-				<div class="heading_box">
+		<div class="col-12">
+			<div class="alert alert-success alert-dismissible fade show" role="alert">
+				<div class="alert-message">
 					{if $message_success == 'updated'}
 						{$btr->comment_updated|escape}
 					{/if}
-					{if $smarty.get.return}
-						<a class="btn btn_return float-xs-right" href="{$smarty.get.return}">
-							{include file='svg_icon.tpl' svgId='return'}
-							<span>{$btr->general_back|escape}</span>
-						</a>
-					{/if}
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>
 			</div>
 		</div>
@@ -34,53 +23,43 @@
 
 {if $message_error}
 	<div class="row">
-		<div class="col-lg-12 col-md-12 col-sm-12">
-			<div class="boxed boxed_warning">
-				<div class="heading_box">
+		<div class="col-12">
+			<div class="alert alert-danger alert-dismissible fade show" role="alert">
+				<div class="alert-message">
 					{$message_error|escape}
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>
 			</div>
 		</div>
 	</div>
 {/if}
 
-<form method="post" enctype="multipart/form-data" class="fn_fast_button">
+<form method="post" enctype="multipart/form-data" class="js-fast-button">
 	<input type="hidden" name="session_id" value="{$smarty.session.id}">
-
 	<div class="row">
-		<div class="col-xs-12 ">
-			<div class="boxed match_matchHeight_true">
-				<div class="row d_flex">
-					<div class="col-lg-10 col-md-9 col-sm-12">
-						<div class="heading_label">
-							{$btr->index_name|escape}
-						</div>
-						<div class="form-group">
-							<input class="form-control" name="name" type="text" value="{$comment->name|escape}">
-							<input name="id" type="hidden" value="{$comment->id|escape}">
-							<input name="type" type="hidden" value="{$comment->type}">
-							<input name="object_id" type="hidden" value="{$comment->object_id|escape}">
-							<input name="parent_id" type="hidden" value="{$comment->parent_id|escape}">
-						</div>
-					</div>
-					<div class="col-lg-2 col-md-3 col-sm-12">
-						<div class="activity_of_switch">
-							<div class="activity_of_switch_item">
-								<div class="turbo_switch clearfix">
-									<label class="switch_label">{$btr->email_comments_approved|escape}</label>
-									<div class="form-check form-switch">
-										<input class="form-check-input" id="approved_checkbox" name="approved" value="1" type="checkbox" {if $comment->approved}checked=""{/if}>
-										<label class="form-check-label" for="approved_checkbox"></label>
-									</div>
-								</div>
+		<div class="col-12">
+			<div class="card">
+				<div class="card-body">
+					<div class="row d-flex">
+						<div class="col-lg-10 col-md-9 col-sm-12">
+							<div class="mb-3">
+								<div class="form-label">{$btr->global_name|escape}</div>
+								<input class="form-control" name="name" type="text" value="{$comment->name|escape}">
+								<input name="id" type="hidden" value="{$comment->id|escape}">
+								<input name="type" type="hidden" value="{$comment->type}">
+								<input name="object_id" type="hidden" value="{$comment->object_id|escape}">
+								<input name="parent_id" type="hidden" value="{$comment->parent_id|escape}">
 							</div>
-							<div class="activity_of_switch_item">
-								<div class="turbo_switch clearfix">
-									<label class="switch_label">{$btr->comment_from_admin|escape}</label>
-									<div class="form-check form-switch">
-										<input class="form-check-input" id="admin_checkbox" name="admin" value="1" type="checkbox" {if $comment->admin}checked=""{/if}>
-										<label class="form-check-label" for="admin_checkbox"></label>
-									</div>
+						</div>
+						<div class="col-lg-2 col-md-3 col-sm-12">
+							<div class="d-flex justify-content-center align-content-center flex-wrap flex-md-column h-100">
+								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
+									<input class="form-check-input ms-2" type="checkbox" id="approved" name="approved" value="1" type="checkbox" {if $comment->approved}checked="" {/if}>
+									<label class="form-check-label ms-2" for="approved">{$btr->email_comments_approved|escape}</label>
+								</div>
+								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
+									<input class="form-check-input ms-2" type="checkbox" id="admin" name="admin" value="1" type="checkbox" {if $comment->admin}checked="" {/if}>
+									<label class="form-check-label ms-2" for="admin">{$btr->comment_from_admin|escape}</label>
 								</div>
 							</div>
 						</div>
@@ -90,39 +69,37 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-lg-12 col-md-12 pr-0">
-			<div class="boxed fn_toggle_wrap">
-				<div class="heading_box">
-					{$btr->settings_general_options|escape}
-					<div class="toggle_arrow_wrap fn_toggle_card text-primary">
-						<a class="btn-minimize" href="javascript:;"><i class="fn_icon_arrow icon-chevron-down"></i></a>
+		<div class="col-12">
+			<div class="card">
+				<div class="card-header">
+					<div class="card-actions float-end">
+						<div class="d-block d-lg-none position-relative collapse-icon">
+							<a href="javascript:;" class="collapse-chevron">
+								<i class="align-middle" data-feather="chevron-up"></i>
+							</a>
+						</div>
 					</div>
+					<h5 class="card-title mb-0">{$btr->global_parameters|escape}</h5>
 				</div>
-				<div class="row">
-					<div class="col-lg-12 toggle_body_wrap on fn_card">
+				<div class="collapse-card">
+					<div class="card-body">
 						<div class="row">
 							<div class="col-md-4">
-								<div>
-									<div class="heading_label">{$btr->general_date|escape}</div>
-									<div>
-										<input name="date" class="form-control" type="text" value="{$comment->date|date}">
-									</div>
+								<div class="mb-3">
+									<div class="form-label">{$btr->global_time|escape}</div>
+									<input name="time" class="form-control flatpickr-time text-start" type="text" value="{$comment->date|time}">
 								</div>
 							</div>
 							<div class="col-md-4">
-								<div>
-									<div class="heading_label">{$btr->support_time|escape}</div>
-									<div>
-										<input name="time" class="form-control" type="text" value="{$comment->date|time}">
-									</div>
+								<div class="mb-3">
+									<div class="form-label">{$btr->global_date|escape}</div>
+									<input name="date" class="form-control flatpickr" type="text" value="{$comment->date|date}">
 								</div>
 							</div>
 							<div class="col-md-4">
-								<div>
-									<div class="heading_label">IP</div>
-									<div>
-										<input name="ip" class="form-control" type="text" value="{$comment->ip}">
-									</div>
+								<div class="mb-3">
+									<div class="form-label">IP</div>
+									<input name="ip" class="form-control" type="text" value="{$comment->ip}">
 								</div>
 							</div>
 						</div>
@@ -132,55 +109,49 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-lg-12 col-md-12">
-			<div class="boxed match fn_toggle_wrap tabs min_height_210px">
-				<div class="heading_box">
-					{$btr->general_comment|escape}
-					<div class="toggle_arrow_wrap fn_toggle_card text-primary">
-						<a class="btn-minimize" href="javascript:;"><i class="fn_icon_arrow icon-chevron-down"></i></a>
-					</div>
-				</div>
-				<div class="toggle_body_wrap on fn_card">
-					<div class="tab_container">
-						<div id="tab1" class="tab">
-							<textarea name="text" class="form-control comment_textarea">{$comment->text|escape}</textarea>
+		<div class="col-12">
+			<div class="card mh-210px">
+				<div class="card-header">
+					<div class="card-actions float-end">
+						<div class="d-block d-lg-none position-relative collapse-icon">
+							<a href="javascript:;" class="collapse-chevron">
+								<i class="align-middle" data-feather="chevron-up"></i>
+							</a>
 						</div>
 					</div>
+					<h5 class="card-title mb-0">{$btr->global_comment|escape}</h5>
 				</div>
-				<div class="row">
-					<div class="col-lg-12 col-md-12 mt-1">
-						<button type="submit" class="btn btn_small btn-primary float-md-right">
-							{include file='svg_icon.tpl' svgId='checked'}
-							<span>{$btr->general_apply|escape}</span>
-						</button>
+				<div class="collapse-card">
+					<div class="card-body">
+						<textarea name="text" class="form-control mb-3" rows="7">{$comment->text|escape}</textarea>
 					</div>
 				</div>
+			</div>
+		</div>
+		<div class="col-12">
+			<div class="d-grid d-sm-block">
+				<button type="submit" class="btn btn-primary float-end mt-2">
+					<i class="align-middle" data-feather="check"></i>
+					{$btr->global_apply|escape}
+				</button>
 			</div>
 		</div>
 	</div>
 </form>
-<!-- Main form (The End) -->
-
-{* On document load *}
-
-{* Datetimepicker *}
-{css id="datetimepicker" include=[
-"turbo/design/js/datetimepicker/jquery.datetimepicker.css"
-]}{/css}
-{stylesheet minify=true}
-
-{js id="datetimepicker" priority=99 include=[
-"turbo/design/js/datetimepicker/jquery.datetimepicker.js"
-]}{/js}
-{javascript minify=true}
 
 {literal}
 	<script>
 		$(window).on("load", function() {
-			$('input[name="date"]').datetimepicker({
-				lang: '{/literal}{$settings->lang}{literal}',
-				timepicker: false,
-				format: 'd.m.Y'
+			flatpickr(".flatpickr", {
+				dateFormat: "d.m.Y",
+				locale: "{/literal}{if $settings->lang =='ua'}uk{else}{$settings->lang}{/if}{literal}"
+			});
+			
+			flatpickr(".flatpickr-time", {
+				enableTime: true,
+				noCalendar: true,
+				dateFormat: "H:i",
+				locale: "{/literal}{if $settings->lang =='ua'}uk{else}{$settings->lang}{/if}{literal}"
 			});
 		});
 	</script>

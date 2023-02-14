@@ -1,30 +1,22 @@
 {if $template_file}
-	{$meta_title = "`$btr->general_template` $template_file" scope=global}
+	{$meta_title = "`$btr->global_template` $template_file" scope=global}
 {/if}
 
-<div class="row">
-	<div class="col-lg-10 col-md-10">
-		<div class="wrap_heading">
-			<div class="box_heading heading_page">
-				{$btr->general_theme|escape} {$theme}, {$btr->general_template|escape} {$template_file}
-			</div>
-		</div>
-	</div>
-	<div class="col-md-2 col-lg-2 col-sm-12 float-xs-right"></div>
-</div>
+<h1 class="h3 mb-3">{$btr->global_theme|escape} {$theme}, {$btr->global_folder|escape} {if $smarty.get.dir}{$smarty.get.dir}{else}html{/if}, {$btr->global_template|escape} {$template_file}</h1>
 
 {if $message_error}
 	<div class="row">
-		<div class="col-lg-12 col-md-12 col-sm-12">
-			<div class="boxed boxed_warning">
-				<div>
+		<div class="col-12">
+			<div class="alert alert-danger alert-dismissible fade show" role="alert">
+				<div class="alert-message">
 					{if $message_error == 'permissions'}
-						{$btr->general_permission|escape} {$template_file}
+						{$btr->global_permission|escape} {$template_file}
 					{elseif $message_error == 'theme_locked'}
-						{$btr->general_protected|escape}
+						{$btr->global_protected|escape}
 					{else}
 						{$message_error|escape}
 					{/if}
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>
 			</div>
 		</div>
@@ -32,27 +24,91 @@
 {/if}
 
 <div class="row">
-	<div class="col-lg-12 col-md-12 col-sm-12">
-		<div class="boxed boxed_attention">
-			<div>
-				{$btr->general_design_message|escape}
-				{$btr->general_design_message2|escape}
+	<div class="col-12">
+		<div class="alert alert-primary alert-dismissible fade show" role="alert">
+			<div class="alert-message">
+				{$btr->global_design_message|escape}
+				{$btr->global_design_message2|escape}
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 			</div>
 		</div>
 	</div>
 </div>
 
-<div class="row">
-	<div class="col-lg-12 col-md-12">
-		<div class="boxed match fn_toggle_wrap tabs">
-			<div class="design_tabs">
-				<div class="design_navigation">
-					<a class="design_navigation_link {if $current_dir == "html"}focus{/if}" href='{url module=TemplatesAdmin  file=null email=null}'>{$btr->general_template|escape}</a>
+<nav aria-label="breadcrumb">
+	<ol class="breadcrumb mb-3">
+		<li class="breadcrumb-item"><a href="{url module=TemplatesAdmin file=null dir=null}" class="text-decoration-none text-muted"><i class="align-middle text-warning mt-n1" data-feather="folder"></i> html</a></li>
+		{if $smarty.get.dir && !$template_file}
+			<li class="breadcrumb-item active">
+				{$smarty.get.dir}
+			</li>
+		{elseif $smarty.get.dir && $template_file}
+			<li class="breadcrumb-item active">
+				<a href="/turbo/index.php?module=TemplatesAdmin&dir={$smarty.get.dir}" class="text-decoration-none text-muted"><i class="align-middle text-warning mt-n1" data-feather="folder"></i> {$smarty.get.dir}</a>
+			</li>
+			<li class="breadcrumb-item active">
+				<i class="align-middle mt-n1" data-feather="file-text"></i> {$template_file}
+			</li>
+		{elseif $template_file}
+			<li class="breadcrumb-item active">
+				<i class="align-middle mt-n1" data-feather="file-text"></i> {$template_file}
+			</li>
+		{/if}
+	</ol>
+</nav>
+
+{if $folders}
+	<div class="row">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-header">
+					<div class="card-actions float-end">
+						<div class="d-block d-lg-none position-relative collapse-icon">
+							<a href="javascript:;" class="collapse-chevron">
+								<i class="align-middle" data-feather="chevron-up"></i>
+							</a>
+						</div>
+					</div>
+					<h5 class="card-title mb-0">{$btr->global_folders|escape}</h5>
 				</div>
-				<div class="design_container">
-					{foreach $templates as $t}
-						<a class="design_tab {if $template_file == $t}focus{/if}" href='{url module=TemplatesAdmin file=$t}'>{$t|escape}</a>
-					{/foreach}
+				<div class="collapse-card">
+					<div class="card-body">
+						<ul class="nav nav-pills">
+							{foreach $folders as $f}
+								<li class="nav-item">
+									<a class="nav-link text-decoration-none text-muted" aria-current="page" href="{url module=TemplatesAdmin file=null dir=$f}"><i class="align-middle text-warning mt-n1" data-feather="folder"></i> {$f|escape}</a>
+								</li>
+							{/foreach}
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{/if}
+
+<div class="row">
+	<div class="col-12">
+		<div class="card">
+			<div class="card-header">
+				<div class="card-actions float-end">
+					<div class="d-block d-lg-none position-relative collapse-icon">
+						<a href="javascript:;" class="collapse-chevron">
+							<i class="align-middle" data-feather="chevron-up"></i>
+						</a>
+					</div>
+				</div>
+				<h5 class="card-title mb-0">{$btr->global_templates|escape}</h5>
+			</div>
+			<div class="collapse-card">
+				<div class="card-body">
+					<ul class="nav nav-pills">
+						{foreach $templates as $t}
+							<li class="nav-item">
+								<a class="nav-link text-decoration-none {if $template_file == $t}active text-white{else}text-muted{/if}" aria-current="page" href="{url module=TemplatesAdmin file=$t}"><i class="align-middle mt-n1" data-feather="file-text"></i> {$t|escape}</a>
+							</li>
+						{/foreach}
+					</ul>
 				</div>
 			</div>
 		</div>
@@ -61,48 +117,70 @@
 
 {if $template_file}
 	<div class="row">
-		<div class="col-lg-12 col-md-12">
-			<div class="boxed fn_toggle_wrap min_height_230px">
-				<div class="heading_box">{$btr->general_template|escape} {$template_file}</div>
-				<form>
-					<textarea id="template_content" name="template_content" style="width:700px;height:500px;">{$template_content|escape}</textarea>
-				</form>
-				<div class="row">
-					<div class="col-lg-12 col-md-12">
-						<button type="submit" name="save" class="fn_save btn btn_small btn-primary float-md-right">
-							{include file='svg_icon.tpl' svgId='checked'}
-							<span>{$btr->general_apply|escape}</span>
-						</button>
+		<div class="col-12">
+			<div class="card mh-230px">
+				<div class="card-header">
+					<div class="card-actions float-end">
+						<div class="d-block d-lg-none position-relative collapse-icon">
+							<a href="javascript:;" class="collapse-chevron">
+								<i class="align-middle" data-feather="chevron-up"></i>
+							</a>
+						</div>
+					</div>
+					<h5 class="card-title mb-0">{$btr->global_template|escape} {$template_file}</h5>
+				</div>
+				<div class="collapse-card">
+					<div class="card-body">
+						<form>
+							<textarea id="template-content" name="template-content">{$template_content|escape}</textarea>
+						</form>
+						<div class="row">
+							<div class="col-12">
+								<button type="submit" name="save" class="js-save btn btn-primary float-end mt-2">
+									<i class="align-middle" data-feather="check"></i>
+									<span>{$btr->global_apply|escape}</span>
+								</button>
+							</div>
+						</div>
 					</div>
 				</div>
-
 			</div>
 		</div>
 	</div>
 {/if}
 
-{* We connect the code editor *}
 {* Codemirror *}
 {css id="codemirror-html" include=[
-"turbo/design/js/codemirror/lib/codemirror.css",
-"turbo/design/js/codemirror/theme/style.css"
+	"turbo/design/js/codemirror/lib/codemirror.css"
 ]}{/css}
 {stylesheet minify=true}
 
+{if $settings->admin_theme == "dark"}
+	{css id="codemirror-html" include=[
+		"turbo/design/js/codemirror/theme/dark.css"
+	]}{/css}
+	{stylesheet minify=true}
+{else}
+	{css id="codemirror-html" include=[
+		"turbo/design/js/codemirror/theme/light.css"
+	]}{/css}
+	{stylesheet minify=true}
+{/if}
+
 {js id="codemirror-html" priority=99 include=[
-"turbo/design/js/codemirror/lib/codemirror.js",
-"turbo/design/js/codemirror/mode/smarty/smarty.js",
-"turbo/design/js/codemirror/mode/smartymixed/smartymixed.js",
-"turbo/design/js/codemirror/mode/xml/xml.js",
-"turbo/design/js/codemirror/mode/htmlmixed/htmlmixed.js",
-"turbo/design/js/codemirror/mode/css/css.js",
-"turbo/design/js/codemirror/mode/javascript/javascript.js",
-"turbo/design/js/codemirror/addon/selection/active-line.js"
+	"turbo/design/js/codemirror/lib/codemirror.js",
+	"turbo/design/js/codemirror/mode/smarty/smarty.js",
+	"turbo/design/js/codemirror/mode/smartymixed/smartymixed.js",
+	"turbo/design/js/codemirror/mode/xml/xml.js",
+	"turbo/design/js/codemirror/mode/htmlmixed/htmlmixed.js",
+	"turbo/design/js/codemirror/mode/css/css.js",
+	"turbo/design/js/codemirror/mode/javascript/javascript.js",
+	"turbo/design/js/codemirror/addon/selection/active-line.js"
 ]}{/js}
 {javascript minify=true}
 
 {literal}
-	<style type="text/css">
+	<style>
 		.CodeMirror {
 			font-family: 'Courier New';
 			margin-bottom: 10px;
@@ -111,48 +189,40 @@
 			min-height: 300px;
 			width: 100%;
 		}
-
 		.CodeMirror-scroll {
 			overflow-y: hidden;
 			overflow-x: auto;
 		}
-
-		.cm-s-style .cm-smarty.cm-tag{color: #ff008a;}
-		.cm-s-style .cm-smarty.cm-operator{color: #ff008a;}
-		.cm-s-style .cm-smarty.cm-string {color: #007000;}
-		.cm-s-style .cm-smarty.cm-variable {color: #ff008a;}
-		.cm-s-style .cm-smarty.cm-variable-2 {color: #cc006e;}
-		.cm-s-style .cm-smarty.cm-variable-3 {color: #ff008a;}
-		.cm-s-style .cm-smarty.cm-property {color: #ff008a;}
-		.cm-s-style .cm-comment {color: #505050;}
-		.cm-s-style .cm-smarty.cm-attribute {color: #ff20Fa;}
-		.cm-s-style .cm-smarty.cm-qualifier {color: #ff008a;}
-		.cm-s-style .cm-smarty.cm-number {color: #ff008a;}
-		.cm-s-style .cm-smarty.cm-keyword {color: #ff008a;}
-		.cm-s-style .cm-smarty.cm-string {color: #708;}
-		.cm-s-style .cm-tag-smarty{color: #ff008a;}
 	</style>
 
 	<script>
 		$(function() {
 			// Saving the code by ajax
 			function save() {
-				$('.CodeMirror').css('background-color', '#e0ffe0');
+				{/literal}
+				{if $settings->admin_theme == "dark"}
+					$('.CodeMirror').css('background-color', '#0e5e46');
+				{else}
+					$('.CodeMirror').css('background-color', '#d2f1e8');
+				{/if}
+				{literal}
 				content = editor.getValue();
 				$.ajax({
 					type: 'POST',
 					url: 'ajax/save_template.php',
-					data: {'content': content, 'theme':'{/literal}{$theme}{literal}', 'template': '{/literal}{$template_file}{literal}', 'session_id': '{/literal}{$smarty.session.id}{literal}'},
+					data: {'content': content, 'theme':'{/literal}{$theme}{literal}', 'template': '{/literal}{$template_file}{literal}', 'dir': '{/literal}{$smarty.get.dir}{literal}', 'session_id': '{/literal}{$smarty.session.id}{literal}'},
 					success: function(data) {
 						$('.CodeMirror').animate({'background-color': '#eef2f4'},500);
 					},
 					dataType: 'json'
 				});
 			}
+			
 			// Clicked the Save button
-			$('.fn_save').on('click', function() {
+			$('.js-save').on('click', function() {
 				save();
 			});
+			
 			// Processing ctrl+s
 			var isCtrl = false;
 			var isCmd = false;
@@ -170,10 +240,9 @@
 		});
 	</script>
 {/literal}
-
 {literal}
 	<script>
-		var editor = CodeMirror.fromTextArea(document.getElementById("template_content"), {
+		var editor = CodeMirror.fromTextArea(document.getElementById("template-content"), {
 			mode: "smartymixed",
 			lineNumbers: true,
 			styleActiveLine: true,
@@ -182,8 +251,7 @@
 			indentWithTabs: false,
 			indentUnit: 2,
 			tabMode: 'classic',
-			theme: 'style'
-
+			{/literal}{if $settings->admin_theme == "dark"}theme: 'dark'{else}theme: 'light'{/if}{literal}
 		});
 	</script>
 {/literal}

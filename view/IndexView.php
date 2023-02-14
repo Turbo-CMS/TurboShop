@@ -1,17 +1,5 @@
 <?php
 
-/**
- * Turbo CMS
- *
- * @author	Turbo CMS
- * @link	https://turbo-cms.com
- *
- * This class uses the template index.tpl,
- * which contains the entire page except for the center block
- * By the get-parameter module we determine what is contained in the central block 
- *
- */
-
 require_once('View.php');
 
 class IndexView extends View

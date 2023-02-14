@@ -1,15 +1,5 @@
 <?php
 
-/**
- * Manage store settings stored in the database
- * Unlike the Config class, it operates with settings available to the admin and stored in the database
- *
- *
- * @author		Turbo CMS
- * @link		https://turbo-cms.com
- *
- */
-
 require_once('Turbo.php');
 
 class Settings extends Turbo

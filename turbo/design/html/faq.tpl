@@ -4,45 +4,35 @@
 	{$meta_title = $btr->faq_add scope=global}
 {/if}
 
-<div class="row">
-	<div class="col-lg-12 col-md-12">
-		<div class="wrap_heading">
-			<div class="box_heading heading_page">
-				{if !$faq->id}
-					{$btr->faq_add|escape}
-				{else}
-					{$faq->name|escape}
-				{/if}
-			</div>
-			{if $faq->id}
-				<div class="box_btn_heading">
-					<a class="btn btn_small btn-primary add" target="_blank" href="../{$lang_link}faq">
-						{include file='svg_icon.tpl' svgId='icon_desktop'}
-						<span>{$btr->general_open|escape}</span>
-					</a>
-				</div>
-			{/if}
+<div class="d-md-flex mb-3">
+	<h1 class="d-inline align-middle me-3">
+		{if !$faq->id}
+			{$btr->faq_add|escape}
+		{else}
+			{$faq->name|escape}
+		{/if}
+	</h1>
+	{if $post->id}
+		<div class="d-grid gap-2 d-sm-block mt-2 mt-md-0">
+			<a class="btn btn-primary" target="_blank" href="../{$lang_link}faq">
+				<i class="align-middle mt-n1" data-feather="external-link"></i>
+				{$btr->global_open|escape}
+			</a>
 		</div>
-	</div>
-	<div class="col-md-12 col-lg-12 col-sm-12 float-xs-right"></div>
+	{/if}
 </div>
 
 {if $message_success}
 	<div class="row">
-		<div class="col-lg-12 col-md-12 col-sm-12">
-			<div class="boxed boxed_success">
-				<div class="heading_box">
+		<div class="col-12">
+			<div class="alert alert-success alert-dismissible fade show" role="alert">
+				<div class="alert-message">
 					{if $message_success == 'added'}
 						{$btr->faq_added|escape}
 					{elseif $message_success == 'updated'}
 						{$btr->faq_updated|escape}
 					{/if}
-					{if $smarty.get.return}
-						<a class="btn btn_return float-xs-right" href="{$smarty.get.return}">
-							{include file='svg_icon.tpl' svgId='return'}
-							<span>{$btr->general_back|escape}</span>
-						</a>
-					{/if}
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>
 			</div>
 		</div>
@@ -52,27 +42,22 @@
 <form method="post" enctype="multipart/form-data">
 	<input type="hidden" name="session_id" value="{$smarty.session.id}">
 	<div class="row">
-		<div class="col-xs-12">
-			<div class="boxed match_matchHeight_true">
-				<div class="row d_flex">
-					<div class="col-lg-10 col-md-9 col-sm-12">
-						<div class="heading_label">
-							{$btr->faq_question|escape}
+		<div class="col-12">
+			<div class="card">
+				<div class="card-body">
+					<div class="row d-flex">
+						<div class="col-lg-10 col-md-9 col-sm-12">
+							<div class="mb-3">
+								<div class="form-label">{$btr->faq_question|escape}</div>
+								<input class="form-control" name="name" type="text" value="{$faq->name|escape}">
+								<input name="id" type="hidden" value="{$faq->id|escape}">
+							</div>
 						</div>
-						<div class="form-group">
-							<input class="form-control" name="name" type="text" value="{$faq->name|escape}">
-							<input name="id" type="hidden" value="{$faq->id|escape}">
-						</div>
-					</div>
-					<div class="col-lg-2 col-md-3 col-sm-12">
-						<div class="activity_of_switch single_switch">
-							<div class="activity_of_switch_item">
-								<div class="turbo_switch clearfix">
-									<label class="switch_label">{$btr->general_enable|escape}</label>
-									<div class="form-check form-switch">
-										<input class="form-check-input" id="visible_checkbox" name="visible" value="1" type="checkbox" {if $faq->visible}checked=""{/if}>
-										<label class="form-check-label" for="visible_checkbox"></label>
-									</div>
+						<div class="col-lg-2 col-md-3 col-sm-12">
+							<div class="d-flex justify-content-center align-content-center flex-wrap flex-md-column h-100">
+								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
+									<input class="form-check-input ms-2" type="checkbox" id="visible" name="visible" value="1" type="checkbox" {if $faq->visible}checked="" {/if}>
+									<label class="form-check-label ms-2" for="visible">{$btr->global_enable|escape}</label>
 								</div>
 							</div>
 						</div>
@@ -82,27 +67,31 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-lg-12 col-md-12">
-			<div class="boxed match fn_toggle_wrap tabs">
-				<div class="heading_box">
-					{$btr->faq_answer|escape}
-					<div class="toggle_arrow_wrap fn_toggle_card text-primary">
-						<a class="btn-minimize" href="javascript:;"><i class="fn_icon_arrow icon-chevron-down"></i></a>
-					</div>
-				</div>
-				<div class="toggle_body_wrap on fn_card">
-					<div class="tab_container">
-						<div id="tab1" class="tab">
-							<textarea name="answer" id="fn_editor" class="editor_small">{$faq->answer|escape}</textarea>
+		<div class="col-12">
+			<div class="card">
+				<div class="card-header">
+					<div class="card-actions float-end">
+						<div class="d-block d-lg-none position-relative collapse-icon">
+							<a href="javascript:;" class="collapse-chevron">
+								<i class="align-middle" data-feather="chevron-up"></i>
+							</a>
 						</div>
 					</div>
+					<h5 class="card-title mb-0">{$btr->faq_answer|escape}</h5>
 				</div>
-				<div class="row">
-					<div class="col-lg-12 col-md-12 mt-1">
-						<button type="submit" class="btn btn_small btn-primary float-md-right">
-							{include file='svg_icon.tpl' svgId='checked'}
-							<span>{$btr->general_apply|escape}</span>
-						</button>
+				<div class="collapse-card">
+					<div class="card-body">
+						<textarea name="answer" id="js-editor" class="editor-small">{$faq->answer|escape}</textarea>
+						<div class="row">
+							<div class="col-12">
+								<div class="d-grid d-sm-block mt-3">
+									<button type="submit" class="btn btn-primary float-end">
+										<i class="align-middle" data-feather="check"></i>
+										<span>{$btr->global_apply|escape}</span>
+									</button>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -110,5 +99,5 @@
 	</div>
 </form>
 
-{* Connect Tiny MCE *}
-{include file='tinymce_init_two.tpl'}
+{* TinyMCE *}
+{include file='tinymce_init.tpl'}

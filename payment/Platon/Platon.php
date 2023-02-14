@@ -16,10 +16,8 @@ class Platon extends Turbo
 		
 		$price = round($this->money->convert($order->total_price, $payment_method->currency_id, false), 2);
 		
-		
-		// описание заказа
 		// order description
-		$data = base64_encode( serialize( array('amount'=>number_format($price,2,'.',''), 'currency'=>$payment_currency->code, 'name'=>'Оплата заказа №'.$order->id)));
+		$data = base64_encode( serialize( array('amount'=>number_format($price,2,'.',''), 'currency'=>$payment_currency->code, 'name'=>'Order payment №'.$order->id)));
 		
 		$return_url = $this->config->root_url.'/order/'.$order->url;
 		

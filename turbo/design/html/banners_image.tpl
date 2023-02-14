@@ -4,26 +4,19 @@
 	{$meta_title = $btr->banners_image_add_banner  scope=global}
 {/if}
 
-<div class="row">
-	<div class="col-lg-12 col-md-12">
-		<div class="wrap_heading">
-			<div class="box_heading heading_page">
-				{if !$banners_image->id}
-					{$btr->banners_image_add_banner|escape}
-				{else}
-					{$banners_image->name|escape}
-				{/if}
-			</div>
-		</div>
-	</div>
-	<div class="col-md-12 col-lg-12 col-sm-12 float-xs-right"></div>
-</div>
+<h1 class="mb-3">
+	{if !$banners_image->id}
+		{$btr->banners_image_add_banner|escape}
+	{else}
+		{$banners_image->name|escape}
+	{/if}
+</h1>
 
 {if $message_success}
 	<div class="row">
-		<div class="col-lg-12 col-md-12 col-sm-12">
-			<div class="boxed boxed_success">
-				<div class="heading_box">
+		<div class="col-12">
+			<div class="alert alert-success alert-dismissible fade show" role="alert">
+				<div class="alert-message">
 					{if $message_success=='added'}
 						{$btr->banners_image_added|escape}
 					{elseif $message_success=='updated'}
@@ -31,138 +24,46 @@
 					{else}
 						{$message_success|escape}
 					{/if}
-					{if $smarty.get.return}
-						<a class="btn btn_return float-xs-right" href="{$smarty.get.return}">
-							{include file='svg_icon.tpl' svgId='return'}
-							<span>{$btr->general_back|escape}</span>
-						</a>
-					{/if}
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>
 			</div>
 		</div>
 	</div>
 {/if}
 
-<form method="post" enctype="multipart/form-data" class="fn_fast_button">
+<form method="post" enctype="multipart/form-data" class="js-fast-button">
 	<input type="hidden" name="session_id" value="{$smarty.session.id}">
 	<div class="row">
 		<div class="col-lg-12 col-md-12 col-sm-12">
-			<div class="boxed">
-				<div class="row d_flex">
-					<div class="col-lg-10 col-md-9 col-sm-12">
-						<div class="heading_label">
-							{$btr->general_name|escape}
-						</div>
-						<div class="form-group">
-							<input class="form-control" name="name" type="text" value="{$banners_image->name|escape}">
-							<input name="id" type="hidden" value="{$banners_image->id|escape}">
-						</div>
-					</div>
-					<div class="col-lg-2 col-md-3 col-sm-12">
-						<div class="activity_of_switch">
-							<div class="activity_of_switch_item">
-								<div class="turbo_switch clearfix">
-									<label class="switch_label">{$btr->general_enable|escape}</label>
-									<div class="form-check form-switch">
-										<input class="form-check-input" id="visible_checkbox" name="visible" value="1" type="checkbox" {if $banners_image->visible}checked=""{/if}>
-										<label class="form-check-label" for="visible_checkbox"></label>
+			<div class="card">
+				<div class="card-body">
+					<div class="row d-flex">
+						<div class="col-lg-10 col-md-9 col-sm-12">
+							<div class="mb-3">
+								<div class="form-label">{$btr->global_title|escape}</div>
+								<input class="form-control" name="name" type="text" value="{$banners_image->name|escape}">
+								<input name="id" type="hidden" value="{$banners_image->id|escape}">
+							</div>
+							<div class="row">
+								<div class="col-xs-12 col-lg-6 col-md-12">
+									<div class="mb-3">
+										<div class="form-label">{$btr->global_banner_group|escape}</div>
+										<select name="banner_id" class="selectpicker">
+											{foreach $banners as $banner}
+												<option value="{$banner->id}" {if $banners_image->banner_id == $banner->id}selected{/if}>{$banner->name|escape}</option>
+											{/foreach}
+										</select>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-lg-6 col-md-12 pr-0">
-			<div class="boxed fn_toggle_wrap min_height_230px">
-				<div class="heading_box">
-					{$btr->general_image|escape}
-					<div class="toggle_arrow_wrap fn_toggle_card text-primary">
-						<a class="btn-minimize" href="javascript:;"><i class="fn_icon_arrow icon-chevron-down"></i></a>
-					</div>
-				</div>
-
-				<div class="toggle_body_wrap on fn_card text-xs-center">
-					<ul class="banner_images_list">
-						<li class="banner_image_item border_image_item {if $banners_image->image}border{/if}">
-							{if $banners_image->image}
-								<input type="hidden" class="fn_accept_delete" name="delete_image" value="">
-								<div class="fn_parent_image">
-									<div class="banner_image image_wrapper fn_image_wrapper text-xs-center">
-										<a href="javascript:;" class="fn_delete_item remove_image"></a>
-										<img src="{$banners_image->image|resize_banners:800:400}" alt="">
-									</div>
+						<div class="col-lg-2 col-md-3 col-sm-12">
+							<div class="d-flex justify-content-center align-content-center flex-wrap flex-md-column h-100">
+								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
+									<input class="form-check-input ms-2" type="checkbox" id="visible" name="visible" value="1" type="checkbox" {if $banners_image->visible}checked="" {/if}>
+									<label class="form-check-label ms-2" for="visible">{$btr->global_enable|escape}</label>
 								</div>
-							{else}
-								<div class="fn_parent_image"></div>
-							{/if}
-							<div class="fn_upload_image dropzone_block_image {if $banners_image->image} hidden{/if}">
-								{include file='svg_icon.tpl' svgId='plus_big'}
-								<input class="dropzone_image" name="image" type="file">
 							</div>
-							<div class="banner_image image_wrapper fn_image_wrapper fn_new_image text-xs-center">
-								<a href="javascript:;" class="fn_delete_item remove_image"></a>
-								<img src="" alt="">
-							</div>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-
-		<div class="col-lg-6 col-md-12">
-			<div class="boxed fn_toggle_wrap min_height_230px">
-				<div class="heading_box">
-					{$btr->banners_image_param|escape}
-					<div class="toggle_arrow_wrap fn_toggle_card text-primary">
-						<a class="btn-minimize" href="javascript:;"><i class="fn_icon_arrow icon-chevron-down"></i></a>
-					</div>
-				</div>
-				<div class="toggle_body_wrap on fn_card">
-					<div class="">
-						<div class="heading_label">{$btr->general_banner_group|escape}</div>
-						<select name="banner_id" class="selectpicker mb-1">
-							{foreach $banners as $banner}
-								<option value="{$banner->id}" {if $banners_image->banner_id == $banner->id}selected{/if}>{$banner->name|escape}</option>
-							{/foreach}
-						</select>
-					</div>
-
-					<div class="">
-						<div class="heading_label">{$btr->banners_image_url|escape}</div>
-						<div class="">
-							<input name="url" class="form-control" type="text" value="{$banners_image->url|escape}">
-						</div>
-					</div>
-
-					<div class="">
-						<div class="heading_label">{$btr->banners_image_button|escape}</div>
-						<div class="">
-							<input name="button" class="form-control" type="text" value="{$banners_image->button|escape}">
-						</div>
-					</div>
-
-					<div class="">
-						<div class="heading_label">{$btr->banners_image_alt|escape}</div>
-						<div class="">
-							<input name="alt" class="form-control" type="text" value="{$banners_image->alt|escape}">
-						</div>
-					</div>
-
-					<div class="">
-						<div class="heading_label">{$btr->banners_image_title|escape}</div>
-						<div class="">
-							<input name="title" class="form-control" type="text" value="{$banners_image->title|escape}">
-						</div>
-					</div>
-
-					<div class="">
-						<div class="heading_label">{$btr->banners_image_description|escape}</div>
-						<div class="">
-							<textarea name="description" class="form-control turbo_textarea">{$banners_image->description|escape}</textarea>
 						</div>
 					</div>
 				</div>
@@ -171,53 +72,189 @@
 	</div>
 	<div class="row">
 		<div class="col-lg-12 col-md-12">
-			<button type="submit" class="btn btn_small btn_small_bottom btn-primary float-md-right">
-				{include file='svg_icon.tpl' svgId='checked'}
-				<span>{$btr->general_apply|escape}</span>
-			</button>
+			<div class="card">
+				<div class="card-header">
+					<div class="card-actions float-end">
+						<div class="d-block d-lg-none position-relative collapse-icon">
+							<a href="javascript:;" class="collapse-chevron">
+								<i class="align-middle" data-feather="chevron-up"></i>
+							</a>
+						</div>
+					</div>
+					<h5 class="card-title mb-0">{$btr->banners_image_param|escape}</h5>
+				</div>
+				<div class="collapse-card">
+					<div class="card-body">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="mb-3">
+									<div class="form-label">{$btr->banners_image_url|escape}</div>
+									<input name="url" class="form-control" type="text" value="{$banners_image->url|escape}">
+								</div>
+								<div class="mb-3">
+									<div class="form-label">{$btr->global_background_color}</div>
+									<div id="cp" class="input-group colorpicker-component">
+										<input type="text" name="color" value="{if $banners_image->color}{$banners_image->color|escape}{else}fffff{/if}" class="form-control">
+										<span class="input-group-text add-on"><i></i></span>
+									</div>
+								</div>
+								<div class="mb-3">
+									<div class="form-label">{$btr->global_color_mode|escape}</div>
+									<select name="style" class="selectpicker">
+										<option value="light" {if $banners_image->style == "light"}selected{/if}>{$btr->global_light|escape}</option>
+										<option value="dark" {if $banners_image->style == "dark"}selected{/if}>{$btr->global_dark|escape}</option>
+									</select>
+								</div>
+								<div class="mb-3">
+									<div class="form-label">{$btr->banners_image_button|escape}</div>
+									<input name="button" class="form-control" type="text" value="{$banners_image->button|escape}">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="mb-3">
+									<div class="form-label">{$btr->banners_image_alt|escape}</div>
+									<input name="alt" class="form-control" type="text" value="{$banners_image->alt|escape}">
+								</div>
+								<div class="mb-3">
+									<div class="form-label">{$btr->banners_image_title|escape}</div>
+									<input name="title" class="form-control" type="text" value="{$banners_image->title|escape}">
+								</div>
+								<div class="mb-3">
+									<div class="form-label">{$btr->global_description|escape}</div>
+									<textarea name="description" class="form-control turbo-textarea">{$banners_image->description|escape}</textarea>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row gx-2">
+		<div class="col-lg-6 col-md-12">
+			<div class="card mh-230px">
+				<div class="card-header">
+					<div class="card-actions float-end">
+						<div class="d-block d-lg-none position-relative collapse-icon">
+							<a href="javascript:;" class="collapse-chevron">
+								<i class="align-middle" data-feather="chevron-up"></i>
+							</a>
+						</div>
+					</div>
+					<h5 class="card-title mb-0">{$btr->global_image|escape}</h5>
+				</div>
+				<div class="collapse-card">
+					<div class="card-body">
+						<ul class="banner-images-list">
+							<li class="banner-image-item border-image-item {if $banners_image->image}border{/if}">
+								{if $banners_image->image}
+									<input type="hidden" class="js-accept-delete" name="delete_image" value="">
+									<div class="js-parent-image">
+										<div class="banner-image image-wrapper js-image-wrapper text-xs-center">
+											<a href="javascript:;" class="js-delete-item remove-image"></a>
+											<img src="{$banners_image->image|resize_banners:800:400}" alt="">
+										</div>
+									</div>
+								{else}
+									<div class="js-parent-image"></div>
+								{/if}
+								<div class="js-upload-image dropzone-block-image {if $banners_image->image}d-none{/if}">
+									<i class="align-middle" data-feather="plus"></i>
+									<input class="dropzone-image" name="image" type="file">
+								</div>
+								<div class="banner-image image-wrapper js-image-wrapper js-new-image text-xs-center">
+									<a href="javascript:;" class="js-delete-item remove-image"></a>
+									<img src="" alt="">
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-6 col-md-12">
+			<div class="card mh-230px">
+				<div class="card-header">
+					<div class="card-actions float-end">
+						<div class="d-block d-lg-none position-relative collapse-icon">
+							<a href="javascript:;" class="collapse-chevron">
+								<i class="align-middle" data-feather="chevron-up"></i>
+							</a>
+						</div>
+					</div>
+					<h5 class="card-title mb-0">{$btr->global_background|escape}</h5>
+				</div>
+				<div class="collapse-card">
+					<div class="card-body">
+						<ul class="banner-images-list">
+							<li class="banner-image-item border-image-item-two {if $banners_image->background}border{/if}">
+								{if $banners_image->background}
+									<input type="hidden" class="js-accept-delete-two" name="delete_background" value="">
+									<div class="js-parent-image-two">
+										<div class="banner-image image-wrapper js-image-wrapper-two text-xs-center">
+											<a href="javascript:;" class="js-delete-item-two remove-image"></a>
+											<img src="{$banners_image->background|resize_banners:800:400}" alt="">
+										</div>
+									</div>
+								{else}
+									<div class="js-parent-image-two"></div>
+								{/if}
+								<div class="js-upload-image-two dropzone-block-image {if $banners_image->background}d-none{/if}">
+									<i class="align-middle" data-feather="plus"></i>
+									<input class="dropzone-image-two" name="background" type="file">
+								</div>
+								<div class="banner-image image-wrapper js-image-wrapper-two js-new-image-two text-xs-center">
+									<a href="javascript:;" class="js-delete-item-two remove-image"></a>
+									<img src="" alt="">
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-12">
+			<div class="d-grid d-sm-block mt-3">
+				<button type="submit" class="btn btn-primary float-end">
+					<i class="align-middle" data-feather="check"></i>
+					{$btr->global_apply|escape}
+				</button>
+			</div>
 		</div>
 	</div>
 </form>
-<script>
-	$(document).on("click", ".fn_delete_banner", function() {
-		$(this).closest(".banner_image").find("img").remove();
-		$(this).remove();
-		$(".fn_upload_image ").removeClass("hidden");
-		$(".fn_accept_delete").val(1);
-	});
 
-	if (window.File && window.FileReader && window.FileList) {
+{* Colorpicker *}
+{css id="colorpicker" include=[
+	"turbo/design/js/colorpicker/css/bootstrap-colorpicker.min.css"
+]}{/css}
+{stylesheet minify=true}
 
-		$(".fn_upload_image").on('dragover', function(e) {
-			e.preventDefault();
-			$(this).css('background', '#bababa');
+{js id="colorpicker" priority=99 include=[
+	"turbo/design/js/colorpicker/js/bootstrap-colorpicker.min.js"
+]}{/js}
+{javascript minify=true}
+
+{literal}
+	<script>
+		$(function() {
+			$('#cp').colorpicker({
+				colorSelectors: {
+					"black": "#000000",
+					"blue": "#0000ff",
+					"brown": "#a52a2a",
+					"gray": "#808080",
+					"green": "#008000",
+					"red": "#ff0000",
+					"orange": "#ffa500",
+					"yellow": "#ffff00",
+					"white": "#ffffff"
+				},
+				format: "hex"
+			});
 		});
-		$(".fn_upload_image").on('dragleave', function() {
-			$(this).css('background', '#f8f8f8');
-		});
-
-		function handleFileSelect(evt) {
-			var files = evt.target.files; // FileList object
-			// Loop through the FileList and render image files as thumbnails.
-			for (var i = 0, f; f = files[i]; i++) {
-				// Only process image files.
-				if (!f.type.match('image.*')) {
-					continue;
-				}
-				var reader = new FileReader();
-				// Closure to capture the file information.
-				reader.onload = (function(theFile) {
-					return function(e) {
-						// Render thumbnail.
-						$("<a href='javascript:;' class='fn_delete_banner remove_image'></a><img class='admin_banner_images' onerror='$(this).closest(\"div\").remove();' src='" + e.target.result + "' />").appendTo("div.banner_image ");
-						$(".fn_upload_image").addClass("hidden");
-					};
-				})(f);
-				// Read in the image file as a data URL.
-				reader.readAsDataURL(f);
-			}
-			$(".fn_upload_image").removeAttr("style");
-		}
-		$(document).on('change', '.dropzone_banner', handleFileSelect);
-	}
-</script>
+	</script>
+{/literal}

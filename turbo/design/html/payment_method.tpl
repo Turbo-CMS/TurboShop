@@ -4,22 +4,19 @@
 	{$meta_title = $btr->payment_method_new scope=global}
 {/if}
 
-<div class="row">
-	<div class="col-lg-7 col-md-7">
-		{if !$payment_method->id}
-			<div class="heading_page">{$btr->payment_method_add|escape}</div>
-		{else}
-			<div class="heading_page">{$payment_method->name|escape}</div>
-		{/if}
-	</div>
-	<div class="col-lg-7 col-md-7 text-xs-right float-xs-right"></div>
-</div>
+<h1 class="mb-3">
+	{if !$payment_method->id}
+		{$btr->payment_method_add|escape}
+	{else}
+		{$payment_method->name|escape}
+	{/if}
+</h1>
 
 {if $message_success}
 	<div class="row">
-		<div class="col-lg-12 col-md-12 col-sm-12">
-			<div class="boxed boxed_success">
-				<div class="heading_box">
+		<div class="col-12">
+			<div class="alert alert-success alert-dismissible fade show" role="alert">
+				<div class="alert-message">
 					{if $message_success == 'added'}
 						{$btr->payment_method_added|escape}
 					{elseif $message_success == 'updated'}
@@ -27,59 +24,50 @@
 					{else}
 						{$message_success|escape}
 					{/if}
-					{if $smarty.get.return}
-						<a class="btn btn_return float-xs-right" href="{$smarty.get.return}">
-							{include file='svg_icon.tpl' svgId='return'}
-							<span>{$btr->general_back|escape}</span>
-						</a>
-					{/if}
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>
-			</div>
+				</div>
 		</div>
 	</div>
 {/if}
 
 {if $message_error}
 	<div class="row">
-		<div class="col-lg-12 col-md-12 col-sm-12">
-			<div class="boxed boxed_warning">
-				<div class="heading_box">
+		<div class="col-12">
+			<div class="alert alert-danger alert-dismissible fade show" role="alert">
+				<div class="alert-message">
 					{if $message_error=='empty_name'}
-						{$btr->general_enter_title|escape}
+						{$btr->global_enter_name|escape}
 					{else}
 						{$message_error|escape}
 					{/if}
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>
 			</div>
 		</div>
 	</div>
 {/if}
 
-<form method="post" enctype="multipart/form-data" class="fn_fast_button">
+<form method="post" enctype="multipart/form-data" class="js-fast-button">
 	<input type="hidden" name="session_id" value="{$smarty.session.id}">
 
 	<div class="row">
-		<div class="col-xs-12">
-			<div class="boxed">
-				<div class="row d_flex">
-					<div class="col-lg-10 col-md-9 col-sm-12">
-						<div class="heading_label">
-							{$btr->general_name|escape}
+		<div class="col-12">
+			<div class="card">
+				<div class="card-body">
+					<div class="row d-flex">
+						<div class="col-lg-10 col-md-9 col-sm-12">
+							<div class="mb-3">
+								<div class="form-label">{$btr->global_title|escape}</div>
+								<input class="form-control mb-h" name="name" type="text" value="{$payment_method->name|escape}">
+								<input name="id" type="hidden" value="{$payment_method->id|escape}">
+							</div>
 						</div>
-						<div class="form-group">
-							<input class="form-control mb-h" name="name" type="text" value="{$payment_method->name|escape}">
-							<input name="id" type="hidden" value="{$payment_method->id|escape}">
-						</div>
-					</div>
-					<div class="col-lg-2 col-md-3 col-sm-12">
-						<div class="activity_of_switch">
-							<div class="activity_of_switch_item">
-								<div class="turbo_switch clearfix">
-									<label class="switch_label">{$btr->general_enable|escape}</label>
-									<div class="form-check form-switch">
-										<input class="form-check-input" id="enabled_checkbox" name="enabled" value="1" type="checkbox" {if $payment_method->enabled}checked=""{/if}>
-										<label class="form-check-label" for="enabled_checkbox"></label>
-									</div>
+						<div class="col-lg-2 col-md-3 col-sm-12">
+							<div class="d-flex justify-content-center align-content-center flex-wrap flex-md-column h-100">
+								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
+									<input class="form-check-input ms-2" type="checkbox" id="enabled" name="enabled" value="1" type="checkbox" {if $payment_method->enabled}checked="" {/if}>
+									<label class="form-check-label ms-2" for="enabled">{$btr->global_enable|escape}</label>
 								</div>
 							</div>
 						</div>
@@ -90,111 +78,86 @@
 	</div>
 
 	<div class="row">
-		<div class="col-lg-12 col-md-12">
-			<div class="boxed fn_toggle_wrap min_height_230px">
-				<div class="heading_box">
-					{$btr->payment_method_settings|escape}
-					<div class="toggle_arrow_wrap fn_toggle_card text-primary">
-						<a class="btn-minimize" href="javascript:;"><i class="fn_icon_arrow icon-chevron-down"></i></a>
+		<div class="col-12">
+			<div class="card">
+				<div class="card-header">
+					<div class="card-actions float-end">
+						<div class="d-block d-lg-none position-relative collapse-icon">
+							<a href="javascript:;" class="collapse-chevron">
+								<i class="align-middle" data-feather="chevron-up"></i>
+							</a>
+						</div>
 					</div>
+					<h5 class="card-title mb-0">{$btr->payment_method_settings|escape}</h5>
 				</div>
-				<div class="row">
-					<div class="col-lg-12 toggle_body_wrap on fn_card">
+				<div class="collapse-card">
+					<div class="card-body">
 						<div class="row">
-							<div class="col-lg-6 pr-0">
-								<div class="form-group clearfix">
-									<div class="heading_label">{$btr->payment_method_type|escape}</div>
-									<select name="module" class="selectpicker">
-										<option value='null'>{$btr->payment_method_manual|escape}</option>
+							<div class="col-12">
+								<div class="row">
+									<div class="col-lg-6">
+										<div class="form-group clearfix">
+											<div class="form-label">{$btr->payment_method_type|escape}</div>
+											<select name="module" class="selectpicker">
+												<option value='null'>{$btr->payment_method_manual|escape}</option>
+												{foreach $payment_modules as $payment_module}
+													<option value="{$payment_module@key|escape}" {if $payment_method->module == $payment_module@key}selected{/if}>{$payment_module->name|escape}</option>
+												{/foreach}
+											</select>
+										</div>
+									</div>
+									<div class="col-lg-6">
+										<div class="form-group clearfix">
+											<div class="form-label">{$btr->global_currency|escape}</div>
+											<select name="currency_id" class="selectpicker">
+												{foreach $currencies as $currency}
+													<option value="{$currency->id}" {if $currency->id==$payment_method->currency_id}selected{/if}>{$currency->name|escape}</option>
+												{/foreach}
+											</select>
+										</div>
+									</div>
+									<div class="col-12 mt-3">
 										{foreach $payment_modules as $payment_module}
-											<option value="{$payment_module@key|escape}" {if $payment_method->module == $payment_module@key}selected{/if}>{$payment_module->name|escape}</option>
-										{/foreach}
-									</select>
-								</div>
-							</div>
-							<div class="col-lg-6">
-								<div class="form-group clearfix">
-									<div class="heading_label">{$btr->general_currency|escape}</div>
-									<select name="currency_id" class="selectpicker">
-										{foreach $currencies as $currency}
-											<option value="{$currency->id}" {if $currency->id==$payment_method->currency_id}selected{/if}>{$currency->name|escape}</option>
-										{/foreach}
-									</select>
-								</div>
-							</div>
-							<div class="col-lg-12 col-md-12">
-								{foreach $payment_modules as $payment_module}
-									<div class="row fn_module_settings" {if $payment_module@key!=$payment_method->module}style="display:none;" {/if} module="{$payment_module@key}">
-										<div class="col-lg-12 col-md-12 heading_box">{$payment_module->name|escape}</div>
-										{foreach $payment_module->settings as $setting}
-											{$variable_name = $setting->variable}
-											{if !empty($setting->options) && $setting->options|@count>1}
-												<div class="col-lg-6">
-													<div class="form-group clearfix">
-														<div class="heading_label">{$setting->name|escape}</div>
-														<div class="">
-															<select name="payment_settings[{$setting->variable}]" class="selectpicker">
-																{foreach $setting->options as $option}
-																	<option value="{$option->value}" {if $option->value==$payment_settings[$setting->variable]}selected{/if}>{$option->name|escape}</option>
-																{/foreach}
-															</select>
+											<div class="row js-module-settings" {if $payment_module@key!=$payment_method->module}style="display:none;" {/if} module="{$payment_module@key}">
+												<h4>{$payment_module->name|escape}</h4>
+												{foreach $payment_module->settings as $setting}
+													{$variable_name = $setting->variable}
+													{if !empty($setting->options) && $setting->options|@count>1}
+														<div class="col-lg-6">
+															<div class="mb-3">
+																<div class="form-label">{$setting->name|escape}</div>
+																<select name="payment_settings[{$setting->variable}]" class="selectpicker">
+																	{foreach $setting->options as $option}
+																		<option value="{$option->value}" {if $option->value==$payment_settings[$setting->variable]}selected{/if}>{$option->name|escape}</option>
+																	{/foreach}
+																</select>
+															</div>
 														</div>
-													</div>
-												</div>
-											{elseif !empty($setting->options) && $setting->options|@count==1}
-												{$option = $setting->options|@first}
-												<div class="col-lg-6">
-													<div class="form-group clearfix">
-														<div class="boxes_inline">
-															<label class="form-check">
-																<input class="form-check-input fn_check_all_single" type="checkbox" name="payment_settings[{$setting->variable}]" value="{$option->value|escape}" {if $option->value==$payment_settings[$setting->variable]}checked{/if} id="{$setting->variable}">
-															</label>
+													{elseif !empty($setting->options) && $setting->options|@count==1}
+														{$option = $setting->options|@first}
+														<div class="col-lg-6">
+															<div class="d-flex align-items-center mb-3">
+																<div class="form-check">
+																	<input class="form-check-input js-check-all-single me-2" type="checkbox" id="payment-settings-{$option->value|escape}" name="payment_settings[{$setting->variable}]" value="{$option->value|escape}" {if $option->value==$payment_settings[$setting->variable]}checked{/if} id="{$setting->variable}">
+																</div>
+																<label class="form-check-label" for="payment-settings-{$option->value|escape}">{$setting->name|escape}</label>
+															</div>
 														</div>
-														<div class="heading_label boxes_inline" for="{$setting->variable}">{$setting->name|escape}</div>
-													</div>
-												</div>
-											{else}
-												<div class="col-lg-6">
-													<div class="form-group clearfix">
-														<div class="heading_label" for="{$setting->variable}">{$setting->name|escape}</div>
-														<div class="">
-															<input name="payment_settings[{$setting->variable}]" class="form-control" type="text" value="{$payment_settings[$setting->variable]|escape}" id="{$setting->variable}">
+													{else}
+														<div class="col-lg-6">
+															<div class="mb-3">
+																<div class="form-label" for="{$setting->variable}">{$setting->name|escape}</div>
+																<input name="payment_settings[{$setting->variable}]" class="form-control" type="text" value="{$payment_settings[$setting->variable]|escape}" id="{$setting->variable}">
+															</div>
 														</div>
-													</div>
-												</div>
-											{/if}
+													{/if}
+												{/foreach}
+											</div>
 										{/foreach}
 									</div>
-								{/foreach}
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<div class="row">
-		<div class="col-lg-12 col-md-12">
-			<div class="boxed fn_toggle_wrap">
-				<div class="heading_box">
-					{$btr->payment_method_shipping|escape}
-					<div class="toggle_arrow_wrap fn_toggle_card text-primary">
-						<a class="btn-minimize" href="javascript:;"><i class="fn_icon_arrow icon-chevron-down"></i></a>
-					</div>
-				</div>
-				<div class="toggle_body_wrap on fn_card">
-					<div class="row wrap_payment_item">
-						{foreach $deliveries as $delivery}
-							<div class="col-lg-4 col-md-4 col-sm-12">
-								<div class="payment_item">
-									<label class="form-check {if in_array($delivery->id, $payment_deliveries)}active_payment{/if}">
-										<input class="form-check-input" value="{$delivery->id}" type="checkbox" name="payment_deliveries[]" {if in_array($delivery->id, $payment_deliveries)}checked{/if}>
-										<span class="form-check-label payment_name_wrap">{$delivery->name|escape}</span>
-									</label>
 								</div>
 							</div>
-						{/foreach}
+						</div>
 					</div>
 				</div>
 			</div>
@@ -202,27 +165,64 @@
 	</div>
 
 	<div class="row">
-		<div class="col-lg-12 col-md-12">
-			<div class="boxed match fn_toggle_wrap tabs">
-				<div class="heading_box">
-					{$btr->payment_method_description|escape}
-					<div class="toggle_arrow_wrap fn_toggle_card text-primary">
-						<a class="btn-minimize" href="javascript:;"><i class="fn_icon_arrow icon-chevron-down"></i></a>
+		<div class="col-12">
+			<div class="card">
+				<div class="card-header">
+					<div class="card-actions float-end">
+						<div class="d-block d-lg-none position-relative collapse-icon">
+							<a href="javascript:;" class="collapse-chevron">
+								<i class="align-middle" data-feather="chevron-up"></i>
+							</a>
+						</div>
 					</div>
+					<h5 class="card-title mb-0">{$btr->payment_method_shipping|escape}</h5>
 				</div>
-				<div class="toggle_body_wrap on fn_card">
-					<div class="tab_container">
-						<div id="tab1" class="tab">
-							<textarea name="description" class="editor_small">{$payment_method->description|escape}</textarea>
+				<div class="collapse-card">
+					<div class="card-body">
+						<div class="row">
+							{foreach $deliveries as $delivery}
+								<div class="col-lg-3 col-md-4 col-sm-12 my-2">
+									<div class="d-flex align-items-center">
+										<div class="form-check">
+											<input class="form-check-input me-2" id="payment-deliveries-{$delivery->id}" value="{$delivery->id}" type="checkbox" name="payment_deliveries[]" {if in_array($delivery->id, $payment_deliveries)}checked{/if}>
+										</div>
+										<label class="form-check-label" for="payment-deliveries-{$delivery->id}">{$delivery->name|escape}</label>
+									</div>
+								</div>
+							{/foreach}
 						</div>
 					</div>
 				</div>
-				<div class="row">
-					<div class="col-lg-12 col-md-12 mt-1">
-						<button type="submit" class="btn btn_small btn-primary float-md-right">
-							{include file='svg_icon.tpl' svgId='checked'}
-							<span>{$btr->general_apply|escape}</span>
-						</button>
+			</div>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-header">
+					<div class="card-actions float-end">
+						<div class="d-block d-lg-none position-relative collapse-icon">
+							<a href="javascript:;" class="collapse-chevron">
+								<i class="align-middle" data-feather="chevron-up"></i>
+							</a>
+						</div>
+					</div>
+					<h5 class="card-title mb-0">{$btr->global_description|escape}</h5>
+				</div>
+				<div class="collapse-card">
+					<div class="card-body">
+						<textarea name="description" id="js-editor" class="editor-small js-editor-class">{$payment_method->description|escape}</textarea>
+						<div class="row">
+							<div class="col-12">
+								<div class="d-grid d-sm-block mt-3">
+									<button type="submit" class="btn btn-primary float-end">
+										<i class="align-middle" data-feather="check"></i>
+										{$btr->global_apply|escape}
+									</button>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -230,18 +230,18 @@
 	</div>
 </form>
 
-{* We connect Tiny MCE *}
-{include file='tinymce_init_two.tpl'}
-{* On document load *}
+{* TinyMCE *}
+{include file='tinymce_init.tpl'}
+
 {literal}
 	<script>
 		$(function() {
-			$('div.fn_module_settings').filter(':hidden').find("input, select, textarea").attr("disabled", true);
+			$('div.js-module-settings').filter(':hidden').find("input, select, textarea").attr("disabled", true);
 
 			$('select[name=module]').on('change', function() {
-				$('div.fn_module_settings').hide().find("input, select, textarea").attr("disabled", true);
-				$('div.fn_module_settings[module=' + $(this).val() + ']').show().find("input, select, textarea").attr("disabled", false);
-				$('div.fn_module_settings[module=' + $(this).val() + ']').find('select').selectpicker('refresh');
+				$('div.js-module-settings').hide().find("input, select, textarea").attr("disabled", true);
+				$('div.js-module-settings[module=' + $(this).val() + ']').show().find("input, select, textarea").attr("disabled", false);
+				$('div.js-module-settings[module=' + $(this).val() + ']').find('select').selectpicker('refresh');
 			});
 		});
 	</script>

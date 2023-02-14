@@ -1,72 +1,58 @@
-{$meta_title=$btr->stats_stats scope=global}
+{$meta_title=$btr->global_stats scope=global}
 
-{* Page title *}
-<div class="row">
-	<div class="col-lg-7 col-md-7">
-		<div class="wrap_heading">
-			<div class="box_heading heading_page">
-				{$btr->stats_stats|escape}
+<h1 class="mb-3">
+	{$btr->global_stats|escape}
+</h1>
+
+<div class="card">
+	<div class="card-header d-block d-lg-none">
+		<div class="card-actions float-end">
+			<div class="position-relative collapse-icon">
+				<a href="javascript:;" class="collapse-chevron">
+					<i class="align-middle" data-feather="chevron-down"></i>
+				</a>
 			</div>
 		</div>
+		<h5 class="card-title mb-0">{$btr->global_filter|escape}</h5>
 	</div>
-</div>
-
-{* Main page form *}
-<div class="boxed fn_toggle_wrap">
-	<div class="row">
-		<div class="col-lg-12 col-md-12">
-			<div class="fn_toggle_wrap">
-				<div class="heading_box visible_md">
-					{$btr->general_filter|escape}
-					<div class="toggle_arrow_wrap fn_toggle_card text-primary">
-						<a class="btn-minimize" href="javascript:;"><i class="fn_icon_arrow icon-chevron-down"></i></a>
-					</div>
-				</div>
-				<div class="boxed_sorting toggle_body_wrap off fn_card">
-					<div class="row">
-						<div class="col-md-11 col-lg-11 col-xl-7 col-sm-12 mb-1">
-							{* Filter block *}
-							<div class="date">
-								<form class="date_filter row" method="get">
-									<input type="hidden" name="module" value="StatsAdmin">
-									<input type="hidden" name="date_filter" value="">
-
-									<div class="col-md-5 col-lg-5 pr-0 pl-0">
-										<div class="input-group mobile_input-group">
-											<span class="input-group-addon-date">{$btr->general_from|escape}</span>
-											<input type="text" class="fn_from_date form-control" name="date_from" value="{$date_from}" autocomplete="off">
-											<div class="input-group-addon">
-												{include file='svg_icon.tpl' svgId='calendar'}
-											</div>
-										</div>
-									</div>
-									<div class="col-md-5 col-lg-5 pr-0 pl-0">
-										<div class="input-group mobile_input-group">
-											<span class=" input-group-addon-date">{$btr->general_to|escape}</span>
-											<input type="text" class="fn_to_date form-control" name="date_to" value="{$date_to}" autocomplete="off">
-											<div class="input-group-addon">
-												{include file='svg_icon.tpl' svgId='calendar'}
-											</div>
-										</div>
-									</div>
-									<div class="col-md-2 col-lg-2 pr-0 mobile_text_right">
-										<button class="btn btn-primary" type="submit">{$btr->general_apply|escape}</button>
-									</div>
-								</form>
+	<div class="collapse-card boxed-sorting">
+		<div class="card-body">
+			<div class="row">
+				<div class="col-12">
+					<form method="get">
+						<input type="hidden" name="module" value="StatsAdmin">
+						<input type="hidden" name="date_filter" value="">
+						<div class="row">
+							<div class="col-sm-12 col-md-4 col-lg-4">
+								<div class="input-group mb-3">
+									<span class="input-group-text">{$btr->global_from|escape}</span>
+									<input type="text" class="flatpickr form-control" name="date_from" value="{$date_from}" autocomplete="off">
+									<span class="input-group-text"><i class="align-middle" data-feather="calendar"></i></span>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-4 col-lg-4">
+								<div class="input-group mb-3">
+									<span class="input-group-text">{$btr->global_to|escape}</span>
+									<input type="text" class="flatpickr form-control" name="date_to" value="{$date_to}" autocomplete="off">
+									<span class="input-group-text"><i class="align-middle" data-feather="calendar"></i></span>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-4 col-lg-4 mb-3">
+								<button class="btn btn-primary" type="submit"><i class="align-middle" data-feather="check"></i> {$btr->global_apply|escape}</button>
 							</div>
 						</div>
-					</div>
+					</form>
 					<div class="row">
-						<div class="col-md-3 col-lg-3 col-sm-12">
+						<div class="col-md-3 col-lg-3 col-sm-12 mb-3 mb-md-0">
 							<select class="selectpicker" data-live-search="true" data-size="10" onchange="location = this.value;">
 								<option {if !$smarty.get.status}selected{/if} value="{url status=null}">{$btr->reportstats_all_statuses|escape}</option>
-								<option value="{url module=StatsAdmin status=1 keyword=null id=null page=null label=null from_date=null to_date=null}" {if $status==1}selected{/if}>{$btr->general_new_order|escape}</option>
-								<option value="{url module=StatsAdmin status=2 keyword=null id=null page=null label=null from_date=null to_date=null}" {if $status==2}selected{/if}>{$btr->general_accepted_order|escape}</option>
-								<option value="{url module=StatsAdmin status=3 keyword=null id=null page=null label=null from_date=null to_date=null}" {if $status==3}selected{/if}>{$btr->general_closed_order|escape}</option>
-								<option value="{url module=StatsAdmin status=4 keyword=null id=null page=null label=null from_date=null to_date=null}" {if $status==4}selected{/if}>{$btr->general_canceled_order|escape}</option>
+								<option value="{url module=StatsAdmin status=1 keyword=null id=null page=null label=null from_date=null to_date=null}" {if $status==1}selected{/if}>{$btr->global_new_order|escape}</option>
+								<option value="{url module=StatsAdmin status=2 keyword=null id=null page=null label=null from_date=null to_date=null}" {if $status==2}selected{/if}>{$btr->global_accepted_order|escape}</option>
+								<option value="{url module=StatsAdmin status=3 keyword=null id=null page=null label=null from_date=null to_date=null}" {if $status==3}selected{/if}>{$btr->global_closed_order|escape}</option>
+								<option value="{url module=StatsAdmin status=4 keyword=null id=null page=null label=null from_date=null to_date=null}" {if $status==4}selected{/if}>{$btr->global_canceled_order|escape}</option>
 							</select>
 						</div>
-						<div class="col-md-3 col-lg-3 col-sm-12">
+						<div class="col-md-3 col-lg-3 col-sm-12 mb-3 mb-md-0">
 							<select class="selectpicker" data-live-search="true" data-size="10" onchange="location = this.value;">
 								<option {if !$label}selected{/if} value="{url label=null}">{$btr->reportstats_all_orders|escape}</option>
 								{foreach $labels as $l}
@@ -74,8 +60,8 @@
 								{/foreach}
 							</select>
 						</div>
-						<div class="col-lg-3 col-md-3 col-sm 12">
-							<select onchange="location = this.value;" data-live-search="true" data-size="10" class="selectpicker">
+						<div class="col-lg-3 col-md-3 col-sm-12 mb-3 mb-md-0">
+							<select onchange="location = this.value;" data-live-search="true" data-size="15" class="selectpicker">
 								<option {if $date_filter == all}selected{/if} value="{url date_filter=all date_to=null date_from=null filter_check=null}">{$btr->reportstats_all_orders|escape}</option>
 								<option {if $date_filter == today}selected{/if} value="{url date_filter=today date_to=null date_from=null filter_check=null}">{$btr->reportstats_today|escape}</option>
 								<option {if $date_filter == this_week}selected{/if} value="{url date_filter=this_week date_to=null date_from=null filter_check=null}">{$btr->reportstats_this_week|escape}</option>
@@ -95,116 +81,176 @@
 			</div>
 		</div>
 	</div>
-
-	<div class="row">
-		<div class="col-lg-12 col-md-12">
-			<div class="nested_boxed fn_toggle_wrap">
-				<div class="toggle_body_wrap fn_card on">
-					<div id="containerAmount" class="chart"></div>
+</div>
+<div class="row gx-2">
+	<div class="col-12 col-lg-6">
+		<div class="card">
+			<div class="card-header">
+				<div class="card-actions float-end">
+					<div class="d-block d-lg-none position-relative collapse-icon">
+						<a href="javascript:;" class="collapse-chevron">
+							<i class="align-middle" data-feather="chevron-up"></i>
+						</a>
+					</div>
 				</div>
+				<h5 class="card-title mb-0">{$btr->stat_orders_amount|escape}</h5>
 			</div>
-		</div>
-		<div class="col-lg-12 col-md-12 pr-0">
-			<div class="nested_boxed fn_toggle_wrap">
-				<div class="toggle_body_wrap fn_card on">
-					<div id="containerOrders" class="chart"></div>
+			<div class="collapse-card">
+				<div class="card-body">
+					<div id="containerAmount" class="chart chart-xl"></div>
 				</div>
 			</div>
 		</div>
 	</div>
-
+	<div class="col-12 col-lg-6">
+		<div class="card">
+			<div class="card-header">
+				<div class="card-actions float-end">
+					<div class="d-block d-lg-none position-relative collapse-icon">
+						<a href="javascript:;" class="collapse-chevron">
+							<i class="align-middle" data-feather="chevron-up"></i>
+						</a>
+					</div>
+				</div>
+				<h5 class="card-title mb-0">{$btr->stat_orders_number|escape}</h5>
+			</div>
+			<div class="collapse-card">
+				<div class="card-body">
+					<div id="containerOrders" class="chart chart-xl"></div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
-
-{* On document load *}
-
-{* Datetimepicker *}
-{css id="datetimepicker" include=[
-"turbo/design/js/datetimepicker/jquery.datetimepicker.css"
-]}{/css}
-{stylesheet minify=true}
-
-{js id="datetimepicker" priority=99 include=[
-"turbo/design/js/datetimepicker/jquery.datetimepicker.js"
-]}{/js}
-{javascript minify=true}
 
 {* Loader *}
 {js id="loader" priority=99 include=[
-"turbo/design/js/loader.js"
-]}{/js}
+	"turbo/design/js/loader.js"
+	]}{/js}
 {javascript minify=true}
 
 {literal}
 	<script>
-		$('.fn_from_date, .fn_to_date').datetimepicker({
-			lang: '{/literal}{$settings->lang}{literal}',
-			timepicker: false,
-			format: 'd.m.Y'
+	$(window).on("load", function() {
+		// Flatpickr
+		flatpickr(".flatpickr", {
+			dateFormat: "d.m.Y",
+			locale: "{/literal}{if $settings->lang =='ua'}uk{else}{$settings->lang}{/if}{literal}"
 		});
+	});
 	</script>
 {/literal}
 
-{literal}
-	<script>
-		google.load("visualization", "1", {packages:["corechart"]});
+{if $settings->admin_theme == "dark"}
+	{literal}
+		<script>
+			google.load("visualization", "1", {packages:["corechart"]});
 
-		// Statistics on the amount of orders
-		google.setOnLoadCallback(drawChart);
+			// Statistics on the amount of orders
+			google.setOnLoadCallback(drawChart);
 
-		function drawChart() {
-			var serie = [];
-			serie.push([{/literal}'{$btr->general_date|escape}', '{$btr->general_new_order|escape}, {$currency->sign|escape}', '{$btr->general_accepted_order|escape}, {$currency->sign|escape}', '{$btr->general_closed_order|escape}, {$currency->sign|escape}', '{$btr->general_canceled_order|escape}, {$currency->sign|escape}'{literal}]); 
-		{/literal}
-		{foreach $stat as $s}
-			serie.push(['{$s.title}', {$s.new}, {$s.confirm}, {$s.complite}, {$s.delete}]);
-		{/foreach}
-		{literal}
-			var options = {
-				legend: {position: "bottom", textStyle: {fontName: 'SF Pro Display', color: '#495057'}},
-				colors: ['#3b82ec', '#f0ad4e', '#4bbf73', '#d9534f'],
-				bar: {groupWidth: '90%'},
-				hAxis: {textStyle: {fontName: 'SF Pro Display', color: '#495057'}},
-				vAxis: {minValue: 0, textStyle: {fontName: 'SF Pro Display', fontSize: 11, color: '#495057'}}, 
-				tooltip: {textStyle: {fontName: 'SF Pro Display', color: '#495057'}},
-				backgroundColor: '#fff',
-				title: '{/literal}{$btr->stat_orders_amount|escape}{literal}',
-				isStacked: true,
-				titleTextStyle: {fontName: 'SF Pro Display', fontSize: '18', bold: true, color: '#495057'}
-			};
-			var chart = new google.visualization.ColumnChart(document.getElementById('containerAmount'));
-			chart.draw(google.visualization.arrayToDataTable(serie), options);
-		}
+			function drawChart() {
+				var serie = [];
+				serie.push([{/literal}'{$btr->global_date|escape}', '{$btr->global_new_order|escape}, {$currency->sign|escape}', '{$btr->global_accepted_order|escape}, {$currency->sign|escape}', '{$btr->global_closed_order|escape}, {$currency->sign|escape}', '{$btr->global_canceled_order|escape}, {$currency->sign|escape}'{literal}]); 
+			{/literal}
+			{foreach $stat as $s}
+				serie.push(['{$s.title}', {$s.new}, {$s.confirm}, {$s.complite}, {$s.delete}]);
+			{/foreach}
+			{literal}
+				var options = {
+					legend: {position: "bottom", textStyle: {fontName: 'Inter', color: '#a7abb1'}},
+					bar: {groupWidth: '90%'},
+					colors: ['#3b7ddd', '#fcb92c', '#1cbb8c', '#dc3545'],
+					hAxis: {textStyle: {fontName: 'Inter', color: '#a7abb1'}},
+					vAxis: {minValue: 0, textStyle: {fontName: 'Inter', fontSize: 11, color: '#a7abb1'}, gridlines: {color: '#19222d'}, baselineColor:'#19222d'},
+					tooltip: {textStyle: {fontName: 'Inter', color: '#6c757d'}},
+					backgroundColor: '#222e3c',
+					isStacked: true
+				};
+				var chart = new google.visualization.ColumnChart(document.getElementById('containerAmount'));
+				chart.draw(google.visualization.arrayToDataTable(serie), options);
+			}
 
-		// Statistics on the number of orders
-		google.setOnLoadCallback(drawChartOrders);
+			// Statistics on the number of orders
+			google.setOnLoadCallback(drawChartOrders);
 
-		function drawChartOrders() {
-			var serie = [];
-			serie.push([{/literal}'{$btr->general_date|escape}', '{$btr->general_new_order|escape}', '{$btr->general_accepted_order|escape}', '{$btr->general_closed_order|escape}', '{$btr->general_canceled_order|escape}'{literal}]); 
-		{/literal}
-		{foreach $stat_orders as $s}
-			serie.push(['{$s.title}', {$s.new}, {$s.confirm}, {$s.complite}, {$s.delete}]); 
-		{/foreach}
-		{literal}
-			var options = {
-				legend: {position: "bottom", textStyle: {fontName: 'SF Pro Display', color: '#495057'}},
-				colors: ['#3b82ec', '#f0ad4e', '#4bbf73', '#d9534f'],
-				bar: {groupWidth: '90%'},
-				hAxis: {textStyle: {fontName: 'SF Pro Display', color: '#495057'}}, 
-				vAxis: {minValue: 0, textStyle: {fontName: 'SF Pro Display', fontSize: 11, color: '#495057'}},
-				tooltip: {textStyle: {fontName: 'SF Pro Display', color: '#495057'}},
-				backgroundColor: '#fff',
-				title: '{/literal}{$btr->stat_orders_number|escape}{literal}',
-				isStacked: true,
-				titleTextStyle: {fontName: 'SF Pro Display', fontSize: '18', bold: true, color: '#495057'}
-			};
-			var chart = new google.visualization.ColumnChart(document.getElementById('containerOrders'));
-			chart.draw(google.visualization.arrayToDataTable(serie), options);
-		}
+			function drawChartOrders() {
+				var serie = [];
+				serie.push([{/literal}'{$btr->global_date|escape}', '{$btr->global_new_order|escape}', '{$btr->global_accepted_order|escape}', '{$btr->global_closed_order|escape}', '{$btr->global_canceled_order|escape}'{literal}]); 
+			{/literal}
+			{foreach $stat_orders as $s}
+				serie.push(['{$s.title}', {$s.new}, {$s.confirm}, {$s.complite}, {$s.delete}]); 
+			{/foreach}
+			{literal}
+				var options = {
+					legend: {position: "bottom", textStyle: {fontName: 'Inter', color: '#a7abb1'}},
+					bar: {groupWidth: '90%'},
+					colors: ['#3b7ddd', '#fcb92c', '#1cbb8c', '#dc3545'],
+					hAxis: {textStyle: {fontName: 'Inter', color: '#a7abb1'}},
+					vAxis: {minValue: 0, textStyle: {fontName: 'Inter', fontSize: 11, color: '#a7abb1'}, gridlines: {color: '#19222d'}, baselineColor:'#19222d'},
+					tooltip: {textStyle: {fontName: 'Inter', color: '#6c757d'}},
+					backgroundColor: '#222e3c',
+					isStacked: true
+				};
+				var chart = new google.visualization.ColumnChart(document.getElementById('containerOrders'));
+				chart.draw(google.visualization.arrayToDataTable(serie), options);
+			}
+		</script>
+	{/literal}
+{else}
+	{literal}
+		<script>
+			google.load("visualization", "1", {packages:["corechart"]});
 
-		$(window).resize(function() {
-			drawChartOrders();
-			drawChart();
-		});
-	</script>
-{/literal}
+			// Statistics on the amount of orders
+			google.setOnLoadCallback(drawChart);
+
+			function drawChart() {
+				var serie = [];
+				serie.push([{/literal}'{$btr->global_date|escape}', '{$btr->global_new_order|escape}, {$currency->sign|escape}', '{$btr->global_accepted_order|escape}, {$currency->sign|escape}', '{$btr->global_closed_order|escape}, {$currency->sign|escape}', '{$btr->global_canceled_order|escape}, {$currency->sign|escape}'{literal}]); 
+			{/literal}
+			{foreach $stat as $s}
+				serie.push(['{$s.title}', {$s.new}, {$s.confirm}, {$s.complite}, {$s.delete}]);
+			{/foreach}
+			{literal}
+				var options = {
+					legend: { position: "bottom", textStyle: {fontName: 'Inter', color: '#6c757d'}},
+					bar: {groupWidth: '90%'},
+					colors: ['#3b7ddd', '#fcb92c', '#1cbb8c', '#dc3545'],
+					hAxis: {textStyle: {fontName: 'Inter', color: '#6c757d'}},
+					vAxis: {minValue: 0, textStyle: {fontName: 'Inter', fontSize: 11, color: '#6c757d'}},
+					tooltip: {textStyle: {fontName: 'Inter', color: '#6c757d'}},
+					backgroundColor: '#fff',
+					isStacked: true
+				};
+				var chart = new google.visualization.ColumnChart(document.getElementById('containerAmount'));
+				chart.draw(google.visualization.arrayToDataTable(serie), options);
+			}
+
+			// Statistics on the number of orders
+			google.setOnLoadCallback(drawChartOrders);
+
+			function drawChartOrders() {
+				var serie = [];
+				serie.push([{/literal}'{$btr->global_date|escape}', '{$btr->global_new_order|escape}', '{$btr->global_accepted_order|escape}', '{$btr->global_closed_order|escape}', '{$btr->global_canceled_order|escape}'{literal}]); 
+			{/literal}
+			{foreach $stat_orders as $s}
+				serie.push(['{$s.title}', {$s.new}, {$s.confirm}, {$s.complite}, {$s.delete}]); 
+			{/foreach}
+			{literal}
+				var options = {
+					legend: { position: "bottom", textStyle: {fontName: 'Inter', color: '#6c757d'}},
+					bar: {groupWidth: '90%'},
+					colors: ['#3b7ddd', '#fcb92c', '#1cbb8c', '#dc3545'],
+					hAxis: {textStyle: {fontName: 'Inter', color: '#6c757d'}},
+					vAxis: {minValue: 0, textStyle: {fontName: 'Inter', fontSize: 11, color: '#6c757d'}},
+					tooltip: {textStyle: {fontName: 'Inter', color: '#6c757d'}},
+					backgroundColor: '#fff',
+					isStacked: true
+				};
+				var chart = new google.visualization.ColumnChart(document.getElementById('containerOrders'));
+				chart.draw(google.visualization.arrayToDataTable(serie), options);
+			}
+		</script>
+	{/literal}
+{/if}

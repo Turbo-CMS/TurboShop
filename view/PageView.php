@@ -1,15 +1,5 @@
 <?php
 
-/**
- * Turbo CMS
- *
- * @author	Turbo CMS
- * @link	https://turbo-cms.com
- *
- * This class uses the template page.tpl
- *
- */
-
 require_once('View.php');
 
 class PageView extends View

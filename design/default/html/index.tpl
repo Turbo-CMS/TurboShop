@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {* General Page *}
-<html {if $language->label}lang="{$language->label|escape}"{/if}>
+<html {if $language->label}lang="{$language->label|escape}"{/if}  {if $smarty.cookies.mode == 'mode'}data-bs-theme="dark"{/if}>
 
 <head>
 	<base href="{$config->root_url}/">
@@ -140,19 +140,18 @@
 	{* Styles *}
 	{if $smarty.cookies.mode == 'mode'}
 		{css id="styles" include=[
-		"design/{$settings->theme|escape}/css/bootstrap-dark.min.css",
 		"design/{$settings->theme|escape}/css/style-dark.css"
 		]}{/css}
 		{stylesheet minify=true}
 	{else}
 		{css id="styles" include=[
-		"design/{$settings->theme|escape}/css/bootstrap.min.css",
 		"design/{$settings->theme|escape}/css/style-light.css"
 		]}{/css}
 		{stylesheet minify=true}
 	{/if}
 
 	{css id="main" include=[
+	"design/{$settings->theme|escape}/css/bootstrap.min.css",
 	"design/{$settings->theme|escape}/css/style.css",
 	"design/{$settings->theme|escape}/css/fontawesome-all.min.css",
 	"design/{$settings->theme|escape}/css/flag-icon.min.css",
@@ -281,7 +280,7 @@
 	<!-- Header -->
 	<header>
 		<!-- Navigation -->
-		<nav itemscope itemtype="https://schema.org/SiteNavigationElement" class="navbar navbar-expand-lg {if $smarty.cookies.mode == 'mode'}navbar-dark bg-dark{else}navbar-light bg-light{/if} fixed-top">
+		<nav itemscope itemtype="https://schema.org/SiteNavigationElement" class="navbar navbar-expand-lg {if $smarty.cookies.mode == 'mode'}navbar-dark bg-body-tertiary{else}navbar-light bg-light{/if} fixed-top">
 			<div class="container">
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu" aria-controls="navbarMenu" aria-expanded="false" aria-label="Menu">
 					<span class="navbar-toggler-icon"></span>
@@ -692,11 +691,7 @@
 			<div class="row d-flex align-items-center">
 				<div class="col-md-4 col-lg-4">
 					<!-- Copyright -->
-					<p class="text-center text-md-start text-white-50">© <span itemprop="copyrightYear">{$smarty.now|date_format:"Y"}</span>
-						<a class="text-decoration-none" href="https://turbo-cms.com">
-							<strong>Turbo CMS</strong>
-						</a>
-					</p>
+					<p class="text-center text-md-start text-white-50">© <span itemprop="copyrightYear">{$smarty.now|date_format:"Y"}</span> <strong>TurboCMS</strong></p>
 				</div>
 				<!-- Made -->
 				<div class="col-md-4 col-lg-4">

@@ -4,126 +4,119 @@
 	{$meta_title = $btr->translation_new scope=global}
 {/if}
 
-<div class="row">
-	<div class="col-lg-6 col-md-6">
-		{if !$translation->id}
-			<div class="heading_page">{$btr->translation_add|escape}{if $settings->admin_theme} {$btr->theme_theme} {$settings->admin_theme|escape}{/if}</div>
-		{else}
-			<div class="heading_page">{$translation->label|escape}{if $settings->admin_theme} {$btr->theme_theme} {$settings->admin_theme|escape}{/if}</div>
-		{/if}
-	</div>
-	<div class="col-lg-4 col-md-3 text-xs-right float-xs-right"></div>
-</div>
+<h1 class="mb-3">
+	{if !$translation->id}
+		{$btr->translation_add|escape}{if $settings->admin_theme} {$btr->global_theme} {$settings->admin_theme|escape}{/if}
+	{else}
+		{$translation->label|escape}{if $settings->admin_theme} {$btr->global_theme} {$settings->admin_theme|escape}{/if}
+	{/if}
+</h1>
 
 {if $locked_theme}
 	<div class="row">
-		<div class="col-lg-12 col-md-12 col-sm-12">
-			<div class="boxed boxed_warning">
-				<div>
-					{$btr->general_protected|escape}
+		<div class="col-12">
+			<div class="alert alert-danger alert-dismissible fade show" role="alert">
+				<div class="alert-message">
+					{$btr->global_protected|escape}
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>
 			</div>
 		</div>
 	</div>
 {/if}
 
-{*Output successful messages*}
 {if $message_success}
 	<div class="row">
-		<div class="col-lg-12 col-md-12 col-sm-12">
-			<div class="boxed boxed_success">
-				<div class="heading_box">
-					<span class="text">
-						{if $message_success == 'added'}
-							{$btr->translation_added|escape}
-						{elseif $message_success == 'updated'}
-							{$btr->translation_updated|escape}
-						{/if}
-					</span>
-					{if $smarty.get.return}
-						<a class="btn btn_return float-xs-right" href="{url module=TranslationsAdmin id=null}">
-							{include file='svg_icon.tpl' svgId='return'}
-							<span>{$btr->general_back|escape}</span>
-						</a>
+		<div class="col-12">
+			<div class="alert alert-success alert-dismissible fade show" role="alert">
+				<div class="alert-message">
+					{if $message_success == 'added'}
+						{$btr->translation_added|escape}
+					{elseif $message_success == 'updated'}
+						{$btr->translation_updated|escape}
 					{/if}
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>
 			</div>
 		</div>
 	</div>
 {/if}
 
-{*Error output*}
 {if $message_error}
 	<div class="row">
-		<div class="col-lg-12 col-md-12 col-sm-12">
-			<div class="boxed boxed_warning">
-				<div class="heading_box">
+		<div class="col-12">
+			<div class="alert alert-danger alert-dismissible fade show" role="alert">
+				<div class="alert-message">
 					{if $message_error == 'label_empty'}{$btr->translation_empty|escape}{/if}
 					{if $message_error == 'label_exists'}{$btr->translation_used|escape}{/if}
 					{if $message_error == 'label_is_class'}{$btr->translation_not_allowed|escape}{/if}
-					{if $smarty.get.return}
-						<a class="btn btn_return float-xs-right" href="{url module=TranslationsAdmin id=null}">
-							{include file='svg_icon.tpl' svgId='return'}
-							<span>{$btr->general_back|escape}</span>
-						</a>
-					{/if}
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>
 			</div>
 		</div>
 	</div>
 {/if}
 
-
-{*Main page form*}
-<form method="post" enctype="multipart/form-data">
-	<input type="hidden" name="session_id" value="{$smarty.session.id}">
-	<input name="id" type="hidden" value="{$translation->id}">
-
-	<div class="row">
-		<div class="col-lg-12 ">
-			<div class="boxed match_matchHeight_true">
-				<div class="row">
-					{*Name of site element*}
-					<div class="col-lg-12 col-md-12">
-						<div class="heading_label">
-							{$btr->translation_name|escape}
-						</div>
-						<div class="form-group">
-							<input name="label" class="form-control" type="text" value="{$translation->label}" {if $locked_theme}readonly=""{/if} />
-						</div>
+<div class="row">
+	<div class="col-lg-12">
+		<div class="card">
+			<div class="card-header">
+				<div class="card-actions float-end">
+					<div class="d-block d-lg-none position-relative collapse-icon">
+						<a href="javascript:;" class="collapse-chevron">
+							<i class="align-middle" data-feather="chevron-up"></i>
+						</a>
 					</div>
 				</div>
-				<div class="row">
-					{foreach $languages as $lang}
-						<div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 mb-h">
-							<div class="heading_label mb-h">
-								<div class="translation_icon">
-									<img src="design/flags/4x3/{$lang->label}.svg">
+				<h5 class="card-title mb-0">{$btr->global_translation|escape}</h5>
+			</div>
+			<div class="collapse-card">
+				<div class="card-body">
+					<form method="post" enctype="multipart/form-data">
+						<input type="hidden" name="session_id" value="{$smarty.session.id}">
+						<input name="id" type="hidden" value="{$translation->id}">
+						<div class="row">
+							<div class="col-12">
+								<div class="mb-3">
+									<div class="form-label">{$btr->translation_name|escape}</div>
+									<input name="label" class="form-control" type="text" value="{$translation->label}" {if $locked_theme}readonly="" {/if} />
 								</div>
-								{$lang->name|escape}
-							</div>
-							<div class="">
-								<textarea name="lang_{$lang->label}" class="form-control turbo_textarea" {if $locked_theme}readonly=""{/if}>{$translation->lang_{$lang->label}}</textarea>
 							</div>
 						</div>
-					{/foreach}
+						<div class="row">
+							{foreach $languages as $lang}
+								<div class="col-lg-4 col-md-4 col-sm-6 col-12">
+									<div class="mb-3">
+										<div class="form-label">
+											<div class="translation-icon mb-2">
+												<img src="design/flags/4x3/{$lang->label}.svg">
+											</div>
+											{$lang->name|escape}
+										</div>
+										<textarea name="lang_{$lang->label}" class="form-control" rows="5" {if $locked_theme}readonly="" {/if}>{$translation->lang_{$lang->label}}</textarea>
+									</div>
+								</div>
+							{/foreach}
+						</div>
+						{if !$locked_theme}
+							<div class="row">
+								<div class="col-12">
+									<div class="d-grid d-sm-block">
+										<button type="submit" class="btn btn-primary float-end">
+											<i class="align-middle" data-feather="check"></i>
+											{$btr->global_apply|escape}
+										</button>
+									</div>
+								</div>
+							</div>
+						{/if}
+					</form>
 				</div>
-				{if !$locked_theme}
-					<div class="row">
-						<div class="col-lg-12 col-md-12 mt-1">
-							<button type="submit" class="btn btn_small btn-primary float-md-right">
-								{include file='svg_icon.tpl' svgId='checked'}
-								<span>{$btr->general_apply|escape}</span>
-							</button>
-						</div>
-					</div>
-				{/if}
 			</div>
 		</div>
 	</div>
-</form>
+</div>
 
-{* On document load *}
 {literal}
 	<script>
 		$(function() {
@@ -136,7 +129,6 @@
 				if (($('input[name="label"]').val() == label || $('input[name="label"]').val() == ''))
 					$('input[name="label"]').val(label);
 			});
-
 		});
 
 		function translit(str) {

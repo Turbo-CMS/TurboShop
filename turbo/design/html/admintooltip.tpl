@@ -38,38 +38,38 @@
 			}
 
 			if (id = $(this).attr('data-page')) {
-				tooltipcontent = "<a href='turbo/index.php?module=PageAdmin&id="+id+"&return="+from+lang+"' class=admin_tooltip_edit>{/literal}{$btr->admintooltip_edit_page}{literal}</a>";
+				tooltipcontent = "<a href='turbo/index.php?module=PageAdmin&id="+id+"&return="+from+lang+"' class=admin_tooltip_edit>{/literal}{$btr->global_edit}{literal}</a>";
 				tooltipcontent += "<a href='turbo/index.php?module=PageAdmin&return="+from+lang+"' class=admin_tooltip_add>{/literal}{$btr->admintooltip_add_page}{literal}</a>";
 			}
 
 			if (id = $(this).attr('data-category')) {
-				tooltipcontent = "<a href='turbo/index.php?module=CategoryAdmin&id="+id+"&return="+from+lang+"' class=admin_tooltip_edit>{/literal}{$btr->admintooltip_edit_category}{literal}</a>";
+				tooltipcontent = "<a href='turbo/index.php?module=CategoryAdmin&id="+id+"&return="+from+lang+"' class=admin_tooltip_edit>{/literal}{$btr->global_edit}{literal}</a>";
 				tooltipcontent += "<a href='turbo/index.php?module=ProductAdmin&category_id="+id+"&return="+from+lang+"' class=admin_tooltip_add>{/literal}{$btr->admintooltip_add_product}{literal}</a>";
 			}
 
 			if (id = $(this).attr('data-brand')) {
-				tooltipcontent = "<a href='turbo/index.php?module=BrandAdmin&id="+id+"&return="+from+lang+"' class=admin_tooltip_edit>{/literal}{$btr->admintooltip_edit_brand}{literal}</a>";
+				tooltipcontent = "<a href='turbo/index.php?module=BrandAdmin&id="+id+"&return="+from+lang+"' class=admin_tooltip_edit>{/literal}{$btr->global_edit}{literal}</a>";
 			}
 
 			if (id = $(this).attr('data-product')) {
-				tooltipcontent = "<a href='turbo/index.php?module=ProductAdmin&id="+id+"&return="+from+lang+"' class=admin_tooltip_edit>{/literal}{$btr->admintooltip_edit_product}{literal}</a>";
+				tooltipcontent = "<a href='turbo/index.php?module=ProductAdmin&id="+id+"&return="+from+lang+"' class=admin_tooltip_edit>{/literal}{$btr->global_edit}{literal}</a>";
 			}
 
 			if (id = $(this).attr('data-articles-category')) {
-				tooltipcontent = "<a href='turbo/index.php?module=ArticlesCategoryAdmin&id="+id+"&return="+from+"' class=admin_tooltip_edit>{/literal}{$btr->admintooltip_edit_category}{literal}</a>";
-				tooltipcontent += "<a href='turbo/index.php?module=ArticleAdmin&return="+from+"' class=admin_tooltip_add>{/literal}{$btr->article_add}{literal}</a>";
+				tooltipcontent = "<a href='turbo/index.php?module=ArticlesCategoryAdmin&id="+id+"&return="+from+"' class=admin_tooltip_edit>{/literal}{$btr->global_edit}{literal}</a>";
+				tooltipcontent += "<a href='turbo/index.php?module=ArticleAdmin&return="+from+"' class=admin_tooltip_add>{/literal}{$btr->admintooltip_add_article}{literal}</a>";
 			}
 
 			if (id = $(this).attr('data-article')) {
-				tooltipcontent = "<a href='turbo/index.php?module=ArticleAdmin&id="+id+"&return="+from+"' class=admin_tooltip_edit>{/literal}{$btr->admintooltip_edit_post}{literal}</a>";
+				tooltipcontent = "<a href='turbo/index.php?module=ArticleAdmin&id="+id+"&return="+from+"' class=admin_tooltip_edit>{/literal}{$btr->global_edit}{literal}</a>";
 			}
 
 			if (id = $(this).attr('data-post')) {
-				tooltipcontent = "<a href='turbo/index.php?module=PostAdmin&id="+id+"&return="+from+lang+"' class=admin_tooltip_edit>{/literal}{$btr->admintooltip_edit_post}{literal}</a>";
+				tooltipcontent = "<a href='turbo/index.php?module=PostAdmin&id="+id+"&return="+from+lang+"' class=admin_tooltip_edit>{/literal}{$btr->global_edit}{literal}</a>";
 			}
 
 			if (id = $(this).attr('data-feature')) {
-				tooltipcontent = "<a href='turbo/index.php?module=FeatureAdmin&id="+id+"&return="+from+lang+"' class=admin_tooltip_edit>{/literal}{$btr->admintooltip_edit_feature}{literal}</a>";
+				tooltipcontent = "<a href='turbo/index.php?module=FeatureAdmin&id="+id+"&return="+from+lang+"' class=admin_tooltip_edit>{/literal}{$btr->global_edit}{literal}</a>";
 			}
 
 			$('.tooltipBody').html(tooltipcontent);
@@ -83,12 +83,9 @@
 		}
 
 		function ShowTooltip(i, content) {
-
 			tooltip = document.getElementById('tooltip');
-
 			document.getElementById('tooltipBody').innerHTML = content;
 			tooltip.style.display = 'block';
-
 			var xleft = 0;
 			var xtop = 0;
 			o = i;

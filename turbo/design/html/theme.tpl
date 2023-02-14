@@ -1,30 +1,21 @@
 {if $theme->name}
-	{$meta_title = "`$btr->general_theme` {$theme->name}" scope=global}
+	{$meta_title = "`$btr->global_theme` {$theme->name}" scope=global}
 {/if}
 
-<div class="row">
-	<div class="col-lg-10 col-md-10">
-		<div class="wrap_heading">
-			<div class="box_heading heading_page">
-				{$btr->theme_current|escape} &mdash; {$theme->name}
-			</div>
-			<div class="box_btn_heading">
-				<a class="fn_clone_theme btn btn_small btn-primary" href="/">
-					{include file='svg_icon.tpl' svgId='plus'}
-					<span>{$btr->theme_copy|escape} {$settings->theme}</span>
-				</a>
-			</div>
-		</div>
+<div class="d-md-flex mb-3">
+	<h1 class="d-inline align-middle me-3">{$btr->theme_current|escape} &mdash; {$theme->name}</h1>
+	<div class="d-grid gap-2 d-sm-block mt-2 mt-md-0">
+		<button type="button" class="js-clone-theme btn btn-primary"><i data-feather="plus"></i> {$btr->theme_copy|escape} {$settings->theme}</button>
 	</div>
-	<div class="col-md-2 col-lg-2 col-sm-12 float-xs-right"></div>
 </div>
 
 {if $theme->locked}
 	<div class="row">
-		<div class="col-lg-12 col-md-12 col-sm-12">
-			<div class="boxed boxed_warning">
-				<div class="">
+		<div class="col-12">
+			<div class="alert alert-danger alert-dismissible fade show" role="alert">
+				<div class="alert-message">
 					{$btr->theme_close|escape}
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>
 			</div>
 		</div>
@@ -33,103 +24,88 @@
 
 {if $message_error}
 	<div class="row">
-		<div class="col-lg-12 col-md-12 col-sm-12">
-			<div class="boxed boxed_warning">
-				<div class="heading_box">
+		<div class="col-12">
+			<div class="alert alert-danger alert-dismissible fade show" role="alert">
+				<div class="alert-message">
 					{if $message_error == 'permissions'}
-						{$btr->general_permissionse|escape} {$themes_dir}
+						{$btr->global_permissionse|escape} {$themes_dir}
 					{elseif $message_error == 'name_exists'}
 						{$btr->theme_exists|escape}
 					{else}
 						{$message_error|escape}
 					{/if}
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>
 			</div>
 		</div>
 	</div>
 {/if}
 
-<div class="boxed fn_toggle_wrap">
-	<div class="row">
-		<div class="col-lg-12 col-md-12 col-sm-12">
-			<form method="post" enctype="multipart/form-data">
-				<input type="hidden" name="session_id" value="{$smarty.session.id}">
-				<input type="hidden" name="action">
-				<input type="hidden" name="theme">
-				<div class="row">
-					<div class="col-lg-12 col-md-12 col-sm-12">
-						<div class="heading_box">
-							{$btr->theme_themes|escape}
-							<div class="toggle_arrow_wrap fn_toggle_card text-primary">
-								<a class="btn-minimize" href="javascript:;"><i class="fn_icon_arrow icon-chevron-down"></i></a>
-							</div>
+<form method="post" enctype="multipart/form-data">
+	<input type="hidden" name="session_id" value="{$smarty.session.id}">
+	<input type="hidden" name="action">
+	<input type="hidden" name="theme">
+	<div class="row gx-2">
+		{foreach $themes as $t}
+			<div class="col-12 col-md-6 col-lg-4">
+				<div class="card mh-250px">
+					<div class="card-header px-4 pt-4">
+						<div class="card-actions float-end">
+							{if  !$t->locked}
+								<span class="btn-edit" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_edit|escape}">
+									<i class="js-rename-theme align-middle cursor-pointer me-1" data-feather="edit-2" data-old-name="{$t->name|escape}"></i>
+								</span>
+								<div class="btn-delete float-end js-remove-theme" data-theme-name="{$t->name|escape}" data-bs-toggle="modal" data-bs-target="#js-delete-theme">
+									<span data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
+										<i class="align-middle" data-feather="trash-2"></i>
+									</span>
+								</div>
+							{else}
+								<span class="btn-delete" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->theme_close|escape}">
+									<i class="align-middle" data-feather="lock"></i>
+								</span>
+							{/if}
 						</div>
-						<div class="toggle_body_wrap fn_card on">
-							<div class="row">
-								{foreach $themes as $t}
-									<div class="col-lg-4 col-md-6 col-sm-12">
-										<div class="banner_card">
-											<div class="banner_card_header img_bnr_c_head">
-												<input type="text" class="hidden" name="old_name[]" value="{$t->name|escape}">
-												<div class="form-group col-lg-9 col-md-8 px-0 fn_rename_value hidden mb-0">
-													<input type="text" class="form-control" name="new_name[]" value="{$t->name|escape}">
-												</div>
-												<span class="theme_active_span font-weight-bold">{$t->name|escape|truncate:20:'...'} {if  $t->name == $theme->name}<span class="text_success">- {$btr->theme_current_item|escape}</span>{/if}</span>
-												{if  !$t->locked}
-													<i class="pencil-icon fn_rename_theme rename_theme p-h" data-old_name="{$t->name|escape}"></i>
-													<button data-theme_name="{$t->name|escape}" type="button" class="btn_close float-xs-right fn_remove_theme" data-toggle="modal" data-target="#fn_delete_theme">
-														{include file='svg_icon.tpl' svgId='delete'}
-													</button>
-												{else}
-													<button type="button" class="btn_close float-xs-right fn_remove_theme locked">
-														{include file='svg_icon.tpl' svgId='lock'}
-													</button>
-												{/if}
-											</div>
-											<div class="banner_card_block">
-												<div class="theme_block_image" style="position:relative;">
-													<img class="{if $theme->name != $t->name}gray_filter{/if}" width="" src='{$root_dir}../design/{$t->name}/preview.png'>
-													{if $theme->name != $t->name}
-														<button style="position:absolute; bottom:0px; right:0px;" class="fn_set_theme btn btn_small btn-primary" data-set_name="{$t->name|escape}">
-															{include file='svg_icon.tpl' svgId='checked'}
-															<span>{$btr->general_select|escape}</span>
-														</button>
-													{/if}
-												</div>
-											</div>
-										</div>
-									</div>
-								{/foreach}
-							</div>
+						<input type="text" class="d-none" name="old_name[]" value="{$t->name|escape}">
+						<div class="js-rename-value d-none position-absolute w-auto mt-n2">
+							<input type="text" class="form-control" name="new_name[]" value="{$t->name|escape}">
 						</div>
+						<h5 class="card-title mb-0">{$t->name|escape} {if  $t->name == $theme->name}<span class="text-success">- {$btr->theme_current_item|escape}</span>{/if}</h5>
 					</div>
-					<div class="col-lg-12">
-						<button type="submit" name="save" class="btn btn_small btn-primary fn_chek_all float-md-right ">
-							{include file='svg_icon.tpl' svgId='checked'}
-							<span>{$btr->general_apply|escape}</span>
-						</button>
+					<div class="card-body px-4 pt-2">
+						<div class="text-center">
+							<img class="{if $theme->name != $t->name}gray-filter{/if}" src="{$root_dir}../design/{$t->name}/preview.png" alt="{$t->name|escape}">
+						</div>
+						{if $theme->name != $t->name}
+							<button type="button" class="js-set-theme btn btn-secondary position-absolute bottom-0 end-0 me-3 mb-3" data-set-name="{$t->name|escape}">
+								<i class="align-middle" data-feather="check"></i>
+								{$btr->global_select|escape}
+							</button>
+						{/if}
 					</div>
 				</div>
-			</form>
+			</div>
+		{/foreach}
+		<div class="col-12">
+			<button type="submit" name="save" class="btn btn-primary js-chek-all float-end">
+				<i class="align-middle" data-feather="check"></i>
+				{$btr->global_apply|escape}
+			</button>
 		</div>
 	</div>
-</div>
-
-<div id="fn_delete_theme" class="modal fade show" role="document">
-	<div class="modal-dialog modal-md">
+</form>
+<div class="modal fade" id="js-delete-theme" tabindex="-1" style="display: none;" aria-hidden="true">
+	<div class="modal-dialog modal-sm" role="document">
 		<div class="modal-content">
-			<div class="card-header">
-				<div class="heading_modal">{$btr->index_confirm|escape}</div>
+			<div class="modal-header">
+				<h5 class="modal-title">{$btr->global_confirm|escape}</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
-			<div class="modal-body">
-				<button type="submit" class="btn btn_small btn-success fn_submit_delete mx-h">
-					{include file='svg_icon.tpl' svgId='checked'}
-					<span>{$btr->index_yes|escape}</span>
-				</button>
-				<button type="button" class="btn btn_small btn-danger fn_dismiss_delete mx-h" data-dismiss="modal">
-					{include file='svg_icon.tpl' svgId='close'}
-					<span>{$btr->index_no|escape}</span>
-				</button>
+			<div class="modal-body text-center">
+				<div class="d-grid gap-2 d-sm-block">
+					<button type="submit" class="btn btn-success js-submit-delete me-sm-1"><i class="align-middle" data-feather="check"></i> {$btr->global_yes|escape}</button>
+					<button type="button" class="btn btn-danger js-dismiss-delete" data-bs-dismiss="modal"><i class="align-middle" data-feather="x"></i> {$btr->global_no|escape}</button>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -137,44 +113,43 @@
 
 <script>
 	{literal}
-		$(function() {
+		$(window).on("load", function() {
 
-			$('.fn_rename_theme').on('click', function() {
-				$(this).parent().find('.fn_rename_value').toggleClass('hidden');
-				$(this).prev().toggleClass('hidden');
-				$(this).parent().find('.fn_set_theme').toggleClass('opacity_toggle');
-				$(this).parent().find('.fn_rename_value > input').val($(this).data('old_name'))
+			$('.js-rename-theme').on('click', function() {
+				$(this).closest('.card-header').find('.js-rename-value').toggleClass('d-none');
+				$(this).closest('.card-header').find('.card-title').toggleClass('d-none');
+				$(this).parent().find('.js-set-theme').toggleClass('opacity-toggle');
+				$(this).parent().find('.js-rename-value > input').val($(this).data('old-name'))
 			});
 
-			$('.fn_set_theme').on('click', function() {
+			$('.js-set-theme').on('click', function() {
 				$("input[name=action]").val('set_main_theme');
-				$("input[name=theme]").val($(this).data('set_name'));
+				$("input[name=theme]").val($(this).data('set-name'));
 				$("form").submit();
 			});
 
 			// Clone the current theme
-			$('.fn_clone_theme').on('click', function(e) {
+			$('.js-clone-theme').on('click', function(e) {
 				e.preventDefault();
 				$("input[name=action]").val('clone_theme');
 				$("form").submit();
 			});
 
-			$(".fn_remove_theme").on("click", function() {
+			$(".js-remove-theme").on("click", function() {
 				action = "delete_theme";
-				theme_name = $(this).data("theme_name");
+				theme_name = $(this).data("theme-name");
 			});
 
-			$(".fn_submit_delete").on("click", function() {
+			$(".js-submit-delete").on("click", function() {
 				$("form input[name=action]").val(action);
 				$("form input[name=theme]").val(theme_name);
 				$("form").submit();
 			});
 
-			$(".fn_dismiss_delete").on("click", function() {
+			$(".js-dismiss-delete").on("click", function() {
 				$("form input[name=action]").val("");
 				$("form input[name=theme]").val("");
 			});
-
 		});
 	{/literal}
 </script>

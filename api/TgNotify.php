@@ -1,13 +1,5 @@
 <?php
 
-/**
- * Turbo CMS
- *
- * @author	Turbo CMS
- * @link	https://turbo-cms.com
- *
- */
-
 class TgNotify extends Turbo
 {
 	private function exec_curl_request($handle)

@@ -245,9 +245,9 @@
 		<div class="tab-pane fade" id="comments" role="tabpanel" aria-labelledby="comments-tab">
 			{* Comments *}
 			{if $settings->comments_tree_products == "on"}
-				{include file='comments_tree_products.tpl'}
+				{include file='comments/comments_tree_products.tpl'}
 			{else}
-				{include file='comments_products.tpl'}
+				{include file='comments/comments_products.tpl'}
 			{/if}
 		</div>
 		{if $cms_files}

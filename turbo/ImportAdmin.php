@@ -189,7 +189,10 @@ class ImportAdmin extends Import
 		$source_columns = $this->columns;
 		$this->design->assign('columns_names', array_keys($this->columns_names));
 
-		$this->db->query('SELECT f.name FROM __features f ORDER BY f.position');
+		$lang_id = $this->languages->lang_id();
+		$px = ($lang_id ? 'l' : 'f');
+		$lang_sql = $this->languages->get_query(array('object' => 'feature', 'px' => 'f'));
+		$this->db->query('SELECT ' . $px . '.name FROM __features f ' . $lang_sql->join . ' ORDER BY f.position');
 		$features = $this->db->results('name');
 		$this->design->assign('features', $features);
 
@@ -209,7 +212,7 @@ class ImportAdmin extends Import
 		foreach ($source_columns as &$column) {
 			$c = new stdClass();
 			$c->name = $column;
-			@$c->value = $selected[$c->name];
+			$c->value = $selected[$c->name];
 			$c->is_feature = in_array($c->name, $features);
 			$c->is_exist = in_array($c->name, $internal_columns) || $c->is_feature;
 			$c->is_nf_selected = !$c->is_exist && $c->value == $c->name;

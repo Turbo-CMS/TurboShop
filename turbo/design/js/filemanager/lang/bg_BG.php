@@ -16,7 +16,7 @@ return array(
     'Error_extension' => 'Това файлово разширение не е позволено.',
     'Upload_file' => 'Качете файл',
     'Filters' => 'Папка',
-    'Videos' => 'Video',
+    'Videos' => 'Видео',
     'Music' => 'Музика',
     'New_Folder' => 'Нова папка',
     'Folder_Created' => 'Папката е правилно създадена',

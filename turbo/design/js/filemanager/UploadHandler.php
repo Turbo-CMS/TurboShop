@@ -1475,10 +1475,12 @@ class UploadHandler
             if (!is_dir($targetPathThumb)) {
                 mkdir($targetPathThumb, $this->options['mkdir_mode'], true);
             }
-            if(is_file($targetFile)) {
-                chmod($targetFile, $this->options['config']['filePermission']);
-            }elseif(is_dir($targetFile)){
-                chmod($targetFile, $this->options['config']['folderPermission']);
+            if(is_function_callable('chmod')){
+                if(is_file($targetFile)) {
+                    chmod($targetFile, $this->options['config']['filePermission']);
+                }elseif(is_dir($targetFile)){
+                    chmod($targetFile, $this->options['config']['folderPermission']);
+                }
             }
         }else{
             $targetFile = $this->options['config']['ftp_temp_folder'].$res['files'][0]->name;
@@ -1612,8 +1614,8 @@ class UploadHandler
         return $this->generate_response($response, $print_response);
     }
 
-    protected function basename($filepath, $suffix = null) {
+    protected function basename($filepath, $suffix = '') {
         $splited = preg_split('/\//', rtrim ($filepath, '/ '));
-        return @substr(basename('X'.$splited[count($splited)-1], $suffix), 1);
+        return substr(basename('X'.$splited[count($splited)-1], $suffix), 1);
     }
 }

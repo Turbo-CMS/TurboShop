@@ -15,5 +15,3 @@
 2. Run the installation script. To do this, open the address `http://your_site/install.php` in your browser.
 3. Follow the instructions in the installer.
 
-## Website
-- [Turbo CMS](https://turbo-cms.com/)

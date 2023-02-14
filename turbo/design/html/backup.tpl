@@ -1,120 +1,102 @@
-{* Title *}
-{$meta_title=$btr->general_backup scope=global}
+{$meta_title=$btr->global_backup scope=global}
 
-<div class="row">
-	<div class="col-lg-7 col-md-7">
-		<div class="wrap_heading">
-			<div class="box_heading heading_page">
-				{$btr->general_backup|escape}
-			</div>
-			<div class="box_btn_heading">
-				<a class="btn btn_small btn-primary" href="">
-					{include file='svg_icon.tpl' svgId='plus'}
-					<span>{$btr->create_backup|escape}</span>
-				</a>
-				<form id="hidden" method="post">
-					<input type="hidden" name="session_id" value="{$smarty.session.id}">
-					<input type="hidden" name="action" value="">
-					<input type="hidden" name="name" value="">
-				</form>
-			</div>
-		</div>
+<div class="d-md-flex mb-3">
+	<h1 class="d-inline align-middle me-3">{$btr->global_backup|escape}</h1>
+	<div class="d-grid gap-2 d-sm-block mt-2 mt-md-0">
+		<button id="create-backup" type="button" class="btn btn-primary"><i data-feather="plus"></i> {$btr->create_backup|escape}</button>
 	</div>
 </div>
 
-<div class="boxed fn_toggle_wrap">
-	{if $backups}
-		<form method="post" class="fn_form_list">
-			<input type="hidden" name="session_id" value="{$smarty.session.id}">
-			<div class="turbo_list fn_sort_list">
-				<div class="turbo_list_head">
-					<div class="turbo_list_heading turbo_list_check">
-						<label class="form-check">
-							<input class="form-check-input fn_check_all fn_check_all_single" type="checkbox" value="">
-						</label>
-					</div>
-					<div class="turbo_list_heading turbo_list_backup_name">{$btr->general_backup|escape}</div>
-					<div class="turbo_list_heading turbo_list_setting turbo_list_backup_setting">{$btr->general_activities|escape}</div>
-					<div class="turbo_list_heading turbo_list_backup_close"></div>
-				</div>
-				<div class="turbo_list_body sortable">
-					{foreach $backups as $backup}
-						<div class="fn_row turbo_list_body_item fn_sort_item">
-							<div class="turbo_list_row ">
-								<div class="turbo_list_boding turbo_list_check">
-									<label class="form-check">
-										<input class="form-check-input fn_check_all_single" type="checkbox" name="check[]" value="{$backup->name}">
-									</label>
-								</div>
+<form id="hidden" method="post">
+	<input type="hidden" name="session_id" value="{$smarty.session.id}">
+	<input type="hidden" name="action" value="">
+	<input type="hidden" name="name" value="">
+</form>
 
-								<div class="turbo_list_boding turbo_list_backup_name">
-									<a href="files/backup/{$backup->name}">
-										{$backup->name}
-									</a>
-									({if $backup->size>1024*1024}{($backup->size/1024/1024)|round:2} {$btr->general_mb|escape}{else}{($backup->size/1024)|round:2} {$btr->general_kb|escape}{/if})
-								</div>
-
-								<div class="turbo_list_boding turbo_list_setting turbo_list_backup_setting">
-									<a href="#" data-hint="{$btr->restore_backup|escape}" class="restore hint-bottom-middle-t-info-s-small-mobile hint-anim">
-										{include file='svg_icon.tpl' svgId='rotate_cw'}
-									</a>
-								</div>
-
-								<div class="turbo_list_boding turbo_list_close turbo_list_backup_close">
-									{*delete*}
-									<button data-hint="{$btr->general_delete|escape}" type="button" class="btn_close fn_remove hint-bottom-right-t-info-s-small-mobile  hint-anim" data-toggle="modal" data-target="#fn_action_modal" onclick="success_action($(this));">
-										{include file='svg_icon.tpl' svgId='delete'}
-									</button>
-								</div>
-							</div>
-						</div>
-					{/foreach}
-				</div>
-				<div class="turbo_list_footer fn_action_block">
-					<div class="turbo_list_foot_left">
-						<div class="turbo_list_heading turbo_list_check">
+<div class="card">
+	<div class="card-body">
+		{if $backups}
+			<form method="post" class="js-form-list">
+				<input type="hidden" name="session_id" value="{$smarty.session.id}">
+				<div class="turbo-list">
+					<div class="turbo-list-head">
+						<div class="turbo-list-heading turbo-list-check">
 							<label class="form-check">
-								<input class="form-check-input fn_check_all fn_check_all_single" type="checkbox" value="">
+								<input class="form-check-input js-check-all js-check-all-single" type="checkbox" value="">
 							</label>
 						</div>
-						<div class="turbo_list_option">
-							<select name="action" class="selectpicker">
-								<option value="delete">{$btr->general_delete|escape}</option>
-							</select>
-						</div>
+						<div class="turbo-list-heading turbo-list-backup-name">{$btr->global_backup|escape}</div>
+						<div class="turbo-list-heading">{$btr->global_activities|escape}</div>
 					</div>
-					<button type="submit" class="btn btn_small btn-primary">
-						{include file='svg_icon.tpl' svgId='checked'}
-						<span>{$btr->general_apply|escape}</span>
-					</button>
+					<div class="turbo-list-body">
+						{foreach $backups as $backup}
+							<div class="js-row turbo-list-body-item">
+								<div class="turbo-list-row">
+									<div class="turbo-list-boding turbo-list-check">
+										<label class="form-check">
+											<input class="form-check-input js-check-all-single" type="checkbox" name="check[]" value="{$backup->name}">
+										</label>
+									</div>
+									<div class="turbo-list-boding turbo-list-backup-name">
+										<a href="files/backup/{$backup->name}" class="fw-bold text-body text-decoration-none">
+											{$backup->name}
+										</a>
+										({if $backup->size>1024*1024}{($backup->size/1024/1024)|round:2} {$btr->global_mb|escape}{else}{($backup->size/1024)|round:2} {$btr->global_kb|escape}{/if})
+									</div>
+									<div class="turbo-list-boding d-flex">
+										<div data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->restore_backup|escape}">
+											<button type="button" class="btn-restore restore">
+												<i class="align-middle" data-feather="rotate-cw"></i>
+											</button>
+										</div>
+										<div data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
+											<button type="button" class="btn-delete js-remove" data-bs-toggle="modal" data-bs-target="#actionModal" onclick="success_action($(this));">
+												<i class="align-middle" data-feather="trash-2"></i>
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						{/foreach}
+					</div>
+					<div class="turbo-list-footer js-action-block">
+						<div class="turbo-list-foot-left">
+							<div class="turbo-list-heading turbo-list-check">
+								<label class="form-check">
+									<input class="form-check-input js-check-all js-check-all-single" type="checkbox" value="">
+								</label>
+							</div>
+							<div class="turbo-list-option">
+								<select name="action" class="selectpicker">
+									<option value="delete">{$btr->global_delete|escape}</option>
+								</select>
+							</div>
+						</div>
+						<button type="submit" class="btn btn-primary">
+							<i class="align-middle" data-feather="check"></i>
+							{$btr->global_apply|escape}
+						</button>
+					</div>
 				</div>
-			</div>
-		</form>
-	{else}
-		<div class="heading_box mt-1">
-			<div class="text_grey">{$btr->no_backups|escape}</div>
-		</div>
-	{/if}
+			</form>
+		{else}
+			<h5 class="card-title ms-1 my-3">{$btr->no_backups|escape}</h5>
+		{/if}
+	</div>
 </div>
 
-<a data-toggle="modal" data-target="#fn_restore_backup" class="hidden"></a>
-
-<div id="fn_restore_backup" class="modal fade show" role="document">
-	<div class="modal-dialog modal-md">
+<div class="modal fade" id="js-restore-backup" tabindex="-1" style="display: none;" aria-hidden="true">
+	<div class="modal-dialog modal-sm" role="document">
 		<div class="modal-content">
-			<div class="card-header">
-				<div class="heading_modal">{$btr->index_confirm|escape}</div>
+			<div class="modal-header">
+				<h5 class="modal-title">{$btr->global_confirm|escape}</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 			</div>
-			<div class="modal-body">
-				<button type="submit" class="btn btn_small btn-success fn_restore_confirm mx-h">
-					{include file='svg_icon.tpl' svgId='checked'}
-					<span>{$btr->index_yes|escape}</span>
-				</button>
-
-				<button type="button" class="btn btn_small btn-danger fn_restore_dismiss mx-h" data-dismiss="modal">
-					{include file='svg_icon.tpl' svgId='close'}
-					<span>{$btr->index_no|escape}</span>
-				</button>
+			<div class="modal-body text-center">
+				<div class="d-grid gap-2 d-sm-block">
+					<button type="button" class="btn btn-success js-restore-confirm me-sm-1"><i class="align-middle" data-feather="check"></i> {$btr->global_yes|escape}</button>
+					<button type="button" class="btn btn-danger js-restore-dismiss" data-bs-dismiss="modal"><i class="align-middle" data-feather="x"></i> {$btr->global_no|escape}</button>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -122,11 +104,10 @@
 
 {literal}
 	<script>
-		$(function() {
-
+		$(window).on("load", function() {
 			// Reestablish 
-			$("a.restore").click(function() {
-				file = $(this).closest(".fn_row").find('[name*="check"]').val();
+			$("button.restore").click(function() {
+				file = $(this).closest(".js-row").find('[name*="check"]').val();
 				$('form#hidden input[name="action"]').val('restore');
 				$('form#hidden input[name="name"]').val(file);
 				$('form#hidden').submit();
@@ -134,30 +115,29 @@
 			});
 
 			// Create backup 
-			$("a.btn-primary").click(function() {
+			$("#create-backup").click(function() {
 				$('form#hidden input[name="action"]').val('create');
 				$('form#hidden').submit();
 				return false;
 			});
 
 			// Confirmed 
-			$(document).on("click", ".fn_restore_confirm", function() {
+			$(document).on("click", ".js-restore-confirm", function() {
 				confirm = false;
 				$('form#hidden').submit();
 			});
 
 			// Canceled
-			$(document).on("click", ".fn_restore_dismiss", function() {
+			$(document).on("click", ".js-restore-dismiss", function() {
 				return false;
 			});
 
 			$("form#hidden").submit(function() {
 				if ($('input[name="action"]').val() == 'restore' && confirm) {
-					$('[data-target="#fn_restore_backup"]').trigger('click');
+					$('#js-restore-backup').modal('show');
 					return false;
 				}
 			});
-
 		});
 	</script>
 {/literal}

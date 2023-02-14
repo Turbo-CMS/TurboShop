@@ -1,15 +1,5 @@
 <?php
 
-/**
- * Turbo CMS
- *
- * @author	Turbo CMS
- * @link	https://turbo-cms.com
- *
- * This class uses the templates login.tpl
- *
- */
-
 require_once('View.php');
 
 class LoginView extends View

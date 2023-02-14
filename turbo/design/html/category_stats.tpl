@@ -1,63 +1,50 @@
 {$meta_title=$btr->category_stats_sales scope=global}
 
-{*Page name*}
-<div class="row">
-	<div class="col-lg-7 col-md-7">
-		<div class="wrap_heading">
-			<div class="box_heading heading_page">
-				{$btr->category_stats_sales|escape} {$category->name|escape} {$brand->name|escape}
-			</div>
-		</div>
-	</div>
+<div class="d-md-flex mb-3">
+	<h1 class="d-inline align-middle me-3">{$btr->category_stats_sales|escape} {$category->name|escape} {$brand->name|escape}</h1>
 </div>
 
-{*Main page form*}
-<div class="boxed fn_toggle_wrap">
-	<div class="row">
-		<div class="col-lg-12 col-md-12">
-			<div class="fn_toggle_wrap">
-				<div class="heading_box visible_md">
-					{$btr->general_filter|escape}
-					<div class="toggle_arrow_wrap fn_toggle_card text-primary">
-						<a class="btn-minimize" href="javascript:;"><i class="fn_icon_arrow icon-chevron-down"></i></a>
-					</div>
-				</div>
-				<div class="boxed_sorting toggle_body_wrap off fn_card">
-					<div class="row">
-						<div class="col-md-11 col-lg-11 col-xl-7 col-sm-12 mb-1">
-							<div class="date">
-								{*Filter box*}
-								<form class="date_filter row" method="get">
-									<input type="hidden" name="module" value="CategoryStatsAdmin">
-									<div class="col-md-5 col-lg-5 pr-0 pl-0">
-										<div class="input-group mobile_input-group">
-											<span class=" input-group-addon-date">{$btr->general_from|escape}</span>
-											<input type="text" class="fn_from_date form-control" name="date_from" value="{$date_from}" autocomplete="off">
-											<div class="input-group-addon">
-												{include file='svg_icon.tpl' svgId='calendar'}
-											</div>
-										</div>
-									</div>
-									<div class="col-md-5 col-lg-5 pr-0 pl-0">
-										<div class="input-group mobile_input-group">
-											<span class=" input-group-addon-date">{$btr->general_to|escape}</span>
-											<input type="text" class="fn_to_date form-control" name="date_to" value="{$date_to}" autocomplete="off">
-											<div class="input-group-addon">
-												{include file='svg_icon.tpl' svgId='calendar'}
-											</div>
-										</div>
-									</div>
-									<div class="col-md-2 pr-0 mobile_text_right">
-										<button class="btn btn-primary" type="submit">{$btr->general_apply|escape}</button>
-									</div>
-								</form>
+<div class="card">
+	<div class="card-header d-block d-lg-none">
+		<div class="card-actions float-end">
+			<div class="position-relative collapse-icon">
+				<a href="javascript:;" class="collapse-chevron">
+					<i class="align-middle" data-feather="chevron-down"></i>
+				</a>
+			</div>
+		</div>
+		<h5 class="card-title mb-0">{$btr->global_filter|escape}</h5>
+	</div>
+	<div class="card-body">
+		<div class="row">
+			<div class="col-12">
+				<div class="collapse-card boxed-sorting">
+					<form method="get">
+						<input type="hidden" name="module" value="CategoryStatsAdmin">
+						<div class="row">
+							<div class="col-sm-12 col-md-4 col-lg-4">
+								<div class="input-group mb-3">
+									<span class="input-group-text">{$btr->global_from|escape}</span>
+									<input type="text" class="flatpickr form-control" name="date_from" value="{$date_from}" autocomplete="off">
+									<span class="input-group-text"><i class="align-middle" data-feather="calendar"></i></span>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-4 col-lg-4">
+								<div class="input-group mb-3">
+									<span class="input-group-text">{$btr->global_to|escape}</span>
+									<input type="text" class="flatpickr form-control" name="date_to" value="{$date_to}" autocomplete="off">
+									<span class="input-group-text"><i class="align-middle" data-feather="calendar"></i></span>
+								</div>
+							</div>
+							<div class="col-sm-12 col-md-4 col-lg-4 mb-3">
+								<button class="btn btn-primary" type="submit"><i class="align-middle" data-feather="check"></i> {$btr->global_apply|escape}</button>
 							</div>
 						</div>
-					</div>
+					</form>
 					<div class="row">
-						<div class="col-md-4 col-lg-4 col-sm-12">
-							<select id="id_categories" name="categories_filter" title="{$btr->general_category_filter|escape}" class="selectpicker form-control" data-live-search="true" data-size="10" onchange="location = this.value;">
-								<option value="{url brand=null category=null}" {if !$category}selected{/if}>{$btr->general_all_categories|escape}</option>
+						<div class="col-md-4 col-lg-4 col-sm-12 mb-3">
+							<select id="id_categories" name="categories_filter" title="{$btr->global_category_filter|escape}" class="selectpicker" data-live-search="true" data-size="10" onchange="location = this.value;">
+								<option value="{url brand=null category=null}" {if !$category}selected{/if}>{$btr->global_all_categories|escape}</option>
 								{function name=category_select level=0}
 									{foreach $categories as $c}
 										<option value='{url brand=null category=$c->id}' {if $smarty.get.category == $c->id}selected{/if}>
@@ -69,94 +56,79 @@
 								{category_select categories=$categories}
 							</select>
 						</div>
-						<div class="col-lg-4 col-md-4 col-sm 12">
+						<div class="col-lg-4 col-md-4 col-sm-12 mb-3">
 							<select onchange="location = this.value;" class="selectpicker">
-								<option value="{url brand=null}" {if !$brand}selected{/if}>{$btr->general_all_brands|escape}</option>
+								<option value="{url brand=null}" {if !$brand}selected{/if}>{$btr->global_all_brands|escape}</option>
 								{foreach $brands as $b}
 									<option value="{url brand=$b->id}" {if $brand->id == $b->id}selected{/if}>{$b->name|escape}</option>
 								{/foreach}
 							</select>
 						</div>
 
-						<div class="col-md-4 col-lg-4 col-sm-12 mobile_text_right">
-							<button id="fn_start" type="submit" class="btn btn_small btn-primary float-md-right">
-								{include file='svg_icon.tpl' svgId='upload'}
-								<span>{$btr->general_export|escape}</span>
+						<div class="col-lg-4 col-md-4 col-sm-12 mb-3">
+							<button id="js-start" type="submit" class="btn btn-primary float-md-end">
+								<i class="align-middle" data-feather="download"></i>
+								{$btr->global_export|escape}
 							</button>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 
-	<form method="post" class="fn_form_list">
-		<input type="hidden" name="session_id" value="{$smarty.session.id}">
-		<div class="turbo_list fn_sort_list">
-			{*Table header*}
-			<div class="turbo_list_head">
-				<div class="turbo_list_heading turbo_list_categorystats_categories">{$btr->general_category|escape}</div>
-				<div class="turbo_list_heading turbo_list_categorystats_total">{$btr->general_sales_amount|escape}</div>
-				<div class="turbo_list_heading turbo_list_categorystats_setting">{$btr->general_amount|escape}</div>
-			</div>
-			{*Element parameters*}
-			<div class="turbo_list_body">
-				{function name=categories_list_tree level=0}
-					{foreach $categories as $category}
-						{if $categories}
-							<div class="turbo_list_body_item">
-								<div class="turbo_list_row ">
-									<div class="turbo_list_boding turbo_list_categorystats_categories">
-										<span class="text_spacing">{$category->name|escape}</span>
-										<div class="hidden-md-up mt-q">
-											<span class="text_dark text_600 text_spacing">
-												<span class="hidden-xs-down">{$btr->general_sales_amount|escape}</span>
-												<span class="{if $category->price}text_primary {else}text_dark {/if}">
-													{$category->price} {$currency->sign}
+		<form method="post" class="js-form-list">
+			<input type="hidden" name="session_id" value="{$smarty.session.id}">
+			<div class="turbo-list ">
+				<div class="turbo-list-head">
+					<div class="turbo-list-heading turbo-list-categorystats-categories">{$btr->global_category|escape}</div>
+					<div class="turbo-list-heading turbo-list-categorystats-total">{$btr->global_sales_amount|escape}</div>
+					<div class="turbo-list-heading turbo-list-categorystats-setting">{$btr->global_qty|escape}</div>
+				</div>
+				<div class="turbo-list-body">
+					{function name=categories_list_tree level=0}
+						{foreach $categories as $category}
+							{if $categories}
+								<div class="turbo-list-body-item">
+									<div class="turbo-list-row">
+										<div class="turbo-list-boding turbo-list-categorystats-categories">
+											<span class="text-body">{$category->name|escape}</span>
+											<div class="d-block d-md-none mt-1">
+												<span class="fw-bold text-body">
+													<span class="d-none d-sm-block">{$btr->global_sales_amount|escape}:</span>
+													<span class="{if $category->price}text-primary{else}text-body{/if}">
+														{$category->price} {$currency->sign}
+													</span>
 												</span>
-											</span>
+											</div>
+										</div>
+										<div class="turbo-list-boding turbo-list-categorystats-total text-body">
+											{if $category->price}<span class="text_dark">{$category->price} {$currency->sign}</span>{else}{$category->price} {$currency->sign}{/if}
+										</div>
+										<div class="turbo-list-boding turbo-list-categorystats-setting text-body">
+											{if $category->amount}<span class="text_dark">{$category->amount} {$btr->reportstats_units}</span>{else}{$category->amount} {$btr->reportstats_units}{/if}
 										</div>
 									</div>
-									<div class="turbo_list_boding turbo_list_categorystats_total text_spacing">
-										{if $category->price}<span class="text_dark">{$category->price} {$currency->sign}</span>{else}{$category->price} {$currency->sign}{/if}
-									</div>
-									<div class="turbo_list_boding turbo_list_categorystats_setting text_spacing">
-										{if $category->amount}<span class="text_dark">{$category->amount} {$btr->reportstats_units}</span>{else}{$category->amount} {$btr->reportstats_units}{/if}
-									</div>
 								</div>
-							</div>
-						{/if}
-						{categories_list_tree categories=$category->subcategories level=$level+1}
-					{/foreach}
-				{/function}
-				{categories_list_tree categories=$categories_list}
-			</div>
-		</div>
-		<div class="row mt-1">
-			<div class="col-lg-12 col-md-12">
-				<div class="text_dark text_500 text-xs-right mr-1 mt-h">
-					<div class="h5">{$btr->general_total|escape} {$total_price} {$currency->sign|escape} <span class="text_grey">({$total_amount} {$btr->reportstats_units|escape})</span></div>
+							{/if}
+							{categories_list_tree categories=$category->subcategories level=$level+1}
+						{/foreach}
+					{/function}
+					{categories_list_tree categories=$categories_list}
 				</div>
 			</div>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="text-dark fw-bold text-end mt-3">
+						<div class="h3">{$btr->global_total|escape} {$total_price} {$currency->sign|escape} <span class="text-secondary">({$total_amount} {$btr->reportstats_units|escape})</span></div>
+					</div>
+				</div>
+			</div>
+		</form>
+		<div class="col-12">
+			{include file='pagination.tpl'}
 		</div>
-	</form>
-	<div class="col-lg-12 col-md-12 col-sm 12 txt_center">
-		{include file='pagination.tpl'}
 	</div>
 </div>
-
-{* On document load *}
-
-{* Datetimepicker *}
-{css id="datetimepicker" include=[
-"turbo/design/js/datetimepicker/jquery.datetimepicker.css"
-]}{/css}
-{stylesheet minify=true}
-
-{js id="datetimepicker" priority=99 include=[
-"turbo/design/js/datetimepicker/jquery.datetimepicker.js"
-]}{/js}
-{javascript minify=true}
 
 <script>
 	{if $category}
@@ -173,43 +145,43 @@
 	{/if}
 </script>
 {literal}
-	<script type="text/javascript">
-		$(function() {
-			$('.fn_from_date, .fn_to_date').datetimepicker({
-				lang: '{/literal}{$settings->lang}{literal}',
-				timepicker: false,
-				format: 'd.m.Y'
-			});
-			$('button#fn_start').click(function() {
-				do_export();
-			});
+<script>
+	$(window).on("load", function() {
 
-			function do_export(page) {
-				page = typeof(page) != 'undefined' ? page : 1;
-				category = typeof(category) != 'undefined' ? category : 0;
-				brand = typeof(brand) != 'undefined' ? brand : 0;
-				date_from = typeof(date_from) != 'undefined' ? date_from : 0;
-				date_to = typeof(date_to) != 'undefined' ? date_to : 0;
-				$.ajax({
-					url: "ajax/export_stat.php",
-					data: {
-						page: page,
-						category: category,
-						brand: brand,
-						date_from: date_from,
-						date_to: date_to
-					},
-					dataType: 'json',
-					success: function() {
-
-						window.location.href = 'files/export/export_stat.csv';
-					},
-					error: function(xhr, status, errorThrown) {
-						alert(errorThrown + '\n' + xhr.responseText + 'asdasd');
-					}
-
-				});
-			}
+		// Flatpickr
+		flatpickr(".flatpickr", {
+			dateFormat: "d.m.Y",
+			locale: "{/literal}{if $settings->lang =='ua'}uk{else}{$settings->lang}{/if}{literal}"
 		});
-	</script>
+
+		$('button#js-start').click(function() {
+			do_export();
+		});
+
+		function do_export(page) {
+			page = typeof(page) != 'undefined' ? page : 1;
+			category = typeof(category) != 'undefined' ? category : 0;
+			brand = typeof(brand) != 'undefined' ? brand : 0;
+			date_from = typeof(date_from) != 'undefined' ? date_from : 0;
+			date_to = typeof(date_to) != 'undefined' ? date_to : 0;
+			$.ajax({
+				url: "ajax/export_stat.php",
+				data: {
+					page: page,
+					category: category,
+					brand: brand,
+					date_from: date_from,
+					date_to: date_to
+				},
+				dataType: 'json',
+				success: function() {
+					window.location.href = 'files/export/export_stat.csv';
+				},
+				error: function(xhr, status, errorThrown) {
+					alert(errorThrown + '\n' + xhr.responseText + 'asdasd');
+				}
+			});
+		}
+	});
+</script>
 {/literal}

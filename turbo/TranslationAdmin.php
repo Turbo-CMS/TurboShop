@@ -7,13 +7,8 @@ class TranslationAdmin extends Turbo
 	public function fetch()
 	{
 		$languages = $this->languages->get_languages();
-
-		$admin_theme = $this->settings->admin_theme;
-		if ($admin_theme) {
-			$locked_theme = is_file('design/' . $admin_theme . '/locked');
-		} else {
-			$locked_theme = is_file('design/' . $this->settings->theme . '/locked');
-		}
+		
+		$locked_theme = is_file('design/' . $this->settings->theme . '/locked');
 		$this->design->assign('locked_theme', $locked_theme);
 
 		$translation = new stdClass;

@@ -1,142 +1,132 @@
-{$meta_title = $btr->settings_system_title scope=global}
+{$meta_title = $btr->global_system scope=global}
 
-{*Page name*}
-<div class="row">
-	<div class="col-lg-6 col-md-6">
-		<div class="heading_page">{$btr->settings_system_title|escape}</div>
-	</div>
-	<div class="col-lg-4 col-md-3 text-xs-right float-xs-right"></div>
-</div>
+<h1 class="mb-3">
+	{$btr->global_system|escape}
+</h1>
 
-<div class="row">
-	<div class="col-lg-12 col-md-12">
-		<div class="boxed fn_toggle_wrap">
-			<div class="heading_box">
-				{$btr->settings_general_options|escape}
-				<div class="toggle_arrow_wrap fn_toggle_card text-primary">
-					<a class="btn-minimize" href="javascript:;"><i class="fa fn_icon_arrow fa-angle-down"></i></a>
+<div class="row gx-2">
+	{if $php_version}
+		<div class="col-12 col-md-6 col-xxl">
+			<div class="card">
+				<div class="card-header">
+					<h5 class="card-title mb-0">PHP Version</h5>
+				</div>
+				<div class="collapse-card">
+					<div class="card-body">
+						<h4 class="mt-0 mb-1">Version: <b>{$php_version|escape}</b></h4>
+					</div>
 				</div>
 			</div>
-			{*Element parameters*}
-			<div class="toggle_body_wrap on fn_card">
-				<div class="row">
-					{if $php_version}
-						<div class="col-lg-4 col-md-4 col-sm-12 pr-0 pr-lg-0">
-							<div class="banner_card">
-								<div class="system_header">
-									<span class="font-weight-bold">PHP Version</span>
-								</div>
-								<div class="banner_card_block">
-									<div class="system_information text_spacing">
-										Version: <b>{$php_version|escape}</b>
-									</div>
-								</div>
-							</div>
-						</div>
-					{/if}
-					{if $sql_info}
-						<div class="col-lg-4 col-md-4 col-sm-12 pr-0 pr-lg-0">
-							<div class="banner_card">
-								<div class="system_header">
-									<span class="font-weight-bold">SQL</span>
-								</div>
-								<div class="banner_card_block">
-									<div class="system_information text_spacing">
-										{foreach $sql_info as $sql_param => $sql_ver}
-											<div>
-												<span>{$sql_param|escape}: </span>
-												<span><b>{$sql_ver|escape}</b></span>
-											</div>
-										{/foreach}
-									</div>
-								</div>
-							</div>
-						</div>
-					{/if}
+		</div>
+	{/if}
+	{if $sql_info}
+		<div class="col-12 col-md-6 col-xxl">
+			<div class="card">
+				<div class="card-header">
+					<h5 class="card-title mb-0">SQL</h5>
+				</div>
+				<div class="collapse-card">
+					<div class="card-body">
+						{foreach $sql_info as $sql_param => $sql_ver}
+							<h4 class="mt-0 mb-1">{$sql_param|escape}: <b>{$sql_ver|escape}</b></h4>
+						{/foreach}
+					</div>
+				</div>
+			</div>
+		</div>
+	{/if}
+	{if $server_ip}
+		<div class="col-12 col-md-6 col-xxl">
+			<div class="card">
+				<div class="card-header">
+					<h5 class="card-title mb-0">{$btr->system_server_ip}</h5>
+				</div>
+				<div class="collapse-card">
+					<div class="card-body">
+						<h4 class="mt-0 mb-1">IP: <b>{$server_ip|escape}</b></h4>
+					</div>
+				</div>
+			</div>
+		</div>
+	{/if}
+</div>
 
-					{if $server_ip}
-						<div class="col-lg-4 col-md-4 col-sm-12">
-							<div class="banner_card">
-								<div class="system_header">
-									<span class="font-weight-bold">{$btr->system_server_ip}</span>
-								</div>
-								<div class="banner_card_block">
-									<div class="system_information text_spacing">
-										IP: <b>{$server_ip|escape}</b>
-									</div>
-								</div>
-							</div>
-						</div>
-					{/if}
-
-					{if $ini_params}
-						<div class="col-lg-12 col-md-12 col-sm-12">
-							<div class="banner_card">
-								<div class="system_header">
-									<span class="font-weight-bold">INI params</span>
-								</div>
-								<div class="banner_card_block">
-									<div class="system_information text_spacing">
-										{foreach $ini_params as $param_name => $param_value}
-											<div>
-												<span>{$param_name|escape}: </span>
-												<span><b>{$param_value|escape}</b></span>
-											</div>
-										{/foreach}
-									</div>
-								</div>
-							</div>
-						</div>
-					{/if}
-
-					<div class="col-lg-12 col-md-12 col-sm-12">
-						<div class="boxed boxed_attention">
-							<div class="heading_box">
-								{$btr->general_caution|escape}
-							</div>
-							<div class="text_box">
-								<div class="mb-1">
-									{$btr->system_message_1|escape}
-								</div>
-								<div class="mb-h"><b>{$btr->system_message_2|escape}</b> </div>
-								<div>
-									<ul class="mb-0 pl-1">
-										<li>display_errors - {$btr->system_display_errors|escape}</li>
-										<li>memory_limit - {$btr->system_memory_limit|escape}</li>
-										<li>post_max_size - {$btr->system_post_max_size|escape}</li>
-										<li>max_input_time - {$btr->system_max_input_time|escape}</li>
-										<li>max_file_uploads - {$btr->system_max_file_uploads|escape}</li>
-										<li>max_execution_time - {$btr->system_max_execution_time|escape}</li>
-										<li>upload_max_filesize - {$btr->system_upload_max_filesize|escape}</li>
-										<li>max_input_vars - {$btr->system_max_input_vars|escape}</li>
-									</ul>
-								</div>
-							</div>
+{if $ini_params}
+	<div class="row gx-2">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-header">
+					<div class="card-actions float-end">
+						<div class="d-block d-lg-none position-relative collapse-icon">
+							<a href="javascript:;" class="collapse-chevron">
+								<i class="align-middle" data-feather="chevron-up"></i>
+							</a>
 						</div>
 					</div>
-
-					{if $all_extensions}
-						<div class="col-lg-12 col-md-12 col-sm-12">
-							<div class="banner_card">
-								<div class="system_header">
-									<span class="font-weight-bold">Server extensions</span>
-								</div>
-								<div class="banner_card_block">
-									<div class="system_information clearfix text_spacing">
-										{foreach $all_extensions as $ext_val}
-											<div class="col-xl-3 col-lg-4 col-md-6">
-												<div>
-													<span {if in_array($ext_val|lower,['curl','memcache','memcached','json','php_zip','zip','gd','mysqli','imagick','openssl','zlib','xmlreader','xmlwriter']) }style="font-weight:700;" {/if}>{$ext_val|escape}{assign var='req_'|cat:$ext_val|lower value="1"}</span>
-												</div>
-											</div>
-										{/foreach}
-									</div>
-								</div>
+					<h5 class="card-title mb-0">INI params</h5>
+				</div>
+				<div class="collapse-card">
+					<div class="card-body">
+						{foreach $ini_params as $param_name => $param_value}
+							<div>
+								<span>{$param_name|escape}: </span>
+								<span><b>{$param_value|escape}</b></span>
 							</div>
-						</div>
-					{/if}
+						{/foreach}
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-12">
+			<div class="alert alert-primary alert-dismissible mb-2" role="alert">
+				<div class="alert-message">
+					<h4 class="alert-heading">{$btr->global_caution|escape}</h4>
+					<div class="mb-1">{$btr->system_message_1|escape}</div>
+					<div class="mb-1"><strong>{$btr->system_message_2|escape}</strong> </div>
+					<ul class="mb-0 ps-3">
+						<li class="mb-1"><strong>display_errors</strong> - {$btr->system_display_errors|escape}</li>
+						<li class="mb-1"><strong>memory_limit</strong> - {$btr->system_memory_limit|escape}</li>
+						<li class="mb-1"><strong>post_max_size</strong> - {$btr->system_post_max_size|escape}</li>
+						<li class="mb-1"><strong>max_input_time</strong> - {$btr->system_max_input_time|escape}</li>
+						<li class="mb-1"><strong>max_file-uploads</strong> - {$btr->system_max_file_uploads|escape}</li>
+						<li class="mb-1"><strong>max_execution_time</strong> - {$btr->system_max_execution_time|escape}</li>
+						<li class="mb-1"><strong>upload_max_filesize</strong> - {$btr->system_upload_max_filesize|escape}</li>
+						<li class="mb-1"><strong>max_input_vars</strong> - {$btr->system_max_input_vars|escape}</li>
+					</ul>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
+{/if}
+
+{if $all_extensions}
+	<div class="row gx-2">
+		<div class="col-lg-12 col-md-12 col-sm-12">
+			<div class="card">
+				<div class="card-header">
+					<div class="card-actions float-end">
+						<div class="d-block d-lg-none position-relative collapse-icon">
+							<a href="javascript:;" class="collapse-chevron">
+								<i class="align-middle" data-feather="chevron-up"></i>
+							</a>
+						</div>
+					</div>
+					<h5 class="card-title mb-0">Server extensions</h5>
+				</div>
+				<div class="collapse-card">
+					<div class="card-body">
+						<div class="row">
+							{foreach $all_extensions as $ext_val}
+								<div class="col-xl-3 col-lg-4 col-md-6">
+									<div>
+										<span {if in_array($ext_val|lower,['curl','memcache','memcached','json','php_zip','zip','gd','mysqli','imagick','openssl','zlib','xmlreader','xmlwriter']) }class="fw-bold" {/if}>{$ext_val|escape}{assign var='req_'|cat:$ext_val|lower value="1"}</span>
+									</div>
+								</div>
+							{/foreach}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{/if}

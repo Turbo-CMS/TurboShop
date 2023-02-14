@@ -1,283 +1,292 @@
 {if $category->id}
-    {$meta_title = $category->name scope=global}
+	{$meta_title = $category->name scope=global}
 {else}
-    {$meta_title = $btr->category_new scope=global}
+	{$meta_title = $btr->category_new scope=global}
 {/if}
 
-<div class="row">
-    <div class="col-lg-12 col-md-12">
-        <div class="wrap_heading">
-            <div class="box_heading heading_page">
-                {if !$category->id}
-                    {$btr->category_add|escape}
-                {else}
-                    {$category->name|escape}
-                {/if}
-            </div>
-            {if $category->id}
-                <div class="box_btn_heading">
-                    <a class="btn btn_small btn-primary add" target="_blank" href="../{$lang_link}catalog/{$category->url}">
-                        {include file='svg_icon.tpl' svgId='icon_desktop'}
-                        <span>{$btr->general_open|escape}</span>
-                    </a>
-                </div>
-            {/if}
-        </div>
-    </div>
-    <div class="col-md-12 col-lg-12 col-sm-12 float-xs-right"></div>
+<div class="d-md-flex mb-3">
+	<h1 class="d-inline align-middle me-3">
+		{if !$category->id}
+			{$btr->category_add|escape}
+		{else}
+			{$category->name|escape}
+		{/if}
+	</h1>
+	{if $category->id}
+		<div class="d-grid gap-2 d-sm-block mt-2 mt-md-0">
+			<a class="btn btn-primary" target="_blank" href="../{$lang_link}catalog/{$category->url}">
+				<i class="align-middle mt-n1" data-feather="external-link"></i>
+				{$btr->global_open|escape}
+			</a>
+		</div>
+	{/if}
 </div>
 
 {if $message_success}
-    <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12">
-            <div class="boxed boxed_success">
-                <div class="heading_box">
-                    {if $message_success=='added'}
-                        {$btr->category_added|escape}
-                    {elseif $message_success=='updated'}
-                        {$btr->category_updated|escape}
-                    {else}
-                        {$message_success|escape}
-                    {/if}
-                    {if $smarty.get.return}
-                        <a class="btn btn_return float-xs-right" href="{$smarty.get.return}">
-                            {include file='svg_icon.tpl' svgId='return'}
-                            <span>{$btr->general_back|escape}</span>
-                        </a>
-                    {/if}
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="row">
+		<div class="col-12">
+			<div class="alert alert-success alert-dismissible fade show" role="alert">
+				<div class="alert-message">
+					{if $message_success=='added'}
+						{$btr->category_added|escape}
+					{elseif $message_success=='updated'}
+						{$btr->category_updated|escape}
+					{else}
+						{$message_success|escape}
+					{/if}
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				</div>
+			</div>
+		</div>
+	</div>
 {/if}
 
 {if $message_error}
-    <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12">
-            <div class="boxed boxed_warning">
-                <div class="heading_box">
-                    {if $message_error=='url_exists'}
-                        {$btr->category_exists|escape}
-                    {elseif $message_error == 'name_empty'}
-                        {$btr->general_enter_title|escape}
-                    {elseif $message_error == 'url_empty'}
-                        {$btr->general_enter_url|escape}
-                    {else}
-                        {$message_error|escape}
-                    {/if}
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="row">
+		<div class="col-12">
+			<div class="alert alert-danger alert-dismissible fade show" role="alert">
+				<div class="alert-message">
+					{if $message_error=='url_exists'}
+						{$btr->category_exists|escape}
+					{elseif $message_error == 'name_empty'}
+						{$btr->global_enter_name|escape}
+					{elseif $message_error == 'url_empty'}
+						{$btr->global_enter_url|escape}
+					{else}
+						{$message_error|escape}
+					{/if}
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+				</div>
+			</div>
+		</div>
+	</div>
 {/if}
 
-<form method="post" enctype="multipart/form-data" class="fn_fast_button">
-    <input type="hidden" name="session_id" value="{$smarty.session.id}">
-    <div class="row">
-        <div class="col-xs-12 ">
-            <div class="boxed match_matchHeight_true">
-                <div class="row d_flex">
-                    <div class="col-lg-10 col-md-9 col-sm-12">
-                        <div class="heading_label">
-                            {$btr->general_name|escape}
-                        </div>
-                        <div class="form-group">
-                            <input class="form-control" name="name" type="text" value="{$category->name|escape}">
-                            <input name="id" type="hidden" value="{$category->id|escape}">
-                        </div>
-                        <div class="heading_label">
-                            {$btr->category_h1|escape}
-                        </div>
-                        <div class="form-group">
-                            <input name="name_h1" class="form-control" type="text" value="{$category->name_h1|escape}">
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-12 col-lg-6 col-md-12">
-                                <div class="mt-h mb-h">
-                                    <div class="input-group">
-                                        <span class="input-group-addon input-group-addon-left">URL</span>
-                                        <input name="url" class="fn_meta_field form-control fn_url {if $category->id}fn_disabled{/if}" {if $category->id}readonly=""{/if} type="text" value="{$category->url|escape}">
-                                        <input type="checkbox" id="block_translit" class="hidden" value="1" {if $category->id}checked=""{/if}>
-                                        <span class="input-group-addon fn_disable_url">
-                                            {if $category->id}
-                                                <i class="url-lock"></i>
-                                            {else}
-                                                <i class="url-lock url-unlock"></i>
-                                            {/if}
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-lg-6 col-md-12">
-                                <div class="input-group mt-h mb-h">
-                                    <span class="boxes_inline pw_id_grup">
-                                        <select name="parent_id" class="selectpicker">
-                                            <option value='0'>{$btr->category_root|escape}</option>
-                                            {function name=category_select level=0}
-                                                {foreach $categories as $cat}
-                                                    {if $category->id != $cat->id}
-                                                        <option value='{$cat->id}' {if $category->parent_id == $cat->id}selected{/if}>{section name=sp loop=$level}--{/section}{$cat->name}</option>
-                                                        {category_select categories=$cat->subcategories level=$level+1}
-                                                    {/if}
-                                                {/foreach}
-                                            {/function}
-                                            {category_select categories=$categories}
-                                        </select>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-md-3 col-sm-12">
-                        <div class="activity_of_switch">
-                            <div class="activity_of_switch_item">
-                                <div class="turbo_switch clearfix">
-                                    <label class="switch_label">{$btr->general_enable|escape}</label>
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" id="visible_checkbox" name="visible" value="1" type="checkbox" {if $category->visible}checked=""{/if}>
-                                        <label class="form-check-label" for="visible_checkbox"></label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="activity_of_switch_item">
-                                <div class="turbo_switch clearfix">
-                                    <label class="switch_label">{$btr->categories_featured|escape}</label>
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" id="featured_checkbox" name="featured" value="1" type="checkbox" {if $category->featured}checked=""{/if}>
-                                        <label class="form-check-label" for="featured_checkbox"></label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<form method="post" enctype="multipart/form-data" class="js-fast-button">
+	<input type="hidden" name="session_id" value="{$smarty.session.id}">
+	<div class="row">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-body">
+					<div class="row d-flex">
+						<div class="col-lg-10 col-md-9 col-sm-12">
+							<div class="mb-3">
+								<div class="form-label">{$btr->global_title|escape}</div>
+								<input class="form-control" name="name" type="text" value="{$category->name|escape}">
+								<input name="id" type="hidden" value="{$category->id|escape}">
+							</div>
+							<div class="mb-3">
+								<div class="form-label">{$btr->global_h1|escape}</div>
+								<input class="form-control" name="name_h1" type="text" value="{$category->name_h1|escape}">
+							</div>
+							<div class="row">
+								<div class="col-12 col-lg-6 col-md-12">
+									<div class="mt-2 mb-3 mb-h">
+										<div class="input-group">
+											<span class="input-group-text">URL</span>
+											<input name="url" class="js-meta-field form-control js-url" type="text" value="{$category->url|escape}" {if $category->id}readonly="" {/if}>
+											<input type="checkbox" id="block-translit" class="d-none" value="1" {if $category->id}checked="" {/if}>
+											<span class="input-group-text js-disable-url">
+												{if $category->id}
+													<i class="url-lock"></i>
+												{else}
+													<i class="url-lock url-unlock"></i>
+												{/if}
+											</span>
+										</div>
+									</div>
+								</div>
+								<div class="col-12 col-lg-6 col-md-12">
+									<div class="input-group mt-2 mb-3 mb-h">
+										<span class="w-100">
+											<select name="parent_id" class="selectpicker">
+												<option value='0'>{$btr->category_root|escape}</option>
+												{function name=category_select level=0}
+													{foreach $categories as $cat}
+														{if $category->id != $cat->id}
+															<option value='{$cat->id}' {if $category->parent_id == $cat->id}selected{/if}>{section name=sp loop=$level}--{/section} {$cat->name}</option>
+															{category_select categories=$cat->subcategories level=$level+1}
+														{/if}
+													{/foreach}
+												{/function}
+												{category_select categories=$categories}
+											</select>
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-2 col-md-3 col-sm-12">
+							<div class="d-flex justify-content-center align-content-center flex-wrap flex-md-column h-100">
+								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
+									<input class="form-check-input ms-2" type="checkbox" id="visible" name="visible" value="1" type="checkbox" {if $category->visible}checked="" {/if}>
+									<label class="form-check-label ms-2" for="visible">{$btr->global_enable|escape}</label>
+								</div>
+								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
+									<input class="form-check-input ms-2" type="checkbox" id="featured" name="featured" value="1" type="checkbox" {if $category->featured}checked="" {/if}>
+									<label class="form-check-label ms-2" for="featured">{$btr->categories_featured|escape}</label>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-    <div class="row">
-        <div class="col-lg-3 col-md-12 pr-0">
-            <div class="boxed fn_toggle_wrap min_height_230px">
-                <div class="heading_box">
-                    {$btr->general_image|escape}
-                    <div class="toggle_arrow_wrap fn_toggle_card text-primary">
-                        <a class="btn-minimize" href="javascript:;"><i class="fn_icon_arrow icon-chevron-down"></i></a>
-                    </div>
-                </div>
-                <div class="toggle_body_wrap on fn_card">
-                    <ul class="category_images_list">
-                        <li class="category_image_item border_image_item {if $category->image}border{/if}">
-                            {if $category->image}
-                                <input type="hidden" class="fn_accept_delete" name="delete_image" value="">
-                                <div class="fn_parent_image">
-                                    <div class="category_image image_wrapper fn_image_wrapper text-xs-center">
-                                        <a href="javascript:;" class="fn_delete_item remove_image"></a>
-                                        <img src="{$category->image|resize_catalog:180:100}" alt="">
-                                    </div>
-                                </div>
-                            {else}
-                                <div class="fn_parent_image"></div>
-                            {/if}
-                            <div class="fn_upload_image dropzone_block_image {if $category->image}hidden{/if}">
-                                {include file='svg_icon.tpl' svgId='plus_big'}
-                                <input class="dropzone_image" name="image" type="file">
-                            </div>
-                            <div class="category_image image_wrapper fn_image_wrapper fn_new_image text-xs-center">
-                                <a href="javascript:;" class="fn_delete_item remove_image"></a>
-                                <img src="" alt="">
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-12 pr-0">
-            <div class="boxed fn_toggle_wrap min_height_230px">
-                <div class="heading_box">
-                    {$btr->general_icon|escape}
-                    <div class="toggle_arrow_wrap fn_toggle_card text-primary">
-                        <a class="btn-minimize" href="javascript:;"><i class="fn_icon_arrow icon-chevron-down"></i></a>
-                    </div>
-                </div>
-                <div class="toggle_body_wrap on fn_card">
-                    <ul class="category_images_list">
-                        <li class="category_image_item border_image_item_two icons {if $category->icon}border{/if}">
-                            {if $category->icon}
-                                <input type="hidden" class="fn_accept_delete_two" name="delete_icon" value="">
-                                <div class="fn_parent_image_two">
-                                    <div class="category_image image_wrapper fn_image_wrapper_two text-xs-center">
-                                        <a href="javascript:;" class="fn_delete_item_two remove_image"></a>
-                                        <img src="../{$config->categories_images_dir}{$category->icon}" alt="">
-                                    </div>
-                                </div>
-                            {else}
-                                <div class="fn_parent_image_two"></div>
-                            {/if}
-                            <div class="fn_upload_image_two dropzone_block_image {if $category->icon}hidden{/if}">
-                                {include file='svg_icon.tpl' svgId='plus_big'}
-                                <input class="dropzone_image_two" name="icon" type="file">
-                            </div>
-                            <div class="category_image image_wrapper fn_image_wrapper_two fn_new_image_two text-xs-center">
-                                <a href="javascript:;" class="fn_delete_item_two remove_image"></a>
-                                <img src="" alt="">
-                            </div>
-                        </li>
-                    </ul>
-                    <div class="heading_label mt-1">{$btr->icon_code|escape}</div>
-                    <div class="form-group">
-                        <input class="form-control" name="code" type="text" value="{$category->code|escape}">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-6 col-md-12">
-            <div class="boxed match fn_toggle_wrap min_height_230px">
-                <div class="heading_box">
-                    {$btr->general_metatags|escape}
-                    <div class="toggle_arrow_wrap fn_toggle_card text-primary">
-                        <a class="btn-minimize" href="javascript:;"><i class="fn_icon_arrow icon-chevron-down"></i></a>
-                    </div>
-                </div>
-                <div class="toggle_body_wrap on fn_card row">
-                    <div class="col-lg-6 col-md-6">
-                        <div class="heading_label">Meta-title <span id="fn_meta_title_counter"></span></div>
-                        <input name="meta_title" class="form-control fn_meta_field mb-h" type="text" value="{$category->meta_title|escape}">
-                        <div class="heading_label">Meta-keywords</div>
-                        <input name="meta_keywords" class="form-control fn_meta_field mb-h" type="text" value="{$category->meta_keywords|escape}">
-                    </div>
-                    <div class="col-lg-6 col-md-6 pl-0">
-                        <div class="heading_label">Meta-description <span id="fn_meta_description_counter"></span></div>
-                        <textarea name="meta_description" class="form-control turbo_textarea fn_meta_field">{$category->meta_description|escape}</textarea>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="row gx-2">
+		<div class="col-lg-3 col-md-12">
+			<div class="card mh-250px">
+				<div class="card-header">
+					<div class="card-actions float-end">
+						<div class="d-block d-lg-none position-relative collapse-icon">
+							<a href="javascript:;" class="collapse-chevron">
+								<i class="align-middle" data-feather="chevron-up"></i>
+							</a>
+						</div>
+					</div>
+					<h5 class="card-title mb-0">{$btr->global_image|escape}</h5>
+				</div>
+				<div class="collapse-card">
+					<div class="card-body">
+						<ul class="category-images-list">
+							<li class="category-image-item border-image-item {if $category->image}border{/if}">
+								{if $category->image}
+									<input type="hidden" class="js-accept-delete" name="delete_image" value="">
+									<div class="js-parent-image">
+										<div class="category-image image-wrapper js-image-wrapper text-xs-center">
+											<a href="javascript:;" class="js-delete-item remove-image"></a>
+											<img src="{$category->image|resize_catalog:180:100}" alt="">
+										</div>
+									</div>
+								{else}
+									<div class="js-parent-image"></div>
+								{/if}
+								<div class="js-upload-image dropzone-block-image {if $category->image}d-none{/if}">
+									<i class="align-middle" data-feather="plus"></i>
+									<input class="dropzone-image" name="image" type="file">
+								</div>
+								<div class="category-image image-wrapper js-image-wrapper js-new-image text-xs-center">
+									<a href="javascript:;" class="js-delete-item remove-image"></a>
+									<img src="" alt="">
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-3 col-md-12">
+			<div class="card mh-250px">
+				<div class="card-header">
+					<div class="card-actions float-end">
+						<div class="d-block d-lg-none position-relative collapse-icon">
+							<a href="javascript:;" class="collapse-chevron">
+								<i class="align-middle" data-feather="chevron-up"></i>
+							</a>
+						</div>
+					</div>
+					<h5 class="card-title mb-0">{$btr->global_icon|escape}</h5>
+				</div>
+				<div class="collapse-card">
+					<div class="card-body">
+						<ul class="category-images-list mb-1">
+							<li class="category-image-item border-image-item-two icons {if $category->icon}border{/if}">
+								{if $category->icon}
+									<input type="hidden" class="js-accept-delete-two" name="delete_icon" value="">
+									<div class="js-parent-image-two">
+										<div class="category-image image-wrapper js-image-wrapper-two text-xs-center">
+											<a href="javascript:;" class="js-delete-item-two remove-image"></a>
+											<img src="../{$config->categories_images_dir}{$category->icon}" alt="">
+										</div>
+									</div>
+								{else}
+									<div class="js-parent-image-two"></div>
+								{/if}
+								<div class="js-upload-image-two dropzone-block-image {if $category->icon}d-none{/if}">
+									<i class="align-middle" data-feather="plus"></i>
+									<input class="dropzone-image-two" name="icon" type="file">
+								</div>
+								<div class="category-image image-wrapper js-image-wrapper-two js-new-image-two text-xs-center">
+									<a href="javascript:;" class="js-delete-item-two remove-image"></a>
+									<img src="" alt="">
+								</div>
+							</li>
+						</ul>
+						<div class="form-label">{$btr->icon_code|escape}</div>
+						<input class="form-control" name="code" type="text" value="{$category->code|escape}">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-6 col-md-12">
+			<div class="card mh-250px">
+				<div class="card-header">
+					<div class="card-actions float-end">
+						<div class="d-block d-lg-none position-relative collapse-icon">
+							<a href="javascript:;" class="collapse-chevron">
+								<i class="align-middle" data-feather="chevron-up"></i>
+							</a>
+						</div>
+					</div>
+					<h5 class="card-title mb-0">{$btr->global_metatags|escape}</h5>
+				</div>
+				<div class="collapse-card">
+					<div class="card-body">
+						<div class="row">
+							<div class="col-lg-6 col-md-6">
+								<div class="mb-3">
+									<div class="form-label">Meta-title <span id="js-meta-title-counter"></span></div>
+									<input name="meta_title" class="form-control js-meta-field mb-h" type="text" value="{$category->meta_title|escape}">
+								</div>
+								<div class="mb-3">
+									<div class="form-label">Meta-keywords</div>
+									<input name="meta_keywords" class="form-control js-meta-field mb-h" type="text" value="{$category->meta_keywords|escape}">
+								</div>
+							</div>
+							<div class="col-lg-6 col-md-6">
+								<div class="form-label">Meta-description <span id="js-meta-description-counter"></span></div>
+								<textarea name="meta_description" class="form-control turbo-textarea js-meta-field">{$category->meta_description|escape}</textarea>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-    <div class="row">
-        <div class="col-lg-12 col-md-12">
-            <div class="boxed match fn_toggle_wrap tabs">
-                <div class="heading_box">
-                    {$btr->general_description|escape}
-                    <div class="toggle_arrow_wrap fn_toggle_card text-primary">
-                        <a class="btn-minimize" href="javascript:;"><i class="fn_icon_arrow icon-chevron-down"></i></a>
-                    </div>
-                </div>
-                <div class="toggle_body_wrap on fn_card">
-                    <textarea id="fn_editor" name="description" class="editor_large fn_editor_class">{$category->description|escape}</textarea>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 mt-1">
-                        <button type="submit" class="btn btn_small btn-primary float-md-right">
-                            {include file='svg_icon.tpl' svgId='checked'}
-                            <span>{$btr->general_apply|escape}</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="row">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-header">
+					<div class="card-actions float-end">
+						<div class="d-block d-lg-none position-relative collapse-icon">
+							<a href="javascript:;" class="collapse-chevron">
+								<i class="align-middle" data-feather="chevron-up"></i>
+							</a>
+						</div>
+					</div>
+					<h5 class="card-title mb-0">{$btr->global_description|escape}</h5>
+				</div>
+				<div class="collapse-card">
+					<div class="card-body">
+						<textarea id="js-editor" name="description" class="editor-large js-editor-class">{$category->description|escape}</textarea>
+						<div class="row">
+							<div class="col-12">
+								<div class="d-grid d-sm-block mt-3">
+									<button type="submit" class="btn btn-primary float-end">
+										<i class="align-middle" data-feather="check"></i>
+										<span>{$btr->global_apply|escape}</span>
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </form>
 
-{* Tiny MCE *}
+{* TinyMCE *}
 {include file='tinymce_init.tpl'}

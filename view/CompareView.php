@@ -1,15 +1,5 @@
 <?php
 
-/**
- * Turbo CMS
- *
- * @author	Turbo CMS
- * @link	https://turbo-cms.com/
- *
- * This class uses the template compare.tpl
- *
- */
-
 require_once('View.php');
 
 class CompareView extends View

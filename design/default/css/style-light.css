@@ -6,25 +6,9 @@
 	color: #212529;
 }
 
-.breadcrumb {
-	display: -ms-flexbox;
-	display: flex;
-	-ms-flex-wrap: wrap;
-	flex-wrap: wrap;
-	padding: 0.75rem 1rem;
-	margin-bottom: 1rem;
-	list-style: none;
-	background-color: #f8f9fa;
-	border-radius: 0.25rem;
-}
-
 .secret-number {
 	border: 1px solid #ced4da;
 	color: #495057;
-}
-
-.table-of-contents {
-	background: #f8f9fa;
 }
 
 #back-to-top {
@@ -104,4 +88,9 @@
 .owl-carousel .owl-dots .owl-dot.active span,
 .owl-carousel .owl-dots .owl-dot:hover span {
 	background: #0d6efd;
+}
+
+a.admin_bookmark {
+	border: 1px solid #dee2e6 !important;
+    background-color: #f8f9fa !important;
 }

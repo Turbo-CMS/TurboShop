@@ -1,46 +1,31 @@
-{$meta_title=$btr->yml_import_global scope=global}
+{$meta_title=$btr->global_yml_import scope=global}
 
-{*Page name*}
-<div class="row">
-	<div class="col-lg-7 col-md-7">
-		<div class="heading_page">
-			{$btr->yml_import_global|escape}
-		</div>
-	</div>
-</div>
+<h1 class="mb-3">
+	{$btr->global_yml_import|escape}
+</h1>
 
-<div id="success" class="row" style="display: none">
-	<div class="col-lg-12 col-md-12 col-sm-12">
-		<div class="boxed boxed_success">
-			<div class="heading_box">
-				{$btr->general_success|escape}!
-			</div>
-		</div>
-	</div>
-</div>
+<div id="import-error" class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none;"></div>
 
-<div id="import_error" class="boxed boxed_warning" style="display: none;"></div>
-
-{*Error output*}
 {if $message_error}
 	<div class="row">
-		<div class="col-lg-12 col-md-12 col-sm-12">
-			<div class="boxed boxed_warning">
-				<div>
+		<div class="col-12">
+			<div class="alert alert-danger alert-dismissible fade show" role="alert">
+				<div class="alert-message">
 					{if $message_error == 'no_permission'}
-						{$btr->general_permissions|escape} {$import_files_dir|escape}
+						{$btr->global_permissions|escape} {$import_files_dir|escape}
 					{elseif $message_error == 'convert_error'}
 						{$btr->import_utf|escape}
 					{elseif $message_error == 'locale_error'}
-						{$btr->import_locale|escape} {$locale|escape} {$btr->import_not_correctly|escape}
+						{$btr->import_locale|escape} {$btr->import_not_correctly|escape}
 					{elseif $message_error == 'upload_error'}
 						{$btr->upload_error|escape}
 					{elseif $message_error == 'download_error'}
-						{$btr->general_error|escape}
+						{$btr->global_error|escape}
 					{else}
 						{$message_error|escape}
 					{/if}
 				</div>
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 			</div>
 		</div>
 	</div>
@@ -50,99 +35,114 @@
 	{if $filename_yml}
 		{if $filename_csv}
 			<div class="row">
-				<div class="col-lg-12 col-md-12">
-					<div class="boxed fn_toggle_wrap ">
-						<div class="heading_box boxes_inline">
-							{if $filename_csv}{$btr->import_file|escape} {$filename_csv|escape}{/if} {if $filename_csv_size}({$filename_csv_size|escape}){/if}
+				<div class="col-12">
+					<div class="card">
+						<div class="card-header">
+							<div class="card-actions float-end">
+								<div class="d-block d-lg-none position-relative collapse-icon">
+									<a href="javascript:;" class="collapse-chevron">
+										<i class="align-middle" data-feather="chevron-up"></i>
+									</a>
+								</div>
+							</div>
+							<h5 class="card-title mb-0">{if $filename_csv}{$btr->import_file|escape} {$filename_csv|escape}{/if} {if $filename_csv_size}({$filename_csv_size|escape}){/if}</h5>
 						</div>
-						<div class="mt-1">
-							<div id='progressbar'></div>
+						<div class="card-body">
+							<div id="progressbar"></div>
+							<div id="success" class="alert alert-success alert-dismissible fade show" role="alert" style="display: none">
+								<div class="alert-message">
+									{$btr->global_success|escape}!
+									<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+								</div>
+							</div>
+							<div id="import-result" class="mt-1"></div>
 						</div>
-						<ul id='import_result'></ul>
 					</div>
 				</div>
 			</div>
 		{/if}
 		{if $yml_params}
-			<div class="boxed fn_toggle_wrap">
-				<div class="row">
-					<div class="col-lg-12 col-md-12 col-sm-12">
-						<form method="post" enctype="multipart/form-data">
-							<input type="hidden" name="session_id" value="{$smarty.session.id}">
-							<input type="hidden" name="start_import_yml" value="1">
-							<div class="heading_box">
-								{if $filename_yml}{$btr->import_file|escape} {$filename_yml|escape}{/if} {if $filename_yml_size}({$filename_yml_size|escape}){/if}
-								<div class="toggle_arrow_wrap fn_toggle_card text-primary">
-									<a class="btn-minimize" href="javascript:;"><i class="fn_icon_arrow icon-chevron-down"></i></a>
-								</div>
-							</div>
-							<div class="toggle_body_wrap on fn_card">
-								<div class="turbo_list mt-1">
-									<div class="turbo_list_head">
-										<div class="col-lg-6 col-md-6">
-											<div class="push-lg-4 col-lg-6 text-xs-left col-sm-12"><span class="mr-1"><b>{$btr->import_yml_columns|escape}</b></span></div>
-										</div>
-										<div class="col-lg-6 col-md-6">
-											<div class="hidden-xs-down hidden-md-down">
-												<a href="javascript:;" class="btn btn_small btn-primary fn_skip_all">{$btr->import_skip_all}</a>
-												<a href="javascript:;" class="btn btn_small btn-primary fn_new_all">{$btr->import_new_all}</a>
-											</div>
-										</div>
+			<div class="card">
+				<div class="card-header">
+					<div class="card-actions float-end">
+						<div class="d-block d-lg-none position-relative collapse-icon">
+							<a href="javascript:;" class="collapse-chevron">
+								<i class="align-middle" data-feather="chevron-up"></i>
+							</a>
+						</div>
+					</div>
+					<h5 class="card-title mb-0">{if $filename_yml}{$btr->import_file|escape} {$filename_yml|escape}{/if} {if $filename_yml_size}({$filename_yml_size|escape}){/if}</h5>
+				</div>
+				<div class="collapse-card">
+					<div class="card-body">
+						<div class="row">
+							<div class="col-12">
+								<form method="post" enctype="multipart/form-data">
+									<input type="hidden" name="session_id" value="{$smarty.session.id}">
+									<input type="hidden" name="start_import_yml" value="1">
+									<div class="d-grid gap-2 d-md-flex justify-content-md-end mb-3">
+										<button class="btn btn-danger me-md-2 js-skip-all" type="button"><i class="align-middle" data-feather="minus"></i> {$btr->import_skip_all|escape}</button>
+										<button class="btn btn-success js-new-all" type="button"><i class="align-middle" data-feather="plus"></i> {$btr->import_new_all|escape}</button>
 									</div>
-									{foreach $yml_params as $pkey=>$pvalue}
-										<div class="row mt-2">
-											<div class="col-lg-6 col-md-6 mb-h">
-												<div class="push-lg-4 col-lg-6 text-xs-left col-sm-12">
-													{$pkey|replace:'param_':''|replace:'#':''}
+									<div class="turbo-list">
+										<div class="turbo-list-head">
+											<div class="turbo-list-heading turbo-list-import-name">{$btr->import_yml_columns|escape}</div>
+											<div class="turbo-list-heading turbo-list-import-value">{$btr->import_field_system|escape}</div>
+										</div>
+										<div class="turbo-list-body import-body">
+											{foreach $yml_params as $pkey=>$pvalue}
+												<div class="turbo-list-body-item body-narrow">
+													<div class="turbo-list-row narrow">
+														<div class="turbo-list-boding turbo-list-import-name">
+															<span class="fw-bold">{$pkey|replace:'param_':''|replace:'#':''}</span>
+														</div>
+														<div class="turbo-list-boding turbo-list-import-value js-row">
+															<select class="selectpicker import-select js-select" data-live-search="true" name="yml_params[{$pkey}]">
+																<optgroup label="{$btr->import_additional}">
+																	<option id="import-skip" data-content="<span class='text-danger'>{$btr->import_skip|escape}</span>" value="">{$btr->import_skip|escape}</option>
+																	<option id="import-new-feature" data-content="<span class='text-success'>{$btr->import_new_feature}</span>" value="{$pkey}">{$btr->import_new_feature|escape}</option>
+																</optgroup>
+																<optgroup label="{$btr->import_main_fields|escape}">
+																	{foreach $columns as $k=>$f}
+																		<option value="{$k}" {if $columns_compared[$pkey] == $k}selected{/if}>{$btr->get_translation('import_field_'|cat:$f)}</option>
+																	{/foreach}
+																</optgroup>
+																<optgroup label="{$btr->import_shop_features|escape}">
+																	{foreach $features as $f}
+																		<option value="{$f}" {if $pkey == $f}selected{elseif $pkey == "param_`$f`"}selected{/if}>{$f}</option>
+																	{/foreach}
+																</optgroup>
+															</select>
+														</div>
+													</div>
 												</div>
-											</div>
-											<div class="col-lg-5 col-md-5 col-sm-12">
-												<div class="push-lg-4 col-lg-6 text-xs-left col-sm-12">
-													<select class="selectpicker fn_select" data-live-search="true" name="yml_params[{$pkey}]">
-														<optgroup label="{$btr->import_additional}">
-															<option id="import_skip" data-content="<span class='text_warning'>{$btr->import_skip}</span>" value="">{$btr->import_skip}</option>
-															<option id="import_new_feature" data-content="<span class='text_green'>{$btr->import_new_feature}</span>" value="{$pkey}">{$btr->import_new_feature}</option>
-														</optgroup>
-														<optgroup label="{$btr->import_main_fields}">
-															{foreach $columns as $k=>$f}
-																<option value="{$k}" {if $columns_compared[$pkey] == $k}selected{/if}>{$btr->get_translation('import_field_'|cat:$f)}</option>
-															{/foreach}
-														</optgroup>
-														<optgroup label="{$btr->import_shop_features}">
-															{foreach $features as $f}
-																<option value="{$f}" {if $pkey == $f}selected{elseif $pkey == "param_`$f`"}selected{/if}>{$f}</option>
-															{/foreach}
-														</optgroup>
+											{/foreach}
+										</div>
+										<div class="turbo-list-footer">
+											<div class="turbo-list-foot-left">
+												<div class="turbo-list-option">
+													<select class="selectpicker" name="convert_only">
+														<option value="0">{$btr->import_do_import|escape} YML</option>
+														<option value="1">{$btr->convert_yml_file_to_csv|escape}</option>
+													</select>
+												</div>
+												<div class="turbo-list-option">
+													<select class="selectpicker" name="yml_import_currency">
+														{foreach $yml_currencies as $k=>$c}
+															<option value="{$c['id']}">{$c['id']} ({$c['rate']})</option>
+														{/foreach}
 													</select>
 												</div>
 											</div>
+											<button type="submit" class="btn btn-primary">
+												<i class="align-middle" data-feather="check"></i>
+												{$btr->global_apply|escape}
+											</button>
 										</div>
-									{/foreach}
-									<div class="import_list_footer"></div>
-								</div>
-								<div class="row">
-									<div class="col-md-4 col-lg-4 col-sm-12 mt-2 mb-1">
-										<select class="selectpicker" name="convert_only">
-											<option value="0">{$btr->import_do_import|escape} YML</option>
-											<option value="1">{$btr->convert_yml_file_to_csv|escape}</option>
-										</select>
-									</div>
-									<div class="col-md-4 col-lg-4 col-sm-12 mt-2 mb-1">
-										<select class="selectpicker" name="yml_import_currency">
-											{foreach $yml_currencies as $k=>$c}
-												<option value="{$c['id']}">{$c['id']} ({$c['rate']})</option>
-											{/foreach}
-										</select>
-									</div>
-									<div class="col-md-4 col-lg-4 col-sm-12 mt-2 mb-1 mobile_text_right">
-										<button type="submit" class="btn btn_small btn-primary float-md-right">
-											{include file='svg_icon.tpl' svgId='download'}
-											<span>{$btr->import_do_import}</span>
-										</button>
-									</div>
-								</div>
+									</div>	
+								</form>
 							</div>
-						</form>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -151,89 +151,85 @@
 	{if !$filename_yml_size}
 		<div class="row">
 			<div class="col-lg-12 col-md-12">
-				<div class="boxed fn_toggle_wrap">
-					<div class="heading_box">
-						{$btr->import_download|escape}
-						<div class="toggle_arrow_wrap fn_toggle_card text-primary">
-							<a class="btn-minimize" href="javascript:;"><i class="fn_icon_arrow icon-chevron-down"></i></a>
+				<div class="card">
+					<div class="card-header">
+						<div class="card-actions float-end">
+							<div class="d-block d-lg-none position-relative collapse-icon">
+								<a href="javascript:;" class="collapse-chevron">
+									<i class="align-middle" data-feather="chevron-up"></i>
+								</a>
+							</div>
 						</div>
+						<h5 class="card-title mb-0">{$btr->import_download|escape}</h5>
 					</div>
-					<div class="toggle_body_wrap on fn_card">
-						<form method="post" id="product" enctype="multipart/form-data">
-							<input type="hidden" name="session_id" value="{$smarty.session.id}">
-							<div class="row">
-								<div class="col-lg-12 col-md-12 col-sm-12">
-									<div class="text_warning">
-										<div class="heading_normal text_warning">
-											<span class="text_warning">{$btr->import_backup|escape}</span>
-										</div>
-									</div>
+					<div class="collapse-card">
+						<div class="card-body mb-3">
+							<div class="alert alert-primary alert-dismissible" role="alert">
+								<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+								<div class="alert-message">
+									{$btr->import_backup|escape}
 								</div>
 							</div>
-							<div class="row">
-								<div class="col-lg-12 col-md-12 col-sm-12">
-									<div class="text_primary">
-										<div class="heading_normal text_primary">
-											<span class="text_primary">
-												{$btr->supported_formats|escape}: xml, xml.gz.
-												{$btr->import_maxsize|escape}
-												{if $config->max_upload_filesize>1024*1024}
-													{$config->max_upload_filesize/1024/1024|round:'2'} {$btr->general_mb|escape}
-												{else}
-													{$config->max_upload_filesize/1024|round:'2'} {$btr->general_kb|escape}
-												{/if}
-											</span>
-										</div>
-									</div>
+							<form method="post" id="product" enctype="multipart/form-data">
+								<input type="hidden" name="session_id" value="{$smarty.session.id}">
+								<div class="form-label">
+									{$btr->import_maxsize|escape}
+									{if $config->max_upload_filesize>1024*1024}
+										{$config->max_upload_filesize/1024/1024|round:'2'} {$btr->global_mb|escape}
+									{else}
+										{$config->max_upload_filesize/1024|round:'2'} {$btr->global_kb|escape}
+									{/if}
 								</div>
-							</div>
-							<div class="row">
-								<div class="col-lg-5 col-md-6 col-sm-12 my-h">
-									<div class="heading_label">{$btr->download_local_computer|escape}</div>
-									<div class="input_file_container">
-										<input name="file" class="file_upload input_file" id="my-file" type="file">
-										<label tabindex="0" for="my-file" class="input_file_trigger">
-											{include file='svg_icon.tpl' svgId='download'}
-											<span>{$btr->general_select_file|escape}</span>
-										</label>
-									</div>
-									<p class="input_file_return"></p>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-7 col-lg-7 col-sm-12 mb-h">
-									<div class="heading_label">{$btr->link_to_yml|escape}</div>
-									<input name="file_url" class="form-control" type="text" value="">
-								</div>
-								<div class="col-md-3 col-sm-3 col-lg-3 col-sm-12 float-sm-right mt-2">
-									<button type="submit" class="btn btn_small btn-primary float-md-right">
-										{include file='svg_icon.tpl' svgId='download'}
-										<span>{$btr->import_to_download|escape}</span>
+								<div class="input-group">
+									<input name="file" class="form-control" type="file">
+									<button type="submit" class="btn btn-primary">
+										<i class="align-middle" data-feather="upload"></i>
+										{$btr->import_to_download|escape}
 									</button>
 								</div>
-							</div>
-						</form>
+								<div class="form-label mt-1">
+									{$btr->supported_formats|escape}: xml, yml, gz.
+								</div>
+								<div class="row mt-3">
+									<div class="col-12">
+										<div class="form-label">{$btr->link_to_yml|escape}</div>
+										<div class="input-group">
+											<input name="file_url" class="form-control" type="text" value="" placeholder="URL...">
+											<button class="btn btn-primary" type="submit"><i class="align-middle mt-n1" data-feather="upload"></i> {$btr->import_to_download|escape}</button>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	{elseif $filename_yml_size && !$filename_csv_size && !$yml_params}
 		<div class="row">
-			<div class="col-lg-12 col-md-12">
-				<div class="boxed fn_toggle_wrap">
-					<div class="heading_box">
-						{if $filename_yml}{$btr->import_file|escape} {$filename_yml|escape}{/if} {if $filename_yml_size}({$filename_yml_size|escape}){/if}
-						{if $filename_csv}{$btr->import_file|escape} {$filename_csv|escape}{/if} {if $filename_csv_size}({$filename_csv_size|escape}){/if}
-						<div class="toggle_arrow_wrap fn_toggle_card text-primary">
-							<a class="btn-minimize" href="javascript:;"><i class="fn_icon_arrow icon-chevron-down"></i></a>
+			<div class="col-12">
+				<div class="card">
+					<div class="card-header">
+						<div class="card-actions float-end">
+							<div class="d-block d-lg-none position-relative collapse-icon">
+								<a href="javascript:;" class="collapse-chevron">
+									<i class="align-middle" data-feather="chevron-up"></i>
+								</a>
+							</div>
 						</div>
+						<h5 class="card-title mb-0">
+							{if $filename_yml}{$btr->import_file|escape} {$filename_yml|escape}{/if} {if $filename_yml_size}({$filename_yml_size|escape}){/if}
+							{if $filename_csv}{$btr->import_file|escape} {$filename_csv|escape}{/if} {if $filename_csv_size}({$filename_csv_size|escape}){/if}
+						</h5>
 					</div>
-					<div class="toggle_body_wrap on fn_card">
-						<form method="post" enctype="multipart/form-data">
-							<input type="hidden" name="session_id" value="{$smarty.session.id}">
-							<input type="hidden" name="file_fields" value="{$filename_yml}">
-							<button type="submit" class="btn btn_small btn-primary">{$btr->read_field_names|escape}</button>
-						</form>
+					<div class="collapse-card">
+						<div class="card-body">
+							<form method="post" enctype="multipart/form-data">
+								<input type="hidden" name="session_id" value="{$smarty.session.id}">
+								<input type="hidden" name="file_fields" value="{$filename_yml}">
+								<button type="submit" class="btn btn-primary"><i class="align-middle" data-feather="check"></i> {$btr->read_field_names|escape}</button>
+							</form>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -243,20 +239,21 @@
 
 {* jQuery UI *}
 {css id="jqueryui" include=[
-"turbo/design/js/jquery/jquery-ui.min.css"
+	"turbo/design/js/jquery/jquery-ui.min.css"
 ]}{/css}
 {stylesheet minify=true}
 
 {js id="jqueryui" priority=99 include=[
-"turbo/design/js/jquery/jquery-ui.min.js"
+	"turbo/design/js/jquery/jquery-ui.min.js"
 ]}{/js}
 {javascript minify=true}
 
 {* Piecon *}
 {js id="piecon" priority=99 include=[
-"turbo/design/js/piecon/piecon.min.js"
+	"turbo/design/js/piecon/piecon.min.js"
 ]}{/js}
 {javascript minify=true}
+
 <script>
 	{if $filename_csv && !$convert_only}
 		{literal}
@@ -280,12 +277,13 @@
 					success: function(data) {
 						Piecon.setProgress(Math.round(100 * data.from / data.totalsize * 100) / 100);
 						$("#progressbar").progressbar({ value: 100 * data.from / data.totalsize });
-						$("ul#import_result").text('{/literal}{$btr->progress_global|escape}{literal}: ' + Math.round(data.from / 1024) + ' {/literal}{$btr->of_global|escape}{literal} ' + Math.round(data.totalsize / 1024) + ' {/literal}{$btr->general_kb|escape}{literal}.');
+						$("#import-result").text('{/literal}{$btr->global_progress|escape}{literal}: ' + Math.round(data.from / 1024) + ' {/literal}{$btr->global_of|escape}{literal} ' + Math.round(data.totalsize / 1024) + ' {/literal}{$btr->global_kb|escape}{literal}.');
 						if (data != false && !data.end) {
 							do_import(data.from);
 						} else {
 							Piecon.setProgress(100);
 							$("#progressbar").hide('fast');
+							$("#import-result").hide('fast');
 							$('#success').show();
 							in_process = false;
 						}
@@ -298,14 +296,14 @@
 		{/literal}
 	{/if}
 	{literal}
-		$('.fn_skip_all').click(function() {
-			$('.fn_select #import_skip').prop('selected', true);
-			$('.fn_select').selectpicker('refresh');
+		$('.js-skip-all').click(function() {
+			$('.js-select #import-skip').prop('selected', true);
+			$('.js-select').selectpicker('refresh');
 		});
-		$('.fn_new_all').click(function() {
-			$('.fn_select').find('#import_skip').remove();
-			$('.fn_select #import_new_feature').after('<option id="import_skip" data-content="<span class=&quot;text_warning&quot;>{/literal}{$btr->import_skip}{literal}</span>" value="">{/literal}{$btr->import_skip}{literal}</option>');
-			$('.fn_select').selectpicker('refresh');
+		$('.js-new-all').click(function() {
+			$('.js-select').find('#import-skip').remove();
+			$('.js-select #import-new-feature').after('<option id="import-skip" data-content="<span class=&quot;text-danger&quot;>{/literal}{$btr->import_skip}{literal}</span>" value="">{/literal}{$btr->import_skip}{literal}</option>');
+			$('.js-select').selectpicker('refresh');
 		});
 	{/literal}
 </script>
@@ -331,7 +329,7 @@
 		}
 
 		#progressbar {
-			background-color: #e2e8ee;
+			background-color: #e9ecef;
 			border-radius: 0.2rem;
 			font-size: 0.61875rem;
 			height: 1rem;
@@ -344,7 +342,7 @@
 		}
 
 		.ui-progressbar-value {
-			background-color: #3f80ea;
+			background-color: #3b7ddd;
 			color: #fff;
 			flex-direction: column;
 			justify-content: center;

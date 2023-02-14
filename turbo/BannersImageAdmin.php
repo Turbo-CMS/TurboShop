@@ -17,6 +17,8 @@ class BannersImageAdmin extends Turbo
 
 			$banners_image->url = $this->request->post('url');
 			$banners_image->button = $this->request->post('button');
+			$banners_image->color = $this->request->post('color');
+			$banners_image->style = $this->request->post('style');
 			$banners_image->title = $this->request->post('title');
 			$banners_image->alt = $this->request->post('alt');
 			$banners_image->description = $this->request->post('description');
@@ -32,12 +34,23 @@ class BannersImageAdmin extends Turbo
 			if ($this->request->post('delete_image')) {
 				$this->banners->delete_image($banners_image->id);
 			}
+			// Delete  background
+			if ($this->request->post('delete_background')) {
+				$this->banners->delete_background($banners_image->id);
+			}
 			// Image upload
 			$image = $this->request->files('image');
 			if (!empty($image['name']) && in_array(strtolower(pathinfo($image['name'], PATHINFO_EXTENSION)), $this->allowed_image_extentions)) {
 				$this->banners->delete_image($banners_image->id);
 				move_uploaded_file($image['tmp_name'], $this->root_dir . $this->config->banners_images_dir . $image['name']);
 				$this->banners->update_banners_image($banners_image->id, array('image' => $image['name']));
+			}
+			// Image background
+			$background = $this->request->files('background');
+			if (!empty($background['name']) && in_array(strtolower(pathinfo($background['name'], PATHINFO_EXTENSION)), $this->allowed_image_extentions)) {
+				$this->banners->delete_background($banners_image->id);
+				move_uploaded_file($background['tmp_name'], $this->root_dir . $this->config->banners_images_dir . $background['name']);
+				$this->banners->update_banners_image($banners_image->id, array('background' => $background['name']));
 			}
 			$banners_image = $this->banners->get_banners_image(intval($banners_image->id));
 		} else {

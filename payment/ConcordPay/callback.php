@@ -85,12 +85,6 @@ if (isset($data['transactionStatus']) && $data['transactionStatus'] === ConcordP
     die("Error $reasonCode: $reason");
 }
 
-// Turbo CMS order statuses:
-// 0 - Новый
-// 1 - Принят
-// 2 - Выполнен
-// 3 - Удален
-
 if (isset($data['transactionStatus']) && $data['transactionStatus'] === ConcordPay::PAYMENT_STATUS_APPROVED) {
     $payment_date = new DateTime('now', new DateTimeZone('UTC'));
     if ($data['type'] === ConcordPay::RESPONSE_TYPE_PAYMENT) {
@@ -109,9 +103,9 @@ if (isset($data['transactionStatus']) && $data['transactionStatus'] === ConcordP
             (int)$order->id,
             array(
                 'paid'         => ConcordPay::ORDER_PAYMENT_STATUS_NOT_PAID,
-                'status'       => 2, // Выполнен.
+                'status'       => 2,
                 'payment_date' => $payment_date->format('Y-m-d H:i:s'),
-                'note'         => 'Платеж возвращен клиенту'
+                'note'         => 'Payment returned to customer'
             )
         );
     }

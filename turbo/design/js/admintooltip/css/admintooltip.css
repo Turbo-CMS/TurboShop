@@ -13,8 +13,8 @@ a.admin_bookmark {
     text-decoration: none!important;
     z-index: 1029;
     cursor: pointer;
-    border: 1px solid #e7e7e7 !important;
-    background-color: #fff !important;
+    border: 1px solid #e7e7e7;
+    background-color: #fff;
 }
 
 .custom-icon-palette-settings {

@@ -15,13 +15,17 @@ if (!$turbo->request->check_session()) {
 	exit();
 }
 $content = $turbo->request->post('content');
+$subdir = $turbo->request->post('dir') ? $turbo->request->post('dir') . "/" : "";
+$subdir = str_replace(array(".", ".."), "", $subdir);
+
 $template = $turbo->request->post('template');
+
 $theme = $turbo->request->post('theme', 'string');
 
 if (pathinfo($template, PATHINFO_EXTENSION) != 'tpl')
 	exit();
 
-$file = $turbo->config->root_dir . 'design/' . $theme . '/html/' . $template;
+$file = $turbo->config->root_dir . 'design/' . $theme . '/html/' . $subdir . $template;
 if (is_file($file) && is_writable($file) && !is_file($turbo->config->root_dir . 'design/' . $theme . '/locked'))
 	file_put_contents($file, $content);
 

@@ -1,15 +1,5 @@
 <?php
 
-/**
- * Turbo CMS
- *
- * @author	Turbo CMS
- * @link	https://turbo-cms.com
- *
- * This class uses the template products.tpl
- *
- */
-
 require_once('View.php');
 
 class ProductsView extends View
@@ -396,10 +386,6 @@ class ProductsView extends View
 
 		$filter['page'] = $current_page;
 		$filter['limit'] = $items_per_page;
-
-		///////////////////////////////////////////////
-		// Pagination END
-		///////////////////////////////////////////////
 
 		$discount = 0;
 		if (isset($_SESSION['user_id']) && $user = $this->users->get_user(intval($_SESSION['user_id'])))

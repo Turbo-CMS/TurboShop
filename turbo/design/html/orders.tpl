@@ -1,401 +1,377 @@
-{* Title *}
-{$meta_title=$btr->general_orders scope=global}
+{$meta_title=$btr->global_orders scope=global}
 
 <div class="row">
-	<div class="col-lg-7 col-md-7">
-		<div class="wrap_heading">
+	<div class="col-lg-8 col-md-8">
+		<div class="d-md-flex mb-3">
 			{if $orders_count}
-				<div class="box_heading heading_page">
-					{$btr->general_orders|escape} - {$orders_count}
-					<div class="export_block hint-bottom-middle-t-info-s-small-mobile hint-anim" data-hint="{$btr->orders_export|escape}">
-						{include file='svg_icon.tpl' svgId='file_export'}
-					</div>
+				<h1 class="d-inline align-middle me-3">
+					{$btr->global_orders|escape} - {$orders_count}
+				</h1>
+				<div class="d-inline-block heading-block text-dark me-3 mb-3 mt-1" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->orders_export|escape}">
+					<i class="align-middle cursor-pointer" data-feather="file-text"></i>
 				</div>
 			{else}
-				<div class="box_heading heading_page">{$btr->orders_no|escape}</div>
+				<h1 class="d-inline align-middle me-3">{$btr->orders_no|escape}</h1>
 			{/if}
-			<div class="box_btn_heading">
-				<a class="btn btn_small btn-primary" href="{url module=OrderAdmin}">
-					{include file='svg_icon.tpl' svgId='plus'}
-					<span>{$btr->orders_add|escape}</span>
-				</a>
+			<div class="d-grid d-sm-block mt-2 mt-md-0">
+				<a class="btn btn-primary" href="{url module=OrderAdmin}"><i data-feather="plus"></i> {$btr->orders_add|escape}</a>
 			</div>
 		</div>
 	</div>
-	<div class="col-lg-5 col-md-5 col-xs-12 float-xs-right">
-		<div class="boxed_search">
-			<form class="search" method="get">
-				<input type="hidden" name="module" value="OrdersAdmin">
-				<div class="input-group">
-					<input name="keyword" class="form-control" placeholder="{$btr->general_search|escape}" type="text" value="{$keyword|escape}">
-					<span class="input-group-btn">
-						<button type="submit" class="btn btn-primary">{include file='svg_icon.tpl' svgId='search'} <span class="hidden-md-down"></span></button>
-					</span>
-				</div>
-			</form>
-		</div>
+	<div class="col-lg-4 col-md-4 col-sm-12 float-end">
+		<form class="search mb-3" method="get">
+			<input type="hidden" name="module" value="OrdersAdmin">
+			<div class="input-group">
+				<input name="keyword" class="form-control" placeholder="{$btr->global_search|escape}" type="text" value="{$keyword|escape}">
+				<button class="btn btn-primary" type="submit"><i class="align-middle mt-n1" data-feather="search"></i></button>
+			</div>
+		</form>
 	</div>
 </div>
 
 {if $message_error}
 	<div class="row">
-		<div class="col-lg-12 col-md-12 col-sm-12">
-			<div class="boxed boxed_warning">
-				<div class="heading_box">
+		<div class="col-12">
+			<div class="alert alert-danger alert-dismissible fade show" role="alert">
+				<div class="alert-message">
 					{if $message_error=='error_closing'}
 						{$btr->orders_in|escape}
 						{foreach $error_orders as $error_order_id}
-							<div>
-								№ {$error_order_id}
-							</div>
+							№ {$error_order_id}
 						{/foreach}
 						{$btr->orders_shortage|escape}
 					{else}
 						{$message_error|escape}
 					{/if}
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>
 			</div>
 		</div>
 	</div>
 {/if}
 
-<div class="boxed fn_toggle_wrap">
-	{if $orders}
-		<div class="row">
-			<div class="col-lg-12 col-md-12">
-				<div class="hidden-md-up">
-					<div class="row mb-1">
-						<div class=" col-md-6 col-sm-12">
-							<select name="status" class="selectpicker" onchange="location = this.value;">
-								<option value="{url module=OrdersAdmin status=0 keyword=null id=null page=null label=null}" {if $status==0}selected=""{/if}>{$btr->general_new_order|escape}</option>
-								<option value="{url module=OrdersAdmin status=1 keyword=null id=null page=null label=null}" {if $status==1}selected=""{/if}>{$btr->general_accepted_order|escape}</option>
-								<option value="{url module=OrdersAdmin status=2 keyword=null id=null page=null label=null}" {if $status==2}selected=""{/if}>{$btr->general_closed_order|escape}</option>
-								<option value="{url module=OrdersAdmin status=3 keyword=null id=null page=null label=null}" {if $status==3}selected=""{/if}>{$btr->general_canceled_order|escape}</option>
-								<option value="{url module=OrdersAdmin status=4 keyword=null id=null page=null label=null}" {if $status==4}selected=""{/if}>{$btr->general_all|escape}</option>
-							</select>
-						</div>
-					</div>
-				</div>
-				<div class="boxed_sorting">
-					<div class="row">
-						<div class="col-md-11 col-lg-11 col-xl-7 col-sm-12 mb-1">
-							<div class="date">
-								<form class="date_filter row" method="get">
-									<input type="hidden" name="module" value="OrdersAdmin">
-									<input type="hidden" name="status" value="{$status}">
-									<div class="col-md-5 col-lg-5 pr-0 pl-0">
-										<div class="input-group">
-											<span class="input-group-addon-date">{$btr->general_from|escape}</span>
-											<input type="text" class="fn_from_date form-control" name="from_date" value="{$from_date}" autocomplete="off">
-											<div class="input-group-addon">
-												{include file='svg_icon.tpl' svgId='calendar'}
-											</div>
-										</div>
-									</div>
-									<div class="col-md-5 col-lg-5 pr-0 pl-0">
-										<div class="input-group">
-											<span class="input-group-addon-date">{$btr->general_to|escape}</span>
-											<input type="text" class="fn_to_date form-control" name="to_date" value="{$to_date}" autocomplete="off">
-											<div class="input-group-addon">
-												{include file='svg_icon.tpl' svgId='calendar'}
-											</div>
-										</div>
-									</div>
-									<div class="col-md-2 col-lg-2 pr-0">
-										<button class="btn btn-primary" type="submit">{$btr->general_apply|escape}</button>
-									</div>
-								</form>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-6 col-lg-4 col-sm-12">
-							<select name="status" class="selectpicker" onchange="location = this.value;">
-								<option value="{url module=OrdersAdmin status=0 keyword=null id=null page=null label=null from_date=null to_date=null}" {if $smarty.get.status && $status == 0 || !$status}selected{/if}>{$btr->general_new_order|escape}</option>
-								<option value="{url module=OrdersAdmin status=1 keyword=null id=null page=null label=null from_date=null to_date=null}" {if $status==1}selected{/if}>{$btr->general_accepted_order|escape}</option>
-								<option value="{url module=OrdersAdmin status=2 keyword=null id=null page=null label=null from_date=null to_date=null}" {if $status==2}selected{/if}>{$btr->general_closed_order|escape}</option>
-								<option value="{url module=OrdersAdmin status=3 keyword=null id=null page=null label=null from_date=null to_date=null}" {if $status==3}selected{/if}>{$btr->general_canceled_order|escape}</option>
-								<option value="{url module=OrdersAdmin status=4 keyword=null id=null page=null label=null from_date=null to_date=null}" {if $status==4}selected=""{/if}>{$btr->general_all|escape}</option>
-							</select>
-						</div>
-						{if $labels}
-							<div class="col-md-6 col-lg-4 col-sm-12">
-								<select class="selectpicker" onchange="location = this.value;">
-									<option value="{url label=null}" {if $label->id != $l->id} selected{/if}>{$btr->orders_all_labels|escape}</option>
-									{foreach $labels as $l}
-										<option value="{url label=$l->id}" {if $label->id == $l->id}selected{/if}>{$l->name|escape}</option>
-									{/foreach}
+<div class="card">
+	<div class="card-body">
+		{if $orders}
+			<div class="row">
+				<div class="col-lg-12 col-md-12">
+					<div class="d-block d-md-none">
+						<div class="row mb-3">
+							<div class="col-md-6 col-sm-12">
+								<select name="status" class="selectpicker" onchange="location = this.value;">
+									<option value="{url module=OrdersAdmin status=0 keyword=null id=null page=null label=null}" {if $status==0}selected{/if}>{$btr->global_new_order|escape}</option>
+									<option value="{url module=OrdersAdmin status=1 keyword=null id=null page=null label=null}" {if $status==1}selected{/if}>{$btr->global_accepted_order|escape}</option>
+									<option value="{url module=OrdersAdmin status=2 keyword=null id=null page=null label=null}" {if $status==2}selected{/if}>{$btr->global_closed_order|escape}</option>
+									<option value="{url module=OrdersAdmin status=3 keyword=null id=null page=null label=null}" {if $status==3}selected{/if}>{$btr->global_canceled_order|escape}</option>
+									<option value="{url module=OrdersAdmin status=4 keyword=null id=null page=null label=null}" {if $status==4}selected{/if}>{$btr->global_all|escape}</option>
 								</select>
 							</div>
-						{/if}
+						</div>
+					</div>
+					<div class="d-none d-md-block">
+						<form method="get">
+							<input type="hidden" name="module" value="OrdersAdmin">
+							<input type="hidden" name="status" value="{$status}">
+							<div class="row">
+								<div class="col-sm-12 col-md-4 col-lg-4">
+									<div class="input-group mb-3">
+										<span class="input-group-text">{$btr->global_from|escape}</span>
+										<input type="text" class="flatpickr form-control" name="from_date" value="{$from_date}" autocomplete="off">
+										<span class="input-group-text"><i class="align-middle" data-feather="calendar"></i></span>
+									</div>
+								</div>
+								<div class="col-sm-12 col-md-4 col-lg-4">
+									<div class="input-group mb-3">
+										<span class="input-group-text">{$btr->global_to|escape}</span>
+										<input type="text" class="flatpickr form-control" name="to_date" value="{$to_date}" autocomplete="off">
+										<span class="input-group-text"><i class="align-middle" data-feather="calendar"></i></span>
+									</div>
+								</div>
+								<div class="col-sm-12 col-md-4 col-lg-4">
+									<button class="btn btn-primary" type="submit"><i class="align-middle" data-feather="check"></i> {$btr->global_apply|escape}</button>
+								</div>
+							</div>
+						</form>
+						<div class="row">
+							<div class="col-sm-12 col-md-6 col-lg-4 mb-3">
+								<select name="status" class="selectpicker" onchange="location = this.value;">
+									<option value="{url module=OrdersAdmin status=0 keyword=null id=null page=null label=null from_date=null to_date=null}" {if $smarty.get.status && $status == 0 || !$status}selected{/if}>{$btr->global_new_order|escape}</option>
+									<option value="{url module=OrdersAdmin status=1 keyword=null id=null page=null label=null from_date=null to_date=null}" {if $status==1}selected{/if}>{$btr->global_accepted_order|escape}</option>
+									<option value="{url module=OrdersAdmin status=2 keyword=null id=null page=null label=null from_date=null to_date=null}" {if $status==2}selected{/if}>{$btr->global_closed_order|escape}</option>
+									<option value="{url module=OrdersAdmin status=3 keyword=null id=null page=null label=null from_date=null to_date=null}" {if $status==3}selected{/if}>{$btr->global_canceled_order|escape}</option>
+									<option value="{url module=OrdersAdmin status=4 keyword=null id=null page=null label=null from_date=null to_date=null}" {if $status==4}selected{/if}>{$btr->global_all|escape}</option>
+								</select>
+							</div>
+							{if $labels}
+								<div class="col-sm-12 col-md-6 col-lg-4 mb-3">
+									<select class="selectpicker" onchange="location = this.value;">
+										<option value="{url label=null}" {if $label->id != $l->id}selected{/if}>{$btr->orders_all_labels|escape}</option>
+										{foreach $labels as $l}
+											<option value="{url label=$l->id}" {if $label->id == $l->id}selected{/if}>{$l->name|escape}</option>
+										{/foreach}
+									</select>
+								</div>
+							{/if}
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="row">
-			<div class="col-lg-12 col-md-12 col-sm-12">
-				<form class="fn_form_list" method="post">
-					<input type="hidden" name="session_id" value="{$smarty.session.id}">
-					<div class="orders_list turbo_list products_list">
-						<div class="turbo_list_head">
-							<div class="turbo_list_heading turbo_list_check">
-								<label class="form-check">
-									<input class="form-check-input fn_check_all fn_check_all_single" type="checkbox" value="">
-								</label>
-							</div>
-							<div class="turbo_list_heading turbo_list_order_number">№ </div>
-							<div class="turbo_list_heading turbo_list_orders_name">{$btr->general_full_name|escape}</div>
-							<div class="turbo_list_heading turbo_list_order_status">{$btr->general_status|escape}</div>
-							<div class="turbo_list_heading turbo_list_order_product_count">{$btr->general_products|escape}</div>
-							<div class="turbo_list_heading turbo_list_orders_price">{$btr->general_sales_amount}</div>
-							<div class="turbo_list_heading turbo_list_order_marker">{$btr->orders_label|escape}</div>
-							<div class="turbo_list_heading turbo_list_close"></div>
-						</div>
-						<div class="turbo_list_body">
-							{foreach $orders as $order}
-								<div class="fn_row turbo_list_body_item">
-									<div class="turbo_list_row">
-										<div class="turbo_list_boding turbo_list_check">
-											<label class="form-check">
-												<input class="form-check-input fn_check_all_single" type="checkbox" name="check[]" value="{$order->id}">
-											</label>
-										</div>
-										<div class="turbo_list_boding turbo_list_boding_order turbo_list_order_number">
-											<a href="{url module=OrderAdmin id=$order->id return=$smarty.server.REQUEST_URI}">{$btr->general_order_number|escape} {$order->id}</a>
-											{if $order->paid}
-												<div class="order_paid">
-													<span class="tag tag-success">{$btr->order_paid|escape}</span>
-												</div>
-											{else}
-												<div class="order_paid">
-													<span class="tag tag-default">{$btr->order_not_paid|escape}</span>
-												</div>
-											{/if}
-										</div>
-										<div class="turbo_list_boding turbo_list_orders_name">
-											<span class="text_dark text_bold">{$order->name|escape}</span>
-											{if $order->note}
-												<div class="note">{$order->note|escape}</div>
-											{/if}
-											<div class="hidden-lg-up mt-q">
-												<span class="tag tag-warning">
-													{if $order->status == 0}
-														{$btr->general_new_order|escape}
-													{/if}
-													{if $order->status == 1}
-														{$btr->general_accepted_order|escape}
-													{/if}
-													{if $order->status == 2}
-														{$btr->general_closed_order|escape}
-													{/if}
-													{if $order->status == 3}
-														{$btr->general_canceled_order|escape}
-													{/if}
-												</span>
-											</div>
-											<div class="mt-q"><span class="hidden-md-down">{$btr->orders_order_in|escape}</span>
-												<span class="tag tag-default">{$order->date|date} l {$order->date|time}</span>
-											</div>
-										</div>
-										<div class="turbo_list_boding turbo_list_order_status">
-											{if $order->status == 0}
-												{$btr->general_new_order|escape}
-											{/if}
-											{if $order->status == 1}
-												{$btr->general_accepted_order|escape}
-											{/if}
-											{if $order->status == 2}
-												{$btr->general_closed_order|escape}
-											{/if}
-											{if $order->status == 3}
-												{$btr->general_canceled_order|escape}
-											{/if}
-										</div>
-										<div class="turbo_list_boding turbo_list_order_product_count">
-											<span>{$order->purchases|count}</span>
-											<span class="fn_orders_toggle">
-												<i class="fn_icon_arrow icon-chevron-down m-t-2"></i>
-											</span>
-										</div>
-										<div class="turbo_list_boding turbo_list_orders_price">
-											<div class="input-group">
-												<span class="form-control">
-													{$order->total_price|escape}
-												</span>
-												<span class="input-group-addon">
-													{$currency->sign|escape}
-												</span>
-											</div>
-										</div>
-										<div class="turbo_list_boding turbo_list_order_marker">
-											<span class="fn_ajax_label_wrapper">
-												<span class="fn_labels_show box_labels_show">{include file='svg_icon.tpl' svgId='tag'} <span>{$btr->orders_choose|escape}</span> </span>
-
-												<div class='fn_labels_hide box_labels_hide'>
-													<span class="heading_label">{$btr->general_labels|escape} <i class="fn_delete_labels_hide btn_close delete_labels_hide">{include file='svg_icon.tpl' svgId='close'}</i></span>
-													<ul class="option_labels_box">
-														{foreach $labels as $l}
-															<li class="fn_ajax_labels" data-order_id="{$order->id}" style="background-color: {$l->color|escape}">
-																<input id="l{$order->id}_{$l->id}" type="checkbox" class="hidden_check_1" value="{$l->id}" {if is_array($order->labels_ids) && in_array($l->id,$order->labels_ids)}checked=""{/if} />
-																<label for="l{$order->id}_{$l->id}" class="label_labels"><span>{$l->name|escape}</span></label>
-															</li>
-														{/foreach}
-													</ul>
-												</div>
-												<div class="fn_order_labels orders_labels">
-													{include file="labels_ajax.tpl"}
-												</div>
-											</span>
-										</div>
-										<div class="turbo_list_boding turbo_list_close">
-											{*delete*}
-											<button data-hint="{$btr->orders_delete|escape}" type="button" class="btn_close fn_remove hint-bottom-right-t-info-s-small-mobile hint-anim" data-toggle="modal" data-target="#fn_action_modal" onclick="success_action($(this));">
-												{include file='svg_icon.tpl' svgId='delete'}
-											</button>
-										</div>
-									</div>
-									<div class="turbo_list_row purchases_block">
-										<div class="orders_purchases_block" style="display: none">
-											<div class="purchases_table">
-												<div class="purchases_head">
-													<div class="purchases_heading purchases_table_orders_num">№</div>
-													<div class="purchases_heading purchases_table_orders_sku">{$btr->general_sku|escape}</div>
-													<div class="purchases_heading purchases_table_orders_name">{$btr->general_name|escape}</div>
-													<div class="purchases_heading purchases_table_orders_price">{$btr->general_price|escape}</div>
-													<div class="purchases_heading col-lg-2 purchases_table_orders_unit">{$btr->general_qty|escape}</div>
-													<div class="purchases_heading purchases_table_orders_total">{$btr->orders_total_price|escape}</div>
-												</div>
-												<div class="purchases_body">
-													{foreach $order->purchases as $purchase}
-														<div class="purchases_body_items">
-															<div class="purchases_body_item">
-																<div class="purchases_bodyng purchases_table_orders_num">{$purchase@iteration}</div>
-																<div class="purchases_bodyng purchases_table_orders_sku">{$purchase->sku|default:"&mdash;"}</div>
-																<div class="purchases_bodyng purchases_table_orders_name">
-																	{$purchase->product_name|escape} {if $purchase->variant_color}/ {$purchase->variant_color|escape}{/if} {if $purchase->variant_name}/ {$purchase->variant_name|escape}{/if}
-																</div>
-																<div class="purchases_bodyng purchases_table_orders_price">{$purchase->price|convert} {$currency->sign|escape}</div>
-																<div class="purchases_bodyng purchases_table_orders_unit"> {$purchase->amount}{$settings->units|escape}</div>
-																<div class="purchases_bodyng purchases_table_orders_total"> {($purchase->amount*$purchase->price)|convert} {$currency->sign|escape}</div>
-															</div>
-														</div>
-													{/foreach}
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							{/foreach}
-						</div>
-						<div class="turbo_list_footer">
-							<div class="turbo_list_foot_left">
-								<div class="turbo_list_heading turbo_list_check">
+			<div class="row">
+				<div class="col-12">
+					<form class="js-form-list" method="post">
+						<input type="hidden" name="session_id" value="{$smarty.session.id}">
+						<div class="turbo-list">
+							<div class="turbo-list-head">
+								<div class="turbo-list-heading turbo-list-check">
 									<label class="form-check">
-										<input class="form-check-input fn_check_all fn_check_all_single" type="checkbox" value="">
+										<input class="form-check-input js-check-all js-check-all-single" type="checkbox" value="">
 									</label>
 								</div>
-								<div class="turbo_list_option">
-									<select name="action" class="selectpicker fn_change_orders">
-										<option value="0">{$btr->general_select_action|escape}</option>
-										{if $status!==0}<option value="set_status_0">{$btr->move_to_new|escape}</option>{/if}
-										{if $status!==1}<option value="set_status_1">{$btr->move_to_accepted|escape}</option>{/if}
-										{if $status!==2}<option value="set_status_2">{$btr->move_to_closed|escape}</option>{/if}
-										{foreach $labels as $l}
-											<option value="set_label_{$l->id}">{$btr->set_label|escape} &laquo;{$l->name}&raquo;</option>
-										{/foreach}
-										{foreach $labels as $l}
-											<option value="unset_label_{$l->id}">{$btr->unset_label|escape} &laquo;{$l->name}&raquo;</option>
-										{/foreach}
-										<option value="delete">{$btr->delete_selected_orders|escape}</option>
-									</select>
-								</div>
+								<div class="turbo-list-heading turbo-list-order-number">№</div>
+								<div class="turbo-list-heading turbo-list-orders-name">{$btr->global_full_name|escape}</div>
+								<div class="turbo-list-heading turbo-list-order-status">{$btr->global_status|escape}</div>
+								<div class="turbo-list-heading turbo-list-order-product-count">{$btr->global_products|escape}</div>
+								<div class="turbo-list-heading turbo-list-orders-price">{$btr->global_sales_amount}</div>
+								<div class="turbo-list-heading turbo-list-order-marker">{$btr->orders_label|escape}</div>
+								<div class="turbo-list-heading turbo-list-delete"></div>
 							</div>
-							<button type="submit" class=" btn btn_small btn-primary">
-								{include file='svg_icon.tpl' svgId='checked'}
-								<span>{$btr->general_apply|escape}</span>
-							</button>
+							<div class="turbo-list-body">
+								{foreach $orders as $order}
+									<div class="js-row turbo-list-body-item">
+										<div class="turbo-list-row">
+											<div class="turbo-list-boding turbo-list-check">
+												<label class="form-check">
+													<input class="form-check-input js-check-all-single" type="checkbox" name="check[]" value="{$order->id}">
+												</label>
+											</div>
+											<div class="turbo-list-boding turbo-list-boding-order turbo-list-order-number">
+												<a href="{url module=OrderAdmin id=$order->id return=$smarty.server.REQUEST_URI}" class="fw-bold text-body text-decoration-none">{$btr->global_order_number|escape} {$order->id}</a>
+												{if $order->paid}
+													<div class="mt-1">
+														<span class="badge badge-success-light">{$btr->order_paid|escape}</span>
+													</div>
+												{else}
+													<div class="mt-1">
+														<span class="badge badge-secondary-light">{$btr->order_not_paid|escape}</span>
+													</div>
+												{/if}
+											</div>
+											<div class="turbo-list-boding turbo-list-orders-name">
+												<a href="{url module=OrderAdmin id=$order->id return=$smarty.server.REQUEST_URI}" class="fw-bold text-body text-decoration-none">{$order->name|escape}</a>
+												{if $order->note}
+													<div class="text-muted fw-light">{$order->note|escape}</div>
+												{/if}
+												<div class="d-block d-lg-none mt-1">
+													{if $order->status == 0}
+														<span class="badge badge-primary-light">
+															{$btr->global_new_order|escape}
+														</span>
+													{/if}
+													{if $order->status == 1}
+														<span class="badge badge-warning-light">
+															{$btr->global_new_order|escape}
+														</span>
+													{/if}
+													{if $order->status == 2}
+														<span class="badge badge-info-light">
+															{$btr->global_closed_order|escape}
+														</span>
+													{/if}
+													{if $order->status == 3}
+														<span class="badge badge-danger-light">
+															{$btr->global_canceled_order|escape}
+														</span>
+													{/if}
+												</div>
+												<div class="mt-1">
+													<span class="d-none d-lg-inline-block text-secondary me-1">{$btr->orders_order_in|escape}:</span>
+													<span class="badge badge-secondary-light">{$order->date|date} l {$order->date|time}</span>
+												</div>
+											</div>
+											<div class="turbo-list-boding turbo-list-order-status">
+												{if $order->status == 0}
+													<span class="badge badge-primary-light">
+														{$btr->global_new_order|escape}
+													</span>
+												{/if}
+												{if $order->status == 1}
+													<span class="badge badge-warning-light">
+														{$btr->global_accepted_order|escape}
+													</span>
+												{/if}
+												{if $order->status == 2}
+													<span class="badge badge-info-light">
+														{$btr->global_closed_order|escape}
+													</span>
+												{/if}
+												{if $order->status == 3}
+													<span class="badge badge-danger-light">
+														{$btr->global_canceled_order|escape}
+													</span>
+												{/if}
+											</div>
+											<div class="turbo-list-boding turbo-list-order-product-count">
+												<span>{$order->purchases|count}</span>
+												<span class="js-orders-toggle cursor-pointer">
+													<span class="js-icon-arrow">
+														<i class="align-middle" data-feather="chevron-down"></i>
+													</span>
+												</span>
+											</div>
+											<div class="turbo-list-boding turbo-list-orders-price">
+												<div class="input-group">
+													<span class="form-control">
+														{$order->total_price|escape}
+													</span>
+													<span class="input-group-text">
+														{$currency->sign|escape}
+													</span>
+												</div>
+											</div>
+											<div class="turbo-list-boding turbo-list-order-marker">
+												<span class="js-ajax-label-wrapper">
+													<a class="nav-link dropdown-toggle" href="#" id="labelsDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{$btr->global_select_label|escape} </a>
+													<div class="dropdown-menu dropdown-menu-start js-labels-hide box-labels-hide" aria-labelledby="labelsDropdown">
+														<ul class="option-labels-box">
+															{foreach $labels as $l}
+																<li class="js-ajax-labels badge d-block text-start my-2" data-order-id="{$order->id}" style="background-color: {$l->color|escape}">
+																	<input id="l{$order->id}_{$l->id}" type="checkbox" class="d-none" name="order_labels[]" value="{$l->id}" {if is_array($order->labels_ids) && in_array($l->id,$order->labels_ids)}checked="" {/if} />
+																	<label for="l{$order->id}_{$l->id}" class="cursor-pointer w-100"><span class="d-inline-block align-middle ms-3">{$l->name|escape}</span></label>
+																</li>
+															{/foreach}
+														</ul>
+													</div>
+													<div class="js-order-labels">
+														{include file="labels_ajax.tpl"}
+													</div>
+												</span>
+											</div>
+											<div class="turbo-list-boding turbo-list-delete">
+												<div data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->orders_delete|escape}">
+													<button type="button" class="btn-delete js-remove" data-bs-toggle="modal" data-bs-target="#actionModal" onclick="success_action($(this));">
+														<i class="align-middle" data-feather="trash-2"></i>
+													</button>
+												</div>
+											</div>
+										</div>
+										<div class="turbo-list-row purchases-block">
+											<div class="orders-purchases-block" style="display: none">
+												<div class="purchases-table">
+													<div class="purchases-head">
+														<div class="purchases-heading purchases-table-orders-num">№</div>
+														<div class="purchases-heading purchases-table-orders-sku">{$btr->global_sku|escape}</div>
+														<div class="purchases-heading purchases-table-orders-name">{$btr->global_title|escape}</div>
+														<div class="purchases-heading purchases-table-orders-price">{$btr->global_price|escape}</div>
+														<div class="purchases-heading purchases-table-orders-unit">{$btr->global_qty|escape}</div>
+														<div class="purchases-heading purchases-table-orders-total">{$btr->orders_total_price|escape}</div>
+													</div>
+													<div class="purchases-body">
+														{foreach $order->purchases as $purchase}
+															<div class="purchases-body-items">
+																<div class="purchases-body-item">
+																	<div class="purchases-bodyng purchases-table-orders-num">{$purchase@iteration}</div>
+																	<div class="purchases-bodyng purchases-table-orders-sku">{$purchase->sku|default:"&mdash;"}</div>
+																	<div class="purchases-bodyng purchases-table-orders-name">
+																		{$purchase->product_name|escape} {if $purchase->variant_color}/ {$purchase->variant_color|escape}{/if} {if $purchase->variant_name}/ {$purchase->variant_name|escape}{/if}
+																	</div>
+																	<div class="purchases-bodyng purchases-table-orders-price">{$purchase->price|convert} {$currency->sign|escape}</div>
+																	<div class="purchases-bodyng purchases-table-orders-unit"> {$purchase->amount}{$settings->units|escape}</div>
+																	<div class="purchases-bodyng purchases-table-orders-total"> {($purchase->amount*$purchase->price)|convert} {$currency->sign|escape}</div>
+																</div>
+															</div>
+														{/foreach}
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								{/foreach}
+							</div>
+							<div class="turbo-list-footer">
+								<div class="turbo-list-foot-left">
+									<div class="turbo-list-heading turbo-list-check">
+										<label class="form-check">
+											<input class="form-check-input js-check-all js-check-all-single" type="checkbox" value="">
+										</label>
+									</div>
+									<div class="turbo-list-option">
+										<select name="action" class="selectpicker js-change-orders">
+											<option value="0">{$btr->global_select_action|escape}</option>
+											{if $status!==0}<option value="set_status_0">{$btr->move_to_new|escape}</option>{/if}
+											{if $status!==1}<option value="set_status_1">{$btr->move_to_accepted|escape}</option>{/if}
+											{if $status!==2}<option value="set_status_2">{$btr->move_to_closed|escape}</option>{/if}
+											<option data-item="label" value="set_label">{$btr->orders_set_label|escape}</option>
+											<option data-item="label" value="unset_label">{$btr->orders_unset_label|escape}</option>
+											<option value="delete">{$btr->delete_selected_orders|escape}</option>
+										</select>
+									</div>
+									<div class="row row-cols-md-auto align-items-center ms-3 d-none js-show-label">
+										<div class="col-12">
+											<select name="change_label_id" class="selectpicker">
+												<option value="0">{$btr->global_select_label|escape}</option>
+												{foreach $labels as $change_label}
+													<option value="{$change_label->id}">{$change_label->name|escape}</option>
+												{/foreach}
+											</select>
+										</div>
+									</div>
+								</div>
+								<button type="submit" class="btn btn-primary">
+									<i class="align-middle" data-feather="check"></i>
+									<span>{$btr->global_apply|escape}</span>
+								</button>
+							</div>
 						</div>
-					</div>
-				</form>
+					</form>
+				</div>
 			</div>
-		</div>
-		<div class="row">
-			<div class="col-lg-12 col-md-12 col-sm 12 txt_center">
-				{include file='pagination.tpl'}
+			<div class="row">
+				<div class="col-12">
+					{include file='pagination.tpl'}
+				</div>
 			</div>
-		</div>
-	{else}
-		<div class="heading_box mt-1">
-			<div class="text_grey">{$btr->orders_no|escape}</div>
-		</div>
-	{/if}
+		{else}
+			<h5 class="card-title ms-1 my-3">{$btr->orders_no|escape}</h5>
+		{/if}
+	</div>
 </div>
 
 {* Piecon *}
 {js id="piecon" priority=99 include=[
-"turbo/design/js/piecon/piecon.min.js"
+	"turbo/design/js/piecon/piecon.min.js"
 ]}{/js}
 {javascript minify=true}
 
-{* Datetimepicker *}
-{css id="datetimepicker" include=[
-"turbo/design/js/datetimepicker/jquery.datetimepicker.css"
-]}{/css}
-{stylesheet minify=true}
-
-{js id="datetimepicker" priority=99 include=[
-"turbo/design/js/datetimepicker/jquery.datetimepicker.js"
-]}{/js}
-{javascript minify=true}
-
-{* On document load *}
 {literal}
 	<script>
-		$(function() {
+		$(window).on("load", function() {
 
-			$(".fn_labels_show").click(function() {
-				$(this).next('.fn_labels_hide').toggleClass("active_labels");
-			});
-			$(".fn_delete_labels_hide").click(function() {
-				$(this).closest('.box_labels_hide').removeClass("active_labels");
+			// Flatpickr
+			flatpickr(".flatpickr", {
+				dateFormat: "d.m.Y",
+				locale: "{/literal}{if $settings->lang =='ua'}uk{else}{$settings->lang}{/if}{literal}"
 			});
 
-			$(document).on("change", ".fn_change_orders", function() {
+			$(document).on("change", ".js-change-orders", function() {
 				var item = $(this).find("option:selected").data("item");
-				if (item == "status") {
-					$(".fn_show_label").hide();
-					$(".fn_show_status").show();
-
-				} else if (item == "label") {
-					$(".fn_show_label").show();
-					$(".fn_show_status").hide();
+				if (item == "label") {
+					$(".js-show-label").removeClass('d-none');
 				} else {
-					$(".fn_show_label").hide();
-					$(".fn_show_status").hide();
+					$(".js-show-label").addClass('d-none');
 				}
-
 			});
 
-			$(document).on("change", ".fn_ajax_labels input", function() {
+			$(document).on("change", ".js-ajax-labels input", function() {
 				elem = $(this);
-				var order_id = parseInt($(this).closest(".fn_ajax_labels").data("order_id"));
+				var order_id = parseInt($(this).closest(".js-ajax-labels").data("order-id"));
 				var state = "";
 				session_id = '{/literal}{$smarty.session.id}{literal}';
-				toastr.options = {
-					closeButton: true,
-					newestOnTop: true,
-					progressBar: true,
-					positionClass: 'toast-top-right',
-					preventDuplicates: false,
-					onclick: null
-				};
-				var label_id = parseInt($(this).closest(".fn_ajax_labels").find("input").val());
-				if ($(this).closest(".fn_ajax_labels").find("input").is(":checked")) {
+				var label_id = parseInt($(this).closest(".js-ajax-labels").find("input").val());
+				if ($(this).closest(".js-ajax-labels").find("input").is(":checked")) {
 					state = "add";
 				} else {
 					state = "remove";
 				}
-
 				$.ajax({
 					type: "POST",
 					dataType: 'json',
@@ -409,33 +385,27 @@
 					success: function(data) {
 						var msg = "";
 						if (data) {
-							elem.closest(".fn_ajax_label_wrapper").find(".fn_order_labels").html(data.data);
-							toastr.success(msg, "{/literal}{$btr->general_success|escape}{literal}");
+							elem.closest(".js-ajax-label-wrapper").find(".js-order-labels").html(data.data);
+							notyf.success({message: '{/literal}{$btr->global_success|escape}{literal}', dismissible: true});
 						} else {
-							toastr.error(msg, "{/literal}{$btr->general_error|escape}{literal}");
-
+							notyf.error({message: '{/literal}{$btr->global_error|escape}{literal}', dismissible: true});
 						}
 					}
 				});
 			});
 
-			$(document).on('click', '.fn_orders_toggle', function() {
-				$(this).find('.fn_icon_arrow').toggleClass('rotate_180');
-				$(this).parents('.fn_row').find('.orders_purchases_block').slideToggle();
+			$(document).on('click', '.js-orders-toggle', function() {
+				$(this).find('.js-icon-arrow').toggleClass('rotate-180');
+				$(this).parents('.js-row').find('.orders-purchases-block').slideToggle();
 			});
 
-			$('.fn_from_date, .fn_to_date').datetimepicker({
-				lang: '{/literal}{$settings->lang}{literal}',
-				timepicker: false,
-				format: 'd.m.Y'
-			});
-
-		{/literal}
-		var status = '{$status|escape}',
-		label='{$label->id|escape}',
-		from_date = '{$from_date}',
-		to_date = '{$to_date}';
-		{literal}
+			{/literal}
+				var status = '{$status|escape}',
+				label='{$label->id|escape}',
+				from_date = '{$from_date}',
+				to_date = '{$to_date}';
+			{literal}
+			
 			// On document load
 			$(document).on('click', '.feather-file-text', function() {
 				Piecon.setOptions({fallback: 'force'});
@@ -478,7 +448,6 @@
 					}
 				});
 			}
-
 		});
 	</script>
 {/literal}

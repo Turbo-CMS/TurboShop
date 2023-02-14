@@ -1,13 +1,5 @@
 <?php
 
-/**
- * Wrapper class for accessing _GET, _POST, _FILES variables
- *
- * @author		Turbo CMS
- * @link		https://turbo-cms.com
- *
- */
-
 require_once('Turbo.php');
 
 class Request extends Turbo

@@ -108,7 +108,7 @@
 		}
 		.es-wrapper-color a {
 			text-decoration: underline;
-			color: #3f80ea;
+			color: #3b7ddd;
 			margin-bottom: 0;
 		}
 
@@ -215,9 +215,9 @@
 		.es-wrapper-color .es-button {
 			mso-style-priority: 100 !important;
 			text-decoration: none !important;
-			border: 2px solid #3f80ea;
+			border: 2px solid #3b7ddd;
 			display: inline-block;
-			background: #3f80ea;
+			background: #3b7ddd;
 			border-radius: 4px;
 			font-size: 14px;
 			font-weight: 600;
@@ -232,14 +232,14 @@
 		.es-wrapper-color .es-download{
 			mso-style-priority: 100 !important;
 			text-decoration: none !important;
-			border: 2px solid #3f80ea;
+			border: 2px solid #3b7ddd;
 			display: inline-block;
 			background: #fff;
 			border-radius: 4px;
 			font-size: 11px;
 			font-weight: 600;
 			font-style: normal;
-			color: #3f80ea;
+			color: #3b7ddd;
 			width: auto;
 			text-align: center;
 			padding: 4px 10px;
@@ -248,8 +248,8 @@
 		}
 
 		.es-wrapper-color .es-button-border {
-			border: 2px solid #d9534f;
-			color: #d9534f;
+			border: 2px solid #dc3545;
+			color: #dc3545;
 			background: #fff;
 			display: inline-block;
 			border-radius: 4px;
@@ -262,11 +262,11 @@
 			text-align: center;
 		}
 		.es-wrapper-color .es-number-order {
-			color: #d9534f;
+			color: #dc3545;
 			padding: 0px 8px;
 			display: inline-block;
 			font-size: 18px;
-			border: 2px solid #d9534f;
+			border: 2px solid #dc3545;
 			border-radius: 4px;
 			line-height: 1.3;
 			margin: 0px 5px;
@@ -276,7 +276,7 @@
 		.es-wrapper-color .es-status-color{
 			font-weight: 600;
 			color: #fff;
-			background: #4bbf73;
+			background: #1cbb8c;
 			padding: 2px 8px;
 			border-radius: 5px;
 			font-size: 12px;
@@ -738,7 +738,7 @@
                                                           {/if}
                                                           <tr class="es-p5t">
                                                             <td style="text-align: right; font-size: 20px; line-height: 150%;"><strong>{$lang->total}:</strong></td>
-                                                            <td style="text-align: right; font-size: 20px; line-height: 150%; color: #d9534f;"><strong>{$order->total_price|convert:$currency->id}&nbsp;{$currency->sign}</strong></td>
+                                                            <td style="text-align: right; font-size: 20px; line-height: 150%; color: #dc3545;"><strong>{$order->total_price|convert:$currency->id}&nbsp;{$currency->sign}</strong></td>
                                                           </tr>
                                                         </tbody>
                                                       </table>

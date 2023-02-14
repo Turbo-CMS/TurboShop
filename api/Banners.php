@@ -1,13 +1,5 @@
 <?php
 
-/**
- * Turbo CMS
- *
- * @author	Turbo CMS
- * @link	https://turbo-cms.com
- *
- */
-
 require_once('Turbo.php');
 
 class Banners extends Turbo
@@ -62,8 +54,11 @@ class Banners extends Turbo
 				bi.id, 
 				bi.banner_id, 
 				bi.image,
+				bi.background,
 				bi.name,
 				bi.url,
+				bi.color,
+				bi.style,
 				bi.button,
 				bi.alt,
 				bi.title,
@@ -157,8 +152,11 @@ class Banners extends Turbo
 				bi.id, 
 				bi.banner_id, 
 				bi.image,
+				bi.background,
 				bi.name,
 				bi.url,
+				bi.color,
+				bi.style,
 				bi.button,
 				bi.alt,
 				bi.title,
@@ -220,6 +218,7 @@ class Banners extends Turbo
 	{
 		if (!empty($id)) {
 			$this->delete_image($id);
+			$this->delete_background($id);
 			$query = $this->db->placehold("DELETE FROM __banners_images WHERE id=? LIMIT 1", intval($id));
 			if ($this->db->query($query)) {
 				$this->db->query("DELETE FROM __lang_banners_images where banner_image_id=?", intval($id));
@@ -238,6 +237,42 @@ class Banners extends Turbo
 			$query = $this->db->placehold("UPDATE __banners_images SET image=NULL WHERE id=?", $id);
 			$this->db->query($query);
 			$query = $this->db->placehold("SELECT count(*) as count FROM __banners_images WHERE image=? LIMIT 1", $filename);
+			$this->db->query($query);
+			$count = $this->db->result('count');
+			if ($count == 0) {
+				$file = pathinfo($filename, PATHINFO_FILENAME);
+				$ext = pathinfo($filename, PATHINFO_EXTENSION);
+				$webp = 'webp';
+
+				// Remove all resizes
+				$rezised_images = glob($this->config->root_dir . $this->config->resized_banners_images_dir . $file . "*." . $ext);
+				if (is_array($rezised_images)) {
+					foreach (glob($this->config->root_dir . $this->config->resized_banners_images_dir . $file . "*." . $ext) as $f) {
+						@unlink($f);
+					}
+				}
+
+				$rezised_images = glob($this->config->root_dir . $this->config->resized_banners_images_dir . $file . "*." . $webp);
+				if (is_array($rezised_images)) {
+					foreach (glob($this->config->root_dir . $this->config->resized_banners_images_dir . $file . "*." . $webp) as $f) {
+						@unlink($f);
+					}
+				}
+
+				@unlink($this->config->root_dir . $this->config->banners_images_dir . $filename);
+			}
+		}
+	}
+	
+	public function delete_background($id)
+	{
+		$query = $this->db->placehold("SELECT background FROM __banners_images WHERE id=?", intval($id));
+		$this->db->query($query);
+		$filename = $this->db->result('background');
+		if (!empty($filename)) {
+			$query = $this->db->placehold("UPDATE __banners_images SET background=NULL WHERE id=?", $id);
+			$this->db->query($query);
+			$query = $this->db->placehold("SELECT count(*) as count FROM __banners_images WHERE background=? LIMIT 1", $filename);
 			$this->db->query($query);
 			$count = $this->db->result('count');
 			if ($count == 0) {

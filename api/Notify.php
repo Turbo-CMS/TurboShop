@@ -1,13 +1,5 @@
 <?php
 
-/**
- * Turbo CMS
- *
- * @author	Turbo CMS
- * @link	https://turbo-cms.com
- *
- */
-
 class Notify extends Turbo
 {
 	function email($to, $subject, $message, $from = '', $reply_to = '')

@@ -52,7 +52,7 @@
 
 {* Comments *}
 {if $settings->comments_tree_reviews == "on"}
-	{include file='comments_tree_reviews.tpl'}
+	{include file='comments/comments_tree_reviews.tpl'}
 {else}
-	{include file='comments_reviews.tpl'}
+	{include file='comments/comments_reviews.tpl'}
 {/if}

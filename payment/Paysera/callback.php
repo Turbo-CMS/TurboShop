@@ -1,15 +1,4 @@
 <?php
-
-/**
- * Turbo CMS
- *
- * @copyright 	Turbo CMS
- * @link 		https://turbo-cms.com
- * @author 		Turbo CMS
- *
- * This script is called by Paysera during the payment process
- *
- */
  
 // Working in the root directory
 require_once('WebToPay.php');

@@ -7,7 +7,7 @@
   The style theme is inspired on the displayed code examples at: https://developer.mozilla.org/en-US/docs/Web/CSS/animation
 
 */
-.cm-s-style-css.CodeMirror { font-family: monospace; background-color: #fff;border: 1px solid #c0c0c0;}
+.cm-s-style-css.CodeMirror { font-family: monospace; background-color: #fff;border: 1px solid #ced4da;}
 .cm-s-style-css .cm-keyword {color: #708;}
 .cm-s-style-css .cm-atom {color: #000;}
 .cm-s-style-css .cm-number {color: #000;}

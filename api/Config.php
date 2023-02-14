@@ -1,20 +1,10 @@
 <?php
 
-/**
- * Wrapper class for a configuration file with store settings
- * Unlike the Settings class, Config operates on low-level settings, such as database settings.
- *
- *
- * @author	Turbo CMS
- * @link	https://turbo-cms.com
- *
- */
-
 require_once('Turbo.php');
 
 class Config
 {
-	public $version = '3.7.8';
+	public $version = '4.0.0';
 
 	// File for storing settings
 	public $config_file = 'config/config.php';

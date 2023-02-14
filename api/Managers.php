@@ -1,13 +1,5 @@
 <?php
 
-/**
- * Turbo CMS
- *
- * @author	Turbo CMS
- * @link	https://turbo-cms.com
- *
- */
-
 require_once('Turbo.php');
 
 class Managers extends Turbo
@@ -15,7 +7,7 @@ class Managers extends Turbo
 	public $permissions_list = array(
 		'dashboard', 'products', 'categories', 'brands', 'features', 'orders', 'labels', 'callbacks',
 		'users', 'groups', 'coupons', 'pages', 'menus', 'blog', 'comments', 'feedbacks', 'import', 'export', 'clear', 'articles',
-		'backup', 'stats', 'subscribes', 'faq', 'design', 'banners', 'settings', 'seo', 'currency', 'delivery', 'payment', 'managers', 'languages'
+		'backup', 'stats', 'subscribes', 'faq', 'design', 'banners', 'settings', 'seo', 'scripts', 'currency', 'delivery', 'payment', 'managers', 'languages'
 	);
 
 	public $passwd_file = "turbo/.passwd";
@@ -137,7 +129,7 @@ class Managers extends Turbo
 		}
 		if ($updated_flag) {
 			file_put_contents($this->passwd_file, implode("\n", $lines));
-			if ($m = $this->get_manager($manager->login))
+			if ($m = $this->get_manager(@$manager->login))
 				return $m->login;
 		}
 		return false;

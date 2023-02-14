@@ -1,14 +1,14 @@
 {if $order->paid}
-	{$subject = "`$btr->email_order` `$order->id` `$btr->email_paid`" scope=global}
+	{$subject = "`$btr->global_order` `$order->id` `$btr->email_paid`" scope=global}
 {else}
-	{$subject = "`$btr->email_new_order` `$order->id`" scope=global}
+	{$subject = "`$btr->order_new` `$order->id`" scope=global}
 {/if}
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>{$btr->email_new_order|escape} № {$order->id}</title>
+    <title>{$btr->order_new|escape} № {$order->id}</title>
     <meta name="x-apple-disable-message-reformatting">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="telephone=no" name="format-detection">
@@ -110,7 +110,7 @@
 		}
 		.es-wrapper-color a {
 			text-decoration: underline;
-			color: #3f80ea;
+			color: #3b7ddd;
 			margin-bottom: 0;
 		}
 
@@ -217,9 +217,9 @@
 		.es-wrapper-color .es-button {
 			mso-style-priority: 100 !important;
 			text-decoration: none !important;
-			border: 2px solid #3f80ea;
+			border: 2px solid #3b7ddd;
 			display: inline-block;
-			background: #3f80ea;
+			background: #3b7ddd;
 			border-radius: 4px;
 			font-size: 14px;
 			font-weight: 600;
@@ -234,14 +234,14 @@
 		.es-wrapper-color .es-download{
 			mso-style-priority: 100 !important;
 			text-decoration: none !important;
-			border: 2px solid #3f80ea;
+			border: 2px solid #3b7ddd;
 			display: inline-block;
 			background: #fff;
 			border-radius: 4px;
 			font-size: 11px;
 			font-weight: 600;
 			font-style: normal;
-			color: #3f80ea;
+			color: #3b7ddd;
 			width: auto;
 			text-align: center;
 			padding: 4px 10px;
@@ -250,8 +250,8 @@
 		}
 
 		.es-wrapper-color .es-button-border {
-			border: 2px solid #d9534f;
-			color: #d9534f;
+			border: 2px solid #dc3545;
+			color: #dc3545;
 			background: #fff;
 			display: inline-block;
 			border-radius: 4px;
@@ -264,11 +264,11 @@
 			text-align: center;
 		}
 		.es-wrapper-color .es-number-order {
-			color: #d9534f;
+			color: #dc3545;
 			padding: 0px 8px;
 			display: inline-block;
 			font-size: 18px;
-			border: 2px solid #d9534f;
+			border: 2px solid #dc3545;
 			border-radius: 4px;
 			line-height: 1.3;
 			margin: 0px 5px;
@@ -278,7 +278,7 @@
 		.es-wrapper-color .es-status-color{
 			font-weight: 600;
 			color: #fff;
-			background: #4bbf73;
+			background: #1cbb8c;
 			padding: 2px 8px;
 			border-radius: 5px;
 			font-size: 12px;
@@ -412,7 +412,7 @@
 																	<tbody>
 																		<tr>
 																			<td class="es-p10t es-p15b" align="center">
-																				<h1>{$btr->email_new_order|escape} <span class="es-number-order">№ {$order->id}</span><br></h1>
+																				<h1>{$btr->order_new|escape} <span class="es-number-order">№ {$order->id}</span><br></h1>
 																			</td>
 																		</tr>
 																		<tr>
@@ -483,7 +483,7 @@
                                                             <td class="es-p5t es-p5b"><span>№ {$order->id}</span></td>
                                                         </tr>
                                                         <tr valign="top">
-                                                            <td class="es-p5t es-p5b" width="180px"><span>{$btr->email_order_date_s|escape}:</span></td>
+                                                            <td class="es-p5t es-p5b" width="180px"><span>{$btr->order_date|escape}:</span></td>
                                                             <td class="es-p5t es-p5b"><span>{$order->date|date}:{$order->date|time}</span></td>
                                                         </tr>
                                                         <tr valign="top">
@@ -501,7 +501,7 @@
 															</td>
                                                         </tr>
                                                         <tr valign="top">
-                                                            <td class="es-p5t es-p5b" width="180px"><span>{$btr->email_payment_status|escape}:</span></td>
+                                                            <td class="es-p5t es-p5b" width="180px"><span>{$btr->global_payment|escape}:</span></td>
                                                             <td class="es-p5t es-p5b">
 																<span>
 																	{if $order->paid == 1}
@@ -513,22 +513,22 @@
                                                             </td>
                                                         </tr>
                                                         <tr valign="top">
-                                                            <td class="es-p5t es-p5b" width="180px"><span>{$btr->email_order_name|escape}:</span></td>
+                                                            <td class="es-p5t es-p5b" width="180px"><span>{$btr->global_full_name|escape}:</span></td>
                                                             <td class="es-p5t es-p5b"><span>{$order->name|escape}</span></td>
                                                         </tr>
                                                         <tr valign="top">
-                                                            <td class="es-p5t es-p5b" width="180px"><span>{$btr->email_order_email|escape}:</span></td>
+                                                            <td class="es-p5t es-p5b" width="180px"><span>{$btr->global_email|escape}:</span></td>
                                                             <td class="es-p5t es-p5b"><span>{$order->email|escape}</span></td>
                                                         </tr>
                                                         {if $order->phone}
                                                         <tr valign="top">
-                                                            <td class="es-p5t es-p5b" width="180px"><span>{$btr->email_order_phone|escape}:</span></td>
+                                                            <td class="es-p5t es-p5b" width="180px"><span>{$btr->global_phone|escape}:</span></td>
                                                             <td class="es-p5t es-p5b"><span>{$order->phone|escape}</span></td>
                                                         </tr>
                                                         {/if}
                                                         {if $order->address}
                                                         <tr valign="top">
-                                                            <td class="es-p5t es-p5b" width="180px"><span>{$btr->email_order_address|escape}:</span></td>
+                                                            <td class="es-p5t es-p5b" width="180px"><span>{$btr->global_adress|escape}:</span></td>
                                                             <td class="es-p5t es-p5b"><span>{$order->address|escape}</span></td>
                                                         </tr>
                                                         {/if}
@@ -676,13 +676,6 @@
 																						{if $purchase->variant->stock == 0}
 																						<div class="es-p5t" style="color: #495057; font-size: 12px;font-weight: 600">{$btr->product_pre_order}</div>
 																						{/if}
-																						{if $order->paid && $purchase->variant->attachment}
-																						<div class="es-p5t">
-																							<a class="es-download" href="{$config->root_url}/{$lang_link}order/{$order->url}/{$purchase->variant->attachment}">
-																								<em>{$btr->email_order_download}</em>
-																							</a>
-																						</div>
-																						{/if}
 																					</td>
 																					<td style="text-align: center;" width="60">
 																						{$purchase->amount} {if $purchase->units}{$purchase->units|escape}{else}{$settings->units}{/if}
@@ -745,21 +738,21 @@
                                                                     <tbody>
                                                                     {if $order->discount}
                                                                     <tr>
-                                                                        <td style="text-align: right; font-size: 18px; line-height: 150%;">{$btr->email_order_discount}:</td>
+                                                                        <td style="text-align: right; font-size: 18px; line-height: 150%;">{$btr->global_discount}:</td>
                                                                         <td style="text-align: right; font-size: 18px; line-height: 150%; color: #495057;">{$order->discount}&nbsp;%</td>
                                                                     </tr>
                                                                     {/if}
 
                                                                     {if $order->coupon_discount>0}
                                                                     <tr>
-                                                                        <td style="text-align: right; font-size: 18px; line-height: 150%;">{$btr->email_order_coupon} {$order->coupon_code}:</td>
+                                                                        <td style="text-align: right; font-size: 18px; line-height: 150%;">{$btr->global_coupon} {$order->coupon_code}:</td>
                                                                         <td style="text-align: right; font-size: 18px; line-height: 150%; color: #495057;">&minus;{$order->coupon_discount}&nbsp;{$currency->sign}</td>
                                                                     </tr>
                                                                     {/if}
 																	
 																	{if $order->weight>0}
                                                                     <tr>
-                                                                        <td style="text-align: right; font-size: 18px; line-height: 150%;">{$btr->general_weight|escape}:</td>
+                                                                        <td style="text-align: right; font-size: 18px; line-height: 150%;">{$btr->global_weight|escape}:</td>
                                                                         <td style="text-align: right; font-size: 18px; line-height: 150%; color: #495057;">{$order->weight}  {$settings->weight_units}</td>
                                                                     </tr>
                                                                     {/if}
@@ -774,8 +767,8 @@
                                                                     {/if}
 
                                                                     <tr class="es-p5t">
-                                                                        <td style="text-align: right; font-size: 20px; line-height: 150%;"><strong>{$btr->email_order_total}:</strong></td>
-                                                                        <td style="text-align: right; font-size: 20px; line-height: 150%; color: #d9534f;"><strong>{$order->total_price|convert:$currency->id}&nbsp;{$currency->sign}</strong></td>
+                                                                        <td style="text-align: right; font-size: 20px; line-height: 150%;"><strong>{$btr->global_total}:</strong></td>
+                                                                        <td style="text-align: right; font-size: 20px; line-height: 150%; color: #dc3545;"><strong>{$order->total_price|convert:$currency->id}&nbsp;{$currency->sign}</strong></td>
                                                                     </tr>
                                                                     </tbody>
                                                                 </table>
@@ -812,8 +805,7 @@
 														<tr>
 															<td align="center">
 																<p>
-																	<span>{$btr->email_details|escape}</span><br>
-																	<a target="_blank" href="https://turbo-cms.com">turbo-cms.com</a>
+																	<span>{$btr->email_details|escape}</span>
 																</p>
 															</td>
 														</tr>

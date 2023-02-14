@@ -1,13 +1,5 @@
 <?php
 
-/**
- * Turbo CMS
- *
- * @author	Turbo CMS
- * @link	https://turbo-cms.com
- *
- */
-
 require_once('Turbo.php');
 
 class ReportStat extends Turbo
@@ -16,13 +8,13 @@ class ReportStat extends Turbo
 	{ // Product selection
 
 		$weekdays = array(
-			' ' . $this->backend_translations->general_days_su . ' ',
-			' ' . $this->backend_translations->general_days_mo . ' ',
-			' ' . $this->backend_translations->general_days_tu . ' ',
-			' ' . $this->backend_translations->general_days_we . ' ',
-			' ' . $this->backend_translations->general_days_th . ' ',
-			' ' . $this->backend_translations->general_days_fr . ' ',
-			' ' . $this->backend_translations->general_days_sa . ' '
+			' ' . $this->backend_translations->global_days_su . ' ',
+			' ' . $this->backend_translations->global_days_mo . ' ',
+			' ' . $this->backend_translations->global_days_tu . ' ',
+			' ' . $this->backend_translations->global_days_we . ' ',
+			' ' . $this->backend_translations->global_days_th . ' ',
+			' ' . $this->backend_translations->global_days_fr . ' ',
+			' ' . $this->backend_translations->global_days_sa . ' '
 		);
 
 		$all_filters = $this->make_filter($filter);
@@ -110,13 +102,13 @@ class ReportStat extends Turbo
 	{ // Product selection
 
 		$weekdays = array(
-			' ' . $this->backend_translations->general_days_su . ' ',
-			' ' . $this->backend_translations->general_days_mo . ' ',
-			' ' . $this->backend_translations->general_days_tu . ' ',
-			' ' . $this->backend_translations->general_days_we . ' ',
-			' ' . $this->backend_translations->general_days_th . ' ',
-			' ' . $this->backend_translations->general_days_fr . ' ',
-			' ' . $this->backend_translations->general_days_sa . ' '
+			' ' . $this->backend_translations->global_days_su . ' ',
+			' ' . $this->backend_translations->global_days_mo . ' ',
+			' ' . $this->backend_translations->global_days_tu . ' ',
+			' ' . $this->backend_translations->global_days_we . ' ',
+			' ' . $this->backend_translations->global_days_th . ' ',
+			' ' . $this->backend_translations->global_days_fr . ' ',
+			' ' . $this->backend_translations->global_days_sa . ' '
 		);
 
 		$all_filters = $this->make_filter($filter);

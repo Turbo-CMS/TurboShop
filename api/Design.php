@@ -1,13 +1,5 @@
 <?php
 
-/**
- * Turbo CMS
- *
- * @author	Turbo CMS
- * @link	https://turbo-cms.com
- *
- */
-
 require_once(dirname(__FILE__) . '/' . 'Turbo.php');
 require_once(dirname(dirname(__FILE__)) . '/smarty/libs/Smarty.class.php');
 require_once 'MobileDetect.php';
@@ -26,7 +18,7 @@ class Design extends Turbo
 		$this->smarty->caching = $this->config->smarty_caching;
 		$this->smarty->cache_lifetime = $this->config->smarty_cache_lifetime;
 		$this->smarty->debugging = $this->config->smarty_debugging;
-		$this->smarty->error_reporting = E_ALL & ~E_WARNING & ~E_NOTICE;
+		$this->smarty->error_reporting = E_ALL & ~E_WARNING & ~E_NOTICE & ~E_USER_DEPRECATED;
 
 		// We take the theme from the settings
 		$theme = $this->settings->theme;

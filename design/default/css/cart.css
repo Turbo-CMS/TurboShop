@@ -35,10 +35,6 @@ table.cart-table tbody td .btn-delete-item {
 	float: right
 }
 
-table.cart-table tbody tr {
-	border-bottom: 1px solid #f0f0f0;
-}
-
 table.cart-table tbody td span,
 table.cart-table tbody td img {
 	display: inline-block;

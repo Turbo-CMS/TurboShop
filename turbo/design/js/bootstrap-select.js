@@ -465,7 +465,7 @@
           : '';
       var drop =
           '<div class="btn-group bootstrap-select' + showTick + inputGroup + '">' +
-          '<button type="button" class="' + this.options.styleBase + ' dropdown-toggle" data-toggle="dropdown"' + autofocus + ' role="button">' +
+          '<button type="button" class="' + this.options.styleBase + ' dropdown-toggle" data-bs-toggle="dropdown"' + autofocus + ' role="button">' +
           '<span class="filter-option pull-left"></span>&nbsp;' +
           '<span class="bs-caret">' +
           this.options.template.caret +
@@ -1212,7 +1212,7 @@
 
           // scroll to selected option
           var offset = that.$lis.eq(selectedIndex)[0].offsetTop - that.$menuInner[0].offsetTop;
-          offset = offset - that.$menuInner[0].offsetHeight/2 + that.sizeInfo.liHeight/2;
+         /*  offset = offset - that.$menuInner[0].offsetHeight/2 + that.sizeInfo.liHeight/2; */
           that.$menuInner[0].scrollTop = offset;
         }
       });
@@ -1602,7 +1602,7 @@
       if (!isActive && (e.keyCode >= 48 && e.keyCode <= 57 || e.keyCode >= 96 && e.keyCode <= 105 || e.keyCode >= 65 && e.keyCode <= 90)) {
         if (!that.options.container) {
           that.setSize();
-          that.$menu.parent().addClass('open');
+          /* that.$menu.parent().addClass('open'); */
           isActive = true;
         } else {
           that.$button.trigger('click');
@@ -1846,8 +1846,8 @@
 
   $(document)
       .data('keycount', 0)
-      .on('keydown.bs.select', '.bootstrap-select [data-toggle=dropdown], .bootstrap-select [role="listbox"], .bs-searchbox input', Selectpicker.prototype.keydown)
-      .on('focusin.modal', '.bootstrap-select [data-toggle=dropdown], .bootstrap-select [role="listbox"], .bs-searchbox input', function (e) {
+      .on('keydown.bs.select', '.bootstrap-select [data-bs-toggle=dropdown], .bootstrap-select [role="listbox"], .bs-searchbox input', Selectpicker.prototype.keydown)
+      .on('focusin.modal', '.bootstrap-select [data-bs-toggle=dropdown], .bootstrap-select [role="listbox"], .bs-searchbox input', function (e) {
         e.stopPropagation();
       });
 

@@ -1,16 +1,5 @@
 <?php
 
-/**
- * Turbo CMS
- *
- * @copyright 	Turbo CMS
- * @link 		https://turbo-cms.com
- * @author 		Turbo CMS
- *
- * IPN Script for Paypal
- *
- */
-
 // Working in root dir
 chdir ('../../');
 

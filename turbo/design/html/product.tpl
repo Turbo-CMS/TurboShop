@@ -4,33 +4,27 @@
 	{$meta_title = $btr->product_new scope=global}
 {/if}
 
-<div class="row">
-	<div class="col-lg-12 col-md-12">
-		<div class="wrap_heading">
-			<div class="box_heading heading_page">
-				{if !$product->id}
-					{$btr->product_add|escape}
-				{else}
-					{$product->name|escape}
-				{/if}
-			</div>
-			{if $product->id}
-				<div class="box_btn_heading">
-					<a class="btn btn_small btn-primary add" target="_blank" href="../{$lang_link}products/{$product->url}">
-						{include file='svg_icon.tpl' svgId='icon_desktop'}
-						<span>{$btr->general_open|escape}</span>
-					</a>
-				</div>
-			{/if}
-		</div>
+<div class="d-md-flex mb-3">
+	<h1 class="d-inline align-middle me-3">
+		{if !$product->id}
+			{$btr->product_add|escape}
+		{else}
+			{$product->name|escape}
+		{/if}
+	</h1>
+	<div class="d-grid d-sm-block mt-2 mt-md-0">
+		<a class="btn btn-primary" target="_blank" href="../{$lang_link}products/{$product->url}">
+			<i class="align-middle mt-n1" data-feather="external-link"></i>
+			{$btr->global_open|escape}
+		</a>
 	</div>
-	<div class="col-md-12 col-lg-12 col-sm-12 float-xs-right"></div>
 </div>
+
 {if $message_success}
 	<div class="row">
-		<div class="col-lg-12 col-md-12 col-sm-12">
-			<div class="boxed boxed_success">
-				<div class="heading_box">
+		<div class="col-12">
+			<div class="alert alert-success alert-dismissible fade show" role="alert">
+				<div class="alert-message">
 					{if $message_success=='added'}
 						{$btr->product_added|escape}
 					{elseif $message_success=='updated'}
@@ -38,83 +32,92 @@
 					{else}
 						{$message_success|escape}
 					{/if}
-					{if $smarty.get.return}
-						<a class="btn btn_return float-xs-right" href="{$smarty.get.return}">
-							{include file='svg_icon.tpl' svgId='return'}
-							<span>{$btr->general_back|escape}</span>
-						</a>
-					{/if}
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>
 			</div>
 		</div>
 	</div>
 {/if}
+
 {if $message_error}
 	<div class="row">
-		<div class="col-lg-12 col-md-12 col-sm-12">
-			<div class="boxed boxed_warning">
-				<div class="heading_box">
+		<div class="col-12">
+			<div class="alert alert-danger alert-dismissible fade show" role="alert">
+				<div class="alert-message">
 					{if $message_error=='url_exists'}
 						{$btr->product_exists|escape}
 					{elseif $message_error=='empty_name'}
-						{$btr->general_enter_title|escape}
+						{$btr->global_enter_name|escape}
 					{elseif $message_error == 'empty_url'}
-						{$btr->general_enter_url|escape}
+						{$btr->global_enter_url|escape}
 					{elseif $message_error == 'url_wrong'}
-						{$btr->general_not_underscore|escape}
+						{$btr->global_not_underscore|escape}
 					{elseif $message_error == 'empty_categories'}
 						{$btr->product_no_category|escape}
 					{else}
 						{$message_error|escape}
 					{/if}
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>
 			</div>
 		</div>
 	</div>
 {/if}
-<form method="post" id="product" enctype="multipart/form-data" class="clearfix fn_fast_button">
+
+<form method="post" id="product" enctype="multipart/form-data" class="js-fast-button">
 	<input type="hidden" name="session_id" value="{$smarty.session.id}">
 	<input type="hidden" name="lang_id" value="{$lang_id}">
-	<div class="row">
-		<div class="col-xs-12">
-			<div class="boxed">
-				<div class="row d_flex">
-					<div class="col-lg-10 col-md-9 col-sm-12">
-						<div class="heading_label">
-							{$btr->general_name|escape}
-						</div>
-						<div class="form-group">
-							<input class="form-control" name="name" type="text" value="{$product->name|escape}">
-							<input name="id" type="hidden" value="{$product->id|escape}">
-						</div>
-						<div class="row">
-							<div class="col-xs-12 col-lg-6 col-md-10">
-								<div class="mt-h mb-h">
-									<div class="input-group">
-										<span class="input-group-addon input-group-addon-left">URL</span>
-										<input name="url" class="fn_meta_field form-control fn_url {if $product->id}fn_disabled{/if}" {if $product->id}readonly=""{/if} type="text" value="{$product->url|escape}">
-										<input type="checkbox" id="block_translit" class="hidden" value="1" {if $product->id}checked=""{/if}>
-										<span class="input-group-addon fn_disable_url">
-											{if $product->id}
-												<i class="url-lock"></i>
-											{else}
-												<i class="url-lock url-unlock"></i>
-											{/if}
-										</span>
+	<div class="row g-2">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-body">
+					<div class="row d-flex">
+						<div class="col-lg-9 col-md-8 col-sm-12">
+							<div class="mb-3">
+								<div class="form-label">{$btr->global_title|escape}</div>
+								<input class="form-control" name="name" type="text" value="{$product->name|escape}">
+								<input name="id" type="hidden" value="{$product->id|escape}">
+							</div>
+							<div class="row">
+								<div class="col-xs-12 col-lg-8 col-md-12">
+									<div class="mb-3">
+										<div class="input-group">
+											<span class="input-group-text">URL</span>
+											<input name="url" class="js-meta-field form-control js-url" type="text" value="{$product->url|escape}" {if $product->id}readonly{/if}>
+											<input type="checkbox" id="block-translit" class="d-none" value="1" {if $product->id}checked="" {/if}>
+											<span class="input-group-text js-disable-url">
+												{if $product->id}
+													<i class="url-lock"></i>
+												{else}
+													<i class="url-lock url-unlock"></i>
+												{/if}
+											</span>
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-					<div class="col-lg-2 col-md-3 col-sm-12">
-						<div class="activity_of_switch">
-							<div class="activity_of_switch_item">
-								<div class="turbo_switch clearfix">
-									<label class="switch_label">{$btr->general_enable|escape}</label>
-									<div class="form-check form-switch">
-										<input class="form-check-input" id="visible_checkbox" name="visible" value="1" type="checkbox" {if $product->visible}checked=""{/if}>
-										<label class="form-check-label" for="visible_checkbox"></label>
-									</div>
+						<div class="col-lg-3 col-md-4 col-sm-12">
+							<div class="d-flex justify-content-center align-content-center flex-wrap flex-md-column h-100">
+								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
+									<input class="form-check-input ms-2" type="checkbox" id="visible" name="visible" value="1" type="checkbox" {if $product->visible}checked="" {/if}>
+									<label class="form-check-label ms-2" for="visible">{$btr->global_enable|escape}</label>
+								</div>
+								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
+									<input class="form-check-input ms-2" type="checkbox" id="featured" name="featured" value="1" type="checkbox" {if $product->featured}checked="" {/if}>
+									<label class="form-check-label ms-2" for="featured">{$btr->global_bestseller|escape}</label>
+								</div>
+								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
+									<input class="form-check-input ms-2" type="checkbox" id="new" name="is_new" value="1" type="checkbox" {if $product->is_new}checked="" {/if}>
+									<label class="form-check-label ms-2" for="new">{$btr->global_new|escape}</label>
+								</div>
+								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
+									<input class="form-check-input ms-2" type="checkbox" id="hit" name="is_hit" value="1" type="checkbox" {if $product->is_hit}checked="" {/if}>
+									<label class="form-check-label ms-2" for="hit">{$btr->global_hit|escape}</label>
+								</div>
+								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
+									<input class="form-check-input ms-2" type="checkbox" id="export" name="to_export" value="1" type="checkbox" {if $product->to_export}checked="" {/if}>
+									<label class="form-check-label ms-2" for="export">{$btr->feature_xml|escape}</label>
 								</div>
 							</div>
 						</div>
@@ -123,405 +126,363 @@
 			</div>
 		</div>
 	</div>
-	<div class="row">
-		<div class="col-lg-8 col-md-12 pr-0">
-			<div class="boxed fn_toggle_wrap min_height_210px">
-				<div class="heading_box">
-					{$btr->general_additional_settings|escape}
-					<div class="toggle_arrow_wrap fn_toggle_card text-primary">
-						<a class="btn-minimize" href="javascript:;"><i class="fn_icon_arrow icon-chevron-down"></i></a>
+	<div class="row g-2">
+		<div class="col-lg-8 col-md-12">
+			<div class="card mh-340px">
+				<div class="card-header">
+					<div class="card-actions float-end">
+						<div class="d-block d-lg-none position-relative collapse-icon">
+							<a href="javascript:;" class="collapse-chevron">
+								<i class="align-middle" data-feather="chevron-up"></i>
+							</a>
+						</div>
 					</div>
+					<h5 class="card-title mb-0">{$btr->product_images|escape}</h5>
 				</div>
-				<div class="toggle_body_wrap on fn_card">
-					<div class="permission_block">
-						<div class="permission_boxes row">
-							<div class="col-xl-3 col-lg-4 col-md-6">
-								<div class="permission_box">
-									<span>{$btr->general_bestseller|escape}</span>
-									<div class="form-check form-switch">
-										<input class="form-check-input" id="featured_checkbox" name="featured" value="1" type="checkbox" {if $product->featured}checked=""{/if}>
-										<label class="form-check-label" for="featured_checkbox"></label>
-									</div>
-								</div>
+				<div class="collapse-card">
+					<div class="card-body">
+						<div class="row">
+							<div class="col-12 mb-1">
+								<ul class="js-droplist-wrap product-images-list sortable" data-image="product">
+									<li class="js-dropzone dropzone-block">
+										<i class="align-middle" data-feather="plus"></i>
+										<input type="file" name="dropped_images[]" multiple class="dropinput">
+									</li>
+									{foreach $product_images as $image}
+										<li class="product-image-item {if $image@first}first-image{/if} {if $image@iteration > 4}js-toggle-hidden d-none{/if} js-sort-item">
+											<button type="button" class="js-remove-image remove-image"></button>
+											<i class="move-zone">
+												{if $image}
+													<img class="product-icon" src="{$image->filename|resize:200:100}" alt="">
+												{else}
+													<i class="align-middle" data-feather="camera"></i>
+												{/if}
+												<input type="hidden" name='images[]' value="{$image->id}">
+											</i>
+										</li>
+									{/foreach}
+									<li class="js-new-image-item product-image-item js-sort-item d-none">
+										<button type="button" class="js-remove-image remove-image"></button>
+										<img src="" alt="">
+										<input type="hidden" name='images_urls[]' value="">
+									</li>
+								</ul>
 							</div>
-							<div class="col-xl-3 col-lg-4 col-md-6">
-								<div class="permission_box">
-									<span>{$btr->general_new|escape}</span>
-									<div class="form-check form-switch">
-										<input class="form-check-input" id="new_checkbox" name="is_new" value="1" type="checkbox" {if $product->is_new}checked=""{/if}>
-										<label class="form-check-label" for="new_checkbox"></label>
-									</div>
+							{if $product_images|count > 4}
+								<div class="col-12">
+									<a href="javascript:;" class="js-icon-arrow card-link js-show-images text-body">{$btr->product_images_all|escape}<i class="align-middle chevron" data-feather="chevron-down"></i></a>
 								</div>
-							</div>
-							<div class="col-xl-3 col-lg-4 col-md-6">
-								<div class="permission_box">
-									<span>{$btr->general_hit|escape}</span>
-									<div class="form-check form-switch">
-										<input class="form-check-input" id="hit_checkbox" name="is_hit" value="1" type="checkbox" {if $product->is_hit}checked=""{/if}>
-										<label class="form-check-label" for="hit_checkbox"></label>
-									</div>
-								</div>
-							</div>
-							<div class="col-xl-3 col-lg-4 col-md-6">
-								<div class="permission_box">
-									<span>{$btr->feature_xml|escape}</span>
-									<div class="form-check form-switch">
-										<input class="form-check-input" id="export_checkbox" name="to_export" value="1" type="checkbox" {if $product->to_export}checked=""{/if}>
-										<label class="form-check-label" for="export_checkbox"></label>
-									</div>
-								</div>
-							</div>
+							{/if}
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="col-lg-4 col-md-12">
-			<div class="boxed fn_toggle_wrap min_height_210px">
-				<div class="heading_box">
-					{$btr->product_rating|escape}
-					<div class="toggle_arrow_wrap fn_toggle_card text-primary">
-						<a class="btn-minimize" href="javascript:;"><i class="fn_icon_arrow icon-chevron-down"></i></a>
-					</div>
-				</div>
-				<div class="toggle_body_wrap on fn_card">
-					<div class="heading_label">
-						{$btr->product_rating_value|escape}
-						<span class="font-weight-bold fn_show_rating">{$product->rating}</span>
-					</div>
-					<div class="raiting_boxed">
-						<input class="fn_rating_value" type="hidden" value="{$product->rating}" name="rating">
-						<input class="fn_rating range_input" type="range" min="1" max="5" step="0.1" value="{$product->rating}">
-
-						<div class="raiting_range_number">
-							<span class="float-xs-left">1</span>
-							<span class="float-xs-right">5</span>
+			<div class="card mh-340px">
+				<div class="card-header">
+					<div class="card-actions float-end">
+						<div class="d-block d-lg-none position-relative collapse-icon">
+							<a href="javascript:;" class="collapse-chevron">
+								<i class="align-middle" data-feather="chevron-up"></i>
+							</a>
 						</div>
 					</div>
-					<div class="heading_label">
-						{$btr->product_rating_number|escape}
-						<input type="text" class="form-control" name="votes" value="{$product->votes}">
-					</div>
+					<h5 class="card-title mb-0">{$btr->global_additional_settings|escape}</h5>
 				</div>
-			</div>
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-lg-8 col-md-12 pr-0">
-			<div class="boxed fn_toggle_wrap min_height_270px">
-				<div class="heading_box">
-					{$btr->product_images|escape}
-					<div class="toggle_arrow_wrap fn_toggle_card text-primary">
-						<a class="btn-minimize" href="javascript:;"><i class="fn_icon_arrow icon-chevron-down"></i></a>
-					</div>
-				</div>
-				<div class="toggle_body_wrap fn_card on">
-					<ul class="fn_droplist_wrap product_images_list clearfix sortable" data-image="product">
-						<li class="fn_dropzone dropzone_block">
-							{include file='svg_icon.tpl' svgId='plus_big'}
-							<input type="file" name="dropped_images[]" multiple class="dropinput">
-						</li>
-						{foreach $product_images as $image}
-							<li class="product_image_item {if $image@first}first_image{/if} {if $image@iteration > 4}fn_toggle_hidden hidden{/if} fn_sort_item">
-								<button type="button" class="fn_remove_image remove_image"></button>
-								<i class="move_zone">
-									{if $image}
-										<img class="product_icon" src="{$image->filename|resize:200:100}" alt="">
-									{else}
-										<img class="product_icon" src="design/images/no_image.svg" width="50">
-									{/if}
-									<input type="hidden" name='images[]' value="{$image->id}">
-								</i>
-							</li>
-						{/foreach}
-						<li class="fn_new_image_item product_image_item fn_sort_item">
-							<button type="button" class="fn_remove_image remove_image"></button>
-							<img src="" alt="">
-							<input type="hidden" name='images_urls[]' value="">
-						</li>
-					</ul>
-					{if $product_images|count > 4}
-						<div class="show_more_images fn_show_images">{$btr->product_images_all|escape}</div>
-					{/if}
-				</div>
-			</div>
-		</div>
-		<div class="col-lg-4 col-md-12 ">
-			<div class="boxed fn_toggle_wrap min_height_270px">
-				<div class="row">
-					<div class="col-lg-12 toggle_body_wrap on fn_card">
-						<div class="heading_label">{$btr->product_sale_to|escape}</div>
-						<p><input id="sale_to" name="sale_to" class="form-control" autocomplete="off" type="text" value="{$product->sale_to}"></p>
-						<div class="heading_label">{$btr->general_brand|escape}</div>
-						<select name="brand_id" class="selectpicker mb-1 fn_meta_brand" data-live-search="true">
-							<option value="0" {if !$product->brand_id}selected=""{/if} data-brand_name="">{$btr->general_not_set|escape}</option>
-							{foreach $brands as $brand}
-								<option value="{$brand->id}" {if $product->brand_id == $brand->id}selected=""{/if} data-brand_name="{$brand->name|escape}">{$brand->name|escape}</option>
-							{/foreach}
-						</select>
-						<div class="heading_label">{$btr->general_category|escape}</div>
-						<fieldset class="form-group">
-							<div id="product_categories" {if !$categories}style='display:none;' {/if}>
-								<div class="product_cats" id="product_cats">
-									{foreach $product_categories as $product_category name=categories}
-										<span class="list">
-											{assign var ='first_category' value=reset($product_categories)}
-											<div class="input-group">
-												<select name="categories[]" class="selectpicker form-control fn_meta_categories" data-live-search="true">
-													<option value="0" data-category_name="">{$btr->not_specified}</option>
-													{function name=category_select level=0}
-														{foreach $categories as $category}
-															<option value='{$category->id}' {if $category->id == $selected_id}selected{/if} category_name='{$category->name|escape}'>{section name=sp loop=$level}-{/section} {$category->name|escape}</option>
-															{category_select categories=$category->subcategories selected_id=$selected_id  level=$level+1}
-														{/foreach}
-													{/function}
-													{category_select categories=$categories selected_id=$product_category->id}
-												</select>
-												<span {if not $smarty.foreach.categories.first}style='display:none;' {/if} tabindex="0" class="add input-group-addon-categories">
-													{include file='svg_icon.tpl' svgId='plus'}
-												</span>
-												<span onclick="" {if $smarty.foreach.categories.first}style='display:none;' {/if} tabindex="0" class="delete input-group-addon-categories">
-													{include file='svg_icon.tpl' svgId='minus'}
-												</span>
+				<div class="collapse-card">
+					<div class="card-body">
+						<div class="mb-3">
+							<div class="form-label">{$btr->product_sale_to|escape}</div>
+							<input id="sale-to" name="sale_to" class="form-control flatpickr-datetime" type="text" value="{$product->sale_to}">
+						</div>
+						<div class="mb-3">
+							<div class="form-label">{$btr->global_brand|escape}</div>
+							<select name="brand_id" class="selectpicker mb-1 js-meta-brand" data-live-search="true">
+								<option value="0" {if !$product->brand_id}selected="" {/if} data-brand_name="">{$btr->global_not_set|escape}</option>
+								{foreach $brands as $brand}
+									<option value="{$brand->id}" {if $product->brand_id == $brand->id}selected="" {/if} data-brand_name="{$brand->name|escape}">{$brand->name|escape}</option>
+								{/foreach}
+							</select>
+						</div>
+						<div class="mb-3">
+							<div class="form-label">{$btr->global_category|escape}</div>
+							<fieldset class="form-group">
+								<div id="product-categories" {if !$categories}style="display:none;" {/if}>
+									<div class="product-cats" id="product-cats">
+										{foreach $product_categories as $product_category name=categories}
+											<div class="list">
+												{assign var ='first_category' value=reset($product_categories)}
+												<div class="input-group mb-3">
+													<select name="categories[]" class="selectpicker select-control js-meta-categories" data-live-search="true">
+														<option value="0" data-category_name="">{$btr->not_specified}</option>
+														{function name=category_select level=0}
+															{foreach $categories as $category}
+																<option value='{$category->id}' {if $category->id == $selected_id}selected{/if} category_name='{$category->name|escape}'>{section name=sp loop=$level}-{/section} {$category->name|escape}</option>
+																{category_select categories=$category->subcategories selected_id=$selected_id  level=$level+1}
+															{/foreach}
+														{/function}
+														{category_select categories=$categories selected_id=$product_category->id}
+													</select>
+													<button {if not $smarty.foreach.categories.first}style="display:none;" {/if} class="add btn input-group-addon-categories" type="button"><i class="align-middle" data-feather="plus"></i></button>
+													<button {if $smarty.foreach.categories.first}style="display:none;" {/if} class="delete btn input-group-addon-categories" type="button"><i class="align-middle" data-feather="minus"></i></button>
+												</div>
 											</div>
-											<br>
-										</span>
-									{/foreach}
+										{/foreach}
+									</div>
 								</div>
-							</div>
-						</fieldset>
+							</fieldset>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-lg-12 col-md-12">
-			<div class="boxed fn_toggle_wrap match_matchHeight_true">
-				<div class="heading_box">
-					{$btr->general_options|escape}
-					<div class="toggle_arrow_wrap fn_toggle_card text-primary">
-						<a class="btn-minimize" href="javascript:;"><i class="fn_icon_arrow icon-chevron-down"></i></a>
+		<div class="col-12">
+			<div class="card">
+				<div class="card-header">
+					<div class="card-actions float-end">
+						<div class="d-block d-lg-none position-relative collapse-icon">
+							<a href="javascript:;" class="collapse-chevron">
+								<i class="align-middle" data-feather="chevron-up"></i>
+							</a>
+						</div>
 					</div>
+					<h5 class="card-title mb-0">{$btr->global_options|escape}</h5>
 				</div>
-				<div class="variants_wrapper fn_card">
-					<div class="turbo_list variants_list scrollbar-variants">
-						<div class="turbo_list_body sortable variants_listadd">
-							{foreach $product_variants as $variant}
-								<div class="turbo_list_body_item variants_list_item">
-									<div class="turbo_list_row">
-										<div class="turbo_list_boding variants_item_drag">
-											<div class="heading_label"></div>
-											<div class="move_zone">
-												{include file='svg_icon.tpl' svgId='drag_vertical'}
+				<div class="collapse-card variants-wrapper">
+					<div class="card-body">
+						<div class="turbo-list variants-list scrollbar-variants">
+							<div class="turbo-list-body sortable variants-listadd">
+								{foreach $product_variants as $variant}
+									<div class="turbo-list-body-item variants-list-item">
+										<div class="turbo-list-row">
+											<div class="turbo-list-boding variants-item-drag">
+												<div class="form-label"></div>
+												<div class="move-zone">
+													<i class="align-middle" transform="rotate(-45)" data-feather="maximize-2"></i>
+												</div>
+											</div>
+											<div class="turbo-list-boding variants-item-sku">
+												<div class="form-label">{$btr->global_sku|escape}</div>
+												<input class="form-control" name="variants[sku][]" type="text" value="{$variant->sku|escape}">
+											</div>
+											<div class="turbo-list-boding variants-item-name">
+												<div class="form-label">{$btr->global_title|escape}</div>
+												<input name="variants[id][]" type="hidden" value="{$variant->id|escape}">
+												<input class="form-control" name="variants[name][]" type="text" value="{$variant->name|escape}">
+											</div>
+											<div class="turbo-list-boding variants-item-height color-picker">
+												<div class="form-label"></div>
+												<input name="variants[color_code][]" type="hidden" value="{$variant->color_code|escape}">
+												<div class="add-on colorPicker-picker" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->select_color|escape}"></div>
+											</div>
+											<div class="turbo-list-boding variants-item-color">
+												<div class="form-label">{$btr->global_color|escape}</div>
+												<input name="variants[color][]" class="form-control" type="text" value="{$variant->color|escape}">
+											</div>
+											<div class="turbo-list-boding variants-item-image">
+												<div class="form-label"></div>
+												<a href="javascript:;" class="add_images">
+													{if $settings->admin_theme == "dark"}
+														<img src="design/images/picture{if !$variant->images_ids}_empty_dark{/if}.svg" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->select_color_image|escape}">
+													{else}
+														<img src="design/images/picture{if !$variant->images_ids}_empty{/if}.svg" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->select_color_image|escape}">
+													{/if}
+												</a>
+												<input name="variants[images_ids][]" type="hidden" value="{$variant->images_ids|escape}">
+											</div>
+											<div class="turbo-list-boding variants-item-price">
+												<div class="form-label">{$btr->global_price|escape}, {if isset($currencies[$variant->currency_id])}{$currencies[$variant->currency_id]->sign|escape}{else}{$currency->sign}{/if}</div>
+												<input class="form-control" name="variants[price][]" type="text" value="{$variant->oprice|escape}">
+											</div>
+											<div class="turbo-list-boding variants-item-discount">
+												<div class="form-label">{$btr->global_old_price|escape}, {if isset($currencies[$variant->currency_id])}{$currencies[$variant->currency_id]->sign|escape}{else}{$currency->sign}{/if}</div>
+												<input class="form-control text-secondary" name="variants[compare_price][]" type="text" value="{$variant->compare_oprice|escape}">
+											</div>
+											<div class="turbo-list-boding variants-item-currency">
+												<div class="form-label">{$btr->global_currency|escape}</div>
+												<select name="variants[currency_id][]" class="selectpicker">
+													{foreach $currencies as $c}
+														<option value="{$c->id}" {if $c->id == $variant->currency_id}selected="" {/if}>{$c->code|escape}</option>
+													{/foreach}
+												</select>
+											</div>
+											<div class="turbo-list-boding variants-item-weight">
+												<div class="form-label">{$btr->global_weight|escape}, {$settings->weight_units}</div>
+												<input class="form-control" name="variants[weight][]" type="text" value="{$variant->weight|escape}">
+											</div>
+											<div class="turbo-list-boding variants-item-amount">
+												<div class="form-label">{$btr->global_qty|escape}</div>
+												<div class="input-group">
+													<input class="form-control" name="variants[stock][]" type="text" value="{if $variant->infinity || $variant->stock == ''}∞{else}{$variant->stock|escape}{/if}">
+													<span class="input-group-text">
+														{$settings->units|escape}
+													</span>
+												</div>
+											</div>
+											{if !$variant@first}
+												<div class="turbo-list-boding turbo-list-delete remove-variant">
+													<div class="form-label"></div>
+													<button type="button" class="btn-delete js-remove-variant" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->delete_variants|escape}">
+														<i class="align-middle" data-feather="trash-2"></i>
+													</button>
+												</div>
+											{/if}
+										</div>
+									</div>
+								{/foreach}
+								<div class="turbo-list-body-item variants-list-item js-new-row-variant" style="display:none;">
+									<div class="turbo-list-row">
+										<div class="turbo-list-boding variants-item-drag">
+											<div class="form-label"></div>
+											<div class="move-zone">
+												<i class="align-middle" transform="rotate(-45)" data-feather="maximize-2"></i>
 											</div>
 										</div>
-										<div class="turbo_list_boding variants_item_sku">
-											<div class="heading_label">{$btr->general_sku|escape}</div>
-											<input class="variant_input" name="variants[sku][]" type="text" value="{$variant->sku|escape}">
+										<div class="turbo-list-boding variants-item-sku">
+											<div class="form-label">{$btr->global_sku|escape}</div>
+											<input class="form-control" name="variants[sku][]" type="text" value="">
 										</div>
-										<div class="turbo_list_boding variants_item_name">
-											<div class="heading_label">{$btr->general_option_name|escape}</div>
-											<input name="variants[id][]" type="hidden" value="{$variant->id|escape}">
-											<input class="variant_input" name="variants[name][]" type="text" value="{$variant->name|escape}">
+										<div class="turbo-list-boding variants-item-name">
+											<div class="form-label">{$btr->global_title|escape}</div>
+											<input name="variants[id][]" type="hidden" value="">
+											<input class="form-control" name="variants[name][]" type="text" value="">
 										</div>
-										<div class="turbo_list_boding variants_item_height color-picker">
-											<div class="heading_label"></div>
-											<span data-hint="{$btr->select_color|escape}" class="hint-top-right-t-info-s-small-mobile hint-anim">
-												<input name="variants[color_code][]" type="hidden" value="{$variant->color_code|escape}" class="">
-												<div class="add-on colorPicker-picker"></div>
-											</span>
+										<div class="turbo-list-boding variants-item-height">
+											<div class="form-label"></div>
+											<input name="variants[color_code][]" type="hidden" value="">
+											<div class="add-on colorPicker-picker" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->select_color|escape}"></div>
 										</div>
-										<div class="turbo_list_boding variants_item_color">
-											<div class="heading_label">{$btr->general_color|escape}</div>
-											<input name="variants[color][]" class="variant_input" type="text" value="{$variant->color|escape}">
+										<div class="turbo-list-boding variants-item-color">
+											<div class="form-label">{$btr->global_color|escape}</div>
+											<input name="variants[color][]" class="form-control" type="text" value="">
 										</div>
-										<div class="turbo_list_boding variants_item_image">
-											<div class="heading_label"></div>
-											<a href='javascript:;' data-hint="{$btr->select_color_image|escape}" class="hint-top-right-t-info-s-small-mobile hint-anim add_images"><img src="design/images/picture{if !$variant->images_ids}_empty{/if}.svg" title="{$btr->select_color_image|escape}"></a>
-											<input name="variants[images_ids][]" type="hidden" value="{$variant->images_ids|escape}">
+										<div class="turbo-list-boding variants-item-image">
+											<div class="form-label"></div>
+											<a href="javascript:;" class="add_images">
+												{if $settings->admin_theme == "dark"}
+													<img src="design/images/picture_empty_dark.svg" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->select_color_image|escape}">
+												{else}
+													<img src="design/images/picture_empty.svg" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->select_color_image|escape}">
+												{/if}
+											</a>
+											<input name="variants[images_ids][]" type="hidden" value="">
 										</div>
-										<div class="turbo_list_boding variants_item_price">
-											<div class="heading_label">{$btr->general_price|escape}, {if isset($currencies[$variant->currency_id])}{$currencies[$variant->currency_id]->sign|escape}{else}{$currency->sign}{/if}</div>
-											<input class="variant_input" name="variants[price][]" type="text" value="{$variant->oprice|escape}">
+										<div class="turbo-list-boding variants-item-price">
+											<div class="form-label">{$btr->global_price|escape}, {$currency->sign}</div>
+											<input class="form-control" name="variants[price][]" type="text" value="">
 										</div>
-										<div class="turbo_list_boding variants_item_discount">
-											<div class="heading_label">{$btr->general_old_price|escape}, {if isset($currencies[$variant->currency_id])}{$currencies[$variant->currency_id]->sign|escape}{else}{$currency->sign}{/if}</div>
-											<input class="variant_input text_grey" name="variants[compare_price][]" type="text" value="{$variant->compare_oprice|escape}">
+										<div class="turbo-list-boding variants-item-discount">
+											<div class="form-label">{$btr->global_old_price|escape}, {$currency->sign}</div>
+											<input class="form-control" name="variants[compare_price][]" type="text" value="">
 										</div>
-										<div class="turbo_list_boding variants_item_currency">
-											<div class="heading_label">{$btr->general_currency|escape}</div>
-											<select name="variants[currency_id][]" class="selectpicker">
+										<div class="turbo-list-boding variants-item-currency">
+											<div class="form-label">{$btr->global_currency|escape}</div>
+											<select name="variants[currency_id][]">
 												{foreach $currencies as $c}
-													<option value="{$c->id}" {if $c->id == $variant->currency_id}selected=""{/if}>{$c->code|escape}</option>
+													<option value="{$c->id}">{$c->code|escape}</option>
 												{/foreach}
 											</select>
 										</div>
-										<div class="turbo_list_boding variants_item_weight">
-											<div class="heading_label">{$btr->general_weight|escape}, {$settings->weight_units}</div>
-											<input class="variant_input" name="variants[weight][]" type="text" value="{$variant->weight|escape}">
+										<div class="turbo-list-boding variants-item-weight">
+											<div class="form-label">{$btr->global_weight|escape}, {$settings->weight_units}</div>
+											<input class="form-control" name="variants[weight][]" type="text" value="">
 										</div>
-										<div class="turbo_list_boding variants_item_amount">
-											<div class="heading_label">{$btr->general_qty|escape}</div>
+										<div class="turbo-list-boding variants-item-amount">
+											<div class="form-label">{$btr->global_qty|escape}</div>
 											<div class="input-group">
-												<input class="form-control" name="variants[stock][]" type="text" value="{if $variant->infinity || $variant->stock == ''}∞{else}{$variant->stock|escape}{/if}">
-												<span class="input-group-addon p-0">
+												<input class="form-control" name="variants[stock][]" type="text" value="∞">
+												<span class="input-group-text">
 													{$settings->units|escape}
 												</span>
 											</div>
 										</div>
-										{if !$variant@first}
-											<div class="turbo_list_boding turbo_list_close remove_variant">
-												<div class="heading_label"></div>
-												<button data-hint="{$btr->delete_variants|escape}" type="button" class="btn_close fn_remove_variant hint-bottom-right-t-info-s-small-mobile  hint-anim">
-													{include file='svg_icon.tpl' svgId='delete'}
-												</button>
-											</div>
-										{/if}
-									</div>
-								</div>
-							{/foreach}
-							<div class="turbo_list_body_item variants_list_item fn_new_row_variant">
-								<div class="turbo_list_row ">
-									<div class="turbo_list_boding variants_item_drag">
-										<div class="heading_label"></div>
-										<div class="move_zone">
-											{include file='svg_icon.tpl' svgId='drag_vertical'}
+										<div class="turbo-list-boding turbo-list-delete remove-variant">
+											<div class="form-label"></div>
+											<button type="button" class="btn-delete js-remove-variant" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->delete_variants|escape}">
+												<i class="align-middle" data-feather="trash-2"></i>
+											</button>
 										</div>
-									</div>
-									<div class="turbo_list_boding variants_item_sku">
-										<div class="heading_label">{$btr->general_sku|escape}</div>
-										<input class="variant_input" name="variants[sku][]" type="text" value="">
-									</div>
-									<div class="turbo_list_boding variants_item_name">
-										<div class="heading_label">{$btr->general_option_name|escape}</div>
-										<input name="variants[id][]" type="hidden" value="">
-										<input class="variant_input" name="variants[name][]" type="text" value="">
-									</div>
-									<div class="turbo_list_boding variants_item_height">
-										<div class="heading_label"></div>
-										<span data-hint="{$btr->select_color|escape}" class="hint-top-right-t-info-s-small-mobile hint-anim">
-											<input name="variants[color_code][]" type="hidden" value="">
-											<div class="add-on colorPicker-picker"></div>
-										</span>
-									</div>
-									<div class="turbo_list_boding variants_item_color">
-										<div class="heading_label">{$btr->general_color|escape}</div>
-										<input name="variants[color][]" class="variant_input" type="text" value="">
-									</div>
-									<div class="turbo_list_boding variants_item_image">
-										<div class="heading_label"></div>
-										<a href='javascript:;' data-hint="{$btr->select_color_image|escape}" class="hint-top-right-t-info-s-small-mobile hint-anim add_images"><img src="design/images/picture_empty.svg" title="{$btr->select_color_image|escape}"></a>
-										<input name="variants[images_ids][]" type="hidden" value="">
-									</div>
-									<div class="turbo_list_boding variants_item_price">
-										<div class="heading_label">{$btr->general_price|escape}, {$currency->sign}</div>
-										<input class="variant_input" name="variants[price][]" type="text" value="">
-									</div>
-									<div class="turbo_list_boding variants_item_discount">
-										<div class="heading_label">{$btr->general_old_price|escape}, {$currency->sign}</div>
-										<input class="variant_input" name="variants[compare_price][]" type="text" value="">
-									</div>
-									<div class="turbo_list_boding variants_item_currency">
-										<div class="heading_label">{$btr->general_currency|escape}</div>
-										<select name="variants[currency_id][]">
-											{foreach $currencies as $c}
-												<option value="{$c->id}">{$c->code|escape}</option>
-											{/foreach}
-										</select>
-									</div>
-									<div class="turbo_list_boding variants_item_weight">
-										<div class="heading_label">{$btr->general_weight|escape}, {$settings->weight_units}</div>
-										<input class="variant_input" name="variants[weight][]" type="text" value="">
-									</div>
-									<div class="turbo_list_boding variants_item_amount">
-										<div class="heading_label">{$btr->general_qty|escape}</div>
-										<div class="input-group">
-											<input class="form-control" name="variants[stock][]" type="text" value="∞">
-											<span class="input-group-addon p-0">
-												{$settings->units|escape}
-											</span>
-										</div>
-									</div>
-									<div class="turbo_list_boding turbo_list_close remove_variant">
-										<div class="heading_label"></div>
-										<button data-hint="{$btr->delete_variants|escape}" type="button" class="btn_close fn_remove_variant hint-bottom-right-t-info-s-small-mobile hint-anim">
-											{include file='svg_icon.tpl' svgId='delete'}
-										</button>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-					<div class="box_btn_heading mt-1">
-						<button type="button" class="btn btn_mini btn-primary fn_add_variant">
-							{include file='svg_icon.tpl' svgId='plus'}
-							<span>{$btr->product_add_option|escape}</span>
-						</button>
+						<div class="box_btn_heading mt-3">
+							<button type="button" class="btn btn-primary js-add-variant">
+								<i class="align-middle" data-feather="plus"></i>
+								<span>{$btr->product_add_option|escape}</span>
+							</button>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="row">
-		<div class="col-lg-6 col-md-12 pr-0">
-			<div class="boxed fn_toggle_wrap min_height_210px">
-				<div class="heading_box">
-					{$btr->product_features|escape}
-					<div class="toggle_arrow_wrap fn_toggle_card text-primary">
-						<a class="btn-minimize" href="javascript:;"><i class="fn_icon_arrow icon-chevron-down"></i></a>
+	<div class="row gx-2">
+		<div class="col-lg-6 col-md-12">
+			<div class="card mh-210px">
+				<div class="card-header">
+					<div class="card-actions float-end">
+						<div class="d-block d-lg-none position-relative collapse-icon">
+							<a href="javascript:;" class="collapse-chevron">
+								<i class="align-middle" data-feather="chevron-up"></i>
+							</a>
+						</div>
 					</div>
+					<h5 class="card-title mb-0">{$btr->product_features|escape}</h5>
 				</div>
-				<div class="toggle_body_wrap on fn_card">
-					<div class="features_wrap fn_features_wrap">
+				<div class="collapse-card">
+					<div class="card-body features-wrap js-features-wrap">
 						{foreach $features as $feature}
-							<div class="fn_feature_block_{$feature->id}">
+							<div class="js-feature-block-{$feature->id}">
 								{assign var="feature_id" value=$feature->id}
 								{foreach $options[$feature->id]->values as $feature_value}
-									<div class="feature_row clearfix">
+									<div class="feature-row">
 										<span feature_id={$feature_id}>
-												<div class="feature_name{if !$feature_value@first} additional_values{/if} {if !$feature_value@first}feature_value_mobile{/if}">
-													{if $feature_value@first}
-														<span title="{$feature->name|escape}">
-															<a href="index.php?module=FeatureAdmin&id={$feature->id}" target="_blank">
-																{$feature->name|escape}
-															</a>
-														</span>
-													{/if}
-												</div>
-											<div class="feature_value {if $feature->is_color}color-picker{/if}">
-												<input class="feature_input fn_auto_option {if !$feature_value@first}feature_input_single{/if}" data-id="{$feature_id}" type="text" name="options[{$feature_id}][]" value="{$feature_value|escape}">
-												{if $feature->is_color}<div class="add-on colorPicker-picker"></div>{/if}
-												<button type="button" class="btn btn_mini{if $feature_value@first} btn-feature {if $feature->is_color}fn_add_color{else}fn_add{/if}{else} btn-danger-feature fn_remove{/if} fn_feature_multi_values feature_multi_values">
-													<span class="fn_plus" {if !$feature_value@first}style="display: none;" {/if}>
-														{include file='svg_icon.tpl' svgId='plus'}
+											<div class="feature-name {if !$feature_value@first}additional-values{/if} {if !$feature_value@first}feature-value-mobile{/if}">
+												{if $feature_value@first}
+													<span title="{$feature->name|escape}">
+														<a href="index.php?module=FeatureAdmin&id={$feature->id}" target="_blank">
+															{$feature->name|escape}
+														</a>
 													</span>
-													<span class="fn_minus" {if $feature_value@first}style="display: none;" {/if}>
-														{include file='svg_icon.tpl' svgId='minus'}
+												{/if}
+											</div>
+											<div class="feature-value {if $feature->is_color}color-picker{/if}">
+												<input class="feature-input js-auto-option {if !$feature_value@first}feature-input-single{/if}" data-id="{$feature_id}" type="text" name="options[{$feature_id}][]" value="{$feature_value|escape}">
+												{if $feature->is_color}<div class="add-on colorPicker-picker"></div>{/if}
+												<button type="button" class="btn btn_mini{if $feature_value@first} btn-feature {if $feature->is_color}js-add-color{else}js-add{/if}{else} btn-minus-feature js-remove{/if} js-feature-multi-values feature-multi-values">
+													<span class="js-plus" {if !$feature_value@first}style="display: none;" {/if}>
+														<i class="align-middle" data-feather="plus"></i>
+													</span>
+													<span class="js-minus" {if $feature_value@first}style="display: none;" {/if}>
+														<i class="align-middle" data-feather="minus"></i>
 													</span>
 												</button>
 											</div>
 										</span>
 									</div>
 								{foreachelse}
-									<div class="feature_row clearfix">
+									<div class="feature-row">
 										<span feature_id={$feature_id}>
-											<div class="feature_name">
+											<div class="feature-name">
 												<span title="{$feature->name|escape}">
 													<a href="index.php?module=FeatureAdmin&id={$feature->id}" target="_blank">
 														{$feature->name|escape}
 													</a>
 												</span>
 											</div>
-											<div class="feature_value {if $feature->is_color}color-picker{/if}">
-												<input class="feature_input fn_auto_option" data-id="{$feature_id}" type="text" name="options[{$feature_id}][]" value="">
+											<div class="feature-value {if $feature->is_color}color-picker{/if}">
+												<input class="feature-input js-auto-option" data-id="{$feature_id}" type="text" name="options[{$feature_id}][]" value="">
 												{if $feature->is_color}<div class="add-on colorPicker-picker"></div>{/if}
-												<button type="button" class="btn btn_mini btn-feature fn_add fn_feature_multi_values feature_multi_values">
-													<span class="fn_plus">
-														{include file='svg_icon.tpl' svgId='plus'}
+												<button type="button" class="btn btn_mini btn-feature js-add js-feature-multi-values feature-multi-values">
+													<span class="js-plus">
+														<i class="align-middle" data-feather="plus"></i>
 													</span>
-													<span class="fn_minus" style="display: none">
-														{include file='svg_icon.tpl' svgId='minus'}
+													<span class="js-minus" style="display: none">
+														<i class="align-middle" data-feather="minus"></i>
 													</span>
 												</button>
 											</div>
@@ -530,61 +491,61 @@
 								{/foreach}
 							</div>
 						{/foreach}
-						<div class="fn_new_feature">
-							<div feature_id="" class="new_feature_row clearfix">
-								<div class="wrap_inner_new_feature">
-									<input type="text" class="new_feature new_feature_name" name="new_features_names[]" placeholder="{$btr->product_features_enter|escape}">
-									<input type="text" class="new_feature new_feature_value" name="new_features_values[]" placeholder="{$btr->product_features_value_enter|escape}">
+						<div class="js-new-feature" style="display:none;">
+							<div feature_id="" class="new-feature-row">
+								<div class="wrap-inner-new-feature">
+									<input type="text" class="new-feature new-feature-name" name="new_features_names[]" placeholder="{$btr->product_features_enter|escape}">
+									<input type="text" class="new-feature new-feature-value" name="new_features_values[]" placeholder="{$btr->product_features_value_enter|escape}">
 								</div>
-								<span class="fn_delete_feature btn_close delete_feature">
-									{include file='svg_icon.tpl' svgId='delete'}
+								<span class="js-delete-feature btn-delete delete-feature">
+									<i class="align-middle" data-feather="trash-2"></i>
 								</span>
 							</div>
 						</div>
-						<div class="fn_new_feature_category">
-							<div class="feature_row clearfix">
-								<div class="feature_name">
-									<span title="" class="fn_feature_name">
+						<div class="js-new-feature-category">
+							<div class="feature-row">
+								<div class="feature-name">
+									<span title="" class="js-feature-name">
 										<a href="" target="_blank"></a>
 									</span>
 								</div>
-								<div class="feature_value">
-									<input class="feature_input fn_auto_option" data-id="" type="text" name="" value="">
-									<button type="button" class="btn btn_mini btn-feature fn_add fn_feature_multi_values feature_multi_values">
-										<span class="fn_plus">
-											{include file='svg_icon.tpl' svgId='plus'}
+								<div class="feature-value">
+									<input class="feature-input js-auto-option" data-id="" type="text" name="" value="">
+									<button type="button" class="btn btn_mini btn-feature js-add js-feature-multi-values feature-multi-values">
+										<span class="js-plus">
+											<i class="align-middle" data-feather="plus"></i>
 										</span>
-										<span class="fn_minus" style="display: none">
-											{include file='svg_icon.tpl' svgId='minus'}
+										<span class="js-minus" style="display: none">
+											<i class="align-middle" data-feather="minus"></i>
 										</span>
 									</button>
 								</div>
 							</div>
 						</div>
-						<div class="fn_new_value">
-							<div class="feature_row clearfix">
-									<div class="feature_name feature_value_mobile">
-										<span title="" class="fn_feature_name">
-											<a href="" target="_blank"></a>
+						<div class="js-new-value" style="display:none;">
+							<div class="feature-row">
+								<div class="feature-name feature-value-mobile">
+									<span title="" class="js-feature-name">
+										<a href="" target="_blank"></a>
+									</span>
+								</div>
+								<div class="feature-value">
+									<input class="feature-input js-auto-option" data-id="" type="text" name="" value="">
+									<button type="button" class="btn btn_mini btn-feature js-add js-feature-multi-values feature-multi-values">
+										<span class="js-plus">
+											<i class="align-middle" data-feather="plus"></i>
 										</span>
-									</div>
-								<div class="feature_value">
-									<input class="feature_input fn_auto_option" data-id="" type="text" name="" value="">
-									<button type="button" class="btn btn_mini btn-feature fn_add fn_feature_multi_values feature_multi_values">
-										<span class="fn_plus">
-											{include file='svg_icon.tpl' svgId='plus'}
-										</span>
-										<span class="fn_minus" style="display: none">
-											{include file='svg_icon.tpl' svgId='minus'}
+										<span class="js-minus" style="display: none">
+											<i class="align-middle" data-feather="minus"></i>
 										</span>
 									</button>
 								</div>
 							</div>
 						</div>
 					</div>
-					<div class="box_btn_heading mt-1">
-						<button type="button" class="btn btn_mini btn-primary fn_add_feature">
-							{include file='svg_icon.tpl' svgId='plus'}
+					<div class="card-body mt-nb2">
+						<button type="button" class="btn btn_mini btn-primary js-add-feature">
+							<i class="align-middle" data-feather="plus"></i>
 							<span>{$btr->product_feature_add|escape}</span>
 						</button>
 					</div>
@@ -592,384 +553,436 @@
 			</div>
 		</div>
 		<div class="col-lg-6 col-md-12">
-			<div class="boxed fn_toggle_wrap min_height_210px">
-				<div class="heading_box">
-					{$btr->general_recommended|escape}
-					<div class="toggle_arrow_wrap fn_toggle_card text-primary">
-						<a class="btn-minimize" href="javascript:;"><i class="fn_icon_arrow icon-chevron-down"></i></a>
+			<div class="card mh-210px">
+				<div class="card-header">
+					<div class="card-actions float-end">
+						<div class="d-block d-lg-none position-relative collapse-icon">
+							<a href="javascript:;" class="collapse-chevron">
+								<i class="align-middle" data-feather="chevron-up"></i>
+							</a>
+						</div>
+					</div>
+					<h5 class="card-title mb-0">{$btr->product_rating|escape}</h5>
+				</div>
+				<div class="collapse-card">
+					<div class="card-body">
+						<label for="ratingRange" class="form-label">
+							{$btr->product_rating_value|escape}
+							<span class="js-show-rating">{$product->rating}</span>
+						</label>
+						<div class="raiting-boxed mb-4">
+							<input class="js-rating-value" type="hidden" value="{$product->rating}" name="rating">
+							<input class="js-rating form-range" id="ratingRange" type="range" min="1" max="5" step="0.1" value="{$product->rating}">
+							<div class="raiting-range-number">
+								<span class="float-start">1</span>
+								<span class="float-end">5</span>
+							</div>
+						</div>
+						<div class="mb-1">
+							<div class="form-label">{$btr->product_rating_number|escape}</div>
+							<input type="text" class="form-control" name="votes" value="{$product->votes}">
+						</div>
 					</div>
 				</div>
-				<div class="toggle_body_wrap on fn_card fn_sort_list">
-					<div class="turbo_list ok_related_list">
-						<div class="turbo_list_body related_products sortable">
-							{foreach $related_products as $related_product}
-								<div class="fn_row turbo turbo_list_body_item fn_sort_item">
-									<div class="turbo_list_row">
-										<div class="turbo_list_boding turbo_list_drag move_zone">
-											{include file='svg_icon.tpl' svgId='drag_vertical'}
+			</div>
+			<div class="card mh-210px">
+				<div class="card-header">
+					<div class="card-actions float-end">
+						<div class="d-block d-lg-none position-relative collapse-icon">
+							<a href="javascript:;" class="collapse-chevron">
+								<i class="align-middle" data-feather="chevron-up"></i>
+							</a>
+						</div>
+					</div>
+					<h5 class="card-title mb-0">{$btr->global_recommended|escape}</h5>
+				</div>
+				<div class="collapse-card">
+					<div class="card-body">
+						<div class="turbo-list turbo-related-list">
+							<div class="turbo-list-body related-products sortable">
+								{foreach $related_products as $related_product}
+									<div class="js-row turbo turbo-list-body-item js-sort-item">
+										<div class="turbo-list-row">
+											<div class="turbo-list-boding turbo-list-drag move-zone">
+												<i class="align-middle" transform="rotate(-45)" data-feather="maximize-2"></i>
+											</div>
+											<div class="turbo-list-boding turbo-list-related-photo">
+												<input type="hidden" name="related_products[]" value="{$related_product->id}">
+												<a href="{url module=ProductAdmin id=$related_product->id}">
+													{if $related_product->images[0]}
+														<img class="product-icon" src='{$related_product->images[0]->filename|resize:40:40}'>
+													{else}
+														<i class="align-middle" data-feather="camera"></i>
+													{/if}
+												</a>
+											</div>
+											<div class="turbo-list-boding turbo-list-related-name">
+												<a href="{url module=ProductAdmin id=$related_product->id}" class="fw-bold text-body text-decoration-none">{$related_product->name|escape}</a>
+											</div>
+											<div class="turbo-list-boding turbo-list-delete">
+												<button type="button" class="btn-delete js-remove-item" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete_product|escape}">
+													<i class="align-middle" data-feather="trash-2"></i>
+												</button>
+											</div>
 										</div>
-										<div class="turbo_list_boding turbo_list_related_photo">
-											<input type="hidden" name="related_products[]" value="{$related_product->id}">
-											<a href="{url module=ProductAdmin id=$related_product->id}">
-												{if $related_product->images[0]}
-													<img class="product_icon" src='{$related_product->images[0]->filename|resize:40:40}'>
-												{else}
-													<img class="product_icon" src="design/images/no_image.svg" width="40">
-												{/if}
-											</a>
+									</div>
+								{/foreach}
+								<div id="new-related-product" class="js-row turbo turbo-list-body-item js-sort-item" style='display:none;'>
+									<div class="turbo-list-row">
+										<div class="turbo-list-boding turbo-list-drag move-zone">
+											<i class="align-middle" transform="rotate(-45)" data-feather="maximize-2"></i>
 										</div>
-										<div class="turbo_list_boding turbo_list_related_name">
-											<a class="link" href="{url module=ProductAdmin id=$related_product->id}">{$related_product->name|escape}</a>
+										<div class="turbo-list-boding turbo-list-related-photo">
+											<input type="hidden" name="related_products[]" value="">
+											<img class="product-icon" src="">
 										</div>
-										<div class="turbo_list_boding turbo_list_close">
-											<button data-hint="{$btr->general_delete_product|escape}" type="button" class="btn_close fn_remove_item hint-bottom-right-t-info-s-small-mobile hint-anim">
-												{include file='svg_icon.tpl' svgId='delete'}
+										<div class="turbo-list-boding turbo-list-related-name">
+											<a href="" class="fw-bold text-body text-decoration-none related-product-name"></a>
+										</div>
+										<div class="turbo-list-boding turbo-list-delete">
+											<button type="button" class="btn-delete js-remove-item" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete_product|escape}">
+												<i class="align-middle" data-feather="trash-2"></i>
 											</button>
 										</div>
 									</div>
 								</div>
-							{/foreach}
-							<div id="new_related_product" class="fn_row turbo turbo_list_body_item fn_sort_item" style='display:none;'>
-								<div class="turbo_list_row">
-									<div class="turbo_list_boding turbo_list_drag move_zone">
-										{include file='svg_icon.tpl' svgId='drag_vertical'}
-									</div>
-									<div class="turbo_list_boding turbo_list_related_photo">
-										<input type="hidden" name="related_products[]" value="">
-										<img class="product_icon" src="">
-									</div>
-									<div class="turbo_list_boding turbo_list_related_name">
-										<a class="link related_product_name" href=""></a>
-									</div>
-									<div class="turbo_list_boding turbo_list_close">
-										<button data-hint="{$btr->general_delete_product|escape}" type="button" class="btn_close fn_remove_item hint-bottom-right-t-info-s-small-mobile  hint-anim">
-											{include file='svg_icon.tpl' svgId='delete'}
-										</button>
-									</div>
-								</div>
 							</div>
 						</div>
-					</div>
-					<div class="heading_label">{$btr->general_recommended_add|escape}</div>
-					<div class="autocomplete_arrow">
-						<input type="text" name="related" id="related_products" class="form-control" placeholder='{$btr->general_add_product|escape}'>
+						<div class="form-label mt-3">{$btr->global_recommended_add|escape}</div>
+						<div class="autocomplete-arrow">
+							<input type="text" name="related" id="related-products" class="form-control" placeholder='{$btr->global_add_product|escape}'>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="row">
-		<div class="col-lg-6 col-md-12 pr-0">
-			<div class="boxed fn_toggle_wrap min_height_210px">
-				<div class="heading_box">
-					{$btr->product_files|escape}
-					<div class="toggle_arrow_wrap fn_toggle_card text-primary">
-						<a class="btn-minimize" href="javascript:;"><i class="fn_icon_arrow icon-chevron-down"></i></a>
-					</div>
-				</div>
-				<div class="toggle_body_wrap on fn_card fn_sort_list">
-					<div class="turbo_list ok_related_list">
-						<div class="turbo_list_body sortable">
-							{foreach $cms_files as $file}
-								<div class="fn_row turbo turbo_list_body_item fn_sort_item">
-									<div class="turbo_list_row">
-										<div class="turbo_list_boding turbo_list_drag move_zone">
-											{include file='svg_icon.tpl' svgId='drag_vertical'}
-										</div>
-										<div class="turbo_list_boding">
-											<input type="hidden" name="files[id][]" value="{$file->id}">
-											<input class="form-control" type="text" name="files[name][]" value="{$file->name}">
-										</div>
-										<div class="turbo_list_boding turbo_list_related_name">
-											<a class="link" href="../{$config->cms_files_dir}{$file->filename|escape}">{$file->filename|escape}</a>
-										</div>
-										<div class="turbo_list_boding turbo_list_close">
-											<button data-hint="{$btr->general_delete_file|escape}" type="button" class="btn_close fn_remove_item hint-bottom-right-t-info-s-small-mobile hint-anim">
-												{include file='svg_icon.tpl' svgId='delete'}
-											</button>
-										</div>
-									</div>
-								</div>
-							{/foreach}
+	<div class="row g-2">
+		<div class="col-lg-6 col-md-12">
+			<div class="card mh-270px">
+				<div class="card-header">
+					<div class="card-actions float-end">
+						<div class="d-block d-lg-none position-relative collapse-icon">
+							<a href="javascript:;" class="collapse-chevron">
+								<i class="align-middle" data-feather="chevron-up"></i>
+							</a>
 						</div>
 					</div>
-					<div class="heading_label">{$btr->general_add_file|escape}</div>
-					<div class="heading_label">
-						<p class="text_primary">
+					<h5 class="card-title mb-0">{$btr->product_files|escape}</h5>
+				</div>
+				<div class="collapse-card">
+					<div class="card-body">
+						<div class="turbo-list turbo-related-list mb-3">
+							<div class="turbo-list-body sortable">
+								{foreach $cms_files as $file}
+									<div class="js-row turbo turbo-list-body-item">
+										<div class="turbo-list-row">
+											<div class="turbo-list-boding turbo-list-drag move-zone">
+												<i class="align-middle" transform="rotate(-45)" data-feather="maximize-2"></i>
+											</div>
+											<div class="turbo-list-boding">
+												<input type="hidden" name="files[id][]" value="{$file->id}">
+												<input class="form-control" type="text" name="files[name][]" value="{$file->name}">
+											</div>
+											<div class="turbo-list-boding turbo-list-related-name">
+												<a class="fw-bold text-body text-decoration-none" href="../{$config->cms_files_dir}{$file->filename|escape}">{$file->filename|escape}</a>
+											</div>
+											<div class="turbo-list-boding turbo-list-delete">
+												<button type="button" class="btn-delete js-remove-item" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete_file|escape}">
+													<i class="align-middle" data-feather="trash-2"></i>
+												</button>
+											</div>
+										</div>
+									</div>
+								{/foreach}
+							</div>
+						</div>
+						<input class="form-control" name="files[]" id="file" type="file" multiple accept="pdf/txt/doc/docx">
+						<div for="file" class="form-label mt-1">
 							{$btr->import_maxsize|escape}
 							{if $config->max_upload_filesize>1024*1024}
-								{$config->max_upload_filesize/1024/1024|round:'2'} {$btr->general_mb|escape}
+								{$config->max_upload_filesize/1024/1024|round:'2'} {$btr->global_mb|escape}
 							{else}
-								{$config->max_upload_filesize/1024|round:'2'} {$btr->general_kb|escape}
+								{$config->max_upload_filesize/1024|round:'2'} {$btr->global_kb|escape}
 							{/if}
-						</p>
+						</div>
 					</div>
-					<div class="input_file_container">
-						<input class="file_upload input_file" name="files[]" placeholder='{$btr->general_select_file|escape}' type="file" multiple accept="pdf/txt/doc/docx">
-						<label tabindex="0" for="my-file" class="input_file_trigger">
-							{include file='svg_icon.tpl' svgId='download'}
-							<span>{$btr->general_select_file|escape}</span>
-						</label>
-					</div>
-					<p class="input_file_return"></p>
 				</div>
 			</div>
 		</div>
 		<div class="col-lg-6 col-md-12">
-			<div class="boxed fn_toggle_wrap min_height_210px">
-				<div class="heading_box">
-					{$btr->general_video|escape}
-					<div class="toggle_arrow_wrap fn_toggle_card text-primary">
-						<a class="btn-minimize" href="javascript:;"><i class="fn_icon_arrow icon-chevron-down"></i></a>
+			<div class="card mh-270px">
+				<div class="card-header">
+					<div class="card-actions float-end">
+						<div class="d-block d-lg-none position-relative collapse-icon">
+							<a href="javascript:;" class="collapse-chevron">
+								<i class="align-middle" data-feather="chevron-up"></i>
+							</a>
+						</div>
 					</div>
+					<h5 class="card-title mb-0">{$btr->global_video|escape}</h5>
 				</div>
-				<div class="toggle_body_wrap on fn_card fn_sort_list videos">
-					<div class="turbo_list ok_related_list">
-						<div class="turbo_list_body sortable">
-							{foreach $product_videos as $video}
-								<div class="fn_row turbo turbo_list_body_item fn_sort_item">
-									<div class="turbo_list_row">
-										<div class="turbo_list_boding turbo_list_drag move_zone">
-											{include file='svg_icon.tpl' svgId='drag_vertical'}
-										</div>
-										<div class="turbo_list_boding turbo_list_related_photo">
-											<a href="https://www.youtube.com/embed/{$video->vid}" data-fancybox class="iframe fancybox.iframe">
-												<img class="product_icon" src="https://img.youtube.com/vi/{$video->vid}/mqdefault.jpg">
-											</a>
-										</div>
-										<div class="turbo_list_boding turbo_list_related_name">
-											<input name="videos[]" value="{$video->link}" class="form-control" style="width:100%;">
-										</div>
-										<div class="turbo_list_boding turbo_list_close">
-											<button data-hint="{$btr->general_delete_video|escape}" type="button" class="btn_close fn_remove_item hint-bottom-right-t-info-s-small-mobile  hint-anim">
-												{include file='svg_icon.tpl' svgId='delete'}
-											</button>
+				<div class="collapse-card">
+					<div class="card-body videos">
+						<div class="turbo-list turbo-related-list mb-3">
+							<div class="turbo-list-body sortable">
+								{foreach $product_videos as $video}
+									<div class="js-row turbo turbo-list-body-item js-sort-item">
+										<div class="turbo-list-row">
+											<div class="turbo-list-boding turbo-list-drag move-zone">
+												<i class="align-middle" transform="rotate(-45)" data-feather="maximize-2"></i>
+											</div>
+											<div class="turbo-list-boding turbo-list-related-photo">
+												<a href="https://www.youtube.com/embed/{$video->vid}" data-fancybox class="iframe fancybox.iframe">
+													<img class="product-icon" src="https://img.youtube.com/vi/{$video->vid}/mqdefault.jpg">
+												</a>
+											</div>
+											<div class="turbo-list-boding turbo-list-related-name">
+												<input name="videos[]" value="{$video->link}" class="form-control" style="width:100%;">
+											</div>
+											<div class="turbo-list-boding turbo-list-delete">
+												<button type="button" class="btn-delete js-remove-item" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete_video|escape}">
+													<i class="align-middle" data-feather="trash-2"></i>
+												</button>
+											</div>
 										</div>
 									</div>
+								{/foreach}
+							</div>
+						</div>
+						<div id="new_video" class="js-row turbo turbo-list-body-item js-sort-item" style='display:none;'>
+							<div class="turbo-list-row">
+								<div class="turbo-list-boding turbo-list-drag move-zone">
+									<i class="align-middle" transform="rotate(-45)" data-feather="maximize-2"></i>
 								</div>
-							{/foreach}
-							<div id="new_video" class="fn_row turbo turbo_list_body_item fn_sort_item" style='display:none;'>
-								<div class="turbo_list_row">
-									<div class="turbo_list_boding turbo_list_drag move_zone">
-										{include file='svg_icon.tpl' svgId='drag_vertical'}
-									</div>
-									<div class="turbo_list_boding turbo_list_related_photo"></div>
-									<div class="turbo_list_boding turbo_list_related_name">
-										<input name="videos[]" class="form-control" value="" style="width:100%;">
-									</div>
-									<div class="turbo_list_boding turbo_list_close">
-										<button data-hint="{$btr->general_delete_video|escape}" type="button" class="btn_close fn_remove_item hint-bottom-right-t-info-s-small-mobile hint-anim delete">
-											{include file='svg_icon.tpl' svgId='delete'}
-										</button>
-									</div>
+								<div class="turbo-list-boding turbo-list-related-photo"></div>
+								<div class="turbo-list-boding turbo-list-related-name">
+									<input name="videos[]" class="form-control" value="" style="width:100%;">
+								</div>
+								<div class="turbo-list-boding turbo-list-delete">
+									<button type="button" class="btn-delete js-remove-item delete" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete_video|escape}">
+										<i class="align-middle" data-feather="trash-2"></i>
+									</button>
 								</div>
 							</div>
 						</div>
-					</div>
-					<div class="box_btn_heading mt-1">
-						<button type="button" class="btn btn_mini btn-primary fn_add_video">
-							{include file='svg_icon.tpl' svgId='plus'}
-							<span>{$btr->general_add_video|escape}</span>
-						</button>
+						<div class="box_btn_heading">
+							<button type="button" class="btn btn_mini btn-primary js-add-video">
+								<i class="align-middle" data-feather="plus"></i>
+								<span>{$btr->global_add_video|escape}</span>
+							</button>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-lg-12 col-md-12">
-			<div class="boxed match fn_toggle_wrap">
-				<div class="heading_box">
-					{$btr->general_metatags|escape}
-					<div class="toggle_arrow_wrap fn_toggle_card text-primary">
-						<a class="btn-minimize" href="javascript:;"><i class="fn_icon_arrow icon-chevron-down"></i></a>
+		<div class="col-12">
+			<div class="card">
+				<div class="card-header">
+					<div class="card-actions float-end">
+						<div class="d-block d-lg-none position-relative collapse-icon">
+							<a href="javascript:;" class="collapse-chevron">
+								<i class="align-middle" data-feather="chevron-up"></i>
+							</a>
+						</div>
 					</div>
+					<h5 class="card-title mb-0">{$btr->global_metatags|escape}</h5>
 				</div>
-				<div class="toggle_body_wrap on fn_card row">
-					<div class="col-lg-6 col-md-6">
-						<div class="heading_label">Meta-title <span id="fn_meta_title_counter"></span></div>
-						<input name="meta_title" class="form-control fn_meta_field mb-h" type="text" value="{$product->meta_title|escape}">
-						<div class="heading_label">Meta-keywords</div>
-						<input name="meta_keywords" class="form-control fn_meta_field mb-h" type="text" value="{$product->meta_keywords|escape}">
-					</div>
-					<div class="col-lg-6 col-md-6 pl-0">
-						<div class="heading_label">Meta-description <span id="fn_meta_description_counter"></span></div>
-						<textarea name="meta_description" class="form-control turbo_textarea fn_meta_field">{$product->meta_description|escape}</textarea>
+				<div class="collapse-card">
+					<div class="card-body">
+						<div class="row">
+							<div class="col-lg-6 col-md-6">
+								<div class="mb-3">
+									<div class="form-label">Meta-title <span id="js-meta-title-counter"></span></div>
+									<input name="meta_title" class="form-control js-meta-field mb-h" type="text" value="{$product->meta_title|escape}">
+								</div>
+								<div class="mb-3">
+									<div class="form-label">Meta-keywords</div>
+									<input name="meta_keywords" class="form-control js-meta-field mb-h" type="text" value="{$product->meta_keywords|escape}">
+								</div>
+							</div>
+							<div class="col-lg-6 col-md-6">
+								<div class="form-label">Meta-description <span id="js-meta-description-counter"></span></div>
+								<textarea name="meta_description" class="form-control turbo-textarea js-meta-field">{$product->meta_description|escape}</textarea>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-lg-12 col-md-12">
-			<div class="boxed match fn_toggle_wrap tabs">
-				<div class="heading_tabs">
-					<div class="tab_navigation">
-						<a href="#tab1" class="heading_box tab_navigation_link">{$btr->general_short_description|escape}</a>
-						<a href="#tab2" class="heading_box tab_navigation_link">{$btr->general_full_description|escape}</a>
+		<div class="col-12">
+			<div class="tab">
+				<ul class="nav nav-tabs" role="tablist">
+					<li class="nav-item" role="presentation"><a class="nav-link active" href="#tab-1" data-bs-toggle="tab" role="tab" aria-selected="true">{$btr->global_short_description|escape}</a></li>
+					<li class="nav-item" role="presentation"><a class="nav-link" href="#tab-2" data-bs-toggle="tab" role="tab" aria-selected="false" tabindex="-1">{$btr->global_full_description|escape}</a></li>
+				</ul>
+				<div class="tab-content">
+					<div class="tab-pane active show" id="tab-1" role="tabpanel">
+						<textarea name="annotation" id="annotation" class="editor-small">{$product->annotation|escape}</textarea>
 					</div>
-					<div class="toggle_arrow_wrap fn_toggle_card text-primary">
-						<a class="btn-minimize" href="javascript:;"><i class="fn_icon_arrow icon-chevron-down"></i></a>
-					</div>
-				</div>
-				<div class="toggle_body_wrap on fn_card">
-					<div class="tab_container">
-						<div id="tab1" class="tab">
-							<textarea name="annotation" id="annotation" class="editor_small">{$product->annotation|escape}</textarea>
-						</div>
-						<div id="tab2" class="tab">
-							<textarea id="fn_editor" name="body" class="editor_large fn_editor_class">{$product->body|escape}</textarea>
-						</div>
+					<div class="tab-pane" id="tab-2" role="tabpanel">
+						<textarea id="js-editor" name="body" class="editor-large js-editor-class">{$product->body|escape}</textarea>
 					</div>
 				</div>
-				<div class="row">
-					<div class="col-lg-12 col-md-12 mt-1">
-						<button type="submit" name="" class="btn btn_small btn-primary float-md-right">
-							{include file='svg_icon.tpl' svgId='checked'}
-							<span>{$btr->general_apply|escape}</span>
-						</button>
-					</div>
-				</div>
+			</div>
+		</div>
+		<div class="col-12">
+			<div class="d-grid d-sm-block">
+				<button type="submit" class="btn btn-primary float-end mt-n2">
+					<i class="align-middle" data-feather="check"></i>
+					{$btr->global_apply|escape}
+				</button>
 			</div>
 		</div>
 	</div>
 </form>
-<div style="display: none;" class="images">
-	<ul>
-		{foreach from=$product_images item=image}
-			<li>
-				<label>
-					<img src="{$image->filename|resize:80:80}" alt="">
-					<input type="hidden" name='images[]' value='{$image->id}'>
-					<span class="start">
-						{include file='svg_icon.tpl' svgId='circle'}
-						{include file='svg_icon.tpl' svgId='checked'}
-					</span>
-				</label>
-			</li>
-		{/foreach}
-	</ul>
-</div>
+{if $product_images}
+	<div style="display: none;" class="images">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">{$btr->product_images|escape}</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<ul>
+						{foreach from=$product_images item=image}
+							<li>
+								<label>
+									<img src="{$image->filename|resize:80:80}" alt="">
+									<input type="hidden" name='images[]' value='{$image->id}'>
+									<span class="start">
+										<i class="align-middle" data-feather="circle"></i>
+										<i class="align-middle" data-feather="check"></i>
+									</span>
+								</label>
+							</li>
+						{/foreach}
+					</ul>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary apply"><i class="align-middle" data-feather="check"></i> {$btr->global_apply|escape}</button>
+				</div>
+			</div>
+		</div>
+	</div>
+{/if}
 
-{* Tiny MCE *}
+{* TinyMCE *}
 {include file='tinymce_init.tpl'}
-{* On document load *}
-
-{* Datetimepicker *}
-{css id="datetimepicker" include=[
-"turbo/design/js/datetimepicker/jquery.datetimepicker.css"
-]}{/css}
-{stylesheet minify=true}
-
-{js id="datetimepicker" priority=99 include=[
-"turbo/design/js/datetimepicker/jquery.datetimepicker.js"
-]}{/js}
-{javascript minify=true}
 
 {* Autocomplete *}
 {js id="autocomplete" priority=99 include=[
-"turbo/design/js/autocomplete/jquery.autocomplete-min.js"
-]}{/js}
-{javascript minify=true}
-
-{* Chosen *}
-{css id="chosen" include=[
-"turbo/design/js/chosen/chosen.min.css"
-]}{/css}
-{stylesheet minify=true}
-
-{js id="chosen" priority=99 include=[
-"turbo/design/js/chosen/chosen.jquery.js"
+	"turbo/design/js/autocomplete/jquery.autocomplete-min.js"
 ]}{/js}
 {javascript minify=true}
 
 {* Fancybox *}
 {css id="fancybox" include=[
-"turbo/design/js/fancybox/jquery.fancybox.css"
+	"turbo/design/js/fancybox/jquery.fancybox.min.css"
 ]}{/css}
 {stylesheet minify=true}
 
 {js id="fancybox" priority=99 include=[
-"turbo/design/js/fancybox/jquery.fancybox.min.js"
+	"turbo/design/js/fancybox/jquery.fancybox.min.js"
 ]}{/js}
 {javascript minify=true}
 
 {* Colorpicker *}
 {css id="colorpicker" include=[
-"turbo/design/js/colorpicker/css/bootstrap-colorpicker.min.css"
+	"turbo/design/js/colorpicker/css/bootstrap-colorpicker.min.css"
 ]}{/css}
 {stylesheet minify=true}
 
 {js id="colorpicker" priority=99 include=[
-"turbo/design/js/colorpicker/js/bootstrap-colorpicker.min.js"
+	"turbo/design/js/colorpicker/js/bootstrap-colorpicker.min.js"
 ]}{/js}
 {javascript minify=true}
 
 {literal}
 	<style>
-		.new_video{ldelim}
-		display:none;
-		{rdelim}
+		.new_video{display:none;}
 	</style>
 	<script>
 		$(window).on("load", function() {
-			$(document).on("click", ".fn_show_images", function() {
-				$(this).prev().find($(".fn_toggle_hidden")).toggleClass("hidden");
+
+			// Images collapse
+			$(document).on("click", ".js-show-images", function() {
+				$(".js-toggle-hidden").toggleClass("d-none");
+				$('.js-icon-arrow').toggleClass('rotate-180');
 			});
 
-			// Timer
-			$('input[name="sale_to"]').datetimepicker({
-				lang: '{/literal}{$settings->lang}{literal}',
-				format: 'Y-m-d H:i:s'
+			// Flatpickr
+			flatpickr(".flatpickr-datetime", {
+				enableTime: true,
+				dateFormat: "Y-m-d H:i",
+				locale: "{/literal}{if $settings->lang =='ua'}uk{else}{$settings->lang}{/if}{literal}",
+				time_24hr: true
 			});
 
 			// Delete product
-			$(document).on("click", ".fn_remove_item", function() {
-				$(this).closest(".fn_row").fadeOut(200, function() { $(this).remove(); });
+			$(document).on("click", ".js-remove-item", function() {
+				$(this).closest(".js-row").fadeOut(200, function() { $(this).remove(); });
 				return false;
 			});
 
-			$(".chosen").chosen('chosen-select');
-			$(document).on("input", ".fn_rating", function() {
-				$(".fn_show_rating").html($(this).val());
-				$(".fn_rating_value").val($(this).val());
+			// Rating
+			$(document).on("input", ".js-rating", function() {
+				$(".js-show-rating").html($(this).val());
+				$(".js-rating-value").val($(this).val());
 			});
 
 			// Add category
-			$('#product_categories .add').click(function() {
-				var $orginal = $('#product_categories .product_cats span.list:last');
+			$('#product-categories .add').click(function() {
+				var $orginal = $('#product-categories .product-cats div.list:last');
 				var $cloned = $orginal.clone();
 				$cloned.find('.bootstrap-select').replaceWith(function() { return $('select', this); })
 				$cloned.find('.selectpicker').selectpicker('render');
-				$cloned.appendTo('#product_categories .product_cats');
-				$("#product_categories .product_cats span.list:last span.add").hide();
-				$("#product_categories .product_cats span.list:last span.delete").show();
+				$cloned.appendTo('#product-categories .product-cats');
+				$("#product-categories .product-cats div.list:last button.add").hide();
+				$("#product-categories .product-cats div.list:last button.delete").show();
 			});
 
 			// Delete category
-			$(document).on("click", "#product_categories .delete", function() {
+			$(document).on("click", "#product-categories .delete", function() {
 				$(this).closest(".list").remove();
 				return false;
 			});
 
-			var image_item_clone = $(".fn_new_image_item").clone(true);
-			$(".fn_new_image_item").remove();
-			var new_image_tem_clone = $(".fn_new_spec_image_item").clone(true);
-			$(".fn_new_spec_image_item").remove();
+			var image_item_clone = $(".js-new-image-item").clone(true).removeClass('d-none');
+			$(".js-new-image-item").remove();
+			var new_image_tem_clone = $(".js-new-spec-image-item").clone(true).removeClass('d-none');
+			$(".js-new-spec-image-item").remove();
 
 			// Drop
 			if (window.File && window.FileReader && window.FileList) {
-				$(".fn_dropzone").on('dragover', function(e) {
+				$(".js-dropzone").on('dragover', function(e) {
 					e.preventDefault();
-					$(this).css('background', '#bababa');
+					{/literal}
+						{if $settings->admin_theme == "dark"}
+							$(this).css('background', '#28323f');
+						{else}
+							$(this).css('background', '#f8f8f8');
+						{/if}
+					{literal}
 				});
-				$(".fn_dropzone").on('dragleave', function() {
-					$(this).css('background', '#f8f8f8');
+				$(".js-dropzone").on('dragleave', function() {
+					{/literal}
+						{if $settings->admin_theme == "dark"}
+							$(this).css('background', '#28323f');
+						{else}
+							$(this).css('background', '#f8f8f8');
+						{/if}
+					{literal}
 				});
 
 				function handleFileSelect(evt) {
-					dropInput = $(this).closest(".fn_droplist_wrap").find("input.dropinput:last").clone();
-					var parent = $(this).closest(".fn_droplist_wrap");
+					dropInput = $(this).closest(".js-droplist-wrap").find("input.dropinput:last").clone();
+					var parent = $(this).closest(".js-droplist-wrap");
 					var files = evt.target.files; // FileList object
 					// Loop through the FileList and render image files as thumbnails.
 					for (var i = 0, f; f = files[i]; i++) {
@@ -993,148 +1006,137 @@
 								clone_item.appendTo(parent);
 								temp_input = dropInput.clone();
 								parent.find("input.dropinput").hide();
-								parent.find(".fn_dropzone").append(temp_input);
+								parent.find(".js-dropzone").append(temp_input);
 							};
 						})(f);
 						// Read in the image file as a data URL.
 						reader.readAsDataURL(f);
 					}
-					$(".fn_dropzone").removeAttr("style");
+					$(".js-dropzone").removeAttr("style");
 				}
 				$(document).on('change', '.dropinput', handleFileSelect);
 			}
-
-			$(document).on("click", ".fn_remove_image", function() {
+				
+			$(document).on("click", ".js-remove-image", function() {
 				$(this).closest("li").remove();
 			});
 
-			$(document).on("click", ".fn_change_special", function() {
-				if ($(this).closest('li').hasClass("product_special")) {
-					$(this).closest("ul").find("input[type=radio]").attr("checked", false);
-					$(this).closest("li").removeClass("product_special");
-					$(this).text($(this).data("origin"));
-				} else {
-					$(this).closest("ul").find("input[type=radio]").attr("checked", false);
-					$(this).closest("li").removeClass("product_special");
-					$(this).closest("li").find("input[type=radio]").attr("checked", true).click();
-					$(this).closest("ul").find("li").removeClass("product_special");
-					$(this).closest("li").addClass("product_special");
-					$(this).text($(this).data("result"));
-				}
-			});
-
-			$(document).on("click", ".fn_remove_variant", function() {
-				$(this).closest(".variants_list_item ").fadeOut(200);
-				$(this).closest(".variants_list_item ").remove();
+			$(document).on("click", ".js-remove-variant", function() {
+				$(this).closest(".variants-list-item").fadeOut(200);
+				$(this).closest(".variants-list-item").remove();
 			});
 
 			// Color picker
 			$('.color-picker').colorpicker({
 				colorSelectors: {
-					'black': '#000000',
-					'white': '#ffffff',
-					'red': '#FF0000',
-					'default': '#777777',
-					'primary': '#337ab7',
-					'success': '#5cb85c',
-					'info': '#5bc0de',
-					'warning': '#f0ad4e',
-					'danger': '#d9534f'
+					"black": "#000000",
+					"blue": "#0000ff",
+					"brown": "#a52a2a",
+					"gray": "#808080",
+					"green": "#008000",
+					"red": "#ff0000",
+					"orange": "#ffa500",
+					"yellow": "#ffff00",
+					"white": "#ffffff"
 				},
 				format: "hex"
 			});
 
-			//////////////////////////////////
 			var color_variant, ids;
-
 			function changeVarName(obj) {
 				parent = $(obj).closest('ul');
-				color = parent.find('.variant_color input').val();
-				size = parent.find('.variant_size input').val();
-				parent.find('.variant_name input').val(color + ' ' + size);
+				color = parent.find('.variant-color input').val();
+				size = parent.find('.variant-size input').val();
+				parent.find('.variant-name input').val(color + ' ' + size);
 			}
 
-			$('.variants_wrapper a.add_images').on('click', function() {
+			$('.variants-wrapper a.add_images').on('click', function() {
 				offset = $(this).offset();
 				color_variant = $(this);
 				ids = $(color_variant).closest('div').find('input[type=hidden]').val().split(',');
-				$('#popup_images').html('');
-				$('.images ul').clone().appendTo('#popup_images');
-				$('#popup_images input[type=hidden]').each(function() {
+				$('#imagesModal').html('');
+				$('.images .modal-dialog').clone().appendTo('#imagesModal');
+				$('#imagesModal').modal('show');
+				$('#imagesModal input[type=hidden]').each(function() {
 					id = $(this).val() + '';
 					if ($.inArray(id, ids) >= 0) $('<input type="checkbox" value="' + $(this).val() + '" style="display:none" checked="checked">').insertAfter(this);
 					else $('<input type="checkbox" value="' + $(this).val() + '" style="display:none">').insertAfter(this);
 					$(this).remove();
 				});
-				$('#popup_images :checkbox:checked').closest('li').addClass('active');
-				$('#popup_images input:checkbox').click(function() {
+				$('#imagesModal :checkbox:checked').closest('li').addClass('active');
+				$('#imagesModal input:checkbox').click(function() {
 					if ($(this).is(':checked')) {
 						$(this).closest('li').addClass('active');
 					} else {
 						$(this).closest('li').removeClass('active');
 					}
 				});
-				$('#popup_images li').each(function() { $(this).find('a').remove(); });
-				$('#popup_images').append('<div class="box_btn"><a href="#" class="btn btn_mini btn-success apply">{/literal} {$btr->general_apply|escape}{literal}</a></div>');
-				$('#popup_images').css('top', (offset.top + 28) + 'px').css('left', (offset.left + 0) + 'px').toggle();
+				$('#imagesModal li').each(function() { $(this).find('a').remove(); });
+
 				return false;
 			});
 
-			$(document).on('click', '#popup_images a.apply', function() {
+			$(document).on('click', '#imagesModal button.apply', function() {
 				ids = [];
-				$('#popup_images :checkbox:checked').each(function() { ids.push($(this).val()); });
+				$('#imagesModal :checkbox:checked').each(function() { ids.push($(this).val()); });
 				$(color_variant).closest('div').find('input[type=hidden]').val(ids.join(','));
 				if (ids.length > 0) $(color_variant).closest('div').find('img').attr('src', 'design/images/picture.svg');
-				else $(color_variant).closest('div').find('img').attr('src', 'design/images/picture_empty.svg');
-				$('#popup_images').toggle();
+				{/literal}
+					{if $settings->admin_theme == "dark"}
+						else $(color_variant).closest('div').find('img').attr('src', 'design/images/picture_empty_dark.svg');
+					{else}
+						else $(color_variant).closest('div').find('img').attr('src', 'design/images/picture_empty.svg');
+					{/if}
+				{literal}
+				$('#imagesModal').modal('hide');
 				return false;
 			});
 
 			function changeVarName(obj) {
 				parent = $(obj).closest('ul');
-				color = parent.find('.variant_color input').val();
-				size = parent.find('.variant_size input').val();
-				parent.find('.variant_name input').val(color + ' ' + size);
+				color = parent.find('.variant-color input').val();
+				size = parent.find('.variant-size input').val();
+				parent.find('.variant-name input').val(color + ' ' + size);
 			}
 
 			// New variant
-			var variant = $('.fn_new_row_variant').clone(true);
-			$('.fn_new_row_variant').remove().removeAttr('id');
+			var variant = $('.js-new-row-variant').clone(true);
+			$('.js-new-row-variant').remove().removeAttr('id');
 			variant.find('.bootstrap-select').replaceWith(function() { return $('select', this); });
-			$('.fn_add_variant').click(function() {
-				if (!$('.variants_wrapper').is('.single_variant')) {
+			$('.js-add-variant').click(function() {
+				if (!$('.variants-wrapper').is('.single-variant')) {
 					var new_line = $(variant).clone(true);
-					new_line.appendTo('.variants_listadd').fadeIn('slow').find("select").selectpicker();
-					new_line.find(".variants_item_height").addClass('.color-picker').colorpicker({
+					new_line.appendTo('.variants-listadd').fadeIn('slow').find("select").selectpicker();
+					new_line.find(".variants-item-height").addClass('.color-picker').colorpicker({
 						colorSelectors: {
-							'black': '#000000',
-							'white': '#ffffff',
-							'red': '#FF0000',
-							'default': '#777777',
-							'primary': '#337ab7',
-							'success': '#5cb85c',
-							'info': '#5bc0de',
-							'warning': '#f0ad4e',
-							'danger': '#d9534f'
+							"black": "#000000",
+							"blue": "#0000ff",
+							"brown": "#a52a2a",
+							"gray": "#808080",
+							"green": "#008000",
+							"red": "#ff0000",
+							"orange": "#ffa500",
+							"yellow": "#ffff00",
+							"white": "#ffffff"
 						},
 						format: "hex"
 					});
 				} else {
-					$('.variants_wrapper .variants_item_name').show('slow');
-					$('.variants_wrapper').removeClass('single_variant');
+					$('.variants-wrapper .variants-item-name').show('slow');
+					$('.variants-wrapper').removeClass('single-variant');
 				}
 				return false;
 			});
 
-			var new_feature_category = $(".fn_new_feature_category").clone(true);
-			var new_val = $(".fn_new_value").clone(true);
-			$(".fn_new_feature_category").remove();
-			new_feature_category.removeClass("fn_new_feature_category");
-			$(".fn_new_value").remove();
-			new_val.removeClass("fn_new_value");
+			var new_feature_category = $(".js-new-feature-category").clone(true);
+			var new_val = $(".js-new-value").clone(true);
+			$(".js-new-feature-category").remove();
+			new_feature_category.removeClass("js-new-feature-category");
+			$(".js-new-value").remove();
+			new_val.removeClass("js-new-value");
 
 			function show_category_features(category_id) {
-				$('div.fn_features_wrap').empty();
+				$('div.js-features-wrap').empty();
 				$.ajax({
 					url: "ajax/get_features.php",
 					data: {category_id: category_id, product_id: $("input[name=id]").val()},
@@ -1143,11 +1145,11 @@
 						for (i = 0; i < data.length; i++) {
 							feature = data[i];
 							var new_line = new_feature_category.clone(true);
-							new_line.addClass('fn_feature_block_' + feature.id);
-							new_line.find(".fn_feature_name").attr('title', feature.name);
-							new_line.find(".fn_feature_name a").text(feature.name).attr('href', "index.php?module=FeatureAdmin&id=" + feature.id);
+							new_line.addClass('js-feature-block-' + feature.id);
+							new_line.find(".js-feature-name").attr('title', feature.name);
+							new_line.find(".js-feature-name a").text(feature.name).attr('href', "index.php?module=FeatureAdmin&id=" + feature.id);
 							new_line.find("input").attr('name', "options[" + feature.id + "][]").val(feature.value[0]);
-							var values = new_line.find(".fn_auto_option");
+							var values = new_line.find(".js-auto-option");
 							values.data('id', feature.id);
 							values.attr('name', "options[" + feature.id + "][]");
 							if (feature.value.length > 1) {
@@ -1156,105 +1158,108 @@
 									new_subline.find("input").attr('name', "options[" + feature.id + "][]").val(feature.value[j]);
 									new_line.append(new_subline);
 									if (j > 0) {
-										new_subline.find(".fn_feature_multi_values")
-											.removeClass("fn_add")
+										new_subline.find(".js-feature-multi-values")
+											.removeClass("js-add")
 											.removeClass("btn-feature")
-											.addClass("fn_remove")
-											.addClass("btn-danger-feature");
-										new_subline.find(".fn_plus").hide();
-										new_subline.find(".fn_minus").show();
-										new_subline.find(".feature_name").html("").addClass("additional_values");
-										new_subline.find(".feature_input").html("").addClass("feature_input_single");
+											.addClass("js-remove")
+											.addClass("btn-minus-feature");
+										new_subline.find(".js-plus").hide();
+										new_subline.find(".js-minus").show();
+										new_subline.find(".feature-name").html("").addClass("additional-values");
+										new_subline.find(".feature-input").html("").addClass("feature-input-single");
 									}
-									new_line.appendTo("div.fn_features_wrap");
+									new_line.appendTo("div.js-features-wrap");
 								}
 							}
-							new_line.appendTo('div.fn_features_wrap').find("input")
-								.autocomplete({
-									serviceUrl: 'ajax/options_autocomplete.php',
-									minChars: 0,
-									params: {feature_id:feature.id},
-									noCache: false
-								});
+							new_line.appendTo('div.js-features-wrap').find("input")
+							.autocomplete({
+								serviceUrl: 'ajax/options_autocomplete.php',
+								minChars: 0,
+								maxHeight: 312,
+								params: {feature_id:feature.id},
+								noCache: false
+							});
 						}
 					}
 				});
 				return false;
 			}
 
-			$(document).on("click", ".fn_feature_multi_values.fn_add_color", function() {
-				var feature_id = $(this).closest(".feature_value").find(".fn_auto_option").data("id"),
+			$(document).on("click", ".js-feature-multi-values.js-add-color", function() {
+				var feature_id = $(this).closest(".feature-value").find(".js-auto-option").data("id"),
 					new_value = new_val.clone(true),
-					value_input = new_value.find(".fn_auto_option"),
-					id_input = new_value.find(".fn_value_id_input");
+					value_input = new_value.find(".js-auto-option"),
+					id_input = new_value.find(".js-value_id_input");
 				value_input.data("id", feature_id);
 				value_input.val("");
 				value_input.attr('name', "options[" + feature_id + "][]");
 				id_input.attr("name", "features_values[" + feature_id + "][]");
-				new_value.find(".feature_name").html("").addClass("additional_values");
-				new_value.find(".feature_input").html("").addClass("feature_input_single");
-				new_value.find('.feature_value').append('<div class="add-on colorPicker-picker"></div>');
-				new_value.find(".feature_value").addClass('.color-picker').colorpicker({
+				new_value.find(".feature-name").html("").addClass("additional-values");
+				new_value.find(".feature-input").html("").addClass("feature-input-single");
+				new_value.find('.feature-value').append('<div class="add-on colorPicker-picker"></div>');
+				new_value.find(".feature-value").addClass('.color-picker').colorpicker({
 					colorSelectors: {
-						'black': '#000000',
-						'white': '#ffffff',
-						'red': '#FF0000',
-						'default': '#777777',
-						'primary': '#337ab7',
-						'success': '#5cb85c',
-						'info': '#5bc0de',
-						'warning': '#f0ad4e',
-						'danger': '#d9534f'
+						"black": "#000000",
+						"blue": "#0000ff",
+						"brown": "#a52a2a",
+						"gray": "#808080",
+						"green": "#008000",
+						"red": "#ff0000",
+						"orange": "#ffa500",
+						"yellow": "#ffff00",
+						"white": "#ffffff"
 					},
 					format: "hex"
 				});
-				new_value.find(".fn_feature_multi_values")
-					.removeClass("fn_add")
+				new_value.find(".js-feature-multi-values")
+					.removeClass("js-add")
 					.removeClass("btn-feature")
-					.addClass("fn_remove")
-					.addClass("btn-danger-feature");
-				new_value.find(".fn_plus").hide();
-				new_value.find(".fn_minus").show();
+					.addClass("js-remove")
+					.addClass("btn-minus-feature");
+				new_value.find(".js-plus").hide();
+				new_value.find(".js-minus").show();
 				value_input.autocomplete({
 					serviceUrl: 'ajax/options_autocomplete.php',
 					minChars: 0,
+					maxHeight: 312,
 					params: {feature_id:feature_id},
 					noCache: false
 				});
-				new_value.appendTo(".fn_feature_block_" + feature_id).fadeIn('slow');
+				new_value.appendTo(".js-feature-block-" + feature_id).fadeIn('slow');
 				return false;
 			});
 
-			$(document).on("click", ".fn_feature_multi_values.fn_add", function() {
-				var feature_id = $(this).closest(".feature_value").find(".fn_auto_option").data("id"),
+			$(document).on("click", ".js-feature-multi-values.js-add", function() {
+				var feature_id = $(this).closest(".feature-value").find(".js-auto-option").data("id"),
 					new_value = new_val.clone(true),
-					value_input = new_value.find(".fn_auto_option"),
-					id_input = new_value.find(".fn_value_id_input");
+					value_input = new_value.find(".js-auto-option"),
+					id_input = new_value.find(".js-value_id_input");
 				value_input.data("id", feature_id);
 				value_input.val("");
 				value_input.attr('name', "options[" + feature_id + "][]");
 				id_input.attr("name", "features_values[" + feature_id + "][]");
-				new_value.find(".feature_name").html("").addClass("additional_values");
-				new_value.find(".feature_input").html("").addClass("feature_input_single");
-				new_value.find(".fn_feature_multi_values")
-					.removeClass("fn_add")
+				new_value.find(".feature-name").html("").addClass("additional-values");
+				new_value.find(".feature-input").html("").addClass("feature-input-single");
+				new_value.find(".js-feature-multi-values")
+					.removeClass("js-add")
 					.removeClass("btn-feature")
-					.addClass("fn_remove")
-					.addClass("btn-danger-feature");
-				new_value.find(".fn_plus").hide();
-				new_value.find(".fn_minus").show();
+					.addClass("js-remove")
+					.addClass("btn-minus-feature");
+				new_value.find(".js-plus").hide();
+				new_value.find(".js-minus").show();
 				value_input.autocomplete({
 					serviceUrl: 'ajax/options_autocomplete.php',
 					minChars: 0,
+					maxHeight: 312,
 					params: {feature_id:feature_id},
 					noCache: false
 				});
-				new_value.appendTo(".fn_feature_block_" + feature_id).fadeIn('slow');
+				new_value.appendTo(".js-feature-block-" + feature_id).fadeIn('slow');
 				return false;
 			});
 
-			$(document).on("click", ".fn_feature_multi_values.fn_remove", function() {
-				$(this).closest(".feature_row").remove();
+			$(document).on("click", ".js-feature-multi-values.js-remove", function() {
+				$(this).closest(".feature-row").remove();
 			});
 
 			// Show category features
@@ -1263,47 +1268,49 @@
 			});
 
 			// Options autocomplete
-			$('div.fn_features_wrap input[name*=options]').each(function(index) {
+			$('div.js-features-wrap input[name*=options]').each(function(index) {
 				feature_id = $(this).closest('span').attr('feature_id');
 				$(this).autocomplete({
 					serviceUrl: 'ajax/options_autocomplete.php',
 					minChars: 0,
+					maxHeight: 312,
 					params: {feature_id:feature_id},
 					noCache: false
 				});
 			});
 
 			// New feature
-			var new_feature = $(".fn_new_feature").clone(true);
-			$(".fn_new_feature").remove();
-			new_feature.removeClass("fn_new_feature");
-			$(document).on("click", ".fn_add_feature", function() {
-				$(new_feature).clone(true).appendTo(".features_wrap").fadeIn('slow');
+			var new_feature = $(".js-new-feature").clone(true);
+			$(".js-new-feature").remove();
+			new_feature.removeClass("js-new-feature");
+			$(document).on("click", ".js-add-feature", function() {
+				$(new_feature).clone(true).appendTo(".features-wrap").fadeIn('slow');
 				return false;
 			});
 
-			$(document).on("click", ".fn_delete_feature", function() {
+			$(document).on("click", ".js-delete-feature", function() {
 				$(this).parent().remove();
 			});
 
 			// New related product
-			var new_related_product = $('#new_related_product').clone(true);
-			$('#new_related_product').remove();
+			var new_related_product = $('#new-related-product').clone(true);
+			$('#new-related-product').remove();
 			new_related_product.removeAttr('id');
-			$("input#related_products").autocomplete({
+			$("input#related-products").autocomplete({
 				serviceUrl: 'ajax/search_products.php',
 				minChars: 0,
+				maxHeight: 362,
 				noCache: false,
 				onSelect: function(suggestion) {
-					$("input#related_products").val('').focus().blur();
-					new_item = new_related_product.clone().appendTo('.related_products');
-					new_item.find('a.related_product_name').html(suggestion.data.name);
-					new_item.find('a.related_product_name').attr('href', 'index.php?module=ProductAdmin&id=' + suggestion.data.id);
+					$("input#related-products").val('').focus().blur();
+					new_item = new_related_product.clone().appendTo('.related-products');
+					new_item.find('a.related-product-name').html(suggestion.data.name);
+					new_item.find('a.related-product-name').attr('href', 'index.php?module=ProductAdmin&id=' + suggestion.data.id);
 					new_item.find('input[name*="related_products"]').val(suggestion.data.id);
 					if (suggestion.data.image)
-						new_item.find('img.product_icon').attr("src", suggestion.data.image);
+						new_item.find('img.product-icon').attr("src", suggestion.data.image);
 					else
-						new_item.find('img.product_icon').remove();
+						new_item.find('img.product-icon').remove();
 					new_item.show();
 				},
 				formatResult: function(suggestions, currentValue) {
@@ -1314,7 +1321,7 @@
 			});
 
 			// Add video
-			$('.videos .fn_add_video').click(function() {
+			$('.videos .js-add-video').click(function() {
 				$('#new_video').clone(false).appendTo('.videos .sortable').fadeIn('slow', function() {
 					$(this).removeClass('#new_video').find('input').focus()
 				});

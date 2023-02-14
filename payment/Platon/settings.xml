@@ -5,10 +5,10 @@
 	</name>
 	<settings>
 		<variable>platon_key</variable>
-		<name>Ключ</name>
+		<name>Key</name>
 	</settings>
 	<settings>
 		<variable>platon_password</variable>
-		<name>Пароль</name>
+		<name>Password</name>
 	</settings>
 </module>

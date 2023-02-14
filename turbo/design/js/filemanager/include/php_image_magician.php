@@ -489,7 +489,7 @@ class imageLib {
         // *** Crop this bad boy
         $crop = imagecreatetruecolor($newWidth, $newHeight);
         $this->keepTransparancy($optimalWidth, $optimalHeight, $crop);
-        @imagecopyresampled($crop, $this->imageResized, 0, 0, $cropStartX, $cropStartY, $newWidth, $newHeight, $newWidth, $newHeight);
+        imagecopyresampled($crop, $this->imageResized, 0, 0, $cropStartX, $cropStartY, $newWidth, $newHeight, $newWidth, $newHeight);
 
         $this->imageResized = $crop;
 
@@ -2719,7 +2719,7 @@ class imageLib {
         };
 
         // *** Get extension / image type
-        $extension = pathinfo($file, PATHINFO_EXTENSION);
+        $extension = mime_content_type($file);
         $extension = fix_strtolower($extension);
         $extension = str_replace('image/', '', $extension);
         switch ($extension)

@@ -4,37 +4,25 @@
 	{$meta_title = $btr->banner_new_group scope=global}
 {/if}
 
-<div class="row">
-	<div class="col-lg-12 col-md-12">
-		<div class="wrap_heading">
-			<div class="box_heading heading_page">
-				{if !$banner->id}
-					{$btr->banner_new_group|escape}
-				{else}
-					{$banner->name|escape}
-				{/if}
-			</div>
-		</div>
-	</div>
-	<div class="col-md-12 col-lg-12 col-sm-12 float-xs-right"></div>
-</div>
+<h1 class="mb-3">
+	{if !$banner->id}
+		{$btr->banner_new_group|escape}
+	{else}
+		{$banner->name|escape}
+	{/if}
+</h1>
 
 {if $message_success}
 	<div class="row">
-		<div class="col-lg-12 col-md-12 col-sm-12">
-			<div class="boxed boxed_success">
-				<div class="heading_box">
+		<div class="col-12">
+			<div class="alert alert-success alert-dismissible fade show" role="alert">
+				<div class="alert-message">
 					{if $message_success == 'added'}
-						{$btr->general_group_added|escape}
+						{$btr->global_group_added|escape}
 					{elseif $message_success == 'updated'}
 						{$btr->banner_updated|escape}
 					{/if}
-					{if $smarty.get.return}
-						<a class="btn btn_return float-xs-right" href="{$smarty.get.return}">
-							{include file='svg_icon.tpl' svgId='return'}
-							<span>{$btr->general_back|escape}</span>
-						</a>
-					{/if}
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>
 			</div>
 		</div>
@@ -43,9 +31,9 @@
 
 {if $message_error}
 	<div class="row">
-		<div class="col-lg-12 col-md-12 col-sm-12">
-			<div class="boxed boxed_warning">
-				<div class="heading_box">
+		<div class="col-12">
+			<div class="alert alert-danger alert-dismissible fade show" role="alert">
+				<div class="alert-message">
 					{if $message_error == 'group_id_exists'}
 						{$btr->banner_id_exists|escape}
 					{elseif $message_error == 'empty_group_id'}
@@ -53,57 +41,50 @@
 					{else}
 						{$message_error|escape}
 					{/if}
+					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>
 			</div>
 		</div>
 	</div>
 {/if}
 
-<form method="post" enctype="multipart/form-data" class="fn_fast_button">
+<form method="post" enctype="multipart/form-data" class="js-fast-button">
 	<input type="hidden" name="session_id" value="{$smarty.session.id}">
 	<div class="row">
-		<div class="col-xs-12">
-			<div class="boxed">
-				<div class="row d_flex">
-					<div class="col-lg-10 col-md-9 col-sm-12">
-						<div class="heading_label">
-							{$btr->general_name|escape}
-						</div>
-						<div class="form-group">
-							<input class="form-control mb-h" name="name" type="text" value="{$banner->name|escape}">
-							<input name="id" type="hidden" value="{$banner->id|escape}">
-						</div>
-						<div class="row">
-							<div class="col-lg-6 col-sm-12">
-								<div class="mt-h">
-									<span class="boxes_inline">
-										<div class="form-check form-switch">
-											<input class="form-check-input" id="show_all_pages" name="show_all_pages" value="1" type="checkbox" {if $banner->show_all_pages}checked=""{/if}>
-											<label class="form-check-label" for="show_all_pages"></label>
+		<div class="col-12">
+			<div class="card">
+				<div class="card-body">
+					<div class="row d-flex">
+						<div class="col-lg-10 col-md-9 col-sm-12">
+							<div class="mb-3">
+								<div class="form-label">{$btr->global_title|escape}</div>
+								<input class="form-control mb-h" name="name" type="text" value="{$banner->name|escape}">
+								<input name="id" type="hidden" value="{$banner->id|escape}">
+							</div>
+							<div class="row">
+								<div class="col-lg-2 col-sm-12">
+									<div class="mt-2 mb-3">
+										<div class="input-group">
+											<span class="input-group-text">ID</span>
+											<input name="group_id" class="form-control" type="text" value="{$banner->group_id|escape}">
 										</div>
-									</span>
-									<span class="boxes_inline heading_label">{$btr->banner_show_group|escape}</span>
+									</div>
 								</div>
-							</div>
-							<div class="col-lg-6 col-sm-12">
-								<div class="input-group">
-									<span class="boxes_inline heading_label">{$btr->banner_id_enter|escape}</span>
-									<span class="boxes_inline bnr_id_grup">
-										<input name="group_id" class="form-control" type="text" value="{$banner->group_id|escape}">
-									</span>
+								<div class="col-lg-10 col-sm-12">
+									<div class="d-flex justify-content-center align-content-start flex-wrap flex-md-column h-100">
+										<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
+											<input class="form-check-input ms-2" type="checkbox" id="show-all-pages" name="show_all_pages" value="1" type="checkbox" {if $banner->show_all_pages}checked="" {/if}>
+											<label class="form-check-label ms-2" for="show-all-pages">{$btr->banner_show_group|escape}</label>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
-					</div>
-					<div class="col-lg-2 col-md-3 col-sm-12">
-						<div class="activity_of_switch">
-							<div class="activity_of_switch_item">
-								<div class="turbo_switch clearfix">
-									<label class="switch_label">{$btr->general_enable|escape}</label>
-									<div class="form-check form-switch">
-										<input class="form-check-input" id="visible_checkbox" name="visible" value="1" type="checkbox" {if $banner->visible}checked=""{/if}>
-										<label class="form-check-label" for="visible_checkbox"></label>
-									</div>
+						<div class="col-lg-2 col-md-3 col-sm-12">
+							<div class="d-flex justify-content-center align-content-center flex-wrap flex-md-column h-100">
+								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
+									<input class="form-check-input ms-2" type="checkbox" id="visible" name="visible" value="1" type="checkbox" {if $banner->visible}checked="" {/if}>
+									<label class="form-check-label ms-2" for="visible">{$btr->global_enable|escape}</label>
 								</div>
 							</div>
 						</div>
@@ -114,22 +95,24 @@
 	</div>
 	<div class="row">
 		<div class="col-md-12">
-			<div class="boxed fn_toggle_wrap min_height_230px">
-				<div class="heading_box">
-					{$btr->banner_show_banner|escape}
-					<div class="toggle_arrow_wrap fn_toggle_card text-primary">
-						<a class="btn-minimize" href="javascript:;"><i class="fn_icon_arrow icon-chevron-down"></i></a>
+			<div class="card">
+				<div class="card-header">
+					<div class="card-actions float-end">
+						<div class="d-block d-lg-none position-relative collapse-icon">
+							<a href="javascript:;" class="collapse-chevron">
+								<i class="align-middle" data-feather="chevron-up"></i>
+							</a>
+						</div>
 					</div>
+					<h5 class="card-title mb-0">{$btr->banner_show_banner|escape}</h5>
 				</div>
-				<div class="toggle_body_wrap fn_card on">
-					<div class="row">
-						<div class="col-lg-3 col-md-6 pr-0 pr-lg-0">
-							<div class="banner_card">
-								<div class="banner_card_header">
-									<span class="font-weight-bold">{$btr->general_pages|escape}</span>
-								</div>
-								<div class="banner_card_block">
-									<select name="pages[]" class="selectpicker fn_action_select" multiple="multiple" data-live-search="true" data-size="10" data-selected-text-format="count">
+				<div class="collapse-card">
+					<div class="card-body">
+						<div class="row mb-1">
+							<div class="col-lg-3 col-md-6">
+								<div class="mb-3">
+									<label class="form-label">{$btr->global_pages|escape}</label>
+									<select name="pages[]" class="selectpicker js-action_select" multiple="multiple" data-live-search="true" data-size="10" data-selected-text-format="count">
 										<option value="0" {if !$banner->page_selected || 0|in_array:$banner->page_selected}selected{/if}>{$btr->banner_hide|escape}</option>
 										{foreach from=$pages item=page}
 											{if $page->name != ''}
@@ -139,13 +122,9 @@
 									</select>
 								</div>
 							</div>
-						</div>
-						<div class="col-lg-3 col-md-6 pr-0">
-							<div class="banner_card">
-								<div class="banner_card_header">
-									<span class="font-weight-bold">{$btr->general_categories|escape}</span>
-								</div>
-								<div class="banner_card_block">
+							<div class="col-lg-3 col-md-6">
+								<div class="mb-3">
+									<label class="form-label">{$btr->global_categories|escape}</label>
 									<select name="categories[]" class="selectpicker" multiple="multiple" data-live-search="true" data-size="10" data-selected-text-format="count">
 										<option value='0' {if !$banner->category_selected || 0|in_array:$banner->category_selected}selected{/if}>{$btr->banner_hide|escape}</option>
 										{function name=category_select level=0}
@@ -158,13 +137,9 @@
 									</select>
 								</div>
 							</div>
-						</div>
-						<div class="col-lg-3 col-md-6 pr-0 pr-lg-0">
-							<div class="banner_card">
-								<div class="banner_card_header">
-									<span class="font-weight-bold">{$btr->general_brands|escape}</span>
-								</div>
-								<div class="banner_card_block">
+							<div class="col-lg-3 col-md-6">
+								<div class="mb-3">
+									<label class="form-label">{$btr->global_brands|escape}</label>
 									<select name="brands[]" class="selectpicker" multiple="multiple" data-live-search="true" data-size="10" data-selected-text-format="count">
 										<option value='0' {if !$banner->brand_selected || 0|in_array:$banner->brand_selected}selected{/if}>{$btr->banner_hide|escape}</option>
 										{foreach from=$brands item=brand}
@@ -173,13 +148,9 @@
 									</select>
 								</div>
 							</div>
-						</div>
-						<div class="col-lg-3 col-md-6">
-							<div class="banner_card">
-								<div class="banner_card_header">
-									<span class="font-weight-bold">{$btr->article_categories|escape}</span>
-								</div>
-								<div class="banner_card_block">
+							<div class="col-lg-3 col-md-6">
+								<div class="mb-3">
+									<label class="form-label">{$btr->article_categories|escape}</label>
 									<select name="articles_categories[]" class="selectpicker" multiple="multiple" data-live-search="true" data-size="10" data-selected-text-format="count">
 										<option value='0' {if !$banner->articles_category_selected || 0|in_array:$banner->articles_category_selected}selected{/if}>{$btr->banner_hide|escape}</option>
 										{function name=articles_category_selected level=0}
@@ -193,14 +164,18 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-lg-12 col-md-12">
-							<button type="submit" class="btn btn_small btn-primary float-md-right">
-								{include file='svg_icon.tpl' svgId='checked'}
-								<span>{$btr->general_apply|escape}</span>
-							</button>
-						</div>
 					</div>
 				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-12">
+			<div class="d-grid d-sm-block mt-2">
+				<button type="submit" class="btn btn-primary float-end">
+					<i class="align-middle" data-feather="check"></i>
+					{$btr->global_apply|escape}
+				</button>
 			</div>
 		</div>
 	</div>
