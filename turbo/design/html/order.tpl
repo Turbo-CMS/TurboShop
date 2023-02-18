@@ -365,7 +365,7 @@
 											</div>
 										</div>
 										<div class="turbo-list-boding turbo-list-order-content-price">
-											<div class="form-check d-inline-block align-top" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_paid_separately|escape}">
+											<div class="form-check d-inline-block align-top mt-1" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_paid_separately|escape}">
 												<input class="form-check-input" type="checkbox" id="separate-delivery" name="separate_delivery" value="1" {if $order->separate_delivery}checked{/if}>
 												<label class="form-check-label" for="separate-delivery"></label>
 											</div>
