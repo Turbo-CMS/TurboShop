@@ -162,7 +162,7 @@
 														<a href="{url module=OrderAdmin id=$order->id return=$smarty.server.REQUEST_URI}" class="fw-bold text-body text-decoration-none">{$btr->global_order_number|escape} {$order->id}</a>
 													</div>
 													<div class="turbo-list-boding turbo-list-user-name">
-														{$order->name|escape}
+														<a href="{url module=OrderAdmin id=$order->id return=$smarty.server.REQUEST_URI}" class="fw-bold text-body text-decoration-none">{$order->name|escape}</a>
 														{if $order->note}
 															<div class="text-muted fw-light">{$order->note|escape}</div>
 														{/if}

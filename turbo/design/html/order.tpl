@@ -453,18 +453,20 @@
 								<div class="d-inline-block text-dark fw-bold">{$order->ip|escape}</div>
 							</div>
 						{/if}
-						<hr>
 						<div class="mb-3">
 							{if !$user}
+								<hr>
 								<label class="form-label">
 									{$btr->global_buyer_not_registred|escape}
 								</label>
 								<input type="hidden" name="user_id" value="{$user->id}">
 								<input type="text" class="js-user-complite form-control" placeholder="{$btr->order_user_select|escape}">
+								<hr>
 							{else}
 								<div class="js-user-row">
+									<hr>
 									<label class="form-label d-inline-block">
-										{$btr->global_buyer|escape}
+										{$btr->global_buyer|escape}:
 										<a href="{url module=UserAdmin id=$user->id}" target="_blank">
 											{$user->name|escape}
 										</a>
@@ -472,15 +474,25 @@
 									<a href="javascript:;" class="btn-delete d-inline-block js-delete-user" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->users_delete|escape}">
 										<i class="align-middle" data-feather="trash-2"></i>
 									</a>
+									<a href="javascript:;" class="btn-edit d-inline-block text-secondary js-edit-user" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_edit|escape}">
+										<i class="align-middle" data-feather="edit"></i>
+									</a>
 									{if $user->group_id > 0}
 										<div class="text-secondary">{$user->group->name|escape}</div>
 									{else}
 										<div class="text-secondary">{$btr->order_not_in_group|escape}</div>
 									{/if}
+									<hr>
+								</div>
+								<div class="edit-user mb-3" style="display:none;">
+									<label class="form-label">
+										{$btr->global_user|escape}
+									</label>
+									<input type="hidden" name="user_id" value="{$user->id}">
+									<input type="text" class="js-user-complite form-control" placeholder="{$btr->order_user_select|escape}">
 								</div>
 							{/if}
 						</div>
-						<hr>
 						<div class="mb-3">
 							<label class="form-label">{$btr->order_language|escape}</label>
 							<select name="lang_id" class="selectpicker">
@@ -489,7 +501,7 @@
 								{/foreach}
 							</select>
 						</div>
-						<div class="form-group">
+						<div class="mb-3">
 							<label class="form-label">{$btr->order_note|escape}</label>
 							<textarea name="note" class="form-control short-textarea">{$order->note|escape}</textarea>
 						</div>
@@ -532,12 +544,13 @@
 	<script>
 		$(window).on("load", function() {
 
-			// Removing a product
+			// Removing product
 			$(document).on("click", "#js-purchase .js-remove-item", function() {
 				$(this).closest(".js-row").fadeOut(200, function() { $(this).remove(); });
 				return false;
 			});
-
+			
+			// Labels
 			$(document).on("change", ".js-ajax-labels input", function() {
 				elem = $(this);
 				var order_id = parseInt($(this).closest(".js-ajax-labels").data("order-id"));
@@ -625,7 +638,8 @@
 				amount_input.data('max', amount);
 				return false;
 			}
-
+			
+			// User complite
 			$(".js-user-complite").autocomplete({
 				serviceUrl: 'ajax/search_users.php',
 				minChars: 0,
@@ -639,12 +653,21 @@
 					return "<span>" + suggestions.value.replace(new RegExp(pattern, 'gi'), '<strong>$1<\/strong>') + "</span>";
 				}
 			});
-
+			
+			// User delete
 			$(document).on("click", ".js-delete-user", function() {
 				$(this).closest(".js-user-row").hide();
 				$('input[name="user_id"]').val(0);
 			});
-
+			
+			// User edit
+			$(document).on("click", ".js-edit-user", function() {
+				 $(".js-user-row").hide();
+				 $(".edit-user").show();
+				 return false;
+			});
+			
+			// Purchase variant
 			$("select.js-purchase-variant").bind("change", function() {
 				change_variant($(this));
 			});
