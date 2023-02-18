@@ -217,10 +217,10 @@
 				</ul>
 				<div class="tab-content">
 					<div class="tab-pane active show" id="tab-1" role="tabpanel">
-						<textarea name="annotation" id="annotation" class="editor-small">{$post->annotation|escape}</textarea>
+						<textarea name="annotation" id="annotation" class="editor">{$post->annotation|escape}</textarea>
 					</div>
 					<div class="tab-pane" id="tab-2" role="tabpanel">
-						<textarea id="js-editor" name="body" class="editor-large js-editor-class">{$post->text|escape}</textarea>
+						<textarea id="js-editor" name="body" class="editor js-editor-class">{$post->text|escape}</textarea>
 					</div>
 				</div>
 			</div>

@@ -81,7 +81,7 @@
 				</div>
 				<div class="collapse-card">
 					<div class="card-body">
-						<textarea name="answer" id="js-editor" class="editor-small">{$faq->answer|escape}</textarea>
+						<textarea name="answer" id="js-editor" class="editor">{$faq->answer|escape}</textarea>
 						<div class="row">
 							<div class="col-12">
 								<div class="d-grid d-sm-block mt-3">

@@ -2,7 +2,7 @@
 <script>
 	$(function() {
 		tinyMCE.init({literal}{{/literal}
-		selector: "textarea.editor-large, textarea.editor-small",
+		selector: "textarea.editor",
 		{if $settings->admin_theme == "dark"}
 			skin: "oxide-dark",
 			content_css: "dark",

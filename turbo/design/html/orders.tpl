@@ -22,7 +22,7 @@
 		<form class="search mb-3" method="get">
 			<input type="hidden" name="module" value="OrdersAdmin">
 			<div class="input-group">
-				<input name="keyword" class="form-control" placeholder="{$btr->global_search|escape}" type="text" value="{$keyword|escape}">
+				<input name="keyword" class="form-control" placeholder="{$btr->global_search_order|escape}" type="text" value="{$keyword|escape}">
 				<button class="btn btn-primary" type="submit"><i class="align-middle mt-n1" data-feather="search"></i></button>
 			</div>
 		</form>

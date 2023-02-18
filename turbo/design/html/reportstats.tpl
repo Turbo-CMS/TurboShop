@@ -49,7 +49,7 @@
 								{function name=category_select level=0}
 									{foreach $categories as $c}
 										<option value='{url keyword=null brand_id=null page=null category_id={$c->id}}' {if $smarty.get.category_id == $c->id}selected{/if}>
-											{section sp $level}-{/section}{$c->name|escape}
+											{section sp $level}--{/section} {$c->name|escape}
 										</option>
 										{category_select categories=$c->subcategories level=$level+1}
 									{/foreach}

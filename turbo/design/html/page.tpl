@@ -82,8 +82,8 @@
 									<div class="mt-2 mb-3 mb-h">
 										<div class="input-group">
 											<span class="input-group-text">URL</span>
-											<input name="url" class="js-meta-field form-control js-url {if $page->id}js-disabled{/if}" {if $page->id}readonly="" {/if} type="text" value="{$page->url|escape}">
-											<input type="checkbox" id="block-translit" class="d-none" value="1" {if $page->id}checked="" {/if}>
+											<input name="url" class="js-meta-field form-control js-url {if $page->id}js-disabled{/if}" {if $page->id}readonly=""{/if} type="text" value="{$page->url|escape}">
+											<input type="checkbox" id="block-translit" class="d-none" value="1" {if $page->id}checked=""{/if}>
 											<span class="input-group-text js-disable-url">
 												{if $page->id}
 													<i class="url-lock"></i>
@@ -99,7 +99,7 @@
 						<div class="col-lg-2 col-md-3 col-sm-12">
 							<div class="d-flex justify-content-center align-content-center flex-wrap flex-md-column h-100">
 								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
-									<input class="form-check-input ms-2" type="checkbox" id="visible" name="visible" value="1" type="checkbox" {if $page->visible}checked="" {/if}>
+									<input class="form-check-input ms-2" type="checkbox" id="visible" name="visible" value="1" type="checkbox" {if $page->visible}checked=""{/if}>
 									<label class="form-check-label ms-2" for="visible">{$btr->global_enable|escape}</label>
 								</div>
 							</div>
@@ -126,7 +126,7 @@
 					<div class="card-body">
 						<div class="mb-3">
 							<div class="form-label">{$btr->global_menu|escape}:</div>
-							<select name="menu_id" class="selectpicker mb-h" id="menu_id">
+							<select name="menu_id" class="selectpicker" id="menu_id">
 								{foreach $menus as $m}
 									<option value="{$m->id}" {if $page->menu_id == $m->id}selected{/if}>{$m->name|escape}</option>
 								{/foreach}
@@ -190,7 +190,7 @@
 				</div>
 				<div class="collapse-card">
 					<div class="card-body">
-						<textarea name="body" id="js-editor" class="editor-small">{$page->body|escape}</textarea>
+						<textarea name="body" id="js-editor" class="editor">{$page->body|escape}</textarea>
 						<div class="row">
 							<div class="col-12">
 								<div class="d-grid d-sm-block mt-3">

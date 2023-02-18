@@ -63,7 +63,7 @@
 								{function name=category_select level=0}
 									{foreach $articles_categories as $c}
 										<option value='{url keyword=null category_id=$c->id}' {if $category->id == $c->id}selected{/if}>
-											{section sp $level}- {/section}{$c->name|escape}
+											{section sp $level}--{/section} {$c->name|escape}
 										</option>
 										{category_select articles_categories=$c->subcategories level=$level+1}
 									{/foreach}

@@ -90,9 +90,7 @@
 									<a href="{url sort=date}" {if $sort == 'date'}class="active" {/if}>{include file='svg_icon.tpl' svgId='sorts'}</a>
 								</div>
 								<div class="turbo-list-heading turbo-list-users-group">{$btr->global_group|escape}</div>
-
 								<div class="turbo-list-heading turbo-list-count">{$btr->users_orders|escape}</div>
-
 								<div class="turbo-list-heading turbo-list-status">{$btr->global_activities|escape}</div>
 								<div class="turbo-list-heading turbo-list-delete"></div>
 							</div>

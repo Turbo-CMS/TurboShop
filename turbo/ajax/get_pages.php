@@ -4,7 +4,7 @@ function process_page($page, $menu_id, $level, &$new_array, $exclude)
 {
 	if ($page->menu_id != $menu_id || in_array($page->id, $exclude))
 		return;
-	$new_array[] = array('id' => $page->id, 'text' => str_repeat('--', $level) . $page->name);
+	$new_array[] = array('id' => $page->id, 'text' => str_repeat('-- ', $level) . $page->name);
 	if (isset($page->subpages))
 		foreach ($page->subpages as $subpage)
 			if ($subpage->menu_id == $menu_id && !in_array($subpage->id, $exclude))

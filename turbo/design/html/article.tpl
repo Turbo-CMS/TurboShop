@@ -170,7 +170,7 @@
 							<select name="category_id" class="selectpicker mb-1">
 								{function name=articles_category_select level=0}
 									{foreach from=$articles_categories item=category}
-										<option value='{$category->id}' {if $category->id == $post->category_id}selected{/if} category_name='{$category->name|escape}'>{section name=sp loop=$level}--{/section}{$category->name|escape}</option>
+										<option value='{$category->id}' {if $category->id == $post->category_id}selected{/if} category_name='{$category->name|escape}'>{section name=sp loop=$level}--{/section} {$category->name|escape}</option>
 										{articles_category_select articles_categories=$category->subcategories  level=$level+1}
 									{/foreach}
 								{/function}
@@ -229,10 +229,10 @@
 				</ul>
 				<div class="tab-content">
 					<div class="tab-pane active show" id="tab-1" role="tabpanel">
-						<textarea name="annotation" id="annotation" class="editor-small">{$post->annotation|escape}</textarea>
+						<textarea name="annotation" id="annotation" class="editor">{$post->annotation|escape}</textarea>
 					</div>
 					<div class="tab-pane" id="tab-2" role="tabpanel">
-						<textarea id="js-editor" name="body" class="editor-large js-editor-class">{$post->text|escape}</textarea>
+						<textarea id="js-editor" name="body" class="editor js-editor-class">{$post->text|escape}</textarea>
 					</div>
 				</div>
 			</div>

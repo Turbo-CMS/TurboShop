@@ -16,7 +16,7 @@
 			{/if}
 		</h1>
 	</div>
-	<div class="d-inline-block me-3 mb-3">
+	<div class="d-grid d-sm-inline-block me-sm-3 me-0 mb-3">
 		<select class="selectpicker" name="status">
 			<option value='0' {if $order->status == 0}selected{/if}>{$btr->global_new_order|escape}</option>
 			<option value='1' {if $order->status == 1}selected{/if}>{$btr->global_accepted_order|escape}</option>
@@ -215,7 +215,6 @@
 												</div>
 											</div>
 											<div class="turbo-list-boding turbo-list-delete">
-												{*delete*}
 												<button type="button" class="btn-delete js-remove-item" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete_product|escape}">
 													<i class="align-middle" data-feather="trash-2"></i>
 												</button>
@@ -260,7 +259,6 @@
 										</div>
 									</div>
 									<div class="turbo-list-boding turbo-list-delete">
-										{*delete*}
 										<button type="button" class="btn-delete js-remove-item" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete_product|escape}">
 											<i class="align-middle" data-feather="trash-2"></i>
 										</button>
@@ -362,12 +360,15 @@
 										</div>
 										<div class="turbo-list-boding turbo-list-order-content-val">
 											<div class="input-group">
-												<input type="text" name="delivery_price" class="form-control" value='{$order->delivery_price}'>
+												<input type="text" name="delivery_price" class="form-control" value="{$order->delivery_price}">
 												<span class="input-group-text">{$currency->sign|escape}</span>
 											</div>
 										</div>
 										<div class="turbo-list-boding turbo-list-order-content-price">
-											<div class="input-group"></div>
+											<div class="form-check d-inline-block align-top" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_paid_separately|escape}">
+												<input class="form-check-input" type="checkbox" id="separate-delivery" name="separate_delivery" value="1" {if $order->separate_delivery}checked{/if}>
+												<label class="form-check-label" for="separate-delivery"></label>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -399,7 +400,7 @@
 						<div class="row">
 							<div class="col-12">
 								<div class="form-check form-switch form-check-reverse float-start mt-3">
-									<input class="form-check-input" type="checkbox" id="paid" name="paid" value="1" {if $order->paid}checked="" {/if}>
+									<input class="form-check-input" type="checkbox" id="paid" name="paid" value="1" {if $order->paid}checked=""{/if}>
 									<label class="form-check-label me-2" for="paid">{$btr->order_paid|escape}</label>
 								</div>
 							</div>

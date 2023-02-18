@@ -28,14 +28,14 @@
 {if $faqs}
 	<div class="accordion" id="accordionFaq">
 		{foreach $faqs as $faq name=active}
-			<div class="accordion-item">
+			<div class="accordion-item" itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
 				<h2 class="accordion-header" id="heading-{$faq->id}">
 					<button class="accordion-button {if !$smarty.foreach.active.first}collapsed{/if}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{$faq->id}" aria-expanded="true" aria-controls="collapse-{$faq->id}">
-						{$faq->name|escape}
+						<span itemprop="name">{$faq->name|escape}</span>
 					</button>
 				</h2>
-				<div id="collapse-{$faq->id}" class="accordion-collapse collapse {if $smarty.foreach.active.first}show{/if}" aria-labelledby="heading-{$faq->id}" data-bs-parent="#accordionFaq">
-					<div class="accordion-body">
+				<div id="collapse-{$faq->id}" class="accordion-collapse collapse {if $smarty.foreach.active.first}show{/if}" aria-labelledby="heading-{$faq->id}" data-bs-parent="#accordionFaq" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+					<div class="accordion-body" itemprop="text">
 						{$faq->answer}
 					</div>
 				</div>

@@ -36,7 +36,6 @@ img {
 
 .tox .tox-edit-area__iframe {
 	background-color: transparent !important;
-	;
 }
 
 .pagination .page-link svg {
@@ -445,7 +444,6 @@ textarea.form-control {
 	text-shadow: none;
 	margin: 3px 0 0;
 	border: 1px solid rgba(0, 0, 0, 0.175);
-	;
 	border-radius: 0.2rem;
 	max-width: 100%;
 
@@ -1077,11 +1075,6 @@ textarea.form-control {
 	text-align: center;
 }
 
-.turbo-list .turbo-list_blog_type {
-	width: 150px;
-	text-align: center;
-}
-
 .turbo-list .turbo-list-delivery-condit {
 	width: 220px;
 	text-align: left;
@@ -1245,11 +1238,6 @@ textarea.form-control {
 
 .turbo-list .turbo-list-status {
 	width: 110px;
-	text-align: center;
-}
-
-.turbo-list .turbo-list_log_status {
-	width: 120px;
 	text-align: center;
 }
 
@@ -1480,7 +1468,6 @@ textarea.form-control {
 	font-size: 12px;
 }
 
-.cur-settings .setting-icon svg,
 .cur-settings .setting-icon svg,
 .turbo-list-setting .setting-icon svg {
 	margin-top: -0.1rem !important;

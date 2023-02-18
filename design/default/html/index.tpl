@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {* General Page *}
-<html {if $language->label}lang="{$language->label|escape}"{/if}  {if $smarty.cookies.mode == 'mode'}data-bs-theme="dark"{/if}>
+<html {if $language->label}lang="{$language->label|escape}"{/if} {if $smarty.cookies.mode == 'mode'}data-bs-theme="dark"{/if} {if $module == 'FAQView'}itemscope itemtype="https://schema.org/FAQPage"{/if}>
 
 <head>
 	<base href="{$config->root_url}/">

@@ -201,7 +201,7 @@
 							<select name="brand_id" class="selectpicker mb-1 js-meta-brand" data-live-search="true">
 								<option value="0" {if !$product->brand_id}selected="" {/if} data-brand_name="">{$btr->global_not_set|escape}</option>
 								{foreach $brands as $brand}
-									<option value="{$brand->id}" {if $product->brand_id == $brand->id}selected="" {/if} data-brand_name="{$brand->name|escape}">{$brand->name|escape}</option>
+									<option value="{$brand->id}" {if $product->brand_id == $brand->id}selected=""{/if} data-brand_name="{$brand->name|escape}">{$brand->name|escape}</option>
 								{/foreach}
 							</select>
 						</div>
@@ -218,7 +218,7 @@
 														<option value="0" data-category_name="">{$btr->not_specified}</option>
 														{function name=category_select level=0}
 															{foreach $categories as $category}
-																<option value='{$category->id}' {if $category->id == $selected_id}selected{/if} category_name='{$category->name|escape}'>{section name=sp loop=$level}-{/section} {$category->name|escape}</option>
+																<option value='{$category->id}' {if $category->id == $selected_id}selected{/if} category_name='{$category->name|escape}'>{section name=sp loop=$level}--{/section} {$category->name|escape}</option>
 																{category_select categories=$category->subcategories selected_id=$selected_id  level=$level+1}
 															{/foreach}
 														{/function}
@@ -822,10 +822,10 @@
 				</ul>
 				<div class="tab-content">
 					<div class="tab-pane active show" id="tab-1" role="tabpanel">
-						<textarea name="annotation" id="annotation" class="editor-small">{$product->annotation|escape}</textarea>
+						<textarea name="annotation" id="annotation" class="editor">{$product->annotation|escape}</textarea>
 					</div>
 					<div class="tab-pane" id="tab-2" role="tabpanel">
-						<textarea id="js-editor" name="body" class="editor-large js-editor-class">{$product->body|escape}</textarea>
+						<textarea id="js-editor" name="body" class="editor js-editor-class">{$product->body|escape}</textarea>
 					</div>
 				</div>
 			</div>

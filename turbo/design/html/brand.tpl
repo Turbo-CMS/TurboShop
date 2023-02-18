@@ -203,7 +203,7 @@
 				</div>
 				<div class="collapse-card">
 					<div class="card-body">
-						<textarea name="description" id="js-editor" class="editor-large js-editor-class">{$brand->description|escape}</textarea>
+						<textarea name="description" id="js-editor" class="editor js-editor-class">{$brand->description|escape}</textarea>
 						<div class="row">
 							<div class="col-12">
 								<div class="d-grid d-sm-block mt-3">

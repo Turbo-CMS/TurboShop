@@ -513,55 +513,55 @@
 								<div class="row">
 									<div class="col-xl-3 col-lg-4 col-md-6 my-2">
 										<div class="form-check form-switch form-check-reverse form-check-inline">
-											<input class="form-check-input ms-2" id="captcha-product" name="captcha_product" value="1" type="checkbox" {if $settings->captcha_product}checked="" {/if}>
+											<input class="form-check-input ms-2" id="captcha-product" name="captcha_product" value="1" type="checkbox" {if $settings->captcha_product}checked=""{/if}>
 											<label class="form-check-label" for="captcha-product">{$btr->settings_general_product|escape}</label>
 										</div>
 									</div>
 									<div class="col-xl-3 col-lg-4 col-md-6 my-2">
 										<div class="form-check form-switch form-check-reverse form-check-inline">
-											<input class="form-check-input ms-2" id="captcha-post" name="captcha_post" value="1" type="checkbox" {if $settings->captcha_post}checked="" {/if}>
+											<input class="form-check-input ms-2" id="captcha-post" name="captcha_post" value="1" type="checkbox" {if $settings->captcha_post}checked=""{/if}>
 											<label class="form-check-label" for="captcha-post">{$btr->settings_general_blog|escape}</label>
 										</div>
 									</div>
 									<div class="col-xl-3 col-lg-4 col-md-6 my-2">
 										<div class="form-check form-switch form-check-reverse form-check-inline">
-											<input class="form-check-input ms-2" id="captcha-article" name="captcha_article" value="1" type="checkbox" {if $settings->captcha_article}checked="" {/if}>
+											<input class="form-check-input ms-2" id="captcha-article" name="captcha_article" value="1" type="checkbox" {if $settings->captcha_article}checked=""{/if}>
 											<label class="form-check-label" for="captcha-article">{$btr->settings_general_article|escape}</label>
 										</div>
 									</div>
 									<div class="col-xl-3 col-lg-4 col-md-6 my-2">
 										<div class="form-check form-switch form-check-reverse form-check-inline">
-											<input class="form-check-input ms-2" id="captcha-cart" name="captcha_cart" value="1" type="checkbox" {if $settings->captcha_cart}checked="" {/if}>
+											<input class="form-check-input ms-2" id="captcha-cart" name="captcha_cart" value="1" type="checkbox" {if $settings->captcha_cart}checked=""{/if}>
 											<label class="form-check-label" for="captcha-cart">{$btr->settings_general_cart|escape}</label>
 										</div>
 									</div>
 									<div class="col-xl-3 col-lg-4 col-md-6 my-2">
 										<div class="form-check form-switch form-check-reverse form-check-inline">
-											<input class="form-check-input ms-2" id="captcha-register" name="captcha_register" value="1" type="checkbox" {if $settings->captcha_register}checked="" {/if}>
+											<input class="form-check-input ms-2" id="captcha-register" name="captcha_register" value="1" type="checkbox" {if $settings->captcha_register}checked=""{/if}>
 											<label class="form-check-label" for="captcha-register">{$btr->settings_general_register|escape}</label>
 										</div>
 									</div>
 									<div class="col-xl-3 col-lg-4 col-md-6 my-2">
 										<div class="form-check form-switch form-check-reverse form-check-inline">
-											<input class="form-check-input ms-2" id="captcha-feedback" name="captcha_feedback" value="1" type="checkbox" {if $settings->captcha_feedback}checked="" {/if}>
+											<input class="form-check-input ms-2" id="captcha-feedback" name="captcha_feedback" value="1" type="checkbox" {if $settings->captcha_feedback}checked=""{/if}>
 											<label class="form-check-label" for="captcha-feedback">{$btr->settings_general_contact_form|escape}</label>
 										</div>
 									</div>
 									<div class="col-xl-3 col-lg-4 col-md-6 my-2">
 										<div class="form-check form-switch form-check-reverse form-check-inline">
-											<input class="form-check-input ms-2" id="captcha-callback" name="captcha_callback" value="1" type="checkbox" {if $settings->captcha_callback}checked="" {/if}>
+											<input class="form-check-input ms-2" id="captcha-callback" name="captcha_callback" value="1" type="checkbox" {if $settings->captcha_callback}checked=""{/if}>
 											<label class="form-check-label" for="captcha-callback">{$btr->settings_general_callback|escape}</label>
 										</div>
 									</div>
 									<div class="col-xl-3 col-lg-4 col-md-6 my-2">
 										<div class="form-check form-switch form-check-reverse form-check-inline">
-											<input class="form-check-input ms-2" id="captcha-fastorder" name="captcha_fastorder" value="1" type="checkbox" {if $settings->captcha_review}checked="" {/if}>
+											<input class="form-check-input ms-2" id="captcha-fastorder" name="captcha_fastorder" value="1" type="checkbox" {if $settings->captcha_fastorder}checked=""{/if}>
 											<label class="form-check-label" for="captcha-fastorder">{$btr->settings_general_fastorder|escape}</label>
 										</div>
 									</div>
 									<div class="col-xl-3 col-lg-4 col-md-6 my-2">
 										<div class="form-check form-switch form-check-reverse form-check-inline">
-											<input class="form-check-input ms-2" id="captcha-review" name="captcha_review" value="1" type="checkbox" {if $settings->captcha_review}checked="" {/if}>
+											<input class="form-check-input ms-2" id="captcha-review" name="captcha_review" value="1" type="checkbox" {if $settings->captcha_review}checked=""{/if}>
 											<label class="form-check-label" for="captcha-review">{$btr->settings_general_review|escape}</label>
 										</div>
 									</div>

@@ -431,7 +431,6 @@ textarea.form-control {
 	text-shadow: none;
 	margin: 3px 0 0;
 	border: 1px solid rgba(0, 0, 0, 0.175);
-	;
 	border-radius: 0.2rem;
 	max-width: 100%;
 
@@ -626,11 +625,6 @@ textarea.form-control {
 
 .turbo-list .turbo-list-body-item.unapproved {
 	background-color: #fdf7f0;
-}
-
-.turbo-list .min_h {
-	border-bottom: 1px solid #dee2e6;
-	min-height: 80px;
 }
 
 .turbo-list .turbo-list-body-item:hover {
@@ -960,7 +954,7 @@ textarea.form-control {
 .turbo-list .turbo-list-banners-info {
 	margin-top: 3px;
 	font-size: 12px;
-}
+	}
 
 .turbo-list .turbo-list-name {
 	width: calc(100% - 718px);
@@ -1065,11 +1059,6 @@ textarea.form-control {
 
 .turbo-list .turbo-list-coupon-condit {
 	width: 190px;
-	text-align: center;
-}
-
-.turbo-list .turbo-list_blog_type {
-	width: 150px;
 	text-align: center;
 }
 
@@ -1236,11 +1225,6 @@ textarea.form-control {
 
 .turbo-list .turbo-list-status {
 	width: 110px;
-	text-align: center;
-}
-
-.turbo-list .turbo-list_log_status {
-	width: 120px;
 	text-align: center;
 }
 
@@ -1471,7 +1455,6 @@ textarea.form-control {
 	font-size: 12px;
 }
 
-.cur-settings .setting-icon svg,
 .cur-settings .setting-icon svg,
 .turbo-list-setting .setting-icon svg {
 	margin-top: -0.1rem !important;
@@ -2064,7 +2047,6 @@ textarea.form-control {
 	background: #fff;
 	border: 1px solid #ced4da;
 	border-radius: 0px;
-
 }
 
 .feature-input:focus {
@@ -2716,7 +2698,6 @@ textarea.form-control {
 	margin-right: 3px;
 	border: 1px solid #ced4da;
 	border-radius: 0.2rem;
-
 }
 
 .translation-icon img {

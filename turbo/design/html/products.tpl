@@ -71,7 +71,7 @@
 								{function name=category_select level=0}
 									{foreach $categories as $c}
 										<option value='{url keyword=null brand_id=null page=null limit=null category_id=$c->id}' {if $category->id == $c->id}selected{/if}>
-											{section sp $level}- {/section}{$c->name|escape}
+											{section sp $level}--{/section} {$c->name|escape}
 										</option>
 										{category_select categories=$c->subcategories level=$level+1}
 									{/foreach}
@@ -305,7 +305,7 @@
 											<select name="target_category" class="selectpicker" data-live-search="true" data-size="5">
 												{function name=category_select_btn level=0}
 													{foreach $categories as $category}
-														<option value="{$category->id}">{section sp $level}-{/section}{$category->name|escape}</option>
+														<option value="{$category->id}">{section sp $level}--{/section} {$category->name|escape}</option>
 														{category_select_btn categories=$category->subcategories selected_id=$selected_id level=$level+1}
 													{/foreach}
 												{/function}

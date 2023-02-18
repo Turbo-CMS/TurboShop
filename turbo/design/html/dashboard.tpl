@@ -146,7 +146,7 @@
 			</div>
 			<div class="collapse-card">
 				<div class="card-body">
-					<div id="containerOrders" class="chart"></div>
+					<div id="containerOrders" class="chart mb-3"></div>
 				</div>
 			</div>
 		</div>
@@ -165,7 +165,7 @@
 			</div>
 			<div class="collapse-card">
 				<div class="card-body">
-					<div id="containerAmount" class="chart"></div>
+					<div id="containerAmount" class="chart mb-3"></div>
 				</div>
 			</div>
 		</div>

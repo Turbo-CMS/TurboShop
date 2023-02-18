@@ -49,14 +49,6 @@
 	.variants-listadd {
 		min-width: 1250px;
 	}
-
-	.cur-settings .setting-icon-export:hover,
-	.turbo-list-setting .setting-icon-export:hover {
-		background: #1f9bcf;
-		border-color: #1f9bcf;
-		color: #fff;
-		font-weight: 600;
-	}
 }
 
 @media only screen and (max-width: 991px) {
@@ -77,10 +69,6 @@
 
 	.turbo-list .variants-item-color {
 		width: 180px;
-	}
-
-	.admin_switches {
-		margin-left: 0px;
 	}
 
 	.turbo-list.variants-list {
@@ -323,7 +311,6 @@
 	.turbo-list-usergroups-sale,
 	.turbo-list-reportstats-total,
 	.turbo-list-currency-exchange,
-	.turbo-list_usergroups_counts,
 	.turbo-list-brands-tag,
 	.turbo-list-categorystats-total,
 	.turbo-list-orders-price,

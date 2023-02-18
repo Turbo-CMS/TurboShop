@@ -107,16 +107,16 @@
 							</a>
 							<ul id="orders" class="sidebar-dropdown list-unstyled collapse {if in_array($smarty.get.module, array('OrdersAdmin', 'OrderAdmin', 'OrdersLabelsAdmin', 'OrdersLabelAdmin'))}show{/if}" data-bs-parent="#sidebar">
 								{if in_array('orders', $manager->permissions)}
-									<li class="sidebar-item {if $status===0}active{/if}">
+									<li class="sidebar-item {if $status===0 }active{/if} {if in_array($smarty.get.module, array('OrderAdmin'))}{if $order->status==0}active{/if}{/if}">
 										<a class="sidebar-link" href="index.php?module=OrdersAdmin&status=0">{$btr->global_new_order}</a>
 									</li>
-									<li class="sidebar-item {if $status===1}active{/if}">
+									<li class="sidebar-item {if $status==1 || $order->status==1}active{/if}">
 										<a class="sidebar-link" href="index.php?module=OrdersAdmin&status=1">{$btr->global_accepted_order|escape}</a>
 									</li>
-									<li class="sidebar-item {if $status===2}active{/if}">
+									<li class="sidebar-item {if $status==2 || $order->status==2}active{/if}">
 										<a class="sidebar-link" href="index.php?module=OrdersAdmin&status=2">{$btr->global_closed_order|escape}</a>
 									</li>
-									<li class="sidebar-item {if $status===3}active{/if}">
+									<li class="sidebar-item {if $status==3 || $order->status==3}active{/if}">
 										<a class="sidebar-link" href="index.php?module=OrdersAdmin&status=3">{$btr->global_canceled_order|escape}</a>
 									</li>
 								{/if}
@@ -434,7 +434,7 @@
 							<div class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0" aria-labelledby="alertsDropdown">
 								<div class="dropdown-menu-header">
 									{if $all_counter}
-										{$btr->new_notifications|escape}
+										{$all_counter} {$btr->new_notifications|escape}
 									{else}
 										{$btr->no_notification|escape}
 									{/if}
@@ -643,23 +643,6 @@
 							}
 						})
 					}
-				});
-			}
-			
-			/* Delete images for products */
-			if ($('.images_list').size() > 0) {
-				$('.js-delete').on('click', function() {
-					if ($('.js-accept-delete').size() > 0) {
-						$('.js-accept-delete').val('1');
-						$(this).closest("li").fadeOut(200, function() {
-							$(this).remove();
-						});
-					} else {
-						$(this).closest("li").fadeOut(200, function() {
-							$(this).remove();
-						});
-					}
-					return false;
 				});
 			}
 			

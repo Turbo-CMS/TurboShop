@@ -84,8 +84,8 @@
 									<div class="mt-2 mb-3 mb-h">
 										<div class="input-group">
 											<span class="input-group-text">URL</span>
-											<input name="url" class="js-meta-field form-control js-url {if $category->id}js-disabled{/if}" {if $category->id}readonly="" {/if} type="text" value="{$category->url|escape}">
-											<input type="checkbox" id="block-translit" class="d-none" value="1" {if $category->id}checked="" {/if}>
+											<input name="url" class="js-meta-field form-control js-url {if $category->id}js-disabled{/if}" {if $category->id}readonly=""{/if} type="text" value="{$category->url|escape}">
+											<input type="checkbox" id="block-translit" class="d-none" value="1" {if $category->id}checked=""{/if}>
 											<span class="input-group-text js-disable-url">
 												{if $category->id}
 													<i class="url-lock"></i>
@@ -104,7 +104,7 @@
 												{function name=category_select level=0}
 													{foreach $articles_categories as $cat}
 														{if $category->id != $cat->id}
-															<option value='{$cat->id}' {if $category->parent_id == $cat->id}selected{/if}>{section name=sp loop=$level}--{/section}{$cat->name}</option>
+															<option value='{$cat->id}' {if $category->parent_id == $cat->id}selected{/if}>{section name=sp loop=$level}--{/section} {$cat->name}</option>
 															{category_select articles_categories=$cat->subcategories level=$level+1}
 														{/if}
 													{/foreach}
@@ -221,7 +221,7 @@
 				</div>
 				<div class="collapse-card">
 					<div class="card-body">
-						<textarea id="js-editor" name="description" class="editor-large js-editor-class">{$category->description|escape}</textarea>
+						<textarea id="js-editor" name="description" class="editor js-editor-class">{$category->description|escape}</textarea>
 						<div class="row">
 							<div class="col-12">
 								<div class="d-grid d-sm-block mt-3">
