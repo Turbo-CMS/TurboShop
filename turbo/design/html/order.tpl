@@ -486,7 +486,7 @@
 								</div>
 								<div class="edit-user mb-3" style="display:none;">
 									<label class="form-label">
-										{$btr->global_user|escape}
+										{$btr->global_buyer|escape}
 									</label>
 									<input type="hidden" name="user_id" value="{$user->id}">
 									<input type="text" class="js-user-complite form-control" placeholder="{$btr->order_user_select|escape}">
