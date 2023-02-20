@@ -2298,7 +2298,7 @@ textarea.form-control {
 	height: 20px;
 }
 
-/************************************************************************* orders.tpl  */
+/************************************************************************* Orders  */
 
 .box-labels-hide .option-labels-box {
 	margin: 0px;
@@ -2330,6 +2330,10 @@ textarea.form-control {
 	font-size: 1.245em;
 	line-height: 0.75em;
 	vertical-align: -25%;
+}
+
+.order-dropdown-toggle:after {
+        margin-left: 0.5em;
 }
 
 /************************************************************************* comments.tpl  */

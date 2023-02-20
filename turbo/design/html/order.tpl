@@ -31,7 +31,7 @@
 	</div>
 	{if $labels}
 		<div class="d-none d-lg-inline-block me-3 mb-3">
-			<a class="nav-link dropdown-toggle" href="#" id="labelsDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{$btr->global_select_label|escape}</a>
+			<a class="nav-link dropdown-toggle order-dropdown-toggle" href="#" id="labelsDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{$btr->global_select_label|escape}</a>
 			<div class="dropdown-menu dropdown-menu-start js-labels-hide box-labels-hide" aria-labelledby="labelsDropdown">
 				<ul class="option-labels-box">
 					{foreach $labels as $l}
