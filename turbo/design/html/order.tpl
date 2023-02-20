@@ -31,12 +31,12 @@
 	</div>
 	{if $labels}
 		<div class="d-none d-lg-inline-block me-3 mb-3">
-			<a class="nav-link dropdown-toggle" href="#" id="labelsDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {$btr->global_select_label|escape} </a>
+			<a class="nav-link dropdown-toggle" href="#" id="labelsDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{$btr->global_select_label|escape}</a>
 			<div class="dropdown-menu dropdown-menu-start js-labels-hide box-labels-hide" aria-labelledby="labelsDropdown">
 				<ul class="option-labels-box">
 					{foreach $labels as $l}
 						<li class="js-ajax-labels badge d-block text-start my-2" data-order-id="{$order->id}" style="background-color: {$l->color|escape}">
-							<input id="l{$order->id}_{$l->id}" type="checkbox" class="d-none" name="order_labels[]" value="{$l->id}" {if in_array($l->id, $order_labels) && is_array($order_labels)}checked="" {/if} />
+							<input id="l{$order->id}_{$l->id}" type="checkbox" class="d-none" name="order_labels[]" value="{$l->id}" {if in_array($l->id, $order_labels) && is_array($order_labels)}checked=""{/if}>
 							<label for="l{$order->id}_{$l->id}" class="cursor-pointer w-100"><span class="d-inline-block align-middle ms-3">{$l->name|escape}</span></label>
 						</li>
 					{/foreach}
@@ -465,18 +465,18 @@
 							{else}
 								<div class="js-user-row">
 									<hr>
-									<label class="form-label d-inline-block">
+									<label class="form-label">
 										{$btr->global_buyer|escape}:
-										<a href="{url module=UserAdmin id=$user->id}" target="_blank">
+										<a href="{url module=UserAdmin id=$user->id}" target="_blank" class="me-1">
 											{$user->name|escape}
 										</a>
+										<a href="javascript:;" class="js-edit-user btn-edit text-body text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_edit|escape}">
+											<i class="align-middle" data-feather="edit"></i>
+										</a>
+										<a href="javascript:;" class="js-delete-user btn-delete mt-n1" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->users_delete|escape}">
+											<i class="align-middle" data-feather="trash-2"></i>
+										</a>
 									</label>
-									<a href="javascript:;" class="btn-delete d-inline-block js-delete-user" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->users_delete|escape}">
-										<i class="align-middle" data-feather="trash-2"></i>
-									</a>
-									<a href="javascript:;" class="btn-edit d-inline-block text-secondary js-edit-user" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_edit|escape}">
-										<i class="align-middle" data-feather="edit"></i>
-									</a>
 									{if $user->group_id > 0}
 										<div class="text-secondary">{$user->group->name|escape}</div>
 									{else}

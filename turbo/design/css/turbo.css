@@ -214,12 +214,8 @@ img {
 	color: #dc3545;
 }
 
-.btn-delete.locked:hover svg {
-	color: #495057;
-}
-
 .btn-edit:hover svg {
-	color: #1cbb8c;
+	color: #3b7ddd;
 }
 
 .btn-restore:hover svg {
