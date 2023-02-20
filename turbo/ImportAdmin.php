@@ -212,7 +212,11 @@ class ImportAdmin extends Import
 		foreach ($source_columns as &$column) {
 			$c = new stdClass();
 			$c->name = $column;
-			$c->value = $selected[$c->name];
+			if (isset($selected[$c->name])) {
+				$c->value = $selected[$c->name];
+			} else {
+				$c->value = null;
+			}
 			$c->is_feature = in_array($c->name, $features);
 			$c->is_exist = in_array($c->name, $internal_columns) || $c->is_feature;
 			$c->is_nf_selected = !$c->is_exist && $c->value == $c->name;
