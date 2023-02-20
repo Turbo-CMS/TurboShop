@@ -71,7 +71,7 @@
 							<select class="selectpicker" data-live-search="true" data-size="10" name="category_id">
 								{function name=categories_tree}
 									{foreach $categories as $c}
-										<option value="{$c->id}">{section name=sp loop=$level}&nbsp;{/section}{$c->name|escape}</option>
+										<option value="{$c->id}">{section name=sp loop=$level}--{/section} {$c->name|escape}</option>
 										{categories_tree categories=$c->subcategories level=$level+1}
 									{/foreach}
 								{/function}
