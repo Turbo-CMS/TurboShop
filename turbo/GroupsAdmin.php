@@ -1,27 +1,30 @@
 <?php
-	
-require_once('api/Turbo.php');
+
+require_once 'api/Turbo.php';
 
 class GroupsAdmin extends Turbo
 {
-	function fetch()
-	{
-		if ($this->request->method('post')) {
-			// Actions with selected
-			$ids = $this->request->post('check');
-			if (is_array($ids))
-				switch ($this->request->post('action')) {
-					case 'delete': {
-							foreach ($ids as $id)
-								$this->users->delete_group($id);
-							break;
-						}
-				}
-		}
+    public function fetch()
+    {
+        if ($this->request->isMethod('post')) {
+            $ids = $this->request->post('check');
 
-		$groups = $this->users->get_groups();
+            if (is_array($ids)) {
+                switch ($this->request->post('action')) {
+                    case 'delete':
+                        foreach ($ids as $id) {
+                            $this->users->deleteGroup($id);
+                        }
+                        break;
+                }
+            }
+        }
 
-		$this->design->assign('groups', $groups);
-		return $this->body = $this->design->fetch('groups.tpl');
-	}
+        $groups = $this->users->getGroups();
+        $this->design->assign('groups', $groups);
+
+        $body = $this->design->fetch('groups.tpl');
+
+        return $body;
+    }
 }

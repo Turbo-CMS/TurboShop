@@ -10,9 +10,9 @@ class Paysera extends Turbo
 		if(empty($button_text))
 			$button_text = $this->translations->proceed_to_checkout;
 		
-		$order = $this->orders->get_order((int)$order_id);
-		$payment_method = $this->payment->get_payment_method($order->payment_method_id);
-		$payment_settings = $this->payment->get_payment_settings($payment_method->id);
+		$order = $this->orders->getOrder((int)$order_id);
+		$payment_method = $this->payment->getPaymentMethod($order->payment_method_id);
+		$payment_settings = $this->payment->getPaymentSettings($payment_method->id);
 		
 		$amount = $this->money->convert($order->total_price, $payment_method->currency_id, false);
 		
@@ -20,7 +20,7 @@ class Paysera extends Turbo
 		$fail_url = $this->config->root_url.'/order/'.$order->url;
 		$callback_url = $this->config->root_url.'/payment/Paysera/callback.php?order_id='.$order->id;		
 
-		$currency = $this->money->get_currency(intval($payment_method->currency_id));
+		$currency = $this->money->getCurrency(intval($payment_method->currency_id));
 
 		$request = WebToPay::buildRequest(array(
 			'projectid'     => $payment_settings['paysera_project_id'],
@@ -39,7 +39,7 @@ class Paysera extends Turbo
 		$button = "<form method='POST' action='".WebToPay::PAY_URL."'>
 					<input type='hidden' name='data' value='".$request['data']."'>
 					<input type='hidden' name='sign' value='".$request['sign']."'>
-					<input class="btn btn-success btn-checkout" type='submit' value='".$button_text."' />
+					<input class='btn btn-success btn-checkout' type='submit' value='".$button_text."' />
 					</form>";
 		return $button;
 	}

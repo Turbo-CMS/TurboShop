@@ -12,7 +12,7 @@
 	{/if}
 </h1>
 
-{if $message_success}
+{if isset($message_success)}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -26,12 +26,12 @@
 					{/if}
 					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>
-				</div>
+			</div>
 		</div>
 	</div>
 {/if}
 
-{if $message_error}
+{if isset($message_error)}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -59,14 +59,14 @@
 						<div class="col-lg-10 col-md-9 col-sm-12">
 							<div class="mb-3">
 								<div class="form-label">{$btr->global_title|escape}</div>
-								<input class="form-control mb-h" name="name" type="text" value="{$payment_method->name|escape}">
+								<input class="form-control mb-h" name="name" type="text" value="{if isset($payment_method->name)}{$payment_method->name|escape}{/if}">
 								<input name="id" type="hidden" value="{$payment_method->id|escape}">
 							</div>
 						</div>
 						<div class="col-lg-2 col-md-3 col-sm-12">
 							<div class="d-flex justify-content-center align-content-center flex-wrap flex-md-column h-100">
 								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
-									<input class="form-check-input ms-2" type="checkbox" id="enabled" name="enabled" value="1" type="checkbox" {if $payment_method->enabled}checked="" {/if}>
+									<input class="form-check-input ms-2" type="checkbox" id="enabled" name="enabled" value="1" type="checkbox" {if isset($payment_method->enabled) && $payment_method->enabled}checked=""{/if}>
 									<label class="form-check-label ms-2" for="enabled">{$btr->global_enable|escape}</label>
 								</div>
 							</div>
@@ -101,7 +101,7 @@
 											<select name="module" class="selectpicker">
 												<option value='null'>{$btr->payment_method_manual|escape}</option>
 												{foreach $payment_modules as $payment_module}
-													<option value="{$payment_module@key|escape}" {if $payment_method->module == $payment_module@key}selected{/if}>{$payment_module->name|escape}</option>
+													<option value="{$payment_module@key|escape}" {if isset($payment_method->module) && $payment_method->module == $payment_module@key}selected{/if}>{$payment_module->name|escape}</option>
 												{/foreach}
 											</select>
 										</div>
@@ -111,14 +111,14 @@
 											<div class="form-label">{$btr->global_currency|escape}</div>
 											<select name="currency_id" class="selectpicker">
 												{foreach $currencies as $currency}
-													<option value="{$currency->id}" {if $currency->id==$payment_method->currency_id}selected{/if}>{$currency->name|escape}</option>
+													<option value="{$currency->id}" {if isset($payment_method->currency_id) && $currency->id == $payment_method->currency_id}selected{/if}>{$currency->name|escape}</option>
 												{/foreach}
 											</select>
 										</div>
 									</div>
 									<div class="col-12 mt-3">
 										{foreach $payment_modules as $payment_module}
-											<div class="row js-module-settings" {if $payment_module@key!=$payment_method->module}style="display:none;" {/if} module="{$payment_module@key}">
+											<div class="row js-module-settings" {if $payment_method->id}{if $payment_module@key != $payment_method->module}style="display:none;"{/if}{else}style="display:none;"{/if} module="{$payment_module@key}">
 												<h4>{$payment_module->name|escape}</h4>
 												{foreach $payment_module->settings as $setting}
 													{$variable_name = $setting->variable}
@@ -128,7 +128,7 @@
 																<div class="form-label">{$setting->name|escape}</div>
 																<select name="payment_settings[{$setting->variable}]" class="selectpicker">
 																	{foreach $setting->options as $option}
-																		<option value="{$option->value}" {if $option->value==$payment_settings[$setting->variable]}selected{/if}>{$option->name|escape}</option>
+																		<option value="{$option->value}" {if isset($payment_settings[$setting->variable]) && $option->value == $payment_settings[$setting->variable]}selected{/if}>{$option->name|escape}</option>
 																	{/foreach}
 																</select>
 															</div>
@@ -147,7 +147,7 @@
 														<div class="col-lg-6">
 															<div class="mb-3">
 																<div class="form-label" for="{$setting->variable}">{$setting->name|escape}</div>
-																<input name="payment_settings[{$setting->variable}]" class="form-control" type="text" value="{$payment_settings[$setting->variable]|escape}" id="{$setting->variable}">
+																<input name="payment_settings[{$setting->variable}]" class="form-control" type="text" value="{if isset($payment_settings[$setting->variable])}{$payment_settings[$setting->variable]|escape}{/if}" id="{$setting->variable}">
 															</div>
 														</div>
 													{/if}
@@ -196,7 +196,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="row">
 		<div class="col-12">
 			<div class="card">
@@ -212,7 +212,7 @@
 				</div>
 				<div class="collapse-card">
 					<div class="card-body">
-						<textarea name="description" id="js-editor" class="editor js-editor-class">{$payment_method->description|escape}</textarea>
+						<textarea name="description" id="js-editor" class="editor js-editor-class">{if isset($payment_method->description)}{$payment_method->description|escape}{/if}</textarea>
 						<div class="row">
 							<div class="col-12">
 								<div class="d-grid d-sm-block mt-3">
@@ -237,7 +237,6 @@
 	<script>
 		$(function() {
 			$('div.js-module-settings').filter(':hidden').find("input, select, textarea").attr("disabled", true);
-
 			$('select[name=module]').on('change', function() {
 				$('div.js-module-settings').hide().find("input, select, textarea").attr("disabled", true);
 				$('div.js-module-settings[module=' + $(this).val() + ']').show().find("input, select, textarea").attr("disabled", false);

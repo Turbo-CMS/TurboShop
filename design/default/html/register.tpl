@@ -23,7 +23,7 @@
 
 <h1 class="my-4">{$lang->registration}</h1>
 
-{if $error}
+{if isset($error)}
 	<div class="alert alert-danger" role="alert">
 		{if $error == 'empty_name'}
 			{$lang->enter_your_name}
@@ -51,21 +51,21 @@
 			<form class="form" id="FormValidation" role="form" autocomplete="off" method="post" novalidate>
 				<div class="mb-3">
 					<label for="name">{$lang->name}</label>
-					<input type="text" class="form-control" name="name" id="name" value="{$name|escape}" maxlength="255" required>
+					<input type="text" class="form-control" name="name" id="name" value="{if isset($name)}{$name|escape}{/if}" maxlength="255" required>
 					<div class="invalid-feedback">{$lang->enter_your_name}</div>
 				</div>
 				<div class="mb-3">
 					<label for="email">Email</label>
-					<input type="text" class="form-control" name="email" id="email" value="{$email|escape}" maxlength="255" required>
+					<input type="text" class="form-control" name="email" id="email" value="{if isset($email)}{$email|escape}{/if}" maxlength="255" required>
 					<div class="invalid-feedback">{$lang->enter_your_email}</div>
 				</div>
 				<div class="mb-3">
 					<label for="phone">{$lang->phone}</label>
-					<input type="text" class="form-control" name="phone" id="phone" value="{$phone|escape}" maxlength="255">
+					<input type="text" class="form-control" name="phone" id="phone" value="{if isset($phone)}{$phone|escape}{/if}" maxlength="255">
 				</div>
 				<div class="mb-3">
 					<label for="address">{$lang->address}</label>
-					<input type="text" class="form-control" name="address" id="address" value="{$address|escape}" maxlength="255">
+					<input type="text" class="form-control" name="address" id="address" value="{if isset($address)}{$address|escape}{/if}" maxlength="255">
 				</div>
 				<div class="mb-3">
 					<label for="password">{$lang->password}</label>

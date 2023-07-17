@@ -1,40 +1,42 @@
 <?php
 
-require_once('Turbo.php');
+require_once 'Turbo.php';
 
 class Banners extends Turbo
 {
-	public function get_banners_images($filter = array())
+	/**
+	 * Get banners images
+	 */
+	public function getBannersImages($filter = [])
 	{
-		// Default
 		$limit = 100;
 		$page = 1;
-		$banner_id_filter = '';
-		$banners_images_id_filter = '';
-		$visible_filter = '';
-		$group_by = '';
+		$bannerIdFilter = '';
+		$bannersImagesIdFilter = '';
+		$visibleFilter = '';
+		$groupBy = '';
 		$order = 'bi.position DESC';
 
 		if (isset($filter['limit'])) {
-			$limit = max(1, intval($filter['limit']));
+			$limit = max(1, (int) $filter['limit']);
 		}
 
 		if (isset($filter['page'])) {
-			$page = max(1, intval($filter['page']));
+			$page = max(1, (int) $filter['page']);
 		}
 
-		$sql_limit = $this->db->placehold(' LIMIT ?, ? ', ($page - 1) * $limit, $limit);
+		$sqlLimit = $this->db->placehold('LIMIT ?, ?', ($page - 1) * $limit, $limit);
 
 		if (!empty($filter['id'])) {
-			$banners_images_id_filter = $this->db->placehold('AND bi.id in(?@)', (array)$filter['id']);
+			$bannersImagesIdFilter = $this->db->placehold('AND bi.id iN(?@)', (array) $filter['id']);
 		}
 
 		if (!empty($filter['banner_id'])) {
-			$banner_id_filter = $this->db->placehold('AND bi.banner_id in(?@)', (array)$filter['banner_id']);
+			$bannerIdFilter = $this->db->placehold('AND bi.banner_id IN(?@)', (array) $filter['banner_id']);
 		}
 
 		if (isset($filter['visible'])) {
-			$visible_filter = $this->db->placehold('AND bi.visible=?', intval($filter['visible']));
+			$visibleFilter = $this->db->placehold('AND bi.visible=?', (int) $filter['visible']);
 		}
 
 		if (!empty($filter['sort'])) {
@@ -48,9 +50,10 @@ class Banners extends Turbo
 			}
 		}
 
-		$lang_sql = $this->languages->get_query(array('object' => 'banner_image', 'px' => 'bi'));
+		$langSql = $this->languages->getQuery(['object' => 'banner_image', 'px' => 'bi']);
 
-		$query = "SELECT 
+		$query = $this->db->placehold(
+			"SELECT 
 				bi.id, 
 				bi.banner_id, 
 				bi.image,
@@ -65,26 +68,26 @@ class Banners extends Turbo
 				bi.description,
 				bi.position, 
 				bi.visible,
-				$lang_sql->fields 
+				$langSql->fields
 			FROM __banners_images bi
-			$lang_sql->join
+			$langSql->join
 			WHERE 
 				1 
-				$banners_images_id_filter 
-				$banner_id_filter 
-				$visible_filter 
-			$group_by
+				$bannersImagesIdFilter
+				$bannerIdFilter
+				$visibleFilter
+			$groupBy
 			ORDER BY $order 
-			$sql_limit
-		";
+			$sqlLimit"
+		);
 
 		if ($this->settings->cached == 1 && empty($_SESSION['admin'])) {
 			if ($result = $this->cache->get($query)) {
-				return $result; // return data from memcached
+				return $result;
 			} else {
-				$this->db->query($query); // otherwise pull from the database
+				$this->db->query($query);
 				$result = $this->db->results();
-				$this->cache->set($query, $result); // put into cache
+				$this->cache->set($query, $result);
 				return $result;
 			}
 		} else {
@@ -93,225 +96,278 @@ class Banners extends Turbo
 		}
 	}
 
-	public function count_banners_images($filter = array())
+	/**
+	 * Count banners images
+	 */
+	public function countBannersImages($filter = [])
 	{
-		$banner_id_filter = '';
-		$banners_images_id_filter = '';
-		$visible_filter = '';
+		$bannerIdFilter = '';
+		$bannersImagesIdFilter = '';
+		$visibleFilter = '';
 
 		if (!empty($filter['banner_id'])) {
-			$banner_id_filter = $this->db->placehold('AND bi.banner_id in(?@)', (array)$filter['banner_id']);
+			$bannerIdFilter = $this->db->placehold('AND bi.banner_id IN(?@)', (array) $filter['banner_id']);
 		}
 
 		if (!empty($filter['id'])) {
-			$banners_images_id_filter = $this->db->placehold('AND bi.id in(?@)', (array)$filter['id']);
+			$bannersImagesIdFilter = $this->db->placehold('AND bi.id IN(?@)', (array) $filter['id']);
 		}
 
 		if (isset($filter['visible'])) {
-			$visible_filter = $this->db->placehold('AND bi.visible=?', intval($filter['visible']));
+			$visibleFilter = $this->db->placehold('AND bi.visible=?', (int) $filter['visible']);
 		}
 
-		$query = "SELECT count(distinct bi.id) as count 
-			FROM __banners_images AS bi
-			WHERE 
-				1 
-				$banner_id_filter 
-				$banners_images_id_filter 
-				$visible_filter 
-		";
+		$query = $this->db->placehold(
+			"SELECT COUNT(DISTINCT bi.id) AS count
+			 FROM __banners_images AS bi
+			 WHERE 1 $bannerIdFilter $bannersImagesIdFilter $visibleFilter"
+		);
 
 		if ($this->settings->cached == 1 && empty($_SESSION['admin'])) {
 			if ($result = $this->cache->get($query)) {
-				return $result; // return data from memcached
+				return $result;
 			} else {
 				if ($this->db->query($query)) {
 					$result = $this->db->result('count');
-					$this->cache->set($query, $result); // put into cache
+					$this->cache->set($query, $result);
+
 					return $result;
-				} else
+				} else {
 					return false;
+				}
 			}
 		} else {
-			if ($this->db->query($query))
+			if ($this->db->query($query)) {
 				return $this->db->result('count');
-			else
+			} else {
 				return false;
+			}
 		}
 	}
 
-	public function get_banners_image($id)
+	/**
+	 * GET banners image
+	 */
+	public function getBannersImage($id)
 	{
 		if (!is_int($id)) {
 			return false;
 		}
-		$banner_id_filter = $this->db->placehold("AND bi.id=?", intval($id));
 
-		$lang_sql = $this->languages->get_query(array('object' => 'banner_image', 'px' => 'bi'));
+		$bannerIdFilter = $this->db->placehold('AND bi.id=?', (int) $id);
 
-		$query = $this->db->placehold("SELECT 
-				bi.id, 
-				bi.banner_id, 
-				bi.image,
-				bi.background,
-				bi.name,
-				bi.url,
-				bi.color,
-				bi.style,
-				bi.button,
-				bi.alt,
-				bi.title,
-				bi.description,
-				bi.position, 
-				bi.visible,
-				$lang_sql->fields 
-			FROM __banners_images bi 
-			$lang_sql->join
-			WHERE 
-				1 
-				$banner_id_filter
-			LIMIT 1
-		", $id);
+		$languageFields = $this->languages->getQuery(['object' => 'banner_image', 'px' => 'bi']);
+
+		$query = $this->db->placehold(
+			"SELECT bi.id,
+					bi.banner_id,
+					bi.image,
+					bi.background,
+					bi.name,
+					bi.url,
+					bi.color,
+					bi.style,
+					bi.button,
+					bi.alt,
+					bi.title,
+					bi.description,
+					bi.position,
+					bi.visible,
+					$languageFields->fields
+			 FROM   __banners_images bi
+				$languageFields->join
+			 WHERE  1 
+				$bannerIdFilter
+			 LIMIT  1",
+			$id
+		);
+
 		$this->db->query($query);
-		$banners_image = $this->db->result();
-		return $banners_image;
+		$bannersImage = $this->db->result();
+
+		return $bannersImage;
 	}
 
-	public function add_banners_image($banners_image)
+	/**
+	 * Add banners image
+	 */
+	public function addBannersImage($bannersImage)
 	{
-		$banners_image = (object)$banners_image;
-		// Check if there is multilingualism and pick up descriptions for translation
-		$result = $this->languages->get_description($banners_image, 'banner_image');
+		$bannersImage = (object) $bannersImage;
+		$result = $this->languages->getDescription($bannersImage, 'banner_image');
 
-		if ($this->db->query("INSERT INTO __banners_images SET ?%", $banners_image)) {
-			$id = $this->db->insert_id();
-			$this->db->query("UPDATE __banners_images SET position=id WHERE id=?", $id);
+		if ($this->db->query('INSERT INTO __banners_images SET ?%', $bannersImage)) {
+			$id = $this->db->insertId();
+			$this->db->query('UPDATE __banners_images SET position=id WHERE id=?', $id);
 
-			// If there is a description to translate. Specify the language to update
 			if (!empty($result->description)) {
-				$this->languages->action_description($id, $result->description, 'banner_image');
+				$this->languages->actionDescription($id, $result->description, 'banner_image');
 			}
+
 			return $id;
 		} else {
 			return false;
 		}
 	}
 
-	public function update_banners_image($id, $banners_image)
+	/**
+	 * Update banners image
+	 */
+	public function updateBannersImage($id, $bannersImage)
 	{
-		$banners_image = (object)$banners_image;
-		// Check if there is multilingualism and pick up descriptions for translation
-		$result = $this->languages->get_description($banners_image, 'banner_image');
+		$bannersImage = (object) $bannersImage;
+		$result = $this->languages->getDescription($bannersImage, 'banner_image');
 
-		$query = $this->db->placehold("UPDATE __banners_images SET ?% WHERE id in (?@) LIMIT ?", $banners_image, (array)$id, count((array)$id));
+		$query = $this->db->placehold("UPDATE __banners_images SET ?% WHERE id IN(?@) LIMIT ?", $bannersImage, (array) $id, count((array) $id));
+
 		if ($this->db->query($query)) {
-			// If there is a description to translate. Specify the language to update
 			if (!empty($result->description)) {
-				$this->languages->action_description($id, $result->description, 'banner_image', $this->languages->lang_id());
+				$this->languages->actionDescription($id, $result->description, 'banner_image', $this->languages->langId());
 			}
+
 			return $id;
 		} else {
 			return false;
 		}
 	}
 
-	public function delete_banners_image($id)
+	/**
+	 * Delete banners image
+	 */
+	public function deleteBannersImage($id)
 	{
 		if (!empty($id)) {
-			$this->delete_image($id);
-			$this->delete_background($id);
-			$query = $this->db->placehold("DELETE FROM __banners_images WHERE id=? LIMIT 1", intval($id));
+			$this->deleteImage($id);
+			$this->deleteBackground($id);
+			$query = $this->db->placehold("DELETE FROM __banners_images WHERE id=? LIMIT 1", (int) $id);
+
 			if ($this->db->query($query)) {
-				$this->db->query("DELETE FROM __lang_banners_images where banner_image_id=?", intval($id));
+				$this->db->query("DELETE FROM __lang_banners_images WHERE banner_image_id=?", (int) $id);
 				return true;
 			}
 		}
+
 		return false;
 	}
 
-	public function delete_image($id)
+	/**
+	 * Delete image
+	 */
+	public function deleteImage($id)
 	{
-		$query = $this->db->placehold("SELECT image FROM __banners_images WHERE id=?", intval($id));
-		$this->db->query($query);
-		$filename = $this->db->result('image');
-		if (!empty($filename)) {
+		$query = $this->db->placehold("SELECT image FROM __banners_images WHERE id=?", (int) $id);
+
+		if ($this->db->query($query)) {
+			$filenames = $this->db->results('image');
+		}
+
+		if (!empty($filenames)) {
 			$query = $this->db->placehold("UPDATE __banners_images SET image=NULL WHERE id=?", $id);
 			$this->db->query($query);
-			$query = $this->db->placehold("SELECT count(*) as count FROM __banners_images WHERE image=? LIMIT 1", $filename);
-			$this->db->query($query);
-			$count = $this->db->result('count');
-			if ($count == 0) {
-				$file = pathinfo($filename, PATHINFO_FILENAME);
-				$ext = pathinfo($filename, PATHINFO_EXTENSION);
-				$webp = 'webp';
 
-				// Remove all resizes
-				$rezised_images = glob($this->config->root_dir . $this->config->resized_banners_images_dir . $file . "*." . $ext);
-				if (is_array($rezised_images)) {
-					foreach (glob($this->config->root_dir . $this->config->resized_banners_images_dir . $file . "*." . $ext) as $f) {
-						@unlink($f);
+			foreach ($filenames as $filename) {
+				$query = $this->db->placehold("SELECT count(*) AS count FROM __banners_images WHERE image=? LIMIT 1", $filename);
+				$this->db->query($query);
+
+				$count = $this->db->result('count');
+
+				if ($count == 0) {
+					$file = pathinfo($filename, PATHINFO_FILENAME);
+					$ext = pathinfo($filename, PATHINFO_EXTENSION);
+					$webp = 'webp';
+
+					$resizedImages = glob($this->config->root_dir . $this->config->resized_banners_images_dir . $file . "*." . $ext);
+
+					if (is_array($resizedImages)) {
+						foreach ($resizedImages as $f) {
+							if (is_file($f)) {
+								unlink($f);
+							}
+						}
 					}
-				}
 
-				$rezised_images = glob($this->config->root_dir . $this->config->resized_banners_images_dir . $file . "*." . $webp);
-				if (is_array($rezised_images)) {
-					foreach (glob($this->config->root_dir . $this->config->resized_banners_images_dir . $file . "*." . $webp) as $f) {
-						@unlink($f);
+					$resizedImages = glob($this->config->root_dir . $this->config->resized_banners_images_dir . $file . "*." . $webp);
+
+					if (is_array($resizedImages)) {
+						foreach ($resizedImages as $f) {
+							if (is_file($f)) {
+								unlink($f);
+							}
+						}
 					}
-				}
 
-				@unlink($this->config->root_dir . $this->config->banners_images_dir . $filename);
+					unlink($this->config->root_dir . $this->config->banners_images_dir . $filename);
+				}
 			}
 		}
 	}
-	
-	public function delete_background($id)
+
+	/**
+	 * Delete background
+	 */
+	public function deleteBackground($id)
 	{
-		$query = $this->db->placehold("SELECT background FROM __banners_images WHERE id=?", intval($id));
-		$this->db->query($query);
-		$filename = $this->db->result('background');
-		if (!empty($filename)) {
+		$query = $this->db->placehold("SELECT background FROM __banners_images WHERE id=?", (int) $id);
+
+		if ($this->db->query($query)) {
+			$filenames = $this->db->results('background');
+		}
+
+		if (!empty($filenames)) {
 			$query = $this->db->placehold("UPDATE __banners_images SET background=NULL WHERE id=?", $id);
+
 			$this->db->query($query);
-			$query = $this->db->placehold("SELECT count(*) as count FROM __banners_images WHERE background=? LIMIT 1", $filename);
-			$this->db->query($query);
-			$count = $this->db->result('count');
-			if ($count == 0) {
-				$file = pathinfo($filename, PATHINFO_FILENAME);
-				$ext = pathinfo($filename, PATHINFO_EXTENSION);
-				$webp = 'webp';
 
-				// Remove all resizes
-				$rezised_images = glob($this->config->root_dir . $this->config->resized_banners_images_dir . $file . "*." . $ext);
-				if (is_array($rezised_images)) {
-					foreach (glob($this->config->root_dir . $this->config->resized_banners_images_dir . $file . "*." . $ext) as $f) {
-						@unlink($f);
+			foreach ($filenames as $filename) {
+				$query = $this->db->placehold("SELECT count(*) AS count FROM __banners_images WHERE background=? LIMIT 1", $filename);
+
+				$this->db->query($query);
+				$count = $this->db->result('count');
+
+				if ($count == 0) {
+					$file = pathinfo($filename, PATHINFO_FILENAME);
+					$ext = pathinfo($filename, PATHINFO_EXTENSION);
+					$webp = 'webp';
+
+					$resizedImages = glob($this->config->root_dir . $this->config->resized_banners_images_dir . $file . "*." . $ext);
+
+					if (is_array($resizedImages)) {
+						foreach ($resizedImages as $f) {
+							if (is_file($f)) {
+								unlink($f);
+							}
+						}
 					}
-				}
 
-				$rezised_images = glob($this->config->root_dir . $this->config->resized_banners_images_dir . $file . "*." . $webp);
-				if (is_array($rezised_images)) {
-					foreach (glob($this->config->root_dir . $this->config->resized_banners_images_dir . $file . "*." . $webp) as $f) {
-						@unlink($f);
+					$resizedImages = glob($this->config->root_dir . $this->config->resized_banners_images_dir . $file . "*." . $webp);
+
+					if (is_array($resizedImages)) {
+						foreach ($resizedImages as $f) {
+							if (is_file($f)) {
+								unlink($f);
+							}
+						}
 					}
-				}
 
-				@unlink($this->config->root_dir . $this->config->banners_images_dir . $filename);
+					unlink($this->config->root_dir . $this->config->banners_images_dir . $filename);
+				}
 			}
 		}
 	}
 
-	// Banner groups
-	public function get_banners($filter = array())
+	/**
+	 * Get banners
+	 */
+	public function getBanners($filter = [])
 	{
-		$visible_filter = '';
-		$banners = array();
+		$visibleFilter = '';
+		$banners = [];
 
 		if (isset($filter['visible'])) {
-			$visible_filter = $this->db->placehold('AND visible = ?', intval($filter['visible']));
+			$visibleFilter = $this->db->placehold('AND visible = ?', (int) $filter['visible']);
 		}
 
-		$query = "SELECT * FROM __banners WHERE 1 $visible_filter ORDER BY position";
-
+		$query = $this->db->placehold("SELECT * FROM __banners WHERE 1 $visibleFilter ORDER BY position");
 		$this->db->query($query);
 
 		foreach ($this->db->results() as $banner) {
@@ -321,46 +377,56 @@ class Banners extends Turbo
 		return $banners;
 	}
 
-	public function get_banner($id, $visible = false, $show_filter_array = array())
+	/**
+	 * Get banner
+	 */
+	public function getBanner($id, $visible = false, $showFilterArray = [])
 	{
 		if (empty($id)) {
 			return false;
 		}
 
-		$is_visible = '';
-		$show_filter = '';
+		$isVisible = '';
+		$showFilter = '';
+		$bannerIdFilter = '';
 
 		if ($visible) {
-			$is_visible = 'AND visible=1';
+			$isVisible = 'AND visible=1';
 		}
 
 		if (is_int($id)) {
-			$banner_id_filter = $this->db->placehold('AND id=? ', intval($id));
+			$bannerIdFilter = $this->db->placehold('AND id=? ', (int) $id);
 		} else {
-			$banner_id_filter = $this->db->placehold('AND group_id=? ', $id);
+			$bannerIdFilter = $this->db->placehold('AND group_id=? ', $id);
 		}
 
-		if (!empty($show_filter_array)) {
-			foreach ($show_filter_array as $k => $sfa) {
+		if (!empty($showFilterArray)) {
+			foreach ($showFilterArray as $k => $sfa) {
 				if (empty($sfa)) {
-					unset($show_filter_array[$k]);
+					unset($showFilterArray[$k]);
 					continue;
 				}
-				$show_filter_array[$k] = $this->db->placehold($k . " regexp '[[:<:]](?)[[:>:]]'", intval($show_filter_array[$k]));
+
+				$showFilterArray[$k] = $this->db->placehold($k . " regexp '[[:<:]](?)[[:>:]]'", (int) $showFilterArray[$k]);
 			}
-			$show_filter_array[] = "show_all_pages=1";
-			$show_filter = 'AND (' . implode(' OR ', $show_filter_array) . ')';
+
+			$showFilterArray[] = "show_all_pages=1";
+			$showFilter = 'AND (' . implode(' OR ', $showFilterArray) . ')';
 		}
 
-		$query = $this->db->placehold("SELECT * FROM __banners WHERE 1 $banner_id_filter $is_visible $show_filter LIMIT 1");
+		$query = $this->db->placehold("SELECT * FROM __banners WHERE 1 $bannerIdFilter $isVisible $showFilter LIMIT 1");
 		$this->db->query($query);
 		$banner = $this->db->result();
+
 		return $banner;
 	}
 
-	public function update_banner($id, $banner)
+	/**
+	 * Updates banner
+	 */
+	public function updateBanner($id, $banner)
 	{
-		$query = $this->db->placehold("UPDATE __banners SET ?% WHERE id in (?@) LIMIT ?", $banner, (array)$id, count((array)$id));
+		$query = $this->db->placehold("UPDATE __banners SET ?% WHERE id IN (?@) LIMIT ?", $banner, (array) $id, count((array) $id));
 		if ($this->db->query($query)) {
 			return $id;
 		} else {
@@ -368,35 +434,45 @@ class Banners extends Turbo
 		}
 	}
 
-	public function add_banner($banner)
+	/**
+	 * Adds a banner.
+	 */
+	public function addBanner($banner)
 	{
 		$banner = (array) $banner;
 
 		if ($this->db->query("INSERT INTO __banners SET ?%", $banner)) {
-			$id = $this->db->insert_id();
+			$id = $this->db->insertId();
 			$this->db->query("UPDATE __banners SET position=id WHERE id=?", $id);
+
 			return $id;
 		} else {
 			return false;
 		}
 	}
 
-	public function delete_banner($id)
+	/**
+	 * Delete banner
+	 */
+	public function deleteBanner($id)
 	{
 		if (!empty($id)) {
-			$this->db->query("SELECT id FROM __banners_images where banner_id=?", intval($id));
-			$banners_images_ids = $this->db->results('id');
-			if (!empty($banners_images_ids)) {
-				foreach ($banners_images_ids as $bi_id) {
-					$this->delete_banners_image($bi_id);
+			$this->db->query('SELECT id FROM __banners_images WHERE banner_id=?', (int) $id);
+			$bannersImageIds = $this->db->results('id');
+
+			if (!empty($bannersImageIds)) {
+				foreach ($bannersImageIds as $biId) {
+					$this->deleteBannersImage($biId);
 				}
 			}
 
-			$query = $this->db->placehold("DELETE FROM __banners WHERE id=? LIMIT 1", intval($id));
+			$query = $this->db->placehold('DELETE FROM __banners WHERE id=? LIMIT 1', (int) $id);
+
 			if ($this->db->query($query)) {
 				return true;
 			}
 		}
+
 		return false;
 	}
 }

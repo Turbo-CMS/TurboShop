@@ -8,21 +8,19 @@ body {
 	}
 }
 
-.small,
-small {
-	font-size: 0.875em;
-	font-weight: 500;
-}
-
 .slide img {
 	max-width: 100%;
 	height: auto;
 	vertical-align: middle;
 }
 
+.card>.list-group:last-child {
+	border-bottom-width: 1px;
+}
+
 .block-description img {
 	max-width: 100%;
-	height: auto; 
+	height: auto;
 }
 
 .btn-toolbar h1 {
@@ -274,7 +272,6 @@ body.offcanvas-active {
 	opacity: 1;
 }
 
-
 /* Capcha */
 
 .secret-number {
@@ -293,7 +290,6 @@ body.offcanvas-active {
 	user-select: none;
 	pointer-events: none;
 }
-
 
 /* Comments */
 
@@ -474,6 +470,10 @@ iframe {
 }
 
 .product-card-quickview-preload .fa-eye {
+	opacity: 0;
+}
+
+.quickview .product-card-quickview-preload:after {
 	opacity: 0;
 }
 

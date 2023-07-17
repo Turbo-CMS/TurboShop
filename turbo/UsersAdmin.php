@@ -1,90 +1,98 @@
 <?php
 
-require_once('api/Turbo.php');
+require_once 'api/Turbo.php';
 
 class UsersAdmin extends Turbo
 {
-	function fetch()
-	{
-		if ($this->request->method('post')) {
-			// Actions with selected
-			$ids = $this->request->post('check');
-			if (is_array($ids))
-				switch ($this->request->post('action')) {
-					case 'disable': {
-							foreach ($ids as $id)
-								$this->users->update_user($id, array('enabled' => 0));
-							break;
-						}
-					case 'enable': {
-							foreach ($ids as $id)
-								$this->users->update_user($id, array('enabled' => 1));
-							break;
-						}
-					case 'delete': {
-							foreach ($ids as $id)
-								$this->users->delete_user($id);
-							break;
-						}
-					case 'move_to': {
-							foreach ($ids as $id) {
-								$this->users->update_user($id, array('group_id' => $this->request->post('move_group', 'integer')));
-							}
-							break;
-						}
-				}
-		}
+    public function fetch()
+    {
+        if ($this->request->isMethod('post')) {
+            $ids = $this->request->post('check');
 
-		foreach ($this->users->get_groups() as $g)
-			$groups[$g->id] = $g;
+            if (is_array($ids)) {
+                switch ($this->request->post('action')) {
+                    case 'disable':
+                        foreach ($ids as $id) {
+                            $this->users->updateUser($id, ['enabled' => 0]);
+                        }
+                        break;
+                    case 'enable':
+                        foreach ($ids as $id) {
+                            $this->users->updateUser($id, ['enabled' => 1]);
+                        }
+                        break;
+                    case 'delete':
+                        foreach ($ids as $id) {
+                            $this->users->deleteUser($id);
+                        }
+                        break;
+                    case 'move_to':
+                        foreach ($ids as $id) {
+                            $this->users->updateUser($id, ['group_id' => $this->request->post('move_group', 'integer')]);
+                        }
+                        break;
+                }
+            }
+        }
 
-		$group = null;
-		$filter = array();
-		$filter['page'] = max(1, $this->request->get('page', 'integer'));
-		$filter['limit'] = 20;
+        $groups = [];
 
-		$group_id = $this->request->get('group_id', 'integer');
-		if ($group_id) {
-			$group = $this->users->get_group($group_id);
-			$filter['group_id'] = $group->id;
-		}
+        foreach ($this->users->getGroups() as $g) {
+            $groups[$g->id] = $g;
+        }
 
-		// Search
-		$keyword = $this->request->get('keyword', 'string');
-		if (!empty($keyword)) {
-			$filter['keyword'] = $keyword;
-			$this->design->assign('keyword', $keyword);
-		}
+        $group = null;
+        $filter = ['page' => max(1, $this->request->get('page', 'integer')), 'limit' => 20,];
+        $groupId = $this->request->get('group_id', 'integer');
 
-		// Sorting users, save in session so that the current sorting is not reset
-		if ($sort = $this->request->get('sort', 'string'))
-			$_SESSION['users_admin_sort'] = $sort;
-		if (!empty($_SESSION['users_admin_sort']))
-			$filter['sort'] = $_SESSION['users_admin_sort'];
-		else
-			$filter['sort'] = 'name';
-		$this->design->assign('sort', $filter['sort']);
+        if ($groupId) {
+            $group = $this->users->getGroup($groupId);
+            $filter['group_id'] = $group->id;
+        }
 
-		$users_count = $this->users->count_users($filter);
+        $keyword = $this->request->get('keyword', 'string');
 
-		// Show all pages at once
-		if ($this->request->get('page') == 'all')
-			$filter['limit'] = $users_count;
+        if (!empty($keyword)) {
+            $filter['keyword'] = $keyword;
+            $this->design->assign('keyword', $keyword);
+        }
 
-		$users = $this->users->get_users($filter);
-		foreach ($users as $user_item) {
-			$user_item->orders = $this->orders->get_orders(array('user_id' => $user_item->id));
-		}
+        if ($sort = $this->request->get('sort', 'string')) {
+            $_SESSION['users_admin_sort'] = $sort;
+        }
 
-		if (!empty($groups)) {
-			$this->design->assign('groups', $groups);
-		}
+        if (!empty($_SESSION['users_admin_sort'])) {
+            $filter['sort'] = $_SESSION['users_admin_sort'];
+        } else {
+            $filter['sort'] = 'name';
+        }
 
-		$this->design->assign('pages_count', ceil($users_count / $filter['limit']));
-		$this->design->assign('current_page', $filter['page']);
-		$this->design->assign('group', $group);
-		$this->design->assign('users', $users);
-		$this->design->assign('users_count', $users_count);
-		return $this->body = $this->design->fetch('users.tpl');
-	}
+        $this->design->assign('sort', $filter['sort']);
+
+        $usersCount = $this->users->countUsers($filter);
+
+        if ($this->request->get('page') == 'all') {
+            $filter['limit'] = $usersCount;
+        }
+
+        $users = $this->users->getUsers($filter);
+
+        foreach ($users as $userItem) {
+            $userItem->orders = $this->orders->getOrders(['user_id' => $userItem->id]);
+        }
+
+        if (!empty($groups)) {
+            $this->design->assign('groups', $groups);
+        }
+
+        $this->design->assign('pages_count', ceil($usersCount / $filter['limit']));
+        $this->design->assign('current_page', $filter['page']);
+        $this->design->assign('group', $group);
+        $this->design->assign('users', $users);
+        $this->design->assign('users_count', $usersCount);
+
+        $body = $this->design->fetch('users.tpl');
+
+        return $body;
+    }
 }

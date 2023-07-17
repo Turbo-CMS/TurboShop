@@ -1,131 +1,155 @@
 <?php
 
-require_once('View.php');
+require_once 'View.php';
 
 class CompareView extends View
 {
-	public $max_products = 4;
+    public $maxProducts = 4;
 
-	/**
-	 *
-	 * Constructor
-	 *
-	 */
-	public function fetch()
-	{
+    public function fetch()
+    {
+        if ($this->request->get('product_url', 'string')) {
+            $_SESSION['compared_products'][$this->request->get('product_url', 'string')] = $this->request->get('product_url', 'string');
+            header('location: ' . $this->config->root_url . '/' . $this->langLink . 'compare/');
+        }
 
-		if ($this->request->get('product_url', 'string')) {
-			$_SESSION['compared_products'][$this->request->get('product_url', 'string')] = $this->request->get('product_url', 'string');
-			header('location: ' . $this->config->root_url . '/' . $this->lang_link . 'compare/');
-		}
-		if (isset($_SESSION['compared_products'])) {
-			if (count($_SESSION['compared_products']) > $this->max_products)
-				array_shift($_SESSION['compared_products']);
-		}
-		if ($this->request->get('remove_product_url', 'string')) {
-			if ($this->request->get('remove_product_url', 'string') == 'all')
-				unset($_SESSION['compared_products']);
-			else
-				unset($_SESSION['compared_products'][$this->request->get('remove_product_url', 'string')]);
+        if (isset($_SESSION['compared_products'])) {
+            if (count($_SESSION['compared_products']) > $this->maxProducts) {
+                array_shift($_SESSION['compared_products']);
+            }
+        }
 
-			header('location: ' . $this->config->root_url . '/' . $this->lang_link . 'compare/');
-		}
+        if ($this->request->get('remove_product_url', 'string')) {
+            if ($this->request->get('remove_product_url', 'string') == 'all') {
+                unset($_SESSION['compared_products']);
+            } else {
+                unset($_SESSION['compared_products'][$this->request->get('remove_product_url', 'string')]);
+            }
 
-		/**
-		 *
-		 * Display individual product
-		 *
-		 */
+            header('location: ' . $this->config->root_url . '/' . $this->langLink . 'compare/');
+        }
 
-		if (isset($_SESSION['compared_products'])) {
-			// Select products from the database
-			foreach ($_SESSION['compared_products'] as $product_url) {
-				$products[] =  $this->products->get_product((string)$product_url);
-			}
-		}
+        if (isset($_SESSION['compared_products'])) {
+            $products = [];
 
-		if (isset($products)) {
-			foreach ($products as $k => $product) {
-				@$product->images = $this->products->get_images(array('product_id' => $product->id));
-				$product->image = &$product->images[0];
+            foreach ($_SESSION['compared_products'] as $product_url) {
+                $products[] = $this->products->getProduct((string) $product_url);
+            }
+        }
 
-				@$cats = $this->categories->get_categories(array('product_id' => $product->id));
-				$product->cats = $cats;
+        if (isset($products)) {
+            foreach ($products as $k => $product) {
 
-				@$variants = $this->variants->get_variants(array('product_id' => $product->id, 'in_stock' => true));
-				// Discount
-				$discount = 0;
-				if (isset($_SESSION['user_id']) && $user = $this->users->get_user(intval($_SESSION['user_id'])))
-					$discount = $user->discount;
+                if (isset($product)) {
+                    $productImages = $this->products->getImages(['product_id' => $product->id]);
 
-				$product->variants = $variants;
+                    if ($productImages !== null) {
+                        $product->images = $productImages;
+                    }
+                }
 
-				// Default option
-				if (($v_id = $this->request->get('variant', 'integer')) > 0 && isset($variants[$v_id]))
-					$product->variant = $variants[$v_id];
-				else
-					$product->variant = reset($variants);
+                if (!empty($product->images)) {
+                    $product->image = &$product->images[0];
+                }
 
-				if ($product_values = $this->features->get_product_options(array('product_id' => $product->id))) {
-					foreach ($product_values as $pv) {
-						if (!isset($product->features[$pv->feature_id])) {
-							$product->features[$pv->feature_id] = $pv;
-						}
-						$product->features[$pv->feature_id]->values[] = $pv;
-					}
-				}
+                if ($product !== null && property_exists($product, 'id')) {
+                    $cats = $this->categories->getCategories(['product_id' => $product->id]);
 
-				if (!empty($product->features)) {
-					foreach ($product->features as $k => $feature) {
-						$_SESSION['compare_features'][$feature->feature_id]	= $feature->feature_id;
-					}
-				}
-			}
-		}
-		if (isset($_SESSION['compare_features'])) {
-			// Select products from the database
-			foreach ($_SESSION['compare_features'] as $feature_id) {
-				$compare_features[] =  $this->features->get_compare($feature_id);
-			}
-			$this->design->assign('compare_features', $compare_features);
-		}
-		unset($_SESSION['compare_features']);
+                    if ($cats !== false) {
+                        $product->cats = $cats;
+                    }
+                }
 
-		// And pass it to the template
-		if (isset($products)) {
-			$this->design->assign('products', $products);
-		}
+                if ($product !== null && property_exists($product, 'id')) {
+                    $variants = $this->variants->getVariants(['product_id' => $product->id, 'in_stock' => true]);
 
-		if ($this->page) {
-			$this->design->assign('meta_title', $this->page->meta_title);
-			$this->design->assign('meta_keywords', $this->page->meta_keywords);
-			$this->design->assign('meta_description', $this->page->meta_description);
-		}
+                    if ($variants !== null) {
+                        $product->variants = $variants;
+                    }
+                }
 
-		$auto_meta = new StdClass;
+                $discount = 0;
 
-		$auto_meta->title       = $this->seo->page_meta_title       ? $this->seo->page_meta_title       : '';
-		$auto_meta->keywords    = $this->seo->page_meta_keywords    ? $this->seo->page_meta_keywords    : '';
-		$auto_meta->description = $this->seo->page_meta_description ? $this->seo->page_meta_description : '';
+                if (isset($_SESSION['user_id']) && $user = $this->users->getUser((int) $_SESSION['user_id'])) {
+                    $discount = $user->discount;
+                }
 
-		$auto_meta_parts = array(
-			'{page}' => ($this->page ? $this->page->header : ''),
-			'{site_url}' => ($this->seo->am_url ? $this->seo->am_url : ''),
-			'{site_name}' => ($this->seo->am_name ? $this->seo->am_name : ''),
-			'{site_phone}' => ($this->seo->am_phone ? $this->seo->am_phone : ''),
-			'{site_email}' => ($this->seo->am_email ? $this->seo->am_email : ''),
-		);
+                if ($product !== null && isset($product->variants)) {
 
-		$auto_meta->title = strtr($auto_meta->title, $auto_meta_parts);
-		$auto_meta->keywords = strtr($auto_meta->keywords, $auto_meta_parts);
-		$auto_meta->description = strtr($auto_meta->description, $auto_meta_parts);
+                    if (($variantId = $this->request->get('variant', 'integer')) > 0 && isset($product->variants[$variantId])) {
+                        $product->variant = $product->variants[$variantId];
+                    } else {
+                        $product->variant = reset($product->variants);
+                    }
+                }
 
-		$auto_meta->title = preg_replace("/\{.*\}/", '', $auto_meta->title);
-		$auto_meta->keywords = preg_replace("/\{.*\}/", '', $auto_meta->keywords);
-		$auto_meta->description = preg_replace("/\{.*\}/", '', $auto_meta->description);
+                if (!is_null($product) && isset($product->id)) {
+                    if ($productValues = $this->features->getProductOptions(['product_id' => $product->id])) {
 
-		$this->design->assign('auto_meta', $auto_meta);
+                        foreach ($productValues as $pv) {
+                            if (!isset($product->features[$pv->feature_id])) {
+                                $product->features[$pv->feature_id] = $pv;
+                            }
 
-		return $this->design->fetch('compare.tpl');
-	}
+                            $product->features[$pv->feature_id]->values[] = $pv;
+                        }
+                    }
+                }
+
+                if (!empty($product->features)) {
+                    foreach ($product->features as $k => $feature) {
+                        $_SESSION['compare_features'][$feature->feature_id] = $feature->feature_id;
+                    }
+                }
+            }
+        }
+
+        if (isset($_SESSION['compare_features'])) {
+            $compareFeatures = [];
+
+            foreach ($_SESSION['compare_features'] as $featureId) {
+                $compareFeatures[] = $this->features->getCompare($featureId);
+            }
+
+            $this->design->assign('compare_features', $compareFeatures);
+        }
+
+        unset($_SESSION['compare_features']);
+
+        if (isset($products)) {
+            $this->design->assign('products', $products);
+        }
+
+        if ($this->page) {
+            $this->design->assign('meta_title', $this->page->meta_title);
+            $this->design->assign('meta_keywords', $this->page->meta_keywords);
+            $this->design->assign('meta_description', $this->page->meta_description);
+        }
+
+        $autoMeta = new stdClass();
+
+        $autoMeta->title = $this->seo->page_meta_title ?: '';
+        $autoMeta->keywords = $this->seo->page_meta_keywords ?: '';
+        $autoMeta->description = $this->seo->page_meta_description ?: '';
+
+        $autoMetaParts = [
+            '{page}' => $this->page ? $this->page->header : '',
+            '{site_url}' => $this->seo->am_url ?: '',
+            '{site_name}' => $this->seo->am_name ?: '',
+            '{site_phone}' => $this->seo->am_phone ?: '',
+            '{site_email}' => $this->seo->am_email ?: '',
+        ];
+
+        $autoMeta->title = strtr($autoMeta->title, $autoMetaParts);
+        $autoMeta->keywords = strtr($autoMeta->keywords, $autoMetaParts);
+        $autoMeta->description = strtr($autoMeta->description, $autoMetaParts);
+
+        $autoMeta->title = preg_replace("/\{.*\}/", '', $autoMeta->title);
+        $autoMeta->keywords = preg_replace("/\{.*\}/", '', $autoMeta->keywords);
+        $autoMeta->description = preg_replace("/\{.*\}/", '', $autoMeta->description);
+
+        $this->design->assign('auto_meta', $autoMeta);
+
+        return $this->design->fetch('compare.tpl');
+    }
 }

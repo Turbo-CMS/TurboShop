@@ -6,135 +6,141 @@ class OrdersAdmin extends Turbo
 {
 	public function fetch()
 	{
-		$filter = array();
+		$filter = [];
 		$filter['page'] = max(1, $this->request->get('page', 'integer'));
-
 		$filter['limit'] = 40;
 
-		// Search
 		$keyword = $this->request->get('keyword', 'string');
+
 		if (!empty($keyword)) {
 			$filter['keyword'] = $keyword;
 			$this->design->assign('keyword', $keyword);
 		}
 
-		// Label filter
-		$label = $this->orders->get_label($this->request->get('label'));
+		$label = $this->orders->getLabel($this->request->get('label'));
+
 		if (!empty($label)) {
 			$filter['label'] = $label->id;
 			$this->design->assign('label', $label);
 		}
 
-		// Action processing
-		if ($this->request->method('post')) {
-
-			// Actions with selected
+		if ($this->request->isMethod('post')) {
 			$ids = $this->request->post('check');
-			if (is_array($ids))
+
+			if (is_array($ids)) {
 				switch ($this->request->post('action')) {
 					case 'delete': {
 							foreach ($ids as $id) {
-								$o = $this->orders->get_order(intval($id));
-								if ($o->status < 3) {
-									$this->orders->update_order($id, array('status' => 3));
+								$order = $this->orders->getOrder((int) $id);
+
+								if ($order->status < 3) {
+									$this->orders->updateOrder($id, ['status' => 3]);
 									$this->orders->open($id);
-								} else
-									$this->orders->delete_order($id);
+								} else {
+									$this->orders->deleteOrder($id);
+								}
 							}
 							break;
 						}
 					case 'set_status_0': {
 							foreach ($ids as $id) {
-								if ($this->orders->open(intval($id)))
-									$this->orders->update_order($id, array('status' => 0));
+								if ($this->orders->open((int) $id)) {
+									$this->orders->updateOrder($id, ['status' => 0]);
+								}
 							}
 							break;
 						}
 					case 'set_status_1': {
 							foreach ($ids as $id) {
-								if (!$this->orders->close(intval($id)))
+								if (!$this->orders->close((int) $id)) {
 									$this->design->assign('message_error', 'error_closing');
-								else
-									$this->orders->update_order($id, array('status' => 1));
+								} else {
+									$this->orders->updateOrder($id, ['status' => 1]);
+								}
 							}
 							break;
 						}
 					case 'set_status_2': {
 							foreach ($ids as $id) {
-								if (!$this->orders->close(intval($id)))
+								if (!$this->orders->close((int) $id)) {
 									$this->design->assign('message_error', 'error_closing');
-								else
-									$this->orders->update_order($id, array('status' => 2));
+								} else {
+									$this->orders->updateOrder($id, ['status' => 2]);
+								}
 							}
 							break;
 						}
 					case 'set_label': {
-							$l_id = $this->request->post('change_label_id', 'integer');
-							if ($l_id > 0)
+							$labelId = $this->request->post('change_label_id', 'integer');
+							if ($labelId > 0) {
 								foreach ($ids as $id) {
-									$this->orders->add_order_labels($id, $l_id);
+									$this->orders->addOrderLabels($id, $labelId);
 								}
+							}
 							break;
 						}
 					case 'unset_label': {
-							$l_id = $this->request->post('change_label_id', 'integer');
-							if ($l_id > 0)
+							$labelId = $this->request->post('change_label_id', 'integer');
+							if ($labelId > 0) {
 								foreach ($ids as $id) {
-									$this->orders->delete_order_labels($id, $l_id);
+									$this->orders->deleteOrderLabels($id, $labelId);
 								}
+							}
 							break;
 						}
 				}
+			}
 		}
 
 		if (empty($keyword)) {
 			$status = $this->request->get('status', 'integer');
-			if ($status < 4)
+
+			if ($status < 4) {
 				$filter['status'] = $status;
+			}
+
 			$this->design->assign('status', $status);
 		}
 
-		// Search before order date
-		$from_date = $this->request->get('from_date');
-		$to_date = $this->request->get('to_date');
-		if (!empty($from_date) || !empty($to_date)) {
-			$filter['from_date'] = $from_date;
-			$filter['to_date'] = $to_date;
-			$this->design->assign('from_date', $from_date);
-			$this->design->assign('to_date', $to_date);
+		$fromDate = $this->request->get('from_date');
+		$toDate = $this->request->get('to_date');
+
+		if (!empty($fromDate) || !empty($toDate)) {
+			$filter['from_date'] = $fromDate;
+			$filter['to_date'] = $toDate;
+			$this->design->assign('from_date', $fromDate);
+			$this->design->assign('to_date', $toDate);
 		}
 
-		$orders_count = $this->orders->count_orders($filter);
+		$ordersCount = $this->orders->countOrders($filter);
 
-		// Show all pages at once
-		if ($this->request->get('page') == 'all')
-			$filter['limit'] = $orders_count;
+		if ($this->request->get('page') == 'all') {
+			$filter['limit'] = $ordersCount;
+		}
 
-		// Display
-		$orders = array();
-		foreach ($this->orders->get_orders($filter) as $o) {
+		$orders = [];
+
+		foreach ($this->orders->getOrders($filter) as $o) {
 			$orders[$o->id] = $o;
-			$orders[$o->id]->purchases = $this->orders->get_purchases(array('order_id' => $o->id));
+			$orders[$o->id]->purchases = $this->orders->getPurchases(['order_id' => $o->id]);
 		}
 
-		// Order tags
-		$orders_labels = array();
-		$orders_labels = $this->orders->get_order_labels(array_keys($orders));
-		if ($orders_labels) {
-			foreach ($orders_labels as $orders_label) {
-				$orders[$orders_label->order_id]->labels[] = $orders_label;
-				$orders[$orders_label->order_id]->labels_ids[] = $orders_label->id;
+		$ordersLabels = [];
+		$ordersLabels = $this->orders->getOrderLabels(array_keys($orders));
+
+		if ($ordersLabels) {
+			foreach ($ordersLabels as $orderLabel) {
+				$orders[$orderLabel->order_id]->labels[] = $orderLabel;
+				$orders[$orderLabel->order_id]->labels_ids[] = $orderLabel->id;
 			}
 		}
 
-		$this->design->assign('pages_count', ceil($orders_count / $filter['limit']));
+		$this->design->assign('pages_count', ceil($ordersCount / $filter['limit']));
 		$this->design->assign('current_page', $filter['page']);
-
-		$this->design->assign('orders_count', $orders_count);
+		$this->design->assign('orders_count', $ordersCount);
 		$this->design->assign('orders', $orders);
 
-		// Order tags
-		$labels = $this->orders->get_labels();
+		$labels = $this->orders->getLabels();
 		$this->design->assign('labels', $labels);
 
 		return $this->design->fetch('orders.tpl');

@@ -1,21 +1,21 @@
 <?php
- 
-require_once('View.php');
+
+require_once 'View.php';
 
 class SitemapView extends View
 {
 	function fetch()
 	{
-		$posts = $this->blog->get_posts(array('visible' => 1));
+		$posts = $this->blog->getPosts(['visible' => 1]);
 		$this->design->assign('posts', $posts);
 
-		$categories = $this->categories->get_categories_tree();
-		$categories = $this->cat_tree($categories);
+		$categories = $this->categories->getCategoriesTree();
+		$categories = $this->categoryTree($categories);
 		$this->design->assign('cats', $categories);
 
-		$articles_categories = $this->articles_categories->get_articles_categories_tree();
-		$articles_categories = $this->articles_cat_tree($articles_categories);
-		$this->design->assign('articles_cats', $articles_categories);
+		$articlesCategories = $this->articlesCategories->getArticlesCategoriesTree();
+		$articlesCategories = $this->articleCategoryTree($articlesCategories);
+		$this->design->assign('articles_cats', $articlesCategories);
 
 		if ($this->page) {
 			$this->design->assign('meta_title', $this->page->meta_title);
@@ -24,52 +24,56 @@ class SitemapView extends View
 			$this->design->assign('page', $this->page);
 		}
 
-		$auto_meta = new StdClass;
+		$autoMeta = new stdClass();
 
-		$auto_meta->title       = $this->seo->page_meta_title       ? $this->seo->page_meta_title       : '';
-		$auto_meta->keywords    = $this->seo->page_meta_keywords    ? $this->seo->page_meta_keywords    : '';
-		$auto_meta->description = $this->seo->page_meta_description ? $this->seo->page_meta_description : '';
+		$autoMeta->title = $this->seo->page_meta_title ?? '';
+		$autoMeta->keywords = $this->seo->page_meta_keywords ?? '';
+		$autoMeta->description = $this->seo->page_meta_description ?? '';
 
-		$auto_meta_parts = array(
+		$autoMetaParts = [
 			'{page}' => ($this->page ? $this->page->header : ''),
-			'{site_url}' => ($this->seo->am_url ? $this->seo->am_url : ''),
-			'{site_name}' => ($this->seo->am_name ? $this->seo->am_name : ''),
-			'{site_phone}' => ($this->seo->am_phone ? $this->seo->am_phone : ''),
-			'{site_email}' => ($this->seo->am_email ? $this->seo->am_email : ''),
-		);
+			'{site_url}' => ($this->seo->am_url ?: ''),
+			'{site_name}' => ($this->seo->am_name ?: ''),
+			'{site_phone}' => ($this->seo->am_phone ?: ''),
+			'{site_email}' => ($this->seo->am_email ?: ''),
+		];
 
-		$auto_meta->title = strtr($auto_meta->title, $auto_meta_parts);
-		$auto_meta->keywords = strtr($auto_meta->keywords, $auto_meta_parts);
-		$auto_meta->description = strtr($auto_meta->description, $auto_meta_parts);
+		foreach ($autoMeta as $key => $value) {
+			$autoMeta->$key = strtr($value, $autoMetaParts);
+			$autoMeta->$key = preg_replace("/\{.*\}/", '', $autoMeta->$key);
+		}
 
-		$auto_meta->title = preg_replace("/\{.*\}/", '', $auto_meta->title);
-		$auto_meta->keywords = preg_replace("/\{.*\}/", '', $auto_meta->keywords);
-		$auto_meta->description = preg_replace("/\{.*\}/", '', $auto_meta->description);
-
-		$this->design->assign('auto_meta', $auto_meta);
+		$this->design->assign('posts', $posts);
+		$this->design->assign('cats', $categories);
+		$this->design->assign('articles_cats', $articlesCategories);
+		$this->design->assign('auto_meta', $autoMeta);
 
 		return $this->design->fetch('sitemap.tpl');
 	}
 
-	private function cat_tree($categories)
+	private function categoryTree($categories)
 	{
+		foreach ($categories as $key => $category) {
+			if (isset($category->subcategories)) {
+				$this->categoryTree($category->subcategories);
+			}
 
-		foreach ($categories as $k => $v) {
-			if (isset($v->subcategories)) $this->cat_tree($v->subcategories);
-			$categories[$k]->products = $this->products->get_products(array('category_id' => $v->id));
+			$categories[$key]->products = $this->products->getProducts(['category_id' => $category->id]);
 		}
 
 		return $categories;
 	}
 
-	private function articles_cat_tree($articles_categories)
+	private function articleCategoryTree($articlesCategories)
 	{
+		foreach ($articlesCategories as $key => $articleCategory) {
+			if (isset($articleCategory->subcategories)) {
+				$this->articleCategoryTree($articleCategory->subcategories);
+			}
 
-		foreach ($articles_categories as $k => $v) {
-			if (isset($v->subcategories)) $this->cat_tree($v->subcategories);
-			$articles_categories[$k]->articles = $this->articles->get_articles(array('category_id' => $v->id));
+			$articlesCategories[$key]->articles = $this->articles->getArticles(['category_id' => $articleCategory->id]);
 		}
 
-		return $articles_categories;
+		return $articlesCategories;
 	}
 }

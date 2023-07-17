@@ -1,68 +1,69 @@
 <?php
 
-require_once('View.php');
+require_once 'View.php';
 
 class UserView extends View
 {
-	function fetch()
-	{
-		if (empty($this->user)) {
-			header('Location: ' . $this->config->root_url . '/' . $this->language->label . '/user/login');
-			exit();
-		}
+    public function fetch()
+    {
+        if (empty($this->user)) {
+            header('Location: ' . $this->config->root_url . '/' . $this->language->label . '/user/login');
+            exit();
+        }
 
-		if ($this->request->method('post') && $this->request->post('name')) {
-			$name			= $this->request->post('name');
-			$email			= $this->request->post('email');
-			$phone          = $this->request->post('phone');
-			$address        = $this->request->post('address');
-			$password		= $this->request->post('password');
+        if ($this->request->isMethod('post') && $this->request->post('name')) {
+            $name = $this->request->post('name');
+            $email = $this->request->post('email');
+            $phone = $this->request->post('phone');
+            $address = $this->request->post('address');
+            $password = $this->request->post('password');
 
-			$this->design->assign('name', $name);
-			$this->design->assign('email', $email);
-			$this->design->assign('phone', $phone);
-			$this->design->assign('address', $address);
+            $this->design->assign('name', $name);
+            $this->design->assign('email', $email);
+            $this->design->assign('phone', $phone);
+            $this->design->assign('address', $address);
 
-			$this->db->query('SELECT count(*) as count FROM __users WHERE email=? AND id!=?', $email, $this->user->id);
-			$user_exists = $this->db->result('count');
+            $this->db->query('SELECT COUNT(*) AS count FROM __users WHERE email=? AND id!=?', $email, $this->user->id);
 
-			if ($user_exists)
-				$this->design->assign('error', 'user_exists');
-			elseif (empty($name))
-				$this->design->assign('error', 'empty_name');
-			elseif (empty($email))
-				$this->design->assign('error', 'empty_email');
-			elseif (empty($phone))
-				$this->design->assign('error', 'empty_phone');
-			elseif (empty($address))
-				$this->design->assign('error', 'empty_address');
-			elseif ($user_id = $this->users->update_user($this->user->id, array('name' => $name, 'email' => $email, 'phone' => $phone, 'address' => $address))) {
-				$this->user = $this->users->get_user(intval($user_id));
-				$this->design->assign('name', $this->user->name);
-				$this->design->assign('user', $this->user);
-				$this->design->assign('email', $this->user->email);
-				$this->design->assign('phone', $this->user->phone);
-				$this->design->assign('address', $this->user->address);
-			} else
-				$this->design->assign('error', 'unknown error');
+            $userExists = $this->db->result('count');
 
-			if (!empty($password)) {
-				$this->users->update_user($this->user->id, array('password' => $password));
-			}
-		} else {
-			// Passing to the template
-			$this->design->assign('name', $this->user->name);
-			$this->design->assign('email', $this->user->email);
-			$this->design->assign('phone', $this->user->phone);
-			$this->design->assign('address', $this->user->address);
-		}
+            if ($userExists) {
+                $this->design->assign('error', 'user_exists');
+            } elseif (empty($name)) {
+                $this->design->assign('error', 'empty_name');
+            } elseif (empty($email)) {
+                $this->design->assign('error', 'empty_email');
+            } elseif (empty($phone)) {
+                $this->design->assign('error', 'empty_phone');
+            } elseif (empty($address)) {
+                $this->design->assign('error', 'empty_address');
+            } elseif ($user_id = $this->users->updateUser($this->user->id, ['name' => $name, 'email' => $email, 'phone' => $phone, 'address' => $address])) {
+                $this->user = $this->users->getUser((int) $user_id);
+                $this->design->assign('name', $this->user->name);
+                $this->design->assign('user', $this->user);
+                $this->design->assign('email', $this->user->email);
+                $this->design->assign('phone', $this->user->phone);
+                $this->design->assign('address', $this->user->address);
+            } else {
+                $this->design->assign('error', 'unknown error');
+            }
 
-		$orders = $this->orders->get_orders(array('user_id' => $this->user->id));
-		$this->design->assign('orders', $orders);
+            if (!empty($password)) {
+                $this->users->updateUser($this->user->id, ['password' => $password]);
+            }
+        } else {
+            $this->design->assign('name', $this->user->name);
+            $this->design->assign('email', $this->user->email);
+            $this->design->assign('phone', $this->user->phone);
+            $this->design->assign('address', $this->user->address);
+        }
 
-		$this->design->assign('meta_title', $this->user->name);
-		$body = $this->design->fetch('user.tpl');
+        $orders = $this->orders->getOrders(['user_id' => $this->user->id]);
+        $this->design->assign('orders', $orders);
 
-		return $body;
-	}
+        $this->design->assign('meta_title', $this->user->name);
+        $body = $this->design->fetch('user.tpl');
+
+        return $body;
+    }
 }

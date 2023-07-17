@@ -1,65 +1,62 @@
 <?php
 
-require_once('api/Turbo.php');
+require_once 'api/Turbo.php';
 
 class FAQsAdmin extends Turbo
 {
 	public function fetch()
 	{
-		// Action processing
-		if ($this->request->method('post')) {
-
-			// Sorting
+		if ($this->request->isMethod('post')) {
 			$positions = $this->request->post('positions');
 			$ids = array_keys($positions);
 			sort($positions);
 			$positions = array_reverse($positions);
-			foreach ($positions as $i => $position)
-				$this->faq->update_faq($ids[$i], array('position' => $position));
 
-			// Actions with selected
+			foreach ($positions as $i => $position) {
+				$this->faq->updateFaq($ids[$i], ['position' => $position]);
+			}
+
 			$ids = $this->request->post('check');
-			if (is_array($ids))
+
+			if (is_array($ids)) {
 				switch ($this->request->post('action')) {
-					case 'disable': {
-							$this->faq->update_faq($ids, array('visible' => 0));
-							break;
+					case 'disable':
+						$this->faq->updateFaq($ids, ['visible' => 0]);
+						break;
+					case 'enable':
+						$this->faq->update_faq($ids, ['visible' => 1]);
+						break;
+					case 'delete':
+						foreach ($ids as $id) {
+							$this->faq->deleteFaq($id);
 						}
-					case 'enable': {
-							$this->faq->update_faq($ids, array('visible' => 1));
-							break;
-						}
-					case 'delete': {
-							foreach ($ids as $id)
-								$this->faq->delete_faq($id);
-							break;
-						}
+						break;
 				}
+			}
 		}
 
-		$filter = array();
-		$filter['page'] = max(1, $this->request->get('page', 'integer'));
-		$filter['limit'] = $this->settings->blog_num_admin;
+		$filter = ['page' => max(1, $this->request->get('page', 'integer')), 'limit' => $this->settings->blog_num_admin,];
 
-		// Search
 		$keyword = $this->request->get('keyword', 'string');
+
 		if (!empty($keyword)) {
 			$filter['keyword'] = $keyword;
 			$this->design->assign('keyword', $keyword);
 		}
 
-		$faqs_count = $this->faq->count_faqs($filter);
-		// Show all pages at once
-		if ($this->request->get('page') == 'all')
-			$filter['limit'] = $faqs_count;
+		$faqsCount = $this->faq->countFaqs($filter);
 
-		$faqs = $this->faq->get_faqs($filter);
-		$this->design->assign('faqs_count', $faqs_count);
+		if ($this->request->get('page') == 'all') {
+			$filter['limit'] = $faqsCount;
+		}
 
-		$this->design->assign('pages_count', ceil($faqs_count / $filter['limit']));
+		$faqs = $this->faq->getFaqs($filter);
+
+		$this->design->assign('faqs_count', $faqsCount);
+		$this->design->assign('pages_count', ceil($faqsCount / $filter['limit']));
 		$this->design->assign('current_page', $filter['page']);
-
 		$this->design->assign('faqs', $faqs);
+
 		return $this->design->fetch('faqs.tpl');
 	}
 }

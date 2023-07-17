@@ -4,7 +4,7 @@
 	<div class="col-lg-8 col-md-8">
 		<div class="d-md-flex mb-3">
 			<h1 class="d-inline align-middle me-3">
-				{if $keyword && $users_count>0}
+				{if isset($keyword) && $users_count>0}
 					{$btr->global_users|escape} - {$users_count}
 				{elseif $users_count>0}
 					{$btr->global_users|escape} - {$users_count}
@@ -23,7 +23,7 @@
 		<form class="search mb-3" method="get">
 			<input type="hidden" name="module" value="UsersAdmin">
 			<div class="input-group">
-				<input name="keyword" class="form-control" placeholder="{$btr->users_search|escape}" type="text" value="{$keyword|escape}">
+				<input name="keyword" class="form-control" placeholder="{$btr->users_search|escape}" type="text" value="{if isset($keyword)}{$keyword|escape}{/if}">
 				<button class="btn btn-primary" type="submit"><i class="align-middle mt-n1" data-feather="search"></i></button>
 			</div>
 		</form>
@@ -56,9 +56,11 @@
 						<div class="col-md-3 col-lg-3 col-sm-12 mb-3">
 							<select class="selectpicker" onchange="location = this.value;">
 								<option value="{url group_id=null}">{$btr->global_filter|escape}</option>
-								{foreach $groups as $g}
-									<option value="{url group_id=$g->id}" {if $group->id == $g->id}selected{/if}>{$g->name|escape}</option>
-								{/foreach}
+								{if isset($groups)}
+									{foreach $groups as $g}
+										<option value="{url group_id=$g->id}" {if isset($group->id) && $group->id == $g->id}selected{/if}>{$g->name|escape}</option>
+									{/foreach}
+								{/if}
 							</select>
 						</div>
 					</div>
@@ -79,15 +81,15 @@
 								</div>
 								<div class="turbo-list-heading turbo-list-users-name">
 									<span>{$btr->global_name|escape}</span>
-									<a href="{url sort=name}" {if $sort == 'name'}class="active" {/if}>{include file='svg_icon.tpl' svgId='sorts'}</a>
+									<a href="{url sort=name}" {if $sort == 'name'}class="active"{/if}>{include file='svg_icon.tpl' svgId='sorts'}</a>
 								</div>
 								<div class="turbo-list-heading turbo-list-users-email">
 									<span>Email</span>
-									<a href="{url sort=email}" {if $sort == 'email'}class="active" {/if}>{include file='svg_icon.tpl' svgId='sorts'}</a>
+									<a href="{url sort=email}" {if $sort == 'email'}class="active"{/if}>{include file='svg_icon.tpl' svgId='sorts'}</a>
 								</div>
 								<div class="turbo-list-heading turbo-list-users-date">
 									<span>{$btr->global_registration_date|escape}</span>
-									<a href="{url sort=date}" {if $sort == 'date'}class="active" {/if}>{include file='svg_icon.tpl' svgId='sorts'}</a>
+									<a href="{url sort=date}" {if $sort == 'date'}class="active"{/if}>{include file='svg_icon.tpl' svgId='sorts'}</a>
 								</div>
 								<div class="turbo-list-heading turbo-list-users-group">{$btr->global_group|escape}</div>
 								<div class="turbo-list-heading turbo-list-count">{$btr->users_orders|escape}</div>
@@ -117,7 +119,7 @@
 												{$user->created|date} | {$user->created|time}
 											</div>
 											<div class="turbo-list-boding turbo-list-users-group">
-												{if $groups[$user->group_id]}
+												{if isset($groups[$user->group_id])}
 													{$groups[$user->group_id]->name|escape}
 												{else}
 													—
@@ -161,7 +163,7 @@
 									</div>
 									<div id="move_to" class="turbo-list-option hidden js-hide-block">
 										<select name="move_group" class="selectpicker">
-											{if $groups}
+											{if isset($groups)}
 												{foreach $groups as $group}
 													<option value="{$group->id}">{$group->name|escape}</option>
 												{/foreach}
@@ -194,9 +196,9 @@
 {javascript minify=true}
 
 <script>
-	var group_id='{$group_id|escape}';
-	var keyword='{$keyword|escape}';
-	var sort='{$sort|escape}';
+	var group_id='{if isset($group_id)}{$group_id|escape}{/if}';
+	var keyword='{if isset($keyword)}{$keyword|escape}{/if}';
+	var sort='{if isset($sort)}{$sort|escape}{/if}';
 </script>
 
 {literal}
@@ -210,11 +212,10 @@
 				}
 			});
 
-			// On document load
 			$(document).on('click', '.feather-file-text', function() {
 				Piecon.setOptions({fallback: 'force'});
 				Piecon.setProgress(0);
-				var progress_item = $("#progressbar"); //specify an element selector with animation
+				var progress_item = $("#progressbar");
 				$(".progress").show();
 				do_export('', progress_item);
 			});

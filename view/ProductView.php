@@ -1,273 +1,355 @@
 <?php
 
-require_once('View.php');
+require_once 'View.php';
 
 class ProductView extends View
 {
 	function fetch()
 	{
-		$product_url = $this->request->get('product_url', 'string');
 
-		if (empty($product_url))
+		$productUrl = $this->request->get('product_url', 'string');
+
+		if (empty($productUrl)) {
 			return false;
+		}
 
-		// Select a product from the database
-		$product = $this->products->get_product((string)$product_url);
-		if (empty($product) || (!$product->visible && empty($_SESSION['admin'])))
+		$product = $this->products->getProduct((string) $productUrl);
+
+		if (empty($product) || (!$product->visible && empty($_SESSION['admin']))) {
 			return false;
+		}
 
-		// Last-Modified
-		$LastModified_unix = strtotime($product->last_modified); // time when the page was last modified
-		$LastModified = gmdate("D, d M Y H:i:s \G\M\T", $LastModified_unix);
-		$IfModifiedSince = false;
-		if (isset($_ENV['HTTP_IF_MODIFIED_SINCE']))
-			$IfModifiedSince = strtotime(substr($_ENV['HTTP_IF_MODIFIED_SINCE'], 5));
-		if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']))
-			$IfModifiedSince = strtotime(substr($_SERVER['HTTP_IF_MODIFIED_SINCE'], 5));
-		if ($IfModifiedSince && $IfModifiedSince >= $LastModified_unix) {
+		$lastModifiedUnix = strtotime($product->last_modified);
+		$lastModified = gmdate("D, d M Y H:i:s \G\M\T", $lastModifiedUnix);
+		$ifModifiedSince = false;
+
+		if (isset($_ENV['HTTP_IF_MODIFIED_SINCE'])) {
+			$ifModifiedSince = strtotime(substr($_ENV['HTTP_IF_MODIFIED_SINCE'], 5));
+		}
+
+		if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
+			$ifModifiedSince = strtotime(substr($_SERVER['HTTP_IF_MODIFIED_SINCE'], 5));
+		}
+
+		if ($ifModifiedSince && $ifModifiedSince >= $lastModifiedUnix) {
 			header($_SERVER['SERVER_PROTOCOL'] . ' 304 Not Modified');
 			exit;
 		}
-		header('Last-Modified: ' . $LastModified);
 
-		$product->images = $this->products->get_images(array('product_id' => $product->id));
+		header('Last-Modified: ' . $lastModified);
+
+		$product->images = $this->products->getImages(['product_id' => $product->id]);
 		$product->image = &$product->images[0];
 
-		$variants = array();
-		$colors = array();
-		$image_ids = array();
-		foreach ($this->variants->get_variants(array('product_id' => $product->id, 'in_stock' => true)) as $v) {
+		$variants = [];
+		$colors = [];
+		$imageIds = [];
+
+		foreach ($this->variants->getVariants(['product_id' => $product->id]) as $v) {
 			$variants[$v->id] = $v;
 			$colors[$v->color]['id'] = $v->id;
 			$colors[$v->color]['code'] = $v->color_code;
-			$image_ids[$v->color] = $v->images_ids;
+			$imageIds[$v->color] = $v->images_ids;
 		}
 
 		$product->variants = $variants;
 		$product->colors = $colors;
-		$product->image_ids = $image_ids;
+		$product->imageIds = $imageIds;
 
-		// Default option
-		if (($v_id = $this->request->get('variant', 'integer')) > 0 && isset($variants[$v_id]))
-			$product->variant = $variants[$v_id];
-		else
+		if (($variantId = $this->request->get('variant', 'integer')) > 0 && isset($variants[$variantId])) {
+			$product->variant = $variants[$variantId];
+		} else {
 			$product->variant = reset($variants);
+		}
 
-		if ($product_values = $this->features->get_product_options(array('product_id' => $product->id))) {
-			foreach ($product_values as $pv) {
+		if ($productValues = $this->features->getProductOptions(['product_id' => $product->id])) {
+
+			foreach ($productValues as $pv) {
 				if (!isset($product->features[$pv->feature_id])) {
 					$product->features[$pv->feature_id] = $pv;
 				}
+
 				$product->features[$pv->feature_id]->values[] = $pv;
 			}
 		}
 
 		if (!empty($product->features)) {
 			foreach ($product->features as &$f) {
-				$feature = $this->features->get_feature(intval($f->feature_id));
+				$feature = $this->features->getFeature((int) $f->feature_id);
 				$f->is_color = $feature->is_color;
+				$f->is_size = $feature->is_size;
 				$f->in_filter = $feature->in_filter;
 				$f->url_in_product = $feature->url_in_product;
 				$f->url = $feature->url;
 			}
 		}
 
-		// Autocomplete name for comment form
-		if (!empty($this->user))
+		if (!empty($this->user)) {
 			$this->design->assign('comment_name', $this->user->name);
+		}
 
-		// Accept comment
-		if ($this->request->method('post') && $this->request->post('comment')) {
-			$comment = new stdClass;
+		$this->design->assign('comment_rating', 5);
+
+		if ($this->request->isMethod('post') && $this->request->post('comment')) {
+			$comment = new stdClass();
+			
 			$comment->name = $this->request->post('name');
 			$comment->text = $this->request->post('text');
-			$captcha_code =  $this->request->post('captcha_code', 'string');
+			$comment->rating = $this->request->post('rating', 'integer');
+			$captchaCode =  $this->request->post('captcha_code', 'string');
+			$comment->parent_id = $this->request->post('parent_id');
+			$comment->admin = $this->request->post('admin');
 
-			if ($this->settings->comments_tree_products == "on") {
-				$comment->parent_id = $this->request->post('parent_id');
-				$comment->admin = $this->request->post('admin');
-			}
-
-			// Pass the comment back to the template - in case of an error, you will need to fill out the form
 			$this->design->assign('comment_text', $comment->text);
 			$this->design->assign('comment_name', $comment->name);
+			$this->design->assign('comment_rating', $comment->rating);
+			$this->design->assign('parent_id', $comment->parent_id);
 
-			if ($this->settings->comments_tree_products == "on") {
-				$this->design->assign('parent_id', $comment->parent_id);
-			}
-
-			// Checking the captcha and filling out the form
-			if ($this->settings->captcha_product && ($_SESSION['captcha_product'] != $captcha_code || empty($captcha_code))) {
+			if ($this->settings->captcha_product && ($_SESSION['captcha_product'] != $captchaCode || empty($captchaCode))) {
 				$this->design->assign('error', 'captcha');
 			} elseif (empty($comment->name)) {
 				$this->design->assign('error', 'empty_name');
 			} elseif (empty($comment->text)) {
 				$this->design->assign('error', 'empty_comment');
 			} else {
-				// Create a comment
 				$comment->object_id = $product->id;
-				$comment->type      = 'product';
-				$comment->ip        = $_SERVER['REMOTE_ADDR'];
+				$comment->type = 'product';
+				$comment->ip = $_SERVER['REMOTE_ADDR'];
 
-				// If there were approved comments from the current ip, approve immediately
 				$this->db->query("SELECT 1 FROM __comments WHERE approved=1 AND ip=? LIMIT 1", $comment->ip);
-				if ($this->db->num_rows() > 0)
+
+				if ($this->db->numRows() > 0) {
 					$comment->approved = 1;
+				}
 
-				// Add a comment to the database
-				$comment_id = $this->comments->add_comment($comment);
+				$commentId = $this->comments->addComment($comment);
+				$this->notify->emailCommentAdmin($commentId);
 
-				// Send email
-				$this->notify->email_comment_admin($comment_id);
-
-				// Let's clean up the saved captcha, otherwise you can disable the download of images and post the old one 
 				unset($_SESSION['captcha_code']);
-				header('location: ' . $_SERVER['REQUEST_URI'] . '#comment_' . $comment_id);
+				header('location: ' . $_SERVER['REQUEST_URI'] . '#comment_' . $commentId);
 			}
 		}
 
-		if ($this->settings->comments_tree_products == "on") {
-			$filter = array();
-			$filter['type'] = 'product';
-			$filter['object_id'] = $product->id;
-			$filter['approved'] = 1;
-			$filter['ip'] = $_SERVER['REMOTE_ADDR'];
+		$itemsPerPage = $this->settings->comments_num;
 
-			// Sorting comments, save in session so that the current sorting remains for the entire site
-			if ($sort = $this->request->get('sort', 'string'))
-				$_SESSION['sort'] = $sort;
-			if (!empty($_SESSION['sort']))
-				$filter['sort'] = $_SESSION['sort'];
-			else
-				$filter['sort'] = 'rate';
-			$this->design->assign('sort', $filter['sort']);
+		$filter = [
+			'approved' => 1,
+			'type' => 'product',
+			'has_parent' => false,
+			'object_id' => $product->id,
+			'ip' => $_SERVER['REMOTE_ADDR']
+		];
 
-			// Read the total number of comments to calculate pages          
-			$comments_count = $this->comments->count_comments($filter);
+		if ($sort = $this->request->get('sort', 'string')) {
+			$_SESSION['sort'] = $sort;
+		}
 
-			// Tree-like product reviews
-			$comments = $this->comments->get_comments_tree($filter);
-			$this->design->assign('comments_count', $comments_count);
+		if (!empty($_SESSION['sort'])) {
+			$filter['sort'] = $_SESSION['sort'];
 		} else {
-
-			// Product reviews
-			$comments = $this->comments->get_comments(array('type' => 'product', 'object_id' => $product->id, 'approved' => 1, 'ip' => $_SERVER['REMOTE_ADDR']));
+			$filter['sort'] = 'rate';
 		}
 
-		// Related products
-		$related_ids = array();
-		$related_products = array();
-		foreach ($this->products->get_related_products($product->id) as $p) {
-			$related_ids[] = $p->related_id;
-			$related_products[$p->related_id] = null;
-		}
-		if (!empty($related_ids)) {
-			foreach ($this->products->get_products(array('id' => $related_ids, 'in_stock' => 1, 'visible' => 1)) as $p)
-				$related_products[$p->id] = $p;
+		$this->design->assign('sort', $filter['sort']);
+		$currentPage = $this->request->get('page', 'integer');
+		$currentPage = max(1, $currentPage);
+		$this->design->assign('current_page_num', $currentPage);
+		$commentsCount = $this->comments->countComments($filter);
 
-			$related_products_images = $this->products->get_images(array('product_id' => array_keys($related_products)));
-			foreach ($related_products_images as $related_product_image)
-				if (isset($related_products[$related_product_image->product_id]))
-					$related_products[$related_product_image->product_id]->images[] = $related_product_image;
-			$related_products_variants = $this->variants->get_variants(array('product_id' => array_keys($related_products), 'in_stock' => 1));
-			foreach ($related_products_variants as $related_product_variant) {
-				if (isset($related_products[$related_product_variant->product_id])) {
-					$related_products[$related_product_variant->product_id]->variants[] = $related_product_variant;
+		if ($this->request->get('page') == 'all') {
+			$itemsPerPage = $commentsCount;
+		}
+
+		$pagesNum = ceil($commentsCount / $itemsPerPage);
+		$this->design->assign('total_pages_num', $pagesNum);
+
+		$filter['page'] = $currentPage;
+		$filter['limit'] = $itemsPerPage;
+
+		$comments = $this->comments->getComments($filter);
+
+		$children = [];
+
+		foreach ($this->comments->getComments() as $c) {
+			$children[$c->parent_id][] = $c;
+		}
+
+		$this->design->assign('comments', $comments);
+		$this->design->assign('children', $children);
+		$this->design->assign('comments_count', $commentsCount);
+
+		$this->db->query("SELECT SUM(rating)/COUNT(id) AS ratings FROM __comments WHERE id IN (SELECT id FROM __comments WHERE type='product' AND object_id = $product->id AND approved=1 AND admin=0 AND rating > 0)");
+		$this->design->assign('ratings', floatval($this->db->result('ratings')));
+
+		$relatedIds = [];
+		$relatedProducts = [];
+		$recommendedIds = [];
+		$recommendedProducts = [];
+
+		$productIds = ['id' => $product->id, 'visible' => 1];
+		$relatedProductsArray = $this->products->getRelatedProducts([$product->id]);
+		$recommendedProductsArray = $this->products->getRecommendedProducts([$product->id]);
+
+		foreach ($relatedProductsArray as $relatedProduct) {
+			$relatedIds[] = $relatedProduct->related_id;
+			$relatedProducts[$relatedProduct->related_id] = null;
+		}
+
+		foreach ($recommendedProductsArray as $recommendedProduct) {
+			$recommendedIds[] = $recommendedProduct->recommended_id;
+			$recommendedProducts[$recommendedProduct->recommended_id] = null;
+		}
+
+		if (!empty($relatedIds)) {
+			$relatedProductsArray = $this->products->getProducts(['id' => $relatedIds, 'visible' => 1]);
+
+			foreach ($relatedProductsArray as $relatedProduct) {
+				$relatedProducts[$relatedProduct->id] = $relatedProduct;
+			}
+
+			$relatedProductsImages = $this->products->getImages(['product_id' => array_keys($relatedProducts)]);
+
+			foreach ($relatedProductsImages as $relatedProductImage) {
+				if (isset($relatedProducts[$relatedProductImage->product_id])) {
+					$relatedProducts[$relatedProductImage->product_id]->images[] = $relatedProductImage;
 				}
 			}
-			foreach ($related_products as $id => $r) {
-				if (is_object($r)) {
-					$r->image = &$r->images[0];
-					$r->variant = &$r->variants[0];
+
+			$relatedProductsVariants = $this->variants->getVariants(['product_id' => array_keys($relatedProducts)]);
+
+			foreach ($relatedProductsVariants as $relatedProductVariant) {
+				if (isset($relatedProducts[$relatedProductVariant->product_id])) {
+					$relatedProducts[$relatedProductVariant->product_id]->variants[] = $relatedProductVariant;
+				}
+			}
+
+			foreach ($relatedProducts as $id => $relatedProduct) {
+				if (!is_object($relatedProduct)) {
+					unset($relatedProducts[$id]);
 				} else {
-					unset($related_products[$id]);
+					$relatedProduct->image = &$relatedProduct->images[0];
+					$relatedProduct->variant = &$relatedProduct->variants[0];
 				}
 			}
-			$this->design->assign('related_products', $related_products);
 		}
 
-		// Files
-		$files = $this->files->get_files(array('object_id' => $product->id, 'type' => 'product'));
+		if (!empty($recommendedIds)) {
+			$recommendedProductsArray = $this->products->getProducts(['id' => $recommendedIds, 'visible' => 1]);
+
+			foreach ($recommendedProductsArray as $recommendedProduct) {
+				$recommendedProducts[$recommendedProduct->id] = $recommendedProduct;
+			}
+
+			$recommendedProductsImages = $this->products->getImages(['product_id' => array_keys($recommendedProducts)]);
+
+			foreach ($recommendedProductsImages as $recommendedProductImage) {
+				if (isset($recommendedProducts[$recommendedProductImage->product_id])) {
+					$recommendedProducts[$recommendedProductImage->product_id]->images[] = $recommendedProductImage;
+				}
+			}
+
+			$recommendedProductsVariants = $this->variants->getVariants(['product_id' => array_keys($recommendedProducts)]);
+
+			foreach ($recommendedProductsVariants as $recommendedProductVariant) {
+				if (isset($recommendedProducts[$recommendedProductVariant->product_id])) {
+					$recommendedProducts[$recommendedProductVariant->product_id]->variants[] = $recommendedProductVariant;
+				}
+			}
+
+			foreach ($recommendedProducts as $id => $recommendedProduct) {
+				if (!is_object($recommendedProduct)) {
+					unset($recommendedProducts[$id]);
+				} else {
+					$recommendedProduct->image = &$recommendedProduct->images[0];
+					$recommendedProduct->variant = &$recommendedProduct->variants[0];
+				}
+			}
+		}
+
+		$this->design->assign('related_products', $relatedProducts);
+		$this->design->assign('recommended_products', $recommendedProducts);
+
+		$files = $this->files->getFiles(['object_id' => $product->id, 'type' => 'product']);
 		$this->design->assign('cms_files', $files);
 
-		// Video
-		$product->videos = $this->products->get_videos(array('product_id' => $product->id));
+		$product->videos = $this->products->getVideos(['product_id' => $product->id]);
 
-		// Neighbor products
-		$this->design->assign('next_product', $this->products->get_next_product($product->id));
-		$this->design->assign('prev_product', $this->products->get_prev_product($product->id));
+		$this->design->assign('next_product', $this->products->getNextProduct($product->id));
+		$this->design->assign('prev_product', $this->products->getPrevProduct($product->id));
 
-		// Promotional item timer
 		if (!empty($product->sale_to) && strtotime($product->sale_to) <= time()) {
 			$product->sale_to = null;
+
 			if ($product->variant && $product->variant->compare_price) {
 				$product->variant->price = $product->variant->compare_price;
 				$product->variant->compare_price = 0;
 				$v = new stdClass();
 				$v->price = $product->variant->price;
 				$v->compare_price = 0;
-				$this->variants->update_variant($product->variant->id, $v);
+				$this->variants->updateVariant($product->variant->id, $v);
 			}
 		}
 
-		// And pass it to the template
 		$this->design->assign('product', $product);
 		$this->design->assign('comments', $comments);
 
-		// Product category and brand
-		$product->categories = $this->categories->get_categories(array('product_id' => $product->id));
-		$this->design->assign('brand', $this->brands->get_brand(intval($product->brand_id)));
-		$this->design->assign('category', reset($product->categories));
+		$productCategories = $this->categories->getCategories(['product_id' => $product->id]);
+		$category = reset($productCategories);
+		$this->design->assign('brand', $this->brands->getBrand((int) $product->brand_id));
+		$this->design->assign('category', reset($productCategories));
 
-		// Adding to the history of viewing products
-		$max_visited_products = 100; // Maximum number of stored items in history
-		$expire = time() + 60 * 60 * 24 * 30; // Lifetime - 30 days
+		$maxVisitedProducts = 100;
+		$expire = time() + 60 * 60 * 24 * 30;
+		$browsedProducts = [];
+
 		if (!empty($_COOKIE['browsed_products'])) {
-			$browsed_products = explode(',', $_COOKIE['browsed_products']);
-			// Delete the current product if it was
-			if (($exists = array_search($product->id, $browsed_products)) !== false)
-				unset($browsed_products[$exists]);
+			$browsedProducts = explode(',', $_COOKIE['browsed_products']);
+
+			if (($exists = array_search($product->id, $browsedProducts)) !== false) {
+				unset($browsedProducts[$exists]);
+			}
 		}
-		// Add the current item
-		$browsed_products[] = $product->id;
-		$cookie_val = implode(',', array_slice($browsed_products, -$max_visited_products, $max_visited_products));
-		setcookie("browsed_products", $cookie_val, $expire, "/");
+
+		$browsedProducts[] = $product->id;
+		$cookieVal = implode(',', array_slice($browsedProducts, -$maxVisitedProducts, $maxVisitedProducts));
+		setcookie('browsed_products', $cookieVal, $expire, '/');
 
 		$this->design->assign('meta_title', $product->meta_title);
 		$this->design->assign('meta_keywords', $product->meta_keywords);
 		$this->design->assign('meta_description', $product->meta_description);
 
-		$category = reset($product->categories);
-		if ($product->brand_id)
-			$brand = $this->brands->get_brand(intval($product->brand_id));
+		if ($product->brand_id) {
+			$brand = $this->brands->getBrand((int) $product->brand_id);
+		}
 
-		$auto_meta = new StdClass;
+		$page = null;
+		$autoMeta = new stdClass();
 
-		$auto_meta->title       = $this->seo->product_meta_title       ? $this->seo->product_meta_title       : '';
-		$auto_meta->keywords    = $this->seo->product_meta_keywords    ? $this->seo->product_meta_keywords    : '';
-		$auto_meta->description = $this->seo->product_meta_description ? $this->seo->product_meta_description : '';
+		$autoMeta->title = $this->seo->product_meta_title ?: '';
+		$autoMeta->keywords = $this->seo->product_meta_keywords ?: '';
+		$autoMeta->description = $this->seo->product_meta_description ?: '';
 
-		$auto_meta_parts = @array(
-			'{product}' => ($product ? $product->name : ''),
-			'{category}' => ($category ? $category->name : ''),
-			'{brand}' => ($brand ? $brand->name : ''),
-			'{page}' => ($page ? $page->header : ''),
-			'{price}' => (($product->variant && $product->variant->price != null) ? $this->money->convert($product->variant->price) . ' ' . $this->currency->sign : ''),
-			'{site_url}' => ($this->seo->am_url ? $this->seo->am_url : ''),
-			'{site_name}' => ($this->seo->am_name ? $this->seo->am_name : ''),
-			'{site_phone}' => ($this->seo->am_phone ? $this->seo->am_phone : ''),
-			'{site_email}' => ($this->seo->am_email ? $this->seo->am_email : ''),
-		);
+		$autoMetaParts = [
+			'{product}' => $product ? $product->name : '',
+			'{category}' => $category ? $category->name : '',
+			'{brand}' => isset($brand, $brand->name) ? $brand->name : '',
+			'{page}' => $page ? $page->header : '',
+			'{price}' => ($product->variant && $product->variant->price != null) ? $this->money->convert($product->variant->price) . ' ' . $this->currency->sign : '',
+			'{site_url}' => $this->seo->am_url ?: '',
+			'{site_name}' => $this->seo->am_name ?: '',
+			'{site_phone}' => $this->seo->am_phone ?: '',
+			'{site_email}' => $this->seo->am_email ?: '',
+		];
 
-		$auto_meta->title = strtr($auto_meta->title, $auto_meta_parts);
-		$auto_meta->keywords = strtr($auto_meta->keywords, $auto_meta_parts);
-		$auto_meta->description = strtr($auto_meta->description, $auto_meta_parts);
+		$autoMeta->title = strtr($autoMeta->title, $autoMetaParts);
+		$autoMeta->keywords = strtr($autoMeta->keywords, $autoMetaParts);
+		$autoMeta->description = strtr($autoMeta->description, $autoMetaParts);
 
-		$auto_meta->title = preg_replace("/\{.*\}/", '', $auto_meta->title);
-		$auto_meta->keywords = preg_replace("/\{.*\}/", '', $auto_meta->keywords);
-		$auto_meta->description = preg_replace("/\{.*\}/", '', $auto_meta->description);
+		$autoMeta->title = preg_replace('/\{.*\}/', '', $autoMeta->title);
+		$autoMeta->keywords = preg_replace('/\{.*\}/', '', $autoMeta->keywords);
+		$autoMeta->description = preg_replace('/\{.*\}/', '', $autoMeta->description);
 
-		$this->design->assign('auto_meta', $auto_meta);
+		$this->design->assign('auto_meta', $autoMeta);
 
 		return $this->design->fetch('product.tpl');
 	}

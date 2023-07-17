@@ -1,172 +1,229 @@
 <?php
 
-require_once('Turbo.php');
+require_once 'Turbo.php';
 
 class Pages extends Turbo
 {
 
-	/*
-	*
-	* The function returns a page by its id or url (depending on the type)
-	* @param $id id or url of the page
-	*
-	*/
-	public function get_page($id)
+	/**
+	 * Get page
+	 */
+	public function getPage($id)
 	{
-		if (gettype($id) == 'string')
-			$where = $this->db->placehold(' WHERE url=? ', $id);
-		else
-			$where = $this->db->placehold(' WHERE id=? ', intval($id));
+		if (is_string($id)) {
+			$where = $this->db->placehold('WHERE url=?', $id);
+		} else {
+			$where = $this->db->placehold('WHERE id=?', (int) $id);
+		}
 
-		$lang_sql = $this->languages->get_query(array('object' => 'page'));
+		$langSql = $this->languages->getQuery(['object' => 'page']);
 
-		$query = "SELECT p.id, p.url, p.header, p.name, p.meta_title, p.meta_description, p.meta_keywords, p.body, p.menu_id, p.parent_id, p.position, p.visible, p.last_modified, $lang_sql->fields
-		          FROM __pages p $lang_sql->join $where LIMIT 1";
+		$query = $this->db->placehold(
+			"SELECT p.id,
+					p.url,
+					p.header,
+					p.name,
+					p.meta_title,
+					p.meta_description,
+					p.meta_keywords,
+					p.body,
+					p.menu_id,
+					p.parent_id,
+					p.position,
+					p.visible,
+					p.last_modified,
+					$langSql->fields
+			 FROM __pages p 
+			 $langSql->join 
+			 $where 
+			 LIMIT 1"
+		);
 
 		$this->db->query($query);
 		return $this->db->result();
 	}
 
-	/*
-	*
-	* The function returns an array of pages that match the filter
-	* @param $filter
-	*
-	*/
-	public function get_pages($filter = array())
+	/**
+	 * Get pages
+	 */
+	public function getPages($filter = [])
 	{
-		$menu_filter = '';
-		$visible_filter = '';
-		$keyword_filter = '';
-		$pages = array();
+		$limit = 1000;
+		$page = 1;
 
-		$lang_id  = $this->languages->lang_id();
-		$px = ($lang_id ? 'l' : 'p');
+		$menuFilter = '';
+		$visibleFilter = '';
+		$keywordFilter = '';
+		$pages = [];
 
-		if (isset($filter['menu_id']))
-			$menu_filter = $this->db->placehold('AND menu_id in (?@)', (array)$filter['menu_id']);
+		$langId  = $this->languages->langId();
+		$px = ($langId ? 'l' : 'p');
 
-		if (isset($filter['visible']))
-			$visible_filter = $this->db->placehold('AND visible = ?', intval($filter['visible']));
+		if (isset($filter['limit'])) {
+			$limit = max(1, (int) $filter['limit']);
+		}
 
-		$lang_sql = $this->languages->get_query(array('object' => 'page'));
+		if (isset($filter['page'])) {
+			$page = max(1, (int) $filter['page']);
+		}
+
+		if (isset($filter['menu_id'])) {
+			$menuFilter = $this->db->placehold('AND menu_id IN(?@)', (array) $filter['menu_id']);
+		}
+
+		if (isset($filter['visible'])) {
+			$visibleFilter = $this->db->placehold('AND visible=?', (int) $filter['visible']);
+		}
+
+		$langSql = $this->languages->getQuery(['object' => 'page']);
 
 		if (isset($filter['keyword'])) {
 			$keywords = explode(' ', $filter['keyword']);
-			foreach ($keywords as $keyword)
-				$keyword_filter .= $this->db->placehold('AND (' . $px . '.name LIKE "%' . $this->db->escape(trim($keyword)) . '%" OR ' . $px . '.meta_keywords LIKE "%' . $this->db->escape(trim($keyword)) . '%") ');
+			foreach ($keywords as $keyword) {
+				$keywordFilter .= $this->db->placehold('AND (' . $px . '.name LIKE "%' . $this->db->escape(trim($keyword)) . '%" OR ' . $px . '.meta_keywords LIKE "%' . $this->db->escape(trim($keyword)) . '%") ');
+			}
 		}
 
-		$query = "SELECT p.id, p.url, p.header, p.name, p.meta_title, p.meta_description, p.meta_keywords, p.body, p.menu_id, p.position, p.visible, p.last_modified, $lang_sql->fields
-		          FROM __pages p $lang_sql->join WHERE 1 $menu_filter $keyword_filter $visible_filter ORDER BY position";
+		$sqlLimit = $this->db->placehold('LIMIT ?, ?', ($page - 1) * $limit, $limit);
+
+		$query = $this->db->placehold(
+			"SELECT 
+				p.id, 
+				p.url, 
+				p.header, 
+				p.name, 
+				p.meta_title, 
+				p.meta_description, 
+				p.meta_keywords, 
+				p.body, 
+				p.menu_id, 
+				p.position, 
+				p.visible, 
+				p.last_modified, 
+				$langSql->fields
+			FROM __pages p 
+			$langSql->join 
+			WHERE 1 
+				$menuFilter 
+				$keywordFilter 
+				$visibleFilter 
+			ORDER BY position 
+			$sqlLimit"
+		);
 
 		$this->db->query($query);
 
-		foreach ($this->db->results() as $page)
+		foreach ($this->db->results() as $page) {
 			$pages[$page->id] = $page;
+		}
 
 		return $pages;
 	}
 
-	/*
-	*
-	* Add page
-	*
-	*/
-	public function add_page($page)
+	/**
+	 * Add page
+	 */
+	public function addPage($page)
 	{
-		$page = (object)$page;
+		$page = (object) $page;
 
-		// Check if there is multilingualism and pick up descriptions for translation
-		$result = $this->languages->get_description($page, 'page');
-		if (!empty($result->data)) $page = $result->data;
+		$result = $this->languages->getDescription($page, 'page');
+
+		if (!empty($result->data)) {
+			$page = $result->data;
+		}
 
 		$query = $this->db->placehold('INSERT INTO __pages SET ?%', $page);
-		if (!$this->db->query($query))
+
+		if (!$this->db->query($query)) {
 			return false;
+		}
 
-		$id = $this->db->insert_id();
+		$id = $this->db->insertId();
 
-		// If there is a description to translate. Specify the language to update
 		if (!empty($result->description)) {
-			$this->languages->action_description($id, $result->description, 'page');
+			$this->languages->actionDescription($id, $result->description, 'page');
 		}
 
 		$this->db->query("UPDATE __pages SET position=id WHERE id=?", $id);
 		return $id;
 	}
 
-	/*
-	*
-	* Update page
-	*
-	*/
-	public function update_page($id, $page)
+	/**
+	 * Update page
+	 */
+	public function updatePage($id, $page)
 	{
+		$page = (object) $page;
 
-		$page = (object)$page;
+		$result = $this->languages->getDescription($page, 'page');
 
-		// Check if there is multilingualism and pick up descriptions for translation
-		$result = $this->languages->get_description($page, 'page');
-		if (!empty($result->data)) $page = $result->data;
+		if (!empty($result->data)) {
+			$page = $result->data;
+		}
 
-		$query = $this->db->placehold('UPDATE __pages SET `last_modified`=NOW(), ?% WHERE id in (?@)', $page, (array)$id);
-		if (!$this->db->query($query))
+		$query = $this->db->placehold('UPDATE __pages SET `last_modified`=NOW(), ?% WHERE id IN(?@)', $page, (array) $id);
+
+		if (!$this->db->query($query)) {
 			return false;
+		}
 
-		// If there is a description to translate. Specify the language to update
 		if (!empty($result->description)) {
-			$this->languages->action_description($id, $result->description, 'page', $this->languages->lang_id());
+			$this->languages->actionDescription($id, $result->description, 'page', $this->languages->langId());
 		}
 
 		return $id;
 	}
 
-	/*
-	*
-	* Delete page
-	*
-	*/
-	public function delete_page($id)
+	/**
+	 * Delete page
+	 */
+	public function deletePage($id)
 	{
 		if (!empty($id)) {
-			$query = $this->db->placehold("DELETE FROM __pages WHERE id=? LIMIT 1", intval($id));
-			if ($this->db->query($query))
-				$this->db->query("DELETE FROM __lang_pages WHERE page_id=?", intval($id));
-			return true;
+			$query = $this->db->placehold('DELETE FROM __pages WHERE id=? LIMIT 1', (int) $id);
+
+			if ($this->db->query($query)) {
+				$this->db->query('DELETE FROM __lang_pages WHERE page_id=?', (int) $id);
+				return true;
+			}
 		}
+
 		return false;
 	}
 
-	/*
-	*
-	* The function returns an array of menus
-	*
-	*/
-	public function get_menus()
+	public $menus = [];
+	public $menu;
+
+	/**
+	 * Get menus
+	 */
+	public function getMenus()
 	{
-		$menus = array();
-		$query = "SELECT * FROM __menu ORDER BY position";
+		$menus = [];
+
+		$query = $this->db->placehold("SELECT * FROM __menu ORDER BY position");
 		$this->db->query($query);
-		foreach ($this->db->results() as $menu)
+
+		foreach ($this->db->results() as $menu) {
 			$menus[$menu->id] = $menu;
+		}
+
 		return $menus;
 	}
 
-	/*
-	*
-	* Update menu list
-	*
-	*/
-	private function init_menu()
+	/**
+	 * Initialize menu
+	 */
+	private function initMenu()
 	{
-		$this->menus = array();
-		// Select from the menu base
-		$query = "SELECT id, name, position FROM __menu ORDER BY position";
+		$this->menus = [];
+
+		$query = $this->db->placehold("SELECT id, name, position FROM __menu ORDER BY position");
+
 		$this->db->query($query);
 
 		$results = $this->db->results();
-
 		foreach ($results as $c) {
 			$this->menus[$c->id] = $c;
 		}
@@ -174,123 +231,128 @@ class Pages extends Turbo
 		$this->menu = reset($this->menus);
 	}
 
-	/*
-	*
-	* Menu creation
-	*
-	*/
-	public function add_menu($menu)
+	/**
+	 * Add menu
+	 */
+	public function addMenu($menu)
 	{
 		$query = $this->db->placehold('INSERT INTO __menu SET ?%', $menu);
-		if (!$this->db->query($query))
-			return false;
 
-		$id = $this->db->insert_id();
+		if (!$this->db->query($query)) {
+			return false;
+		}
+
+		$id = $this->db->insertId();
+
 		$this->db->query("UPDATE __menu SET position=id WHERE id=?", $id);
-		$this->init_menu();
+		$this->initMenu();
+
 		return $id;
 	}
 
-	/*
-	*
-	* Update menu
-	*
-	*/
-	public function update_menu($id, $menu)
+	/**
+	 * Update menu
+	 */
+	public function updateMenu($id, $menu)
 	{
-		$query = $this->db->placehold('UPDATE __menu SET ?% WHERE id in (?@)', $menu, (array)$id);
-		if (!$this->db->query($query))
+		$query = $this->db->placehold('UPDATE __menu SET ?% WHERE id IN(?@)', $menu, (array) $id);
+
+		if (!$this->db->query($query)) {
 			return false;
-		$this->init_menu();
+		}
+
+		$this->initMenu();
+
 		return $id;
 	}
 
-	/*
-	*
-	* Delete menu
-	*
-	*/
-	public function delete_menu($id)
+	/**
+	 * Delete menu
+	 */
+	public function deleteMenu($id)
 	{
 		if (!empty($id)) {
-			$query = $this->db->placehold("DELETE FROM __menu WHERE id=? LIMIT 1", intval($id));
-			if ($this->db->query($query))
+			$query = $this->db->placehold("DELETE FROM __menu WHERE id=? LIMIT 1", (int) $id);
+
+			if ($this->db->query($query)) {
 				return true;
-			$this->init_menu();
+			}
+
+			$this->initMenu();
 		}
+
 		return false;
 	}
 
-	/*
-	*
-	* The function returns the menu by id
-	* @param $id
-	*
-	*/
-	public function get_menu($menu_id)
+	/**
+	 * Get menu
+	 */
+	public function getMenu($menuId)
 	{
-		$query = $this->db->placehold("SELECT * FROM __menu WHERE id=? LIMIT 1", intval($menu_id));
+		$query = $this->db->placehold("SELECT * FROM __menu WHERE id=? LIMIT 1", (int) $menuId);
 		$this->db->query($query);
+
 		return $this->db->result();
 	}
 
-	// List of menu pointers in the menu tree (key = menu id)
-	private $all_pages;
+	private $allPages;
+	private $pagesTree;
 
-	// Menu tree
-	private $pages_tree;
-
-	// The function returns the menu tree
-	public function get_pages_tree($filter = array())
+	/**
+	 * Get pages tree
+	 */
+	public function getPagesTree($filter = [])
 	{
-		//if(!isset($this->pages_tree))
-		unset($this->init_pages, $this->all_pages);
-		$this->init_pages($filter);
+		unset($this->initPages, $this->allPages);
+		$this->initPages($filter);
 
-		return $this->pages_tree;
+		return $this->pagesTree;
 	}
 
-	// Menu initialization, after which the menu will be selected from a local variable
-	private function init_pages($filter = array())
+	/**
+	 * Initialize pages
+	 */
+	private function initPages($filter = [])
 	{
-		$menu_id = '';
-		$is_visible = '';
-		//print_r($filter);
-		if (isset($filter['visible']) && isset($filter['menu_id'])) {
-			$query = $this->db->placehold('SELECT COUNT(*) FROM __pages WHERE id=? AND visible=1', intval($filter['menu_id']));
+		$menuId = '';
+		$isVisible = '';
+
+		if (isset($filter['visible'], $filter['menu_id'])) {
+			$query = $this->db->placehold('SELECT COUNT(*) FROM __pages WHERE id=? AND visible=1', (int) $filter['menu_id']);
 			$this->db->query($query);
-			if (!$this->db->result('COUNT(*)'))
+
+			if (!$this->db->result('COUNT(*)')) {
 				return false;
+			}
 		}
 
-		if (isset($filter['menu_id']))
-			$menu_id = $this->db->placehold(" AND menu_id=? ", intval($filter['menu_id']));
+		if (isset($filter['menu_id'])) {
+			$menuId = $this->db->placehold(" AND menu_id=? ", (int) $filter['menu_id']);
+		}
 
-		if (isset($filter['visible']))
-			$is_visible = ' AND visible =1 ';
+		if (isset($filter['visible'])) {
+			$isVisible = ' AND visible =1 ';
+		}
 
-		// Menu tree
 		$tree = new stdClass();
-		$tree->subpages = array();
+		$tree->subpages = [];
 
-		// Pointers to tree nodes
-		$pointers = array();
+		$pointers = [];
 		$pointers[0] = &$tree;
-		$pointers[0]->path = array();
+		$pointers[0]->path = [];
 		$pointers[0]->level = 0;
 
-		$lang_sql = $this->languages->get_query(array('object' => 'page'));
+		$langSql = $this->languages->getQuery(['object' => 'page']);
 
-		// Select all pages
-		$query = $this->db->placehold("SELECT *, $lang_sql->fields FROM __pages p $lang_sql->join WHERE 1 $menu_id $is_visible ORDER BY p.parent_id, p.position");
+		$query = $this->db->placehold("SELECT *, $langSql->fields FROM __pages p $langSql->join WHERE 1 $menuId $isVisible ORDER BY p.parent_id, p.position");
 
 		if ($this->settings->cached == 1 && empty($_SESSION['admin'])) {
 			if ($result = $this->cache->get($query)) {
-				$pages = $result; // return data from memcached
+				$pages = $result;
 			} else {
-				$this->db->query($query); // otherwise pull from the database
+				$this->db->query($query);
 				$result = $this->db->results();
-				$this->cache->set($query, $result); // put into cache
+				$this->cache->set($query, $result);
 				$pages = $result;
 			}
 		} else {
@@ -298,47 +360,47 @@ class Pages extends Turbo
 			$pages = $this->db->results();
 		}
 
-		$finish = false;
-		// We don't stop until the menus run out, or until none of the remaining ones have anywhere to stick
-		while (!empty($pages)  && !$finish) {
+		while (!empty($pages)) {
 			$flag = false;
-			// Loop through all selected menus
+
 			foreach ($pages as $k => $page) {
 				if (isset($pointers[$page->parent_id])) {
-					// Add the current menu to the menu tree (through the pointer)
 					$pointers[$page->id] = $pointers[$page->parent_id]->subpages[] = $page;
 
-					// Path to the current menu
 					$curr = $pointers[$page->id];
-					$pointers[$page->id]->path = array_merge((array)$pointers[$page->parent_id]->path, array($curr));
+					$pointers[$page->id]->path = array_merge((array) $pointers[$page->parent_id]->path, [$curr]);
 
-					// Menu nesting level
 					$pointers[$page->id]->level = 1 + $pointers[$page->parent_id]->level;
 
-					// Remove the used menu from the menu array
 					unset($pages[$k]);
 					$flag = true;
 				}
 			}
-			if (!$flag) $finish = true;
+
+			if (!$flag) {
+				break;
+			}
 		}
 
-		// For each menu id of all its children, find out
 		$ids = array_reverse(array_keys($pointers));
+
 		foreach ($ids as $id) {
 			if ($id > 0) {
 				$pointers[$id]->children[] = $id;
 
-				if (isset($pointers[$pointers[$id]->parent_id]->children))
+				if (isset($pointers[$pointers[$id]->parent_id]->children)) {
 					$pointers[$pointers[$id]->parent_id]->children = array_merge($pointers[$id]->children, $pointers[$pointers[$id]->parent_id]->children);
-				else
+				} else {
 					$pointers[$pointers[$id]->parent_id]->children = $pointers[$id]->children;
+				}
 			}
 		}
-		unset($pointers[0]);
-		unset($ids);
 
-		$this->pages_tree = $tree->subpages;
-		$this->all_pages = $pointers;
+		unset($pointers[0], $ids);
+
+		$this->pagesTree = $tree->subpages;
+		$this->allPages = $pointers;
+
+		return true;
 	}
 }

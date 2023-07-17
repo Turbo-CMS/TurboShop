@@ -1,67 +1,86 @@
 <?php
 
-require_once('Turbo.php');
+require_once 'Turbo.php';
 
 class Blog extends Turbo
 {
-	/*
-	*
-	* // For each category, we find out the id of all its children. The function returns a post by its id or url
-	* (depending on the argument type, int - id, string - url)
-	* @param $id id or post url
-	*
-	*/
-	public function get_post($id)
+	/**
+	 * Get post
+	 */
+	public function getPost($id)
 	{
-		if (is_int($id))
-			$where = $this->db->placehold(' WHERE b.id=? ', intval($id));
-		else
-			$where = $this->db->placehold(' WHERE b.url=? ', $id);
+		if (is_int($id)) {
+			$where = $this->db->placehold('WHERE b.id=?', (int) $id);
+		} else {
+			$where = $this->db->placehold('WHERE b.url=?', $id);
+		}
 
-		$lang_sql = $this->languages->get_query(array('object' => 'blog'));
+		$langSql = $this->languages->getQuery(['object' => 'blog']);
 
-		$query = $this->db->placehold("SELECT b.id, b.url, b.name, b.annotation, b.text, b.rate, b.views, b.meta_title,
-		                               b.meta_keywords, b.meta_description, b.visible, b.date, b.image, b.last_modified, $lang_sql->fields
-		                               FROM __blog b $lang_sql->join $where LIMIT 1");
-		if ($this->db->query($query))
+		$query = $this->db->placehold(
+			"SELECT 
+				b.id,
+				b.url,
+				b.name,
+				b.annotation,
+				b.text,
+				b.rate,
+				b.views,
+				b.meta_title,
+				b.meta_keywords,
+				b.meta_description,
+				b.visible,
+				b.date,
+				b.image,
+				b.last_modified,
+				$langSql->fields
+			FROM 
+				__blog b 
+				$langSql->join 
+				$where 
+			LIMIT 
+				1"
+		);
+
+		if ($this->db->query($query)) {
 			return $this->db->result();
-		else
+		} else {
 			return false;
+		}
 	}
 
-	/*
-	*
-	* The function returns an array of posts that match the filter
-	* @param $filter
-	*
-	*/
-	public function get_posts($filter = array())
+	/**
+	 * Get posts
+	 */
+	public function getPosts($filter = [])
 	{
-		// Default
 		$limit = 1000;
 		$page = 1;
-		$post_id_filter = '';
-		$visible_filter = '';
-		$keyword_filter = '';
-		$posts = array();
+		$postIdFilter = '';
+		$visibleFilter = '';
+		$keywordFilter = '';
 		$order = 'b.date DESC';
 
-		$lang_id  = $this->languages->lang_id();
-		$px = ($lang_id ? 'l' : 'b');
+		$langId = $this->languages->langId();
+		$px = ($langId ? 'l' : 'b');
 
-		if (isset($filter['limit']))
-			$limit = max(1, intval($filter['limit']));
+		if (isset($filter['limit'])) {
+			$limit = max(1, (int) $filter['limit']);
+		}
 
-		if (isset($filter['page']))
-			$page = max(1, intval($filter['page']));
+		if (isset($filter['page'])) {
+			$page = max(1, (int) $filter['page']);
+		}
 
-		if (!empty($filter['id']))
-			$post_id_filter = $this->db->placehold('AND b.id in(?@)', (array)$filter['id']);
+		if (!empty($filter['id'])) {
+			$postIdFilter = $this->db->placehold('AND b.id IN(?@)', (array) $filter['id']);
+		}
 
-		if (isset($filter['visible']))
-			$visible_filter = $this->db->placehold('AND b.visible = ?', intval($filter['visible']));
+		if (isset($filter['visible'])) {
+			$visibleFilter = $this->db->placehold('AND b.visible=?', (int) $filter['visible']);
+		}
 
-		if (!empty($filter['sort']))
+		if (!empty($filter['sort'])) {
 			switch ($filter['sort']) {
 				case 'date':
 					$order = 'b.date DESC';
@@ -70,30 +89,56 @@ class Blog extends Turbo
 					$order = 'b.rate DESC';
 					break;
 			}
+		}
 
 		if (isset($filter['keyword'])) {
 			$keywords = explode(' ', $filter['keyword']);
-			foreach ($keywords as $keyword)
-				$keyword_filter .= $this->db->placehold('AND (' . $px . '.name LIKE "%' . $this->db->escape(trim($keyword)) . '%" OR ' . $px . '.meta_keywords LIKE "%' . $this->db->escape(trim($keyword)) . '%") ');
+			foreach ($keywords as $keyword) {
+				$keywordFilter .= $this->db->placehold('AND (' . $px . '.name LIKE "%' . $this->db->escape(trim($keyword)) . '%" OR ' . $px . '.meta_keywords LIKE "%' . $this->db->escape(trim($keyword)) . '%") ');
+			}
 		}
 
-		$sql_limit = $this->db->placehold(' LIMIT ?, ? ', ($page - 1) * $limit, $limit);
+		$sqlLimit = $this->db->placehold('LIMIT ?, ?', ($page - 1) * $limit, $limit);
 
-		$lang_sql = $this->languages->get_query(array('object' => 'blog'));
+		$langSql = $this->languages->getQuery(['object' => 'blog']);
 
-		$query = $this->db->placehold("SELECT b.id, b.url, b.name, b.annotation, b.text, b.views, b.rate,
-		                                      b.meta_title, b.meta_keywords, b.meta_description, b.visible,
-		                                      b.date, b.image, b.last_modified, $lang_sql->fields
-		                                      FROM __blog b $lang_sql->join WHERE 1 $post_id_filter $visible_filter $keyword_filter
-		                                      ORDER BY $order $sql_limit");
+		$query = $this->db->placehold(
+			"SELECT
+				b.id,
+				b.url,
+				b.name,
+				b.annotation,
+				b.text,
+				b.views,
+				b.rate,
+				b.meta_title,
+				b.meta_keywords,
+				b.meta_description,
+				b.visible,
+				b.date,
+				b.image,
+				b.last_modified,
+				$langSql->fields
+			FROM
+				__blog b 
+				$langSql->join
+			WHERE
+				1
+				$postIdFilter
+				$visibleFilter
+				$keywordFilter
+			ORDER BY
+				$order
+				$sqlLimit"
+		);
 
 		if ($this->settings->cached == 1 && empty($_SESSION['admin'])) {
 			if ($result = $this->cache->get($query)) {
-				return $result; // return data from memcached
+				return $result;
 			} else {
-				$this->db->query($query); // otherwise pull from the database
+				$this->db->query($query);
 				$result = $this->db->results();
-				$this->cache->set($query, $result); // put into cache
+				$this->cache->set($query, $result);
 				return $result;
 			}
 		} else {
@@ -102,229 +147,249 @@ class Blog extends Turbo
 		}
 	}
 
-	/*
-	*
-	* The function calculates the number of posts that match the filter
-	* @param $filter
-	*
-	*/
-	public function count_posts($filter = array())
+	/**
+	 * Count posts
+	 */
+	public function countPosts($filter = [])
 	{
-		$post_id_filter = '';
-		$visible_filter = '';
-		$keyword_filter = '';
+		$postIdFilter = '';
+		$visibleFilter = '';
+		$keywordFilter = '';
 
-		if (!empty($filter['id']))
-			$post_id_filter = $this->db->placehold('AND b.id in(?@)', (array)$filter['id']);
+		if (!empty($filter['id'])) {
+			$postIdFilter = $this->db->placehold('AND b.id IN(?@)', (array) $filter['id']);
+		}
 
-		if (isset($filter['visible']))
-			$visible_filter = $this->db->placehold('AND b.visible = ?', intval($filter['visible']));
+		if (isset($filter['visible'])) {
+			$visibleFilter = $this->db->placehold('AND b.visible=?', (int) $filter['visible']);
+		}
 
 		if (isset($filter['keyword'])) {
 			$keywords = explode(' ', $filter['keyword']);
-			foreach ($keywords as $keyword)
-				$keyword_filter .= $this->db->placehold('AND (b.name LIKE "%' . $this->db->escape(trim($keyword)) . '%" OR b.meta_keywords LIKE "%' . $this->db->escape(trim($keyword)) . '%") ');
+			foreach ($keywords as $keyword) {
+				$keywordFilter .= $this->db->placehold('AND (b.name LIKE "%' . $this->db->escape(trim($keyword)) . '%" OR b.meta_keywords LIKE "%' . $this->db->escape(trim($keyword)) . '%") ');
+			}
 		}
 
-		$query = "SELECT COUNT(distinct b.id) as count
-		          FROM __blog b WHERE 1 $post_id_filter $visible_filter $keyword_filter";
+		$query = $this->db->placehold(
+			"SELECT COUNT(DISTINCT b.id) AS count
+			FROM __blog b
+			WHERE 1 $postIdFilter $visibleFilter $keywordFilter"
+		);
 
 		if ($this->settings->cached == 1 && empty($_SESSION['admin'])) {
 			if ($result = $this->cache->get($query)) {
-				return $result; // return data from memcached
+				return $result;
 			} else {
 				if ($this->db->query($query)) {
 					$result = $this->db->result('count');
-					$this->cache->set($query, $result); // put into cache
+					$this->cache->set($query, $result);
 					return $result;
-				} else
+				} else {
 					return false;
+				}
 			}
 		} else {
-			if ($this->db->query($query))
+			if ($this->db->query($query)) {
 				return $this->db->result('count');
-			else
+			} else {
 				return false;
+			}
 		}
 	}
 
-	/*
-	*
-	* Create a post
-	* @param $post
-	*
-	*/
-	public function add_post($post)
+	/**
+	 * Add a post 
+	 */
+	public function addPost($post)
 	{
-		if (!isset($post->date))
-			$date_query = ', date=NOW()';
-		else
-			$date_query = '';
+		if (!isset($post->date)) {
+			$dateQuery = ', date=NOW()';
+		} else {
+			$dateQuery = '';
+		}
 
-		$post = (object)$post;
+		$post = (object) $post;
+		$result = $this->languages->getDescription($post, 'blog');
 
-		// Check if there is multilingualism and pick up descriptions for translation
-		$result = $this->languages->get_description($post, 'blog');
-		if (!empty($result->data)) $post = $result->data;
+		if (!empty($result->data)) {
+			$post = $result->data;
+		}
 
 		$this->settings->lastModifyPosts = date("Y-m-d H:i:s");
-		$query = $this->db->placehold("INSERT INTO __blog SET `last_modified`=NOW(), ?% $date_query", $post);
-		if (!$this->db->query($query))
+		$query = $this->db->placehold("INSERT INTO __blog SET `last_modified`=NOW(), ?% $dateQuery", $post);
+
+		if (!$this->db->query($query)) {
 			return false;
-
-		$id = $this->db->insert_id();
-
-		// If there is a description to translate. Specify the language to update
-		if (!empty($result->description)) {
-			$this->languages->action_description($id, $result->description, 'blog');
 		}
 
-		return $id;
-	}
+		$id = $this->db->insertId();
 
-	/*
-	*
-	* Update post(s)
-	* @param $post
-	*
-	*/
-	public function update_post($id, $post)
-	{
-		$post = (object)$post;
-
-		// Check if there is multilingualism and pick up descriptions for translation
-		$result = $this->languages->get_description($post, 'blog');
-		if (!empty($result->data)) $post = $result->data;
-
-		$this->settings->lastModifyPosts = date("Y-m-d H:i:s");
-		$query = $this->db->placehold("UPDATE __blog SET `last_modified`=NOW(), ?% WHERE id in(?@) LIMIT ?", $post, (array)$id, count((array)$id));
-		$this->db->query($query);
-
-		// If there is a description to translate. Specify the language to update
 		if (!empty($result->description)) {
-			$this->languages->action_description($id, $result->description, 'blog', $this->languages->lang_id());
+			$this->languages->actionDescription($id, $result->description, 'blog');
 		}
 
 		return $id;
 	}
 
 	/**
-	 * The function contributes +1 to the post view
-	 * @param $id
-	 * @retval object
+	 * Update post.
 	 */
-	public function update_views($id)
+	public function updatePost($id, $post)
+	{
+		$post = (object) $post;
+
+		$result = $this->languages->getDescription($post, 'blog');
+		if (!empty($result->data)) {
+			$post = $result->data;
+		}
+
+		$this->settings->lastModifyPosts = date("Y-m-d H:i:s");
+
+		$query = $this->db->placehold("UPDATE __blog SET `last_modified` = NOW(), ?% WHERE id IN (?@) LIMIT ?", $post, (array) $id, count((array) $id));
+		$this->db->query($query);
+
+		if (!empty($result->description)) {
+			$this->languages->actionDescription($id, $result->description, 'blog', $this->languages->langId());
+		}
+
+		return $id;
+	}
+
+	/**
+	 * Update view
+	 */
+	public function updateViews($id)
 	{
 		$this->db->query("UPDATE __blog SET views=views+1 WHERE id=?", $id);
+
 		return true;
 	}
 
-	/*
-	*
-	* Delete post
-	* @param $id
-	*
-	*/
-	public function delete_post($id)
+	/**
+	 * Delete post
+	 */
+	public function deletePost($id)
 	{
 		if (!empty($id)) {
-			$this->delete_image($id);
-			$query = $this->db->placehold("DELETE FROM __blog WHERE id=? LIMIT 1", intval($id));
+			$this->deleteImage($id);
+			$query = $this->db->placehold("DELETE FROM __blog WHERE id=? LIMIT 1", (int) $id);
+
 			if ($this->db->query($query)) {
-				$this->db->query("DELETE FROM __lang_blog WHERE blog_id=?", intval($id));
-				$query = $this->db->placehold("DELETE FROM __comments WHERE type='blog' AND object_id=?", intval($id));
-				if ($this->db->query($query))
+				$this->db->query("DELETE FROM __lang_blog WHERE blog_id=?", (int) $id);
+
+				$query = $this->db->placehold("DELETE FROM __comments WHERE type='blog' AND object_id=?", (int) $id);
+
+				if ($this->db->query($query)) {
 					return true;
+				}
 			}
 		}
+
 		return false;
 	}
 
-	public function delete_image($post_id)
+	/**
+	 * Delete image
+	 */
+	public function deleteImage($postId)
 	{
-		$query = $this->db->placehold("SELECT image FROM __blog WHERE id=?", intval($post_id));
-		$this->db->query($query);
-		$filename = $this->db->result('image');
-		if (!empty($filename)) {
-			$query = $this->db->placehold("UPDATE __blog SET image=NULL WHERE id=?", $post_id);
+		$query = $this->db->placehold("SELECT image FROM __blog WHERE id=?", (int) $postId);
+
+		if ($this->db->query($query)) {
+			$filenames = $this->db->results('image');
+		}
+
+		if (!empty($filenames)) {
+			$query = $this->db->placehold("UPDATE __blog SET image = NULL WHERE id=?", $postId);
 			$this->db->query($query);
-			$query = $this->db->placehold("SELECT count(*) as count FROM __blog WHERE image=? LIMIT 1", $filename);
-			$this->db->query($query);
-			$count = $this->db->result('count');
-			if ($count == 0) {
-				$file = pathinfo($filename, PATHINFO_FILENAME);
-				$ext = pathinfo($filename, PATHINFO_EXTENSION);
-				$webp = 'webp';
 
-				// Remove all resizes
-				$rezised_images = glob($this->config->root_dir . $this->config->resized_posts_images_dir . $file . "*." . $ext);
-				if (is_array($rezised_images)) {
-					foreach (glob($this->config->root_dir . $this->config->resized_posts_images_dir . $file . "*." . $ext) as $f) {
-						@unlink($f);
+			foreach ($filenames as $filename) {
+				$query = $this->db->placehold("SELECT count(*) AS count FROM __blog WHERE image=? LIMIT 1", $filename);
+				$this->db->query($query);
+
+				$count = $this->db->result('count');
+
+				if ($count == 0) {
+					$file = pathinfo($filename, PATHINFO_FILENAME);
+					$ext = pathinfo($filename, PATHINFO_EXTENSION);
+					$webp = 'webp';
+
+					$resizedImages = glob($this->config->root_dir . $this->config->resized_posts_images_dir . $file . "*." . $ext);
+
+					if (is_array($resizedImages)) {
+						foreach ($resizedImages as $f) {
+							if (is_file($f)) {
+								unlink($f);
+							}
+						}
 					}
-				}
 
-				$rezised_images = glob($this->config->root_dir . $this->config->resized_posts_images_dir . $file . "*." . $webp);
-				if (is_array($rezised_images)) {
-					foreach (glob($this->config->root_dir . $this->config->resized_posts_images_dir . $file . "*." . $webp) as $f) {
-						@unlink($f);
+					$resizedImages = glob($this->config->root_dir . $this->config->resized_posts_images_dir . $file . "*." . $webp);
+
+					if (is_array($resizedImages)) {
+						foreach ($resizedImages as $f) {
+							if (is_file($f)) {
+								unlink($f);
+							}
+						}
 					}
-				}
 
-				@unlink($this->config->root_dir . $this->config->posts_images_dir . $filename);
+					unlink($this->config->root_dir . $this->config->posts_images_dir . $filename);
+				}
 			}
 		}
 	}
 
-	/*
-	*
-	* Next post
-	* @param $post
-	*
-	*/
-	public function get_next_post($id)
+	/**
+	 * Get next post
+	 */
+	public function getNextPost($id)
 	{
 		$this->db->query("SELECT date FROM __blog WHERE id=? LIMIT 1", $id);
 		$date = $this->db->result('date');
 
 		$this->db->query(
 			"(SELECT id FROM __blog WHERE date=? AND id>? AND visible  ORDER BY id limit 1)
-		                   UNION
-		                  (SELECT id FROM __blog WHERE date>? AND visible ORDER BY date, id limit 1)",
+		    UNION
+		    (SELECT id FROM __blog WHERE date>? AND visible ORDER BY date, id limit 1)",
 			$date,
 			$id,
 			$date
 		);
-		$next_id = $this->db->result('id');
-		if ($next_id)
-			return $this->get_post(intval($next_id));
-		else
+
+		$nextId = $this->db->result('id');
+		
+		if ($nextId) {
+			return $this->getPost((int) $nextId);
+		} else {
 			return false;
+		}
 	}
 
-	/*
-	*
-	* Previous post
-	* @param $post
-	*
-	*/
-	public function get_prev_post($id)
+	/**
+	 * Get previous post
+	 */
+	public function getPrevPost($id)
 	{
 		$this->db->query("SELECT date FROM __blog WHERE id=? LIMIT 1", $id);
 		$date = $this->db->result('date');
 
 		$this->db->query(
 			"(SELECT id FROM __blog WHERE date=? AND id<? AND visible ORDER BY id DESC limit 1)
-		                   UNION
-		                  (SELECT id FROM __blog WHERE date<? AND visible ORDER BY date DESC, id DESC limit 1)",
+		    UNION
+		    (SELECT id FROM __blog WHERE date<? AND visible ORDER BY date DESC, id DESC limit 1)",
 			$date,
 			$id,
 			$date
 		);
-		$prev_id = $this->db->result('id');
-		if ($prev_id)
-			return $this->get_post(intval($prev_id));
-		else
+
+		$prevId = $this->db->result('id');
+
+		if ($prevId) {
+			return $this->getPost((int) $prevId);
+		} else {
 			return false;
+		}
 	}
 }

@@ -1,41 +1,38 @@
 <?php
 
-require_once('api/Turbo.php');
+require_once 'api/Turbo.php';
 
 class LanguagesAdmin extends Turbo
 {
 	public function fetch()
 	{
-		// Action processing
-		if ($this->request->method('post')) {
-			// Actions with selected
+		if ($this->request->isMethod('post')) {
 			$ids = $this->request->post('check');
 
-			if (is_array($ids))
+			if (is_array($ids)) {
 				switch ($this->request->post('action')) {
-					case 'delete': {
-							foreach ($ids as $id)
-								$this->languages->delete_language($id);
-							break;
+					case 'delete':
+						foreach ($ids as $id) {
+							$this->languages->deleteLanguage($id);
 						}
-					case 'disable': {
-							$this->languages->update_language($ids, array('enabled' => 0));
-							break;
-						}
-					case 'enable': {
-							$this->languages->update_language($ids, array('enabled' => 1));
-							break;
-						}
+						break;
+					case 'disable':
+						$this->languages->updateLanguage($ids, ['enabled' => 0]);
+						break;
+					case 'enable':
+						$this->languages->updateLanguage($ids, ['enabled' => 1]);
+						break;
 				}
+			}
 
-			// Sorting
 			$positions = $this->request->post('positions');
-			foreach ($positions as $position => $id)
-				$this->languages->update_language($id, array('position' => $position + 1));
+
+			foreach ($positions as $position => $id) {
+				$this->languages->updateLanguage($id, ['position' => $position + 1]);
+			}
 		}
 
-		//$languages = null;
-		$languages = $this->languages->get_languages();
+		$languages = $this->languages->getLanguages();
 		$this->design->assign('languages', $languages);
 
 		return $this->design->fetch('languages.tpl');

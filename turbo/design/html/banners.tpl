@@ -49,7 +49,7 @@
 												{if $banner->show_all_pages}
 													<span class="badge badge-success-light">{$btr->global_all_pages|escape}</span>
 												{/if}
-												{if !$banner->show_all_pages && $banner->articles_category_show}
+												{if !$banner->show_all_pages && isset($banner->articles_category_show)}
 													<div class="mb-0">
 														<span class="fw-bold text-muted">{$btr->article_categories|escape}:</span>
 														{foreach $banner->articles_category_show as $cat_show}
@@ -57,7 +57,7 @@
 														{/foreach}
 													</div>
 												{/if}
-												{if !$banner->show_all_pages && $banner->category_show}
+												{if !$banner->show_all_pages && isset($banner->category_show)}
 													<div class="mb-0">
 														<span class="fw-bold text-muted">{$btr->global_categories|escape}:</span>
 														{foreach $banner->category_show as $cat_show}
@@ -65,7 +65,7 @@
 														{/foreach}
 													</div>
 												{/if}
-												{if !$banner->show_all_pages && $banner->brands_show}
+												{if !$banner->show_all_pages && isset($banner->brands_show)}
 													<div class="mb-0">
 														<span class="fw-bold text-muted">{$btr->global_brands|escape}:</span>
 														{foreach $banner->brands_show as $brand_show}
@@ -73,7 +73,7 @@
 														{/foreach}
 													</div>
 												{/if}
-												{if !$banner->show_all_pages && $banner->page_show}
+												{if !$banner->show_all_pages && isset($banner->page_show)}
 													<div class="mb-0">
 														<span class="fw-bold text-muted">{$btr->global_pages|escape}:</span>
 														{foreach $banner->page_show as $page_show}

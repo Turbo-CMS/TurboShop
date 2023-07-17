@@ -22,7 +22,7 @@
 	</div>
 {/if}
 
-{if $message_error}
+{if isset($message_error)}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -51,7 +51,7 @@
 				<div class="card mh-250px">
 					<div class="card-header px-4 pt-4">
 						<div class="card-actions float-end">
-							{if  !$t->locked}
+							{if !$t->locked}
 								<span class="btn-edit" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_edit|escape}">
 									<i class="js-rename-theme align-middle cursor-pointer me-1" data-feather="edit-2" data-old-name="{$t->name|escape}"></i>
 								</span>
@@ -74,7 +74,7 @@
 					</div>
 					<div class="card-body px-4 pt-2">
 						<div class="text-center">
-							<img class="{if $theme->name != $t->name}gray-filter{/if}" src="{$root_dir}../design/{$t->name}/preview.png" alt="{$t->name|escape}">
+							<img class="{if $theme->name != $t->name}gray-filter{/if}" src="../design/{$t->name}/preview.png" alt="{$t->name|escape}">
 						</div>
 						{if $theme->name != $t->name}
 							<button type="button" class="js-set-theme btn btn-secondary position-absolute bottom-0 end-0 me-3 mb-3" data-set-name="{$t->name|escape}">
@@ -114,7 +114,6 @@
 <script>
 	{literal}
 		$(window).on("load", function() {
-
 			$('.js-rename-theme').on('click', function() {
 				$(this).closest('.card-header').find('.js-rename-value').toggleClass('d-none');
 				$(this).closest('.card-header').find('.card-title').toggleClass('d-none');
@@ -128,7 +127,6 @@
 				$("form").submit();
 			});
 
-			// Clone the current theme
 			$('.js-clone-theme').on('click', function(e) {
 				e.preventDefault();
 				$("input[name=action]").val('clone_theme');

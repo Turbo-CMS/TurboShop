@@ -1,58 +1,60 @@
 <?php
 
-require_once('api/Turbo.php');
+require_once 'api/Turbo.php';
 
 class MenuAdmin extends Turbo
 {
-	public function fetch()
-	{
-		// Action processing
-		if ($this->request->method('post')) {
+    public function fetch()
+    {
+        if ($this->request->isMethod('post')) {
+            foreach ($this->request->post('menu') as $n => $va) {
+                foreach ($va as $i => $v) {
+                    if (empty($menus[$i])) {
+                        $menus[$i] = new stdClass();
+                    }
 
-			foreach ($this->request->post('menu') as $n => $va)
-				foreach ($va as $i => $v) {
-					if (empty($menus[$i]))
-						$menus[$i] = new stdClass;
-					$menus[$i]->$n = $v;
-				}
+                    $menus[$i]->$n = $v;
+                }
+            }
 
-			$menus_ids = array();
-			foreach ($menus as $menu) {
-				if ($menu->id)
-					$this->pages->update_menu($menu->id, $menu);
-				else
-					$menu->id = $this->pages->add_menu($menu);
-				$menus_ids[] = $menu->id;
-			}
+            $menusIds = [];
 
-			// Delete untransferred menus
-			$query = $this->db->placehold('DELETE FROM __menu WHERE id NOT IN(?@)', $menus_ids);
-			$this->db->query($query);
+            foreach ($menus as $menu) {
+                if ($menu->id) {
+                    $this->pages->updateMenu($menu->id, $menu);
+                } else {
+                    $menu->id = $this->pages->addMenu($menu);
+                }
 
-			// Sort menu
-			asort($menus_ids);
-			$i = 0;
-			foreach ($menus_ids as $menu_id) {
-				$this->pages->update_menu($menus_ids[$i], array('position' => $menu_id));
-				$i++;
-			}
+                $menusIds[] = $menu->id;
+            }
 
-			// Actions with selected
-			$action = $this->request->post('action');
-			$id = $this->request->post('action_id');
+            $query = $this->db->placehold('DELETE FROM __menu WHERE id NOT IN(?@)', $menusIds);
+            $this->db->query($query);
 
-			if (!empty($action) && !empty($id))
-				switch ($action) {
-					case 'delete': {
-							$this->pages->delete_menu($id);
-							break;
-						}
-				}
-		}
+            asort($menusIds);
+            $i = 0;
 
-		// Display
-		$menus = $this->pages->get_menus();
-		$this->design->assign('menus', $menus);
-		return $this->design->fetch('menu.tpl');
-	}
+            foreach ($menusIds as $menuId) {
+                $this->pages->updateMenu($menusIds[$i], ['position' => $menuId]);
+                $i++;
+            }
+
+            $action = $this->request->post('action');
+            $id = $this->request->post('action_id');
+
+            if (!empty($action) && !empty($id)) {
+                switch ($action) {
+                    case 'delete':
+                        $this->pages->deleteMenu($id);
+                        break;
+                }
+            }
+        }
+
+        $menus = $this->pages->getMenus();
+        $this->design->assign('menus', $menus);
+
+        return $this->design->fetch('menu.tpl');
+    }
 }

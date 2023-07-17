@@ -7,7 +7,7 @@
 	</div>
 </div>
 
-{if $message_error}
+{if isset($message_error)}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -117,11 +117,10 @@
 {literal}
 	<script>
 		$(window).on("load", function() {
-			// Add menu
-			var curr = $('#new-menu').clone(true);
+			var new_menu = $('#new-menu').clone(true);
 			$('#new-menu').remove().removeAttr('id');
 			$('#add-menu').click(function() {
-				$(curr).clone(true).appendTo('.turbo-list-body').fadeIn('slow').find("input[name*=name]").focus();
+				$(new_menu).clone(true).appendTo('.turbo-list-body').fadeIn('slow').find("input[name*=name]").focus();
 				return false;
 			});
 			$(document).on("click", ".js-remove-new-menu", function() {

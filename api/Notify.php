@@ -1,155 +1,197 @@
 <?php
 
+require_once 'Turbo.php';
+
 class Notify extends Turbo
 {
-	function email($to, $subject, $message, $from = '', $reply_to = '')
+	/**
+	 * Send email
+	 */
+	function email($to, $subject, $message, $from = '', $replyTo = '')
 	{
-		$headers = "MIME-Version: 1.0\n";
-		$headers .= "Content-type: text/html; charset=utf-8; \r\n";
-		$headers .= "From: $from\r\n";
-		if (!empty($reply_to))
-			$headers .= "reply-to: $reply_to\r\n";
+		$headers = "MIME-Version: 1.0\r\n";
+		$headers .= "Content-type: text/html; charset=utf-8\r\n";
 
-		$subject = "=?utf-8?B?" . base64_encode($subject) . "?=";
+		if (!empty($from)) {
+			$headers .= "From: $from\r\n";
+		}
 
-		@mail($to, $subject, $message, $headers);
+		if (!empty($replyTo)) {
+			$headers .= "Reply-To: $replyTo\r\n";
+		}
+
+		$subject = '=?utf-8?B?' . base64_encode($subject) . '?=';
+
+		return mail($to, $subject, $message, $headers);
 	}
 
-	public function email_order_user($order_id)
+	/**
+	 * Email order user
+	 */
+	public function emailOrderUser($orderId)
 	{
-		if (!($order = $this->orders->get_order(intval($order_id))) || empty($order->email))
+		$order = $this->orders->getOrder($orderId);
+
+		if (!$order || empty($order->email)) {
 			return false;
+		}
 
 		$languages = $this->languages->languages();
 		if (!empty($order->lang_id) && isset($languages[$order->lang_id])) {
-			$cur_lang_id = $this->languages->lang_id();
-			$this->languages->set_lang_id($order->lang_id);
-			$lang_link = '';
-			$f_lang = reset($languages);
-			if ($order->lang_id != $f_lang->id) {
-				$lang_link = $languages[$order->lang_id]->label . '/';
+			$currentLangId = $this->languages->langId();
+			$this->languages->setLangId($order->lang_id);
+
+			$langLink = '';
+			$firstLang = reset($languages);
+
+			if ($order->lang_id != $firstLang->id) {
+				$langLink = $languages[$order->lang_id]->label . '/';
 			}
-			$this->design->assign('lang_link', $lang_link);
-			$this->money->init_currencies();
-			$this->design->assign("currency", $this->money->get_currency());
-			$this->translations->init_translations();
+
+			$this->design->assign('lang_link', $langLink);
+			$this->money->initCurrencies();
+			$this->design->assign("currency", $this->money->getCurrency());
+			$this->translations->initTranslations();
 			$this->design->assign('lang', $this->translations);
 		}
 
-		$purchases = $this->orders->get_purchases(array('order_id' => $order->id));
+		$purchases = $this->orders->getPurchases(['order_id' => $order->id]);
 		$this->design->assign('purchases', $purchases);
 
-		$products_ids = array();
-		$variants_ids = array();
+		$productsIds = [];
+		$variantsIds = [];
+
 		foreach ($purchases as $purchase) {
-			$products_ids[] = $purchase->product_id;
-			$variants_ids[] = $purchase->variant_id;
+			$productsIds[] = $purchase->product_id;
+			$variantsIds[] = $purchase->variant_id;
 		}
 
-		$products = array();
-		foreach ($this->products->get_products(array('id' => $products_ids)) as $p)
-			$products[$p->id] = $p;
+		$products = [];
 
-		$images = $this->products->get_images(array('product_id' => $products_ids));
-		foreach ($images as $image)
-			$products[$image->product_id]->images[] = $image;
+		foreach ($this->products->getProducts(['id' => $productsIds]) as $product) {
+			$products[$product->id] = $product;
+		}
 
-		$variants = array();
-		foreach ($this->variants->get_variants(array('id' => $variants_ids)) as $v) {
-			$variants[$v->id] = $v;
-			$products[$v->product_id]->variants[] = $v;
+		$images = $this->products->getImages(['product_id' => $productsIds]);
+
+		foreach ($images as $image) {
+			$products[$image['product_id']]['images'][] = $image;
+		}
+
+		$variants = [];
+
+		foreach ($this->variants->getVariants(['id' => $variantsIds]) as $variant) {
+			$variants[$variant['id']] = $variant;
+			$products[$variant['product_id']]['variants'][] = $variant;
 		}
 
 		foreach ($purchases as &$purchase) {
-			if (!empty($products[$purchase->product_id]))
+			if (!empty($products[$purchase->product_id])) {
 				$purchase->product = $products[$purchase->product_id];
-			if (!empty($variants[$purchase->variant_id]))
+			}
+			if (!empty($variants[$purchase->variant_id])) {
 				$purchase->variant = $variants[$purchase->variant_id];
+			}
 		}
 
-		// Delivery method
-		$delivery = $this->delivery->get_delivery($order->delivery_id);
+		$delivery = $this->delivery->getDelivery($order->delivery_id);
 		$this->design->assign('delivery', $delivery);
-
 		$this->design->assign('order', $order);
 		$this->design->assign('purchases', $purchases);
 
-		// Sending a letter
-		// If no currency was passed to the template, pass
 		if ($this->design->smarty->getTemplateVars('currency') === null) {
-			$this->design->assign('currency', current($this->money->get_currencies(array('enabled' => 1))));
+			$this->design->assign('currency', current($this->money->getCurrencies(['enabled' => true])));
 		}
-		$email_template = $this->design->fetch($this->config->root_dir . 'design/' . $this->settings->theme . '/html/email_order.tpl');
-		$subject = $this->design->get_var('subject');
+
+		$emailTemplate = $this->design->fetch($this->config->root_dir . 'design/' . $this->settings->theme . '/html/email_order.tpl');
+		$subject = $this->design->getVar('subject');
 		$from = ($this->settings->notify_from_name ? $this->settings->notify_from_name . " <" . $this->settings->notify_from_email . ">" : $this->settings->notify_from_email);
-		$this->email($order->email, $subject, $email_template, $from);
+		$this->email($order->email, $subject, $emailTemplate, $from);
 
 		if (!empty($order->lang_id) && isset($languages[$order->lang_id])) {
-			$this->languages->set_lang_id($cur_lang_id);
-			$lang_link = '';
-			$f_lang = reset($languages);
-			if ($order->lang_id != $f_lang->id) {
-				$lang_link = $languages[$order->lang_id]->label . '/';
+			$this->languages->set_lang_id($currentLangId);
+			$langLink = '';
+			$firstLang = reset($languages);
+
+			if ($order->lang_id != $firstLang->id) {
+				$langLink = $languages[$order->lang_id]->label . '/';
 			}
-			$this->design->assign('lang_link', $lang_link);
-			$this->money->init_currencies();
-			$this->design->assign("currency", $this->money->get_currency());
-			$this->translations->init_translations();
+
+			$this->design->assign('lang_link', $langLink);
+			$this->money->initCurrencies();
+			$this->design->assign("currency", $this->money->getCurrency());
+			$this->translations->initTranslations();
 			$this->design->assign('lang', $this->translations);
 		}
 	}
 
-	public function email_order_admin($order_id)
+	/**
+	 * Email order admin
+	 */
+	public function emailOrderAdmin($orderId)
 	{
-		if (!($order = $this->orders->get_order(intval($order_id))))
+		$order = $this->orders->getOrder((int) $orderId);
+
+		if (!$order) {
 			return false;
-
-		$purchases = $this->orders->get_purchases(array('order_id' => $order->id));
-		$this->design->assign('purchases', $purchases);
-
-		$products_ids = array();
-		$variants_ids = array();
-		foreach ($purchases as $purchase) {
-			$products_ids[] = $purchase->product_id;
-			$variants_ids[] = $purchase->variant_id;
 		}
 
-		$products = array();
-		foreach ($this->products->get_products(array('id' => $products_ids)) as $p)
-			$products[$p->id] = $p;
+		$purchases = $this->orders->getPurchases(['order_id' => $order->id]);
+		$this->design->assign('purchases', $purchases);
 
-		$images = $this->products->get_images(array('product_id' => $products_ids));
-		foreach ($images as $image)
-			$products[$image->product_id]->images[] = $image;
+		$productsIds = [];
+		$variantsIds = [];
 
-		$variants = array();
-		foreach ($this->variants->get_variants(array('id' => $variants_ids)) as $v) {
-			$variants[$v->id] = $v;
-			$products[$v->product_id]->variants[] = $v;
+		foreach ($purchases as $purchase) {
+			$productsIds[] = $purchase->product_id;
+			$variantsIds[] = $purchase->variant_id;
+		}
+
+		$products = [];
+
+		foreach ($this->products->getProducts(['id' => $productsIds]) as $product) {
+			$products[$product->id] = $product;
+		}
+
+		$images = $this->products->getImages(['product_id' => $productsIds]);
+
+		foreach ($images as $image) {
+			if (isset($products[$image->product_id])) {
+				$products[$image->product_id]->images[] = $image;
+			}
+		}
+
+		$variants = [];
+
+		foreach ($this->variants->getVariants(['id' => $variantsIds]) as $variant) {
+			$variants[$variant->id] = $variant;
+
+			if (isset($products[$variant->product_id])) {
+				$products[$variant->product_id]->variants[] = $variant;
+			}
 		}
 
 		foreach ($purchases as &$purchase) {
-			if (!empty($products[$purchase->product_id]))
+			if (isset($products[$purchase->product_id])) {
 				$purchase->product = $products[$purchase->product_id];
-			if (!empty($variants[$purchase->variant_id]))
+			}
+
+			if (isset($variants[$purchase->variant_id])) {
 				$purchase->variant = $variants[$purchase->variant_id];
+			}
 		}
 
-		// Delivery method
-		$delivery = $this->delivery->get_delivery($order->delivery_id);
+		$delivery = $this->delivery->getDelivery($order->delivery_id);
+		$user = $this->users->getUser((int) $order->user_id);
+
 		$this->design->assign('delivery', $delivery);
-
-		// User
-		$user = $this->users->get_user(intval($order->user_id));
 		$this->design->assign('user', $user);
-
 		$this->design->assign('order', $order);
 		$this->design->assign('purchases', $purchases);
+		$this->design->assign('main_currency', $this->money->getCurrency());
 
-		// In main currency
-		$this->design->assign('main_currency', $this->money->get_currency());
+		$backendTranslations = $this->backendTranslations;
 
-		$backend_translations = $this->backend_translations;
 		$file = $_SERVER['DOCUMENT_ROOT'] . '/turbo/lang/' . $this->settings->email_lang . '.php';
 		if (!file_exists($file)) {
 			foreach (glob($_SERVER['DOCUMENT_ROOT'] . '/turbo/lang/??.php') as $f) {
@@ -157,108 +199,142 @@ class Notify extends Turbo
 				break;
 			}
 		}
-		require_once($file);
-		$this->design->assign('btr', $backend_translations);
 
-		// Sending a letter
-		$email_template = $this->design->fetch($this->config->root_dir . 'turbo/design/html/email_order_admin.tpl');
-		$subject = $this->design->get_var('subject');
-		$this->email($this->settings->order_email, $subject, $email_template, $this->settings->notify_from_email);
+		require_once $file;
+
+		$this->design->assign('btr', $backendTranslations);
+
+		$emailTemplate = $this->design->fetch($this->config->root_dir . 'turbo/design/html/email_order_admin.tpl');
+		$subject = $this->design->getVar('subject');
+		$this->email($this->settings->order_email, $subject, $emailTemplate, $this->settings->notify_from_email);
 	}
 
-	public function email_comment_admin($comment_id)
+	/**
+	 * Email comment admin
+	 */
+	public function emailCommentAdmin($commentId)
 	{
-		if (!($comment = $this->comments->get_comment(intval($comment_id))))
-			return false;
+		$comment = $this->comments->getComment((int) $commentId);
 
-		if ($comment->type == 'product')
-			$comment->product = $this->products->get_product(intval($comment->object_id));
-		if ($comment->type == 'article')
-			$comment->article = $this->articles->get_article(intval($comment->object_id));
-		if ($comment->type == 'blog')
-			$comment->post = $this->blog->get_post(intval($comment->object_id));
+		if (!$comment) {
+			return false;
+		}
+
+		if ($comment->type == 'product') {
+			$comment->product = $this->products->getProduct((int) $comment->object_id);
+		} elseif ($comment->type == 'article') {
+			$comment->article = $this->articles->getArticle((int) $comment->object_id);
+		} elseif ($comment->type == 'blog') {
+			$comment->post = $this->blog->getPost((int) $comment->object_id);
+		}
 
 		$this->design->assign('comment', $comment);
-		
-		$backend_translations = $this->backend_translations;
+
+		$backendTranslations = $this->backendTranslations;
 		$file = $_SERVER['DOCUMENT_ROOT'] . '/turbo/lang/' . $this->settings->email_lang . '.php';
+
 		if (!file_exists($file)) {
 			foreach (glob($_SERVER['DOCUMENT_ROOT'] . '/turbo/lang/??.php') as $f) {
 				$file = $_SERVER['DOCUMENT_ROOT'] . '/turbo/lang/' . pathinfo($f, PATHINFO_FILENAME) . '.php';
 				break;
 			}
 		}
-		require_once($file);
-		$this->design->assign('btr', $backend_translations);
 
-		// Sending a letter
-		$email_template = $this->design->fetch($this->config->root_dir . 'turbo/design/html/email_comment_admin.tpl');
-		$subject = $this->design->get_var('subject');
-		$this->email($this->settings->comment_email, $subject, $email_template, $this->settings->notify_from_email);
+		require_once $file;
+		$this->design->assign('btr', $backendTranslations);
+
+		$emailTemplate = $this->design->fetch($this->config->root_dir . 'turbo/design/html/email_comment_admin.tpl');
+		$subject = $this->design->getVar('subject');
+		$this->email($this->settings->comment_email, $subject, $emailTemplate, $this->settings->notify_from_email);
 	}
 
-	public function email_password_remind($user_id, $code)
+	/**
+	 * Email password remind
+	 */
+	public function emailPasswordRemind($userId, $code)
 	{
-		if (!($user = $this->users->get_user(intval($user_id))))
+		$user = $this->users->getUser($userId);
+		if (!$user) {
 			return false;
+		}
 
 		$this->design->assign('user', $user);
 		$this->design->assign('code', $code);
 
-		// Sending a letter
-		$email_template = $this->design->fetch($this->config->root_dir . 'design/' . $this->settings->theme . '/html/email_password_remind.tpl');
-		$subject = $this->design->get_var('subject');
+		$emailTemplate = $this->design->fetch($this->config->root_dir . 'design/' . $this->settings->theme . '/html/email_password_remind.tpl');
+		$subject = $this->design->getVar('subject');
 		$from = ($this->settings->notify_from_name ? $this->settings->notify_from_name . " <" . $this->settings->notify_from_email . ">" : $this->settings->notify_from_email);
-		$this->email($user->email, $subject, $email_template, $from);
+		$this->email($user->email, $subject, $emailTemplate, $from);
 
 		$this->design->smarty->clearAssign('user');
 		$this->design->smarty->clearAssign('code');
+
+		return true;
 	}
 
-	public function email_feedback_admin($feedback_id)
+	/**
+	 * Email feedback admin
+	 */
+	public function emailFeedbackAdmin($feedbackId)
 	{
-		if (!($feedback = $this->feedbacks->get_feedback(intval($feedback_id))))
+		if (!$feedback = $this->feedbacks->getFeedback($feedbackId)) {
 			return false;
+		}
 
 		$this->design->assign('feedback', $feedback);
-		
-		$backend_translations = $this->backend_translations;
+
+		$backendTranslations = $this->backendTranslations;
+
 		$file = $_SERVER['DOCUMENT_ROOT'] . '/turbo/lang/' . $this->settings->email_lang . '.php';
+
 		if (!file_exists($file)) {
 			foreach (glob($_SERVER['DOCUMENT_ROOT'] . '/turbo/lang/??.php') as $f) {
 				$file = $_SERVER['DOCUMENT_ROOT'] . '/turbo/lang/' . pathinfo($f, PATHINFO_FILENAME) . '.php';
 				break;
 			}
 		}
-		require_once($file);
-		$this->design->assign('btr', $backend_translations);
 
-		// Sending a letter
-		$email_template = $this->design->fetch($this->config->root_dir . 'turbo/design/html/email_feedback_admin.tpl');
-		$subject = $this->design->get_var('subject');
-		$this->email($this->settings->comment_email, $subject, $email_template, $this->settings->notify_from_email);
+		require_once $file;
+
+		$this->design->assign('btr', $backendTranslations);
+
+		$emailTemplate = $this->design->fetch($this->config->root_dir . 'turbo/design/html/email_feedback_admin.tpl');
+		$subject = $this->design->getVar('subject');
+		$this->email($this->settings->comment_email, $subject, $emailTemplate, $this->settings->notify_from_email);
+
+		return true;
 	}
 
-	public function email_callback_admin($callback_id)
+	/**
+	 * Email callback admin
+	 */
+	public function emailCallbackAdmin($callbackId)
 	{
-		if (!($callback = $this->callbacks->get_callback(intval($callback_id))))
+		if (!$callback = $this->callbacks->getCallback($callbackId)) {
 			return false;
+		}
+
 		$this->design->assign('callback', $callback);
-		
-		$backend_translations = $this->backend_translations;
+
+		$backendTranslations = $this->backendTranslations;
+
 		$file = $_SERVER['DOCUMENT_ROOT'] . '/turbo/lang/' . $this->settings->email_lang . '.php';
+
 		if (!file_exists($file)) {
 			foreach (glob($_SERVER['DOCUMENT_ROOT'] . '/turbo/lang/??.php') as $f) {
 				$file = $_SERVER['DOCUMENT_ROOT'] . '/turbo/lang/' . pathinfo($f, PATHINFO_FILENAME) . '.php';
 				break;
 			}
 		}
-		require_once($file);
-		$this->design->assign('btr', $backend_translations);
 
-		// Sending a letter
-		$email_template = $this->design->fetch($this->config->root_dir . 'turbo/design/html/email_callback_admin.tpl');
-		$subject = $this->design->get_var('subject');
-		$this->email($this->settings->comment_email, $subject, $email_template, $this->settings->notify_from_email);
+		require_once $file;
+
+		$this->design->assign('btr', $backendTranslations);
+
+		$emailTemplate = $this->design->fetch($this->config->root_dir . 'turbo/design/html/email_callback_admin.tpl');
+		$subject = $this->design->getVar('subject');
+		$this->email($this->settings->comment_email, $subject, $emailTemplate, $this->settings->notify_from_email);
+
+		return true;
 	}
 }

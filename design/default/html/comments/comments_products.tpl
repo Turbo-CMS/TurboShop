@@ -1,27 +1,39 @@
 {if $comments}
-	<!-- Single Comment -->
-	{foreach $comments as $comment}
-		<span itemprop="review" itemscope itemtype="http://schema.org/Review">
-			<meta itemprop="datePublished" content="{$comment->date|date}">
-			<meta itemprop="name" content="{$product->name|escape}">
-			<meta itemprop="itemreviewed" content="{$product->name|escape}">
-			<a name="comment_{$comment->id}"></a>
-			<p><span itemprop="description">{$comment->text|escape|nl2br}</span></p>
-			<small class="text-muted"><b><span itemprop="author">{$comment->name|escape}</span></b> {$comment->date|date} {$lang->at} {$comment->date|time} {if !$comment->approved}<span class="text-danger">{$lang->awaiting_moderation}</span>{/if}</b></small>
-			<hr class="text-black-50">
-		</span>
-	{/foreach}
-	<!-- Single Comment (The End)-->
-{else}
-	<p>
-		{$lang->no_comments}
-	</p>
-{/if}
-<!-- Comments Form -->
-<a class="btn btn-success mb-4" data-bs-toggle="collapse" href="#CommentForm" role="button" aria-expanded="false" aria-controls="CommentForm">{$lang->comment_on}</a>
-<div class="collapse" id="CommentForm">
-	{if $error}
-		<div class="alert alert-danger" role="alert">
+	<!-- Rating wrap -->
+	<div class="rating-wrap mb-2 ratings reviews">
+		<ul class="rating-stars rater-starsOff" style="width:132px;">
+			<li style="width:{$ratings*100/5|string_format:'%.0f'}%" class="stars-active rater-starsOn">
+				<i class="fa fa-star"></i>
+				<i class="fa fa-star"></i>
+				<i class="fa fa-star"></i>
+				<i class="fa fa-star"></i>
+				<i class="fa fa-star"></i>
+			</li>
+			<li>
+				<i class="far fa-star"></i>
+				<i class="far fa-star"></i>
+				<i class="far fa-star"></i>
+				<i class="far fa-star"></i>
+				<i class="far fa-star"></i>
+			</li>
+		</ul>
+		{if $ratings> 0} 
+			<div class="label-rating" itemprop="aggregateRating" itemtype="https://schema.org/AggregateRating" itemscope>
+				<meta itemprop="reviewCount" content="{$comments_count}" />
+				<span class="rater-rating h3" itemprop="ratingValue" content="{$ratings|string_format:'%.1f'}">{$ratings|string_format:'%.1f'}</span>
+			</div>
+		{/if}
+	</div>
+	<div class="btn-toolbar justify-content-between mb-4" role="toolbar" aria-label="SortComments">
+		{if isset($comments_count)}<span>{$comments_count} {$comments_count|plural:$lang->comment_1:$lang->comment_2:$lang->comment_3}</span>{/if}
+		<div class="btn-group" role="group" aria-label="First group">
+			<a href="{url sort=rate page=null}" class="sort-comments text-decoration-none me-3 {if isset($sort) && $sort=='rate'}active{/if}">{$lang->popular}</a>
+			<a href="{url sort=date page=null}" class="sort-comments text-decoration-none {if isset($sort) && $sort=='date'}active{/if}">{$lang->in_order}</a>
+		</div>
+	</div>
+	<hr class="text-black-50">
+	{if isset($error)}
+		<div class="alert alert-danger my-4" role="alert">
 			{if $error=='captcha'}
 				{$lang->captcha_incorrect}
 			{elseif $error=='empty_name'}
@@ -31,16 +43,99 @@
 			{/if}
 		</div>
 	{/if}
+	{function name=comments_tree level=0}
+		{foreach $comments as $comment name=tree}
+			<!-- Single Comment -->
+			<span itemprop="review" itemscope itemtype="http://schema.org/Review">
+				<meta itemprop="datePublished" content="{$comment->date|date}">
+				<meta itemprop="name" content="{$product->name|escape}">
+				<meta itemprop="itemreviewed" content="{$product->name|escape}">
+				<a name="comment_{$comment->id}"></a>
+				<div class="media comments {if $level == 1 && $smarty.foreach.tree.first}mt-4{/if}">
+					{if $comment->admin == 1}
+						<i class="fal fa-user-headset fa-2x d-flex me-3 text-primary"></i>
+					{else}
+						<i class="fal fa-user fa-2x d-flex me-3 text-muted"></i>
+					{/if}
+					<div class="media-body">
+						<h5 class="mt-0 {if $comment->admin == 1}admin text-primary{/if}">{$comment->name|escape}</h5>
+						<small class="text-muted"><b><span itemprop="author">{$comment->name|escape}</span></b> {$comment->date|date} {$lang->at} {$comment->date|time} {if !$comment->approved}<span class="text-danger">{$lang->awaiting_moderation}</span>{/if}</b></small>
+						{if $comment->admin == 0 && $level == 0}
+							<div class="rating-wrap mb-1">
+								<ul class="rating-stars">
+									<li style="width:{$comment->rating*100/5|string_format:'%.0f'}%" class="stars-active">
+										<i class="fa fa-star"></i>
+										<i class="fa fa-star"></i>
+										<i class="fa fa-star"></i>
+										<i class="fa fa-star"></i>
+										<i class="fa fa-star"></i>
+									</li>
+									<li>
+										<i class="far fa-star"></i>
+										<i class="far fa-star"></i>
+										<i class="far fa-star"></i>
+										<i class="far fa-star"></i>
+										<i class="far fa-star"></i>
+									</li>
+								</ul>
+								<span itemprop="reviewRating" itemscope itemtype="https://schema.org/Rating">
+									<meta itemprop="ratingValue" content="{$comment->rating}">
+								</span>
+							</div>
+						{/if}
+						<p><span itemprop="description">{$comment->text|escape|nl2br}</span></p>
+						<span class="float-end btn-group vote">
+							<a class="btn vote-button-plus" href="ajax/comment.rate.php?id={$comment->id}&rate=up"><i class="fa fa-chevron-up" aria-hidden="true"></i></a>
+							{if $comment->rate>0}
+								<span class="btn vote-value pos">{$comment->rate}</span>
+							{elseif $comment->rate == 0}
+								<span class="btn text-muted vote-value">{$comment->rate}</span>
+							{else}
+								<span class="btn vote-value neg">{$comment->rate}</span>
+							{/if}
+							<a class="btn vote-button-minus" href="ajax/comment.rate.php?id={$comment->id}&rate=down"><i class="fa fa-chevron-down" aria-hidden="true"></i></a>
+						</span>
+						{if $level == 0}<div id="{$comment->id}" class="comments-item-reply comment"><span data-close-text="{$lang->close}" data-reply-text="{$lang->reply}">{$lang->reply}</span></div>{/if}
+						{if isset($children[$comment->id])}
+							{comments_tree comments=$children[$comment->id] level=$level+1}
+						{/if}
+					</div>
+				</div>
+			</span>
+		{/foreach}
+	{/function}
+	{comments_tree comments = $comments}
+	{include file='pagination.tpl'}
+{else}
+	<p>
+		{$lang->no_comments}
+	</p>
+{/if}
+<a class="btn btn-success mt-2 comments-reply-form" href="#CommentForm" role="button" data-close-text="{$lang->close}" data-comment-text="{$lang->comment_on}">{$lang->comment_on}</a>
+<div class="collapse mb-4" id="CommentForm">
 	<form class="form-horizontal mt-4" id="FormValidation" role="form" method="post">
+		<input type="hidden" id="hidden">
+		<input type="hidden" id="parent" name="parent_id" value="0">
+		<input type="hidden" id="admin" name="admin" value="{if isset($smarty.session.admin) && $smarty.session.admin == 'admin'}1{else}0{/if}">
+		{if isset($smarty.session.admin) && !$smarty.session.admin == 'admin'}
+			<span>
+				<div id="rating" class="row mb-1">
+					<div class="col-12 col-md-6" style="font-size: 1em;">
+						<div id="review"></div>
+					</div>
+					<input type="hidden" name="rating" id="starsInput" value="{$comment_rating}">
+				</div>
+			</span>
+		{/if}
 		<div class="mb-3">
 			<label for="comment">{$lang->comment}</label>
-			<textarea class="form-control" name="text" id="comment" placeholder="{$lang->enter_a_comment}" rows="4" required>{$comment_text}</textarea>
+			<textarea class="form-control" name="text" id="comment" placeholder="{$lang->enter_a_comment}" rows="4" required>{if isset($comment_text)}{$comment_text}{/if}</textarea>
 			<div class="invalid-feedback">{$lang->enter_a_comment}</div>
 		</div>
 		<div class="mb-3">
-			<label for="comment_name">{$lang->name}</label>
-			<input type="text" class="form-control" name="name" id="comment_name" value="{$comment_name|escape}" placeholder="{$lang->enter_your_name}" required>
-			<div class="invalid-feedback">{$lang->name}</div>
+			<label for="comment-name">{$lang->name}</label>
+			<input type="text" class="form-control" id="comment-name" name="name" value="{if isset($comment_text)}{$comment_name|escape}{/if}" placeholder="{$lang->enter_your_name}" required>
+			<div class="invalid-feedback">{$lang->enter_your_name}</div>
 		</div>
 		{if $settings->captcha_product}
 			<div class="row mt-4">

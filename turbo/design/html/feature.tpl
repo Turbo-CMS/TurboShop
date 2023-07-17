@@ -1,4 +1,4 @@
-{if $feature->id}
+{if isset($feature->id)}
 	{$meta_title = $feature->name scope=global}
 {else}
 	{$meta_title = $btr->feature_new scope=global}
@@ -6,7 +6,7 @@
 
 <div class="d-md-flex mb-3">
 	<h1 class="d-inline align-middle me-3">
-		{if !$feature->id}
+		{if !isset($feature->id)}
 			{$btr->feature_add|escape}
 		{else}
 			{$feature->name|escape}
@@ -14,7 +14,7 @@
 	</h1>
 </div>
 
-{if $message_success}
+{if isset($message_success)}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -33,7 +33,7 @@
 	</div>
 {/if}
 
-{if $message_error}
+{if isset($message_error)}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -62,18 +62,18 @@
 						<div class="col-lg-10 col-md-9 col-sm-12">
 							<div class="mb-3">
 								<div class="form-label">{$btr->global_title|escape}</div>
-								<input class="form-control" name="name" type="text" value="{$feature->name|escape}">
-								<input name="id" type="hidden" value="{$feature->id|escape}">
+								<input class="form-control" name="name" type="text" value="{if isset($feature->name)}{$feature->name|escape}{/if}">
+								<input name="id" type="hidden" value="{if isset($feature->id)}{$feature->id|escape}{/if}">
 							</div>
 							<div class="row">
 								<div class="col-xs-12 col-lg-6 col-md-6">
 									<div class="mt-2 mb-3">
 										<div class="input-group">
 											<span class="input-group-text">URL</span>
-											<input name="url" class="form-control js-url {if $feature->id}js-disabled{/if}" {if $feature->id}readonly=""{/if} type="text" value="{$feature->url|escape}">
-											<input type="checkbox" id="block-translit" class="d-none" value="1" {if $feature->id}checked=""{/if}>
+											<input name="url" class="form-control js-url {if isset($feature->id)}js-disabled{/if}" {if isset($feature->id)}readonly=""{/if} type="text" value="{if isset($feature->url)}{$feature->url|escape}{/if}">
+											<input type="checkbox" id="block-translit" class="d-none" value="1" {if isset($feature->id)}checked=""{/if}>
 											<span class="input-group-text js-disable-url">
-												{if $feature->id}
+												{if isset($feature->id)}
 													<i class="url-lock"></i>
 												{else}
 													<i class="url-lock url-unlock"></i>
@@ -85,7 +85,7 @@
 								<div class="col-lg-6 col-md-6 col-xs-12">
 									<div class="d-flex justify-content-center align-content-start flex-wrap flex-md-column h-100">
 										<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
-											<input class="form-check-input ms-2" type="checkbox" id="url-in-product" name="url_in_product" value="1" type="checkbox" {if $feature->url_in_product}checked=""{/if}>
+											<input class="form-check-input ms-2" type="checkbox" id="url-in-product" name="url_in_product" value="1" type="checkbox" {if isset($feature->url_in_product)}checked=""{/if}>
 											<label class="form-check-label ms-2" for="url-in-product">{$btr->feature_url_in_product|escape}</label>
 										</div>
 									</div>
@@ -95,12 +95,16 @@
 						<div class="col-lg-2 col-md-3 col-sm-12">
 							<div class="d-flex justify-content-center align-content-center flex-wrap flex-md-column h-100">
 								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
-									<input class="form-check-input ms-2" type="checkbox" id="in-filter" name="in_filter" value="1" type="checkbox" {if $feature->in_filter}checked=""{/if}>
+									<input class="form-check-input ms-2" type="checkbox" id="in-filter" name="in_filter" value="1" type="checkbox" {if isset($feature->in_filter) && $feature->in_filter}checked=""{/if}>
 									<label class="form-check-label ms-2" for="in-filter">{$btr->feature_filter|escape}</label>
 								</div>
 								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
-									<input class="form-check-input ms-2" type="checkbox" id="is-color" name="is_color" value="1" type="checkbox" {if $feature->is_color}checked=""{/if}>
+									<input class="form-check-input ms-2" type="checkbox" id="is-color" name="is_color" value="1" type="checkbox" {if isset($feature->is_color) && $feature->is_color}checked=""{/if}>
 									<label class="form-check-label ms-2" for="is-color">{$btr->color_filter|escape}</label>
+								</div>
+								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
+									<input class="form-check-input ms-2" type="checkbox" id="is-size" name="is_size" value="1" type="checkbox" {if isset($feature->is_size) && $feature->is_size}checked=""{/if}>
+									<label class="form-check-label ms-2" for="is-size">{$btr->size_filter|escape}</label>
 								</div>
 							</div>
 						</div>
@@ -140,10 +144,12 @@
 							</div>
 							<div class="col-12 col-md-6 col-lg-6">
 								<select class="selectpicker js-select-all-categories px-0" multiple name="feature_categories[]" size="15" data-selected-text-format="count">
-									{function name=category_select selected_id=$product_category level=0}
+									{function name=category_select level=0}
 										{foreach $categories as $category}
-											<option value='{$category->id}' {if in_array($category->id, $feature_categories)}selected{/if} category_name='{$category->single_name}'>{section name=sp loop=$level}&nbsp;&nbsp;&nbsp;&nbsp;{/section}{$category->name}</option>
-											{category_select categories=$category->subcategories selected_id=$selected_id  level=$level+1}
+											<option value="{$category->id}" {if in_array($category->id, $feature_categories)}selected{/if} {if isset($category->single_name)}category_name="{$category->single_name}" {/if}>{section name=sp loop=$level}--{/section} {$category->name}</option>
+											{if isset($category->subcategories)}
+												{category_select categories=$category->subcategories level=$level+1}
+											{/if}
 										{/foreach}
 									{/function}
 									{category_select categories=$categories}
@@ -235,7 +241,7 @@
 			$('.js-select-all-categories option').prop("selected", $(this).is(':checked'));
 			$('.js-select-all-categories').selectpicker('refresh');
 		});
-		
+
 		$(function() {
 			$('input[name="name"]').keyup(function() {
 				if (!$('#block-translit').is(':checked')) {
@@ -265,7 +271,6 @@
 		}
 
 		$(function() {
-			/* Call an ajax entity update */
 			if ($(".js-ajax-update-options").size() > 0) {
 				$(document).on("click", ".js-ajax-update-options", function() {
 					ajax_update_options($(this));
@@ -286,18 +291,18 @@
 					type: "POST",
 					dataType: 'json',
 					url: "ajax/update_options.php",
-					data: {feature_id: '{/literal}{$feature->id}{literal}', value: value, translit: translit, old_value: old_value, session_id : session_id},
-					success: function(data) {
+					data: {feature_id: '{/literal}{if isset($feature->id)}{$feature->id}{/if}{literal}', value: value, translit: translit, old_value: old_value, session_id: session_id},
+					success: function (data) {
 						var msg = "";
 						if (data) {
 							$this.removeClass('unapproved');
-							notyf.success({message: '{/literal}{$btr->global_success|escape}{literal}', dismissible: true});
-								if (value == "approved" || value == "processed") {
-									$this.closest("div").find(".js-answer_btn").show();
-									$this.closest(".js-row").removeClass('unapproved');
-								}
+							notyf.success({ message: '{/literal}{$btr->global_success|escape}{literal}', dismissible: true });
+							if (value == "approved" || value == "processed") {
+								$this.closest("div").find(".js-answer_btn").show();
+								$this.closest(".js-row").removeClass('unapproved');
+							}
 						} else {
-							notyf.error({message: '{/literal}{$btr->global_error|escape}{literal}', dismissible: true});
+							notyf.error({ message: '{/literal}{$btr->global_error|escape}{literal}', dismissible: true });
 						}
 					}
 				});

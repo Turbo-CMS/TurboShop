@@ -1,76 +1,102 @@
 <?php
 
-require_once('Turbo.php');
+require_once 'Turbo.php';
 
 class Coupons extends Turbo
 {
 
-	/*
-	*
-	* The function returns a coupon by its id or url
-	* (depending on the argument type, int - id, string - code)
-	* @param $id coupon id or code
-	*
-	*/
-	public function get_coupon($id)
+	/**
+	 * Get coupon
+	 */
+	public function getCoupon($id)
 	{
-		if (gettype($id) == 'string')
-			$where = $this->db->placehold('WHERE c.code=? ', $id);
-		else
-			$where = $this->db->placehold('WHERE c.id=? ', $id);
+		if (is_string($id)) {
+			$where = $this->db->placehold('WHERE c.code=?', $id);
+		} else {
+			$where = $this->db->placehold('WHERE c.id=?', $id);
+		}
 
-		$query = $this->db->placehold("SELECT c.id, c.code, c.value, c.type, c.expire, min_order_price, c.single, c.usages,
-										((DATE(NOW()) <= DATE(c.expire) OR c.expire IS NULL) AND (c.usages=0 OR NOT c.single)) AS valid
-		                               FROM __coupons c $where LIMIT 1");
-		if ($this->db->query($query))
+		$query = $this->db->placehold(
+			"SELECT 
+				c.id, 
+				c.code, 
+				c.value, 
+				c.type, 
+				c.expire, 
+				min_order_price, 
+				c.single, 
+				c.usages,
+				((DATE(NOW()) <= DATE(c.expire) OR c.expire IS NULL) AND (c.usages=0 OR NOT c.single)) AS valid
+			 FROM 
+				 __coupons c 
+			 $where 
+			 LIMIT 1"
+		);
+
+		if ($this->db->query($query)) {
 			return $this->db->result();
-		else
+		} else {
 			return false;
+		}
 	}
 
-	/*
-	*
-	* The function returns an array of coupons that match the filter
-	* @param $filter
-	*
-	*/
-	public function get_coupons($filter = array())
+	/**
+	 * Get coupons
+	 */
+	public function getCoupons($filter = [])
 	{
-		// Default
 		$limit = 1000;
 		$page = 1;
-		$coupon_id_filter = '';
-		$valid_filter = '';
-		$keyword_filter = '';
+		$couponIdFilter = '';
+		$validFilter = '';
+		$keywordFilter = '';
 
-		if (isset($filter['limit']))
-			$limit = max(1, intval($filter['limit']));
+		if (isset($filter['limit'])) {
+			$limit = max(1, (int) $filter['limit']);
+		}
 
-		if (isset($filter['page']))
-			$page = max(1, intval($filter['page']));
+		if (isset($filter['page'])) {
+			$page = max(1, (int) $filter['page']);
+		}
 
-		if (!empty($filter['id']))
-			$coupon_id_filter = $this->db->placehold('AND c.id in(?@)', (array)$filter['id']);
+		if (!empty($filter['id'])) {
+			$couponIdFilter = $this->db->placehold('AND c.id IN(?@)', (array) $filter['id']);
+		}
 
-		if (isset($filter['valid']))
-			if ($filter['valid'])
-				$valid_filter = $this->db->placehold('AND ((DATE(NOW()) <= DATE(c.expire) OR c.expire IS NULL) AND (c.usages=0 OR NOT c.single))');
-			else
-				$valid_filter = $this->db->placehold('AND NOT ((DATE(NOW()) <= DATE(c.expire) OR c.expire IS NULL) AND (c.usages=0 OR NOT c.single))');
+		if (isset($filter['valid'])) {
+			if ($filter['valid']) {
+				$validFilter = $this->db->placehold('AND ((DATE(NOW()) <= DATE(c.expire) OR c.expire IS NULL) AND (c.usages=0 OR NOT c.single))');
+			} else {
+				$validFilter = $this->db->placehold('AND NOT ((DATE(NOW()) <= DATE(c.expire) OR c.expire IS NULL) AND (c.usages=0 OR NOT c.single))');
+			}
+		}
 
 		if (isset($filter['keyword'])) {
 			$keywords = explode(' ', $filter['keyword']);
-			foreach ($keywords as $keyword)
-				$keyword_filter .= $this->db->placehold('AND (b.name LIKE "%' . $this->db->escape(trim($keyword)) . '%" OR b.meta_keywords LIKE "%' . $this->db->escape(trim($keyword)) . '%") ');
+			foreach ($keywords as $keyword) {
+				$keywordFilter .= $this->db->placehold('AND (b.name LIKE "%' . $this->db->escape(trim($keyword)) . '%" OR b.meta_keywords LIKE "%' . $this->db->escape(trim($keyword)) . '%") ');
+			}
 		}
 
-		$sql_limit = $this->db->placehold(' LIMIT ?, ? ', ($page - 1) * $limit, $limit);
+		$sqlLimit = $this->db->placehold(' LIMIT ?, ?', ($page - 1) * $limit, $limit);
 
 		$query = $this->db->placehold(
-			"SELECT c.id, c.code, c.value, c.type, c.expire, min_order_price, c.single, c.usages,
-										((DATE(NOW()) <= DATE(c.expire) OR c.expire IS NULL) AND (c.usages=0 OR NOT c.single)) AS valid
-		                                      FROM __coupons c WHERE 1 $coupon_id_filter $valid_filter $keyword_filter
-		                                      ORDER BY valid DESC, id DESC $sql_limit",
+			"SELECT c.id, 
+					c.code, 
+					c.value, 
+					c.type, 
+					c.expire, 
+					min_order_price, 
+					c.single, 
+					c.usages,
+					((DATE(NOW()) <= DATE(c.expire) OR c.expire IS NULL) AND (c.usages=0 OR NOT c.single)) AS valid
+			 FROM __coupons c 
+			 WHERE 1
+				$couponIdFilter 
+				$validFilter 
+				$keywordFilter
+			 ORDER BY valid DESC, id DESC 
+			 $sqlLimit",
 			$this->settings->date_format
 		);
 
@@ -78,81 +104,82 @@ class Coupons extends Turbo
 		return $this->db->results();
 	}
 
-	/*
-	*
-	* The function calculates the number of posts that match the filter
-	* @param $filter
-	*
-	*/
-	public function count_coupons($filter = array())
+	/**
+	 * Count coupons 
+	 */
+	public function countCoupons($filter = [])
 	{
-		$coupon_id_filter = '';
-		$valid_filter = '';
-		$keyword_filter = '';
+		$couponIdFilter = '';
+		$validFilter = '';
+		$keywordFilter = '';
 
-		if (!empty($filter['id']))
-			$coupon_id_filter = $this->db->placehold('AND c.id in(?@)', (array)$filter['id']);
+		if (!empty($filter['id'])) {
+			$couponIdFilter = $this->db->placehold('AND c.id IN(?@)', (array) $filter['id']);
+		}
 
-		if (isset($filter['valid']))
-			$valid_filter = $this->db->placehold('AND ((DATE(NOW()) <= DATE(c.expire) OR c.expire IS NULL) AND (c.usages=0 OR NOT c.single))');
+		if (isset($filter['valid'])) {
+			$validFilter = $this->db->placehold('AND ((DATE(NOW()) <= DATE(c.expire) OR c.expire IS NULL) AND (c.usages=0 OR NOT c.single))');
+		}
 
 		if (isset($filter['keyword'])) {
 			$keywords = explode(' ', $filter['keyword']);
-			foreach ($keywords as $keyword)
-				$keyword_filter .= $this->db->placehold('AND (b.name LIKE "%' . $this->db->escape(trim($keyword)) . '%" OR b.meta_keywords LIKE "%' . $this->db->escape(trim($keyword)) . '%") ');
+			foreach ($keywords as $keyword) {
+				$keywordFilter .= $this->db->placehold('AND (b.name LIKE "%' . $this->db->escape(trim($keyword)) . '%" OR b.meta_keywords LIKE "%' . $this->db->escape(trim($keyword)) . '%") ');
+			}
 		}
 
-		$query = "SELECT COUNT(distinct c.id) as count
-		          FROM __coupons c WHERE 1 $coupon_id_filter $valid_filter";
+		$query = $this->db->placehold(
+			"SELECT COUNT(distinct c.id) AS count 
+			FROM __coupons c 
+			WHERE 1 $couponIdFilter $validFilter"
+		);
 
-		if ($this->db->query($query))
+		if ($this->db->query($query)) {
 			return $this->db->result('count');
-		else
+		} else {
 			return false;
+		}
 	}
 
-	/*
-	*
-	* Add coupon
-	* @param $coupon
-	*
-	*/
-	public function add_coupon($coupon)
+	/**
+	 * Add coupon
+	 */
+	public function addCoupon($coupon)
 	{
-		if (empty($coupon->single))
+		if (empty($coupon->single)) {
 			$coupon->single = 0;
+		}
+
 		$query = $this->db->placehold("INSERT INTO __coupons SET ?%", $coupon);
 
-		if (!$this->db->query($query))
+		if (!$this->db->query($query)) {
 			return false;
-		else
-			return $this->db->insert_id();
+		} else {
+			return $this->db->insertId();
+		}
 	}
 
-	/*
-	*
-	* Update coupon
-	* @param $id, $coupon
-	*
-	*/
-	public function update_coupon($id, $coupon)
+	/**
+	 * Update coupon
+	 */
+	public function updateCoupon($id, $coupon)
 	{
-		$query = $this->db->placehold("UPDATE __coupons SET ?% WHERE id in(?@) LIMIT ?", $coupon, (array)$id, count((array)$id));
+		$query = $this->db->placehold("UPDATE __coupons SET ?% WHERE id IN(?@) LIMIT ?", $coupon, (array) $id, count((array) $id));
 		$this->db->query($query);
+
 		return $id;
 	}
 
-	/*
-	*
-	* Delete coupon
-	* @param $id
-	*
-	*/
-	public function delete_coupon($id)
+	/**
+	 * Deletes coupon
+	 */
+	public function deleteCoupon($id)
 	{
 		if (!empty($id)) {
-			$query = $this->db->placehold("DELETE FROM __coupons WHERE id=? LIMIT 1", intval($id));
+			$query = $this->db->placehold("DELETE FROM __coupons WHERE id=? LIMIT 1", (int) $id);
 			return $this->db->query($query);
 		}
+
+		return false;
 	}
 }

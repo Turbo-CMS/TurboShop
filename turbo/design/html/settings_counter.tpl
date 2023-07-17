@@ -4,7 +4,7 @@
 	<h1 class="d-inline align-middle me-3">{$btr->user_scripts|escape}</h1>
 </div>
 
-{if $message_success}
+{if isset($message_success)}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -41,16 +41,16 @@
 												<div class="col-md-12">
 													<div class="mb-3">
 														<div class="form-label">{$btr->counters_counter_name|escape}</div>
-														<input name="counters[name][]" class="form-control" value="{$c->name|escape}">
+														<input name="counters[name][]" class="form-control" value="{if isset($c->name)}{$c->name|escape}{/if}">
 													</div>
 												</div>
 												<div class="col-md-12">
 													<div class="mb-3">
 														<div class="form-label">{$btr->counters_counter_position|escape}</div>
 														<select name="counters[position][]" class="selectpicker">
-															<option value="head" {if $c->position == 'head'} selected{/if}>{$btr->counters_position_head|escape}</option>
-															<option value="body_top" {if $c->position == 'body_top'} selected{/if}>{$btr->counters_position_body_top|escape}</option>
-															<option value="body_bottom" {if $c->position == 'body_bottom'} selected{/if}>{$btr->counters_position_body_bottom|escape}</option>
+															<option value="head" {if isset($c->position) && $c->position == 'head'}selected{/if}>{$btr->counters_position_head|escape}</option>
+															<option value="body_top" {if isset($c->position) && $c->position == 'body_top'}selected{/if}>{$btr->counters_position_body_top|escape}</option>
+															<option value="body_bottom" {if isset($c->position) && $c->position == 'body_bottom'}selected{/if}>{$btr->counters_position_body_bottom|escape}</option>
 														</select>
 													</div>
 												</div>
@@ -61,7 +61,7 @@
 												<div class="col-md-12">
 													<div class="mb-3">
 														<div class="form-label">{$btr->counters_counter_code|escape}</div>
-														<textarea name="counters[code][]" class="form-control turbo-textarea">{$c->code|escape}</textarea>
+														<textarea name="counters[code][]" class="form-control turbo-textarea">{if isset($c->code)}{$c->code|escape}{/if}</textarea>
 													</div>
 												</div>
 											</div>
@@ -93,9 +93,9 @@
 										<div class="mb-3">
 											<div class="form-label">{$btr->counters_counter_position|escape}</div>
 											<select name="counters[position][]" class="selectpicker">
-												<option value="head" {if $c->position == 'head'}selected{/if}>{$btr->counters_position_head|escape}</option>
-												<option value="body_top" {if $c->position == 'body_top'}selected{/if}>{$btr->counters_position_body_top|escape}</option>
-												<option value="body_bottom" {if $c->position == 'body_bottom'}selected{/if}>{$btr->counters_position_body_bottom|escape}</option>
+												<option value="head">{$btr->counters_position_head|escape}</option>
+												<option value="body_top">{$btr->counters_position_body_top|escape}</option>
+												<option value="body_bottom">{$btr->counters_position_body_bottom|escape}</option>
 											</select>
 										</div>
 									</div>

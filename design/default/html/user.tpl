@@ -11,9 +11,9 @@
 
 <h1 class="mt-4">{$user->name|escape}</h1>
 
-<h5>{if $group->discount>0}{$lang->your_discount} &mdash; {$group->discount}%{/if}</h5>
+<h5>{if isset($group) && $group->discount > 0}{$lang->your_discount} &mdash; {$group->discount}%{/if}</h5>
 
-{if $error}
+{if isset($error)}
 	<div class="alert alert-danger" role="alert">
 		{if $error == 'empty_name'}
 			{$lang->enter_your_name}
@@ -33,19 +33,19 @@
 	<form class="form-horizontal mt-4" role="form" method="post">
 		<div class="mb-3">
 			<label for="name">{$lang->name}</label>
-			<input type="text" class="form-control" name="name" id="name" value="{$name|escape}" placeholder="{$lang->enter_your_name}" maxlength="255">
+			<input type="text" class="form-control" name="name" id="name" value="{if isset($name)}{$name|escape}{/if}" placeholder="{$lang->enter_your_name}" maxlength="255">
 		</div>
 		<div class="mb-3">
 			<label for="email">Email</label>
-			<input type="text" class="form-control" name="email" id="email" value="{$email|escape}" placeholder="{$lang->enter_your_email}" maxlength="255">
+			<input type="text" class="form-control" name="email" id="email" value="{if isset($email)}{$email|escape}{/if}" placeholder="{$lang->enter_your_email}" maxlength="255">
 		</div>
 		<div class="mb-3">
 			<label for="phone">{$lang->phone}</label>
-			<input type="text" class="form-control" name="phone" id="phone" value="{$phone|escape}" placeholder="{$lang->enter_phone_number}" maxlength="255">
+			<input type="text" class="form-control" name="phone" id="phone" value="{if isset($phone)}{$phone|escape}{/if}" placeholder="{$lang->enter_phone_number}" maxlength="255">
 		</div>
 		<div class="mb-3">
 			<label for="address">{$lang->address}</label>
-			<input type="text" class="form-control" name="address" id="address" value="{$address|escape}" placeholder="{$lang->enter_the_address}" maxlength="255">
+			<input type="text" class="form-control" name="address" id="address" value="{if isset($address)}{$address|escape}{/if}" placeholder="{$lang->enter_the_address}" maxlength="255">
 		</div>
 		<div class="mb-3">
 			<label for="password"><a class="text-decoration-none" data-bs-toggle="collapse" href="#collapsePassword" role="button" aria-expanded="false" aria-controls="collapsePassword">{$lang->change_password}</a></label>
@@ -66,7 +66,7 @@
 	<ul class="list-group list-group-flush">
 		{foreach $orders as $order}
 			<li class="list-group-item">
-				{$order->date|date} <a href='{$lang_link}order/{$order->url}'>{$lang->index_order}{$order->id}</a>
+				{$order->date|date} <a href='{$lang_link}order/{$order->url}'>{$lang->global_order}{$order->id}</a>
 				{if $order->paid == 1}{$lang->paid},{/if}
 				{if $order->status == 0}
 					{$lang->waiting_processing}

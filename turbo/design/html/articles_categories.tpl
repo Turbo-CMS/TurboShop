@@ -37,7 +37,7 @@
 										<div class="js-row {if $level == 1}turbo-list-body-item{/if} js-sort-item body-narrow row-narrow">
 											<div class="turbo-list-row {if $level > 1}js-sort-item{/if} narrow">
 												<input type="hidden" name="positions[{$category->id}]" value="{$category->position}">
-												{if $category->subcategories}
+												{if isset($category->subcategories)}
 													<div class="turbo-list-heading turbo-list-subicon">
 														<a href="javascript:;" class="js-ajax-toggle" data-toggle="0" data-category_id="{$category->id}">
 															<i class="icon-category plus-category"></i>
@@ -89,7 +89,7 @@
 													</div>
 												</div>
 											</div>
-											{if $category->subcategories}
+											{if isset($category->subcategories)}
 												<div class="js-ajax-categories categories-sub-block subcategories-level-{$level} sortable" style="display: none;">
 													{categories_tree articles_categories=$category->subcategories level=$level+1}
 												</div>
@@ -132,21 +132,22 @@
 		{/if}
 	</div>
 </div>
+
 <script>
 	$(document).on("click", ".js-ajax-toggle", function() {
 		elem = $(this);
 		var el = document.querySelectorAll("div.sortable , .js-ajax-categories.sortable");
 		for (i = 0; i < el.length; i++) {
 			var sortable = Sortable.create(el[i], {
-				handle: ".move-zone", // Drag handle selector within list items
-				sort: true, // sorting inside list
-				animation: 150, // ms, animation speed moving items when sorting, `0` — without animation
-				scroll: true, // or HTMLElement
-				ghostClass: "sortable-ghost", // Class name for the drop placeholder
-				chosenClass: "sortable-chosen", // Class name for the chosen item
-				dragClass: "sortable-drag", // Class name for the dragging item
-				scrollSensitivity: 30, // px, how near the mouse must be to an edge to start scrolling.
-				scrollSpeed: 10, // px
+				handle: ".move-zone",
+				sort: true,
+				animation: 150,
+				scroll: true,
+				ghostClass: "sortable-ghost",
+				chosenClass: "sortable-chosen",
+				dragClass: "sortable-drag",
+				scrollSensitivity: 30,
+				scrollSpeed: 10,
 			});
 		}
 		elem.closest(".js-row").children(".js-ajax-categories").slideToggle(500);

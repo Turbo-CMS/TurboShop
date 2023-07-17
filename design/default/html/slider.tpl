@@ -1,7 +1,7 @@
 {get_banner var=banner_1 group='1'}
-{if $banner_1->items}
+{if isset($banner_1->items)}
 	<!-- Slider -->
-	<div id="MainSlider" class="carousel slide my-4 {if $smarty.cookies.mode == 'mode'}bg-body-tertiary{else}bg-light carousel-dark{/if} rounded" data-bs-ride="carousel">
+	<div id="MainSlider" class="carousel slide my-4 {if isset($smarty.cookies.mode) && $smarty.cookies.mode == 'mode'}bg-body-tertiary{else}bg-light carousel-dark{/if} rounded" data-bs-ride="carousel">
 		<div class="carousel-indicators">
 			{foreach $banner_1->items as $s name=indicator}
 				<button type="button" data-bs-target="#MainSlider" data-bs-slide-to="{$smarty.foreach.indicator.index}" aria-label="Slide {$smarty.foreach.indicator.index}" {if $smarty.foreach.indicator.first}class="active" aria-current="true" {/if}></button>

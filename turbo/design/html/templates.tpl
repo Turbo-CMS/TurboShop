@@ -2,9 +2,9 @@
 	{$meta_title = "`$btr->global_template` $template_file" scope=global}
 {/if}
 
-<h1 class="h3 mb-3">{$btr->global_theme|escape} {$theme}, {$btr->global_folder|escape} {if $smarty.get.dir}{$smarty.get.dir}{else}html{/if}, {$btr->global_template|escape} {$template_file}</h1>
+<h1 class="h3 mb-3">{$btr->global_theme|escape} {$theme}, {$btr->global_folder|escape} {if isset($smarty.get.dir)}{$smarty.get.dir}{else}html{/if}, {$btr->global_template|escape} {$template_file}</h1>
 
-{if $message_error}
+{if isset($message_error)}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -38,11 +38,11 @@
 <nav aria-label="breadcrumb">
 	<ol class="breadcrumb mb-3">
 		<li class="breadcrumb-item"><a href="{url module=TemplatesAdmin file=null dir=null}" class="text-decoration-none text-muted"><i class="align-middle text-warning mt-n1" data-feather="folder"></i> html</a></li>
-		{if $smarty.get.dir && !$template_file}
+		{if isset($smarty.get.dir) && !$template_file}
 			<li class="breadcrumb-item active">
 				{$smarty.get.dir}
 			</li>
-		{elseif $smarty.get.dir && $template_file}
+		{elseif isset($smarty.get.dir) && $template_file}
 			<li class="breadcrumb-item active">
 				<a href="/turbo/index.php?module=TemplatesAdmin&dir={$smarty.get.dir}" class="text-decoration-none text-muted"><i class="align-middle text-warning mt-n1" data-feather="folder"></i> {$smarty.get.dir}</a>
 			</li>
@@ -197,20 +197,19 @@
 
 	<script>
 		$(function() {
-			// Saving the code by ajax
 			function save() {
 				{/literal}
-				{if $settings->admin_theme == "dark"}
-					$('.CodeMirror').css('background-color', '#0e5e46');
-				{else}
-					$('.CodeMirror').css('background-color', '#d2f1e8');
-				{/if}
+					{if $settings->admin_theme == "dark"}
+						$('.CodeMirror').css('background-color', '#0e5e46');
+					{else}
+						$('.CodeMirror').css('background-color', '#d2f1e8');
+					{/if}
 				{literal}
 				content = editor.getValue();
 				$.ajax({
 					type: 'POST',
 					url: 'ajax/save_template.php',
-					data: {'content': content, 'theme':'{/literal}{$theme}{literal}', 'template': '{/literal}{$template_file}{literal}', 'dir': '{/literal}{$smarty.get.dir}{literal}', 'session_id': '{/literal}{$smarty.session.id}{literal}'},
+					data: {'content': content, 'theme':'{/literal}{$theme}{literal}', 'template': '{/literal}{$template_file}{literal}', 'dir': '{/literal}{if isset($smarty.get.dir)}{$smarty.get.dir}{/if}{literal}', 'session_id': '{/literal}{$smarty.session.id}{literal}'},
 					success: function(data) {
 						$('.CodeMirror').animate({'background-color': '#eef2f4'},500);
 					},
@@ -218,12 +217,10 @@
 				});
 			}
 			
-			// Clicked the Save button
 			$('.js-save').on('click', function() {
 				save();
 			});
 			
-			// Processing ctrl+s
 			var isCtrl = false;
 			var isCmd = false;
 			$(document).keyup(function(e) {

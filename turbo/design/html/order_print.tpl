@@ -6,12 +6,11 @@
 	<base href="{$config->root_url}/">
 	<title>{$btr->global_order_number|escape} {$order->id}</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<meta name="description" content="{$meta_description|escape}">
+	<meta name="description" content="{if isset($meta_description)}{$meta_description|escape}{/if}">
 	<style>
 		body {
 			width: 1000px;
 			height: 1414px;
-			/* to centre page on screen*/
 			margin-left: auto;
 			margin-right: auto;
 			border: 1px solid black;
@@ -247,7 +246,7 @@
 				<th>{$btr->global_total|escape}</th>
 				<td class="total">{$order->total_price}&nbsp;{$currency->sign|escape}</td>
 			</tr>
-			{if $payment_method}
+			{if isset($payment_method)}
 				<tr>
 					<td colspan="2">{$btr->order_print_payment|escape} {$payment_method->name}</td>
 				</tr>
@@ -259,5 +258,4 @@
 		</table>
 	</div>
 </body>
-
 </html>

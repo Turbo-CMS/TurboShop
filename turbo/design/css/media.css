@@ -124,7 +124,7 @@
 	}
 
 	.turbo-list .turbo-list-coupon-name {
-		width: calc(100% - 157px);
+		width: calc(100% - 160px);
 	}
 
 	.turbo-list .turbo-list-users-name {
@@ -143,7 +143,7 @@
 		width: calc(100% - 360px);
 	}
 
-	.turbo-list .turbo-list-import-name {
+.turbo-list .turbo-list-import-name {
 		width: calc(100% - 345px);
 	}
 
@@ -427,19 +427,23 @@
 		width: calc(100% - 90px);
 	}
 
-	.turbo-list .subcomments-level-2 .turbo-list-comments-name {
-		width: calc(100% - 130px);
-	}
-
-	.turbo-list .subcomments-level-3 .turbo-list-comments-name {
-		width: calc(100% - 160px);
-	}
-
 	.turbo-list .turbo-list-categories-name {
 		width: calc(100% - 60px);
 	}
 
 	.turbo-list .turbo-list-related-name {
+		width: calc(100% - 50px);
+	}
+	
+	.turbo-list .turbo-list-recommended-name {
+		width: calc(100% - 50px);
+	}
+	
+	.turbo-list .turbo-list-files-name {
+		width: calc(100% - 50px);
+	}
+	
+	.turbo-list .turbo-list-video-name {
 		width: calc(100% - 50px);
 	}
 
@@ -622,25 +626,7 @@
 		width: 0px;
 	}
 
-	.turbo-list .subcomments-level-2 .turbo-list-subcomment {
-		margin-left: 0px;
-		width: 0px;
-	}
-
-	.turbo-list .subcomments-level-3 .turbo-list-subcomment {
-		margin-left: 0px;
-		width: 0px;
-	}
-
 	.turbo-list .subcomments-level-1 .turbo-list-comments-name {
-		width: 100%;
-	}
-
-	.turbo-list .subcomments-level-2 .turbo-list-comments-name {
-		width: 100%;
-	}
-
-	.turbo-list .subcomments-level-3 .turbo-list-comments-name {
 		width: 100%;
 	}
 

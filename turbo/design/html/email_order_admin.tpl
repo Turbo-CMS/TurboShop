@@ -528,13 +528,13 @@
                                                         {/if}
                                                         {if $order->address}
                                                         <tr valign="top">
-                                                            <td class="es-p5t es-p5b" width="180px"><span>{$btr->global_adress|escape}:</span></td>
+                                                            <td class="es-p5t es-p5b" width="180px"><span>{$btr->global_address|escape}:</span></td>
                                                             <td class="es-p5t es-p5b"><span>{$order->address|escape}</span></td>
                                                         </tr>
                                                         {/if}
                                                         {if $order->comment}
                                                         <tr valign="top">
-                                                            <td class="es-p5t es-p5b" width="180px"><span>{$btr->email_order_comment|escape}:</span></td>
+                                                            <td class="es-p5t es-p5b" width="180px"><span>{$btr->global_comment|escape}:</span></td>
                                                             <td class="es-p5t es-p5b"><span>{$order->comment|escape|nl2br}</span></td>
                                                         </tr>
                                                         {/if}
@@ -627,28 +627,30 @@
 															<tbody>
 																<tr>
 																	<td align="center">
-																		{$img_flag=0}
-																		{$image_array=","|explode:$purchase->variant->images_ids}
-																			{foreach $purchase->product->images as $image}
-																				{if $image->id|in_array:$image_array}
-																					{if $img_flag==0}{$image_toshow=$image}{/if}
-																					{$img_flag=1}
-																				{/if}
-																			{/foreach}
-																		{if $img_flag ne 0}
-																			<a href="{$config->root_url}/products/{$purchase->product->url}">
-																				<img src="{$image_toshow->filename|resize:120:120}" alt="{$purchase->product->name|escape}">
-																			</a>
-																		{else}
-																			{$image = $purchase->product->images|first}
-																			{if $image}
+																		{if isset($purchase->product->images)}
+																			{$img_flag=0}
+																			{$image_array=","|explode:$purchase->variant->images_ids}
+																				{foreach $purchase->product->images as $image}
+																					{if $image->id|in_array:$image_array}
+																						{if $img_flag==0}{$image_toshow=$image}{/if}
+																						{$img_flag=1}
+																					{/if}
+																				{/foreach}
+																			{if $img_flag ne 0}
 																				<a href="{$config->root_url}/products/{$purchase->product->url}">
-																					<img src="{$image->filename|resize:120:120}" alt="{$purchase->product->name|escape}">
+																					<img src="{$image_toshow->filename|resize:120:120}" alt="{$purchase->product->name|escape}">
 																				</a>
 																			{else}
-																				<a href="{$config->root_url}/products/{$purchase->product->url}">
-																					<img style="width: 100px; height: 100px;" src="{$config->root_url}/design/{$settings->theme}/images/no-photo.png" alt="{$purchase->product->name|escape}" title="{$purchase->product->name|escape}">
-																				</a>
+																				{$image = $purchase->product->images|first}
+																				{if $image}
+																					<a href="{$config->root_url}/products/{$purchase->product->url}">
+																						<img src="{$image->filename|resize:120:120}" alt="{$purchase->product->name|escape}">
+																					</a>
+																				{else}
+																					<a href="{$config->root_url}/products/{$purchase->product->url}">
+																						<img style="width: 100px; height: 100px;" src="{$config->root_url}/design/{$settings->theme}/images/no-photo.png" alt="{$purchase->product->name|escape}" title="{$purchase->product->name|escape}">
+																					</a>
+																				{/if}
 																			{/if}
 																		{/if}
 																	</td>
@@ -678,7 +680,7 @@
 																						{/if}
 																					</td>
 																					<td style="text-align: center;" width="60">
-																						{$purchase->amount} {if $purchase->units}{$purchase->units|escape}{else}{$settings->units}{/if}
+																						{$purchase->amount} {if isset($purchase->units)}{$purchase->units|escape}{else}{$settings->units}{/if}
 																					</td>
 																					<td style="text-align: center;" width="100">
 																						<b>{$purchase->price|convert:$currency->id}&nbsp;{$currency->sign}</b>

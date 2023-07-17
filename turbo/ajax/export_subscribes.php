@@ -1,84 +1,82 @@
 <?php
 
 session_start();
-require_once('../../api/Turbo.php');
+require_once '../../api/Turbo.php';
 
 class ExportAjax extends Turbo
 {
+	private $columnNames = [
+		'email' => 'Email'
+	];
 
-	private $columns_names = array(
-		'email' =>            'Email'
-	);
-
-	private $column_delimiter = ';';
-	private $count_subscribes = 5;
-	private $export_files_dir = '../files/export_users/';
-	private $filename = 'subscribes.csv';
+	private $columnDelimiter = ';';
+	private $countSubscribes = 5;
+	private $exportFilesDir = '../files/export_users/';
+	private $fileName = 'subscribes.csv';
 
 	public function fetch()
 	{
-
 		if (!$this->managers->access('subscribes')) {
 			return false;
 		}
 
-		// Excel only eats 1251
 		$this->db->query('SET NAMES cp1251');
 
-		// Page to be exported
 		$page = $this->request->get('page');
-		if (empty($page) || $page == 1) {
+
+		if (empty($page) || $page === 1) {
 			$page = 1;
-			// If you started over, delete the old export file
-			if (is_writable($this->export_files_dir . $this->filename)) {
-				unlink($this->export_files_dir . $this->filename);
+
+			if (is_writable($this->exportFilesDir . $this->fileName)) {
+				unlink($this->exportFilesDir . $this->fileName);
 			}
 		}
 
-		// Opening the export file for adding
-		$f = fopen($this->export_files_dir . $this->filename, 'ab');
+		$file = fopen($this->exportFilesDir . $this->fileName, 'ab');
 
-		// If you started from the beginning - add the column names to the first line
 		if ($page == 1) {
-			fputcsv($f, $this->columns_names, $this->column_delimiter);
+			fputcsv($file, $this->columnNames, $this->columnDelimiter);
 		}
 
-		$filter = array();
+		$filter = [];
 		$filter['page'] = $page;
-		$filter['limit'] = $this->count_subscribes;
+		$filter['limit'] = $this->countSubscribes;
 		$filter['sort'] = $this->request->get('sort');
 		$filter['keyword'] = $this->request->get('keyword');
 
-		// Select users
-		$users = array();
-		foreach ($this->subscribes->get_subscribes($filter) as $s) {
-			$str = array();
-			foreach ($this->columns_names as $n => $c) {
-				$str[] = $s->$n;
+		$subscribes = $this->subscribes->get_subscribes($filter);
+
+		foreach ($subscribes as $subscribe) {
+			$str = [];
+
+			foreach ($this->columnNames as $name => $column) {
+				$str[] = $subscribe->$name;
 			}
 
-			fputcsv($f, $str, $this->column_delimiter);
+			fputcsv($file, $str, $this->columnDelimiter);
 		}
 
-		$total_subscribes = $this->subscribes->count_subscribes();
+		$totalSubscribes = $this->subscribes->count_subscribes();
 
-		if ($this->count_subscribes * $page < $total_subscribes) {
-			return array('end' => false, 'page' => $page, 'totalpages' => $total_subscribes / $this->count_subscribes);
+		if ($this->countSubscribes * $page < $totalSubscribes) {
+			return ['end' => false, 'page' => $page, 'totalPages' => $totalSubscribes / $this->countSubscribes];
 		} else {
-			return array('end' => true, 'page' => $page, 'totalpages' => $total_subscribes / $this->count_subscribes);
+			return ['end' => true, 'page' => $page, 'totalPages' => $totalSubscribes / $this->countSubscribes];
 		}
 
-		fclose($f);
+		fclose($file);
 	}
 }
 
-$export_ajax = new ExportAjax();
-$data = $export_ajax->fetch();
+$exportAjax = new ExportAjax();
+$data = $exportAjax->fetch();
+
 if ($data) {
 	header("Content-type: application/json; charset=utf-8");
 	header("Cache-Control: must-revalidate");
 	header("Pragma: no-cache");
 	header("Expires: -1");
+
 	$json = json_encode($data);
 	print $json;
 }

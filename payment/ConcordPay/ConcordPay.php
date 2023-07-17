@@ -55,13 +55,13 @@ class ConcordPay extends Turbo
         if (empty($button_text)) {
             $button_text = $this->translations->proceed_to_checkout;
         }
-        $order     = $this->orders->get_order((int)$order_id);
-        $purchases = $this->orders->get_purchases(array('order_id' => (int)$order->id));
+        $order     = $this->orders->getOrder((int)$order_id);
+        $purchases = $this->orders->getPurchases(array('order_id' => (int)$order->id));
 
-        $payment_method   = $this->payment->get_payment_method($order->payment_method_id);
-        $payment_currency = $this->money->get_currency((int)$payment_method->currency_id);
+        $payment_method   = $this->payment->getPaymentMethod($order->payment_method_id);
+        $payment_currency = $this->money->getCurrency((int)$payment_method->currency_id);
 
-        $settings = $this->payment->get_payment_settings($payment_method->id);
+        $settings = $this->payment->getPaymentSettings($payment_method->id);
         $amount   = round($this->money->convert($order->total_price, $payment_method->currency_id, false), 2);
         $currency = $payment_currency->code ?? self::CURRENCY_UAH;
 

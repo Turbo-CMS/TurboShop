@@ -1,91 +1,121 @@
 <?php
 
-require_once('Turbo.php');
+require_once 'Turbo.php';
 
 class FAQ extends Turbo
 {
-
-	/*
-	*
-	* Function returns FAQ by its id
-	* @param $id id faq
-	*
-	*/
-	public function get_faq($id)
+	/**
+	 * Get FAQ 
+	 */
+	public function getFaq($id)
 	{
-		if (is_int($id))
-			$where = $this->db->placehold(' WHERE f.id=? ', intval($id));
+		if (is_int($id)) {
+			$where = $this->db->placehold('WHERE f.id=?', (int) $id);
+		}
 
-		$lang_sql = $this->languages->get_query(array('object' => 'faq'));
+		$langSql = $this->languages->getQuery(['object' => 'faq']);
 
-		$query = $this->db->placehold("SELECT f.id, f.name, f.answer, f.visible, f.position, f.last_modified, $lang_sql->fields
-		                               FROM __faq f $lang_sql->join $where LIMIT 1");
-		if ($this->db->query($query))
+		$query = $this->db->placehold(
+			"SELECT
+				f.id,
+				f.name,
+				f.answer,
+				f.visible,
+				f.position,
+				f.last_modified,
+				$langSql->fields
+			FROM __faq f
+				$langSql->join
+			$where
+			LIMIT 1"
+		);
+
+		if ($this->db->query($query)) {
 			return $this->db->result();
-		else
+		} else {
 			return false;
+		}
 	}
 
-	/*
-	*
-	* The function returns an array of FAQs that match the filter
-	* @param $filter
-	*
-	*/
-	public function get_faqs($filter = array())
+	/**
+	 * Get FAQs
+	 */
+	public function getFaqs($filter = [])
 	{
-		// Default
 		$limit = 1000;
 		$page = 1;
-		$faq_id_filter = '';
-		$visible_filter = '';
-		$keyword_filter = '';
+		$faqIdFilter = '';
+		$visibleFilter = '';
+		$keywordFilter = '';
 		$order = 'f.position DESC';
-		$faq = array();
 
-		$lang_id  = $this->languages->lang_id();
-		$px = ($lang_id ? 'l' : 'f');
+		$langId = $this->languages->langId();
+		$px = ($langId ? 'l' : 'f');
 
-		if (isset($filter['limit']))
-			$limit = max(1, intval($filter['limit']));
+		if (isset($filter['limit'])) {
+			$limit = max(1, (int) $filter['limit']);
+		}
 
-		if (isset($filter['page']))
-			$page = max(1, intval($filter['page']));
+		if (isset($filter['page'])) {
+			$page = max(1, (int) $filter['page']);
+		}
 
-		if (!empty($filter['id']))
-			$faq_id_filter = $this->db->placehold('AND f.id in(?@)', (array)$filter['id']);
+		if (!empty($filter['id'])) {
+			$faqIdFilter = $this->db->placehold('AND f.id IN(?@)', (array) $filter['id']);
+		}
 
-		if (isset($filter['visible']))
-			$visible_filter = $this->db->placehold('AND f.visible = ?', intval($filter['visible']));
+		if (isset($filter['visible'])) {
+			$visibleFilter = $this->db->placehold('AND f.visible=?', (int) $filter['visible']);
+		}
 
-		if (!empty($filter['sort']))
+		if (!empty($filter['sort'])) {
 			switch ($filter['sort']) {
 				case 'position':
 					$order = 'f.position DESC';
 					break;
 			}
+		}
 
 		if (isset($filter['keyword'])) {
 			$keywords = explode(' ', $filter['keyword']);
-			foreach ($keywords as $keyword)
-				$keyword_filter .= $this->db->placehold('AND (' . $px . '.name LIKE "%' . $this->db->escape(trim($keyword)) . '%") ');
+			foreach ($keywords as $keyword) {
+				$keywordFilter .= $this->db->placehold('AND (' . $px . '.name LIKE "%' . $this->db->escape(trim($keyword)) . '%") ');
+			}
 		}
 
-		$sql_limit = $this->db->placehold(' LIMIT ?, ? ', ($page - 1) * $limit, $limit);
+		$sqlLimit = $this->db->placehold('LIMIT ?, ?', ($page - 1) * $limit, $limit);
 
-		$lang_sql = $this->languages->get_query(array('object' => 'faq'));
+		$langSql = $this->languages->getQuery(['object' => 'faq',]);
 
-		$query = $this->db->placehold("SELECT f.id, f.name, f.answer, f.visible, f.position, f.last_modified, $lang_sql->fields
-		                                      FROM __faq f $lang_sql->join WHERE 1 $faq_id_filter $visible_filter $keyword_filter
-		                                      ORDER BY $order $sql_limit");
+		$query = $this->db->placehold(
+			"SELECT 
+				f.id, 
+				f.name, 
+				f.answer,
+				f.visible,
+				f.position,
+				f.last_modified,
+				$langSql->fields
+			FROM 
+				__faq f
+				$langSql->join
+			WHERE 
+				1 
+				$faqIdFilter 
+				$visibleFilter
+				$keywordFilter
+			ORDER BY 
+				$order
+				$sqlLimit"
+		);
 
 		if ($this->settings->cached == 1 && empty($_SESSION['admin'])) {
 			if ($result = $this->cache->get($query)) {
-				return $result; // return data from memcached
+				return $result;
 			} else {
-				$this->db->query($query); // otherwise pull from the database
+				$this->db->query($query);
 				$result = $this->db->results();
-				$this->cache->set($query, $result); // put into cache
+				$this->cache->set($query, $result);
 				return $result;
 			}
 		} else {
@@ -94,124 +124,127 @@ class FAQ extends Turbo
 		}
 	}
 
-	/*
-	*
-	* The function calculates the number of faqs that satisfy the filter
-	* @param $filter
-	*
-	*/
-	public function count_faqs($filter = array())
+	/**
+	 * Count FAQs
+	 */
+	public function countFaqs($filter = [])
 	{
-		$faq_id_filter = '';
-		$visible_filter = '';
-		$keyword_filter = '';
+		$faqIdFilter = '';
+		$visibleFilter = '';
+		$keywordFilter = '';
 
-		if (!empty($filter['id']))
-			$post_id_filter = $this->db->placehold('AND f.id in(?@)', (array)$filter['id']);
+		if (!empty($filter['id'])) {
+			$faqIdFilter = $this->db->placehold('AND f.id IN(?@)', (array) $filter['id']);
+		}
 
-		if (isset($filter['visible']))
-			$visible_filter = $this->db->placehold('AND f.visible = ?', intval($filter['visible']));
+		if (isset($filter['visible'])) {
+			$visibleFilter = $this->db->placehold('AND f.visible = ?', (int) $filter['visible']);
+		}
 
 		if (isset($filter['keyword'])) {
 			$keywords = explode(' ', $filter['keyword']);
-			foreach ($keywords as $keyword)
-				$keyword_filter .= $this->db->placehold('AND (f.name LIKE "%' . $this->db->escape(trim($keyword)) . '%") ');
+			foreach ($keywords as $keyword) {
+				$keywordFilter .= $this->db->placehold('AND (f.name LIKE "%' . $this->db->escape(trim($keyword)) . '%") ');
+			}
 		}
 
-		$query = "SELECT COUNT(distinct f.id) as count
-		          FROM __faq f WHERE 1 $faq_id_filter $visible_filter $keyword_filter";
+		$query = $this->db->placehold(
+			"SELECT COUNT(DISTINCT f.id) AS count 
+          	FROM __faq f 
+          	WHERE 1 $faqIdFilter $visibleFilter $keywordFilter"
+		);
 
 		if ($this->settings->cached == 1 && empty($_SESSION['admin'])) {
 			if ($result = $this->cache->get($query)) {
-				return $result; // return data from memcached
+				return $result;
 			} else {
 				if ($this->db->query($query)) {
 					$result = $this->db->result('count');
-					$this->cache->set($query, $result); // put into cache
+					$this->cache->set($query, $result);
 					return $result;
-				} else
+				} else {
 					return false;
+				}
 			}
 		} else {
-			if ($this->db->query($query))
+			if ($this->db->query($query)) {
 				return $this->db->result('count');
-			else
+			} else {
 				return false;
+			}
 		}
 	}
 
-	/*
-	*
-	* FAQ creation
-	* @param $faq
-	*
-	*/
-	public function add_faq($faq)
+	/**
+	 * Add FAQ
+	 */
+	public function addFaq($faq)
 	{
-		$faq = (object)$faq;
+		$faq = (object) $faq;
+		$result = $this->languages->getDescription($faq, 'faq');
 
-		// Check if there is multilingualism and pick up descriptions for translation
-		$result = $this->languages->get_description($faq, 'faq');
-		if (!empty($result->data)) $faq = $result->data;
+		if (!empty($result->data)) {
+			$faq = $result->data;
+		}
 
 		$this->settings->lastModifyFAQ = date("Y-m-d H:i:s");
 		$query = $this->db->placehold('INSERT INTO __faq SET ?%', $faq);
-		if (!$this->db->query($query))
+
+		if (!$this->db->query($query)) {
 			return false;
+		}
 
-		$id = $this->db->insert_id();
+		$id = $this->db->insertId();
 
-		// If there is a description to translate. Specify the language to update
 		if (!empty($result->description)) {
-			$this->languages->action_description($id, $result->description, 'faq');
+			$this->languages->actionDescription($id, $result->description, 'faq');
 		}
 
 		$this->db->query("UPDATE __faq SET position=id WHERE id=?", $id);
+
 		return $id;
 	}
 
-	/*
-	*
-	* Update FAQ
-	* @param $faq
-	*
-	*/
-	public function update_faq($id, $faq)
+	/**
+	 * Update FAQ
+	 */
+	public function updateFaq($id, $faq)
 	{
-		$faq = (object)$faq;
+		$faq = (object) $faq;
+		$result = $this->languages->getDescription($faq, 'faq');
 
-		// Check if there is multilingualism and pick up descriptions for translation
-		$result = $this->languages->get_description($faq, 'faq');
-		if (!empty($result->data)) $faq = $result->data;
+		if (!empty($result->data)) {
+			$faq = $result->data;
+		}
 
 		$this->settings->lastModifyFAQ = date("Y-m-d H:i:s");
-		$query = $this->db->placehold("UPDATE __faq SET `last_modified`=NOW(), ?% WHERE id in(?@) LIMIT ?", $faq, (array)$id, count((array)$id));
+		$query = $this->db->placehold("UPDATE __faq SET `last_modified`=NOW(), ?% WHERE id IN(?@) LIMIT ?", $faq, (array) $id, count((array) $id));
 		$this->db->query($query);
 
-		// If there is a description to translate. Specify the language to update
 		if (!empty($result->description)) {
-			$this->languages->action_description($id, $result->description, 'faq', $this->languages->lang_id());
+			$this->languages->actionDescription($id, $result->description, 'faq', $this->languages->langId());
 		}
 
 		return $id;
 	}
 
-	/*
-	*
-	* Delete FAQ
-	* @param $id
-	*
-	*/
-	public function delete_faq($id)
+	/**
+	 * Delete FAQ
+	 */
+	public function deleteFaq($id)
 	{
 		if (!empty($id)) {
-			$query = $this->db->placehold("DELETE FROM __faq WHERE id=? LIMIT 1", intval($id));
+			$query = $this->db->placehold("DELETE FROM __faq WHERE id=? LIMIT 1", (int) $id);
+
 			if ($this->db->query($query)) {
-				$this->db->query("DELETE FROM __lang_faq WHERE faq_id=?", intval($id));
-				if ($this->db->query($query))
+				$this->db->query("DELETE FROM __lang_faq WHERE faq_id=?", (int) $id);
+
+				if ($this->db->query($query)) {
 					return true;
+				}
 			}
 		}
+
 		return false;
 	}
 }

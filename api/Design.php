@@ -1,299 +1,312 @@
 <?php
 
-require_once(dirname(__FILE__) . '/' . 'Turbo.php');
-require_once(dirname(dirname(__FILE__)) . '/smarty/libs/Smarty.class.php');
+require_once __DIR__ . '/Turbo.php';
+require_once dirname(__DIR__) . '/smarty/libs/Smarty.class.php';
 require_once 'MobileDetect.php';
+
 class Design extends Turbo
 {
 	public $smarty;
 	public $detect;
+
 	public function __construct()
 	{
 		parent::__construct();
 
-		// Creating and configuring Smarty
-		$this->detect = new Mobile_Detect();
+		$this->detect = new MobileDetect();
+
 		$this->smarty = new Smarty();
+
 		$this->smarty->compile_check = $this->config->smarty_compile_check;
 		$this->smarty->caching = $this->config->smarty_caching;
 		$this->smarty->cache_lifetime = $this->config->smarty_cache_lifetime;
 		$this->smarty->debugging = $this->config->smarty_debugging;
 		$this->smarty->error_reporting = E_ALL & ~E_WARNING & ~E_NOTICE & ~E_USER_DEPRECATED;
 
-		// We take the theme from the settings
 		$theme = $this->settings->theme;
 
 		$this->smarty->compile_dir = $this->config->root_dir . '/compiled/' . $theme;
 		$this->smarty->template_dir = $this->config->root_dir . '/design/' . $theme . '/html';
 
-		// Create a folder for the compiled templates of the current theme
-		if (!is_dir($this->smarty->compile_dir))
+		if (!is_dir($this->smarty->compile_dir)) {
 			mkdir($this->smarty->compile_dir, 0777);
+		}
 
 		$this->smarty->cache_dir = 'cache';
 
-		$this->smarty->registerPlugin('modifier', 'resize_articles', array($this, 'resize_articles_modifier'));
-		$this->smarty->registerPlugin('modifier', 'resize_catalog',  array($this, 'resize_catalog_modifier'));
-		$this->smarty->registerPlugin('modifier', 'resize_brands',   array($this, 'resize_brands_modifier'));
-		$this->smarty->registerPlugin('modifier', 'resize_banners',  array($this, 'resize_banners_modifier'));
-		$this->smarty->registerPlugin('modifier', 'resize_posts',    array($this, 'resize_posts_modifier'));
-		$this->smarty->registerPlugin('modifier', 'resize',		     array($this, 'resize_modifier'));
-		$this->smarty->registerPlugin('modifier', 'token',		     array($this, 'token_modifier'));
-		$this->smarty->registerPlugin('modifier', 'plural',		     array($this, 'plural_modifier'));
-		$this->smarty->registerPlugin('function', 'url', 		     array($this, 'url_modifier'));
-		$this->smarty->registerPlugin('modifier', 'first',		     array($this, 'first_modifier'));
-		$this->smarty->registerPlugin('modifier', 'cut',		     array($this, 'cut_modifier'));
-		$this->smarty->registerPlugin('modifier', 'date',		     array($this, 'date_modifier'));
-		$this->smarty->registerPlugin('modifier', 'time',		     array($this, 'time_modifier'));
-		$this->smarty->registerPlugin('function', 'api',		     array($this, 'api_plugin'));
+		$this->smarty->registerPlugin('modifier', 'resize_articles', [$this, 'resizeArticlesModifier']);
+		$this->smarty->registerPlugin('modifier', 'resize_catalog', [$this, 'resizeCatalogModifier']);
+		$this->smarty->registerPlugin('modifier', 'resize_brands', [$this, 'resizeBrandsModifier']);
+		$this->smarty->registerPlugin('modifier', 'resize_banners', [$this, 'resizeBannersModifier']);
+		$this->smarty->registerPlugin('modifier', 'resize_posts', [$this, 'resizePostsModifier']);
+		$this->smarty->registerPlugin('modifier', 'resize', [$this, 'resizeModifier']);
+		$this->smarty->registerPlugin('modifier', 'token', [$this, 'tokenModifier']);
+		$this->smarty->registerPlugin('modifier', 'plural', [$this, 'pluralModifier']);
+		$this->smarty->registerPlugin('function', 'url', [$this, 'urlModifier']);
+		$this->smarty->registerPlugin('modifier', 'first', [$this, 'firstModifier']);
+		$this->smarty->registerPlugin('modifier', 'cut', [$this, 'cutModifier']);
+		$this->smarty->registerPlugin('modifier', 'date', [$this, 'dateModifier']);
+		$this->smarty->registerPlugin('modifier', 'time', [$this, 'timeModifier']);
+		$this->smarty->registerPlugin('function', 'api', [$this, 'apiPlugin']);
+		$this->smarty->registerPlugin('modifier', 'floor', [$this, 'floorModifier']);
+		$this->smarty->registerPlugin('modifier', 'ceil', [$this, 'ceilModifier']);
+		$this->smarty->registerPlugin('modifier', 'stristr', [$this, 'stristrModifier']);
+		$this->smarty->registerPlugin('modifier', 'in_array', [$this, 'inArrayModifier']);
+		$this->smarty->registerPlugin('modifier', 'array_slice', [$this, 'arraySliceModifier']);
+		$this->smarty->registerPlugin('modifier', 'getimagesize', [$this, 'getimagesizeModifier']);
+		$this->smarty->registerPlugin('modifier', 'urlencode', [$this, 'urlencodeModifier']);
 
-		if ($this->config->smarty_html_minify)
+		if ($this->config->smarty_html_minify) {
 			$this->smarty->loadFilter('output', 'trimwhitespace');
+		}
 	}
 
+	/**
+	 * Assign
+	 */
 	public function assign($var, $value)
 	{
 		return $this->smarty->assign($var, $value);
 	}
 
+	/**
+	 * Fetch
+	 */
 	public function fetch($template)
 	{
-		// We transfer to the design what may be needed in it
-		$this->assign('config',		$this->config);
-		$this->assign('settings',	$this->settings);
+		$this->assign('config', $this->config);
+		$this->assign('settings', $this->settings);
+
 		return $this->smarty->fetch($template);
 	}
 
-	public function set_templates_dir($dir)
+	/**
+	 * Set templates directory
+	 */
+	public function setTemplatesDir($dir)
 	{
 		$this->smarty->template_dir = $dir;
 	}
 
-	public function set_compiled_dir($dir)
+	/**
+	 * Set compiled directory
+	 */
+	public function setCompiledDir($dir)
 	{
 		$this->smarty->compile_dir = $dir;
 	}
 
-	public function get_var($name)
+	/**
+	 * Get var
+	 */
+	public function getVar($name)
 	{
 		return $this->smarty->getTemplateVars($name);
 	}
 
-	public function clear_cache()
+	/**
+	 * Clear cached
+	 */
+	public function clearCache()
 	{
 		$this->smarty->clearAllCache();
 	}
 
-	public function resize_modifier($filename, $width = 0, $height = 0, $set_watermark = false)
+	/**
+	 * Resize Image
+	 */
+	private function resizeImage($filename, $width, $height, $setWatermark, $resizedImagesDir)
 	{
-		$resized_filename = $this->image->add_resize_params($filename, $width, $height, $set_watermark);
-		$resized_filename_encoded = $resized_filename;
+		$resizedFilename = $this->image->addResizeParams($filename, $width, $height, $setWatermark);
+		$resizedFilenameEncoded = $resizedFilename;
 
-		$size = ($width ? $width : 0) . 'x' . ($height ? $height : 0) . ($set_watermark ? "w" : '');
-		$image_sizes = array();
-		if ($this->settings->image_sizes)
-			$image_sizes = explode('|', $this->settings->image_sizes);
-		if (!in_array($size, $image_sizes)) {
-			$image_sizes[] = $size;
-			$this->settings->image_sizes = implode('|', $image_sizes);
+		$size = ($width ?: 0) . 'x' . ($height ?: 0) . ($setWatermark ? "w" : '');
+
+		static $imageSizes;
+
+		if (!$imageSizes) {
+			$imageSizes = explode('|', $this->settings->image_sizes ?? '');
 		}
 
-		if (substr($resized_filename_encoded, 0, 7) == 'http://' || substr($resized_filename_encoded, 0, 8) == 'https://')
-			$resized_filename_encoded = rawurlencode($resized_filename_encoded);
-
-		$resized_filename_encoded = rawurlencode($resized_filename_encoded);
-
-		return $this->config->root_url . '/' . $this->config->resized_images_dir . $resized_filename_encoded;
-	}
-
-	public function resize_catalog_modifier($filename, $width = 0, $height = 0, $set_watermark = false)
-	{
-		$resized_filename = $this->image->add_resize_params($filename, $width, $height, $set_watermark);
-		$resized_filename_encoded = $resized_filename;
-
-		$size = ($width ? $width : 0) . 'x' . ($height ? $height : 0) . ($set_watermark ? "w" : '');
-		$image_sizes = array();
-		if ($this->settings->image_sizes)
-			$image_sizes = explode('|', $this->settings->image_sizes);
-		if (!in_array($size, $image_sizes)) {
-			$image_sizes[] = $size;
-			$this->settings->image_sizes = implode('|', $image_sizes);
+		if (!in_array($size, $imageSizes, true)) {
+			$imageSizes[] = $size;
+			$this->settings->image_sizes = implode('|', $imageSizes);
 		}
 
-		if (substr($resized_filename_encoded, 0, 7) == 'http://' || substr($resized_filename_encoded, 0, 8) == 'https://')
-			$resized_filename_encoded = rawurlencode($resized_filename_encoded);
-
-
-		$resized_filename_encoded = rawurlencode($resized_filename_encoded);
-
-
-		return $this->config->root_url . '/' . $this->config->resized_category_images_dir . $resized_filename_encoded;
-	}
-
-	public function resize_posts_modifier($filename, $width = 0, $height = 0, $set_watermark = false)
-	{
-		$resized_filename = $this->image->add_resize_params($filename, $width, $height, $set_watermark);
-		$resized_filename_encoded = $resized_filename;
-
-		$size = ($width ? $width : 0) . 'x' . ($height ? $height : 0) . ($set_watermark ? "w" : '');
-		$image_sizes = array();
-		if ($this->settings->image_sizes)
-			$image_sizes = explode('|', $this->settings->image_sizes);
-		if (!in_array($size, $image_sizes)) {
-			$image_sizes[] = $size;
-			$this->settings->image_sizes = implode('|', $image_sizes);
+		if (substr($resizedFilenameEncoded, 0, 7) == 'http://' || substr($resizedFilenameEncoded, 0, 8) == 'https://') {
+			$resizedFilenameEncoded = rawurlencode($resizedFilenameEncoded);
 		}
 
-		if (substr($resized_filename_encoded, 0, 7) == 'http://' || substr($resized_filename_encoded, 0, 8) == 'https://')
-			$resized_filename_encoded = rawurlencode($resized_filename_encoded);
+		$resizedFilenameEncoded = rawurlencode($resizedFilenameEncoded);
 
-
-		$resized_filename_encoded = rawurlencode($resized_filename_encoded);
-
-
-		return $this->config->root_url . '/' . $this->config->resized_posts_images_dir . $resized_filename_encoded;
+		return $this->config->root_url . '/' . $resizedImagesDir . $resizedFilenameEncoded;
 	}
 
-	public function resize_articles_modifier($filename, $width = 0, $height = 0, $set_watermark = false)
+	/**
+	 * Resize modifier
+	 */
+	public function resizeModifier($filename, $width = 0, $height = 0, $setWatermark = false)
 	{
-		$resized_filename = $this->image->add_resize_params($filename, $width, $height, $set_watermark);
-		$resized_filename_encoded = $resized_filename;
-
-		$size = ($width ? $width : 0) . 'x' . ($height ? $height : 0) . ($set_watermark ? "w" : '');
-		$image_sizes = array();
-		if ($this->settings->image_sizes)
-			$image_sizes = explode('|', $this->settings->image_sizes);
-		if (!in_array($size, $image_sizes)) {
-			$image_sizes[] = $size;
-			$this->settings->image_sizes = implode('|', $image_sizes);
-		}
-
-		if (substr($resized_filename_encoded, 0, 7) == 'http://' || substr($resized_filename_encoded, 0, 8) == 'https://')
-			$resized_filename_encoded = rawurlencode($resized_filename_encoded);
-
-
-		$resized_filename_encoded = rawurlencode($resized_filename_encoded);
-
-
-		return $this->config->root_url . '/' . $this->config->resized_articles_images_dir . $resized_filename_encoded;
+		return $this->resizeImage($filename, $width, $height, $setWatermark, $this->config->resized_images_dir);
 	}
 
-	public function resize_brands_modifier($filename, $width = 0, $height = 0, $set_watermark = false)
+	/**
+	 * Resize catalog
+	 */
+	public function resizeCatalogModifier($filename, $width = 0, $height = 0, $setWatermark = false)
 	{
-		$resized_filename = $this->image->add_resize_params($filename, $width, $height, $set_watermark);
-		$resized_filename_encoded = $resized_filename;
-
-		$size = ($width ? $width : 0) . 'x' . ($height ? $height : 0) . ($set_watermark ? "w" : '');
-		$image_sizes = array();
-		if ($this->settings->image_sizes)
-			$image_sizes = explode('|', $this->settings->image_sizes);
-		if (!in_array($size, $image_sizes)) {
-			$image_sizes[] = $size;
-			$this->settings->image_sizes = implode('|', $image_sizes);
-		}
-
-		if (substr($resized_filename_encoded, 0, 7) == 'http://' || substr($resized_filename_encoded, 0, 8) == 'https://')
-			$resized_filename_encoded = rawurlencode($resized_filename_encoded);
-
-
-		$resized_filename_encoded = rawurlencode($resized_filename_encoded);
-
-
-		return $this->config->root_url . '/' . $this->config->resized_brands_images_dir . $resized_filename_encoded;
+		return $this->resizeImage($filename, $width, $height, $setWatermark, $this->config->resized_category_images_dir);
 	}
 
-	public function resize_banners_modifier($filename, $width = 0, $height = 0, $set_watermark = false)
+	/**
+	 * Resize posts 
+	 */
+	public function resizePostsModifier($filename, $width = 0, $height = 0, $setWatermark = false)
 	{
-		$resized_filename = $this->image->add_resize_params($filename, $width, $height, $set_watermark);
-		$resized_filename_encoded = $resized_filename;
-
-		$size = ($width ? $width : 0) . 'x' . ($height ? $height : 0) . ($set_watermark ? "w" : '');
-		$image_sizes = array();
-		if ($this->settings->image_sizes)
-			$image_sizes = explode('|', $this->settings->image_sizes);
-		if (!in_array($size, $image_sizes)) {
-			$image_sizes[] = $size;
-			$this->settings->image_sizes = implode('|', $image_sizes);
-		}
-
-		if (substr($resized_filename_encoded, 0, 7) == 'http://' || substr($resized_filename_encoded, 0, 8) == 'https://')
-			$resized_filename_encoded = rawurlencode($resized_filename_encoded);
-
-
-		$resized_filename_encoded = rawurlencode($resized_filename_encoded);
-
-
-		return $this->config->root_url . '/' . $this->config->resized_banners_images_dir . $resized_filename_encoded;
+		return $this->resizeImage($filename, $width, $height, $setWatermark, $this->config->resized_posts_images_dir);
 	}
 
-	public function token_modifier($text)
+	/**
+	 * Resize articles
+	 */
+	public function resizeArticlesModifier($filename, $width = 0, $height = 0, $setWatermark = false)
+	{
+		return $this->resizeImage($filename, $width, $height, $setWatermark, $this->config->resized_articles_images_dir);
+	}
+
+	/**
+	 * Resize brands
+	 */
+	public function resizeBrandsModifier($filename, $width = 0, $height = 0, $setWatermark = false)
+	{
+		return $this->resizeImage($filename, $width, $height, $setWatermark, $this->config->resized_brands_images_dir);
+	}
+
+	/**
+	 * Resize banners
+	 */
+	public function resizeBannersModifier($filename, $width = 0, $height = 0, $setWatermark = false)
+	{
+		return $this->resizeImage($filename, $width, $height, $setWatermark, $this->config->resized_banners_images_dir);
+	}
+
+	/**
+	 * Token modifier
+	 */
+	public function tokenModifier($text)
 	{
 		return $this->config->token($text);
 	}
 
-	public function url_modifier($params)
+	/**
+	 * URL modifier
+	 */
+	public function urlModifier($params)
 	{
-		if (is_array(reset($params)))
+		if (is_array(reset($params))) {
 			return $this->request->url(reset($params));
-		else
-			return $this->request->url($params);
-	}
-
-	public function plural_modifier($number, $singular, $plural1, $plural2 = null)
-	{
-		$number = abs($number);
-		if (!empty($plural2)) {
-			$p1 = $number % 10;
-			$p2 = $number % 100;
-			if ($number == 0)
-				return $plural1;
-			if ($p1 == 1 && !($p2 >= 11 && $p2 <= 19))
-				return $singular;
-			elseif ($p1 >= 2 && $p1 <= 4 && !($p2 >= 11 && $p2 <= 19))
-				return $plural2;
-			else
-				return $plural1;
 		} else {
-			if ($number == 1)
-				return $singular;
-			else
-				return $plural1;
+			return $this->request->url($params);
 		}
 	}
 
-	public function first_modifier($params = array())
+	/**
+	 * Plural modifier
+	 */
+	public function pluralModifier($number, $singular, $plural1, $plural2 = null)
 	{
-		if (!is_array($params))
-			return false;
+		$number = is_numeric($number) ? abs($number) : 0;
+
+		if (!empty($plural2)) {
+			$p1 = $number % 10;
+			$p2 = $number % 100;
+
+			if ($number == 0) {
+				return $plural1;
+			}
+
+			if ($p1 == 1 && !($p2 >= 11 && $p2 <= 19)) {
+				return $singular;
+			} elseif ($p1 >= 2 && $p1 <= 4 && !($p2 >= 11 && $p2 <= 19)) {
+				return $plural2;
+			} else {
+				return $plural1;
+			}
+		} else {
+			if ($number == 1) {
+				return $singular;
+			} else {
+				return $plural1;
+			}
+		}
+	}
+
+	/**
+	 * First modifier
+	 */
+	public function firstModifier($params = [])
+	{
+		if (!is_array($params)) {
+			return null;
+		}
+
 		return reset($params);
 	}
 
-	public function cut_modifier($array, $num = 1)
+	/**
+	 * Cut modifier
+	 */
+	public function cutModifier($array = [], $num = 1)
 	{
-		if ($num >= 0)
+		if ($num >= 0) {
 			return array_slice($array, $num, count($array) - $num, true);
-		else
+		} else {
 			return array_slice($array, 0, count($array) + $num, true);
+		}
 	}
 
-	public function date_modifier($date, $format = null)
+	/**
+	 * Date modifier
+	 */
+	public function dateModifier($date, $format = null)
 	{
-		if (empty($date))
+		if ($date === null) {
 			$date = date("Y-m-d");
-		return date(empty($format) ? $this->settings->date_format : $format, strtotime($date));
+		}
+
+		if (empty($format)) {
+			$format = $this->settings->date_format;
+		}
+
+		return date($format, strtotime($date));
 	}
 
-	public function time_modifier($date, $format = null)
+	/**
+	 * Time modifier
+	 */
+	public function timeModifier($date, $format = null)
 	{
-		return date(empty($format) ? 'H:i' : $format, @strtotime($date));
+		if ($date === null) {
+			return '';
+		}
+
+		$timestamp = strtotime($date);
+
+		if ($timestamp === false) {
+			return '';
+		}
+
+		return date(empty($format) ? 'H:i' : $format, $timestamp);
 	}
 
-	public function api_plugin($params, &$smarty)
+	/**
+	 * API modifier
+	 */
+	public function apiPlugin($params, Smarty &$smarty)
 	{
-		if (!isset($params['module']))
+		if (!isset($params['module']) || !isset($params['method'])) {
 			return false;
-		if (!isset($params['method']))
-			return false;
+		}
 
 		$module = $params['module'];
 		$method = $params['method'];
@@ -305,14 +318,75 @@ class Design extends Turbo
 		$smarty->assign($var, $res);
 	}
 
-	public function is_mobile()
+	/**
+	 * Is mobile
+	 */
+	public function isMobile()
 	{
-		$res = $this->detect->isMobile();
-		return $res;
+		return $this->detect->isMobile();
 	}
-	public function is_tablet()
+
+	/**
+	 * Is tablet
+	 */
+	public function isTablet()
 	{
-		$res = $this->detect->isTablet();
-		return $res;
+		return $this->detect->isTablet();
+	}
+
+	/**
+	 * Floor modifier
+	 */
+	function floorModifier($number)
+	{
+		return floor($number);
+	}
+
+	/**
+	 * Ceil modifier
+	 */
+	function ceilModifier($number)
+	{
+		return ceil($number);
+	}
+
+	/**
+	 * Stristr modifier
+	 */
+	function stristrModifier($text)
+	{
+		return stristr($text, '');
+	}
+
+	/**
+	 * In array modifier
+	 */
+	function inArrayModifier($value, $array)
+	{
+		return in_array($value, $array);
+	}
+
+	/**
+	 * Array slice modifier
+	 */
+	function arraySliceModifier($input, $start, $length)
+	{
+		return array_slice($input, $start, $length);
+	}
+
+	/**
+	 * Getimagesize modifier
+	 */
+	function getimagesizeModifier($value)
+	{
+		return getimagesize($value);
+	}
+
+	/**
+	 * Urlencode modifier
+	 */
+	function urlencodeModifier($value)
+	{
+		return urlencode($value);
 	}
 }

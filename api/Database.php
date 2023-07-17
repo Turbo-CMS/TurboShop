@@ -1,6 +1,6 @@
 <?php
 
-require_once('Turbo.php');
+require_once 'Turbo.php';
 
 class Database extends Turbo
 {
@@ -8,7 +8,7 @@ class Database extends Turbo
 	private $res;
 
 	/**
-	 * In the constructor we connect the base
+	 * Connects
 	 */
 	public function __construct()
 	{
@@ -17,7 +17,7 @@ class Database extends Turbo
 	}
 
 	/**
-	 * In the destructor, detach from the base
+	 * Disconnects
 	 */
 	public function __destruct()
 	{
@@ -29,61 +29,68 @@ class Database extends Turbo
 	 */
 	public function connect()
 	{
-		// When called again, return the existing link 
-		if (!empty($this->mysqli))
+		if (!empty($this->mysqli)) {
 			return $this->mysqli;
-		// Otherwise, establish a connection
-		else
-			$this->mysqli = new mysqli($this->config->db_server, $this->config->db_user, $this->config->db_password, $this->config->db_name);
+		} else {
+			$this->mysqli = new mysqli(
+				$this->config->db_server,
+				$this->config->db_user,
+				$this->config->db_password,
+				$this->config->db_name
+			);
 
-		// Display a message in case of an error
-		if ($this->mysqli->connect_error) {
-			trigger_error("Could not connect to the database: " . $this->mysqli->connect_error, E_USER_WARNING);
-			return false;
-		}
-		// Or set up a connection
-		else {
-			if ($this->config->db_charset)
-				$this->mysqli->query('SET NAMES ' . $this->config->db_charset);
-			if ($this->config->db_sql_mode)
-				$this->mysqli->query('SET SESSION SQL_MODE = "' . $this->config->db_sql_mode . '"');
-			if ($this->config->db_timezone)
-				$this->mysqli->query('SET time_zone = "' . $this->config->db_timezone . '"');
-			if ($this->config->debug) {
-				$this->mysqli->query('SET profiling = 1');
-				$this->mysqli->query('SET profiling_history_size = 100');
+			if ($this->mysqli->connect_error) {
+				trigger_error("Could not connect to the database: " . $this->mysqli->connect_error, E_USER_WARNING);
+				return false;
+			} else {
+				if ($this->config->db_charset) {
+					$this->mysqli->set_charset($this->config->db_charset);
+				}
+				if ($this->config->db_sql_mode) {
+					$this->mysqli->query('SET SESSION sql_mode = "' . $this->config->db_sql_mode . '"');
+				}
+				if ($this->config->db_timezone) {
+					$this->mysqli->query('SET time_zone = "' . $this->config->db_timezone . '"');
+				}
+				if ($this->config->debug) {
+					$this->mysqli->query('SET profiling = 1');
+					$this->mysqli->query('SET profiling_history_size = 100');
+				}
 			}
 		}
+
 		return $this->mysqli;
 	}
 
 	/**
-	 * Closing the database connection
+	 * Disconnects 
 	 */
 	public function disconnect()
 	{
-		if (!@$this->mysqli->close())
+		if ($this->mysqli->close()) {
 			return true;
-		else
+		} else {
 			return false;
+		}
 	}
 
 	/**
-	 * Database request. The first argument is required - the text of the request.
-	 * When specifying other arguments, placehold() is automatically executed for the request with the substitution of these arguments 
+	 * Database query
 	 */
 	public function query()
 	{
-		if (is_object($this->res))
-			$this->res->free();
+		if (is_object($this->res)) {
+			$this->res->free_result();
+		}
 
-		$args = func_get_args();
-		$q = call_user_func_array(array($this, 'placehold'), $args);
-		return $this->res = $this->mysqli->query($q);
+		$query = call_user_func_array(array($this, 'placehold'), func_get_args());
+		$this->res = $this->mysqli->query($query);
+
+		return $this->res;
 	}
 
 	/**
-	 *  Shielding
+	 * Escapes
 	 */
 	public function escape($str)
 	{
@@ -91,114 +98,142 @@ class Database extends Turbo
 	}
 
 	/**
-	 * Placeholder for requests. Work example: $query = $db->placehold('SELECT name FROM products WHERE id=?', $id); 
+	 * Placeholder
 	 */
 	public function placehold()
 	{
 		$args = func_get_args();
 		$tmpl = array_shift($args);
-		// Replace all __ with a prefix, but only unquoted ones
-		$tmpl = preg_replace('/([^"\'0-9a-z_])__([a-z_]+[^"\'])/i', "\$1" . $this->config->db_prefix . "\$2", $tmpl);
+		$tmpl = preg_replace('/([^"\'0-9a-z_])__([a-z_]+[^"\'])/i', '$1' . $this->config->db_prefix . '$2', $tmpl);
+
 		if (!empty($args)) {
-			$result = $this->sql_placeholder_ex($tmpl, $args, $error);
+			$result = $this->sqlPlaceholderEx($tmpl, $args, $error);
+
 			if ($result === false) {
 				$error = "Placeholder substitution error. Diagnostics: \"$error\"";
 				trigger_error($error, E_USER_WARNING);
 				return false;
 			}
+
 			return $result;
-		} else
+		} else {
 			return $tmpl;
+		}
 	}
 
 	/**
-	 * Returns the results of a query. The optional second argument specifies which column to return instead of the entire array of columns
+	 * Returns
 	 */
 	public function results($field = null)
 	{
-		$results = array();
+		$results = [];
+
 		if (!$this->res) {
 			trigger_error($this->mysqli->error, E_USER_WARNING);
-			return false;
+			return [];
 		}
 
-		if ($this->res->num_rows == 0)
-			return array();
+		if ($this->res->num_rows == 0) {
+			return [];
+		}
 
 		while ($row = $this->res->fetch_object()) {
-			if (!empty($field) && isset($row->$field))
+			if (!empty($field) && isset($row->$field)) {
 				array_push($results, $row->$field);
-			else
+			} else {
 				array_push($results, $row);
+			}
 		}
+
 		return $results;
 	}
 
 	/**
-	 * Returns the first result of the query. The optional second argument specifies which column to return instead of the entire array of columns 
+	 * Result
 	 */
 	public function result($field = null)
 	{
-		$result = array();
 		if (!$this->res) {
-			$this->error_msg = "Could not execute query to database";
-			return 0;
+			throw new \RuntimeException('Could not execute query to database');
 		}
+
 		$row = $this->res->fetch_object();
-		if (!empty($field) && isset($row->$field))
+
+		if ($field != null && isset($row->$field)) {
 			return $row->$field;
-		elseif (!empty($field) && !isset($row->$field))
+		}
+
+		if ($field != null && !isset($row->$field)) {
 			return false;
-		else
-			return $row;
+		}
+
+		return $row;
 	}
 
 	/**
-	 * Returns the last inserted id
+	 * Inserted ID
 	 */
-	public function insert_id()
+	public function insertId()
 	{
+		if (!$this->mysqli instanceof mysqli) {
+			return null;
+		}
+
 		return $this->mysqli->insert_id;
 	}
 
 	/**
-	 * Returns the number of selected rows
+	 * Num rows
 	 */
-	public function num_rows()
+	public function numRows()
 	{
+		if (!$this->res) {
+			return null;
+		}
+
 		return $this->res->num_rows;
 	}
 
 	/**
-	 * Returns the number of affected rows
+	 * Affected rows
 	 */
-	public function affected_rows()
+	public function affectedRows()
 	{
+		if (!$this->mysqli) {
+			return null;
+		}
+
 		return $this->mysqli->affected_rows;
 	}
 
 	/**
-	 * Returns information about MySQL
-	 *
+	 * Get Mysql info
 	 */
-	public function get_mysql_info()
+	public function getMysqlInfo()
 	{
-		$info = array();
+		if (!$this->mysqli) {
+			return [];
+		}
+
+		$info = [];
 		$info['server_info'] = $this->mysqli->server_info;
+
 		return $info;
 	}
 
 	/**
-	 * Placeholder compilation
+	 * Sql compile placeholder
 	 */
-	private function sql_compile_placeholder($tmpl)
+	private function sqlCompilePlaceholder($tmpl)
 	{
-		$compiled = array();
-		$p = 0;	 // current position in the string 
-		$i = 0;	 // placeholder counter
-		$has_named = false;
-		while (false !== ($start = $p = strpos($tmpl, "?", $p))) {
-			// We define the type of placeholder 
+
+		$compiled = [];
+		$p = 0;
+		$i = 0;
+		$hasNamed = false;
+
+		while (false !== ($start = $p = strpos($tmpl, '?', $p))) {
+
 			switch ($c = substr($tmpl, ++$p, 1)) {
 				case '%':
 				case '@':
@@ -206,75 +241,84 @@ class Database extends Turbo
 					$type = $c;
 					++$p;
 					break;
+
 				default:
 					$type = '';
 					break;
 			}
-			// Checking if this placeholder is named: "?keyname" 
+
 			if (preg_match('/^((?:[^\s[:punct:]]|_)+)/', substr($tmpl, $p), $pock)) {
 				$key = $pock[1];
-				if ($type != '#')
-					$has_named = true;
+
+				if ($type != '#') {
+					$hasNamed = true;
+				}
+
 				$p += strlen($key);
 			} else {
 				$key = $i;
-				if ($type != '#')
-					$i++;
+
+				if ($type != '#') {
+					++$i;
+				}
 			}
-			// Save a placeholder entry
-			$compiled[] = array($key, $type, $start, $p - $start);
+
+			$compiled[] = [$key, $type, $start, $p - $start];
 		}
-		return array($compiled, $tmpl, $has_named);
+
+		return [
+			$compiled,
+			$tmpl,
+			$hasNamed
+		];
 	}
 
 	/**
-	 * Placeholder execution
+	 * Sql placeholder ex
 	 */
-	private function sql_placeholder_ex($tmpl, $args, &$errormsg)
+	private function sqlPlaceholderEx($tmpl, $args, &$errormsg)
 	{
-		// Has the request been parsed?.. If not, parse it
-		if (is_array($tmpl))
+		if (is_array($tmpl)) {
 			$compiled = $tmpl;
-		else
-			$compiled	 = $this->sql_compile_placeholder($tmpl);
+		} else {
+			$compiled = $this->sqlCompilePlaceholder($tmpl);
+		}
 
 		list($compiled, $tmpl, $has_named) = $compiled;
 
-		// If there is at least one named placeholder, use first argument as an associative array
-		if ($has_named)
-			$args = @$args[0];
+		if ($has_named) {
+			$args = $args[0] ?? null;
+		}
 
-		// Perform all substitutions in a loop
-		$p	 = 0;				// current position in line
-		$out = '';			// resulting string 
-		$error = false; // were there any mistakes? 
+		$p = 0;
+		$out = '';
+		$error = false;
 
 		foreach ($compiled as $num => $e) {
 			list($key, $type, $start, $length) = $e;
 
-			// Pre-string. 
 			$out .= substr($tmpl, $p, $start - $p);
+
 			$p = $start + $length;
 
-			$repl = '';		// text to replace the current placeholder
-			$errmsg = ''; // error message for this placeholder
+			$repl = '';
+			$errmsg = '';
+
 			do {
-				// Is it a placeholder constant?
 				if ($type === '#') {
-					$repl = @constant($key);
-					if (NULL === $repl)
+					$repl = constant($key);
+					if ($repl === null) {
 						$error = $errmsg = "UNKNOWN_CONSTANT_$key";
-					break;
+					}
 				}
-				// Handling the error 
+
 				if (!isset($args[$key])) {
 					$error = $errmsg = "UNKNOWN_PLACEHOLDER_$key";
 					break;
 				}
-				// We insert a value according to the placeholder type 
+
 				$a = $args[$key];
 				if ($type === '') {
-					// Scalar placeholder
 					if (is_array($a)) {
 						$error = $errmsg = "NOT_A_SCALAR_PLACEHOLDER_$key";
 						break;
@@ -282,41 +326,43 @@ class Database extends Turbo
 					$repl = is_int($a) || is_float($a) ? str_replace(',', '.', $a) : "'" . addslashes($a) . "'";
 					break;
 				}
-				// Otherwise it is an array or a list
-				if (is_object($a))
+
+				if (is_object($a)) {
 					$a = get_object_vars($a);
+				}
 
 				if (!is_array($a)) {
 					$error = $errmsg = "NOT_AN_ARRAY_PLACEHOLDER_$key";
 					break;
 				}
-				if ($type === '@') {
-					// This is a list 
-					foreach ($a as $v) {
-						if (is_null($v))
-							$r = "NULL";
-						else
-							$r = "'" . @addslashes($v) . "'";
 
+				if ($type === '@') {
+					foreach ($a as $v) {
+						if (is_null($v)) {
+							$r = "NULL";
+						} else {
+							$r = "'" . @addslashes($v) . "'";
+						}
 						$repl .= ($repl === '' ? "" : ",") . $r;
 					}
 				} elseif ($type === '%') {
-					// This is a set of key=>value pairs
 					$lerror = array();
 					foreach ($a as $k => $v) {
-						if (!is_string($k))
+						if (!is_string($k)) {
 							$lerror[$k] = "NOT_A_STRING_KEY_{$k}_FOR_PLACEHOLDER_$key";
-						else
+						} else {
 							$k = preg_replace('/[^a-zA-Z0-9_]/', '_', $k);
+						}
 
-						if (is_null($v))
+						if (is_null($v)) {
 							$r = "=NULL";
-						else
+						} else {
 							$r = "='" . @addslashes($v) . "'";
+						}
 
 						$repl .= ($repl === '' ? "" : ", ") . $k . $r;
 					}
-					// If there was an error, compose a message
+
 					if (count($lerror)) {
 						$repl = '';
 						foreach ($a as $k => $v) {
@@ -331,28 +377,34 @@ class Database extends Turbo
 					}
 				}
 			} while (false);
-			if ($errmsg) $compiled[$num]['error'] = $errmsg;
-			if (!$error) $out .= $repl;
+
+			if ($errmsg) {
+				$compiled[$num]['error'] = $errmsg;
+			}
+
+			if (!$error) {
+				$out .= $repl;
+			}
 		}
+
 		$out .= substr($tmpl, $p);
 
-		// If an error occurs, rewrite the resulting string
-		// in the error message (arranging the diagnostic lines
-		// instead of erroneous placeholders).  
 		if ($error) {
 			$out = '';
-			$p	 = 0; // current position
+			$p = 0;
 			foreach ($compiled as $num => $e) {
 				list($key, $type, $start, $length) = $e;
+
 				$out .= substr($tmpl, $p, $start - $p);
 				$p = $start + $length;
+
 				if (isset($e['error'])) {
 					$out .= $e['error'];
 				} else {
 					$out .= substr($tmpl, $start, $length);
 				}
 			}
-			// The last part of the line
+
 			$out .= substr($tmpl, $p);
 			$errormsg = $out;
 			return false;
@@ -362,75 +414,86 @@ class Database extends Turbo
 		}
 	}
 
+	/**
+	 * Dump
+	 */
 	public function dump($filename)
 	{
-		$h = fopen($filename, 'w');
-		$q = $this->placehold("SHOW FULL TABLES LIKE '__%';");
-		$result = $this->mysqli->query($q);
-		while ($row = $result->fetch_row()) {
-			if ($row[1] == 'BASE TABLE')
-				$this->dump_table($row[0], $h);
+		$handle = fopen($filename, 'w');
+		$query = $this->placehold("SHOW FULL TABLES LIKE '__%';");
+		$result = $this->mysqli->query($query);
+
+		while ($table = $result->fetch_row()) {
+			if ($table[1] == 'BASE TABLE') {
+				$this->dumpTable($table[0], $handle);
+			}
 		}
-		fclose($h);
+
+		fclose($handle);
 	}
 
+	/**
+	 * Restore
+	 */
 	function restore($filename)
 	{
 		$templine = '';
 		$h = fopen($filename, 'r');
 
-		// Loop through each line
 		if ($h) {
 			while (!feof($h)) {
 				$line = fgets($h);
-				// Only continue if it's not a comment
 				if (substr($line, 0, 2) != '--' && $line != '') {
-					// Add this line to the current segment
 					$templine .= $line;
-					// If it has a semicolon at the end, it's the end of the query
 					if (substr(trim($line), -1, 1) == ';') {
-						// Perform the query
 						$this->mysqli->query($templine) or print('Error performing query \'<b>' . $templine . '</b>\': ' . $this->mysqli->error . '<br/><br/>');
-						// Reset temp variable to empty
 						$templine = '';
 					}
 				}
 			}
 		}
+
 		fclose($h);
 	}
 
-	public function dump_table($table, $h)
+	/**
+	 * Dump table
+	 */
+	public function dumpTable($table, $h)
 	{
 		$sql = "SELECT * FROM `$table`;";
 		$result = $this->mysqli->query($sql);
+
 		if ($result) {
 			fwrite($h, "/* Data for table $table */\n");
 			fwrite($h, "TRUNCATE TABLE `$table`;\n");
 
-			$num_rows = $result->num_rows;
-			$num_fields = $this->mysqli->field_count;
+			$numRows = $result->num_rows;
+			$numFields = $this->mysqli->field_count;
 
-			if ($num_rows > 0) {
-				$field_type = array();
-				$field_name = array();
+			if ($numRows > 0) {
+				$fieldType = [];
+				$fieldName = [];
 				$meta = $result->fetch_fields();
+
 				foreach ($meta as $m) {
-					array_push($field_type, $m->type);
-					array_push($field_name, $m->name);
+					$fieldType[] = $m->type;
+					$fieldName[] = $m->name;
 				}
-				$fields = implode('`, `', $field_name);
-				fwrite($h,  "INSERT INTO `$table` (`$fields`) VALUES\n");
+
+				$fields = implode('`, `', $fieldName);
+				fwrite($h, "INSERT INTO `$table` (`$fields`) VALUES\n");
+
 				$index = 0;
 				while ($row = $result->fetch_row()) {
 					fwrite($h, "(");
-					for ($i = 0; $i < $num_fields; $i++) {
-						if (is_null($row[$i]))
+					for ($i = 0; $i < $numFields; $i++) {
+						if (is_null($row[$i])) {
 							fwrite($h, "null");
-						else {
-							switch ($field_type[$i]) {
+						} else {
+							switch ($fieldType[$i]) {
 								case 'int':
-									fwrite($h,  $row[$i]);
+									fwrite($h, $row[$i]);
 									break;
 								case 'string':
 								case 'blob':
@@ -438,17 +501,19 @@ class Database extends Turbo
 									fwrite($h, "'" . $this->mysqli->real_escape_string($row[$i]) . "'");
 							}
 						}
-						if ($i < $num_fields - 1)
-							fwrite($h,  ",");
+
+						if ($i < $numFields - 1) {
+							fwrite($h, ",");
+						}
 					}
+
 					fwrite($h, ")");
-
-					if ($index < $num_rows - 1)
-						fwrite($h,  ",");
-					else
+					if ($index < $numRows - 1) {
+						fwrite($h, ",");
+					} else {
 						fwrite($h, ";");
+					}
 					fwrite($h, "\n");
-
 					$index++;
 				}
 			}

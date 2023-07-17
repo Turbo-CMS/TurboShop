@@ -120,8 +120,8 @@
 
 <script>
 	var in_process = false;
-	var keyword='{$keyword|escape}';
-	var sort='{$sort|escape}';
+	var keyword='{if isset($keyword)}{$keyword|escape}{/if}';
+	var sort='{if isset($sort)}{$sort|escape}{/if}';
 
 	{literal}
 		$(function() {
@@ -129,7 +129,7 @@
 			$(document).on('click', '.feather-file-text', function() {
 				Piecon.setOptions({fallback: 'force'});
 				Piecon.setProgress(0);
-				var progress_item = $("#progressbar"); // specify an element selector with animation
+				var progress_item = $("#progressbar");
 				$(".progress").show();
 				do_export('', progress_item);
 			});

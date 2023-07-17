@@ -2,7 +2,7 @@
 
 <h1 class="mb-3">{$btr->images_theme|escape} {$theme|escape}</h1>
 
-{if $message_error}
+{if isset($message_error)}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -32,7 +32,7 @@
 				<div class="card">
 					<div class="card-header px-4 pt-4">
 						<div class="card-actions float-end">
-							{if $message_error == 'theme_locked'}
+							{if isset($message_error) && $message_error == 'theme_locked'}
 								<span class="btn-delete" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->theme_close|escape}">
 									<i class="align-middle" data-feather="lock"></i>
 								</span>
@@ -72,7 +72,7 @@
 			</div>
 		{/foreach}
 	</div>
-	{if !$message_error == 'theme_locked'}
+	{if !$locked}
 		<div class="row mt-2">
 			<div class="col-12">
 				<div class="upload-image"></div>
@@ -124,14 +124,12 @@
 {literal}
 	<script>
 		$(window).on("load", function() {
-
 			$('.js-rename-image').on('click', function() {
 				$(this).closest('.card-header').find('.js-rename-value').toggleClass('d-none');
 				$(this).closest('.card-header').find('.card-title').toggleClass('d-none');
 				$(this).parent().find('.js-rename-value > input').val($(this).data('old-name'))
 			});
 
-			// Delete
 			$(".js-delete-img").on("click", function() {
 				image_name = $(this).data("name");
 			});
@@ -145,11 +143,9 @@
 				$('input[name=delete_image]').val("");
 			});
 
-			// Upload
 			$('.js-add-image').on('click', function() {
 				$('.upload-image').append($('<div class="mb-3"><input class="form-control" type="file" name="upload_images[]"></div>'));
 			});
-
 		});
 	</script>
 {/literal}

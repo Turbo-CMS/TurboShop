@@ -12,7 +12,7 @@
 			<meta itemprop="position" content="{$level++}">
 		</li>
 		<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item">
-			<a itemprop="item" class="text-decoration-none" href="{$lang_link}blog"><span itemprop="name">{$lang->index_blog}</span></a>
+			<a itemprop="item" class="text-decoration-none" href="{$lang_link}blog"><span itemprop="name">{$lang->global_blog}</span></a>
 			<meta itemprop="position" content="{$level++}">
 		</li>
 		<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item active" aria-current="page">
@@ -98,8 +98,4 @@
 {/if}
 
 {* Comments *}
-{if $settings->comments_tree_blog == "on"}
-	{include file='comments/comments_tree_blog.tpl'}
-{else}
-	{include file='comments/comments_blog.tpl'}
-{/if}
+{include file='comments/comments_blog.tpl'}

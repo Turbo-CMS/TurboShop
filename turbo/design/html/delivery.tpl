@@ -12,7 +12,7 @@
 	{/if}
 </h1>
 
-{if $message_success}
+{if isset($message_success)}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -29,7 +29,7 @@
 	</div>
 {/if}
 
-{if $message_error}
+{if isset($message_error)}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -58,14 +58,14 @@
 						<div class="col-lg-10 col-md-9 col-sm-12">
 							<div class="mb-3">
 								<div class="form-label">{$btr->global_title|escape}</div>
-								<input class="form-control mb-h" name="name" type="text" value="{$delivery->name|escape}">
+								<input class="form-control mb-h" name="name" type="text" value="{if isset($delivery->name)}{$delivery->name|escape}{/if}">
 								<input name="id" type="hidden" value="{$delivery->id|escape}">
 							</div>
 						</div>
 						<div class="col-lg-2 col-md-3 col-sm-12">
 							<div class="d-flex justify-content-center align-content-center flex-wrap flex-md-column h-100">
 								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
-									<input class="form-check-input ms-2" type="checkbox" id="enabled" name="enabled" value="1" type="checkbox" {if $delivery->enabled}checked="" {/if}>
+									<input class="form-check-input ms-2" type="checkbox" id="enabled" name="enabled" value="1" type="checkbox" {if isset($delivery->enabled) && $delivery->enabled}checked=""{/if}>
 									<label class="form-check-label ms-2" for="enabled">{$btr->global_enable|escape}</label>
 								</div>
 							</div>
@@ -92,33 +92,33 @@
 				<div class="collapse-card">
 					<div class="card-body">
 						<div class="d-grid d-sm-block">
-							<button type="button" class="btn btn-outline-primary js-type-delivery delivery-type mb-3 me-sm-2 {if $delivery->price > 0}active{/if}" data-type="paid">
+							<button type="button" class="btn btn-outline-primary js-type-delivery delivery-type mb-3 me-sm-2 {if isset($delivery->price) && $delivery->price > 0}active{/if}" data-type="paid">
 								{$btr->delivery_paid|escape}
 							</button>
-							<button type="button" class="btn btn-outline-primary js-type-delivery delivery-type mb-3 me-sm-2 {if $delivery->price == 0 && !$delivery->separate_payment}active{/if}" data-type="free">
+							<button type="button" class="btn btn-outline-primary js-type-delivery delivery-type mb-3 me-sm-2 {if isset($delivery->price) && $delivery->price == 0 && !$delivery->separate_payment}active{/if}" data-type="free">
 								{$btr->deliveries_free|escape}
 							</button>
-							<button type="button" class="btn btn-outline-primary js-type-delivery delivery-type mb-3 {if $delivery->separate_payment}active{/if}" data-type="delivery">
+							<button type="button" class="btn btn-outline-primary js-type-delivery delivery-type mb-3 {if isset($delivery->separate_payment)}active{/if}" data-type="delivery">
 								{$btr->global_paid_separately|escape}
 							</button>
 						</div>
-						<div class="row row-cols-sm-auto align-items-center js-delivery-option gx-3 {if $delivery->price == 0}d-none{/if}">
+						<div class="row row-cols-sm-auto align-items-center js-delivery-option gx-3 {if isset($delivery->price) && $delivery->price == 0}d-none{/if}">
 							<div class="col-12">
 								<label for="price" class="form-label">{$btr->delivery_cost|escape}</label>
 								<div class="input-group mb-2 me-sm-2 dl-price">
-									<input name="price" id="price" class="form-control" type="text" value="{$delivery->price|escape}">
+									<input name="price" id="price" class="form-control" type="text" value="{if isset($delivery->price)}{$delivery->price|escape}{/if}">
 									<div class="input-group-text">{$currency->sign|escape}</div>
 								</div>
 							</div>
 							<div class="col-12">
 								<label for="free-from" class="form-label">{$btr->deliveries_free_from|escape}</label>
 								<div class="input-group mb-2 me-sm-2 dl-price">
-									<input name="free_from" id="free-from" class="form-control" type="text" value="{$delivery->free_from|escape}">
+									<input name="free_from" id="free-from" class="form-control" type="text" value="{if isset($delivery->free_from)}{$delivery->free_from|escape}{/if}">
 									<div class="input-group-text">{$currency->sign|escape}</div>
 								</div>
 							</div>
 						</div>
-						<input class="d-none" name="separate_payment" type="checkbox" value="1" {if $delivery->separate_payment}checked{/if} />
+						<input class="d-none" name="separate_payment" type="checkbox" value="1" {if isset($delivery->separate_payment)}checked{/if}>
 					</div>
 				</div>
 			</div>
@@ -169,7 +169,7 @@
 				</div>
 				<div class="collapse-card">
 					<div class="card-body">
-						<textarea name="description" id="js-editor" class="editor js-editor-class">{$delivery->description|escape}</textarea>
+						<textarea name="description" id="js-editor" class="editor js-editor-class">{if isset($delivery->description)}{$delivery->description|escape}{/if}</textarea>
 						<div class="row">
 							<div class="col-12">
 								<div class="d-grid d-sm-block mt-3">
@@ -200,19 +200,19 @@
 				$(".js-delivery-option").removeClass("d-none");
 				$("input[name=separate_payment]").removeAttr("checked");
 				$(this).addClass("active");
-			break;
+				break;
 			case 'free':
 				$(".js-delivery-option").addClass("d-none");
 				$(".js-delivery-option").find("input").val(0);
 				$("input[name=separate_payment]").removeAttr("checked");
 				$(this).addClass("active");
-			break;
+				break;
 			case 'delivery':
 				$(".js-delivery-option").addClass("d-none");
 				$(".js-delivery-option").find("input").val(0);
 				$("input[name=separate_payment]").trigger("click");
 				$(this).addClass("active");
-			break;
+				break;
 		}
 	});
 </script>

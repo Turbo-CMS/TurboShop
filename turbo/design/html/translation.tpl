@@ -25,7 +25,7 @@
 	</div>
 {/if}
 
-{if $message_success}
+{if isset($message_success)}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -42,7 +42,7 @@
 	</div>
 {/if}
 
-{if $message_error}
+{if isset($message_error)}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -79,7 +79,7 @@
 							<div class="col-12">
 								<div class="mb-3">
 									<div class="form-label">{$btr->translation_name|escape}</div>
-									<input name="label" class="form-control" type="text" value="{$translation->label}" {if $locked_theme}readonly="" {/if} />
+									<input name="label" class="form-control" type="text" value="{if isset($translation->label)}{$translation->label}{/if}" {if $locked_theme}readonly=""{/if} />
 								</div>
 							</div>
 						</div>
@@ -93,7 +93,7 @@
 											</div>
 											{$lang->name|escape}
 										</div>
-										<textarea name="lang_{$lang->label}" class="form-control" rows="5" {if $locked_theme}readonly="" {/if}>{$translation->lang_{$lang->label}}</textarea>
+										<textarea name="lang_{$lang->label}" class="form-control" rows="5" {if $locked_theme}readonly=""{/if}>{if $translation->id}{$translation->lang_{$lang->label}}{/if}</textarea>
 									</div>
 								</div>
 							{/foreach}

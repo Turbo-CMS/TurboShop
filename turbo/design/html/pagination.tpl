@@ -46,6 +46,7 @@
 					<a id="NextLink" class="page-link" href="{url page=$current_page+1}"><i class="align-middle" data-feather="chevron-right"></i></a>
 				</li>
 			{/if}
+			
 			<li class="page-item">
 				<a class="page-link" href="{url page=all}">{$btr->pagination_show_all|escape}</a>
 			</li>

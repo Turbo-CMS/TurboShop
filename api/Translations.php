@@ -1,25 +1,29 @@
 <?php
 
-require_once('Turbo.php');
+require_once 'Turbo.php';
 
 class Translations extends Turbo
 {
-	private $vars = array();
+	private $vars = [];
 
-	function __construct()
+	public function __construct()
 	{
 		parent::__construct();
-		$this->init_translations();
+		$this->initTranslations();
 	}
 
-	public function init_translations()
+	/**
+	 * Initializes translations
+	 */
+	public function initTranslations()
 	{
-		$vars = array();
-		@$lang_label = $_SESSION['lang'] ? $_SESSION['lang'] : $this->settings->lang_label;
-		$language   = $this->languages->languages(array('id' => $this->languages->lang_id));
-		if (!empty($language)) {
-			$translations = $this->languages->get_translations(array('lang' => $language->label));
-			if (!empty($translations)) {
+		$langLabel = $_SESSION['lang'] ?? $this->settings->lang_label;
+		$language = $this->languages->languages(['id' => $this->languages->langId, 'label' => $langLabel]);
+
+		if ($language) {
+			$translations = $this->languages->getTranslations(['lang' => $language->label]);
+
+			if (is_array($translations)) {
 				foreach ($translations as $result) {
 					$this->vars[$result->label] = $result->value;
 				}
@@ -27,14 +31,19 @@ class Translations extends Turbo
 		}
 	}
 
+	/**
+	 * Get translation 
+	 */
 	public function __get($name)
 	{
-		if ($res = parent::__get($name))
+		if ($res = parent::__get($name)) {
 			return $res;
+		}
 
-		if (isset($this->vars[$name]))
+		if (isset($this->vars[$name])) {
 			return $this->vars[$name];
-		else
+		} else {
 			return null;
+		}
 	}
 }

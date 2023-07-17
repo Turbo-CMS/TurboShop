@@ -8,14 +8,16 @@
 {* Featured products *}
 {get_featured_products var=featured_products limit=3}
 {if $featured_products}
-	<header class="section-heading">
+	<div class="section-heading">
 		<a href="{$lang_link}featured" class="btn btn-outline-primary float-end">{$lang->see_all}</a>
 		<h2 class="section-title my-2">{$lang->featured_products}</h2>
-	</header>
+	</div>
 	<hr class="text-black-50">
 	<div class="row">
 		{foreach $featured_products as $product}
-			{include file='grid.tpl'}
+			<div class="col-md-6 col-lg-6 col-xl-4">
+				{include file='grid.tpl'}
+			</div>
 		{/foreach}
 	</div>
 {/if}
@@ -23,14 +25,16 @@
 {* New products *}
 {get_is_new_products var=new_products limit=3}
 {if $new_products}
-	<header class="section-heading">
+	<div class="section-heading">
 		<a href="{$lang_link}new" class="btn btn-outline-primary float-end">{$lang->see_all}</a>
 		<h2 class="section-title my-2">{$lang->new_arrivals}</h2>
-	</header>
+	</div>
 	<hr class="text-black-50">
 	<div class="row">
 		{foreach $new_products as $product}
-			{include file='grid.tpl'}
+			<div class="col-md-6 col-lg-6 col-xl-4">
+				{include file='grid.tpl'}
+			</div>
 		{/foreach}
 	</div>
 {/if}
@@ -38,14 +42,16 @@
 {* Discounted products *}
 {get_discounted_products var=discounted_products limit=3}
 {if $discounted_products}
-	<header class="section-heading">
+	<div class="section-heading">
 		<a href="{$lang_link}sale" class="btn btn-outline-primary float-end">{$lang->see_all}</a>
 		<h2 class="section-title my-2">{$lang->sale}</h2>
-	</header>
+	</div>
 	<hr class="text-black-50">
 	<div class="row">
 		{foreach $discounted_products as $product}
-			{include file='grid.tpl'}
+			<div class="col-md-6 col-lg-6 col-xl-4">
+				{include file='grid.tpl'}
+			</div>
 		{/foreach}
 	</div>
 {/if}
@@ -53,14 +59,16 @@
 {* Hit *}
 {get_is_hit_products var=hit_products limit=3}
 {if $hit_products}
-	<header class="section-heading">
+	<div class="section-heading">
 		<a href="{$lang_link}hit" class="btn btn-outline-primary float-end">{$lang->see_all}</a>
 		<h2 class="section-title my-2">{$lang->bestsellers}</h2>
-	</header>
+	</div>
 	<hr class="text-black-50">
 	<div class="row">
 		{foreach $hit_products as $product}
-			{include file='grid.tpl'}
+			<div class="col-md-6 col-lg-6 col-xl-4">
+				{include file='grid.tpl'}
+			</div>
 		{/foreach}
 	</div>
 {/if}
@@ -88,14 +96,14 @@
 								{/if}
 							</div>
 							<div class="card-body">
-								<a data-category="{$c->id}" class="title text-decoration-none" href="{$lang_link}catalog/{$c->url}">{$c->name|escape}</a>
+								<h5 class="card-title"><a data-category="{$c->id}" class="text-decoration-none" href="{$lang_link}catalog/{$c->url}">{if $c->code}<i class="fal fa-{$c->code|escape} me-1"></i>{/if} {$c->name|escape}</a></h5>
 							</div>
-							{if $c->subcategories}
+							{if isset($c->subcategories)}
 								<ul class="list-group list-group-flush">
 									{foreach $c->subcategories as $cs}
 										{if $cs->featured}
 											{if $cs->visible}
-												<li class="list-group-item"><a data-category="{$cs->id}" href="{$lang_link}catalog/{$cs->url}">{$cs->name}</a></li>
+												<li class="list-group-item"><a data-category="{$cs->id}" href="{$lang_link}catalog/{$cs->url}" class="text-decoration-none">{if $cs->code}<i class="fal fa-{$cs->code|escape} me-1"></i>{/if} {$cs->name}</a></li>
 											{/if}
 										{/if}
 									{/foreach}

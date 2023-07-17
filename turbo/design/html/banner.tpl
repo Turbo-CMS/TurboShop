@@ -1,18 +1,18 @@
-{if $banner->id}
+{if isset($banner->id)}
 	{$meta_title = $banner->name scope=global}
 {else}
 	{$meta_title = $btr->banner_new_group scope=global}
 {/if}
 
 <h1 class="mb-3">
-	{if !$banner->id}
+	{if !isset($banner->id)}
 		{$btr->banner_new_group|escape}
 	{else}
 		{$banner->name|escape}
 	{/if}
 </h1>
 
-{if $message_success}
+{if isset($message_success)}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -29,7 +29,7 @@
 	</div>
 {/if}
 
-{if $message_error}
+{if isset($message_error)}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -58,22 +58,22 @@
 						<div class="col-lg-10 col-md-9 col-sm-12">
 							<div class="mb-3">
 								<div class="form-label">{$btr->global_title|escape}</div>
-								<input class="form-control mb-h" name="name" type="text" value="{$banner->name|escape}">
-								<input name="id" type="hidden" value="{$banner->id|escape}">
+								<input class="form-control mb-h" name="name" type="text" value="{if isset($banner->name)}{$banner->name|escape}{/if}">
+								<input name="id" type="hidden" value="{if isset($banner->id)}{$banner->id|escape}{/if}">
 							</div>
 							<div class="row">
 								<div class="col-lg-2 col-sm-12">
 									<div class="mt-2 mb-3">
 										<div class="input-group">
 											<span class="input-group-text">ID</span>
-											<input name="group_id" class="form-control" type="text" value="{$banner->group_id|escape}">
+											<input name="group_id" class="form-control" type="text" value="{if isset($banner->id)}{$banner->group_id|escape}{/if}">
 										</div>
 									</div>
 								</div>
 								<div class="col-lg-10 col-sm-12">
 									<div class="d-flex justify-content-center align-content-start flex-wrap flex-md-column h-100">
 										<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
-											<input class="form-check-input ms-2" type="checkbox" id="show-all-pages" name="show_all_pages" value="1" type="checkbox" {if $banner->show_all_pages}checked="" {/if}>
+											<input class="form-check-input ms-2" type="checkbox" id="show-all-pages" name="show_all_pages" value="1" type="checkbox" {if isset($banner->show_all_pages) && $banner->show_all_pages}checked=""{/if}>
 											<label class="form-check-label ms-2" for="show-all-pages">{$btr->banner_show_group|escape}</label>
 										</div>
 									</div>
@@ -83,7 +83,7 @@
 						<div class="col-lg-2 col-md-3 col-sm-12">
 							<div class="d-flex justify-content-center align-content-center flex-wrap flex-md-column h-100">
 								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
-									<input class="form-check-input ms-2" type="checkbox" id="visible" name="visible" value="1" type="checkbox" {if $banner->visible}checked="" {/if}>
+									<input class="form-check-input ms-2" type="checkbox" id="visible" name="visible" value="1" type="checkbox" {if isset($banner->visible) && $banner->visible}checked=""{/if}>
 									<label class="form-check-label ms-2" for="visible">{$btr->global_enable|escape}</label>
 								</div>
 							</div>
@@ -113,10 +113,10 @@
 								<div class="mb-3">
 									<label class="form-label">{$btr->global_pages|escape}</label>
 									<select name="pages[]" class="selectpicker js-action_select" multiple="multiple" data-live-search="true" data-size="10" data-selected-text-format="count">
-										<option value="0" {if !$banner->page_selected || 0|in_array:$banner->page_selected}selected{/if}>{$btr->banner_hide|escape}</option>
+										<option value="0" {if !isset($banner->page_selected) || 0|in_array:$banner->page_selected}selected{/if}>{$btr->banner_hide|escape}</option>
 										{foreach from=$pages item=page}
 											{if $page->name != ''}
-												<option value="{$page->id}" {if $banner->page_selected && $page->id|in_array:$banner->page_selected}selected{/if}>{$page->name|escape}</option>
+												<option value="{$page->id}" {if isset($banner->page_selected) && $page->id|in_array:$banner->page_selected}selected{/if}>{$page->name|escape}</option>
 											{/if}
 										{/foreach}
 									</select>
@@ -126,11 +126,13 @@
 								<div class="mb-3">
 									<label class="form-label">{$btr->global_categories|escape}</label>
 									<select name="categories[]" class="selectpicker" multiple="multiple" data-live-search="true" data-size="10" data-selected-text-format="count">
-										<option value='0' {if !$banner->category_selected || 0|in_array:$banner->category_selected}selected{/if}>{$btr->banner_hide|escape}</option>
+										<option value='0' {if !isset($banner->category_selected) || 0|in_array:$banner->category_selected}selected{/if}>{$btr->banner_hide|escape}</option>
 										{function name=category_select level=0}
 											{foreach from=$categories item=category}
 												<option value="{$category->id}" {if $selected && $category->id|in_array:$selected}selected{/if}>{section name=sp loop=$level}&nbsp;{/section}{$category->name|escape}</option>
-												{category_select categories=$category->subcategories selected=$banner->category_selected  level=$level+1}
+												{if isset($category->subcategories)}
+													{category_select categories=$category->subcategories selected=$banner->category_selected level=$level+1}
+												{/if}
 											{/foreach}
 										{/function}
 										{category_select categories=$categories selected=$banner->category_selected}
@@ -141,9 +143,9 @@
 								<div class="mb-3">
 									<label class="form-label">{$btr->global_brands|escape}</label>
 									<select name="brands[]" class="selectpicker" multiple="multiple" data-live-search="true" data-size="10" data-selected-text-format="count">
-										<option value='0' {if !$banner->brand_selected || 0|in_array:$banner->brand_selected}selected{/if}>{$btr->banner_hide|escape}</option>
+										<option value="0" {if !isset($banner->brand_selected) || 0|in_array:$banner->brand_selected}selected{/if}>{$btr->banner_hide|escape}</option>
 										{foreach from=$brands item=brand}
-											<option value='{$brand->id}' {if $banner->brand_selected && $brand->id|in_array:$banner->brand_selected}selected{/if}>{$brand->name|escape}</option>
+											<option value="{$brand->id}" {if isset($banner->brand_selected) && $brand->id|in_array:$banner->brand_selected}selected{/if}>{$brand->name|escape}</option>
 										{/foreach}
 									</select>
 								</div>
@@ -152,11 +154,13 @@
 								<div class="mb-3">
 									<label class="form-label">{$btr->article_categories|escape}</label>
 									<select name="articles_categories[]" class="selectpicker" multiple="multiple" data-live-search="true" data-size="10" data-selected-text-format="count">
-										<option value='0' {if !$banner->articles_category_selected || 0|in_array:$banner->articles_category_selected}selected{/if}>{$btr->banner_hide|escape}</option>
+										<option value="0" {if !isset($banner->articles_category_selected) || 0|in_array:$banner->articles_category_selected}selected{/if}>{$btr->banner_hide|escape}</option>
 										{function name=articles_category_selected level=0}
 											{foreach from=$articles_categories item=articles_category}
 												<option value="{$articles_category->id}" {if $selected && $articles_category->id|in_array:$selected}selected{/if}>{section name=sp loop=$level}&nbsp;{/section}{$articles_category->name|escape}</option>
-												{articles_category_selected articles_categories=$articles_category->subcategories selected=$banner->articles_category_selected  level=$level+1}
+												{if isset($articles_category->subcategories)}
+													{articles_category_selected articles_categories=$articles_category->subcategories selected=$banner->articles_category_selected level=$level+1}
+												{/if}
 											{/foreach}
 										{/function}
 										{articles_category_selected articles_categories=$articles_categories selected=$banner->articles_category_selected}

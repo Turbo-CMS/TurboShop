@@ -1,6 +1,6 @@
 {* Pagination *}
 
-{if $total_pages_num>1}
+{if isset($total_pages_num) && $total_pages_num>1}
 
 	<!-- Pagination -->
 	<nav aria-label="Page navigation example">

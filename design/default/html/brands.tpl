@@ -30,7 +30,7 @@
 		{foreach $all_brands as $b}
 			<div class="col-lg-3 col-md-4">
 				<a href="{$lang_link}brands/{$b->url}">
-					<figure class="box item-logo">
+					<div class="box item-logo">
 						{if $b->image}
 							<img src="{$b->image|resize_brands:125:42}" alt="{$b->name|escape}" title="{$b->name|escape}">
 						{else}
@@ -38,7 +38,7 @@
 								<h3>{$b->name|escape}</h3>
 							</a>
 						{/if}
-					</figure>
+					</div>
 				</a><!-- item-logo.// -->
 			</div> <!-- col.// -->
 		{/foreach}

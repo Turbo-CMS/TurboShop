@@ -23,7 +23,7 @@
 
 <h1 class="my-4">{$lang->login}</h1>
 
-{if $error}
+{if isset($error)}
 	<div class="alert alert-danger" role="alert">
 		{if $error == 'login_incorrect'}
 			{$lang->wrong_login_password}
@@ -45,7 +45,7 @@
 			<form class="form" id="FormValidation" role="form" autocomplete="off" method="post" novalidate>
 				<div class="mb-3">
 					<label for="login-email">Email</label>
-					<input type="text" class="form-control" name="email" id="login-email" value="{$email|escape}" maxlength="255" required>
+					<input type="text" class="form-control" name="email" id="login-email" value="{if isset($email)}{$email|escape}{/if}" maxlength="255" required>
 					<div class="invalid-feedback">{$lang->enter_your_email}</div>
 				</div>
 				<div class="mb-3">

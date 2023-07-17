@@ -1,116 +1,112 @@
 <?php
 
-require_once('Turbo.php');
+require_once 'Turbo.php';
 
 class Request extends Turbo
 {
 
-	/**
-	 * Constructor, cleaning slashes
-	 */
 	public function __construct()
 	{
 		parent::__construct();
 
-		$_POST = $this->stripslashes_recursive($_POST);
-		$_GET = $this->stripslashes_recursive($_GET);
+		$_POST = $this->stripslashesRecursive($_POST);
+		$_GET = $this->stripslashesRecursive($_GET);
 	}
 
 	/**
-	 * Definition of the request method for accessing the page (GET, POST)
-	 * If a function argument is given (method name, in any case), returns true or false
-	 * If no argument is given, returns the name of the method
-	 * Example: 
-	 * 
-	 *	if($turbo->request->method('post'))
-	 *		print 'Request method is POST';
-	 * 
+	 * Is method
 	 */
-	public function method($method = null)
+	public function isMethod($method = null)
 	{
-		if (!empty($method))
+		if ($method !== null) {
 			return strtolower($_SERVER['REQUEST_METHOD']) == strtolower($method);
+		}
+
 		return $_SERVER['REQUEST_METHOD'];
 	}
 
 	/**
-	 * Returns a _GET variable filtered by the given type if the second parameter specifies the filter type
-	 * The second parameter $type can have the following values: integer, string, boolean
-	 * If $type is not set, returns the variable in its pure form
+	 * Get
 	 */
 	public function get($name, $type = null)
 	{
 		$val = null;
-		if (isset($_GET[$name]))
+
+		if (isset($_GET[$name])) {
 			$val = $_GET[$name];
+		}
 
-		if (!empty($type) && is_array($val))
+		if (!empty($type) && is_array($val)) {
 			$val = reset($val);
+		}
 
-		if ($type == 'string')
-			return @strval(preg_replace('/[^\p{L}\p{Nd}\d\s_\-\.\%\s]/ui', '', $val));
+		if ($type == 'string') {
+			return preg_replace('/[^\p{L}\p{Nd}\d\s_\-\.\%\s]/ui', '', strval($val));
+		}
 
-		if ($type == 'integer')
-			return intval($val);
+		if ($type == 'integer') {
+			return (int) $val;
+		}
 
-		if ($type == 'boolean')
+		if ($type == 'boolean') {
 			return !empty($val);
+		}
 
 		return $val;
 	}
 
 	/**
-	 * Returns the _POST variable filtered by the given type if the filter type is specified in the second parameter
-	 * The second parameter $type can have the following values: integer, string, boolean
-	 * If $type is not set, returns the variable in its pure form
+	 * Post
 	 */
 	public function post($name = null, $type = null)
 	{
 		$val = null;
-		if (!empty($name) && isset($_POST[$name]))
+
+		if (!empty($name) && isset($_POST[$name])) {
 			$val = $_POST[$name];
-		elseif (empty($name))
+		} elseif (empty($name)) {
 			$val = file_get_contents('php://input');
+		}
 
-		if ($type == 'string')
-			return @strval(preg_replace('/[^\p{L}\p{Nd}\d\s_\-\.\%\s]/ui', '', $val));
+		if ($type == 'string') {
+			return strval(preg_replace('/[^\p{L}\p{Nd}\d\s_\-\.\%\s]/ui', '', $val));
+		}
 
-		if ($type == 'integer')
-			return intval($val);
+		if ($type == 'integer') {
+			return (int) $val;
+		}
 
-		if ($type == 'boolean')
+		if ($type == 'boolean') {
 			return !empty($val);
+		}
 
 		return $val;
 	}
 
 	/**
-	 * Returns the _FILES variable
-	 * Usually _FILES variables are two-dimensional arrays, so you can specify a second parameter,
-	 * for example, to get the name of an uploaded file: $filename = $turbo->request->files('myfile', 'name'); 
+	 * Files
 	 */
 	public function files($name, $name2 = null)
 	{
-		if (!empty($name2) && !empty($_FILES[$name][$name2]))
+		if (!empty($name2) && !empty($_FILES[$name][$name2])) {
 			return $_FILES[$name][$name2];
-		elseif (empty($name2) && !empty($_FILES[$name]))
+		} elseif (empty($name2) && !empty($_FILES[$name])) {
 			return $_FILES[$name];
-		else
+		} else {
 			return null;
+		}
 	}
 
 	/**
-	 * Recursive cleaning of magic slashes
-	 *
-	 * @param $var
-	 * @return array|string
+	 * Stripslashes recursive
 	 */
-	private function stripslashes_recursive($var)
+	private function stripslashesRecursive($var)
 	{
 		if (is_array($var)) {
-			$res = array();
+			$res = [];
+
 			foreach ($var as $k => $v) {
-				$res[$this->stripslashes_recursive($k)] = $this->stripslashes_recursive($v);
+				$res[$this->stripslashesRecursive($k)] = $this->stripslashesRecursive($v);
 			}
 
 			return $res;
@@ -120,9 +116,9 @@ class Request extends Turbo
 	}
 
 	/**
-	 * Session check
+	 * Check session
 	 */
-	public function check_session()
+	public function checkSession()
 	{
 		if (!empty($_POST)) {
 			if (empty($_POST['session_id']) || $_POST['session_id'] != session_id()) {
@@ -130,65 +126,73 @@ class Request extends Turbo
 				return false;
 			}
 		}
+
 		return true;
 	}
 
 	/**
-	 * URL
+	 * Url
 	 */
-	public function url($params = array())
+	public function url($params = [])
 	{
-		$url = @parse_url($_SERVER["REQUEST_URI"]);
-		@parse_str($url['query'], $query);
+		$url = parse_url($_SERVER["REQUEST_URI"]);
+		$query = [];
 
-		foreach ($query as &$v) {
-			if (!is_array($v))
-				$v = stripslashes(urldecode($v));
+		if (isset($url['query']) && !empty($url['query'])) {
+			parse_str($url['query'], $query);
 		}
 
-		foreach ($params as $name => $value)
+		if (!is_null($query)) {
+			foreach ($query as &$v) {
+				if (!is_array($v)) {
+					$v = stripslashes(urldecode($v));
+				}
+			}
+		}
+
+		foreach ($params as $name => $value) {
 			$query[$name] = $value;
+		}
 
-		$query_is_empty = true;
-		foreach ($query as $name => $value)
-			if ($value !== '' && $value !== null)
-				$query_is_empty = false;
+		$queryIsEmpty = true;
+		foreach ($query as $name => $value) {
+			if ($value !== '' && $value !== null) {
+				$queryIsEmpty = false;
+			}
+		}
 
-		if (!$query_is_empty)
+		if (!$queryIsEmpty) {
 			$url['query'] = http_build_query($query);
-		else
+		} else {
 			$url['query'] = null;
+		}
 
 		$result = http_build_url(null, $url);
+
 		return $result;
 	}
 }
 
+/**
+ * Build URL
+ */
 if (!function_exists('http_build_url')) {
-	define('HTTP_URL_REPLACE', 1);				// Replace every part of the first URL when there's one of the second URL
-	define('HTTP_URL_JOIN_PATH', 2);			// Join relative paths
-	define('HTTP_URL_JOIN_QUERY', 4);			// Join query strings
-	define('HTTP_URL_STRIP_USER', 8);			// Strip any user authentication information
-	define('HTTP_URL_STRIP_PASS', 16);			// Strip any password authentication information
-	define('HTTP_URL_STRIP_AUTH', 32);			// Strip any authentication information
-	define('HTTP_URL_STRIP_PORT', 64);			// Strip explicit port numbers
-	define('HTTP_URL_STRIP_PATH', 128);			// Strip complete path
-	define('HTTP_URL_STRIP_QUERY', 256);		// Strip query string
-	define('HTTP_URL_STRIP_FRAGMENT', 512);		// Strip any fragments (#identifier)
-	define('HTTP_URL_STRIP_ALL', 1024);			// Strip anything but scheme and host
+	define('HTTP_URL_REPLACE', 1);
+	define('HTTP_URL_JOIN_PATH', 2);
+	define('HTTP_URL_JOIN_QUERY', 4);
+	define('HTTP_URL_STRIP_USER', 8);
+	define('HTTP_URL_STRIP_PASS', 16);
+	define('HTTP_URL_STRIP_AUTH', 32);
+	define('HTTP_URL_STRIP_PORT', 64);
+	define('HTTP_URL_STRIP_PATH', 128);
+	define('HTTP_URL_STRIP_QUERY', 256);
+	define('HTTP_URL_STRIP_FRAGMENT', 512);
+	define('HTTP_URL_STRIP_ALL', 1024);
 
-	// Build an URL
-	// The parts of the second URL will be merged into the first according to the flags argument. 
-	// 
-	// @param	mixed			(Part(s) of) an URL in form of a string or associative array like parse_url() returns
-	// @param	mixed			Same as the first argument
-	// @param	int				A bitmask of binary or'ed HTTP_URL constants (Optional)HTTP_URL_REPLACE is the default
-	// @param	array			If set, it will be filled with the parts of the composed url like parse_url() would return 
-	function http_build_url($url, $parts = array(), $flags = HTTP_URL_REPLACE, &$new_url = false)
+	function http_build_url($url, $parts = [], $flags = HTTP_URL_REPLACE, &$newUrl = false)
 	{
-		$keys = array('user', 'pass', 'port', 'path', 'query', 'fragment');
+		$keys = ['user', 'pass', 'port', 'path', 'query', 'fragment'];
 
-		// HTTP_URL_STRIP_ALL becomes all the HTTP_URL_STRIP_Xs
 		if ($flags & HTTP_URL_STRIP_ALL) {
 			$flags |= HTTP_URL_STRIP_USER;
 			$flags |= HTTP_URL_STRIP_PASS;
@@ -196,76 +200,75 @@ if (!function_exists('http_build_url')) {
 			$flags |= HTTP_URL_STRIP_PATH;
 			$flags |= HTTP_URL_STRIP_QUERY;
 			$flags |= HTTP_URL_STRIP_FRAGMENT;
-		}
-		// HTTP_URL_STRIP_AUTH becomes HTTP_URL_STRIP_USER and HTTP_URL_STRIP_PASS
-		else if ($flags & HTTP_URL_STRIP_AUTH) {
+		} else if ($flags & HTTP_URL_STRIP_AUTH) {
 			$flags |= HTTP_URL_STRIP_USER;
 			$flags |= HTTP_URL_STRIP_PASS;
 		}
 
-		// Parse the original URL
-		@$parse_url = parse_url($url);
+		if (isset($url)) {
+			$parseUrl = parse_url($url);
+		}
 
-		// Scheme and Host are always replaced
-		if (isset($parts['scheme']))
-			$parse_url['scheme'] = $parts['scheme'];
-		if (isset($parts['host']))
-			$parse_url['host'] = $parts['host'];
+		if (isset($parts['scheme'])) {
+			$parseUrl['scheme'] = $parts['scheme'];
+		}
 
-		// (If applicable) Replace the original URL with it's new parts
+		if (isset($parts['host'])) {
+			$parseUrl['host'] = $parts['host'];
+		}
+
 		if ($flags & HTTP_URL_REPLACE) {
 			foreach ($keys as $key) {
 				if (isset($parts[$key]))
-					$parse_url[$key] = $parts[$key];
+					$parseUrl[$key] = $parts[$key];
 			}
 		} else {
-			// Join the original URL path with the new path
 			if (isset($parts['path']) && ($flags & HTTP_URL_JOIN_PATH)) {
-				if (isset($parse_url['path']))
-					$parse_url['path'] = rtrim(str_replace(basename($parse_url['path']), '', $parse_url['path']), '/') . '/' . ltrim($parts['path'], '/');
+				if (isset($parseUrl['path']))
+					$parseUrl['path'] = rtrim(str_replace(basename($parseUrl['path']), '', $parseUrl['path']), '/') . '/' . ltrim($parts['path'], '/');
 				else
-					$parse_url['path'] = $parts['path'];
+					$parseUrl['path'] = $parts['path'];
 			}
 
-			// Join the original query string with the new query string
 			if (isset($parts['query']) && ($flags & HTTP_URL_JOIN_QUERY)) {
-				if (isset($parse_url['query']))
-					$parse_url['query'] .= '&' . $parts['query'];
+				if (isset($parseUrl['query']))
+					$parseUrl['query'] .= '&' . $parts['query'];
 				else
-					$parse_url['query'] = $parts['query'];
+					$parseUrl['query'] = $parts['query'];
 			}
 		}
 
-		// Strips all the applicable sections of the URL
-		// Note: Scheme and Host are never stripped
 		foreach ($keys as $key) {
 			if ($flags & (int)constant('HTTP_URL_STRIP_' . strtoupper($key)))
-				unset($parse_url[$key]);
+				unset($parseUrl[$key]);
 		}
 
-		$new_url = $parse_url;
+		$newUrl = $parseUrl;
 
-		return ((isset($parse_url['scheme'])) ? $parse_url['scheme'] . '://' : '')
-			. ((isset($parse_url['user'])) ? $parse_url['user'] . ((isset($parse_url['pass'])) ? ':' . $parse_url['pass'] : '') . '@' : '')
-			. ((isset($parse_url['host'])) ? $parse_url['host'] : '')
-			. ((isset($parse_url['port'])) ? ':' . $parse_url['port'] : '')
-			. ((isset($parse_url['path'])) ? $parse_url['path'] : '')
-			. ((isset($parse_url['query'])) ? '?' . $parse_url['query'] : '')
-			. ((isset($parse_url['fragment'])) ? '#' . $parse_url['fragment'] : '');
+		return ((isset($parseUrl['scheme'])) ? $parseUrl['scheme'] . '://' : '')
+			. ((isset($parseUrl['user'])) ? $parseUrl['user'] . ((isset($parseUrl['pass'])) ? ':' . $parseUrl['pass'] : '') . '@' : '')
+			. ((isset($parseUrl['host'])) ? $parseUrl['host'] : '')
+			. ((isset($parseUrl['port'])) ? ':' . $parseUrl['port'] : '')
+			. ((isset($parseUrl['path'])) ? $parseUrl['path'] : '')
+			. ((isset($parseUrl['query'])) ? '?' . $parseUrl['query'] : '')
+			. ((isset($parseUrl['fragment'])) ? '#' . $parseUrl['fragment'] : '');
 	}
 }
 
 if (!function_exists('http_build_query')) {
 	function http_build_query($data, $prefix = null, $sep = '', $key = '')
 	{
-		$ret    = array();
+		$ret = [];
+
 		foreach ((array)$data as $k => $v) {
-			$k    = urlencode($k);
+			$k = urlencode($k);
+
 			if (is_int($k) && $prefix != null) {
-				$k    = $prefix . $k;
+				$k = $prefix . $k;
 			};
+
 			if (!empty($key)) {
-				$k    = $key . "[" . $k . "]";
+				$k = $key . "[" . $k . "]";
 			};
 
 			if (is_array($v) || is_object($v)) {
@@ -279,6 +282,6 @@ if (!function_exists('http_build_query')) {
 			$sep = ini_get("arg_separator.output");
 		};
 
-		return    implode($sep, $ret);
+		return implode($sep, $ret);
 	};
-};
+}

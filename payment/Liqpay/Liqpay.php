@@ -9,11 +9,11 @@ class Liqpay extends Turbo
 		if(empty($button_text))
 			$button_text = $this->translations->proceed_to_checkout;
 
-		$order = $this->orders->get_order((int)$order_id);
+		$order = $this->orders->getOrder((int)$order_id);
 		$liqpay_order_id = $order->id."-".rand(100000, 999999);
-		$payment_method = $this->payment->get_payment_method($order->payment_method_id);
-		$payment_currency = $this->money->get_currency(intval($payment_method->currency_id));
-		$settings = $this->payment->get_payment_settings($payment_method->id);
+		$payment_method = $this->payment->getPaymentMethod($order->payment_method_id);
+		$payment_currency = $this->money->getCurrency(intval($payment_method->currency_id));
+		$settings = $this->payment->getPaymentSettings($payment_method->id);
 
 		$price = round($this->money->convert($order->total_price, $payment_method->currency_id, false), 2);
 

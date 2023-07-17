@@ -1,44 +1,45 @@
 <?php
 
-require_once('api/Turbo.php');
+require_once 'api/Turbo.php';
 
 class PaymentMethodsAdmin extends Turbo
 {
 	public function fetch()
 	{
-		// Action processing
-		if ($this->request->method('post')) {
-			// Sorting
-			$positions = $this->request->post('positions');
+		if ($this->request->isMethod('post')) {
+			$positions = $this->request->post('positions', []);
 			$ids = array_keys($positions);
 			sort($positions);
-			foreach ($positions as $i => $position)
-				$this->payment->update_payment_method($ids[$i], array('position' => $position));
 
-			// Actions with selected
-			$ids = $this->request->post('check');
+			foreach ($positions as $i => $position) {
+				$this->payment->updatePaymentMethod($ids[$i], ['position' => $position]);
+			}
 
-			if (is_array($ids))
+			$ids = $this->request->post('check', []);
+
+			if (is_array($ids)) {
 				switch ($this->request->post('action')) {
 					case 'disable': {
-							$this->payment->update_payment_method($ids, array('enabled' => 0));
+							$this->payment->updatePaymentMethod($ids, ['enabled' => 0]);
 							break;
 						}
 					case 'enable': {
-							$this->payment->update_payment_method($ids, array('enabled' => 1));
+							$this->payment->updatePaymentMethod($ids, ['enabled' => 1]);
 							break;
 						}
 					case 'delete': {
-							foreach ($ids as $id)
-								$this->payment->delete_payment_method($id);
+							foreach ($ids as $id) {
+								$this->payment->deletePaymentMethod($id);
+							}
 							break;
 						}
 				}
+			}
 		}
 
-		// Display
-		$payment_methods = $this->payment->get_payment_methods();
-		$this->design->assign('payment_methods', $payment_methods);
+		$paymentMethods = $this->payment->getPaymentMethods();
+		$this->design->assign('payment_methods', $paymentMethods);
+
 		return $this->design->fetch('payment_methods.tpl');
 	}
 }

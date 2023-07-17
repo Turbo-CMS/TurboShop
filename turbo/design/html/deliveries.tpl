@@ -110,9 +110,7 @@
 				</div>
 			</form>
 		{else}
-			<div class="card-header">
-				<h5 class="card-title mb-0">{$btr->deliveries_no|escape}</h5>
-			</div>
+			<h5 class="card-title ms-1 my-3">{$btr->deliveries_no|escape}</h5>
 		{/if}
 	</div>
 </div>

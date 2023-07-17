@@ -1,30 +1,30 @@
 <?php
 
-require_once('api/Turbo.php');
+require_once 'api/Turbo.php';
 
 class BrandsAdmin extends Turbo
 {
-	function fetch()
+	public function fetch()
 	{
-		// Action processing 	
-		if ($this->request->method('post')) {
-
-			// Actions with selected
+		if ($this->request->isMethod('post')) {
 			$ids = $this->request->post('check');
 
-			if (is_array($ids))
+			if (is_array($ids)) {
 				switch ($this->request->post('action')) {
-					case 'delete': {
-							foreach ($ids as $id)
-								$this->brands->delete_brand($id);
-							break;
+					case 'delete':
+						foreach ($ids as $id) {
+							$this->brands->deleteBrand($id);
 						}
+						break;
 				}
+			}
 		}
 
-		$brands = $this->brands->get_brands();
-
+		$brands = $this->brands->getBrands();
 		$this->design->assign('brands', $brands);
-		return $this->body = $this->design->fetch('brands.tpl');
+
+		$body = $this->design->fetch('brands.tpl');
+
+		return $body;
 	}
 }

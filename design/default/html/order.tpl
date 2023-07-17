@@ -42,23 +42,25 @@
 		<tbody>
 			{foreach $purchases as $purchase}
 				<tr>
-					<td>
-						{$img_flag=0}
-						{$image_array=","|explode:$purchase->variant->images_ids}
-						{foreach $purchase->product->images as $image}
-							{if $image->id|in_array:$image_array}
-								{if $img_flag==0}{$image_toshow=$image}{/if}
-								{$img_flag=1}
-							{/if}
-						{/foreach}
-						{if $img_flag ne 0}
-							<a href="{$lang_link}products/{$purchase->product->url}"><img src="{$image_toshow->filename|resize:116:116}" alt="{$product->name|escape}"></a>
-						{else}
-							{$image = $purchase->product->images|first}
-							{if $image}
-								<a href="{$lang_link}products/{$purchase->product->url}"><img src="{$image->filename|resize:116:116}" alt="{$product->name|escape}"></a>
+					<td class="text-center">
+						{if isset($purchase->product->images)}
+							{$img_flag=0}
+							{$image_array=","|explode:$purchase->variant->images_ids}
+							{foreach $purchase->product->images as $image}
+								{if $image->id|in_array:$image_array}
+									{if $img_flag==0}{$image_toshow=$image}{/if}
+									{$img_flag=1}
+								{/if}
+							{/foreach}
+							{if $img_flag ne 0}
+								<a href="{$lang_link}products/{$purchase->product->url}"><img src="{$image_toshow->filename|resize:116:116}" alt="{$purchase->product->name|escape}"></a>
 							{else}
-								<a href="{$lang_link}products/{$purchase->product->url}"><img style="width: 116px; height: 116px;" src="design/{$settings->theme|escape}/images/no-photo.svg" alt="{$product->name|escape}"></a>
+								{$image = $purchase->product->images|first}
+								{if $image}
+									<a href="{$lang_link}products/{$purchase->product->url}"><img src="{$image->filename|resize:116:116}" alt="{$purchase->product->name|escape}"></a>
+								{else}
+									<a href="{$lang_link}products/{$purchase->product->url}"><img style="width: 116px; height: 116px;" src="design/{$settings->theme|escape}/images/no-photo.svg" alt="{$purchase->product->name|escape}"></a>
+								{/if}
 							{/if}
 						{/if}
 					</td>
@@ -206,23 +208,23 @@
 	</table>
 	{if !$order->paid}
 		{* Choosing a payment method *}
-		{if $payment_methods && !$payment_method && $order->total_price>0}
+		{if $payment_methods && !isset($payment_method) && $order->total_price>0}
 			<form method="post">
 				<h2>{$lang->select_a_payment_method}</h2>
 				<div id="accordion">
-					{foreach $payment_methods as $payment_method name=foo}
+					{foreach $payment_methods as $payment_method}
 						<div class="card my-2">
-							<div class="card-header" id="headingOne">
+							<div class="card-header">
 								<h5 class="mb-0">
 									<div class="form-check">
 										<label for="payment_{$payment_method->id}" class="form-check-label">
-											<input type="radio" class="form-check-input {if !$smarty.foreach.foo.first}collapsed{/if}" name="payment_method_id" value="{$payment_method->id}" data-bs-toggle="collapse" data-bs-target="#collapse{$payment_method->id}" aria-expanded="true" aria-controls="collapse{$payment_method->id}" {if $payment_method@first}checked{/if} id="payment_{$payment_method->id}">
+											<input type="radio" class="form-check-input {if $payment_method@first}collapsed{/if}" name="payment_method_id" value="{$payment_method->id}" data-bs-toggle="collapse" data-bs-target="#collapse{$payment_method->id}" aria-expanded="true" aria-controls="collapse{$payment_method->id}" {if $payment_method@first}checked{/if} id="payment_{$payment_method->id}">
 											{$payment_method->name}, {$lang->to_pay_small} {$order->total_price|convert:$payment_method->currency_id}&nbsp;{$all_currencies[$payment_method->currency_id]->sign}
 										</label>
 									</div>
 								</h5>
 							</div>
-							<div id="collapse{$payment_method->id}" class="collapse {if $smarty.foreach.foo.first}show{/if}" aria-labelledby="heading{$payment_method->id}" data-parent="#accordion">
+							<div id="collapse{$payment_method->id}" class="collapse {if $payment_method@first}show{/if}" aria-labelledby="heading{$payment_method->id}" data-bs-parent="#accordion">
 								{if $payment_method->description}
 									<div class="card-body">
 										{$payment_method->description}

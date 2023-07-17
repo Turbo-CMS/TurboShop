@@ -1,109 +1,130 @@
 <?php
 
-require_once('View.php');
+require_once 'View.php';
 
 class OrderView extends View
 {
 	public function __construct()
 	{
 		parent::__construct();
-		$this->design->smarty->registerPlugin("function", "checkout_form", array($this, 'checkout_form'));
-	}
-	
-	function fetch()
-	{
-		return $this->fetch_order();
+		$this->design->smarty->registerPlugin("function", "checkout_form", [$this, 'checkoutForm']);
 	}
 
-	function fetch_order()
+	public function fetch()
 	{
-		if ($url = $this->request->get('url', 'string'))
-			$order = $this->orders->get_order((string)$url);
-		elseif (!empty($_SESSION['order_id']))
-			$order = $this->orders->get_order(intval($_SESSION['order_id']));
-		else
-			return false;
+		return $this->fetchOrder();
+	}
 
-		if (!$order)
+	/**
+	 * Fetch order
+	 */
+	private function fetchOrder()
+	{
+		if ($url = $this->request->get('url', 'string')) {
+			$order = $this->orders->getOrder((string)$url);
+		} elseif (!empty($_SESSION['order_id'])) {
+			$order = $this->orders->getOrder((int) $_SESSION['order_id']);
+		} else {
 			return false;
+		}
 
-		$purchases = $this->orders->get_purchases(array('order_id' => intval($order->id)));
-		if (!$purchases)
+		if (!$order) {
 			return false;
+		}
 
-		if ($this->request->method('post')) {
-			if ($payment_method_id = $this->request->post('payment_method_id', 'integer')) {
-				$this->orders->update_order($order->id, array('payment_method_id' => $payment_method_id));
-				$order = $this->orders->get_order((int)$order->id);
+		$purchases = $this->orders->getPurchases(['order_id' => (int) $order->id]);
+
+		if (!$purchases) {
+			return false;
+		}
+
+		if ($this->request->isMethod('post')) {
+			if ($paymentMethodId = $this->request->post('payment_method_id', 'integer')) {
+				$this->orders->updateOrder($order->id, ['payment_method_id' => $paymentMethodId]);
+				$order = $this->orders->getOrder((int)$order->id);
 			} elseif ($this->request->post('reset_payment_method')) {
-				$this->orders->update_order($order->id, array('payment_method_id' => null));
-				$order = $this->orders->get_order((int)$order->id);
+				$this->orders->updateOrder($order->id, ['payment_method_id' => null]);
+				$order = $this->orders->getOrder((int)$order->id);
 			}
 		}
 
-		$products_ids = array();
-		$variants_ids = array();
+		$productsIds = [];
+		$variantsIds = [];
+
 		foreach ($purchases as $purchase) {
-			$products_ids[] = $purchase->product_id;
-			$variants_ids[] = $purchase->variant_id;
+			$productsIds[] = $purchase->product_id;
+			$variantsIds[] = $purchase->variant_id;
 		}
-		$products = array();
-		foreach ($this->products->get_products(array('id' => $products_ids)) as $p)
-			$products[$p->id] = $p;
 
-		$images = $this->products->get_images(array('product_id' => $products_ids));
-		foreach ($images as $image)
+		$products = [];
+		
+		foreach ($this->products->getProducts(['id' => $productsIds]) as $product) {
+			$products[$product->id] = $product;
+		}
+
+		$images = $this->products->getImages(['product_id' => $productsIds]);
+
+		foreach ($images as $image) {
 			$products[$image->product_id]->images[] = $image;
+		}
 
-		$variants = array();
-		foreach ($this->variants->get_variants(array('id' => $variants_ids)) as $v)
-			$variants[$v->id] = $v;
+		$variants = [];
+		
+		foreach ($this->variants->getVariants(['id' => $variantsIds]) as $variant) {
+			$variants[$variant->id] = $variant;
+		}
 
-		foreach ($variants as $variant)
+		foreach ($variants as $variant) {
 			$products[$variant->product_id]->variants[] = $variant;
+		}
 
 		foreach ($purchases as &$purchase) {
-			if (!empty($products[$purchase->product_id]))
+			if (!empty($products[$purchase->product_id])) {
 				$purchase->product = $products[$purchase->product_id];
+			}
+
 			if (!empty($variants[$purchase->variant_id])) {
 				$purchase->variant = $variants[$purchase->variant_id];
 			}
 		}
 
-		// Delivery method
-		$delivery = $this->delivery->get_delivery($order->delivery_id);
-		$this->design->assign('delivery', $delivery);
+		$delivery = $this->delivery->getDelivery($order->delivery_id);
 
+		$this->design->assign('delivery', $delivery);
 		$this->design->assign('order', $order);
 		$this->design->assign('purchases', $purchases);
-
-		// Payment method
+		
 		if ($order->payment_method_id) {
-			$payment_method = $this->payment->get_payment_method($order->payment_method_id);
-			$this->design->assign('payment_method', $payment_method);
+			$paymentMethod = $this->payment->getPaymentMethod($order->payment_method_id);
+			$this->design->assign('payment_method', $paymentMethod);
 		}
 
-		// Payment Options
-		$payment_methods = $this->payment->get_payment_methods(array('delivery_id' => $order->delivery_id, 'enabled' => 1));
-		$this->design->assign('payment_methods', $payment_methods);
+		$paymentMethods = $this->payment->getPaymentMethods(['delivery_id' => $order->delivery_id, 'enabled' => 1]);
+		$this->design->assign('payment_methods', $paymentMethods);
+		$allCurrencies = $this->money->getCurrencies();
+		$this->design->assign('all_currencies', $allCurrencies);
 
-		// All currencies
-		$this->design->assign('all_currencies', $this->money->get_currencies());
+		$body = $this->design->fetch('order.tpl');
 
-		// Output order
-		return $this->body = $this->design->fetch('order.tpl');
+		return $body;
 	}
 
-	public function checkout_form($params, $smarty)
+	/**
+	 * Checkout form
+	 */
+	public function checkoutForm($params)
 	{
-		$module_name = preg_replace("/[^A-Za-z0-9]+/", "", $params['module']);
+		$moduleName = preg_replace("/[^A-Za-z0-9]+/", "", $params['module']);
 
 		$form = '';
-		if (!empty($module_name) && is_file("payment/$module_name/$module_name.php")) {
-			include_once("payment/$module_name/$module_name.php");
-			$module = new $module_name();
-			$form = $module->checkout_form($params['order_id'], $params['button_text']);
+
+		if (!empty($moduleName) && is_file("payment/$moduleName/$moduleName.php")) {
+			include_once("payment/$moduleName/$moduleName.php");
+			$module = new $moduleName();
+			$buttonText = isset($params['button_text']) ? $params['button_text'] : '';
+			$form = $module->checkout_form($params['order_id'], $buttonText);
 		}
+		
 		return $form;
 	}
 }

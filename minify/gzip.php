@@ -1,6 +1,5 @@
 <?php
 
-
 $request = trim($_SERVER['REQUEST_URI'], ' /');
 
 $source = realpath('../'.substr($request, 0, -4));
@@ -17,9 +16,7 @@ $content = gzencode($content, $level, FORCE_GZIP);
 
 file_put_contents($source.'.gz'.$level, $content);
 
-
 $sourceExt = pathinfo($source, PATHINFO_EXTENSION);
-
 
 header('Content-Encoding: gzip');
 header('Content-type: ' . ($sourceExt=='css' ? 'text/css' : 'text/javascript'));

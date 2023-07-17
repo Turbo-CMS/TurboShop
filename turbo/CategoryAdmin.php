@@ -1,15 +1,16 @@
 <?php
 
-require_once('api/Turbo.php');
+require_once 'api/Turbo.php';
 
 class CategoryAdmin extends Turbo
 {
-	private	$allowed_image_extentions = array('png', 'gif', 'jpg', 'jpeg', 'ico');
+	private $allowedImageExtentions = ['png', 'gif', 'jpg', 'jpeg', 'ico'];
 
-	function fetch()
+	public function fetch()
 	{
-		$category = new stdClass;
-		if ($this->request->method('post')) {
+		$category = new stdClass();
+
+		if ($this->request->isMethod('post')) {
 			$category->id = $this->request->post('id', 'integer');
 			$category->parent_id = $this->request->post('parent_id', 'integer');
 			$category->name = $this->request->post('name');
@@ -17,16 +18,13 @@ class CategoryAdmin extends Turbo
 			$category->code = $this->request->post('code');
 			$category->visible = $this->request->post('visible', 'boolean');
 			$category->featured = $this->request->post('featured', 'boolean');
-
 			$category->url = trim($this->request->post('url', 'string'));
 			$category->meta_title = $this->request->post('meta_title');
 			$category->meta_keywords = $this->request->post('meta_keywords');
 			$category->meta_description = $this->request->post('meta_description');
-
 			$category->description = $this->request->post('description');
 
-			// Do not allow duplicate section URLs
-			if (($c = $this->categories->get_category($category->url)) && $c->id != $category->id) {
+			if (($c = $this->categories->getCategory($category->url)) && $c->id != $category->id) {
 				$this->design->assign('message_error', 'url_exists');
 			} elseif (empty($category->name)) {
 				$this->design->assign('message_error', 'name_empty');
@@ -34,45 +32,49 @@ class CategoryAdmin extends Turbo
 				$this->design->assign('message_error', 'url_empty');
 			} else {
 				if (empty($category->id)) {
-					$category->id = $this->categories->add_category($category);
+					$category->id = $this->categories->addCategory($category);
 					$this->design->assign('message_success', 'added');
 				} else {
-					$this->categories->update_category($category->id, $category);
+					$this->categories->updateCategory($category->id, $category);
 					$this->design->assign('message_success', 'updated');
 				}
-				// Delete  image
+
 				if ($this->request->post('delete_image')) {
-					$this->categories->delete_image($category->id);
+					$this->categories->deleteImage($category->id);
 				}
-				// Delete  icon
+
 				if ($this->request->post('delete_icon')) {
-					$this->categories->delete_icon($category->id);
+					$this->categories->deleteIcon($category->id);
 				}
-				// Image upload
+
 				$image = $this->request->files('image');
-				if (!empty($image['name']) && in_array(strtolower(pathinfo($image['name'], PATHINFO_EXTENSION)), $this->allowed_image_extentions)) {
-					$this->categories->delete_image($category->id);
+
+				if (!empty($image['name']) && in_array(strtolower(pathinfo($image['name'], PATHINFO_EXTENSION)), $this->allowedImageExtentions)) {
+					$this->categories->deleteImage($category->id);
 					move_uploaded_file($image['tmp_name'], $this->root_dir . $this->config->categories_images_dir . $image['name']);
-					$this->categories->update_category($category->id, array('image' => $image['name']));
+					$this->categories->updateCategory($category->id, ['image' => $image['name']]);
 				}
-				// Icon upload
+
 				$icon = $this->request->files('icon');
-				if (!empty($icon['name']) && in_array(strtolower(pathinfo($icon['name'], PATHINFO_EXTENSION)), $this->allowed_image_extentions)) {
-					$this->categories->delete_icon($category->id);
+
+				if (!empty($icon['name']) && in_array(strtolower(pathinfo($icon['name'], PATHINFO_EXTENSION)), $this->allowedImageExtentions)) {
+					$this->categories->deleteIcon($category->id);
 					move_uploaded_file($icon['tmp_name'], $this->root_dir . $this->config->categories_images_dir . $icon['name']);
-					$this->categories->update_category($category->id, array('icon' => $icon['name']));
+					$this->categories->updateCategory($category->id, ['icon' => $icon['name']]);
 				}
-				$category = $this->categories->get_category(intval($category->id));
+
+				$category = $this->categories->getCategory(intval($category->id));
 			}
 		} else {
 			$category->id = $this->request->get('id', 'integer');
-			$category = $this->categories->get_category($category->id);
+			$category = $this->categories->getCategory($category->id);
 		}
 
-		$categories = $this->categories->get_categories_tree();
+		$categories = $this->categories->getCategoriesTree();
 
 		$this->design->assign('category', $category);
 		$this->design->assign('categories', $categories);
+
 		return  $this->design->fetch('category.tpl');
 	}
 }

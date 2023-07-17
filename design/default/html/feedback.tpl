@@ -24,13 +24,13 @@
 
 {$page->body}
 
-<h2>{$lang->index_feedback}</h2>
-{if $message_sent}
+<h2>{$lang->global_feedback}</h2>
+{if isset($message_sent)}
 	<div class="alert alert-success" role="alert">
 		{$name|escape}, {$lang->feedback_message_sent}
 	</div>
 {else}
-	{if $error}
+	{if isset($error)}
 		<div class="alert alert-danger" role="alert">
 			{if $error=='captcha'}
 				{$lang->captcha_incorrect}
@@ -46,17 +46,17 @@
 	<form class="form-horizontal mt-4" id="FormValidation" role="form" method="post">
 		<div class="mb-3">
 			<label for="feedback_name">{$lang->name}</label>
-			<input type="text" class="form-control" name="name" id="feedback_name" value="{$name|escape}" placeholder="{$lang->enter_your_name}" required>
+<input type="text" class="form-control" name="name" id="feedback_name" value="{if isset($name)}{$name|escape}{/if}" placeholder="{$lang->enter_your_name}" required>
 			<div class="invalid-feedback">{$lang->enter_your_name}</div>
 		</div>
 		<div class="mb-3">
 			<label for="feedback_email">Email</label>
-			<input type="email" class="form-control" name="email" id="feedback_email" value="{$email|escape}" placeholder="{$lang->enter_your_email}" maxlength="255" required>
+<input type="email" class="form-control" name="email" id="feedback_email" value="{if isset($email)}{$email|escape}{/if}" placeholder="{$lang->enter_your_email}" maxlength="255" required>
 			<div class="invalid-feedback">{$lang->enter_your_email}</div>
 		</div>
 		<div class="mb-3">
 			<label for="feedback_message">{$lang->message}</label>
-			<textarea class="form-control" name="message" id="feedback_message" placeholder="{$lang->enter_your_message}" rows="4" required>{$message|escape}</textarea>
+<textarea class="form-control" name="message" id="feedback_message" placeholder="{$lang->enter_your_message}" rows="4" required>{if isset($message)}{$message|escape}{/if}</textarea>
 			<div class="invalid-feedback">{$lang->enter_your_message}</div>
 		</div>
 		{if $settings->captcha_feedback}

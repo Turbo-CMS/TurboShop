@@ -1,40 +1,37 @@
 <?php
 
-require_once('View.php');
+require_once 'View.php';
 
 class FeedbackView extends View
 {
-	function fetch()
+	public function fetch()
 	{
-		$feedback = new stdClass;
-		if ($this->request->method('post') && $this->request->post('feedback')) {
-			$feedback->name         = $this->request->post('name');
-			$feedback->email        = $this->request->post('email');
-			$feedback->message      = $this->request->post('message');
-			$captcha_code           = $this->request->post('captcha_code');
+		$feedback = new stdClass();
 
-			$this->design->assign('name',  $feedback->name);
+		if ($this->request->isMethod('post') && $this->request->post('feedback')) {
+			$feedback->name = $this->request->post('name');
+			$feedback->email = $this->request->post('email');
+			$feedback->message = $this->request->post('message');
+
+			$captchaCode = $this->request->post('captcha_code');
+
+			$this->design->assign('name', $feedback->name);
 			$this->design->assign('email', $feedback->email);
 			$this->design->assign('message', $feedback->message);
 
-			if (empty($feedback->name))
+			if (empty($feedback->name)) {
 				$this->design->assign('error', 'empty_name');
-			elseif (empty($feedback->email))
+			} elseif (empty($feedback->email)) {
 				$this->design->assign('error', 'empty_email');
-			elseif (empty($feedback->message))
+			} elseif (empty($feedback->message)) {
 				$this->design->assign('error', 'empty_text');
-			elseif ($this->settings->captcha_feedback && ($_SESSION['captcha_feedback'] != $captcha_code || empty($captcha_code))) {
+			} elseif ($this->settings->captcha_feedback && ($_SESSION['captcha_feedback'] != $captchaCode || empty($captchaCode))) {
 				$this->design->assign('error', 'captcha');
 			} else {
 				$this->design->assign('message_sent', true);
-
 				$feedback->ip = $_SERVER['REMOTE_ADDR'];
-				$feedback_id = $this->feedbacks->add_feedback($feedback);
-
-				// Send email
-				$this->notify->email_feedback_admin($feedback_id);
-
-				// Retrieve the saved captcha
+				$feedbackId = $this->feedbacks->addFeedback($feedback);
+				$this->notify->emailFeedbackAdmin($feedbackId);
 				unset($_SESSION['captcha_code']);
 			}
 		}
@@ -45,32 +42,30 @@ class FeedbackView extends View
 			$this->design->assign('meta_description', $this->page->meta_description);
 		}
 
-		$auto_meta = new StdClass;
+		$autoMeta = new stdClass();
 
-		$auto_meta->title       = $this->seo->page_meta_title       ? $this->seo->page_meta_title       : '';
-		$auto_meta->keywords    = $this->seo->page_meta_keywords    ? $this->seo->page_meta_keywords    : '';
-		$auto_meta->description = $this->seo->page_meta_description ? $this->seo->page_meta_description : '';
+		$autoMeta->title = $this->seo->page_meta_title ?: '';
+		$autoMeta->keywords = $this->seo->page_meta_keywords ?: '';
+		$autoMeta->description = $this->seo->page_meta_description ?: '';
 
-		$auto_meta_parts = array(
-			'{page}' => ($this->page ? $this->page->header : ''),
-			'{site_url}' => ($this->seo->am_url ? $this->seo->am_url : ''),
-			'{site_name}' => ($this->seo->am_name ? $this->seo->am_name : ''),
-			'{site_phone}' => ($this->seo->am_phone ? $this->seo->am_phone : ''),
-			'{site_email}' => ($this->seo->am_email ? $this->seo->am_email : ''),
-		);
+		$autoMetaParts = [
+			'{page}' => $this->page ? $this->page->header : '',
+			'{site_url}' => $this->seo->am_url ?: '',
+			'{site_name}' => $this->seo->am_name ?: '',
+			'{site_phone}' => $this->seo->am_phone ?: '',
+			'{site_email}' => $this->seo->am_email ?: '',
+		];
 
-		$auto_meta->title = strtr($auto_meta->title, $auto_meta_parts);
-		$auto_meta->keywords = strtr($auto_meta->keywords, $auto_meta_parts);
-		$auto_meta->description = strtr($auto_meta->description, $auto_meta_parts);
+		$autoMeta->title = strtr($autoMeta->title, $autoMetaParts);
+		$autoMeta->keywords = strtr($autoMeta->keywords, $autoMetaParts);
+		$autoMeta->description = strtr($autoMeta->description, $autoMetaParts);
 
-		$auto_meta->title = preg_replace("/\{.*\}/", '', $auto_meta->title);
-		$auto_meta->keywords = preg_replace("/\{.*\}/", '', $auto_meta->keywords);
-		$auto_meta->description = preg_replace("/\{.*\}/", '', $auto_meta->description);
+		$autoMeta->title = preg_replace("/\{.*\}/", '', $autoMeta->title);
+		$autoMeta->keywords = preg_replace("/\{.*\}/", '', $autoMeta->keywords);
+		$autoMeta->description = preg_replace("/\{.*\}/", '', $autoMeta->description);
 
-		$this->design->assign('auto_meta', $auto_meta);
+		$this->design->assign('auto_meta', $autoMeta);
 
-		$body = $this->design->fetch('feedback.tpl');
-
-		return $body;
+		return $this->design->fetch('feedback.tpl');
 	}
 }

@@ -8,9 +8,9 @@
 	<div class="col-lg-8 col-md-8">
 		<div class="d-md-flex mb-3">
 			<h1 class="d-inline align-middle me-3">
-				{if $category->name}
+				{if isset($category->name)}
 					{$btr->global_articles|escape} - {$posts_count}
-				{elseif $keyword}
+				{elseif isset($keyword)}
 					{$btr->global_articles|escape} - {$posts_count}
 				{else}
 					{$btr->global_articles|escape} - {$posts_count}
@@ -25,7 +25,7 @@
 		<form class="search mb-3" method="get">
 			<input type="hidden" name="module" value="ArticlesAdmin">
 			<div class="input-group">
-				<input name="keyword" class="form-control" placeholder="{$btr->blog_search|escape}" type="text" value="{$keyword|escape}">
+				<input name="keyword" class="form-control" placeholder="{$btr->blog_search|escape}" type="text" value="{if isset($keyword)}{$keyword|escape}{/if}">
 				<button class="btn btn-primary" type="submit"><i class="align-middle mt-n1" data-feather="search"></i></button>
 			</div>
 		</form>
@@ -51,9 +51,9 @@
 						<div class="col-md-3 col-lg-3 col-sm-12 mb-3">
 							<div>
 								<select id="id_filter" name="articles_filter" class="selectpicker" title="{$btr->articles_filter|escape}" data-live-search="true" onchange="location = this.value;">
-									<option value="{url category_id=null keyword=null filter=null}" {if !$filter}selected{/if}>{$btr->all_articles|escape}</option>
-									<option value="{url keyword=null category_id=null filter='visible'}" {if $filter == 'visible'}selected{/if}>{$btr->active_articles|escape}</option>
-									<option value="{url keyword=null category_id=null filter='hidden'}" {if $filter == 'hidden'}selected{/if}>{$btr->hidden_articles|escape}</option>
+									<option value="{url category_id=null keyword=null filter=null}" {if !isset($filter)}selected{/if}>{$btr->all_articles|escape}</option>
+									<option value="{url keyword=null category_id=null filter='visible'}" {if isset($filter) && $filter == 'visible'}selected{/if}>{$btr->active_articles|escape}</option>
+									<option value="{url keyword=null category_id=null filter='hidden'}" {if isset($filter) && $filter == 'hidden'}selected{/if}>{$btr->hidden_articles|escape}</option>
 								</select>
 							</div>
 						</div>
@@ -62,10 +62,12 @@
 								<option value="{url keyword=null category_id=null}" {if !$category}selected{/if}>{$btr->global_all_categories|escape}</option>
 								{function name=category_select level=0}
 									{foreach $articles_categories as $c}
-										<option value='{url keyword=null category_id=$c->id}' {if $category->id == $c->id}selected{/if}>
+										<option value='{url keyword=null category_id=$c->id}' {if isset($category->id) && $category->id == $c->id}selected{/if}>
 											{section sp $level}--{/section} {$c->name|escape}
 										</option>
-										{category_select articles_categories=$c->subcategories level=$level+1}
+										{if isset($c->subcategories)}
+											{category_select articles_categories=$c->subcategories level=$level+1}
+										{/if}
 									{/foreach}
 								{/function}
 								{category_select articles_categories=$articles_categories}
@@ -122,7 +124,7 @@
 												<a href="{url module=ArticleAdmin id=$post->id return=$smarty.server.REQUEST_URI}" class="fw-bold text-body text-decoration-none">{$post->name|escape}</a>
 												<div class="mb-0">
 													<span class="fw-bold text-secondary">{$post->date|date}</span>
-												</div>	
+												</div>
 											</div>
 											<div class="turbo-list-boding turbo-list-status">
 												<div class="form-check form-switch">

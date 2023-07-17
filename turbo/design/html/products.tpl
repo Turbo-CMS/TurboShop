@@ -1,4 +1,4 @@
-{if $category}
+{if isset($category)}
 	{$meta_title=$category->name scope=global}
 {else}
 	{$meta_title=$btr->global_products scope=global}
@@ -9,9 +9,9 @@
 		<div class="d-md-flex mb-3">
 			<h1 class="d-inline align-middle me-3">
 				{if $products_count}
-					{if $category->name || $brand->name}
-						{$category->name|escape} {$brand->name|escape} - {$products_count}
-					{elseif $keyword}
+					{if isset($category->name) || isset($brand->name)}
+						{if isset($category)}{$category->name|escape}{/if} {if isset($brand)}{$brand->name|escape}{/if} - {$products_count}
+					{elseif isset($keyword)}
 						{$btr->global_products|escape} - {$products_count}
 					{else}
 						{$btr->global_products|escape} - {$products_count}
@@ -29,7 +29,7 @@
 		<form class="search mb-3" method="get">
 			<input type="hidden" name="module" value="ProductsAdmin">
 			<div class="input-group">
-				<input name="keyword" class="form-control" placeholder="{$btr->products_search|escape}" type="text" value="{$keyword|escape}">
+				<input name="keyword" class="form-control" placeholder="{$btr->products_search|escape}" type="text" value="{if isset($keyword)}{if isset($keyword)}{$keyword|escape}{/if}{/if}">
 				<button class="btn btn-primary" type="submit"><i class="align-middle mt-n1" data-feather="search"></i></button>
 			</div>
 		</form>
@@ -54,26 +54,28 @@
 					<div class="row">
 						<div class="col-md-3 col-lg-3 col-sm-12 mb-3">
 							<select id="id-filter" name="products_filter" class="selectpicker" data-live-search="true" data-size="10" onchange="location = this.value;">
-								<option value="{url brand_id=null category_id=null keyword=null page=null limit=null filter=null}" {if !$filter}selected{/if}>{$btr->global_all_products|escape}</option>
-								<option value="{url keyword=null brand_id=null category_id=null page=null limit=null filter='featured'}" {if $filter == 'featured'}selected{/if}>{$btr->products_bestsellers|escape}</option>
-								<option value="{url keyword=null brand_id=null category_id=null page=null limit=null filter='new'}" {if $filter == 'new'}selected{/if}>{$btr->global_new|escape}</option>
-								<option value="{url keyword=null brand_id=null category_id=null page=null limit=null filter='hit'}" {if $filter == 'hit'}selected{/if}>{$btr->global_hit|escape}</option>
-								<option value="{url keyword=null brand_id=null category_id=null page=null limit=null filter='discounted'}" {if $filter == 'discounted'}selected{/if}>{$btr->products_discount|escape}</option>
-								<option value="{url keyword=null brand_id=null category_id=null page=null limit=null filter='to_export'}" {if $filter == 'to_export'}selected{/if}>{$btr->global_add_xml_short|escape}</option>
-								<option value="{url keyword=null brand_id=null category_id=null page=null limit=null filter='visible'}" {if $filter == 'visible'}selected{/if}>{$btr->products_enable|escape}</option>
-								<option value="{url keyword=null brand_id=null category_id=null page=null limit=null filter='hidden'}" {if $filter == 'hidden'}selected{/if}>{$btr->products_disable|escape}</option>
-								<option value="{url keyword=null brand_id=null category_id=null page=null limit=null filter='outofstock'}" {if $filter == 'outofstock'}selected{/if}>{$btr->products_out_of_stock|escape}</option>
+								<option value="{url brand_id=null category_id=null keyword=null page=null limit=null filter=null}" {if !isset($filter)}selected{/if}>{$btr->global_all_products|escape}</option>
+								<option value="{url keyword=null brand_id=null category_id=null page=null limit=null filter='featured'}" {if isset($filter) && $filter == 'featured'}selected{/if}>{$btr->products_bestsellers|escape}</option>
+								<option value="{url keyword=null brand_id=null category_id=null page=null limit=null filter='new'}" {if isset($filter) && $filter == 'new'}selected{/if}>{$btr->global_new|escape}</option>
+								<option value="{url keyword=null brand_id=null category_id=null page=null limit=null filter='hit'}" {if isset($filter) && $filter == 'hit'}selected{/if}>{$btr->global_hit|escape}</option>
+								<option value="{url keyword=null brand_id=null category_id=null page=null limit=null filter='discounted'}" {if isset($filter) && $filter == 'discounted'}selected{/if}>{$btr->products_discount|escape}</option>
+								<option value="{url keyword=null brand_id=null category_id=null page=null limit=null filter='to_export'}" {if isset($filter) && $filter == 'to_export'}selected{/if}>{$btr->global_add_xml_short|escape}</option>
+								<option value="{url keyword=null brand_id=null category_id=null page=null limit=null filter='visible'}" {if isset($filter) && $filter == 'visible'}selected{/if}>{$btr->products_enable|escape}</option>
+								<option value="{url keyword=null brand_id=null category_id=null page=null limit=null filter='hidden'}" {if isset($filter) && $filter == 'hidden'}selected{/if}>{$btr->products_disable|escape}</option>
+								<option value="{url keyword=null brand_id=null category_id=null page=null limit=null filter='outofstock'}" {if isset($filter) && $filter == 'outofstock'}selected{/if}>{$btr->products_out_of_stock|escape}</option>
 							</select>
 						</div>
 						<div class="col-md-3 col-lg-3 col-sm-12 mb-3">
 							<select id="id-categories" name="categories_filter" title="{$btr->global_category_filter|escape}" class="selectpicker" data-live-search="true" data-size="10" onchange="location = this.value;">
-								<option value="{url keyword=null brand_id=null page=null limit=null category_id=null}" {if !$category}selected{/if}>{$btr->global_all_categories|escape}</option>
+								<option value="{url keyword=null brand_id=null page=null limit=null category_id=null}" {if !isset($category)}selected{/if}>{$btr->global_all_categories|escape}</option>
 								{function name=category_select level=0}
 									{foreach $categories as $c}
-										<option value='{url keyword=null brand_id=null page=null limit=null category_id=$c->id}' {if $category->id == $c->id}selected{/if}>
+										<option value='{url keyword=null brand_id=null page=null limit=null category_id=$c->id}' {if isset($category) && $category->id == $c->id}selected{/if}>
 											{section sp $level}--{/section} {$c->name|escape}
 										</option>
-										{category_select categories=$c->subcategories level=$level+1}
+										{if isset($c->subcategories)}
+											{category_select categories=$c->subcategories level=$level+1}
+										{/if}
 									{/foreach}
 								{/function}
 								{category_select categories=$categories}
@@ -81,9 +83,9 @@
 						</div>
 						<div class="col-md-3 col-lg-3 col-sm-12 mb-3">
 							<select id="id-brands" name="brands_filter" title="{$btr->global_brand_filter|escape}" class="selectpicker" data-live-search="true" data-size="10" onchange="location = this.value;">
-								<option value="{url keyword=null brand_id=null page=null limit=null category_id=null}" {if !$brand}selected{/if}>{$btr->global_all_brands|escape}</option>
+								<option value="{url keyword=null brand_id=null page=null limit=null category_id=null}" {if !isset($brand)}selected{/if}>{$btr->global_all_brands|escape}</option>
 								{foreach $brands as $b}
-									<option value="{url keyword=null page=null limit=null brand_id=$b->id}" brand_id="{$b->id}" {if $brand->id == $b->id}selected{/if}>{$b->name}</option>
+									<option value="{url keyword=null page=null limit=null brand_id=$b->id}" brand_id="{$b->id}" {if isset($brand) && $brand->id == $b->id}selected{/if}>{$b->name}</option>
 								{/foreach}
 							</select>
 						</div>
@@ -152,9 +154,7 @@
 													</span>
 													<span class="fw-bold">{if $product->variants[0]->infinity}∞{else}{$product->variants[0]->stock}{/if} {$settings->units|escape}</span>
 												</div>
-												{if $product->brand}
-													<div class="turbo-list-name-brand text-muted">{$btr->global_brand|escape} {$product->brand}</div>
-												{/if}
+												<div class="turbo-list-name-brand text-muted">{if $product->brand}{$btr->global_brand|escape}{/if} {$product->brand}</div>
 												{if $product->variants|count > 1}
 													<div class="js-variants-toggle variants-toggle">
 														{$btr->global_options|escape}
@@ -306,7 +306,9 @@
 												{function name=category_select_btn level=0}
 													{foreach $categories as $category}
 														<option value="{$category->id}">{section sp $level}--{/section} {$category->name|escape}</option>
-														{category_select_btn categories=$category->subcategories selected_id=$selected_id level=$level+1}
+														{if isset($category->subcategories)}
+															{category_select_btn categories=$category->subcategories level=$level+1}
+														{/if}
 													{/foreach}
 												{/function}
 												{category_select_btn categories=$categories}
@@ -376,7 +378,6 @@
 				}
 			});
 
-			// Duplicate product
 			$(document).on("click", ".js-copy", function() {
 				$('.js-form-list input[type="checkbox"][name*="check"]').attr('checked', false);
 				$(this).closest(".js-form-list").find('select[name="action"] option[value=duplicate]').attr('selected', true);
@@ -385,7 +386,6 @@
 				$(this).closest(".js-form-list").submit();
 			});
 
-			// Infinity in stock
 			$("input[name*=stock]").focus(function() {
 				if ($(this).val() == '∞')
 					$(this).val('');

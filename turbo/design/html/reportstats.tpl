@@ -26,14 +26,14 @@
 							<div class="col-sm-12 col-md-4 col-lg-4">
 								<div class="input-group mb-3">
 									<span class="input-group-text">{$btr->global_from|escape}</span>
-									<input type="text" class="flatpickr form-control" name="date_from" value="{$date_from}" autocomplete="off">
+									<input type="text" class="flatpickr form-control" name="date_from" value="{if isset($date_from)}{$date_from}{/if}" autocomplete="off">
 									<span class="input-group-text"><i class="align-middle" data-feather="calendar"></i></span>
 								</div>
 							</div>
 							<div class="col-sm-12 col-md-4 col-lg-4">
 								<div class="input-group mb-3">
 									<span class="input-group-text">{$btr->global_to|escape}</span>
-									<input type="text" class="flatpickr form-control" name="date_to" value="{$date_to}" autocomplete="off">
+									<input type="text" class="flatpickr form-control" name="date_to" value="{if isset($date_to)}{$date_to}{/if}" autocomplete="off">
 									<span class="input-group-text"><i class="align-middle" data-feather="calendar"></i></span>
 								</div>
 							</div>
@@ -45,13 +45,15 @@
 					<div class="row">
 						<div class="col-md-3 col-lg-3 col-sm-12 mb-3">
 							<select id="id_categories" name="categories_filter" title="{$btr->global_category_filter|escape}" class="selectpicker" data-live-search="true" data-size="10" onchange="location = this.value;">
-								<option value="{url keyword=null brand_id=null page=null limit=null category_id=null}" {if !$category}selected{/if}>{$btr->global_all_categories|escape}</option>
+								<option value="{url keyword=null brand_id=null page=null limit=null category_id=null}" {if !isset($category)}selected{/if}>{$btr->global_all_categories|escape}</option>
 								{function name=category_select level=0}
 									{foreach $categories as $c}
-										<option value='{url keyword=null brand_id=null page=null category_id={$c->id}}' {if $smarty.get.category_id == $c->id}selected{/if}>
+										<option value='{url keyword=null brand_id=null page=null category_id={$c->id}}' {if isset($smarty.get.category_id) && $smarty.get.category_id == $c->id}selected{/if}>
 											{section sp $level}--{/section} {$c->name|escape}
 										</option>
-										{category_select categories=$c->subcategories level=$level+1}
+										{if isset($c->subcategories)}
+											{category_select categories=$c->subcategories level=$level+1}
+										{/if}
 									{/foreach}
 								{/function}
 								{category_select categories=$categories}
@@ -59,27 +61,27 @@
 						</div>
 						<div class="col-md-3 col-lg-3 col-sm-12 mb-3">
 							<select class="selectpicker" data-live-search="true" data-size="10" onchange="location = this.value;">
-								<option {if !$smarty.get.status}selected{/if} value="{url status=null}">{$btr->reportstats_all_statuses|escape}</option>
-								<option value="{url module=ReportStatsAdmin status=1 keyword=null id=null page=null label=null from_date=null to_date=null}" {if $status==1}selected{/if}>{$btr->global_new_order|escape}</option>
-								<option value="{url module=ReportStatsAdmin status=2 keyword=null id=null page=null label=null from_date=null to_date=null}" {if $status==2}selected{/if}>{$btr->global_accepted_order|escape}</option>
-								<option value="{url module=ReportStatsAdmin status=3 keyword=null id=null page=null label=null from_date=null to_date=null}" {if $status==3}selected{/if}>{$btr->global_closed_order|escape}</option>
-								<option value="{url module=ReportStatsAdmin status=4 keyword=null id=null page=null label=null from_date=null to_date=null}" {if $status==4}selected{/if}>{$btr->global_canceled_order|escape}</option>
+								<option {if !isset($smarty.get.status)}selected{/if} value="{url status=null}">{$btr->reportstats_all_statuses|escape}</option>
+								<option value="{url module=ReportStatsAdmin status=1 keyword=null id=null page=null label=null from_date=null to_date=null}" {if isset($status) && $status==1}selected{/if}>{$btr->global_new_order|escape}</option>
+								<option value="{url module=ReportStatsAdmin status=2 keyword=null id=null page=null label=null from_date=null to_date=null}" {if isset($status) && $status==2}selected{/if}>{$btr->global_accepted_order|escape}</option>
+								<option value="{url module=ReportStatsAdmin status=3 keyword=null id=null page=null label=null from_date=null to_date=null}" {if isset($status) && $status==3}selected{/if}>{$btr->global_closed_order|escape}</option>
+								<option value="{url module=ReportStatsAdmin status=4 keyword=null id=null page=null label=null from_date=null to_date=null}" {if isset($status) && $status==4}selected{/if}>{$btr->global_canceled_order|escape}</option>
 							</select>
 						</div>
 						<div class="col-lg-3 col-md-3 col-sm-12 mb-3">
 							<select onchange="location = this.value;" data-live-search="true" data-size="15" class="selectpicker">
-								<option {if !$date_filter}selected{/if} value="{url date_filter=null date_to=null date_from=null filter_check=null}">{$btr->reportstats_all_orders|escape}</option>
-								<option {if $date_filter == today}selected{/if} value="{url date_filter=today date_to=null date_from=null filter_check=null}">{$btr->reportstats_today|escape}</option>
-								<option {if $date_filter == this_week}selected{/if} value="{url date_filter=this_week date_to=null date_from=null filter_check=null}">{$btr->reportstats_this_week|escape}</option>
-								<option {if $date_filter == this_month}selected{/if} value="{url date_filter=this_month date_to=null date_from=null filter_check=null}">{$btr->reportstats_this_month|escape}</option>
-								<option {if $date_filter == this_year}selected{/if} value="{url date_filter=this_year date_to=null date_from=null filter_check=null}">{$btr->reportstats_this_year|escape}</option>
-								<option {if $date_filter == yesterday}selected{/if} value="{url date_filter=yesterday date_to=null date_from=null filter_check=null}">{$btr->reportstats_yesterday|escape}</option>
-								<option {if $date_filter == last_week}selected{/if} value="{url date_filter=last_week date_to=null date_from=null filter_check=null}">{$btr->reportstats_last_week|escape}</option>
-								<option {if $date_filter == last_month}selected{/if} value="{url date_filter=last_month date_to=null date_from=null filter_check=null}">{$btr->reportstats_last_month|escape}</option>
-								<option {if $date_filter == last_year}selected{/if} value="{url date_filter=last_year date_to=null date_from=null filter_check=null}">{$btr->reportstats_last_year|escape}</option>
-								<option {if $date_filter == last_24hour}selected{/if} value="{url date_filter=last_24hour date_to=null date_from=null filter_check=null}">{$btr->reportstats_last_24|escape}</option>
-								<option {if $date_filter == last_7day}selected{/if} value="{url date_filter=last_7day date_to=null date_from=null filter_check=null}">{$btr->reportstats_last_7_days|escape}</option>
-								<option {if $date_filter == last_30day}selected{/if} value="{url date_filter=last_30day date_to=null date_from=null filter_check=null}">{$btr->reportstats_last_30_days|escape}</option>
+								<option {if !isset($date_filter)}selected{/if} value="{url date_filter=null date_to=null date_from=null filter_check=null}">{$btr->reportstats_all_orders|escape}</option>
+								<option {if isset($date_filter) && $date_filter == today}selected{/if} value="{url date_filter=today date_to=null date_from=null filter_check=null}">{$btr->reportstats_today|escape}</option>
+								<option {if isset($date_filter) && $date_filter == this_week}selected{/if} value="{url date_filter=this_week date_to=null date_from=null filter_check=null}">{$btr->reportstats_this_week|escape}</option>
+								<option {if isset($date_filter) && $date_filter == this_month}selected{/if} value="{url date_filter=this_month date_to=null date_from=null filter_check=null}">{$btr->reportstats_this_month|escape}</option>
+								<option {if isset($date_filter) && $date_filter == this_year}selected{/if} value="{url date_filter=this_year date_to=null date_from=null filter_check=null}">{$btr->reportstats_this_year|escape}</option>
+								<option {if isset($date_filter) && $date_filter == yesterday}selected{/if} value="{url date_filter=yesterday date_to=null date_from=null filter_check=null}">{$btr->reportstats_yesterday|escape}</option>
+								<option {if isset($date_filter) && $date_filter == last_week}selected{/if} value="{url date_filter=last_week date_to=null date_from=null filter_check=null}">{$btr->reportstats_last_week|escape}</option>
+								<option {if isset($date_filter) && $date_filter == last_month}selected{/if} value="{url date_filter=last_month date_to=null date_from=null filter_check=null}">{$btr->reportstats_last_month|escape}</option>
+								<option {if isset($date_filter) && $date_filter == last_year}selected{/if} value="{url date_filter=last_year date_to=null date_from=null filter_check=null}">{$btr->reportstats_last_year|escape}</option>
+								<option {if isset($date_filter) && $date_filter == last_24hour}selected{/if} value="{url date_filter=last_24hour date_to=null date_from=null filter_check=null}">{$btr->reportstats_last_24|escape}</option>
+								<option {if isset($date_filter) && $date_filter == last_7day}selected{/if} value="{url date_filter=last_7day date_to=null date_from=null filter_check=null}">{$btr->reportstats_last_7_days|escape}</option>
+								<option {if isset($date_filter) && $date_filter == last_30day}selected{/if} value="{url date_filter=last_30day date_to=null date_from=null filter_check=null}">{$btr->reportstats_last_30_days|escape}</option>
 							</select>
 						</div>
 
@@ -121,7 +123,6 @@
 						<a href="{if $sort_prod=='amount'}{url sort_prod=amount_in}{else}{url sort_prod=amount}{/if}" {if $sort_prod=='amount' || $sort_prod=='amount_in'}class="{$sort} selected" {/if}>{include file='svg_icon.tpl' svgId='sorts'}</a>
 					</div>
 				</div>
-
 				<div class="turbo-list-body">
 					{foreach $report_stat_purchases as $purchase}
 						{assign var='total_summ'  value=$total_summ+$purchase->sum_price}
@@ -129,9 +130,11 @@
 						<div class="turbo-list-body-item">
 							<div class="turbo-list-row">
 								<div class="turbo-list-boding turbo-list-reportstats-categories text-body">
-									{foreach $purchase->category->path as $c}
-										{$c->name}/
-									{/foreach}
+									{if isset($purchase->category)} 	
+										{foreach $purchase->category->path as $c}
+											{$c->name}/
+										{/foreach}
+									{/if}
 								</div>
 								<div class="turbo-list-boding turbo-list-reportstats-products">
 									<a title="{$purchase->product_name|escape}" href="{url module=ReportStatsProdAdmin id=$purchase->product_id return=$smarty.server.REQUEST_URI}" class="fw-bold text-body text-decoration-none">{$purchase->product_name}</a>
@@ -145,13 +148,12 @@
 										</span>
 									</div>
 								</div>
-
 								<div class="turbo-list-boding turbo-list-reportstats-total text-body">
 									{$purchase->sum_price} {$currency->sign|escape}
 								</div>
 
 								<div class="turbo-list-reportstats-setting text-body">
-									{$purchase->amount} {if $purchase->units}{$purchase->units|escape}{else}{$settings->units}{/if}
+									{$purchase->amount} {if isset($purchase->units)}{$purchase->units|escape}{else}{$settings->units}{/if}
 								</div>
 							</div>
 						</div>
@@ -173,25 +175,25 @@
 </div>
 
 <script>
-	{if $date_filter}
+	{if isset($date_filter)}
 		var date_filter = '{$date_filter}';
 	{/if}
-	{if $date_from}
+	{if isset($date_from)}
 		var date_from = '{$date_from}';
 	{/if}
-	{if $date_to}
+	{if isset($date_to)}
 		var date_to = '{$date_to}';
 	{/if}
-	{if $status}
+	{if isset($status)}
 		var status = '{$status}';
 	{/if}
 	{if $sort_prod}
 		var sort_prod = '{$sort_prod}';
 	{/if}
-	{if $page}
+	{if isset($page)}
 		var page = '{$page}';
 	{/if}
-	{if $category}
+	{if isset($category)}
 		var category = '{$category}';
 	{/if}
 </script>
@@ -199,7 +201,7 @@
 {literal}
 	<script>
 		$(window).on("load", function() {
-			// Flatpickr
+
 			flatpickr(".flatpickr", {
 				dateFormat: "d.m.Y",
 				locale: "{/literal}{if $settings->lang =='ua'}uk{else}{$settings->lang}{/if}{literal}"

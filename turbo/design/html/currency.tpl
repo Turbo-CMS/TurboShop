@@ -7,7 +7,7 @@
 	</div>
 </div>
 
-{if $message_error}
+{if isset($message_error)}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -267,9 +267,7 @@
 {literal}
 	<script>
 		$(window).on("load", function() {
-
 			var confirm = true;
-			// Add currency
 			var curr = $('#new-currency').clone(true);
 			$('#new-currency').remove().removeAttr('id');
 			$('#add-currency').click(function() {
@@ -293,21 +291,18 @@
 				$(".js-form-list").submit();
 			});
 
-			// Confirmed currency conversion
 			$(document).on("click", ".js-recalculate-currency-confirm", function() {
 				$('input[name="recalculate"]').val(1);
 				confirm = false;
 				$(".js-form-list").submit();
 			});
 
-			// Canceled currency conversion
 			$(document).on("click", ".js-recalculate-currency-dismiss", function() {
 				$('input[name="recalculate"]').val(0);
 				confirm = false;
 				$(".js-form-list").submit();
 			});
 
-			// Remember the id of the first currency to determine the change in the base currency
 			var base_currency_id = $('input[name*="currency[id]"]').val();
 
 			$(".js-form-list").submit(function() {

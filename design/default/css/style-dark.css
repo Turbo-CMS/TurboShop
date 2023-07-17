@@ -43,7 +43,7 @@
 }
 
 .autocomplete-suggestions {
-    background-color: #212529!important;
+	background-color: #212529 !important;
 }
 
 .autocomplete-suggestions strong {
@@ -56,32 +56,6 @@
 
 .btn-link:focus {
 	box-shadow: none !important;
-}
-
-/* Variants */
-
-.variants label {
-	border: solid 1px #495057;
-}
-
-.variants label.active {
-	color: #0d6efd;
-	border: solid 2px #0d6efd;
-}
-
-.variants label:active {
-	box-shadow: 0 0 0 0.2rem rgba(49, 132, 253, 0.25);
-	border: solid 2px #0d6efd;
-}
-
-.variants label:focus {
-	box-shadow: 0 0 0 0.2rem rgba(49, 132, 253, 0.25);
-	border: solid 2px #0d6efd;
-}
-
-.variants label:active:focus {
-	box-shadow: 0 0 0 0.2rem rgba(49, 132, 253, 0.25);
-	border: solid 2px #0d6efd;
 }
 
 /* Carusel images */
@@ -105,5 +79,14 @@
 
 a.admin_bookmark {
 	border: 1px solid #495057 !important;
-    background-color: #2b3035 !important;
+	background-color: #2b3035 !important;
+}
+
+.size-filter .btn {
+	border: 1px solid rgba(255, 255, 255, 0.15)!important;
+	color: #adb5bd!important;
+}
+
+.size-filter .btn:hover {
+	border: 1px solid rgba(255, 255, 255, 0.15)!important;
 }

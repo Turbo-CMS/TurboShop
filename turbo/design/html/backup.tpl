@@ -105,7 +105,6 @@
 {literal}
 	<script>
 		$(window).on("load", function() {
-			// Reestablish 
 			$("button.restore").click(function() {
 				file = $(this).closest(".js-row").find('[name*="check"]').val();
 				$('form#hidden input[name="action"]').val('restore');
@@ -114,20 +113,17 @@
 				return false;
 			});
 
-			// Create backup 
 			$("#create-backup").click(function() {
 				$('form#hidden input[name="action"]').val('create');
 				$('form#hidden').submit();
 				return false;
 			});
 
-			// Confirmed 
 			$(document).on("click", ".js-restore-confirm", function() {
 				confirm = false;
 				$('form#hidden').submit();
 			});
 
-			// Canceled
 			$(document).on("click", ".js-restore-dismiss", function() {
 				return false;
 			});

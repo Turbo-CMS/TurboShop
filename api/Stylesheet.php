@@ -1,100 +1,104 @@
 <?php
 
+require_once 'Turbo.php';
+
 class Stylesheet extends Turbo
 {
-	protected $events = array();
-
+	protected $events = [];
 	protected $gzip_level = null;
-
 	protected $cache_dir = 'css/';
-
 	protected $min_filesize = 256;
-
 	protected $order_num = 0;
-
-	// lessphp
 	protected $less_used = false;
 	protected $less_object = null;
 
-	/*
-	* Registration css file(s)
-	* @param $id
-	* @param $files
-	* @param integer $priority
-	*/
-	public function add_files($id, $files, $priority = 10, $less = false)
+	/**
+	 * Add file
+	 */
+	public function addFiles($id, $files, $priority = 10, $less = false)
 	{
-		$event = $this->get_event($id);
+		$event = $this->getEvent($id);
 
 		foreach ((array) $files as $path) {
 			$file = trim($path, '/ ');
 			$path = $this->config->root_dir . $file;
-			if (is_file($path))
-				$event->data[$path] = (object) array('type' => 'file', 'time' => ($less ? 0 : filemtime($path)), 'original' => $file, 'event' => $event->id, 'less' => $less);
+
+			if (is_file($path)) {
+				$event->data[$path] = (object) [
+					'type' => 'file',
+					'time' => ($less ? 0 : filemtime($path)),
+					'original' => $file,
+					'event' => $event->id,
+					'less' => $less,
+				];
+			}
 		}
 
-		if (!$event->data)
+		if (!$event->data) {
 			return false;
+		}
 
-		$event->priority = intval($priority);
+		$event->priority = (int) $priority;
 
-		if ($less)
+		if ($less) {
 			$this->less_used = true;
+		}
 
 		return $this->events[$event->id] = $event;
 	}
 
-	/*
-	* Register custom css code
-	* @param $id
-	* @param string $code
-	* @param integer $priority
-	*/
-	public function add_code($id, $code, $priority = 10, $less = false)
+	/**
+	 * Add code
+	 */
+	public function addCode($id, $code, $priority = 10, $less = false)
 	{
-		$event = $this->get_event($id);
+		$event = $this->getEvent($id);
 
-		if (!$code = trim($code))
+		if (!$code = trim($code)) {
 			return false;
+		}
 
-		$event->data[$code] = (object) array('type' => 'code', 'time' => 0, 'event' => $event->id, 'less' => $less);
-		$event->priority = intval($priority);
+		$event->data[$code] = (object) [
+			'type' => 'code',
+			'time' => 0,
+			'event' => $event->id,
+			'less' => $less,
+		];
 
-		if ($less)
+		$event->priority = (int) $priority;
+
+		if ($less) {
 			$this->less_used = true;
+		}
 
 		return $this->events[$event->id] = $event;
 	}
 
-	/*
-	* Unregister css file(s) or code
-	* @param $id
-	*/
+	/**
+	 * Unregister
+	 */
 	public function unplug($id)
 	{
 		unset($this->events[$id]);
 	}
 
-	/*
-	* Output css file(s) or code
-	* @param $event
-	*/
+	/**
+	 * Render
+	 */
 	public function render($event_id = null, $minify = null, $combine = true)
 	{
 
-		if (is_null($minify))
+		if (is_null($minify)) {
 			$minify = $this->config->minify_css;
+		}
 
-		// compression can be used here
-		// check if it is supported by the browser
 		if (is_null($this->gzip_level)) {
 			$this->gzip_level = 0;
-
-			// Create the package if it doesn't exist
 			$this->cache_dir =  $this->config->minify_cache_dir . $this->cache_dir;
-			if (!is_dir($this->config->root_dir . $this->cache_dir))
-				mkdir($this->config->root_dir . $this->cache_dir, 0755, true);
 
+			if (!is_dir($this->config->root_dir . $this->cache_dir)) {
+				mkdir($this->config->root_dir . $this->cache_dir, 0755, true);
+			}
 
 			if ($this->config->minify_gzip_level > 0 && isset($_SERVER['HTTP_ACCEPT_ENCODING'])) {
 				if (stripos($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') !== false) {
@@ -105,67 +109,68 @@ class Stylesheet extends Turbo
 			}
 		}
 
-		// If the resource ID is given, we will return only it
 		if (!is_null($event_id)) {
 			if (isset($this->events[$event_id])) {
 				$events_data = $this->events[$event_id]->data;
-				// Clean up from re-rendering
 				$this->unplug($event_id);
 			}
 		} else {
-			uasort($this->events, array($this, 'sort_priority_callback'));
+			uasort($this->events, [$this, 'sortPriorityCallback']);
 
-			$events_data = array();
-			foreach ($this->events as $ev)
+			$events_data = [];
+
+			foreach ($this->events as $ev) {
 				$events_data = array_merge($events_data, $ev->data);
+			}
 
-			// Clean up from re-rendering
-			$this->events = array();
+			$this->events = [];
 		}
 
 		$result = '';
 
-		// If there is nothing to output
-		if (empty($events_data))
+		if (empty($events_data)) {
 			return $result;
+		}
 
-		// All off give back originals 
 		if (!$combine && !$minify) {
 			foreach ($events_data as $css => $data) {
-				if ($data->less)
+				if ($data->less) {
 					$this->verify_less($css, $data);
+				}
 
-				if ($data->type == 'code')
-					$result .= $this->render_tag($css);
-				else
-					$result .= $this->render_tag(false, $data->original);
+				if ($data->type == 'code') {
+					$result .= $this->renderTag($css, "");
+				} else {
+					$result .= $this->renderTag(false, $data->original);
+				}
 			}
-		} else // Something is enabled
-		{
-
-			// If we do not pack data into 1 file
+		} else {
 			if (!$combine) {
 				foreach ($events_data as $css => $e) {
-					if ($e->type == 'code')
+					if ($e->type == 'code') {
 						$prefix = $e->event;
-					else
+					} else {
 						$prefix = pathinfo($e->original, PATHINFO_FILENAME);
+					}
 
 					$result .= $this->proteced(array($css => $e), $prefix, $minify);
 				}
-			} else // Pack everything into 1 file
-			{
+			} else {
 
 				$prefix = 'pack';
+
 				if (count($events_data) == 1) {
 					$e = reset($events_data);
-					if ($e->type == 'code')
+
+					if ($e->type == 'code') {
 						$prefix = $e->event;
-					else
+					} else {
 						$prefix = pathinfo($e->original, PATHINFO_FILENAME);
+					}
 				} elseif (!is_null($event_id)) {
 					$prefix = $event_id;
 				}
+
 				$result = $this->proteced($events_data, $prefix, $minify);
 			}
 		}
@@ -173,87 +178,98 @@ class Stylesheet extends Turbo
 		return $result;
 	}
 
+	/**
+	 * Proteced
+	 */
 	protected function proteced($data, $prefix, $minify)
 	{
 
-		if ($minify && substr($prefix, -4) !== '.min')
+		if ($minify && substr($prefix, -4) !== '.min') {
 			$prefix .= '.min';
+		}
 
-		list($cacheFile, $cachePath) = $this->get_cacheFile($data, $prefix);
+		list($cacheFile, $cachePath) = $this->getCacheFile($data, $prefix);
 
-		// There is less. Let's check its caches
-		$less_verify = array();
+		$less_verify = [];
 
 		if ($this->less_used) {
-			$new_data = array();
+			$new_data = [];
+
 			foreach ($data as $css => $_data) {
-				if ($_data->less)
+				if ($_data->less) {
 					$less_verify[] = $this->verify_less($css, $_data);
+				}
 
 				$new_data[$css] = $_data;
 			}
+
 			$data = $new_data;
 		}
 
-		// Something is wrong with the cache less. Let's update
-		if (in_array(false, $less_verify) && is_file($cachePath))
+		if (in_array(false, $less_verify) && is_file($cachePath)) {
 			unlink($cachePath);
-
-		// No main cache file 
-		if (!is_file($cachePath)) {
-			$minifier = $this->get_minifier(array_keys($data), $minify);
-			$content = $minifier->minify($cachePath);
-
-			// If the content is less than min_filesize then we give it to html
-			if (strlen($content) > $this->min_filesize)
-				$content = false;
-
-			if ($this->gzip_level && !$content)
-				$cacheFile = $cacheFile . '.gz' . $this->gzip_level;
-		} else {
-			$content = false;
-			if (filesize($cachePath) < $this->min_filesize)
-				$content = file_get_contents($cachePath);
-			elseif ($this->gzip_level)
-				$cacheFile = $cacheFile . '.gz' . $this->gzip_level;
 		}
 
-		return $this->render_tag($content, $cacheFile);
+		if (!is_file($cachePath)) {
+			$minifier = $this->getMinifier(array_keys($data), $minify);
+			$content = $minifier->minify($cachePath);
+
+			if (strlen($content) > $this->min_filesize) {
+				$content = false;
+			}
+
+			if ($this->gzip_level && !$content) {
+				$cacheFile = $cacheFile . '.gz' . $this->gzip_level;
+			}
+		} else {
+			$content = false;
+
+			if (filesize($cachePath) < $this->min_filesize) {
+				$content = file_get_contents($cachePath);
+			} elseif ($this->gzip_level) {
+				$cacheFile = $cacheFile . '.gz' . $this->gzip_level;
+			}
+		}
+
+		return $this->renderTag($content, $cacheFile);
 	}
 
-	protected function get_event($event_id)
+	/**
+	 * Get event
+	 */
+	protected function getEvent($event_id)
 	{
-		if (isset($this->events[$event_id]))
+		if (isset($this->events[$event_id])) {
 			return $this->events[$event_id];
+		}
 
 		$event = new stdClass();
 		$event->id = $event_id;
-		$event->data = array();
+		$event->data = [];
 		$event->order = $this->order_num++;
 		return $event;
 	}
 
-	/*
-	* Handling less syntax
-	*/
+	/**
+	 * Verify less
+	 */
 	protected function verify_less(&$resource, &$data)
 	{
 		$valid = true;
 
 		try {
-
 			$key = $this->hash(var_export($data, 1));
 
-			if ($data->type == 'code')
+			if ($data->type == 'code') {
 				$prefix = $data->event;
-			else
+			} else {
 				$prefix = pathinfo($data->original, PATHINFO_FILENAME);
+			}
 
-			list($outputFile, $outputPath) = $this->get_cacheFile($data, $prefix . '.less');
+			list($outputFile, $outputPath) = $this->getCacheFile($data, $prefix . '.less');
 
 			$cachePath = $outputPath . '.cache';
 
-			// no cache or target file
 			if (!is_file($outputPath) || !is_readable($cachePath) || !is_array($cache = @unserialize(file_get_contents($cachePath)))) {
 				$valid = false;
 			} else {
@@ -265,20 +281,19 @@ class Stylesheet extends Turbo
 				}
 			}
 
-			// Less has changed
 			if (!$valid) {
 				include_once $this->config->root_dir . '/minify/less/lessc.inc.php';
 				$cache = lessc::cexecute($resource);
 
 				if ($data->type == 'file') {
-					// Change path to application files
-					$minifier = $this->get_minifier($cache['compiled'], false);
+					$minifier = $this->getMinifier($cache['compiled'], false);
 					$minifier->setRootSource($data->original);
 					$cache['compiled'] = $minifier->minify($outputPath);
 				} else {
 					file_put_contents($outputPath, $cache['compiled']);
 				}
-				unset($cache['compiled']); // To reduce cache size 
+
+				unset($cache['compiled']);
 				file_put_contents($cachePath, serialize($cache));
 			}
 
@@ -292,62 +307,61 @@ class Stylesheet extends Turbo
 		return $valid;
 	}
 
-	/*
-	* Get MatthiasMullie minify object
-	*/
-	protected function get_minifier($data, $minify)
+	/**
+	 * Get minifier
+	 */
+	protected function getMinifier($data, $minify)
 	{
-		// Use compression
 		require_once $this->config->root_dir . '/minify/MatthiasMullie/autoload.php';
 
 		if ($minify) {
 			$minifier = new MatthiasMullie\Minify\CSS($data);
-
-			// Disable import of application files. Soon I will finalize their caching
 			$minifier->setMaxImportSize(0);
 			$minifier->setImportExtensions(array());
-		} else // Просто клеим
+		} else {
 			$minifier = new MatthiasMullie\Minify\CSSPacker($data);
+		}
 
-		// Return content	
 		return $minifier;
 	}
 
-	/*
-	* We form the name of the cache file based on the parameters
-	*/
-	protected function get_cacheFile($data, $prefix)
+	/**
+	 * Get cache file
+	 */
+	protected function getCacheFile($data, $prefix)
 	{
 		$key = $this->hash(var_export($data, 1));
-
 		$cacheFile = $this->cache_dir . $key . '_' . $prefix . '.css';
-		return array($cacheFile, $this->config->root_dir . $cacheFile);
+
+		return [$cacheFile, $this->config->root_dir . $cacheFile];
 	}
 
-	protected function render_tag($content, $css_file)
+	protected function renderTag($content, $css_file)
 	{
-		if ($content)
+		if ($content) {
 			return '<style type="text/css">' . $content . '</style>';
-		else
+		} else {
 			return '<link href="' . $css_file . '" rel="stylesheet"/>';
+		}
 	}
 
-	/*
-	* String hashing
-	*/
+	/**
+	 * String hashing
+	 */
 	protected function hash($str)
 	{
 		$hash = crc32($str);
 		return ($hash >= 0 ? $hash : sprintf('%u', $hash));
 	}
 
-	/* 
-	* Sort array by priority 
-	*/
-	public function sort_priority_callback($a, $b)
+	/** 
+	 * Sort array by priority 
+	 */
+	public function sortPriorityCallback($a, $b)
 	{
-		if ($a->priority == $b->priority)
+		if ($a->priority == $b->priority) {
 			return ($a->order < $b->order) ? -1 : 1;
+		}
 
 		return ($a->priority < $b->priority) ? 1 : -1;
 	}

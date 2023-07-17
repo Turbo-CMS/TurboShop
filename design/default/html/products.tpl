@@ -1,15 +1,15 @@
 {* List products *}
 
 {* Canonical page address *}
-{if $page}
+{if isset($page)}
 	{$canonical="/{$page->url}" scope=global}
-{elseif $category && $brand}
+{elseif isset($category) && isset($brand)}
 	{$canonical="/catalog/{$category->url}/{$brand->url}" scope=global}
-{elseif $category}
+{elseif isset($category)}
 	{$canonical="/catalog/{$category->url}" scope=global}
-{elseif $brand}
+{elseif isset($brand)}
 	{$canonical="/brands/{$brand->url}" scope=global}
-{elseif $keyword}
+{elseif isset($keyword)}
 	{$canonical="/all-products?keyword={$keyword|escape}" scope=global}
 {else}
 	{$canonical="/all-products" scope=global}
@@ -23,13 +23,13 @@
 			<a itemprop="item" class="text-decoration-none" href="{if $lang_link}{$lang_link}{else}/{/if}"><span itemprop="name" title="{$lang->home}">{$lang->home}</span></a>
 			<meta itemprop="position" content="{$level++}">
 		</li>
-		{if $page && !$category}
+		{if isset($page) && !isset($category)}
 			<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="breadcrumb-item active" aria-current="page">
 				<a itemprop="item" class="text-decoration-none" href="{$lang_link}{$page->url}"><span itemprop="name">{$page->header|escape}</span></a>
 				<meta itemprop="position" content="{$level++}">
 			</li>
 		{/if}
-		{if $category}
+		{if isset($category)}
 			<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="breadcrumb-item active" aria-current="page">
 				<a itemprop="item" class="text-decoration-none" href="{$lang_link}catalog"><span itemprop="name">{$lang->catalog}</span></a>
 				<meta itemprop="position" content="{$level++}">
@@ -40,35 +40,35 @@
 					<meta itemprop="position" content="{$level++}">
 				</li>
 			{/foreach}
-			{if $brand}
+			{if isset($brand)}
 				<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item">
 					<a itemprop="item" class="text-decoration-none" href="{$lang_link}catalog/{$cat->url}/{$brand->url}"><span itemprop="name">{$brand->name|escape}</span></a>
 					<meta itemprop="position" content="{$level++}">
 				</li>
 			{/if}
-			{if $page}
+			{if isset($page)}
 				<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="breadcrumb-item active" aria-current="page">
 					<a itemprop="item" class="text-decoration-none" href="{$lang_link}{$page->url}"><span itemprop="name">{$page->header|escape}</span></a>
 					<meta itemprop="position" content="{$level++}">
 				</li>
 			{/if}
-		{elseif $brand}
+		{elseif isset($brand)}
 			<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="breadcrumb-item active" aria-current="page">
-				<a itemprop="item" class="text-decoration-none" href="{$lang_link}brands"><span itemprop="name">{$lang->index_brands}</span></a>
+				<a itemprop="item" class="text-decoration-none" href="{$lang_link}brands"><span itemprop="name">{$lang->global_brands}</span></a>
 				<meta itemprop="position" content="{$level++}">
 			</li>
 			<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item">
 				<a itemprop="item" class="text-decoration-none" href="{$lang_link}brands/{$brand->url}"><span itemprop="name">{$brand->name|escape}</span></a>
 				<meta itemprop="position" content="{$level++}">
 			</li>
-		{elseif $wishlist}
+		{elseif isset($wishlist)}
 			<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item active">
 				<a itemprop="item" class="text-decoration-none" href="{$lang_link}wishlist/"><span itemprop="name">{$lang->compare}</span></a>
 				<meta itemprop="position" content="{$level++}">
 			</li>
-		{elseif $keyword}
+		{elseif isset($keyword)}
 			<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item active">
-				<a itemprop="item" class="text-decoration-none" href="{$lang_link}products?keyword={$keyword|escape}"><span itemprop="name">{$lang->search}</span></a>
+				<a itemprop="item" class="text-decoration-none" href="{$lang_link}all-products?keyword={$keyword|escape}"><span itemprop="name">{$lang->search}</span></a>
 				<meta itemprop="position" content="{$level++}">
 			</li>
 		{/if}
@@ -77,18 +77,30 @@
 <!-- Breadcrumb #End /-->
 
 {* Page title *}
-{if $keyword}
+{if isset($keyword)}
 	<h1 class="my-4">{$lang->search} {$keyword|escape}</h1>
-{elseif $page}
+{elseif isset($page)}
 	<h1 class="my-4">{$page->name|escape}</h1>
 {else}
-	<h1 class="my-4">{if $category->name_h1}{$category->name_h1|escape}{else}{$category->name|escape}{/if} {if $brand->name_h1}{$brand->name_h1|escape}{else}{$brand->name|escape}{/if}</h1>
+	<h1 class="my-4">
+		{if isset($category) && $category->name_h1}
+			{$category->name_h1|escape}
+		{elseif isset($category) && $category->name}
+			{$category->name|escape}
+		{/if}
+
+		{if isset($brand) && $brand->name_h1}
+			{$brand->name_h1|escape}
+		{elseif isset($brand) && $brand->name}
+			{$brand->name|escape}
+		{/if}
+	</h1>
 {/if}
 
-{if $page->url=='catalog'}
+{if isset($page) && $page->url=='catalog'}
 	{include file='catalog.tpl'}
 {else}
-	{if $products}
+	{if isset($products)}
 		<div class="btn-toolbar justify-content-between mb-4" role="toolbar" aria-label="Toolbar sort">
 			<a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="sortBy" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 				{$lang->sort_by}
@@ -102,19 +114,21 @@
 				<a class="dropdown-item {if $sort=='rating'}active{/if}" href="{furl sort=rating page=null}">{$lang->by_rating}</a>
 			</div>
 			<div class="btn-group" role="group" aria-label="View">
-				<button onclick="document.cookie='view=grid;path=/';document.location.reload();" type="button" class="btn btn-secondary {if !$smarty.cookies.view || $smarty.cookies.view == 'grid'}active{/if}"><i class="fa fa-th"></i></button>
-				<button onclick="document.cookie='view=list;path=/';document.location.reload();" type="button" class="btn btn-secondary {if $smarty.cookies.view == 'list'}active{/if}"><i class="fa fa-th-list"></i></button>
+				<button onclick="document.cookie='view=grid;path=/';document.location.reload();" type="button" class="btn btn-secondary {if isset($smarty.cookies.view) && $smarty.cookies.view == 'grid'}active{/if}"><i class="fa fa-th"></i></button>
+				<button onclick="document.cookie='view=list;path=/';document.location.reload();" type="button" class="btn btn-secondary {if isset($smarty.cookies.view) && $smarty.cookies.view == 'list'}active{/if}"><i class="fa fa-th-list"></i></button>
 			</div>
 		</div>
 		<div class="row">
-			{if $smarty.cookies.view == 'list'}
+			{if isset($smarty.cookies.view) && $smarty.cookies.view == 'list'}
 				<main class="col-md-12">
 					{include file='list.tpl'}
 					{include file='chpu_pagination.tpl'}
 				</main>
 			{else}
 				{foreach $products as $product}
-					{include file='grid.tpl'}
+					<div class="col-md-6 col-lg-6 col-xl-4">
+						{include file='grid.tpl'}
+					</div>
 				{/foreach}
 				<main class="col-md-12">
 					{include file='chpu_pagination.tpl'}
@@ -132,11 +146,13 @@
 	{if $page}
 		{* Page description*}
 		{$page->body}
-	{elseif (!$category || !$brand) && ($category->description || $brand->description) && !$noindex_filter && !$smarty.get.page && !$smarty.get.sort}
-		{* Category description *}
-		{$category->description}
+	{elseif !$noindex_filter && !isset($smarty.get.page) && !isset($smarty.get.sort)}
+		{if isset($category) && $category->description}
+			{$category->description}
+		{/if}
 
-		{* Brand Description *}
-		{$brand->description}
+		{if isset($brand) && $brand->description}
+			{$brand->description}
+		{/if}
 	{/if}
 {/if}

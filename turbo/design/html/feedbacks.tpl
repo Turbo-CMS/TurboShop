@@ -16,7 +16,7 @@
 		<form class="search mb-3" method="get">
 			<input type="hidden" name="module" value="CommentsAdmin">
 			<div class="input-group">
-				<input name="keyword" class="form-control" placeholder="{$btr->feedbacks_search|escape}" type="text" value="{$keyword|escape}">
+				<input name="keyword" class="form-control" placeholder="{$btr->feedbacks_search|escape}" type="text" value="{if isset($keyword)}{$keyword|escape}{/if}">
 				<button class="btn btn-primary" type="submit"><i class="align-middle mt-n1" data-feather="search"></i></button>
 			</div>
 		</form>
@@ -43,59 +43,53 @@
 								<div class="turbo-list-heading turbo-list-delete"></div>
 							</div>
 							<div class="turbo-list-body">
-								{function name=comments_tree level=0}
-									{foreach $feedbacks as $feedback}
-										<div class="js-row turbo-list-body-item {if !$feedback->processed}unapproved{/if} {if $level > 0}admin-note2{/if}">
-											<div class="turbo-list-row">
-												<div class="turbo-list-boding turbo-list-check">
-													<label class="form-check">
-														<input class="form-check-input js-check-all-single" type="checkbox" name="check[]" value="{$feedback->id}">
-													</label>
+								{foreach $feedbacks as $feedback}
+									<div class="js-row turbo-list-body-item {if !$feedback->processed}unapproved{/if}">
+										<div class="turbo-list-row">
+											<div class="turbo-list-boding turbo-list-check">
+												<label class="form-check">
+													<input class="form-check-input js-check-all-single" type="checkbox" name="check[]" value="{$feedback->id}">
+												</label>
+											</div>
+											<div class="turbo-list-boding turbo-list-comments-name">
+												<div class="mb-0">
+													<span class="fw-bold text-secondary">{$btr->global_name|escape}: </span>
+													<a href="mailto:{$feedback->name|escape}<{$feedback->email|escape}>?subject={$btr->email_request_from|escape} {$feedback->name|escape}" class="fw-bold text-body text-decoration-none">{$feedback->name|escape}</a>
 												</div>
-												<div class="turbo-list-boding turbo-list-comments-name {if $level > 0}admin-note{/if}">
-													<div class="mb-0">
-														<span class="fw-bold text-secondary">{$btr->global_name|escape}: </span>
-														<a href="mailto:{$feedback->name|escape}<{$feedback->email|escape}>?subject={$btr->email_request_from|escape} {$feedback->name|escape}" class="fw-bold text-body text-decoration-none">{$feedback->name|escape}</a>
-													</div>
-													<div class="mb-0">
-														<span class="fw-bold text-secondary">Email:</span> <span class="text-body">{$feedback->email|escape}</span>
-													</div>
-													<div class="mb-0">
-														<span class="fw-bold text-secondary">{$btr->global_message|escape}</span>
-														<span class="text-body">{$feedback->message|escape|nl2br}</span>
-													</div>
-													<span class="text-secondary">{$btr->global_request_sent|escape}</span>
-													<span class="badge badge-secondary-light">{$feedback->date|time} | {$feedback->date|date}</span>
-													{if !$feedback->processed}
-														<div class="d-block d-md-none mt-1">
-															<button type="button" class="btn btn-outline-secondary js-ajax-action {if $feedback->processed}js-active-class{/if}" data-module="feedback" data-action="processed" data-id="{$feedback->id}" onclick="$(this).hide();">
-																{$btr->global_process|escape}
-															</button>
-														</div>
-													{/if}
+												<div class="mb-0">
+													<span class="fw-bold text-secondary">Email:</span> <span class="text-body">{$feedback->email|escape}</span>
 												</div>
-												<div class="turbo-list-boding turbo-list-comments-btn">
-													{if !$feedback->processed}
+												<div class="mb-0">
+													<span class="fw-bold text-secondary">{$btr->global_message|escape}</span>
+													<span class="text-body">{$feedback->message|escape|nl2br}</span>
+												</div>
+												<span class="text-secondary">{$btr->global_request_sent|escape}</span>
+												<span class="badge badge-secondary-light">{$feedback->date|time} | {$feedback->date|date}</span>
+												{if !$feedback->processed}
+													<div class="d-block d-md-none mt-1">
 														<button type="button" class="btn btn-outline-secondary js-ajax-action {if $feedback->processed}js-active-class{/if}" data-module="feedback" data-action="processed" data-id="{$feedback->id}" onclick="$(this).hide();">
 															{$btr->global_process|escape}
 														</button>
-													{/if}
-												</div>
-												<div class="turbo-list-boding turbo-list-delete">
-													<div data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete_request|escape}">
-														<button type="button" class="btn-delete js-remove" data-bs-toggle="modal" data-bs-target="#actionModal" onclick="success_action($(this));">
-															<i class="align-middle" data-feather="trash-2"></i>
-														</button>
 													</div>
+												{/if}
+											</div>
+											<div class="turbo-list-boding turbo-list-comments-btn">
+												{if !$feedback->processed}
+													<button type="button" class="btn btn-outline-secondary js-ajax-action {if $feedback->processed}js-active-class{/if}" data-module="feedback" data-action="processed" data-id="{$feedback->id}" onclick="$(this).hide();">
+														{$btr->global_process|escape}
+													</button>
+												{/if}
+											</div>
+											<div class="turbo-list-boding turbo-list-delete">
+												<div data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete_request|escape}">
+													<button type="button" class="btn-delete js-remove" data-bs-toggle="modal" data-bs-target="#actionModal" onclick="success_action($(this));">
+														<i class="align-middle" data-feather="trash-2"></i>
+													</button>
 												</div>
 											</div>
-											{if isset($admin_answer[$feedback->id])}
-												{comments_tree feedbacks=$admin_answer[$feedback->id] level=$level+1}
-											{/if}
 										</div>
-									{/foreach}
-								{/function}
-								{comments_tree feedbacks=$feedbacks}
+									</div>
+								{/foreach}
 							</div>
 							<div class="turbo-list-footer js-action-block">
 								<div class="turbo-list-foot-left">

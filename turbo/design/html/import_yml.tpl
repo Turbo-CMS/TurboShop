@@ -6,7 +6,7 @@
 
 <div id="import-error" class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none;"></div>
 
-{if $message_error}
+{if isset($message_error)}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -32,8 +32,8 @@
 {/if}
 
 {if $message_error != 'no_permission'}
-	{if $filename_yml}
-		{if $filename_csv}
+	{if isset($filename_yml)}
+		{if isset($filename_csv)}
 			<div class="row">
 				<div class="col-12">
 					<div class="card">
@@ -48,20 +48,29 @@
 							<h5 class="card-title mb-0">{if $filename_csv}{$btr->import_file|escape} {$filename_csv|escape}{/if} {if $filename_csv_size}({$filename_csv_size|escape}){/if}</h5>
 						</div>
 						<div class="card-body">
-							<div id="progressbar"></div>
-							<div id="success" class="alert alert-success alert-dismissible fade show" role="alert" style="display: none">
-								<div class="alert-message">
-									{$btr->global_success|escape}!
-									<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+							{if !isset($convert_only)}
+								<div id="progressbar"></div>
+								<div id="success" class="alert alert-success alert-dismissible fade show" role="alert" style="display: none">
+									<div class="alert-message">
+										{$btr->global_success|escape}!
+										<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+									</div>
 								</div>
-							</div>
-							<div id="import-result" class="mt-1"></div>
+								<div id="import-result" class="mt-1"></div>
+							{else}
+								<div id="success" class="alert alert-success alert-dismissible fade show" role="alert">
+									<div class="alert-message">
+										{$btr->global_success|escape}!
+										<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+									</div>
+								</div>
+							{/if}
 						</div>
 					</div>
 				</div>
 			</div>
 		{/if}
-		{if $yml_params}
+		{if isset($yml_params)}
 			<div class="card">
 				<div class="card-header">
 					<div class="card-actions float-end">
@@ -104,7 +113,7 @@
 																</optgroup>
 																<optgroup label="{$btr->import_main_fields|escape}">
 																	{foreach $columns as $k=>$f}
-																		<option value="{$k}" {if $columns_compared[$pkey] == $k}selected{/if}>{$btr->get_translation('import_field_'|cat:$f)}</option>
+																		<option value="{$k}" {if isset($columns_compared[$pkey]) && $columns_compared[$pkey] == $k}selected{/if}>{$btr->get_translation('import_field_'|cat:$f)}</option>
 																	{/foreach}
 																</optgroup>
 																<optgroup label="{$btr->import_shop_features|escape}">
@@ -139,7 +148,7 @@
 												{$btr->global_apply|escape}
 											</button>
 										</div>
-									</div>	
+									</div>
 								</form>
 							</div>
 						</div>
@@ -148,7 +157,7 @@
 			</div>
 		{/if}
 	{/if}
-	{if !$filename_yml_size}
+	{if !isset($filename_yml_size)}
 		<div class="row">
 			<div class="col-lg-12 col-md-12">
 				<div class="card">
@@ -205,7 +214,7 @@
 				</div>
 			</div>
 		</div>
-	{elseif $filename_yml_size && !$filename_csv_size && !$yml_params}
+	{elseif isset($filename_yml_size) && !isset($filename_csv_size) && !isset($yml_params)}
 		<div class="row">
 			<div class="col-12">
 				<div class="card">
@@ -218,8 +227,8 @@
 							</div>
 						</div>
 						<h5 class="card-title mb-0">
-							{if $filename_yml}{$btr->import_file|escape} {$filename_yml|escape}{/if} {if $filename_yml_size}({$filename_yml_size|escape}){/if}
-							{if $filename_csv}{$btr->import_file|escape} {$filename_csv|escape}{/if} {if $filename_csv_size}({$filename_csv_size|escape}){/if}
+							{if isset($filename_yml)}{$btr->import_file|escape} {$filename_yml|escape}{/if} {if isset($filename_yml_size)}({$filename_yml_size|escape}){/if}
+							{if isset($filename_csv)}{$btr->import_file|escape} {$filename_csv|escape}{/if} {if isset($filename_csv_size)}({$filename_csv_size|escape}){/if}
 						</h5>
 					</div>
 					<div class="collapse-card">
@@ -255,11 +264,11 @@
 {javascript minify=true}
 
 <script>
-	{if $filename_csv && !$convert_only}
+	{if isset($filename_csv) && !isset($convert_only)}
 		{literal}
 			var in_process = false;
 			var count = 1;
-			// On document load
+			
 			$(function() {
 				Piecon.setOptions({fallback: 'force'});
 				Piecon.setProgress(0);

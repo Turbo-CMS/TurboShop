@@ -1,99 +1,101 @@
 <?php
 
-require_once('api/Turbo.php');
+require_once 'api/Turbo.php';
 
 class ReportStatsAdmin extends Turbo
 {
-	public function fetch()
-	{
-		$filter = array();
+    public function fetch()
+    {
+        $filter = [];
+        $dateFilter = $this->request->get('date_filter');
 
-		$date_filter = $this->request->get('date_filter');
-		if (!empty($date_filter)) {
-			$filter['date_filter'] = $date_filter;
-			$this->design->assign('date_filter', $date_filter);
-		}
+        if (!empty($dateFilter)) {
+            $filter['date_filter'] = $dateFilter;
+            $this->design->assign('date_filter', $dateFilter);
+        }
 
-		$date_from = $this->request->get('date_from');
-		$date_to = $this->request->get('date_to');
+        $dateFrom = $this->request->get('date_from');
+        $dateTo = $this->request->get('date_to');
 
-		if (!empty($date_from)) {
-			$filter['date_from'] = date("Y-m-d 00:00:01", strtotime($date_from));
-			$this->design->assign('date_from', $date_from);
-		}
+        if (!empty($dateFrom)) {
+            $filter['date_from'] = date('Y-m-d 00:00:01', strtotime($dateFrom));
+            $this->design->assign('date_from', $dateFrom);
+        }
 
-		if (!empty($date_to)) {
-			$filter['date_to'] = date("Y-m-d 23:59:00", strtotime($date_to));
-			$this->design->assign('date_to', $date_to);
-		}
+        if (!empty($dateTo)) {
+            $filter['date_to'] = date('Y-m-d 23:59:00', strtotime($dateTo));
+            $this->design->assign('date_to', $dateTo);
+        }
 
-		$status = $this->request->get('status', 'integer');
-		if (!empty($status)) {
-			switch ($status) {
-				case '1': {
-						$stat_o = 0;
-						break;
-					}
-				case '2': {
-						$stat_o = 1;
-						break;
-					}
-				case '3': {
-						$stat_o = 2;
-						break;
-					}
-				case '4': {
-						$stat_o = 3;
-						break;
-					}
-			}
-			$filter['status'] = $stat_o;
-			$this->design->assign('status', $status);
-		}
+        $status = $this->request->get('status', 'integer');
 
-		$sort_prod = $this->request->get('sort_prod');
-		if (!empty($sort_prod)) {
-			$filter['sort_prod'] = $sort_prod;
-			$this->design->assign('sort_prod', $sort_prod);
-		} else {
-			$sort_prod = 'price';
-			$this->design->assign('sort_prod', $sort_prod);
-		}
+        if (!empty($status)) {
+            switch ($status) {
+                case '1':
+                    $stat = 0;
+                    break;
+                case '2':
+                    $stat = 1;
+                    break;
+                case '3':
+                    $stat = 2;
+                    break;
+                case '4':
+                    $stat = 3;
+                    break;
+            }
 
-		$filter['page'] = max(1, $this->request->get('page', 'integer'));
-		$filter['limit'] = 40;
-		$cat_filter = $this->request->get('category_id', 'integer');
+            $filter['status'] = $stat;
+            $this->design->assign('status', $status);
+        }
 
-		$temp_filter = $filter;
-		unset($temp_filter['limit']);
-		unset($temp_filter['page']);
+        $sortProd = $this->request->get('sort_prod');
 
-		$stat_count = $this->reportstat->get_report_purchases_count($temp_filter);
-		$this->design->assign('posts_count', $stat_count);
+        if (!empty($sortProd)) {
+            $filter['sort_prod'] = $sortProd;
+            $this->design->assign('sort_prod', $sortProd);
+        } else {
+            $sortProd = 'price';
+            $this->design->assign('sort_prod', $sortProd);
+        }
 
-		if ($this->request->get('page') == 'all') {
-			$filter['limit'] = $stat_count;
-		}
+        $filter['page'] = max(1, $this->request->get('page', 'integer'));
+        $filter['limit'] = 40;
 
-		$this->design->assign('pages_count', ceil($stat_count / $filter['limit']));
-		$this->design->assign('current_page', $filter['page']);
+        $catFilter = $this->request->get('category_id', 'integer');
+        $tempFilter = $filter;
 
-		$report_stat_purchases = $this->reportstat->get_report_purchases($filter);
-		foreach ($report_stat_purchases as $id => $r) {
-			if (!empty($r->product_id)) {
-				$tmp_cat = $this->categories->get_categories(array('product_id' => $r->product_id));
-				$tmp_cat = reset($tmp_cat);
-				if (!empty($cat_filter) && $tmp_cat->id != $cat_filter) {
-					unset($report_stat_purchases[$id]);
-				} else {
-					$report_stat_purchases[$id]->category = $tmp_cat;
-				}
-			}
-		}
+        unset($tempFilter['limit']);
+        unset($tempFilter['page']);
 
-		$this->design->assign('report_stat_purchases', $report_stat_purchases);
-		$this->design->assign('categories', $this->categories->get_categories_tree());
+        $statCount = $this->reportstat->getReportPurchasesCount($tempFilter);
+        $this->design->assign('posts_count', $statCount);
 
-		return $this->design->fetch('reportstats.tpl');
-	}
+        if ($this->request->get('page') == 'all') {
+            $filter['limit'] = $statCount;
+        }
+
+        $this->design->assign('pages_count', ceil($statCount / $filter['limit']));
+        $this->design->assign('current_page', $filter['page']);
+
+        $reportStatPurchases = $this->reportstat->getReportPurchases($filter);
+
+        foreach ($reportStatPurchases as $id => $r) {
+            if (!empty($r->product_id)) {
+                $tmpCat = $this->categories->getCategories(['product_id' => $r->product_id]);
+                $tmpCat = reset($tmpCat);
+
+                if (!empty($catFilter) && $tmpCat->id != $catFilter) {
+                    unset($reportStatPurchases[$id]);
+                } else {
+                    $reportStatPurchases[$id]->category = $tmpCat;
+                }
+            }
+        }
+
+        $this->design->assign('report_stat_purchases', $reportStatPurchases);
+        $this->design->assign('categories', $this->categories->getCategoriesTree());
+
+        return $this->design->fetch('reportstats.tpl');
+    }
 }

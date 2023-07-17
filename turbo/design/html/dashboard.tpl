@@ -189,11 +189,10 @@
 		<script>
 			var chart;
 
-			// Orders statistics
 			$(function() {
 				var options = {
 					exporting: {
-						chartOptions: { // specific options for the exported image
+						chartOptions: {
 							plotOptions: {
 								series: {
 									dataLabels: {
@@ -262,21 +261,18 @@
 					while (currentDate <= maxDate) {
 						d = new Date(currentDate);
 						newDates.push((d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear());
-						currentDate += (24 * 60 * 60 * 1000); // add one day
+						currentDate += (24 * 60 * 60 * 1000);
 					}
 					series.name = '{/literal}{$btr->stats_orders_amount|escape}{literal}' + '{/literal}{$currency->sign}{literal}';
-					// Iterate over the lines and add categories or series
 					$.each(data, function(lineNo, line) {
 						series.data.push([Date.UTC(line.year, line.month - 1, line.day), parseInt(line.y)]);
 					});
 					//
 					options.series.push(series);
-					// Create the chart
 					var chart = new Highcharts.Chart(options);
 				});
 			});
 
-			// Sales statistics
 			$(function() {
 				var options = {
 					chart: {
@@ -322,7 +318,6 @@
 						series0.data.push([Date.UTC(1900 + d.getYear(), d.getMonth(), d.getDate()), 0]);
 						series1.data.push([Date.UTC(1900 + d.getYear(), d.getMonth(), d.getDate()), 0]);
 					}
-					// Iterate over the lines and add categories or series
 					$.each(data, function(lineNo, line) {
 						series.data.push([Date.UTC(line.year, line.month - 1, line.day), parseInt(line.x)]);
 						series0.data.push([Date.UTC(line.year, line.month - 1, line.day), parseInt(line.y)]);
@@ -332,7 +327,6 @@
 					options.series.push(series0);
 					options.series.push(series1);
 					console.log(options.series);
-					// Create the chart
 					var chart = new Highcharts.Chart(options);
 				});
 			});
@@ -394,15 +388,11 @@
 						lineColor: '#404048'
 					}
 				},
-				// General
 				background2: '#f0f0ea'
 			};
-			// Apply the theme
+
 			var highchartsOptions = Highcharts.setOptions(Highcharts.theme);
-
 			google.load("visualization", "1", {packages:["corechart"]});
-
-			// Statistics on the number of orders
 			google.setOnLoadCallback(drawChartOrders);
 
 			function drawChartOrders() {
@@ -426,9 +416,8 @@
 				chart.draw(google.visualization.arrayToDataTable(serie), options);
 			}
 
-			// Statistics on the amount of orders
 			google.setOnLoadCallback(drawChart);
-
+			
 			function drawChart() {
 				var serie = [];
 				serie.push([{/literal}'{$btr->global_date|escape}', '{$btr->global_new_order|escape}, {$currency->sign|escape}', '{$btr->global_accepted_order|escape}, {$currency->sign|escape}', '{$btr->global_closed_order|escape}, {$currency->sign|escape}', '{$btr->global_canceled_order|escape}, {$currency->sign|escape}'{literal}]); 
@@ -456,11 +445,10 @@
 		<script>
 			var chart;
 
-			// Orders statistics
 			$(function() {
 				var options = {
 					exporting: {
-						chartOptions: { // specific options for the exported image
+						chartOptions: {
 							plotOptions: {
 								series: {
 									dataLabels: {
@@ -521,21 +509,20 @@
 					while (currentDate <= maxDate) {
 						d = new Date(currentDate);
 						newDates.push((d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear());
-						currentDate += (24 * 60 * 60 * 1000); // add one day
+						currentDate += (24 * 60 * 60 * 1000);
 					}
 					series.name = '{/literal}{$btr->stats_orders_amount|escape}{literal}' + '{/literal}{$currency->sign}{literal}';
-					// Iterate over the lines and add categories or series
+
 					$.each(data, function(lineNo, line) {
 						series.data.push([Date.UTC(line.year, line.month - 1, line.day), parseInt(line.y)]);
 					});
-					//
+
 					options.series.push(series);
-					// Create the chart
+
 					var chart = new Highcharts.Chart(options);
 				});
 			});
 
-			// Sales statistics
 			$(function() {
 				var options = {
 					chart: {
@@ -578,7 +565,6 @@
 						series0.data.push([Date.UTC(1900 + d.getYear(), d.getMonth(), d.getDate()), 0]);
 						series1.data.push([Date.UTC(1900 + d.getYear(), d.getMonth(), d.getDate()), 0]);
 					}
-					// Iterate over the lines and add categories or series
 					$.each(data, function(lineNo, line) {
 						series.data.push([Date.UTC(line.year, line.month - 1, line.day), parseInt(line.x)]);
 						series0.data.push([Date.UTC(line.year, line.month - 1, line.day), parseInt(line.y)]);
@@ -588,7 +574,7 @@
 					options.series.push(series0);
 					options.series.push(series1);
 					console.log(options.series);
-					// Create the chart
+
 					var chart = new Highcharts.Chart(options);
 				});
 			});
@@ -642,15 +628,12 @@
 						lineColor: '#404048'
 					}
 				},
-				// General
 				background2: '#f0f0ea'
 			};
-			// Apply the theme
 			var highchartsOptions = Highcharts.setOptions(Highcharts.theme);
 
 			google.load("visualization", "1", {packages:["corechart"]});
 
-			// Statistics on the number of orders
 			google.setOnLoadCallback(drawChartOrders);
 
 			function drawChartOrders() {
@@ -674,7 +657,6 @@
 				chart.draw(google.visualization.arrayToDataTable(serie), options);
 			}
 
-			// Statistics on the amount of orders
 			google.setOnLoadCallback(drawChart);
 
 			function drawChart() {

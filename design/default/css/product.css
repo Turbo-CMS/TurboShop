@@ -62,34 +62,43 @@
 	margin: 5px 0 0 0;
 }
 
-
-/* Variants */
-
-.variants td {
-	padding: 4px 0;
-	text-align: left;
-}
-
-.variants label {
-	display: inline-block;
-	padding: 6px;
-	margin: 3px 6px 3px 0;
-	min-width: 37px;
-	white-space: nowrap;
-	font-weight: 500;
-	cursor: pointer;
-	text-align: center;
-	border-radius: 0.25rem;
-}
-
-.variants label.active {
-	padding: 5px;
-}
-
 .variants label input {
 	display: none;
 }
 
-.variants label:active {
-	padding: 5px;
+.color-product .btn {
+	border: 1px solid rgba(0, 0, 0, 0.125);
+}
+
+.color-product .btn.active {
+	border: 1px solid #0d6efd;
+	box-shadow: 0 0 0 0.2rem rgba(49, 132, 253, 0.25);
+}
+
+.color-product .btn:hover {
+	border: 1px solid #0d6efd;
+	box-shadow: 0 0 0 0.2rem rgba(49, 132, 253, 0.25);
+}
+
+.color-product .btn:focus {
+	box-shadow: 0 0 0 0.2rem rgba(49, 132, 253, 0.25);
+	border: 1px solid #0d6efd;
+}
+
+.btn span.fa-check {
+	opacity: 0;
+}
+
+.btn.active span.fa-check {
+	opacity: 1;
+	color: #fff;
+}
+
+.btn.white.active span.fa-check {
+	opacity: 1;
+	color: #000;
+}
+
+.variants-size .btn{
+	min-width: 33px;
 }

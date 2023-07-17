@@ -1,61 +1,63 @@
 <?php
 
-require_once('api/Turbo.php');
+require_once 'api/Turbo.php';
 
 class PagesAdmin extends Turbo
 {
 	public function fetch()
 	{
-		// Menu
-		$menus = $this->pages->get_menus();
+		$menus = $this->pages->getMenus();
 		$this->design->assign('menus', $menus);
+		$menuId = $this->request->get('menu_id', 'integer');
 
-		// Current menu
-		$menu_id = $this->request->get('menu_id', 'integer');
-		if (!$menu_id || !$menu = $this->pages->get_menu($menu_id)) {
+		if (!$menuId || !$menu = $this->pages->getMenu($menuId)) {
 			$menu = reset($menus);
 		}
+
 		$this->design->assign('menu', $menu);
 
-		// Action processing
-		if ($this->request->method('post')) {
-			// Sorting
+		if ($this->request->isMethod('post')) {
 			$positions = $this->request->post('positions');
 			$ids = array_keys($positions);
 			sort($positions);
-			foreach ($positions as $i => $position)
-				$this->pages->update_page($ids[$i], array('position' => $position));
 
-			// Actions with selected
+			foreach ($positions as $i => $position) {
+				$this->pages->updatePage($ids[$i], ['position' => $position]);
+			}
+
 			$ids = $this->request->post('check');
-			if (is_array($ids))
+
+			if (is_array($ids)) {
 				switch ($this->request->post('action')) {
-					case 'disable': {
-							$this->pages->update_page($ids, array('visible' => 0));
-							break;
+					case 'disable':
+						$this->pages->updatePage($ids, ['visible' => 0]);
+						break;
+					case 'enable':
+						$this->pages->updatePage($ids, ['visible' => 1]);
+						break;
+					case 'delete':
+						foreach ($ids as $id) {
+							$this->pages->deletePage($id);
 						}
-					case 'enable': {
-							$this->pages->update_page($ids, array('visible' => 1));
-							break;
-						}
-					case 'delete': {
-							foreach ($ids as $id)
-								$this->pages->delete_page($id);
-							break;
-						}
+						break;
 				}
+			}
 		}
 
-		// Display
-		$tree = $this->pages->get_pages_tree();
-		$pages = array();
+		$tree = $this->pages->getPagesTree();
+
+		$pages = [];
+
 		foreach ($tree as $t) {
-			if ($t->menu_id != $menu->id)
+			if ($t->menu_id !== $menu->id) {
 				continue;
+			}
+
 			$pages[] = $t;
 		}
 
 		$this->design->assign('pages', $pages);
+
 		return $this->design->fetch('pages.tpl');
 	}
 }

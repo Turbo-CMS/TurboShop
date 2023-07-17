@@ -1,47 +1,49 @@
 <?php
 
-require_once('api/Turbo.php');
+require_once 'api/Turbo.php';
 
 class CouponsAdmin extends Turbo
 {
-	public function fetch()
-	{
-		// Action processing
-		if ($this->request->method('post')) {
-			// Actions with selected
-			$ids = $this->request->post('check');
-			if (is_array($ids) && count($ids) > 0)
-				switch ($this->request->post('action')) {
-					case 'delete': {
-							foreach ($ids as $id)
-								$this->coupons->delete_coupon($id);
-							break;
-						}
-				}
-		}
+    public function fetch()
+    {
+        if ($this->request->isMethod('post')) {
+            $ids = $this->request->post('check');
 
-		$filter = array();
-		$filter['page'] = max(1, $this->request->get('page', 'integer'));
-		$filter['limit'] = 20;
+            if (is_array($ids) && count($ids) > 0) {
+                switch ($this->request->post('action')) {
+                    case 'delete':
+                        foreach ($ids as $id) {
+                            $this->coupons->deleteCoupon((int) $id);
+                        }
+                        break;
+                }
+            }
+        }
 
-		// Search
-		$keyword = $this->request->get('keyword', 'string');
-		if (!empty($keyword)) {
-			$filter['keyword'] = $keyword;
-			$this->design->assign('keyword', $keyword);
-		}
+        $filter = [];
+        $filter['page'] = max(1, $this->request->get('page', 'integer'));
+        $filter['limit'] = 20;
 
-		$coupons_count = $this->coupons->count_coupons($filter);
+        $keyword = $this->request->get('keyword', 'string');
 
-		$pages_count = ceil($coupons_count / $filter['limit']);
-		$filter['page'] = min($filter['page'], $pages_count);
-		$this->design->assign('coupons_count', $coupons_count);
-		$this->design->assign('pages_count', $pages_count);
-		$this->design->assign('current_page', $filter['page']);
+        if (!empty($keyword)) {
+            $filter['keyword'] = $keyword;
+            $this->design->assign('keyword', $keyword);
+        }
 
-		$coupons = $this->coupons->get_coupons($filter);
+        $couponsCount = $this->coupons->countCoupons($filter);
 
-		$this->design->assign('coupons', $coupons);
-		return $this->design->fetch('coupons.tpl');
-	}
+        $pagesCount = ceil($couponsCount / $filter['limit']);
+        $filter['page'] = min($filter['page'], $pagesCount);
+
+        $this->design->assign('coupons_count', $couponsCount);
+        $this->design->assign('pages_count', $pagesCount);
+        $this->design->assign('current_page', $filter['page']);
+
+        $coupons = $this->coupons->getCoupons($filter);
+
+        $this->design->assign('coupons', $coupons);
+
+        return $this->design->fetch('coupons.tpl');
+    }
 }

@@ -2,11 +2,11 @@
 	{foreach $categories as $c}
 		{if $c->visible}
 			<div class="col-lg-4 col-md-4 col-sm-6">
-				<a href="{$lang_link}catalog/{$c->url}" class="text-decoration-none">
-					<h5>{if $c->code}<i class="fal fa-{$c->code|escape} me-1"></i>{/if} {$c->name}</h5>
+				<a href="{$lang_link}catalog/{$c->url}" class="text-decoration-none fs-5">
+					{if $c->code}<i class="fal fa-{$c->code|escape} me-1"></i>{/if} {$c->name}
 				</a>
 				<ul class="list-group list-group-flush">
-					{if $c->subcategories}
+					{if isset($c->subcategories)}
 						{foreach $c->subcategories as $cat}
 							{if $cat->visible}
 								<li class="list-group-item"><a href="{$lang_link}catalog/{$cat->url}" class="text-decoration-none">{if $cat->code}<i class="fal fa-{$cat->code|escape} me-1"></i>{/if} {$cat->name}</a></li>

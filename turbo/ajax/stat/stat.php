@@ -1,42 +1,49 @@
 <?php
 
-require_once('../../../api/Turbo.php');
+require_once '../../../api/Turbo.php';
 
 class StatAjax extends Turbo
 {
-
-	// Displaying order statistics
-	public function fetch()
+	public function fetch(): array
 	{
-		$query = $this->db->placehold('SELECT 
-				SUM( o.total_price ) AS total_price, 
+		$query = $this->db->placehold(
+			'SELECT 
+				SUM(o.total_price) AS total_price, 
 				MAX(DAY(date)) AS day, 
-				MAX(MONTH(date)) as month, 
-				MAX(YEAR(date)) as year 
+				MAX(MONTH(date)) AS month, 
+				MAX(YEAR(date)) AS year 
 			FROM __orders o 
 			WHERE 
 				o.closed 
-			GROUP BY YEAR(o.date), MONTH(o.date),  DATE(o.date)
-		');
+			GROUP BY YEAR(o.date), MONTH(o.date), DATE(o.date)'
+		);
+
 		$this->db->query($query);
 		$data = $this->db->results();
 
-		$results = array();
+		$results = [];
+
 		foreach ($data as $d) {
-			$result['day'] = $d->day;
-			$result['month'] = $d->month;
-			$result['year'] = $d->year;
-			$result['y'] = $d->total_price;
+			$result = [
+				'day' => $d->day,
+				'month' => $d->month,
+				'year' => $d->year,
+				'y' => $d->total_price,
+			];
+
 			$results[] = $result;
 		}
+
 		return $results;
 	}
 }
 
-$stat_ajax = new StatAjax();
-header("Content-type: application/json; charset=utf-8");
-header("Cache-Control: must-revalidate");
-header("Pragma: no-cache");
-header("Expires: -1");
-$json = json_encode($stat_ajax->fetch());
+$statAjax = new StatAjax();
+
+header('Content-type: application/json; charset=utf-8');
+header('Cache-Control: must-revalidate');
+header('Pragma: no-cache');
+header('Expires: -1');
+
+$json = json_encode($statAjax->fetch());
 print $json;

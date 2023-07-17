@@ -1,16 +1,17 @@
 <?php
-	
-require_once('api/Turbo.php');
+
+require_once 'api/Turbo.php';
 
 class SystemAdmin extends Turbo
 {
-	// System information
 	public function fetch()
 	{
-		$php_version = phpversion();
-		$all_extensions = get_loaded_extensions();
-		$ini_params = array();
-		$request_ini = array(
+		$phpVersion = phpversion();
+		$allExtensions = get_loaded_extensions();
+
+		$iniParams = [];
+
+		$requestIni = [
 			'display_errors',
 			'memory_limit',
 			'post_max_size',
@@ -19,20 +20,20 @@ class SystemAdmin extends Turbo
 			'max_execution_time',
 			'upload_max_filesize',
 			'max_input_vars'
-		);
+		];
 
-		foreach ($request_ini as $ini) {
-			$ini_params[$ini] =  ini_get($ini);
+		foreach ($requestIni as $ini) {
+			$iniParams[$ini] = ini_get($ini);
 		}
 
-		$sql_info = $this->db->get_mysql_info();
-		$server_ip = file_get_contents('http://ipinfo.io/ip');
+		$sqlInfo = $this->db->getMysqlInfo();
+		$serverIp = file_get_contents('http://ipinfo.io/ip');
 
-		$this->design->assign('sql_info', $sql_info);
-		$this->design->assign('php_version', $php_version);
-		$this->design->assign('all_extensions', $all_extensions);
-		$this->design->assign('ini_params', $ini_params);
-		$this->design->assign('server_ip', $server_ip);
+		$this->design->assign('sql_info', $sqlInfo);
+		$this->design->assign('php_version', $phpVersion);
+		$this->design->assign('all_extensions', $allExtensions);
+		$this->design->assign('ini_params', $iniParams);
+		$this->design->assign('server_ip', $serverIp);
 
 		return $this->design->fetch('settings_system.tpl');
 	}

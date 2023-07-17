@@ -1,35 +1,48 @@
 <?php
-require_once('api/Turbo.php');
+require_once 'api/Turbo.php';
 $turbo = new Turbo();
 
 header("Content-type: application/rss+xml; charset=UTF-8");
-print '<?xml version="1.0" encoding="utf-8"?>';
-print '<rss 
-	xmlns:g="http://base.google.com/ns/1.0">
+echo '<?xml version="1.0" encoding="utf-8"?>';
+echo '<rss xmlns:g="http://base.google.com/ns/1.0"
     xmlns:media="http://search.yahoo.com/mrss/"
-    version="2.0">
-';
-print '<channel>';
-print '<turbo:cms_plugin>B72BDECFC64B5820494C626D5455F4B2</turbo:cms_plugin>';
-print '<title>' . htmlspecialchars($turbo->settings->site_name) . '</title>';
-print '<link>' . $turbo->config->root_url . '</link>';
-print '<description>' . htmlspecialchars($turbo->settings->site_name) . '</description>';
+    version="2.0">';
+echo '<channel>';
+echo '<turbo:cms_plugin>B72BDECFC64B5820494C626D5455F4B2</turbo:cms_plugin>';
+echo '<title>' . htmlspecialchars($turbo->settings->site_name) . '</title>';
+echo '<link>' . $turbo->config->root_url . '</link>';
+echo '<description>' . htmlspecialchars($turbo->settings->site_name) . '</description>';
 
 $filter['visible'] = 1;
-$rss = $turbo->blog->get_posts($filter);
+$rss = $turbo->blog->getPosts($filter);
+$languages = $turbo->languages->languages();
+$langLink = '';
+
+if (!empty($languages)) {
+	$firstLang = reset($languages);
+
+	if (isset($_GET['lang_label'])) {
+		$language = $turbo->languages->languages(array('id' => $turbo->languages->langId()));
+	} else {
+		$turbo->languages->setLangId($firstLang->id);
+	}
+
+	if (!empty($language) && is_object($language) && $language->id !== $firstLang->id) {
+		$langLink = $language->label . '/';
+	}
+}
 
 foreach ($rss as $r) {
-	print '<item turbo="true">';
-	print '<title>' . htmlspecialchars($r->name) . '</title>';
-	print '<link>' . $turbo->config->root_url . '/blog/' . $r->url . '</link>';
-	print '<turbo:topic>' . htmlspecialchars($r->name) . '</turbo:topic>';
-	print '<turbo:source>' . $turbo->config->root_url . '/blog/' . $r->url . '</turbo:source>';
-	print '<pubDate>' . $r->last_modified . '</pubDate>'; // D, d M Y H:i:s +0000
-	print '<turbo:content><![CDATA[';
+	echo '<item turbo="true">';
+	echo '<title>' . htmlspecialchars($r->name) . '</title>';
+	echo '<link>' . $turbo->config->root_url . '/' . $langLink . 'blog/' . $r->url . '</link>';
+	echo '<turbo:topic>' . htmlspecialchars($r->name) . '</turbo:topic>';
+	echo '<turbo:source>' . $turbo->config->root_url . '/' . $langLink . 'blog/' . $r->url . '</turbo:source>';
+	echo '<pubDate>' . $r->last_modified . '</pubDate>';
+	echo '<turbo:content><![CDATA[';
 
-	// Display image
 	if (!empty($r->image)) {
-		print '<figure><img src="' . $turbo->design->resize_posts_modifier($r->image, 400, 400, false) . '"/></figure>';
+		echo '<figure><img src="' . $turbo->design->resizePostsModifier($r->image, 400, 400, false) . '"/></figure>';
 	}
 
 	if (!empty($r->text)) {
@@ -41,7 +54,6 @@ foreach ($rss as $r) {
 	}
 
 	if (!empty($content)) {
-		// Decoding special characters
 		$content = preg_replace('/[\x00-\x1F\x7F]/u', '', $content);
 		$content = preg_replace('/«/', '"', $content);
 		$content = preg_replace('/»/', '"', $content);
@@ -53,30 +65,21 @@ foreach ($rss as $r) {
 		$content = preg_replace('/^\s*\/\/<!\[CDATA\[([\s\S]*)\/\/\]\]>\s*\z/', '$1', $content);
 		$content = preg_replace('/<!--(.|\s)*?-->/', '', $content);
 		$content = preg_replace('#&[^\s]([^\#])(?![a-z1-4]{1,10};)#i', '&#x26;$1', $content);
-		// add alt if it is not present at all in the img tag
-		/*$pattern = "/<img(?!([^>]*\b)alt=)([^>]*?)>/i";
-			$replacement = '<img alt="'.htmlspecialchars($r->name).'"$1$2>';
-			$content = preg_replace( $pattern, $replacement, $content );*/
-		// set alt to post name if empty
-		/*$pattern = "/<img alt=\"\" (.*?) \/>/i";
-			$replacement = '<img alt="'.htmlspecialchars($r->name).'" $1 />';
-			$content = preg_replace($pattern, $replacement, $content);*/
-		// wrap images in figure
+
 		$content = preg_replace('/(<img\s(.+?)\/?>)/is', '<figure>$1</figure>', $content);
-		// convert iframe from video
 		$pattern = "/<iframe title=\"(.*?)\"(.*?) allow=\"(.*?)\"(.*?)><\/iframe>/i";
 		$replacement = '<iframe$2 allowfullscreen="true"></iframe>';
 		$content = preg_replace($pattern, $replacement, $content);
 
-		print $content;
+		echo $content;
 	}
 
 	if (!empty($r->text)) {
-		print '<button formaction="' . $turbo->config->root_url . '/blog/' . $r->url . '" data-background-color="#0893b9" data-color="#ffffff" data-turbo="false" data-primary="true" >Полная версия ...</button>';
+		echo '<button formaction="' . $turbo->config->root_url . '/' . $langLink . 'blog/' . $r->url . '" data-background-color="#0893b9" data-color="#ffffff" data-turbo="false" data-primary="true">&#129122;</button>';
 	}
 
-	print ']]></turbo:content>';
+	echo ']]></turbo:content>';
 
-	print '</item>';
+	echo '</item>';
 }
-print ' </channel></rss>';
+echo ' </channel></rss>';

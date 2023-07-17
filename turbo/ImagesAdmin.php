@@ -1,77 +1,83 @@
 <?php
-	
-require_once('api/Turbo.php');
+
+require_once 'api/Turbo.php';
 
 class ImagesAdmin extends Turbo
 {
-	public function fetch()
-	{
-		$images_dir = 'design/' . $this->settings->theme . '/images/';
-		$allowed_extentions = array('png', 'gif', 'jpg', 'jpeg', 'ico');
-		$images = array();
+    public function fetch()
+    {
+        $imagesDir = 'design/' . $this->settings->theme . '/images/';
+        $allowedExtensions = ['png', 'gif', 'jpg', 'jpeg', 'ico'];
+        $images = [];
 
-		// Save
-		if ($this->request->method('post') && !is_file($images_dir . '../locked')) {
-			$old_names = $this->request->post('old_name');
-			$new_names = $this->request->post('new_name');
-			if (is_array($old_names))
-				foreach ($old_names as $i => $old_name) {
-					$new_name = $new_names[$i];
-					$new_name = trim(pathinfo($new_name, PATHINFO_FILENAME) . '.' . pathinfo($old_name, PATHINFO_EXTENSION), '.');
+        if ($this->request->isMethod('post') && !is_file($imagesDir . '../locked')) {
+            $oldNames = $this->request->post('old_name');
+            $newNames = $this->request->post('new_name');
 
-					if (is_writable($images_dir) && is_file($images_dir . $old_name) && !is_file($images_dir . $new_name))
-						rename($images_dir . $old_name, $images_dir . $new_name);
-					elseif (is_file($images_dir . $new_name) && $new_name != $old_name)
-						$message_error = 'name_exists';
-				}
+            if (is_array($oldNames)) {
+                foreach ($oldNames as $i => $oldName) {
+                    $newName = $newNames[$i];
+                    $newName = trim(pathinfo($newName, PATHINFO_FILENAME) . '.' . pathinfo($oldName, PATHINFO_EXTENSION), '.');
 
-			$delete_image = trim($this->request->post('delete_image'), '.');
+                    if (is_writable($imagesDir) && is_file($imagesDir . $oldName) && !is_file($imagesDir . $newName)) {
+                        rename($imagesDir . $oldName, $imagesDir . $newName);
+                    } elseif (is_file($imagesDir . $newName) && $newName !== $oldName) {
+                        $messageError = 'name_exists';
+                    }
+                }
+            }
 
-			if (!empty($delete_image)) {
-				@unlink($images_dir . $delete_image);
-			}
+            $deleteImage = trim($this->request->post('delete_image'), '.');
 
-			// Image upload
-			if ($images = $this->request->files('upload_images')) {
-				for ($i = 0; $i < count($images['name']); $i++) {
-					$name = trim($images['name'][$i], '.');
-					if (in_array(strtolower(pathinfo($name, PATHINFO_EXTENSION)), $allowed_extentions))
-						move_uploaded_file($images['tmp_name'][$i], $images_dir . $name);
-				}
-			}
+            if (!empty($deleteImage)) {
+                unlink($imagesDir . $deleteImage);
+            }
 
-			if (!isset($message_error)) {
-				header("Location: " . $_SERVER['REQUEST_URI']);
-				exit();
-			} else
-				$this->design->assign('message_error', $message_error);
-		}
+            if ($images = $this->request->files('upload_images')) {
+                for ($i = 0; $i < count($images['name']); $i++) {
+                    $name = trim($images['name'][$i], '.');
+                    if (in_array(strtolower(pathinfo($name, PATHINFO_EXTENSION)), $allowedExtensions)) {
+                        move_uploaded_file($images['tmp_name'][$i], $imagesDir . $name);
+                    }
+                }
+            }
 
-		// Reading all files
-		if ($handle = opendir($images_dir)) {
-			while (false !== ($file = readdir($handle))) {
-				if (is_file($images_dir . $file) && $file[0] != '.' && in_array(pathinfo($file, PATHINFO_EXTENSION), $allowed_extentions)) {
-					$image = new stdClass;
-					$image->name = $file;
-					$image->size = filesize($images_dir . $file);
-					list($image->width, $image->height) = @getimagesize($images_dir . $file);
-					$images[$file] = $image;
-				}
-			}
-			closedir($handle);
-			ksort($images);
-		}
+            if (!isset($messageError)) {
+                header('Location: ' . $_SERVER['REQUEST_URI']);
+                exit();
+            } else {
+                $this->design->assign('message_error', $messageError);
+            }
+        }
 
-		// If there are no write permissions, we pass a warning to the design
-		if (!is_writable($images_dir)) {
-			$this->design->assign('message_error', 'permissions');
-		} elseif (is_file($images_dir . '../locked')) {
-			$this->design->assign('message_error', 'theme_locked');
-		}
+        if ($handle = opendir($imagesDir)) {
+            while (false !== ($file = readdir($handle))) {
+                if (is_file($imagesDir . $file) && $file[0] != '.' && in_array(pathinfo($file, PATHINFO_EXTENSION), $allowedExtensions)) {
+                    $image = new stdClass;
+                    $image->name = $file;
+                    $image->size = filesize($imagesDir . $file);
+                    list($image->width, $image->height) = getimagesize($imagesDir . $file);
+                    $images[$file] = $image;
+                }
+            }
 
-		$this->design->assign('theme', $this->settings->theme);
-		$this->design->assign('images', $images);
-		$this->design->assign('images_dir', $images_dir);
-		return $this->design->fetch('images.tpl');
-	}
+            closedir($handle);
+            ksort($images);
+        }
+
+        if (!is_writable($imagesDir)) {
+            $this->design->assign('message_error', 'permissions');
+        } elseif (is_file($imagesDir . '../locked')) {
+            $this->design->assign('message_error', 'theme_locked');
+        }
+
+        $locked = is_file($imagesDir . '../locked');
+
+        $this->design->assign('locked', $locked);
+        $this->design->assign('theme', $this->settings->theme);
+        $this->design->assign('images', $images);
+        $this->design->assign('images_dir', $imagesDir);
+
+        return $this->design->fetch('images.tpl');
+    }
 }

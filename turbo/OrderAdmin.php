@@ -1,13 +1,14 @@
 <?php
 
-require_once('api/Turbo.php');
+require_once 'api/Turbo.php';
 
 class OrderAdmin extends Turbo
 {
 	public function fetch()
 	{
-		$order = new stdClass;
-		if ($this->request->method('post')) {
+		$order = new stdClass();
+
+		if ($this->request->isMethod('post')) {
 			$order->id = $this->request->post('id', 'integer');
 			$order->name = $this->request->post('name');
 			$order->email = $this->request->post('email');
@@ -26,199 +27,230 @@ class OrderAdmin extends Turbo
 			$order->separate_delivery = $this->request->post('separate_delivery', 'integer');
 			$order->lang_id = $this->request->post('lang_id', 'integer');
 
-			if (!$order_labels = $this->request->post('order_labels'))
-				$order_labels = array();
+			if (!$orderLabels = $this->request->post('order_labels')) {
+				$orderLabels = [];
+			}
 
 			if (empty($order->id)) {
-				$order->id = $this->orders->add_order($order);
+				$order->id = $this->orders->addOrder($order);
 				$this->design->assign('message_success', 'added');
 			} else {
-				$this->orders->update_order($order->id, $order);
+				$this->orders->updateOrder($order->id, $order);
 				$this->design->assign('message_success', 'updated');
 			}
 
 			if ($order->id) {
-				// Purchases
-				$purchases = array();
+				$purchases = [];
+
 				if ($this->request->post('purchases')) {
-					foreach ($this->request->post('purchases') as $n => $va) foreach ($va as $i => $v) {
-						if (empty($purchases[$i]))
-							$purchases[$i] = new stdClass;
-						$purchases[$i]->$n = $v;
+					foreach ($this->request->post('purchases') as $n => $va) {
+						foreach ($va as $i => $v) {
+							if (empty($purchases[$i])) {
+								$purchases[$i] = new stdClass();
+							}
+
+							$purchases[$i]->$n = $v;
+						}
 					}
 				}
-				$posted_purchases_ids = array();
+
+				$postedPurchasesIds = [];
+
 				foreach ($purchases as $purchase) {
-					$variant = $this->variants->get_variant($purchase->variant_id);
+					$variant = $this->variants->getVariant($purchase->variant_id);
 
-					if (!empty($purchase->id))
-						if (!empty($variant))
-							$this->orders->update_purchase($purchase->id, array('variant_id' => $purchase->variant_id, 'variant_name' => $variant->name, 'sku' => $variant->sku, 'price' => $purchase->price, 'amount' => $purchase->amount));
-						else
-							$this->orders->update_purchase($purchase->id, array('price' => $purchase->price, 'amount' => $purchase->amount));
-					elseif (!$purchase->id = $this->orders->add_purchase(array('order_id' => $order->id, 'variant_id' => $purchase->variant_id, 'variant_name' => $variant->name, 'price' => $purchase->price, 'amount' => $purchase->amount)))
+					if (!empty($purchase->id)) {
+						if (!empty($variant)) {
+							$this->orders->updatePurchase($purchase->id, ['variant_id' => $purchase->variant_id, 'variant_name' => $variant->name, 'sku' => $variant->sku, 'price' => $purchase->price, 'amount' => $purchase->amount,]);
+						} else {
+							$this->orders->updatePurchase($purchase->id, ['price' => $purchase->price, 'amount' => $purchase->amount,]);
+						}
+					} elseif (!$purchase->id = $this->orders->addPurchase(['order_id' => $order->id, 'variant_id' => $purchase->variant_id, 'variant_name' => $variant->name, 'price' => $purchase->price, 'amount' => $purchase->amount,])) {
 						$this->design->assign('message_error', 'error_closing');
+					}
 
-					$posted_purchases_ids[] = $purchase->id;
+					$postedPurchasesIds[] = $purchase->id;
 				}
 
-				// Delete untransferred goods
-				foreach ($this->orders->get_purchases(array('order_id' => $order->id)) as $p)
-					if (!in_array($p->id, $posted_purchases_ids))
-						$this->orders->delete_purchase($p->id);
+				foreach ($this->orders->getPurchases(['order_id' => $order->id]) as $p) {
+					if (!in_array($p->id, $postedPurchasesIds)) {
+						$this->orders->deletePurchase($p->id);
+					}
+				}
 
-				// Accept?
-				if ($this->request->post('status_new'))
-					$new_status = 0;
-				elseif ($this->request->post('status_accept'))
-					$new_status = 1;
-				elseif ($this->request->post('status_done'))
-					$new_status = 2;
-				elseif ($this->request->post('status_deleted'))
-					$new_status = 3;
-				else
-					$new_status = $this->request->post('status', 'string');
+				if ($this->request->post('status_new')) {
+					$newStatus = 0;
+				} elseif ($this->request->post('status_accept')) {
+					$newStatus = 1;
+				} elseif ($this->request->post('status_done')) {
+					$newStatus = 2;
+				} elseif ($this->request->post('status_deleted')) {
+					$newStatus = 3;
+				} else {
+					$newStatus = $this->request->post('status', 'string');
+				}
 
-				if ($new_status == 0) {
-					if (!$this->orders->open(intval($order->id)))
+				if ($newStatus == 0) {
+					if (!$this->orders->open((int) $order->id)) {
 						$this->design->assign('message_error', 'error_open');
-					else
-						$this->orders->update_order($order->id, array('status' => 0));
-				} elseif ($new_status == 1) {
-					if (!$this->orders->close(intval($order->id)))
+					} else {
+						$this->orders->updateOrder($order->id, ['status' => 0]);
+					}
+				} elseif ($newStatus == 1) {
+					if (!$this->orders->close((int) $order->id)) {
 						$this->design->assign('message_error', 'error_closing');
-					else
-						$this->orders->update_order($order->id, array('status' => 1));
-				} elseif ($new_status == 2) {
-					if (!$this->orders->close(intval($order->id)))
+					} else {
+						$this->orders->updateOrder($order->id, ['status' => 1]);
+					}
+				} elseif ($newStatus == 2) {
+					if (!$this->orders->close((int) $order->id)) {
 						$this->design->assign('message_error', 'error_closing');
-					else
-						$this->orders->update_order($order->id, array('status' => 2));
-				} elseif ($new_status == 3) {
-					if (!$this->orders->open(intval($order->id)))
+					} else {
+						$this->orders->updateOrder($order->id, ['status' => 2]);
+					}
+				} elseif ($newStatus == 3) {
+					if (!$this->orders->open((int) $order->id)) {
 						$this->design->assign('message_error', 'error_open');
-					else
-						$this->orders->update_order($order->id, array('status' => 3));
+					} else {
+						$this->orders->updateOrder($order->id, ['status' => 3]);
+					}
+
 					header('Location: ' . $this->request->get('return'));
 				}
-				$order = $this->orders->get_order($order->id);
 
-				// Sending an email to the user 
-				if ($this->request->post('notify_user'))
-					$this->notify->email_order_user($order->id);
+				$order = $this->orders->getOrder($order->id);
+
+				if ($this->request->post('notify_user')) {
+					$this->notify->emailOrderUser($order->id);
+				}
 			}
 		} else {
 			$order->id = $this->request->get('id', 'integer');
-			$order = $this->orders->get_order(intval($order->id));
-			// Order tags
-			$order_labels = array();
-			if (isset($order->id))
-				foreach ($this->orders->get_order_labels($order->id) as $ol)
-					$order_labels[] = $ol->id;
+			$order = $this->orders->getOrder(intval($order->id));
+
+			$orderLabels = [];
+
+			if (isset($order->id)) {
+				foreach ($this->orders->getOrderLabels($order->id) as $ol) {
+					$orderLabels[] = $ol->id;
+				}
+			}
 		}
 
 		$subtotal = 0;
-		$purchases_count = 0;
-		if ($order && $purchases = $this->orders->get_purchases(array('order_id' => $order->id))) {
-			// Purchases
-			$products_ids = array();
-			$variants_ids = array();
+		$purchasesCount = 0;
+
+		if ($order && $purchases = $this->orders->getPurchases(['order_id' => $order->id])) {
+			$productsIds = [];
+			$variantsIds = [];
+
 			foreach ($purchases as $purchase) {
-				$products_ids[] = $purchase->product_id;
-				$variants_ids[] = $purchase->variant_id;
+				$productsIds[] = $purchase->product_id;
+				$variantsIds[] = $purchase->variant_id;
 			}
 
-			$products = array();
-			foreach ($this->products->get_products(array('id' => $products_ids)) as $p)
-				$products[$p->id] = $p;
+			$products = [];
 
-			$images = $this->products->get_images(array('product_id' => $products_ids));
-			foreach ($images as $image)
+			foreach ($this->products->getProducts(['ids' => $productsIds]) as $product) {
+				$products[$product->id] = $product;
+			}
+
+			$images = $this->products->getImages(['productId' => $productsIds]);
+
+			foreach ($images as $image) {
 				$products[$image->product_id]->images[] = $image;
+			}
 
-			$variants = array();
-			foreach ($this->variants->get_variants(array('product_id' => $products_ids)) as $v)
-				$variants[$v->id] = $v;
+			$variants = [];
 
-			foreach ($variants as $variant)
-				if (!empty($products[$variant->product_id]))
+			foreach ($this->variants->getVariants(['product_id' => $productsIds]) as $variant) {
+				$variants[$variant->id] = $variant;
+			}
+
+			foreach ($variants as $variant) {
+				if (!empty($products[$variant->product_id])) {
 					$products[$variant->product_id]->variants[] = $variant;
-
+				}
+			}
 
 			foreach ($purchases as &$purchase) {
-				if (!empty($products[$purchase->product_id]))
+				if (!empty($products[$purchase->product_id])) {
 					$purchase->product = $products[$purchase->product_id];
-				if (!empty($variants[$purchase->variant_id]))
+				}
+
+				if (!empty($variants[$purchase->variant_id])) {
 					$purchase->variant = $variants[$purchase->variant_id];
+				}
+
 				$subtotal += $purchase->price * $purchase->amount;
-				$purchases_count += $purchase->amount;
+				$purchasesCount += $purchase->amount;
 			}
 		} else {
-			$purchases = array();
+			$purchases = [];
 		}
 
-		// If new order and passed get parameters
 		if (empty($order->id)) {
-			$order = new stdClass;
-			if (empty($order->phone))
+			$order = new stdClass();
+
+			if (empty($order->phone)) {
 				$order->phone = $this->request->get('phone', 'string');
-			if (empty($order->name))
+			}
+
+			if (empty($order->name)) {
 				$order->name = $this->request->get('name', 'string');
-			if (empty($order->address))
+			}
+
+			if (empty($order->address)) {
 				$order->address = $this->request->get('address', 'string');
-			if (empty($order->email))
+			}
+
+			if (empty($order->email)) {
 				$order->email = $this->request->get('email', 'string');
+			}
 		}
 
 		$this->design->assign('purchases', $purchases);
-		$this->design->assign('purchases_count', $purchases_count);
+		$this->design->assign('purchases_count', $purchasesCount);
 		$this->design->assign('subtotal', $subtotal);
 		$this->design->assign('order', $order);
 
 		if (!empty($order->id)) {
-			// Delivery method
-			$delivery = $this->delivery->get_delivery($order->delivery_id);
+			$delivery = $this->delivery->getDelivery($order->delivery_id);
 			$this->design->assign('delivery', $delivery);
 
-			// Payment method
-			$payment_method = $this->payment->get_payment_method($order->payment_method_id);
+			$paymentMethod = $this->payment->getPaymentMethod($order->payment_method_id);
 
-			if (!empty($payment_method)) {
-				$this->design->assign('payment_method', $payment_method);
-
-				// Payment currency
-				$payment_currency = $this->money->get_currency(intval($payment_method->currency_id));
-				$this->design->assign('payment_currency', $payment_currency);
+			if (!empty($paymentMethod)) {
+				$this->design->assign('payment_method', $paymentMethod);
+				$paymentCurrency = $this->money->getCurrency((int) $paymentMethod->currency_id);
+				$this->design->assign('payment_currency', $paymentCurrency);
 			}
-			// User
+
 			if ($order->user_id) {
-				$order_user = $this->users->get_user(intval($order->user_id));
-				$order_user->group = $this->users->get_group(intval($order_user->group_id));
-				$this->design->assign('user', $order_user);
+				$orderUser = $this->users->getUser((int) $order->user_id);
+				$orderUser->group = $this->users->getGroup((int) $orderUser->group_id);
+				$this->design->assign('user', $orderUser);
 			}
 
-			// Neighbor orders
-			$this->design->assign('next_order', $this->orders->get_next_order($order->id, $this->request->get('status', 'string')));
-			$this->design->assign('prev_order', $this->orders->get_prev_order($order->id, $this->request->get('status', 'string')));
+			$this->design->assign('next_order', $this->orders->getNextOrder($order->id, $this->request->get('status', 'string')));
+			$this->design->assign('prev_order', $this->orders->getPrevOrder($order->id, $this->request->get('status', 'string')));
 		}
 
-		// All delivery methods
-		$deliveries = $this->delivery->get_deliveries();
+		$deliveries = $this->delivery->getDeliveries();
 		$this->design->assign('deliveries', $deliveries);
 
-		// All payment methods
-		$payment_methods = $this->payment->get_payment_methods();
-		$this->design->assign('payment_methods', $payment_methods);
+		$paymentMethods = $this->payment->getPaymentMethods();
+		$this->design->assign('payment_methods', $paymentMethods);
 
-		// Order tags
-		$labels = $this->orders->get_labels();
+		$labels = $this->orders->getLabels();
 		$this->design->assign('labels', $labels);
 
-		$this->design->assign('order_labels', $order_labels);
+		$this->design->assign('order_labels', $orderLabels);
 
-		if ($this->request->get('view') == 'print')
+		if ($this->request->get('view') == 'print') {
 			return $this->design->fetch('order_print.tpl');
-		else
+		} else {
 			return $this->design->fetch('order.tpl');
+		}
 	}
 }

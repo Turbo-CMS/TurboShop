@@ -1,4 +1,4 @@
-{if $order->id}
+{if isset($order->id)}
 	{$meta_title = "`$btr->global_order_number` `$order->id`" scope=global}
 {else}
 	{$meta_title = $btr->order_new scope=global}
@@ -6,10 +6,10 @@
 
 <form method="post" id="order" enctype="multipart/form-data">
 	<input type="hidden" name="session_id" value="{$smarty.session.id}">
-	<input name="id" type="hidden" value="{$order->id|escape}">
+	<input name="id" type="hidden" value="{if isset($order->id)}{$order->id|escape}{/if}">
 	<div class="d-inline-block me-3 mb-3">
 		<h1 class="d-inline align-middle">
-			{if $order->id}
+			{if isset($order->id)}
 				{$btr->global_order_number|escape} {$order->id|escape}
 			{else}
 				{$btr->order_new|escape}
@@ -18,26 +18,28 @@
 	</div>
 	<div class="d-grid d-sm-inline-block me-sm-3 me-0 mb-3">
 		<select class="selectpicker" name="status">
-			<option value='0' {if $order->status == 0}selected{/if}>{$btr->global_new_order|escape}</option>
-			<option value='1' {if $order->status == 1}selected{/if}>{$btr->global_accepted_order|escape}</option>
-			<option value='2' {if $order->status == 2}selected{/if}>{$btr->global_closed_order|escape}</option>
-			<option value='3' {if $order->status == 3}selected{/if}>{$btr->global_canceled_order|escape}</option>
+			<option value='0' {if isset($order->status) && $order->status == 0}selected{/if}>{$btr->global_new_order|escape}</option>
+			<option value='1' {if isset($order->status) && $order->status == 1}selected{/if}>{$btr->global_accepted_order|escape}</option>
+			<option value='2' {if isset($order->status) && $order->status == 2}selected{/if}>{$btr->global_closed_order|escape}</option>
+			<option value='3' {if isset($order->status) && $order->status == 3}selected{/if}>{$btr->global_canceled_order|escape}</option>
 		</select>
 	</div>
-	<div class="d-none d-lg-inline-block d-inline-block me-3 mb-3" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->order_print|escape}">
-		<a href="{url view=print id=$order->id}" target="_blank" class="heading-block text-dark">
-			<i class="align-middle" data-feather="printer"></i>
-		</a>
-	</div>
+	{if isset($order->id)}
+		<div class="d-none d-lg-inline-block d-inline-block me-3 mb-3" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->order_print|escape}">
+			<a href="{url view=print id=$order->id}" target="_blank" class="heading-block text-dark">
+				<i class="align-middle" data-feather="printer"></i>
+			</a>
+		</div>
+	{/if}
 	{if $labels}
 		<div class="d-none d-lg-inline-block me-3 mb-3">
 			<a class="nav-link dropdown-toggle order-dropdown-toggle" href="#" id="labelsDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{$btr->global_select_label|escape}</a>
 			<div class="dropdown-menu dropdown-menu-start js-labels-hide box-labels-hide" aria-labelledby="labelsDropdown">
 				<ul class="option-labels-box">
 					{foreach $labels as $l}
-						<li class="js-ajax-labels badge d-block text-start my-2" data-order-id="{$order->id}" style="background-color: {$l->color|escape}">
-							<input id="l{$order->id}_{$l->id}" type="checkbox" class="d-none" name="order_labels[]" value="{$l->id}" {if in_array($l->id, $order_labels) && is_array($order_labels)}checked=""{/if}>
-							<label for="l{$order->id}_{$l->id}" class="cursor-pointer w-100"><span class="d-inline-block align-middle ms-3">{$l->name|escape}</span></label>
+						<li class="js-ajax-labels badge d-block text-start my-2" data-order-id="{isset($order->id)}" style="background-color: {$l->color|escape}">
+							<input id="l{isset($order->id)}_{$l->id}" type="checkbox" class="d-none" name="order_labels[]" value="{$l->id}" {if in_array($l->id, $order_labels) && is_array($order_labels)}checked=""{/if}>
+							<label for="l{isset($order->id)}_{$l->id}" class="cursor-pointer w-100"><span class="d-inline-block align-middle ms-3">{$l->name|escape}</span></label>
 						</li>
 					{/foreach}
 				</ul>
@@ -49,19 +51,7 @@
 			</div>
 		</div>
 	{/if}
-	{if $hasVariantNotInStock}
-		<div class="row">
-			<div class="col-12">
-				<div class="alert alert-danger alert-dismissible fade show" role="alert">
-					<div class="alert-message">
-						{$btr->order_not_in_stock|escape}
-						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-					</div>
-				</div>
-			</div>
-		</div>
-	{/if}
-	{if $message_error}
+	{if isset($message_error)}
 		<div class="row">
 			<div class="col-12">
 				<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -76,7 +66,7 @@
 				</div>
 			</div>
 		</div>
-	{elseif $message_success}
+	{elseif isset($message_success)}
 		<div class="row">
 			<div class="col-12">
 				<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -124,22 +114,24 @@
 										<div class="turbo-list-row">
 											<input type="hidden" name="purchases[id][{$purchase->id}]" value="{$purchase->id}">
 											<div class="turbo-list-boding turbo-list-photo">
-												{$img_flag=0}
-												{$image_array=","|explode:$purchase->variant->images_ids}
-												{foreach $purchase->product->images as $image}
-													{if $image->id|in_array:$image_array}
-														{if $img_flag==0}{$image_toshow=$image}{/if}
-														{$img_flag=1}
-													{/if}
-												{/foreach}
-												{if $img_flag ne 0}
-													<img src="{$image_toshow->filename|resize:50:50}" alt="{$product->name|escape}">
-												{else}
-													{$image = $purchase->product->images|first}
-													{if $image}
-														<img class="product-icon" src="{$image->filename|resize:50:50}" alt="{$product->name|escape}">
+												{if isset($purchase->variant) && isset($purchase->product->images)}
+													{$img_flag=0}
+													{$image_array=","|explode:$purchase->variant->images_ids}
+													{foreach $purchase->product->images as $image}
+														{if $image->id|in_array:$image_array}
+															{if $img_flag==0}{$image_toshow=$image}{/if}
+															{$img_flag=1}
+														{/if}
+													{/foreach}
+													{if $img_flag ne 0}
+														<img src="{$image_toshow->filename|resize:50:50}" alt="{$purchase->product->name|escape}">
 													{else}
-														<i class="align-middle" data-feather="camera"></i>
+														{$image = $purchase->product->images|first}
+														{if $image}
+															<img class="product-icon" src="{$image->filename|resize:50:50}" alt="{$purchase->product->name|escape}">
+														{else}
+															<i class="align-middle" data-feather="camera"></i>
+														{/if}
 													{/if}
 												{/if}
 											</div>
@@ -150,14 +142,14 @@
 														{if !$order->closed}
 															{if !$purchase->product}
 																<span class="text-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->product_does_not_exist|escape}"><i class="align-middle mt-n1" data-feather="alert-circle"></i></span>
-															{elseif !$purchase->variant}
+															{elseif !isset($purchase->variant)}
 																<span class="text-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->product_variant_does_not_exist|escape}"><i class="align-middle mt-n1" data-feather="alert-circle"></i></span>
 															{elseif $purchase->variant->stock < $purchase->amount}
 																<span class="text-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->in_stock_left|escape} {$purchase->variant->stock}"><i class="align-middle mt-n1" data-feather="alert-circle"></i></span>
 															{/if}
 														{/if}
 														{if $purchase->variant_name}
-															<span class="text-secondary">{$btr->order_option|escape} {$purchase->variant_name|escape} {if $purchase->variant->color}/ {$purchase->variant->color|escape}{/if}</span>
+															<span class="text-secondary">{$btr->order_option|escape} {$purchase->variant_name|escape} {if isset($purchase->variant->color)}/ {$purchase->variant->color|escape}{/if}</span>
 														{/if}
 														{if $purchase->sku}
 															<span class="text-secondary">/ {$btr->global_sku|escape} {$purchase->sku|default:"&mdash;"}</span>
@@ -176,7 +168,7 @@
 														<span class="fw-bold">{$purchase->amount} {$settings->units|escape}</span>
 													</div>
 												</div>
-												{if !$purchase->variant}
+												{if !isset($purchase->variant)}
 													<input class="form-control" type="hidden" name="purchases[variant_id][{$purchase->id}]" value="">
 												{else}
 													<div class="d-inline-block">
@@ -254,8 +246,10 @@
 									</div>
 									<div class="turbo-list-boding turbo-list-order-amount-price">
 										<div class="text-dark">
-											<span>{$purchase->price}</span>
-											<span class="">{$currency->sign|escape}</span>
+											{if isset($purchase->price)}
+												<span>{$purchase->price}</span>
+												<span class="">{$currency->sign|escape}</span>
+											{/if}
 										</div>
 									</div>
 									<div class="turbo-list-boding turbo-list-delete">
@@ -305,29 +299,29 @@
 										</div>
 										<div class="turbo-list-boding turbo-list-order-content-val">
 											<div class="input-group">
-												<input type="text" class="form-control" name="discount" value="{$order->discount}">
+												<input type="text" class="form-control" name="discount" value="{if isset($order->discount)}{$order->discount}{/if}">
 												<span class="input-group-text">%</span>
 											</div>
 										</div>
 										<div class="turbo-list-boding turbo-list-order-content-price">
-											<span>{($subtotal-$subtotal*$order->discount/100)|round:2}</span>
-											<span class="">{$currency->sign|escape}</span>
+											<span>{if isset($order->discount)}{($subtotal-$subtotal*$order->discount/100)|round:2}{/if}</span>
+											<span>{$currency->sign|escape}</span>
 										</div>
 									</div>
 								</div>
 								<div class="turbo-list-body-item">
 									<div class="turbo-list-row d-md-flex d-block">
 										<div class="turbo-list-boding turbo-turbo-list-order-content-name">
-											{$btr->global_coupon|escape}{if $order->coupon_code} ({$order->coupon_code}){/if}
+											{$btr->global_coupon|escape} {if isset($order->coupon_code) && $order->coupon_code}({$order->coupon_code}){/if}
 										</div>
 										<div class="turbo-list-boding turbo-list-order-content-val">
 											<div class="input-group">
-												<input type="text" class="form-control" name="coupon_discount" value="{$order->coupon_discount}">
+												<input type="text" class="form-control" name="coupon_discount" value="{if isset($order->coupon_discount)}&minus;{$order->coupon_discount}{/if}">
 												<span class="input-group-text">{$currency->sign|escape}</span>
 											</div>
 										</div>
 										<div class="turbo-list-boding turbo-list-order-content-price">
-											<span>{($subtotal-$subtotal*$order->discount/100-$order->coupon_discount)|round:2}</span>
+											<span>{if isset($order->discount)}{($subtotal-$subtotal*$order->discount/100-$order->coupon_discount)|round:2}{/if}</span>
 											<span class="">{$currency->sign|escape}</span>
 										</div>
 									</div>
@@ -339,7 +333,7 @@
 										</div>
 										<div class="turbo-list-boding turbo-list-order-content-val">
 											<div class="input-group">
-												<input type="text" class="form-control" name="weight" value="{$order->weight}">
+												<input type="text" class="form-control" name="weight" value="{if isset($order->weight)}{$order->weight}{/if}">
 												<span class="input-group-text">{$settings->weight_units}</span>
 											</div>
 										</div>
@@ -353,20 +347,20 @@
 												<select name="delivery_id" class="selectpicker">
 													<option value="0">{$btr->order_not_selected|escape}</option>
 													{foreach $deliveries as $d}
-														<option value="{$d->id}" {if $d->id==$delivery->id}selected{/if}>{$d->name|escape}</option>
+														<option value="{$d->id}" {if isset($delivery) && $d->id==$delivery->id}selected{/if}>{$d->name|escape}</option>
 													{/foreach}
 												</select>
 											</div>
 										</div>
 										<div class="turbo-list-boding turbo-list-order-content-val">
 											<div class="input-group">
-												<input type="text" name="delivery_price" class="form-control" value="{$order->delivery_price}">
+												<input type="text" name="delivery_price" class="form-control" value="{if isset($order->delivery_price)}{$order->delivery_price}{/if}">
 												<span class="input-group-text">{$currency->sign|escape}</span>
 											</div>
 										</div>
 										<div class="turbo-list-boding turbo-list-order-content-price">
 											<div class="form-check d-inline-block align-top mt-1" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_paid_separately|escape}">
-												<input class="form-check-input" type="checkbox" id="separate-delivery" name="separate_delivery" value="1" {if $order->separate_delivery}checked{/if}>
+												<input class="form-check-input" type="checkbox" id="separate-delivery" name="separate_delivery" value="1" {if isset($order->separate_delivery) && $order->separate_delivery}checked{/if}>
 												<label class="form-check-label" for="separate-delivery"></label>
 											</div>
 										</div>
@@ -377,21 +371,21 @@
 						<div class="row">
 							<div class="col-lg-4 col-md-12 mt-2">
 								<div class="form-label">{$btr->global_payment|escape}</div>
-								<div class="">
+								<div class="mt-1">
 									<select name="payment_method_id" class="selectpicker">
 										<option value="0">{$btr->order_not_selected|escape}</option>
 										{foreach $payment_methods as $pm}
-											<option value="{$pm->id}" {if $pm->id==$payment_method->id}selected{/if}>{$pm->name|escape}</option>
+											<option value="{$pm->id}" {if isset($payment_method) && $pm->id==$payment_method->id}selected{/if}>{$pm->name|escape}</option>
 										{/foreach}
 									</select>
 								</div>
 							</div>
 							<div class="col-lg-8 col-md-12">
 								<div class="text-dark fw-bold text-end mt-3">
-									<div class="h3">{$btr->global_total|escape}: {$order->total_price} {$currency->sign|escape}</div>
+									<div class="h3">{$btr->global_total|escape}: {if isset($order->total_price)}{$order->total_price}{/if} {$currency->sign|escape}</div>
 								</div>
 								<div class="fw-bold text-end me-1 mt-1">
-									{if $payment_method}
+									{if isset($payment_method)}
 										<div class="h3 text-secondary">{$btr->order_to_pay|escape} {$order->total_price|convert:$payment_currency->id} {$payment_currency->sign}</div>
 									{/if}
 								</div>
@@ -400,7 +394,7 @@
 						<div class="row">
 							<div class="col-12">
 								<div class="form-check form-switch form-check-reverse float-start mt-3">
-									<input class="form-check-input" type="checkbox" id="paid" name="paid" value="1" {if $order->paid}checked=""{/if}>
+									<input class="form-check-input" type="checkbox" id="paid" name="paid" value="1" {if isset($order->paid) && $order->paid}checked=""{/if}>
 									<label class="form-check-label me-2" for="paid">{$btr->order_paid|escape}</label>
 								</div>
 							</div>
@@ -425,41 +419,41 @@
 					<div class="card-body">
 						<div class="mb-3">
 							<label class="form-label d-inline-block">{$btr->order_date|escape}</label>
-							<div class="d-inline-block text-dark fw-bold">{$order->date|date} {$order->date|time}</div>
+							<div class="d-inline-block text-dark fw-bold">{if isset($order->date)}{$order->date|date} {$order->date|time}{/if}</div>
 						</div>
 						<div class="mb-3">
 							<label class="form-label" for="name">{$btr->global_full_name|escape}</label>
-							<input name="name" class="form-control" id="name" type="text" value="{$order->name|escape}">
+							<input name="name" class="form-control" id="name" type="text" value="{if isset($order->name)}{$order->name|escape}{/if}">
 						</div>
 						<div class="mb-3">
 							<label class="form-label" for="phone">{$btr->global_phone|escape}</label>
-							<input name="phone" class="form-control" id="phone" ype="text" value="{$order->phone|escape}">
+							<input name="phone" class="form-control" id="phone" ype="text" value="{if isset($order->phone)}{$order->phone|escape}{/if}">
 						</div>
 						<div class="mb-3">
 							<label class="form-label" for="email">E-mail</label>
-							<input name="email" class="form-control" id="email" type="text" value="{$order->email|escape}">
+							<input name="email" class="form-control" id="email" type="text" value="{if isset($order->email)}{$order->email|escape}{/if}">
 						</div>
 						<div class="mb-3">
-							<label class="form-label">{$btr->global_adress|escape} <i class="align-middle text-secondary" data-feather="map"></i> <a href="https://www.google.com/maps/search/{$order->address|escape}?hl={$settings->lang}" target="_blank">{$btr->order_on_map|escape}</a></label>
-							<textarea name="address" class="form-control short-textarea">{$order->address|escape}</textarea>
+							<label class="form-label">{$btr->global_address|escape} <i class="align-middle text-secondary" data-feather="map"></i> <a href="https://www.google.com/maps/search/{$order->address|escape}?hl={$settings->lang}" target="_blank">{$btr->order_on_map|escape}</a></label>
+							<textarea name="address" class="form-control short-textarea">{if isset($order->address)}{$order->address|escape}{/if}</textarea>
 						</div>
 						<div class="mb-3">
 							<label class="form-label">{$btr->global_comment|escape}</label>
-							<textarea name="comment" class="form-control short-textarea">{$order->comment|escape}</textarea>
+							<textarea name="comment" class="form-control short-textarea">{if isset($order->comment)}{$order->comment|escape}{/if}</textarea>
 						</div>
-						{if $order->ip}
+						{if isset($order->ip)}
 							<div class="mb-3">
 								<label class="form-label d-inline-block">{$btr->order_ip|escape} <i class="align-middle text-secondary" data-feather="map-pin"></i> <a href="https://who.is/whois-ip/ip-address/{$order->ip}" target="_blank"> whois</a></label>
 								<div class="d-inline-block text-dark fw-bold">{$order->ip|escape}</div>
 							</div>
 						{/if}
 						<div class="mb-3">
-							{if !$user}
+							{if !isset($user)}
 								<hr>
 								<label class="form-label">
 									{$btr->global_buyer_not_registred|escape}
 								</label>
-								<input type="hidden" name="user_id" value="{$user->id}">
+								<input type="hidden" name="user_id" value="{if isset($user->id)}{$user->id}{/if}">
 								<input type="text" class="js-user-complite form-control" placeholder="{$btr->order_user_select|escape}">
 								<hr>
 							{else}
@@ -488,7 +482,7 @@
 									<label class="form-label">
 										{$btr->global_buyer|escape}
 									</label>
-									<input type="hidden" name="user_id" value="{$user->id}">
+									<input type="hidden" name="user_id" value="{if isset($user->id)}{$user->id}{/if}">
 									<input type="text" class="js-user-complite form-control" placeholder="{$btr->order_user_select|escape}">
 								</div>
 							{/if}
@@ -497,13 +491,13 @@
 							<label class="form-label">{$btr->order_language|escape}</label>
 							<select name="lang_id" class="selectpicker">
 								{foreach $languages as $l}
-									<option value='{$l->id}' {if $l->id == $order->lang_id}selected{/if} data-content='<span class="flag-icon flag-icon-{$l->label}"></span> {$l->name|escape}'>{$l->name|escape}</option>
+									<option value="{$l->id}" {if isset($order->lang_id) && $l->id == $order->lang_id}selected{/if} data-content='<span class="flag-icon flag-icon-{$l->label}"></span> {$l->name|escape}'>{$l->name|escape}</option>
 								{/foreach}
 							</select>
 						</div>
 						<div class="mb-3">
 							<label class="form-label">{$btr->order_note|escape}</label>
-							<textarea name="note" class="form-control short-textarea">{$order->note|escape}</textarea>
+							<textarea name="note" class="form-control short-textarea">{if isset($order->note)}{$order->note|escape}{/if}</textarea>
 						</div>
 					</div>
 				</div>
@@ -543,15 +537,12 @@
 {literal}
 	<script>
 		$(window).on("load", function() {
-
-			// Removing product
 			$(document).on("click", "#js-purchase .js-remove-item", function() {
 				$(this).closest(".js-row").fadeOut(200, function() { $(this).remove(); });
 				return false;
 			});
-			
-			// Labels
-			$(document).on("change", ".js-ajax-labels input", function() {
+
+			$(document).on("change", ".js-ajax-labels input", function () {
 				elem = $(this);
 				var order_id = parseInt($(this).closest(".js-ajax-labels").data("order-id"));
 				var state = "";
@@ -572,19 +563,18 @@
 						label_id: label_id,
 						session_id: session_id
 					},
-					success: function(data) {
+					success: function (data) {
 						var msg = "";
 						if (data) {
 							$(".js-ajax-label").html(data.data);
-							notyf.success({message: '{/literal}{$btr->global_success|escape}{literal}', dismissible: true});
+							notyf.success({ message: '{/literal}{$btr->global_success|escape}{literal}', dismissible: true });
 						} else {
-							notyf.error({message: '{/literal}{$btr->global_error|escape}{literal}', dismissible: true});
+							notyf.error({ message: '{/literal}{$btr->global_error|escape}{literal}', dismissible: true });
 						}
 					}
 				});
 			});
 
-			// Add product
 			var new_purchase = $('#js-purchase .js-new_purchase').clone(true);
 			$('#js-purchase .js-new_purchase').remove().removeAttr('class');
 			$("#js-add-purchase").autocomplete({
@@ -597,7 +587,6 @@
 					new_item.removeAttr('id');
 					new_item.find('.js-new-product').html(suggestion.data.name);
 					new_item.find('.js-new-product').attr('href', 'index.php?module=ProductAdmin&id=' + suggestion.data.id);
-					// Adding options for a new product
 					var variants_select = new_item.find("select.js-new-variant");
 					for (var i in suggestion.data.variants) {
 						variants_select.append("<option value='" + suggestion.data.variants[i].id + "' data-price='" + suggestion.data.variants[i].price + "' data-amount='" + suggestion.data.variants[i].stock + "'>" + suggestion.data.variants[i].name + "  " + suggestion.data.variants[i].color + "</option>");
@@ -628,7 +617,6 @@
 				}
 			});
 
-			// Change in price and max quantity when changing the variant
 			function change_variant(element) {
 				var price = element.find('option:selected').data('price');
 				var amount = element.find('option:selected').data('amount');
@@ -638,8 +626,7 @@
 				amount_input.data('max', amount);
 				return false;
 			}
-			
-			// User complite
+
 			$(".js-user-complite").autocomplete({
 				serviceUrl: 'ajax/search_users.php',
 				minChars: 0,
@@ -653,21 +640,18 @@
 					return "<span>" + suggestions.value.replace(new RegExp(pattern, 'gi'), '<strong>$1<\/strong>') + "</span>";
 				}
 			});
-			
-			// User delete
+
 			$(document).on("click", ".js-delete-user", function() {
 				$(this).closest(".js-user-row").hide();
 				$('input[name="user_id"]').val(0);
 			});
-			
-			// User edit
+
 			$(document).on("click", ".js-edit-user", function() {
-				 $(".js-user-row").hide();
-				 $(".edit-user").show();
-				 return false;
+				$(".js-user-row").hide();
+				$(".edit-user").show();
+				return false;
 			});
-			
-			// Purchase variant
+
 			$("select.js-purchase-variant").bind("change", function() {
 				change_variant($(this));
 			});

@@ -1,7 +1,15 @@
 {$meta_title=$btr->category_stats_sales scope=global}
 
 <div class="d-md-flex mb-3">
-	<h1 class="d-inline align-middle me-3">{$btr->category_stats_sales|escape} {$category->name|escape} {$brand->name|escape}</h1>
+	<h1 class="d-inline align-middle me-3">
+		{$btr->category_stats_sales|escape}
+		{if isset($category->name)}
+			{$category->name|escape}
+		{/if}
+		{if isset($brand->name)}
+			{$brand->name|escape}
+		{/if}
+	</h1>
 </div>
 
 <div class="card">
@@ -25,14 +33,14 @@
 							<div class="col-sm-12 col-md-4 col-lg-4">
 								<div class="input-group mb-3">
 									<span class="input-group-text">{$btr->global_from|escape}</span>
-									<input type="text" class="flatpickr form-control" name="date_from" value="{$date_from}" autocomplete="off">
+									<input type="text" class="flatpickr form-control" name="date_from" value="{if isset($date_from)}{$date_from}{/if}" autocomplete="off">
 									<span class="input-group-text"><i class="align-middle" data-feather="calendar"></i></span>
 								</div>
 							</div>
 							<div class="col-sm-12 col-md-4 col-lg-4">
 								<div class="input-group mb-3">
 									<span class="input-group-text">{$btr->global_to|escape}</span>
-									<input type="text" class="flatpickr form-control" name="date_to" value="{$date_to}" autocomplete="off">
+									<input type="text" class="flatpickr form-control" name="date_to" value="{if isset($date_to)}{$date_to}{/if}" autocomplete="off">
 									<span class="input-group-text"><i class="align-middle" data-feather="calendar"></i></span>
 								</div>
 							</div>
@@ -44,13 +52,15 @@
 					<div class="row">
 						<div class="col-md-4 col-lg-4 col-sm-12 mb-3">
 							<select id="id_categories" name="categories_filter" title="{$btr->global_category_filter|escape}" class="selectpicker" data-live-search="true" data-size="10" onchange="location = this.value;">
-								<option value="{url brand=null category=null}" {if !$category}selected{/if}>{$btr->global_all_categories|escape}</option>
+								<option value="{url brand=null category=null}" {if !isset($category)}selected{/if}>{$btr->global_all_categories|escape}</option>
 								{function name=category_select level=0}
 									{foreach $categories as $c}
-										<option value='{url brand=null category=$c->id}' {if $smarty.get.category == $c->id}selected{/if}>
+										<option value='{url brand=null category=$c->id}' {if isset($smarty.get.category_id) && $smarty.get.category == $c->id}selected{/if}>
 											{section sp $level}--{/section} {$c->name|escape}
 										</option>
-										{category_select categories=$c->subcategories level=$level+1}
+										{if isset($c->subcategories)}
+											{category_select categories=$c->subcategories level=$level+1}
+										{/if}
 									{/foreach}
 								{/function}
 								{category_select categories=$categories}
@@ -58,9 +68,9 @@
 						</div>
 						<div class="col-lg-4 col-md-4 col-sm-12 mb-3">
 							<select onchange="location = this.value;" class="selectpicker">
-								<option value="{url brand=null}" {if !$brand}selected{/if}>{$btr->global_all_brands|escape}</option>
+								<option value="{url brand=null}" {if !isset($brand)}selected{/if}>{$btr->global_all_brands|escape}</option>
 								{foreach $brands as $b}
-									<option value="{url brand=$b->id}" {if $brand->id == $b->id}selected{/if}>{$b->name|escape}</option>
+									<option value="{url brand=$b->id}" {if isset($brand) && $brand->id == $b->id}selected{/if}>{$b->name|escape}</option>
 								{/foreach}
 							</select>
 						</div>
@@ -110,7 +120,9 @@
 									</div>
 								</div>
 							{/if}
-							{categories_list_tree categories=$category->subcategories level=$level+1}
+							{if isset($c->subcategories)}
+								{categories_list_tree categories=$category->subcategories level=$level+1}
+							{/if}
 						{/foreach}
 					{/function}
 					{categories_list_tree categories=$categories_list}
@@ -124,64 +136,60 @@
 				</div>
 			</div>
 		</form>
-		<div class="col-12">
-			{include file='pagination.tpl'}
-		</div>
 	</div>
 </div>
 
 <script>
-	{if $category}
+	{if isset($category)}
 		var category = {$category->id};
 	{/if}
-	{if $brand}
+	{if isset($brand)}
 		var brand = {$brand->id};
 	{/if}
-	{if $date_from}
+	{if isset($date_from)}
 		var date_from = '{$date_from}';
 	{/if}
-	{if $date_to}
+	{if isset($date_to)}
 		var date_to = '{$date_to}';
 	{/if}
 </script>
 {literal}
-<script>
-	$(window).on("load", function() {
+	<script>
+		$(window).on("load", function() {
 
-		// Flatpickr
-		flatpickr(".flatpickr", {
-			dateFormat: "d.m.Y",
-			locale: "{/literal}{if $settings->lang =='ua'}uk{else}{$settings->lang}{/if}{literal}"
-		});
-
-		$('button#js-start').click(function() {
-			do_export();
-		});
-
-		function do_export(page) {
-			page = typeof(page) != 'undefined' ? page : 1;
-			category = typeof(category) != 'undefined' ? category : 0;
-			brand = typeof(brand) != 'undefined' ? brand : 0;
-			date_from = typeof(date_from) != 'undefined' ? date_from : 0;
-			date_to = typeof(date_to) != 'undefined' ? date_to : 0;
-			$.ajax({
-				url: "ajax/export_stat.php",
-				data: {
-					page: page,
-					category: category,
-					brand: brand,
-					date_from: date_from,
-					date_to: date_to
-				},
-				dataType: 'json',
-				success: function() {
-					window.location.href = 'files/export/export_stat.csv';
-				},
-				error: function(xhr, status, errorThrown) {
-					alert(errorThrown + '\n' + xhr.responseText + 'asdasd');
-				}
+			flatpickr(".flatpickr", {
+				dateFormat: "d.m.Y",
+				locale: "{/literal}{if $settings->lang =='ua'}uk{else}{$settings->lang}{/if}{literal}"
 			});
-		}
-	});
-</script>
+
+			$('button#js-start').click(function() {
+				do_export();
+			});
+
+			function do_export(page) {
+				page = typeof(page) != 'undefined' ? page : 1;
+				category = typeof(category) != 'undefined' ? category : 0;
+				brand = typeof(brand) != 'undefined' ? brand : 0;
+				date_from = typeof(date_from) != 'undefined' ? date_from : 0;
+				date_to = typeof(date_to) != 'undefined' ? date_to : 0;
+				$.ajax({
+					url: "ajax/export_stat_categories.php",
+					data: {
+						page: page,
+						category: category,
+						brand: brand,
+						date_from: date_from,
+						date_to: date_to
+					},
+					dataType: 'json',
+					success: function() {
+						window.location.href = 'files/export/export_stat_categories.csv';
+					},
+					error: function(xhr, status, errorThrown) {
+						alert(errorThrown + '\n' + xhr.responseText + 'asdasd');
+					}
+				});
+			}
+		});
+	</script>
 {/literal}

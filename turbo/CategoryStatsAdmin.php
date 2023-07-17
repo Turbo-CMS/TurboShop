@@ -1,91 +1,96 @@
 <?php
 
-require_once('api/Turbo.php');
+require_once 'api/Turbo.php';
 
 class CategoryStatsAdmin extends Turbo
 {
-	public $total_price;
-	public $total_amount;
+    public $totalPrice;
+    public $totalAmount;
 
-	public function fetch()
-	{
-		$filter = array();
-		$this->total_price = 0;
-		$this->total_amount = 0;
+    public function fetch()
+    {
+        $filter = [];
+        $this->totalPrice = 0;
+        $this->totalAmount = 0;
 
-		$date_from = $this->request->get('date_from');
-		$date_to = $this->request->get('date_to');
+        $dateFrom = $this->request->get('date_from');
+        $dateTo = $this->request->get('date_to');
 
-		// Date filter
-		if (!empty($date_from) || !empty($date_to)) {
-			if (!empty($date_from)) {
-				$filter['date_from'] = date("Y-m-d 00:00:01", strtotime($date_from));
-				$this->design->assign('date_from', $date_from);
-			}
-			if (!empty($date_to)) {
-				$filter['date_to'] = date("Y-m-d 23:59:00", strtotime($date_to));
-				$this->design->assign('date_to', $date_to);
-			}
-		}
+        if (!empty($dateFrom) || !empty($dateTo)) {
+            if (!empty($dateFrom)) {
+                $filter['date_from'] = date("Y-m-d 00:00:01", strtotime($dateFrom));
+                $this->design->assign('date_from', $dateFrom);
+            }
 
-		// Filter by category
-		$category_id = $this->request->get('category', 'integer');
-		if (!empty($category_id)) {
-			$category = $this->categories->get_category($category_id);
-			$this->design->assign('category', $category);
-			$filter['category_id'] = $category->children;
-		}
+            if (!empty($dateTo)) {
+                $filter['date_to'] = date("Y-m-d 23:59:00", strtotime($dateTo));
+                $this->design->assign('date_to', $dateTo);
+            }
+        }
 
-		// Filter by brand
-		$brand_id = $this->request->get('brand', 'integer');
-		if (!empty($brand_id)) {
-			$filter['brand_id'] = $brand_id;
-			$brand = $this->brands->get_brand($brand_id);
-			$this->design->assign('brand', $brand);
-		}
+        $categoryId = $this->request->get('category', 'integer');
 
-		$brands_filter = array();
-		$categories = $this->categories->get_categories_tree();
-		if (!empty($category)) {
-			$brands_filter['category_id'] = $category->children;
-		}
-		$brands = $this->brands->get_brands($brands_filter);
+        if (!empty($categoryId)) {
+            $category = $this->categories->getCategory($categoryId);
+            $this->design->assign('category', $category);
+            $filter['category_id'] = $category->children;
+        }
 
-		// Formation of statistics
-		$purchases = $this->reportstat->get_categorized_stat($filter);
-		if (!empty($category)) {
-			$categories_list = $this->cat_tree(array($category), $purchases);
-		} else {
-			$categories_list = $this->cat_tree($categories, $purchases);
-		}
-		$this->design->assign('categories_list', $categories_list);
-		$this->design->assign('categories', $categories);
-		$this->design->assign('brands', $brands);
-		$this->design->assign('total_price', $this->total_price);
-		$this->design->assign('total_amount', $this->total_amount);
+        $brandId = $this->request->get('brand', 'integer');
 
-		return $this->design->fetch('category_stats.tpl');
-	}
+        if (!empty($brandId)) {
+            $filter['brand_id'] = $brandId;
+            $brand = $this->brands->getBrand($brandId);
+            $this->design->assign('brand', $brand);
+        }
 
-	// Building a category tree with sales statistics
-	private function cat_tree($categories, $purchases = array())
-	{
-		foreach ($categories as $k => $v) {
-			if (isset($v->subcategories)) {
-				$this->cat_tree($v->subcategories, $purchases);
-			}
-			if (isset($purchases[$v->id])) {
-				$price = floatval($purchases[$v->id]->price);
-				$amount = intval($purchases[$v->id]->amount);
-			} else {
-				$price = 0;
-				$amount = 0;
-			}
-			$categories[$k]->price = $price;
-			$categories[$k]->amount = $amount;
-			$this->total_price += $price;
-			$this->total_amount += $amount;
-		}
-		return $categories;
-	}
+        $brandsFilter = [];
+        $categories = $this->categories->getCategoriesTree();
+
+        if (!empty($category)) {
+            $brandsFilter['category_id'] = $category->children;
+        }
+
+        $brands = $this->brands->getBrands($brandsFilter);
+
+        $purchases = $this->reportstat->getCategorizedStat($filter);
+
+        if (!empty($category)) {
+            $categoriesList = $this->catTree([$category], $purchases);
+        } else {
+            $categoriesList = $this->catTree($categories, $purchases);
+        }
+
+        $this->design->assign('categories_list', $categoriesList);
+        $this->design->assign('categories', $categories);
+        $this->design->assign('brands', $brands);
+        $this->design->assign('total_price', $this->totalPrice);
+        $this->design->assign('total_amount', $this->totalAmount);
+
+        return $this->design->fetch('category_stats.tpl');
+    }
+
+    private function catTree($categories, $purchases = [])
+    {
+        foreach ($categories as $k => $v) {
+            if (isset($v->subcategories)) {
+                $this->catTree($v->subcategories, $purchases);
+            }
+
+            if (isset($purchases[$v->id])) {
+                $price = floatval($purchases[$v->id]->price);
+                $amount = intval($purchases[$v->id]->amount);
+            } else {
+                $price = 0;
+                $amount = 0;
+            }
+
+            $categories[$k]->price = $price;
+            $categories[$k]->amount = $amount;
+            $this->totalPrice += $price;
+            $this->totalAmount += $amount;
+        }
+
+        return $categories;
+    }
 }

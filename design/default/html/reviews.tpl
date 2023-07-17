@@ -21,9 +21,10 @@
 
 <!-- Page title -->
 <h1 data-page="{$page->id}" class="my-4">{$page->name|escape}</h1>
+<!-- Rating wrap -->
 <div class="rating-wrap mb-2 ratings reviews">
 	<ul class="rating-stars rater-starsOff" style="width:132px;">
-		<li style="width:{$ratings*100/5|string_format:"%.0f"}%" class="stars-active rater-starsOn">
+		<li style="width:{$ratings*100/5|string_format:'%.0f'}%" class="stars-active rater-starsOn">
 			<i class="fa fa-star"></i>
 			<i class="fa fa-star"></i>
 			<i class="fa fa-star"></i>
@@ -40,19 +41,12 @@
 	</ul>
 	{if $ratings> 0}
 		<div class="label-rating">
-			<span class="test-text">
-				<span class="rater-rating h3">{$ratings|string_format:"%.1f"}</span>
-			</span>
+			<span class="rater-rating h3">{$ratings|string_format:"%.1f"}</span>
 		</div>
 	{/if}
 </div>
-<!-- rating-wrap.// -->
 <!-- Page body -->
 {$page->body}
 
 {* Comments *}
-{if $settings->comments_tree_reviews == "on"}
-	{include file='comments/comments_tree_reviews.tpl'}
-{else}
-	{include file='comments/comments_reviews.tpl'}
-{/if}
+{include file='comments/comments_reviews.tpl'}

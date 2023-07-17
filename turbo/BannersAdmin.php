@@ -1,72 +1,80 @@
 <?php
 
-require_once('api/Turbo.php');
+require_once 'api/Turbo.php';
 
 class BannersAdmin extends Turbo
 {
 	public function fetch()
 	{
-		if ($this->request->method('post')) {
-			// Actions with selected
+		if ($this->request->isMethod('post')) {
 			$ids = $this->request->post('check');
+
 			if (is_array($ids)) {
 				switch ($this->request->post('action')) {
-					case 'disable': {
-							foreach ($ids as $id) {
-								$this->banners->update_banner($id, array('visible' => 0));
-							}
-							break;
+					case 'disable':
+						foreach ($ids as $id) {
+							$this->banners->updateBanner($id, ['visible' => 0]);
 						}
-					case 'enable': {
-							foreach ($ids as $id) {
-								$this->banners->update_banner($id, array('visible' => 1));
-							}
-							break;
+						break;
+
+					case 'enable':
+						foreach ($ids as $id) {
+							$this->banners->updateBanner($id, ['visible' => 1]);
 						}
-					case 'delete': {
-							foreach ($ids as $id) {
-								$this->banners->delete_banner($id);
-							}
-							break;
+						break;
+
+					case 'delete':
+						foreach ($ids as $id) {
+							$this->banners->deleteBanner($id);
 						}
+						break;
 				}
 			}
 
-			// Sorting
 			$positions = $this->request->post('positions');
 			$ids = array_keys($positions);
+
 			sort($positions);
+
 			foreach ($positions as $i => $position) {
-				$this->banners->update_banner($ids[$i], array('position' => $position));
+				$this->banners->updateBanner($ids[$i], ['position' => $position]);
 			}
 		}
 
-		$banners = $this->banners->get_banners();
+		$banners = $this->banners->getBanners();
+
 		if ($banners) {
-			$articles_categories = $this->articles_categories->get_articles_categories();
-			$categories = $this->categories->get_categories();
-			$brands     = $this->brands->get_brands();
-			$pages = $this->pages->get_pages();
+			$articlesCategories = $this->articlesCategories->getArticlesCategories();
+			$categories = $this->categories->getCategories();
+			$brands = $this->brands->getBrands();
+			$pages = $this->pages->getPages();
+
 			foreach ($banners as $banner) {
-				$banner->articles_category_selected = explode(",", $banner->articles_categories);
-				$banner->category_selected = explode(",", $banner->categories);
-				$banner->brand_selected = explode(",", $banner->brands);
-				$banner->page_selected = explode(",", $banner->pages);
-				foreach ($articles_categories as $c) {
+				$banner->articles_category_selected = explode(',', $banner->articles_categories);
+				$banner->category_selected = explode(',', $banner->categories);
+				$banner->brand_selected = explode(',', $banner->brands);
+				$banner->page_selected = explode(',', $banner->pages);
+
+				foreach ($articlesCategories as $c) {
 					if (in_array($c->id, $banner->articles_category_selected)) {
 						$banner->articles_category_show[] = $c;
 					}
 				}
+
 				foreach ($brands as $b) {
 					if (in_array($b->id, $banner->brand_selected)) {
 						$banner->brands_show[] = $b;
 					}
 				}
+
 				foreach ($categories as $c) {
-					if (in_array($c->id, $banner->category_selected)) {
-						$banner->category_show[] = $c;
+					if (isset($c->id)) {
+						if (in_array($c->id, $banner->category_selected)) {
+							$banner->category_show[] = $c;
+						}
 					}
 				}
+
 				foreach ($pages as $p) {
 					if (in_array($p->id, $banner->page_selected)) {
 						$banner->page_show[] = $p;
@@ -74,7 +82,9 @@ class BannersAdmin extends Turbo
 				}
 			}
 		}
+
 		$this->design->assign('banners', $banners);
+
 		return $this->design->fetch('banners.tpl');
 	}
 }

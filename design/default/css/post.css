@@ -44,7 +44,7 @@
 }
 
 .table-of-contents-list>ol>li>ol>li {
-	font-size: .92em
+	font-size: 0.92em
 }
 
 .table-of-contents-list>ol>li>ol>li:before {
@@ -52,7 +52,7 @@
 }
 
 .table-of-contents-list>ol>li>ol>li>ol>li {
-	font-size: .88em
+	font-size: 0.88em
 }
 
 .table-of-contents-list>ol>li>ol>li>ol>li:before {
@@ -99,9 +99,9 @@
 
 .table-of-contents>ol>li>ol>li {
 	counter-reset: sublist3;
-	margin-top: .3em;
-	margin-bottom: .3em;
-	margin-left: 30px
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	margin-left: 0px
 }
 
 .table-of-contents>ol>li>ol>li:before {
@@ -110,8 +110,8 @@
 }
 
 .table-of-contents {
-	margin-top: .3em;
-	margin-bottom: .7em;
+	margin-top: 0.3em;
+	margin-bottom: 0.7em;
 	margin-left: 0px
 }
 
@@ -119,28 +119,6 @@
 	content: counter(point) "." counter(sublist) "." counter(sublist3) ". ";
 	counter-increment: sublist3;
 	width: 40px
-}
-
-blockquote {
-	background: #f8f9fa;
-	border-left: 5px solid #ccc;
-	margin: 1.5em 0px;
-	padding: 0.5em 10px;
-	quotes: "\201C""\201D""\2018""\2019";
-	font-family: 'Lato', sans-serif;
-}
-
-blockquote:before {
-	color: #ccc;
-	content: "\201C";
-	font-size: 4em;
-	line-height: 0.1em;
-	margin-right: 0.25em;
-	vertical-align: -0.4em;
-}
-
-blockquote p {
-	display: inline;
 }
 
 .tags a {

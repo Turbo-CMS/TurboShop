@@ -9,6 +9,10 @@
 - PHP 7+ > 8+
 - MySQL 
 
+## Download
+
+[Download distribute](https://github.com/Turbo-CMS/TurboShop/releases)
+
 ## How to install
 
 1. Copy the **install.php** file and the **turbo_soure.zip** archive to the server

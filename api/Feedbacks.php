@@ -1,111 +1,172 @@
 <?php
 
-require_once('Turbo.php');
+require_once 'Turbo.php';
 
 class Feedbacks extends Turbo
 {
-	public function get_feedback($id)
+	/**
+	 * Get feedback
+	 */
+	public function getFeedback($id)
 	{
-		$query = $this->db->placehold("SELECT f.id, f.name, f.processed, f.email, f.ip, f.message, f.date FROM __feedbacks f WHERE id=? LIMIT 1", intval($id));
+		$query = $this->db->placehold(
+			"SELECT
+				f.id,
+				f.name,
+				f.processed,
+				f.email,
+				f.ip,
+				f.message,
+				f.date
+			FROM __feedbacks f
+			WHERE id=?
+			LIMIT 1",
+			(int) $id
+		);
 
-		if ($this->db->query($query))
+		if ($this->db->query($query)) {
 			return $this->db->result();
-		else
+		} else {
 			return false;
+		}
 	}
 
-	public function get_feedbacks($filter = array(), $new_on_top = false)
+	/**
+	 * Get feedbacks
+	 */
+	public function getFeedbacks($filter = [], $newOnTop = false)
 	{
-		// Default
 		$limit = 0;
 		$page = 1;
-		$keyword_filter = '';
+		$keywordFilter = '';
 		$processed = '';
 
-		if (isset($filter['limit']))
+		if (isset($filter['limit'])) {
 			$limit = max(1, intval($filter['limit']));
+		}
 
-		if (isset($filter['page']))
+		if (isset($filter['page'])) {
 			$page = max(1, intval($filter['page']));
+		}
 
-		if (isset($filter['processed']))
+		if (isset($filter['processed'])) {
 			$processed = $this->db->placehold('AND processed=?', $filter['processed']);
+		}
 
-		$sql_limit = $this->db->placehold(' LIMIT ?, ? ', ($page - 1) * $limit, $limit);
+		$sqlLimit = $this->db->placehold('LIMIT ?, ?', ($page - 1) * $limit, $limit);
 
 		if (!empty($filter['keyword'])) {
 			$keywords = explode(' ', $filter['keyword']);
-			foreach ($keywords as $keyword)
-				$keyword_filter .= $this->db->placehold('AND f.name LIKE "%' . $this->db->escape(trim($keyword)) . '%" OR f.message LIKE "%' . $this->db->escape(trim($keyword)) . '%" OR f.email LIKE "%' . $this->db->escape(trim($keyword)) . '%" ');
+			foreach ($keywords as $keyword) {
+				$keywordFilter .= $this->db->placehold('AND f.name LIKE "%' . $this->db->escape(trim($keyword)) . '%" OR f.message LIKE "%' . $this->db->escape(trim($keyword)) . '%" OR f.email LIKE "%' . $this->db->escape(trim($keyword)) . '%" ');
+			}
 		}
 
-		if ($new_on_top)
+		if ($newOnTop) {
 			$sort = 'DESC';
-		else
+		} else {
 			$sort = 'ASC';
+		}
 
-		$query = $this->db->placehold("SELECT f.id, f.name, f.email, f.ip, f.message, f.processed, f.date
-										FROM __feedbacks f WHERE 1 $processed $keyword_filter ORDER BY f.id $sort $sql_limit");
+		$query = $this->db->placehold(
+			"SELECT
+				f.id,
+				f.name,
+				f.email,
+				f.ip,
+				f.message,
+				f.processed,
+				f.date
+			FROM 
+				__feedbacks f
+			WHERE 
+				1 
+				$processed 
+				$keywordFilter 
+			ORDER BY 
+				f.id 
+				$sort 
+				$sqlLimit"
+		);
 
 		$this->db->query($query);
 		return $this->db->results();
 	}
 
-	public function count_feedbacks($filter = array())
+	/**
+	 * Counts feedbacks
+	 */
+	public function countFeedbacks($filter = [])
 	{
-		$keyword_filter = '';
-		$processed_filter = '';
+		$keywordFilter = '';
+		$processedFilter = '';
 
 		if (!empty($filter['keyword'])) {
 			$keywords = explode(' ', $filter['keyword']);
-			foreach ($keywords as $keyword)
-				$keyword_filter .= $this->db->placehold('AND f.name LIKE "%' . $this->db->escape(trim($keyword)) . '%" OR f.message LIKE "%' . $this->db->escape(trim($keyword)) . '%" OR f.email LIKE "%' . $this->db->escape(trim($keyword)) . '%" ');
+			foreach ($keywords as $keyword) {
+				$keywordFilter .= $this->db->placehold('AND f.name LIKE "%' . $this->db->escape(trim($keyword)) . '%" OR f.message LIKE "%' . $this->db->escape(trim($keyword)) . '%" OR f.email LIKE "%' . $this->db->escape(trim($keyword)) . '%" ');
+			}
 		}
 
 		if (isset($filter['processed'])) {
-			$processed_filter = $this->db->placehold('AND f.processed = ?', intval($filter['processed']));
+			$processedFilter = $this->db->placehold('AND f.processed = ?', intval($filter['processed']));
 		}
 
-		$query = $this->db->placehold("SELECT count(distinct f.id) as count
-										FROM __feedbacks f WHERE 1 $processed_filter $keyword_filter");
+		$query = $this->db->placehold(
+			"SELECT COUNT(DISTINCT f.id) AS count
+			FROM __feedbacks f 
+			WHERE 1 $processedFilter $keywordFilter"
+		);
 
 		$this->db->query($query);
 		return $this->db->result('count');
 	}
 
-	public function add_feedback($feedback)
+	/**
+	 * Add feedback
+	 */
+	public function addFeedback($feedback)
 	{
-		$query = $this->db->placehold(
-			'INSERT INTO __feedbacks
-		SET ?%,
-		date = NOW()',
-			$feedback
-		);
+		$query = $this->db->placehold('INSERT INTO __feedbacks SET ?%, date = NOW()', $feedback);
 
-		if (!$this->db->query($query))
+		if (!$this->db->query($query)) {
 			return false;
+		}
 
-		$id = $this->db->insert_id();
+		$id = $this->db->insertId();
 		return $id;
 	}
 
-	public function update_feedback($id, $feedback)
+	/**
+	 * Update feedback
+	 */
+	public function updateFeedback($id, $feedback)
 	{
-		$date_query = '';
+		$dateQuery = '';
+		$feedback = (object) $feedback;
+
 		if (isset($feedback->date)) {
 			$date = $feedback->date;
 			unset($feedback->date);
-			$date_query = $this->db->placehold(', date=STR_TO_DATE(?, ?)', $date, $this->settings->date_format);
+
+			$dateQuery = $this->db->placehold(', date=STR_TO_DATE(?, ?)', $date, $this->settings->date_format);
 		}
-		$query = $this->db->placehold("UPDATE __feedbacks SET ?% $date_query WHERE id in(?@) LIMIT 1", $feedback, (array)$id);
+
+		$query = $this->db->placehold("UPDATE __feedbacks SET ?% $dateQuery WHERE id IN(?@) LIMIT 1", $feedback, (array) $id);
+
 		$this->db->query($query);
 		return $id;
 	}
 
-	public function delete_feedback($id)
+
+	/**
+	 * Delete feedback
+	 */
+	public function deleteFeedback($id)
 	{
 		if (!empty($id)) {
-			$query = $this->db->placehold("DELETE FROM __feedbacks WHERE id=? LIMIT 1", intval($id));
+			$query = $this->db->placehold("DELETE FROM __feedbacks WHERE id=? LIMIT 1", (int) $id);
+
 			$this->db->query($query);
 		}
 	}

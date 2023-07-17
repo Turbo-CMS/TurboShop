@@ -12,15 +12,17 @@
 			<meta itemprop="position" content="{$level++}">
 		</li>
 		<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item">
-			<a itemprop="item" class="text-decoration-none" href="{$lang_link}articles"><span itemprop="name">{$lang->index_articles}</span></a>
+			<a itemprop="item" class="text-decoration-none" href="{$lang_link}articles"><span itemprop="name">{$lang->global_articles}</span></a>
 			<meta itemprop="position" content="{$level++}">
 		</li>
-		{foreach from=$category->path item=cat}
-			<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item">
-				<a itemprop="item" class="text-decoration-none" href="{$lang_link}articles/{$cat->url}"><span itemprop="name">{$cat->name|escape}</span></a>
-				<meta itemprop="position" content="{$level++}">
-			</li>
-		{/foreach}
+		{if isset($articles_category)}
+			{foreach from=$category->path item=cat}
+				<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item">
+					<a itemprop="item" class="text-decoration-none" href="{$lang_link}articles/{$cat->url}"><span itemprop="name">{$cat->name|escape}</span></a>
+					<meta itemprop="position" content="{$level++}">
+				</li>
+			{/foreach}
+		{/if}
 		<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item active">
 			<a itemprop="item" class="text-decoration-none" href="{$lang_link}article/{$post->url}"><span itemprop="name">{$post->name|escape}</span></a>
 			<meta itemprop="position" content="{$level++}">
@@ -106,8 +108,4 @@
 {/if}
 
 {* Comments *}
-{if $settings->comments_tree_articles == "on"}
-	{include file='comments/comments_tree_aticles.tpl'}
-{else}
-	{include file='comments/comments_aticles.tpl'}
-{/if}
+{include file='comments/comments_aticles.tpl'}

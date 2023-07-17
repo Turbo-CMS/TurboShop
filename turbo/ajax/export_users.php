@@ -1,85 +1,88 @@
 <?php
-
 session_start();
-require_once('../../api/Turbo.php');
+require_once '../../api/Turbo.php';
 
 class ExportAjax extends Turbo
 {
-	private $columns_names = array(
-		'name' =>             'Name',
-		'email' =>            'Email',
-		'phone' =>            'Phone',
-		'address' =>          'Address',
-		'group_name' =>       'Group',
-		'discount' =>         'Discount',
-		'enabled' =>          'Enabled',
-		'created' =>          'Created',
-		'last_ip' =>          'IP'
-	);
+    private $columnsNames = [
+        'name' => 'Name',
+        'email' => 'Email',
+        'phone' => 'Phone',
+        'address' => 'Address',
+        'group_name' => 'Group',
+        'discount' => 'Discount',
+        'enabled' => 'Enabled',
+        'created' => 'Created',
+        'last_ip' => 'IP',
+    ];
 
-	private $column_delimiter = ';';
-	private $users_count = 10;
-	private $export_files_dir = '../files/export_users/';
-	private $filename = 'users.csv';
+    private $columnDelimiter = ';';
+    private $usersCount = 10;
+    private $exportFilesDir = '../files/export_users/';
+    private $filename = 'users.csv';
 
-	public function fetch()
-	{
-		if (!$this->managers->access('users'))
-			return false;
+    public function fetch()
+    {
+        if (!$this->managers->access('users')) {
+            return false;
+        }
 
-		// Excel only eats 1251
-		$this->db->query('SET NAMES cp1251');
+        $this->db->query('SET NAMES cp1251');
 
-		// Page to be exported
-		$page = $this->request->get('page');
-		if (empty($page) || $page == 1) {
-			$page = 1;
-			// If you started over, delete the old export file
-			if (is_writable($this->export_files_dir . $this->filename))
-				unlink($this->export_files_dir . $this->filename);
-		}
+        $page = $this->request->get('page');
+        if (empty($page) || $page == 1) {
+            $page = 1;
 
-		// Opening the export file for adding
-		$f = fopen($this->export_files_dir . $this->filename, 'ab');
+            if (is_writable($this->exportFilesDir . $this->filename)) {
+                unlink($this->exportFilesDir . $this->filename);
+            }
+        }
 
-		// If you started from the beginning - add the column names to the first line
-		if ($page == 1) {
-			fputcsv($f, $this->columns_names, $this->column_delimiter);
-		}
+        $f = fopen($this->exportFilesDir . $this->filename, 'ab');
 
-		$filter = array();
-		$filter['page'] = $page;
-		$filter['limit'] = $this->users_count;
-		if ($this->request->get('group_id'))
-			$filter['group_id'] = intval($this->request->get('group_id'));
-		$filter['sort'] = $this->request->get('sort');
-		$filter['keyword'] = $this->request->get('keyword');
+        if ($page == 1) {
+            fputcsv($f, $this->columnsNames, $this->columnDelimiter);
+        }
 
-		// Select users
-		$users = array();
-		foreach ($this->users->get_users($filter) as $u) {
-			$str = array();
-			foreach ($this->columns_names as $n => $c)
-				$str[] = $u->$n;
+        $filter = ['page' => $page, 'limit' => $this->usersCount,];
 
-			fputcsv($f, $str, $this->column_delimiter);
-		}
+        if ($this->request->get('group_id')) {
+            $filter['group_id'] = (int) $this->request->get('group_id');
+        }
 
-		$total_users = $this->users->count_users();
+        $filter['sort'] = $this->request->get('sort');
+        $filter['keyword'] = $this->request->get('keyword');
 
-		if ($this->users_count * $page < $total_users)
-			return array('end' => false, 'page' => $page, 'totalpages' => $total_users / $this->users_count);
-		else
-			return array('end' => true, 'page' => $page, 'totalpages' => $total_users / $this->users_count);
+        $users = [];
 
-		fclose($f);
-	}
+        foreach ($this->users->getUsers($filter) as $u) {
+            $data = [];
+
+            foreach ($this->columnsNames as $n => $c) {
+                $data[] = $u->$n;
+            }
+
+            fputcsv($f, $data, $this->columnDelimiter);
+        }
+
+        $totalUsers = $this->users->countUsers();
+
+        if ($this->usersCount * $page < $totalUsers) {
+            return ['end' => false, 'page' => $page, 'totalpages' => $totalUsers / $this->usersCount,];
+        } else {
+            return ['end' => true, 'page' => $page, 'totalpages' => $totalUsers / $this->usersCount,];
+        }
+
+        fclose($f);
+    }
 }
 
 $export_ajax = new ExportAjax();
-$json = json_encode($export_ajax->fetch());
-header("Content-type: application/json; charset=utf-8");
-header("Cache-Control: must-revalidate");
-header("Pragma: no-cache");
-header("Expires: -1");
-print $json;
+$json = json_encode($export_ajax->fetch(), JSON_THROW_ON_ERROR);
+
+header('Content-type: application/json; charset=utf-8');
+header('Cache-Control: must-revalidate');
+header('Pragma: no-cache');
+header('Expires: -1');
+
+echo $json;

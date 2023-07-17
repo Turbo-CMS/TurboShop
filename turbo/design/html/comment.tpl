@@ -6,7 +6,7 @@
 	</h1>
 </div>
 
-{if $message_success}
+{if isset($message_success)}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -21,7 +21,7 @@
 	</div>
 {/if}
 
-{if $message_error}
+{if isset($message_error)}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -54,11 +54,11 @@
 						<div class="col-lg-2 col-md-3 col-sm-12">
 							<div class="d-flex justify-content-center align-content-center flex-wrap flex-md-column h-100">
 								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
-									<input class="form-check-input ms-2" type="checkbox" id="approved" name="approved" value="1" type="checkbox" {if $comment->approved}checked="" {/if}>
+									<input class="form-check-input ms-2" type="checkbox" id="approved" name="approved" value="1" type="checkbox" {if $comment->approved}checked=""{/if}>
 									<label class="form-check-label ms-2" for="approved">{$btr->email_comments_approved|escape}</label>
 								</div>
 								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
-									<input class="form-check-input ms-2" type="checkbox" id="admin" name="admin" value="1" type="checkbox" {if $comment->admin}checked="" {/if}>
+									<input class="form-check-input ms-2" type="checkbox" id="admin" name="admin" value="1" type="checkbox" {if $comment->admin}checked=""{/if}>
 									<label class="form-check-label ms-2" for="admin">{$btr->comment_from_admin|escape}</label>
 								</div>
 							</div>
@@ -84,24 +84,42 @@
 				<div class="collapse-card">
 					<div class="card-body">
 						<div class="row">
-							<div class="col-md-4">
+							<div class="col">
 								<div class="mb-3">
 									<div class="form-label">{$btr->global_time|escape}</div>
 									<input name="time" class="form-control flatpickr-time text-start" type="text" value="{$comment->date|time}">
 								</div>
 							</div>
-							<div class="col-md-4">
+							<div class="col">
 								<div class="mb-3">
 									<div class="form-label">{$btr->global_date|escape}</div>
 									<input name="date" class="form-control flatpickr" type="text" value="{$comment->date|date}">
 								</div>
 							</div>
-							<div class="col-md-4">
+							<div class="col">
 								<div class="mb-3">
 									<div class="form-label">IP</div>
 									<input name="ip" class="form-control" type="text" value="{$comment->ip}">
 								</div>
 							</div>
+							{if $comment->type == 'product' && $comment->parent_id == 0 || $comment->type == 'review'}
+								<div class="col">
+									<div class="mb-3">
+										<label for="ratingRange" class="form-label">
+											{$btr->product_rating_value|escape}
+											<span class="js-show-rating">{$comment->rating}</span>
+										</label>
+										<div class="raiting-boxed mb-4">
+											<input class="js-rating-value" type="hidden" value="{$comment->rating}" name="rating">
+											<input class="js-rating form-range" id="ratingRange" type="range" min="0" max="5" step="1" value="{$comment->rating}">
+											<div class="raiting-range-number">
+												<span class="float-start">0</span>
+												<span class="float-end">5</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							{/if}
 						</div>
 					</div>
 				</div>
@@ -152,6 +170,11 @@
 				noCalendar: true,
 				dateFormat: "H:i",
 				locale: "{/literal}{if $settings->lang =='ua'}uk{else}{$settings->lang}{/if}{literal}"
+			});
+			
+			$(document).on("input", ".js-rating", function() {
+				$(".js-show-rating").html($(this).val());
+				$(".js-rating-value").val($(this).val());
 			});
 		});
 	</script>

@@ -1,121 +1,116 @@
 <?php
 
 session_start();
-require_once('../../api/Turbo.php');
+require_once '../../api/Turbo.php';
 
 class ExportAjax extends Turbo
 {
+    private $columnNames = [
+        'id' => 'Order ID',
+        'date' => 'Order date',
+        'name' => 'User name',
+        'phone' => 'User phone',
+        'email' => 'User email',
+        'address' => 'User address',
+        'comment' => 'User comment',
+        'total_price' => 'Total price',
+        'currency' => 'Currency',
+    ];
 
-	// Fields (columns) for the export file
-	private $columns_names = array(
-		'id' =>           'Order ID',
-		'date' =>         'Order date',
-		'name' =>         'User name',
-		'phone' =>        'User phone',
-		'email' =>        'User email',
-		'address' =>      'User address',
-		'comment' =>      'User comment',
-		'total_price' =>  'Total price',
-		'currency' =>     'Currency'
+    private $columnDelimiter = ';';
+    private $ordersCount = 100;
+    private $exportFilesDir = '../files/export/';
+    private $filename = 'export_orders.csv';
 
-	);
+    public function fetch()
+    {
+        if (!$this->managers->access('orders')) {
+            return false;
+        }
 
-	private $column_delimiter = ';';
-	private $orders_count = 100;
-	private $export_files_dir = '../files/export/';
-	private $filename = 'export_orders.csv';
+        session_write_close();
+        unset($_SESSION['lang_id']);
+        $this->db->query('SET NAMES cp1251');
 
-	public function fetch()
-	{
+        $page = $this->request->get('page');
 
-		if (!$this->managers->access('orders'))
-			return false;
+        if (empty($page) || $page == 1) {
+            $page = 1;
 
-		session_write_close();
-		unset($_SESSION['lang_id']);
+            if (is_writable($this->exportFilesDir . $this->filename)) {
+                unlink($this->exportFilesDir . $this->filename);
+            }
+        }
 
-		// Excel only eats 1251
-		$this->db->query('SET NAMES cp1251');
+        $f = fopen($this->exportFilesDir . $this->filename, 'ab');
+        $filter = [];
+        $filter['page'] = $page;
+        $filter['limit'] = $this->ordersCount;
+        $status = $this->request->get('status', 'integer');
 
-		// Page to be exported
-		$page = $this->request->get('page');
-		if (empty($page) || $page == 1) {
-			$page = 1;
-			// If you started over, delete the old export file
-			if (is_writable($this->export_files_dir . $this->filename)) {
-				unlink($this->export_files_dir . $this->filename);
-			}
-		}
+        if ($status < 4) {
+            $filter['status'] = $status;
+        }
 
-		// Opening the export file for adding
-		$f = fopen($this->export_files_dir . $this->filename, 'ab');
+        $labelId = $this->request->get('label', 'integer');
 
-		$filter = array();
+        if (!empty($labelId)) {
+            $filter['label'] = $labelId;
+        }
 
-		$filter['page'] = $page;
-		$filter['limit'] = $this->orders_count;
+        $fromDate = $this->request->get('from_date');
+        $toDate = $this->request->get('to_date');
 
-		// Status
-		$status = $this->request->get('status', 'integer');
-		if ($status < 4)
-			$filter['status'] = $status;
+        if (!empty($fromDate)) {
+            $filter['from_date'] = $fromDate;
+        }
 
-		// Label
-		$label_id = $this->request->get('label', 'integer');
-		if (!empty($label_id)) {
-			$filter['label'] = $label_id;
-		}
+        if (!empty($toDate)) {
+            $filter['to_date'] = $toDate;
+        }
 
-		// Date
-		$from_date = $this->request->get('from_date');
-		$to_date = $this->request->get('to_date');
+        if ($page == 1) {
+            fputcsv($f, $this->columnNames, $this->columnDelimiter);
+        }
 
-		if (!empty($from_date)) {
-			$filter['from_date'] = $from_date;
-		}
-		if (!empty($to_date)) {
-			$filter['to_date'] = $to_date;
-		}
+        $mainCurrency = $this->money->getCurrency();
 
-		// If you started from the beginning - add the column names to the first line
-		if ($page == 1) {
-			fputcsv($f, $this->columns_names, $this->column_delimiter);
-		}
+        $orders = $this->orders->getOrders($filter);
 
-		// Main currency
-		$main_currency =  $this->money->get_currency();
+        if (!empty($orders)) {
+            foreach ($orders as $order) {
+                $str = [];
+                $order->currency = $mainCurrency->code;
 
-		// All orders
-		$orders = $this->orders->get_orders($filter);
-		if (!empty($orders)) {
-			foreach ($orders as $o) {
-				$str = array();
-				$o->currency = $main_currency->code;
-				foreach ($this->columns_names as $n => $c) {
-					$str[] = $o->$n;
-				}
-				fputcsv($f, $str, $this->column_delimiter);
-			}
-		}
-		$total_orders = $this->orders->count_orders($filter);
+                foreach ($this->columnNames as $name => $columnName) {
+                    $str[] = $order->$name;
+                }
 
-		if ($this->orders_count * $page < $total_orders) {
-			return array('end' => false, 'page' => $page, 'totalpages' => $total_orders / $this->orders_count);
-		} else {
-			return array('end' => true, 'page' => $page, 'totalpages' => $total_orders / $this->orders_count);
-		}
+                fputcsv($f, $str, $this->columnDelimiter);
+            }
+        }
 
-		fclose($f);
-	}
+        $totalOrders = $this->orders->countOrders($filter);
+
+        if ($this->ordersCount * $page < $totalOrders) {
+            $result = ['end' => false, 'page' => $page, 'totalpages' => $totalOrders / $this->ordersCount];
+        } else {
+            $result = ['end' => true, 'page' => $page, 'totalpages' => $totalOrders / $this->ordersCount];
+        }
+
+        fclose($f);
+        return $result;
+    }
 }
 
-$export_ajax = new ExportAjax();
-$data = $export_ajax->fetch();
+$exportAjax = new ExportAjax();
+$data = $exportAjax->fetch();
+
 if ($data) {
-	header("Content-type: application/json; charset=utf-8");
-	header("Cache-Control: must-revalidate");
-	header("Pragma: no-cache");
-	header("Expires: -1");
-	$json = json_encode($data);
-	print $json;
+    header("Content-type: application/json; charset=utf-8");
+    header("Cache-Control: must-revalidate");
+    header("Pragma: no-cache");
+    header("Expires: -1");
+
+    echo json_encode($data);
 }

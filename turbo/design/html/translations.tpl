@@ -17,7 +17,7 @@
 		<form class="search mb-3" method="get">
 			<input type="hidden" name="module" value="TranslationsAdmin">
 			<div class="input-group">
-				<input name="keyword" class="form-control" placeholder="{$btr->translations_search|escape}" type="text" value="{$keyword|escape}">
+				<input name="keyword" class="form-control" placeholder="{$btr->translations_search|escape}" type="text" value="{if isset($keyword)}{$keyword|escape}{/if}">
 				<button class="btn btn-primary" type="submit"><i class="align-middle mt-n1" data-feather="search"></i></button>
 			</div>
 		</form>
@@ -38,8 +38,8 @@
 {/if}
 
 <div class="card">
-	{if $translations}
-		<div class="card-body">
+	<div class="card-body">
+		{if $translations}
 			<form class="js-form-list" method="post">
 				<input type="hidden" name="session_id" value="{$smarty.session.id}">
 				<div class="translation_wrap turbo-list">

@@ -4,7 +4,7 @@
 	<div class="col-lg-8 col-md-8">
 		<div class="d-md-flex mb-3">
 			<h1 class="d-inline align-middle me-3">
-				{if $keyword && $posts_count}
+				{if isset($keyword) && $posts_count}
 					{$btr->global_blog|escape} - {$posts_count}
 				{elseif $posts_count}
 					{$btr->global_blog|escape} - {$posts_count}
@@ -19,7 +19,7 @@
 		<form class="search mb-3" method="get">
 			<input type="hidden" name="module" value="BlogAdmin">
 			<div class="input-group">
-				<input name="keyword" class="form-control" placeholder="{$btr->blog_search|escape}" type="text" value="{$keyword|escape}">
+				<input name="keyword" class="form-control" placeholder="{$btr->blog_search|escape}" type="text" value="{if isset($keyword)}{$keyword|escape}{/if}">
 				<button class="btn btn-primary" type="submit"><i class="align-middle mt-n1" data-feather="search"></i></button>
 			</div>
 		</form>
@@ -70,11 +70,11 @@
 												<a class="fw-bold text-body text-decoration-none" href="{url module=PostAdmin id=$post->id return=$smarty.server.REQUEST_URI}">{$post->name|escape}</a>
 												<div class="mb-0">
 													<span class="fw-bold text-secondary">{$post->date|date}</span>
-												</div>	
+												</div>
 											</div>
 											<div class="turbo-list-boding turbo-list-status">
 												<div class="form-check form-switch">
-													<input class="form-check-input js-ajax-action {if $post->visible}js-active-class{/if}" id="id_{$post->id}" data-module="blog" data-action="visible" data-id="{$post->id}" name="visible" value="1" type="checkbox" {if $post->visible}checked="" {/if}>
+													<input class="form-check-input js-ajax-action {if $post->visible}js-active-class{/if}" id="id_{$post->id}" data-module="blog" data-action="visible" data-id="{$post->id}" name="visible" value="1" type="checkbox" {if $post->visible}checked=""{/if}>
 													<label class="form-check-label" for="id_{$post->id}"></label>
 												</div>
 											</div>

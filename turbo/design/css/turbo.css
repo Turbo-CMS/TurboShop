@@ -49,6 +49,14 @@ img {
 	width: 24px;
 }
 
+.z-1 {
+    z-index: 1!important;
+}
+
+.new-video {
+	display:none;
+}
+
 /************************************************************************* Sidebar  */
 .sidebar-brand-text img {
 	width: 120px;
@@ -77,6 +85,10 @@ img {
 
 .mh-270px {
 	min-height: 270px;
+}
+
+.mh-315px {
+	min-height: 315px;
 }
 
 .mh-335px {
@@ -521,6 +533,33 @@ textarea.form-control {
 	border-bottom: 1px solid transparent;
 }
 
+.turbo-list.turbo-recommended-list {
+	text-align: center;
+	border: none;
+}
+
+.turbo-list.turbo-recommended-list .turbo-list-body-item:last-child {
+	border-bottom: 1px solid transparent;
+}
+
+.turbo-list.turbo-files-list {
+	text-align: center;
+	border: none;
+}
+
+.turbo-list.turbo-files-list .turbo-list-body-item:last-child {
+	border-bottom: 1px solid transparent;
+}
+
+.turbo-list.turbo-video-list {
+	text-align: center;
+	border: none;
+}
+
+.turbo-list.turbo-video-list .turbo-list-body-item:last-child {
+	border-bottom: 1px solid transparent;
+}
+
 .turbo-list .dropdown-menu {
 	text-align: left;
 }
@@ -840,6 +879,34 @@ textarea.form-control {
 	text-align: left;
 }
 
+.turbo-list .turbo-list-recommended-photo {
+	width: 50px;
+	text-align: center !important;
+}
+
+.turbo-list .turbo-list-recommended-name {
+	width: calc(100% - 150px);
+	position: relative;
+	text-align: left;
+}
+
+.turbo-list .turbo-list-files-name {
+	width: calc(100% - 150px);
+	position: relative;
+	text-align: left;
+}
+
+.turbo-list .turbo-list-video-photo {
+	width: 50px;
+	text-align: center !important;
+}
+
+.turbo-list .turbo-list-video-name {
+	width: calc(100% - 150px);
+	position: relative;
+	text-align: left;
+}
+
 .turbo-list .turbo-list-banners-photo {
 	width: 140px;
 	text-align: center !important;
@@ -1038,7 +1105,7 @@ textarea.form-control {
 }
 
 .turbo-list .turbo-list-coupon-name {
-	width: calc(100% - 750px);
+	width: calc(100% - 760px);
 	position: relative;
 	text-align: left;
 }
@@ -1054,7 +1121,7 @@ textarea.form-control {
 }
 
 .turbo-list .turbo-list-coupon-condit {
-	width: 190px;
+	width: 200px;
 	text-align: center;
 }
 
@@ -1299,7 +1366,7 @@ textarea.form-control {
 }
 
 .turbo-list .turbo-list-order-content-val {
-	width: 130px;
+	width: 150px;
 	text-align: center;
 }
 
@@ -2114,7 +2181,6 @@ textarea.form-control {
 
 .features-wrap .colorPicker-picker {
 	height: 24px;
-	float: left;
 	width: 24px;
 	margin-top: 0px;
 	margin-left: 0px;
@@ -2344,14 +2410,6 @@ textarea.form-control {
 
 .turbo-list .subcomments-level-1 .turbo-list-subcomment {
 	margin-left: 15px;
-}
-
-.turbo-list .subcomments-level-2 .turbo-list-subcomment {
-	margin-left: 55px;
-}
-
-.turbo-list .subcomments-level-3 .turbo-list-subcomment {
-	margin-left: 85px;
 }
 
 .turbo-list .turbo-list-boding.turbo-list-comments-name .admin a {

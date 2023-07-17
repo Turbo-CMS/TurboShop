@@ -1,18 +1,16 @@
 <?php
 
-require_once('Turbo.php');
+require_once 'Turbo.php';
 
 class Cart extends Turbo
 {
-	/*
-	*
-	* The function returns a cart
-	*
-	*/
-	public function get_cart()
+	/**
+	 * Get cart
+	 */
+	public function getCart()
 	{
 		$cart = new stdClass();
-		$cart->purchases = array();
+		$cart->purchases = [];
 		$cart->total_price = 0;
 		$cart->total_products = 0;
 		$cart->coupon = null;
@@ -20,31 +18,34 @@ class Cart extends Turbo
 		$cart->coupon_discount = 0;
 		$cart->total_weight = 0;
 
-		// We take the list variant_id=>amount from the session
 		if (!empty($_SESSION['shopping_cart'])) {
 			$session_items = $_SESSION['shopping_cart'];
+			$variants = $this->variants->getVariants(['id' => array_keys($session_items)]);
 
-			$variants = $this->variants->get_variants(array('id' => array_keys($session_items)));
 			if (!empty($variants)) {
+				$items = [];
 
 				foreach ($variants as $variant) {
-					$items[$variant->id] = new stdClass();
-					$items[$variant->id]->variant = $variant;
-					$items[$variant->id]->amount = $session_items[$variant->id];
-					$products_ids[] = $variant->product_id;
+					$item = new stdClass();
+					$item->variant = $variant;
+					$item->amount = $session_items[$variant->id];
+					$items[$variant->id] = $item;
+					$productsIds[] = $variant->product_id;
 				}
 
-				$products = array();
-				foreach ($this->products->get_products(array('id' => $products_ids, 'limit' => count($products_ids))) as $p)
+				$products = [];
+
+				foreach ($this->products->getProducts(['id' => $productsIds, 'limit' => count($productsIds)]) as $p) {
 					$products[$p->id] = $p;
+				}
 
-				$images = $this->products->get_images(array('product_id' => $products_ids));
-				foreach ($images as $image)
+				$images = $this->products->getImages(['product_id' => $productsIds]);
+
+				foreach ($images as $image) {
 					$products[$image->product_id]->images[$image->id] = $image;
+				}
 
-
-				foreach ($items as $variant_id => $item) {
-					$purchase = null;
+				foreach ($items as $variantId => $item) {
 					if (!empty($products[$item->variant->product_id])) {
 						$purchase = new stdClass();
 						$purchase->product = $products[$item->variant->product_id];
@@ -57,7 +58,7 @@ class Cart extends Turbo
 							$v = new stdClass();
 							$v->price = $purchase->variant->price;
 							$v->compare_price = 0;
-							$this->variants->update_variant($purchase->variant->id, $v);
+							$this->variants->updateVariant($purchase->variant->id, $v);
 						}
 
 						$cart->purchases[] = $purchase;
@@ -67,19 +68,18 @@ class Cart extends Turbo
 					}
 				}
 
-				// Custom discount
 				$cart->discount = 0;
-				if (isset($_SESSION['user_id']) && $user = $this->users->get_user(intval($_SESSION['user_id'])))
+
+				if (isset($_SESSION['user_id']) && $user = $this->users->getUser((int) $_SESSION['user_id'])) {
 					$cart->discount = $user->discount;
+				}
 
 				$cart->total_price *= (100 - $cart->discount) / 100;
 
-				// Coupon discount
 				if (isset($_SESSION['coupon_code'])) {
-					$cart->coupon = $this->coupons->get_coupon($_SESSION['coupon_code']);
+					$cart->coupon = $this->coupons->getCoupon($_SESSION['coupon_code']);
 					if ($cart->coupon && $cart->coupon->valid && $cart->total_price >= $cart->coupon->min_order_price) {
 						if ($cart->coupon->type == 'absolute') {
-							// Absolute discount no more than the amount of the order
 							$cart->coupon_discount = $cart->total_price > $cart->coupon->value ? $cart->coupon->value : $cart->total_price;
 							$cart->total_price = max(0, $cart->total_price - $cart->coupon->value);
 						} else {
@@ -96,80 +96,63 @@ class Cart extends Turbo
 		return $cart;
 	}
 
-	/*
-	*
-	* Adding a product variant to the cart
-	*
-	*/
-	public function add_item($variant_id, $amount = 1)
+	/**
+	 * Add item
+	 */
+	public function addItem($variantId, $amount = 1)
 	{
 		$amount = max(1, $amount);
 
-		if (isset($_SESSION['shopping_cart'][$variant_id]))
-			$amount = max(1, $amount + $_SESSION['shopping_cart'][$variant_id]);
+		if (isset($_SESSION['shopping_cart'][$variantId])) {
+			$amount = max(1, $amount + $_SESSION['shopping_cart'][$variantId]);
+		}
 
-		// We will select a product from the database, at the same time making sure of its existence
-		$variant = $this->variants->get_variant($variant_id);
+		$variant = $this->variants->getVariant($variantId);
 
-		// If the product exists, add it to the cart 
 		if (!empty($variant) && ($variant->stock > 0)) {
-			// We will not give more than in stock
 			$amount = min($amount, $variant->stock);
-
-			$_SESSION['shopping_cart'][$variant_id] = intval($amount);
+			$_SESSION['shopping_cart'][$variantId] = (int) $amount;
 		}
 	}
 
-	/*
-	*
-	* Product Quantity Update
-	*
-	*/
-	public function update_item($variant_id, $amount = 1)
+	/**
+	 * Update item
+	 */
+	public function updateItem($variantId, $amount = 1)
 	{
 		$amount = max(1, $amount);
+		$variant = $this->variants->getVariant($variantId);
 
-		// We will select a product from the database, at the same time making sure of its existence
-		$variant = $this->variants->get_variant($variant_id);
-
-		// If the product exists, add it to the cart
 		if (!empty($variant) && $variant->stock > 0) {
-			// We will not give more than in stock
 			$amount = min($amount, $variant->stock);
-
-			$_SESSION['shopping_cart'][$variant_id] = intval($amount);
+			$_SESSION['shopping_cart'][$variantId] = (int) $amount;
 		}
 	}
 
-	/*
-	*
-	* Removing an item from the cart
-	*
-	*/
-	public function delete_item($variant_id)
+	/**
+	 * Delete item
+	 */
+	public function deleteItem($variantId)
 	{
-		unset($_SESSION['shopping_cart'][$variant_id]);
+		unset($_SESSION['shopping_cart'][$variantId]);
 	}
 
-	/*
-	*
-	* Emptying the trash
-	*
-	*/
-	public function empty_cart()
+	/**
+	 * Empty cart
+	 */
+	public function emptyCart()
 	{
 		unset($_SESSION['shopping_cart']);
 		unset($_SESSION['coupon_code']);
 	}
 
-	/*
-	*
-	* Apply Coupon
-	*
-	*/
-	public function apply_coupon($coupon_code)
+	/**
+	 * Applies coupon 
+	 */
+	public function applyCoupon($couponCode)
 	{
-		$coupon = $this->coupons->get_coupon((string)$coupon_code);
+		$coupon = $this->coupons->getCoupon((string)$couponCode);
+
 		if ($coupon && $coupon->valid) {
 			$_SESSION['coupon_code'] = $coupon->code;
 		} else {

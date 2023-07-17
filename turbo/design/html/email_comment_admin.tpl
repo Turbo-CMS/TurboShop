@@ -457,15 +457,15 @@
 																				<td class="es-p15t es-p10b" align="center">
 																					{if $comment->type == 'product'}
 																						<a class="es-button" target="_blank" href="{$config->root_url}/products/{$comment->product->url}#comment_{$comment->id}">
-																							{$btr->global_order_info|escape}
+																							{$btr->email_order_info|escape}
 																						</a>
 																					{elseif $comment->type == 'blog'}
 																						<a class="es-button" target="_blank" href="{$config->root_url}/blog/{$comment->post->url}#comment_{$comment->id}">
-																							{$btr->global_order_info|escape}
+																							{$btr->email_order_info|escape}
 																						</a>
 																					{elseif $comment->type == 'article'}
 																						<a class="es-button" target="_blank" href="{$config->root_url}/article/{$comment->post->url}#comment_{$comment->id}">
-																							{$btr->global_order_info|escape}
+																							{$btr->email_order_info|escape}
 																						</a>
 																					{/if}
 																				</td>

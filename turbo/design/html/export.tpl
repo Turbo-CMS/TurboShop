@@ -15,7 +15,7 @@
 	</div>
 </div>
 
-{if $message_error}
+{if isset($message_error)}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -32,7 +32,7 @@
 	</div>
 {/if}
 
-{if $message_error != 'no_permission'}
+{if !isset($message_error)}
 	<div class="alert alert-primary alert-dismissible" role="alert">
 		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 		<div class="alert-message">
@@ -72,7 +72,9 @@
 								{function name=categories_tree}
 									{foreach $categories as $c}
 										<option value="{$c->id}">{section name=sp loop=$level}--{/section} {$c->name|escape}</option>
-										{categories_tree categories=$c->subcategories level=$level+1}
+										{if isset($c->subcategories)}
+											{categories_tree categories=$c->subcategories level=$level+1}
+										{/if}
 									{/foreach}
 								{/function}
 								{categories_tree categories=$categories level=0}
@@ -84,7 +86,7 @@
 							<div class="form-label">{$btr->global_from_brand|escape}</div>
 							<select class="selectpicker" data-size="10" name="brand_id">
 								{foreach $brands as $b}
-									<option value="{$b->id}" {if $b@first}selected=""{/if}>{$b->name|escape}</option>
+									<option value="{$b->id}" {if $b@first}selected="" {/if}>{$b->name|escape}</option>
 								{/foreach}
 							</select>
 						</div>
@@ -128,7 +130,7 @@
 				}
 				Piecon.setOptions({fallback: 'force'});
 				Piecon.setProgress(0);
-				var progress_item = $("#progressbar"); //specify an element selector with animation
+				var progress_item = $("#progressbar");
 				$(".progress").show();
 				do_export('', progress_item);
 			});

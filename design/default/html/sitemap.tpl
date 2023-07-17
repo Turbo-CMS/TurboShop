@@ -47,15 +47,15 @@
 	{/foreach}
 </ul>
 {if $posts}
-	<h2 class="my-4">{$lang->index_blog}</h2>
+	<h2 class="my-4">{$lang->global_blog}</h2>
 	<ul>
 		{foreach $posts as $p}
 			<li><a class="text-decoration-none" href="{$lang_link}blog/{$p->url}">{$p->name}</a></li>
 		{/foreach}
 	</ul>
 {/if}
-{if $articles}
-	<h2 class="my-4">{$lang->index_articles}</h2>
+{if isset($articles)}
+	<h2 class="my-4">{$lang->global_articles}</h2>
 	<ul>
 		{foreach $articles as $p}
 			<li><a class="text-decoration-none" href="{$lang_link}article/{$p->url}">{$p->name}</a></li>
@@ -63,7 +63,7 @@
 	</ul>
 {/if}
 {if $articles_cats}
-	<h2 class="my-4">{$lang->index_articles}</h2>
+	<h2 class="my-4">{$lang->global_articles}</h2>
 	{function name=cat_art}
 		{if $articles}
 			<ul>
@@ -82,7 +82,9 @@
 					{if $c->visible}
 						<li>
 							<a class="text-decoration-none" href="{$lang_link}articles/{$c->url}"><b>{$c->name}</b></a>
-							{articles_cat_tree articles_cats=$c->subcategories}
+							{if property_exists($c, 'subcategories')}
+								{articles_cat_tree articles_cats=$c->subcategories}
+							{/if}
 							{cat_art articles=$c->articles}
 						</li>
 					{/if}
@@ -93,7 +95,7 @@
 	{articles_cat_tree articles_cats=$articles_cats}
 {/if}
 {if $cats}
-	<h2 class="my-4">{$lang->index_products}</h2>
+	<h2 class="my-4">{$lang->global_products}</h2>
 	{function name=cat_prod}
 		{if $prod}
 			<ul>
@@ -112,7 +114,9 @@
 					{if $c->visible}
 						<li>
 							<a class="text-decoration-none" href="{$lang_link}catalog/{$c->url}"><b>{$c->name}</b></a>
-							{cat_tree cats=$c->subcategories}
+							{if property_exists($c, 'subcategories')}
+								{cat_tree cats=$c->subcategories}
+							{/if}
 							{cat_prod prod=$c->products}
 						</li>
 					{/if}

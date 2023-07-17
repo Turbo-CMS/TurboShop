@@ -1,122 +1,151 @@
 <?php
 
-require_once('api/Turbo.php');
+require_once 'api/Turbo.php';
 
 class ThemeAdmin extends Turbo
 {
-	private $themes_dir = 'design/';
-	private $compiled_dir = 'compiled/';
+	private $themesDir = 'design/';
+	private $compiledDir = 'compiled/';
 
 	public function fetch()
 	{
-		if ($this->request->method('post')) {
-			$this->dir_delete($this->compiled_dir, false);
-			$old_names = $this->request->post('old_name');
-			$new_names = $this->request->post('new_name');
-			if (is_array($old_names))
-				foreach ($old_names as $i => $old_name) {
-					$new_name = preg_replace("/[^a-zA-Z0-9\-\_]/", "", $new_names[$i]);
+		if ($this->request->isMethod('post')) {
+			$this->dirDelete($this->compiledDir, false);
+			$oldNames = $this->request->post('old_name');
+			$newNames = $this->request->post('new_name');
 
-					if (is_writable($this->themes_dir) && is_dir($this->themes_dir . $old_name) && !is_file($this->themes_dir . $new_name) && !is_dir($this->themes_dir . $new_name)) {
-						rename($this->themes_dir . $old_name, $this->themes_dir . $new_name);
-						if ($this->settings->theme == $old_name)
-							$this->settings->theme = $new_name;
-					} elseif (is_file($this->themes_dir . $new_name) && $new_name != $old_name)
-						$message_error = 'name_exists';
+			if (is_array($oldNames)) {
+				foreach ($oldNames as $i => $oldName) {
+					$newName = preg_replace("/[^a-zA-Z0-9\-\_]/", "", $newNames[$i]);
+
+					if (is_writable($this->themesDir) && is_dir($this->themesDir . $oldName) && !is_file($this->themesDir . $newName) && !is_dir($this->themesDir . $newName)) {
+						rename($this->themesDir . $oldName, $this->themesDir . $newName);
+
+						if ($this->settings->theme == $oldName) {
+							$this->settings->theme = $newName;
+						}
+					} elseif (is_file($this->themesDir . $newName) && $newName != $oldName) {
+						$messageError = 'name_exists';
+					}
 				}
+			}
 
 			$action = $this->request->post('action');
-			$action_theme  = $this->request->post('theme');
+			$actionTheme  = $this->request->post('theme');
 
 			switch ($this->request->post('action')) {
 				case 'set_main_theme': {
-						$this->settings->theme = $action_theme;
-						$this->languages->set_translation();
+						$this->settings->theme = $actionTheme;
+						$this->languages->setTranslation();
 						break;
 					}
 				case 'clone_theme': {
-						$new_name = $this->settings->theme;
-						while (is_dir($this->themes_dir . $new_name) || is_file($this->themes_dir . $new_name)) {
-							if (preg_match('/(.+)_([0-9]+)$/', $new_name, $parts))
-								$new_name = $parts[1] . '_' . ($parts[2] + 1);
-							else
-								$new_name = $new_name . '_1';
+						$newName = $this->settings->theme;
+
+						while (is_dir($this->themesDir . $newName) || is_file($this->themesDir . $newName)) {
+							if (preg_match('/(.+)_([0-9]+)$/', $newName, $parts)) {
+								$newName = $parts[1] . '_' . ($parts[2] + 1);
+							} else {
+								$newName = $newName . '_1';
+							}
 						}
-						$this->dir_copy($this->themes_dir . $this->settings->theme, $this->themes_dir . $new_name);
-						@unlink($this->themes_dir . $new_name . '/locked');
-						$this->settings->theme = $new_name;
+
+						$this->dirCopy($this->themesDir . $this->settings->theme, $this->themesDir . $newName);
+						@unlink($this->themesDir . $newName . '/locked');
+						$this->settings->theme = $newName;
 						break;
 					}
 				case 'delete_theme': {
-						$this->dir_delete($this->themes_dir . $action_theme);
-						if ($action_theme == $this->settings->theme) {
-							$t = current($this->get_themes());
+						$this->dirDelete($this->themesDir . $actionTheme);
+
+						if ($actionTheme == $this->settings->theme) {
+							$t = current($this->getThemes());
 							$this->settings->theme = $t->name;
 						}
+
 						break;
 					}
 			}
 		}
 
-		$themes = $this->get_themes();
+		$themes = $this->getThemes();
 
-		// If there are no write permissions, we pass a warning to the design
-		if (!is_writable($this->themes_dir)) {
+		if (!is_writable($this->themesDir)) {
 			$this->design->assign('message_error', 'permissions');
 		}
 
-		$current_theme = new stdClass;
-		$current_theme->name = $this->settings->theme;
-		$current_theme->locked = is_file($this->themes_dir . $current_theme->name . '/locked');
-		$this->design->assign('theme', $current_theme);
+		$currentTheme = new stdClass();
+		$currentTheme->name = $this->settings->theme;
+		$currentTheme->locked = is_file($this->themesDir . $currentTheme->name . '/locked');
+
+		$this->design->assign('theme', $currentTheme);
 		$this->design->assign('themes', $themes);
-		$this->design->assign('themes_dir', $this->themes_dir);
+		$this->design->assign('themes_dir', $this->themesDir);
+
 		return $this->design->fetch('theme.tpl');
 	}
 
-	private function dir_copy($src, $dst)
+	private function dirCopy($src, $dst)
 	{
 		if (is_dir($src)) {
 			mkdir($dst, 0777);
 			$files = scandir($src);
-			foreach ($files as $file)
-				if ($file != "." && $file != "..") $this->dir_copy("$src/$file", "$dst/$file");
-		} elseif (file_exists($src))
+
+			foreach ($files as $file) {
+				if ($file != "." && $file != "..") $this->dirCopy("$src/$file", "$dst/$file");
+			}
+		} elseif (file_exists($src)) {
 			copy($src, $dst);
-		@chmod($dst, 0777);
+		}
+
+		chmod($dst, 0777);
 	}
 
-	private function dir_delete($path, $delete_self = true)
+	private function dirDelete($path, $deleteSelf = true)
 	{
-		if (!$dh = @opendir($path))
+		if (!$dh = opendir($path)) {
 			return;
-		while (false !== ($obj = readdir($dh))) {
-			if ($obj == '.' || $obj == '..')
-				continue;
-
-			if (!@unlink($path . '/' . $obj))
-				$this->dir_delete($path . '/' . $obj, true);
 		}
+
+		while (false !== ($obj = readdir($dh))) {
+			if ($obj == '.' || $obj == '..') {
+				continue;
+			}
+
+			$fullPath = $path . '/' . $obj;
+
+			if (is_dir($fullPath)) {
+				$this->dirDelete($fullPath, true);
+			} else {
+				unlink($fullPath);
+			}
+		}
+
 		closedir($dh);
-		if ($delete_self)
-			@rmdir($path);
+
+		if ($deleteSelf) {
+			rmdir($path);
+		}
+
 		return;
 	}
 
-	private function get_themes()
+	private function getThemes()
 	{
-		if ($handle = opendir($this->themes_dir)) {
+		if ($handle = opendir($this->themesDir)) {
 			while (false !== ($file = readdir($handle))) {
-				if (is_dir($this->themes_dir . '/' . $file) && $file[0] != '.') {
-					$theme = new stdClass;
+				if (is_dir($this->themesDir . '/' . $file) && $file[0] != '.') {
+					$theme = new stdClass();
 					$theme->name = $file;
-					$theme->locked = is_file($this->themes_dir . $file . '/locked');
+					$theme->locked = is_file($this->themesDir . $file . '/locked');
 					$themes[] = $theme;
 				}
 			}
+
 			closedir($handle);
 			sort($themes);
 		}
+
 		return $themes;
 	}
 }

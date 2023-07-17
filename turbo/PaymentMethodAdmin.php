@@ -1,66 +1,71 @@
 <?php
 
-require_once('api/Turbo.php');
+require_once 'api/Turbo.php';
 
 class PaymentMethodAdmin extends Turbo
 {
-	public function fetch()
-	{
-		$payment_method = new stdClass;
-		if ($this->request->method('post')) {
-			$payment_method->id             = $this->request->post('id', 'integer');
-			$payment_method->enabled        = $this->request->post('enabled', 'boolean');
-			$payment_method->name           = $this->request->post('name');
-			$payment_method->currency_id    = $this->request->post('currency_id');
-			$payment_method->description    = $this->request->post('description');
-			$payment_method->module         = $this->request->post('module', 'string');
+    public function fetch()
+    {
+        $paymentMethod = new stdClass();
 
-			$payment_settings = $this->request->post('payment_settings');
+        if ($this->request->isMethod('post')) {
+            $paymentMethod->id = $this->request->post('id', 'integer');
+            $paymentMethod->enabled = $this->request->post('enabled', 'boolean');
+            $paymentMethod->name = $this->request->post('name');
+            $paymentMethod->currency_id = $this->request->post('currency_id');
+            $paymentMethod->description = $this->request->post('description');
+            $paymentMethod->module = $this->request->post('module', 'string');
+            $paymentSettings = $this->request->post('payment_settings');
 
-			if (!$payment_deliveries = $this->request->post('payment_deliveries')) {
-				$payment_deliveries = array();
-			}
+            if (!$paymentDeliveries = $this->request->post('payment_deliveries')) {
+                $paymentDeliveries = [];
+            }
 
-			if (empty($payment_method->name)) {
-				$this->design->assign('message_error', 'empty_name');
-			} else {
-				if (empty($payment_method->id)) {
-					$payment_method->id = $this->payment->add_payment_method($payment_method);
-					$this->design->assign('message_success', 'added');
-				} else {
-					$this->payment->update_payment_method($payment_method->id, $payment_method);
-					$this->design->assign('message_success', 'updated');
-				}
-				if ($payment_method->id) {
-					$this->payment->update_payment_settings($payment_method->id, $payment_settings);
-					$this->payment->update_payment_deliveries($payment_method->id, $payment_deliveries);
-				}
-				$payment_method = $this->payment->get_payment_method($payment_method->id);
-			}
-		} else {
-			$payment_method->id = $this->request->get('id', 'integer');
-			if (!empty($payment_method->id)) {
-				$payment_method = $this->payment->get_payment_method($payment_method->id);
-				$payment_settings =  $this->payment->get_payment_settings($payment_method->id);
-			} else {
-				$payment_settings = array();
-			}
-			$payment_deliveries = $this->payment->get_payment_deliveries($payment_method->id);
-		}
-		$this->design->assign('payment_deliveries', $payment_deliveries);
+            if (empty($paymentMethod->name)) {
+                $this->design->assign('message_error', 'empty_name');
+            } else {
+                if (empty($paymentMethod->id)) {
+                    $paymentMethod->id = $this->payment->addPaymentMethod($paymentMethod);
+                    $this->design->assign('message_success', 'added');
+                } else {
+                    $this->payment->updatePaymentMethod($paymentMethod->id, $paymentMethod);
+                    $this->design->assign('message_success', 'updated');
+                }
 
-		// Related shipping methods
-		$deliveries = $this->delivery->get_deliveries();
-		$this->design->assign('deliveries', $deliveries);
+                if ($paymentMethod->id) {
+                    $this->payment->updatePaymentSettings($paymentMethod->id, $paymentSettings);
+                    $this->payment->updatePaymentDeliveries($paymentMethod->id, $paymentDeliveries);
+                }
 
-		$this->design->assign('payment_method', $payment_method);
-		$this->design->assign('payment_settings', $payment_settings);
-		$payment_modules = $this->payment->get_payment_modules();
-		$this->design->assign('payment_modules', $payment_modules);
+                $paymentMethod = $this->payment->getPaymentMethod($paymentMethod->id);
+            }
+        } else {
+            $paymentMethod->id = $this->request->get('id', 'integer');
 
-		$currencies = $this->money->get_currencies();
-		$this->design->assign('currencies', $currencies);
+            if (!empty($paymentMethod->id)) {
+                $paymentMethod = $this->payment->getPaymentMethod($paymentMethod->id);
+                $paymentSettings =  $this->payment->getPaymentSettings($paymentMethod->id);
+            } else {
+                $paymentSettings = [];
+            }
 
-		return $this->design->fetch('payment_method.tpl');
-	}
+            $paymentDeliveries = $this->payment->getPaymentDeliveries($paymentMethod->id);
+        }
+
+        $this->design->assign('payment_deliveries', $paymentDeliveries);
+
+        $deliveries = $this->delivery->getDeliveries();
+        $this->design->assign('deliveries', $deliveries);
+
+        $this->design->assign('payment_method', $paymentMethod);
+        $this->design->assign('payment_settings', $paymentSettings);
+
+        $paymentModules = $this->payment->getPaymentModules();
+        $this->design->assign('payment_modules', $paymentModules);
+
+        $currencies = $this->money->getCurrencies();
+        $this->design->assign('currencies', $currencies);
+
+        return $this->design->fetch('payment_method.tpl');
+    }
 }

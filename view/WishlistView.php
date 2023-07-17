@@ -1,100 +1,138 @@
 <?php
 
-require_once('View.php');
+require_once 'View.php';
 
 class WishlistView extends View
 {
-	public $max_visited_products = 100; // Maximum number of stored items in history
+	public $maxVisitedProducts = 100;
 
-	/**
-	 *
-	 * Constructor
-	 *
-	 */
 	public function fetch()
 	{
-		$max_visited_products = 100;
-		$expire = time() + 60 * 60 * 24 * 365; // Life time - 365 days
+		$maxVisitedProducts = 100;
+		$expire = time() + 60 * 60 * 24 * 365;
 
 		if ($this->request->get('product_url', 'string')) {
-
 			if (!empty($_COOKIE['wishlist_products'])) {
-				$wishlist_products = explode(',', $_COOKIE['wishlist_products']);
-				// Delete the current product if it was
-				if (($exists = array_search($this->request->get('product_url', 'string'), $wishlist_products)) !== false)
-					unset($wishlist_products[$exists]);
-			}
-			// Add current product
-			$wishlist_products[] = $this->request->get('product_url', 'string');
-			$cookie_val = implode(',', array_slice($wishlist_products, -$max_visited_products, $max_visited_products));
-			setcookie("wishlist_products", $cookie_val, $expire, "/");
+				$wishlistProducts = explode(',', $_COOKIE['wishlist_products']);
 
-			header('location: ' . $this->config->root_url . '/' . $this->lang_link . 'wishlist/');
+				if (($exists = array_search($this->request->get('product_url', 'string'), $wishlistProducts)) !== false) {
+					unset($wishlistProducts[$exists]);
+				}
+			}
+
+			$wishlistProducts[] = $this->request->get('product_url', 'string');
+			$cookieVal = implode(',', array_slice($wishlistProducts, -$maxVisitedProducts, $maxVisitedProducts));
+			setcookie("wishlist_products", $cookieVal, $expire, "/");
+
+			header('location: ' . $this->config->root_url . '/' . $this->langLink . 'wishlist/');
 		}
 
 		if ($this->request->get('remove_product_url', 'string')) {
 			if ($this->request->get('remove_product_url', 'string') == 'all') {
 				setcookie("wishlist_products", "", $expire, "/");
-				header('location: ' . $this->config->root_url . '/' . $this->lang_link . 'wishlist/');
+				header('location: ' . $this->config->root_url . '/' . $this->langLink . 'wishlist/');
 			} else {
 				if (!empty($_COOKIE['wishlist_products'])) {
-					$wishlist_products = explode(',', $_COOKIE['wishlist_products']);
-					// Delete the current product if it was
-					if (($exists = array_search($this->request->get('remove_product_url', 'string'), $wishlist_products)) !== false)
-						unset($wishlist_products[$exists]);
+					$wishlistProducts = explode(',', $_COOKIE['wishlist_products']);
+
+					if (($exists = array_search($this->request->get('remove_product_url', 'string'), $wishlistProducts)) !== false) {
+						unset($wishlistProducts[$exists]);
+					}
 				}
 
-				$cookie_val = implode(',', array_slice($wishlist_products, -$max_visited_products, $max_visited_products));
-				setcookie("wishlist_products", $cookie_val, $expire, "/");
+				$cookieVal = implode(',', array_slice($wishlistProducts, -$maxVisitedProducts, $maxVisitedProducts));
+				setcookie("wishlist_products", $cookieVal, $expire, "/");
 
-				header('location: ' . $this->config->root_url . '/' . $this->lang_link . 'wishlist/');
+				header('location: ' . $this->config->root_url . '/' . $this->langLink . 'wishlist/');
 			}
 		}
 
-		/**
-		 *
-		 * Single product display
-		 *
-		 */
 		if (!empty($_COOKIE['wishlist_products'])) {
-			$wishlist_products = explode(',', $_COOKIE['wishlist_products']);
-			// Select products from database
-			foreach ($wishlist_products as $product_url) {
-				$pr = $this->products->get_product((string)$product_url);
-				if (!empty($pr))
-					$products[] =  $pr;
-				else
-				if (($exists = array_search((string)$product_url, $wishlist_products)) !== false)
-					unset($wishlist_products[$exists]);
+			$wishlistProducts = explode(',', $_COOKIE['wishlist_products']);
+
+			foreach ($wishlistProducts as $productUrl) {
+				$pr = $this->products->getProduct((string) $productUrl);
+
+				if (!empty($pr)) {
+					$products[] = $pr;
+				} elseif (($exists = array_search((string) $productUrl, $wishlistProducts)) !== false) {
+					unset($wishlistProducts[$exists]);
+				}
 			}
 		}
-		//print_r($products);
+
 		if (isset($products) && !empty($products)) {
 			foreach ($products as $k => $product) {
-				$product->images = $this->products->get_images(array('product_id' => $product->id));
+
+				$product->images = $this->products->getImages(['product_id' => $product->id]);
 				$product->image = &$product->images[0];
 
-				$cats = $this->categories->get_categories(array('product_id' => $product->id));
+				$cats = $this->categories->getCategories(['product_id' => $product->id]);
 				$product->cats = $cats;
 
-				$variants = $this->variants->get_variants(array('product_id' => $product->id, 'in_stock' => true));
-				// Discount
+				$variants = $this->variants->getVariants(['product_id' => $product->id, 'in_stock' => true]);
+
 				$discount = 0;
-				if (isset($_SESSION['user_id']) && $user = $this->users->get_user(intval($_SESSION['user_id'])))
+
+				if (isset($_SESSION['user_id']) && $user = $this->users->getUser((int) $_SESSION['user_id'])) {
 					$discount = $user->discount;
+				}
+
 				$product->variants = $variants;
 
-				// Default variant
-				if (($v_id = $this->request->get('variant', 'integer')) > 0 && isset($variants[$v_id]))
-					$product->variant = $variants[$v_id];
-				else
+				if (($vId = $this->request->get('variant', 'integer')) > 0 && isset($variants[$vId])) {
+					$product->variant = $variants[$vId];
+				} else {
 					$product->variant = reset($variants);
+				}
+
+				$product->commentsCount = $this->comments->countComments(['object_id' => $product->id, 'type' => 'product', 'approved' => 1]);
+
+				$dataRelatedProducts = [];
+				$relatedIds = $this->products->getRelatedProductIds([$product->id]);
+
+				if (!empty($relatedIds)) {
+					$relatedProducts = $this->products->getProducts(['id' => $relatedIds, 'visible' => 1]);
+
+					if (!empty($relatedProducts)) {
+						$relatedProductsImages = $this->products->getImages(['product_id' => array_keys($relatedProducts)]);
+
+						foreach ($relatedProducts as $relatedProduct) {
+							$relatedProduct->images = [];
+							$relatedProduct->variants = [];
+
+							foreach ($relatedProductsImages as $relatedProductImage) {
+								if ($relatedProduct->id == $relatedProductImage->product_id) {
+									$relatedProduct->images[] = $relatedProductImage;
+								}
+							}
+
+							$relatedProductsVariants = $this->variants->getVariants(['product_id' => $relatedProduct->id]);
+
+							foreach ($relatedProductsVariants as $relatedProductVariant) {
+								$relatedProduct->variants[] = $relatedProductVariant;
+							}
+
+							if (isset($relatedProduct->variants[0])) {
+								$relatedProduct->variant = $relatedProduct->variants[0];
+							}
+
+							if (isset($relatedProduct->images[0])) {
+								$relatedProduct->image = $relatedProduct->images[0];
+							}
+
+							$dataRelatedProducts[] = $relatedProduct;
+						}
+					}
+				}
+
+				$product->relatedProducts = $dataRelatedProducts;
 			}
-			// And pass it to the template
+
 			$this->design->assign('products', $products);
 		} else {
 			unset($_COOKIE['wishlist_products']);
-			unset($wishlist_products);
+			unset($wishlistProducts);
 		}
 
 		$this->design->assign('wishlist', true);
@@ -105,29 +143,29 @@ class WishlistView extends View
 			$this->design->assign('meta_description', $this->page->meta_description);
 		}
 
-		$auto_meta = new StdClass;
+		$autoMeta = new StdClass();
 
-		$auto_meta->title       = $this->seo->page_meta_title       ? $this->seo->page_meta_title       : '';
-		$auto_meta->keywords    = $this->seo->page_meta_keywords    ? $this->seo->page_meta_keywords    : '';
-		$auto_meta->description = $this->seo->page_meta_description ? $this->seo->page_meta_description : '';
+		$autoMeta->title = $this->seo->page_meta_title ?: '';
+		$autoMeta->keywords = $this->seo->page_meta_keywords ?: '';
+		$autoMeta->description = $this->seo->page_meta_description ?: '';
 
-		$auto_meta_parts = array(
-			'{page}' => ($this->page ? $this->page->header : ''),
-			'{site_url}' => ($this->seo->am_url ? $this->seo->am_url : ''),
-			'{site_name}' => ($this->seo->am_name ? $this->seo->am_name : ''),
-			'{site_phone}' => ($this->seo->am_phone ? $this->seo->am_phone : ''),
-			'{site_email}' => ($this->seo->am_email ? $this->seo->am_email : ''),
-		);
+		$autoMetaParts = [
+			'{page}' => $this->page ? $this->page->header : '',
+			'{site_url}' => $this->seo->am_url ?: '',
+			'{site_name}' => $this->seo->am_name ?: '',
+			'{site_phone}' => $this->seo->am_phone ?: '',
+			'{site_email}' => $this->seo->am_email ?: '',
+		];
 
-		$auto_meta->title = strtr($auto_meta->title, $auto_meta_parts);
-		$auto_meta->keywords = strtr($auto_meta->keywords, $auto_meta_parts);
-		$auto_meta->description = strtr($auto_meta->description, $auto_meta_parts);
+		$autoMeta->title = strtr($autoMeta->title, $autoMetaParts);
+		$autoMeta->keywords = strtr($autoMeta->keywords, $autoMetaParts);
+		$autoMeta->description = strtr($autoMeta->description, $autoMetaParts);
 
-		$auto_meta->title = preg_replace("/\{.*\}/", '', $auto_meta->title);
-		$auto_meta->keywords = preg_replace("/\{.*\}/", '', $auto_meta->keywords);
-		$auto_meta->description = preg_replace("/\{.*\}/", '', $auto_meta->description);
+		$autoMeta->title = preg_replace('/\{.*\}/', '', $autoMeta->title);
+		$autoMeta->keywords = preg_replace('/\{.*\}/', '', $autoMeta->keywords);
+		$autoMeta->description = preg_replace('/\{.*\}/', '', $autoMeta->description);
 
-		$this->design->assign('auto_meta', $auto_meta);
+		$this->design->assign('auto_meta', $autoMeta);
 
 		return $this->design->fetch('wishlist.tpl');
 	}

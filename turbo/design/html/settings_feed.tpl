@@ -4,7 +4,7 @@
 	{$btr->settings_feed_yml|escape}
 </h1>
 
-{if $message_success}
+{if isset($message_success)}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-success alert-dismissible fade show" role="alert">

@@ -1,110 +1,160 @@
 <?php
 
-require_once('Turbo.php');
+require_once 'Turbo.php';
 
 class Articles extends Turbo
 {
-	/*
-	*
-	* The function returns an article by its id or url
-	* (depending on the argument type, int - id, string - url)
-	* @param $id article id or url
-	*
-	*/
-	public function get_article($id)
+	/**
+	 * Get article
+	 */
+	public function getArticle($id)
 	{
-		if (is_int($id))
-			$where = $this->db->placehold(' WHERE b.id=? ', intval($id));
-		else
-			$where = $this->db->placehold(' WHERE b.url=? ', $id);
-
-		$lang_sql = $this->languages->get_query(array('object' => 'article', 'px' => 'b'));
-
-		$query = $this->db->placehold("SELECT b.id, b.category_id, b.url, b.name, b.author, b.annotation, b.text, b.rate, b.views, b.meta_title,
-		                               b.meta_keywords, b.meta_description, b.visible, b.date, b.image, b.position, b.last_modified, $lang_sql->fields
-		                               FROM __articles b $lang_sql->join $where LIMIT 1");
-		if ($this->db->query($query))
-			return $this->db->result();
-		else
-			return false;
-	}
-
-	/*
-	*
-	* The function returns an array of articles matching the filter
-	* @param $filter
-	*
-	*/
-	public function get_articles($filter = array())
-	{
-		// Default
-		$limit = 1000;
-		$page = 1;
-		$post_id_filter = '';
-		$category_id_filter = '';
-		$visible_filter = '';
-		$keyword_filter = '';
-		$order = 'b.position DESC';
-		$posts = array();
-
-		$lang_id  = $this->languages->lang_id();
-		$px = ($lang_id ? 'l' : 'b');
-
-		if (isset($filter['limit']))
-			$limit = max(1, intval($filter['limit']));
-
-		if (isset($filter['page']))
-			$page = max(1, intval($filter['page']));
-
-		if (!empty($filter['id']))
-			$post_id_filter = $this->db->placehold('AND b.id in(?@)', (array)$filter['id']);
-
-		if (!empty($filter['category_id'])) {
-			$category_id_filter = $this->db->placehold('AND b.category_id in(?@)', (array)$filter['category_id']);
+		if (is_int($id)) {
+			$where = $this->db->placehold('WHERE a.id=?', (int) $id);
+		} else {
+			$where = $this->db->placehold('WHERE a.url=?', $id);
 		}
 
-		if (isset($filter['visible']))
-			$visible_filter = $this->db->placehold('AND b.visible = ?', intval($filter['visible']));
+		$langSql = $this->languages->getQuery(['object' => 'article', 'px' => 'a']);
 
-		if (!empty($filter['sort']))
+		$query = $this->db->placehold(
+			"SELECT 
+				a.id, 
+				a.category_id, 
+				a.url, 
+				a.name, 
+				a.author, 
+				a.annotation, 
+				a.text, 
+				a.rate, 
+				a.views,
+				a.meta_title, 
+				a.meta_keywords, 
+				a.meta_description, 
+				a.visible, 
+				a.date, 
+				a.image, 
+				a.position,
+				a.last_modified, 
+				$langSql->fields 
+			FROM 
+				__articles a 
+				$langSql->join 
+				$where 
+			LIMIT 1"
+		);
+
+		if ($this->db->query($query)) {
+			return $this->db->result();
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Get articles
+	 */
+	public function getArticles($filter = [])
+	{
+		$limit = 1000;
+		$page = 1;
+		$postIdFilter = '';
+		$categoryIdFilter = '';
+		$visibleFilter = '';
+		$keywordFilter = '';
+		$order = 'a.position DESC';
+		$langId = $this->languages->langId();
+		$px = ($langId ? 'l' : 'a');
+
+		if (isset($filter['limit'])) {
+			$limit = max(1, (int) $filter['limit']);
+		}
+
+		if (isset($filter['page'])) {
+			$page = max(1, (int) $filter['page']);
+		}
+
+		if (!empty($filter['id'])) {
+			$postIdFilter = $this->db->placehold('AND a.id IN(?@)', (array) $filter['id']);
+		}
+
+		if (!empty($filter['category_id'])) {
+			$categoryIdFilter = $this->db->placehold('AND a.category_id IN(?@)', (array) $filter['category_id']);
+		}
+
+		if (isset($filter['visible'])) {
+			$visibleFilter = $this->db->placehold('AND a.visible=?', (int) $filter['visible']);
+		}
+
+		if (!empty($filter['sort'])) {
 			switch ($filter['sort']) {
 				case 'position':
-					$order = 'b.position DESC';
+					$order = 'a.position DESC';
 					break;
 				case 'name':
-					$order = 'b.name';
+					$order = 'a.name';
 					break;
 				case 'date':
-					$order = 'b.date DESC,b.id DESC';
+					$order = 'a.date DESC, a.id DESC';
 					break;
 				case 'rate':
-					$order = 'b.rate DESC';
+					$order = 'a.rate DESC';
 					break;
 			}
+		}
 
 		if (isset($filter['keyword'])) {
 			$keywords = explode(' ', $filter['keyword']);
-			foreach ($keywords as $keyword)
-				$keyword_filter .= $this->db->placehold('AND (' . $px . '.name LIKE "%' . $this->db->escape(trim($keyword)) . '%" OR ' . $px . '.meta_keywords LIKE "%' . $this->db->escape(trim($keyword)) . '%") ');
+			foreach ($keywords as $keyword) {
+				$keywordFilter .= $this->db->placehold('AND (' . $px . '.name LIKE "%' . $this->db->escape(trim($keyword)) . '%" OR ' . $px . '.meta_keywords LIKE "%' . $this->db->escape(trim($keyword)) . '%") ');
+			}
 		}
 
-		$sql_limit = $this->db->placehold(' LIMIT ?, ? ', ($page - 1) * $limit, $limit);
+		$sqlLimit = $this->db->placehold('LIMIT ?, ?', ($page - 1) * $limit, $limit);
 
-		$lang_sql = $this->languages->get_query(array('object' => 'article', 'px' => 'b'));
+		$langSql = $this->languages->getQuery(['object' => 'article', 'px' => 'a']);
 
-		$query = $this->db->placehold("SELECT b.id, b.category_id, b.url, b.name, b.author, b.annotation, b.text, b.rate, b.views,
-		                                      b.meta_title, b.meta_keywords, b.meta_description, b.image, b.visible,
-		                                      b.date, b.position, b.last_modified, $lang_sql->fields
-		                                      FROM __articles b $lang_sql->join WHERE 1 $post_id_filter $category_id_filter $visible_filter $keyword_filter
-		                                      ORDER BY $order $sql_limit");
+		$query = $this->db->placehold(
+			"SELECT
+				a.id, 
+				a.category_id, 
+				a.url, 
+				a.name, 
+				a.author, 
+				a.annotation, 
+				a.text, 
+				a.rate, 
+				a.views, 
+				a.meta_title, 
+				a.meta_keywords, 
+				a.meta_description, 
+				a.image, 
+				a.visible, 
+				a.date, 
+				a.position,
+				a.last_modified, 
+				$langSql->fields      
+			FROM 
+				__articles a 
+				$langSql->join 
+			WHERE 
+				1 
+				$postIdFilter 
+				$categoryIdFilter 
+				$visibleFilter 
+				$keywordFilter 
+			ORDER BY 
+				$order 
+				$sqlLimit"
+		);
 
 		if ($this->settings->cached == 1 && empty($_SESSION['admin'])) {
 			if ($result = $this->cache->get($query)) {
-				return $result; // return data from memcached
+				return $result;
 			} else {
-				$this->db->query($query); // otherwise pull from the database
+				$this->db->query($query);
 				$result = $this->db->results();
-				$this->cache->set($query, $result); // put into cache
+				$this->cache->set($query, $result);
 				return $result;
 			}
 		} else {
@@ -113,64 +163,63 @@ class Articles extends Turbo
 		}
 	}
 
-	/*
-	*
-	* The function calculates the number of articles that match the filter 
-	* @param $filter
-	*
-	*/
-	public function count_articles($filter = array())
+	/**
+	 * Count articles
+	 */
+	public function countArticles($filters = [])
 	{
-		$post_id_filter = '';
-		$category_id_filter = '';
-		$visible_filter = '';
-		$keyword_filter = '';
+		$postIdFilter = '';
+		$categoryIdFilter = '';
+		$visibleFilter = '';
+		$keywordFilter = '';
 
-		if (!empty($filter['id']))
-			$post_id_filter = $this->db->placehold('AND b.id in(?@)', (array)$filter['id']);
-
-		if (!empty($filter['category_id'])) {
-			$category_id_filter = $this->db->placehold('AND b.category_id in(?@)', (array)$filter['category_id']);
+		if (!empty($filters['id'])) {
+			$postIdFilter = $this->db->placehold('AND a.id IN(?@)', (array) $filters['id']);
 		}
 
-		if (isset($filter['visible']))
-			$visible_filter = $this->db->placehold('AND b.visible = ?', intval($filter['visible']));
+		if (!empty($filters['category_id'])) {
+			$categoryIdFilter = $this->db->placehold('AND a.category_id IN(?@)', (array) $filters['category_id']);
+		}
+
+		if (isset($filters['visible'])) {
+			$visibleFilter = $this->db->placehold('AND a.visible=?', (int) $filters['visible']);
+		}
 
 		if (isset($filter['keyword'])) {
 			$keywords = explode(' ', $filter['keyword']);
-			foreach ($keywords as $keyword)
-				$keyword_filter .= $this->db->placehold('AND (b.name LIKE "%' . $this->db->escape(trim($keyword)) . '%" OR b.meta_keywords LIKE "%' . $this->db->escape(trim($keyword)) . '%") ');
+			foreach ($keywords as $keyword) {
+				$keywordFilter .= $this->db->placehold('AND (a.name LIKE "%' . $this->db->escape(trim($keyword)) . '%" OR a.meta_keywords LIKE "%' . $this->db->escape(trim($keyword)) . '%") ');
+			}
 		}
 
-		$query = "SELECT COUNT(distinct b.id) as count
-		          FROM __articles b WHERE 1 $post_id_filter $category_id_filter $visible_filter $keyword_filter";
+		$query = $this->db->placehold(
+			"SELECT COUNT(DISTINCT a.id) AS count
+            FROM __articles a WHERE 1 $postIdFilter $categoryIdFilter $visibleFilter $keywordFilter"
+		);
 
 		if ($this->settings->cached == 1 && empty($_SESSION['admin'])) {
 			if ($result = $this->cache->get($query)) {
-				return $result; // return data from memcached
-			} else {
-				if ($this->db->query($query)) {
-					$result = $this->db->result('count');
-					$this->cache->set($query, $result); // put into cache
-					return $result;
-				} else
-					return false;
+				return $result;
 			}
+		}
+
+		if ($this->db->query($query)) {
+			$result = $this->db->result('count');
+
+			if ($this->settings->cached == 1 && empty($_SESSION['admin'])) {
+				$this->cache->set($query, $result);
+			}
+
+			return $result;
 		} else {
-			if ($this->db->query($query))
-				return $this->db->result('count');
-			else
-				return false;
+			return false;
 		}
 	}
 
-	/*
-	*
-	* Article creation
-	* @param $article
-	*
-	*/
-	public function add_article($article)
+	/**
+	 * Add article
+	 */
+	public function addArticle($article)
 	{
 		$article = (array) $article;
 
@@ -179,179 +228,198 @@ class Articles extends Turbo
 			$article['url'] = strtolower(preg_replace("/[^0-9a-zа-я\-]+/ui", '', $article['url']));
 		}
 
-		// If there is an article with this URL, add a number to it
-		while ($this->get_article((string)$article['url'])) {
-			if (preg_match('/(.+)_([0-9]+)$/', $article['url'], $parts))
+		while ($this->getArticle((string) $article['url'])) {
+			if (preg_match('/(.+)_([0-9]+)$/', $article['url'], $parts)) {
 				$article['url'] = $parts[1] . '_' . ($parts[2] + 1);
-			else
+			} else {
 				$article['url'] = $article['url'] . '_2';
+			}
 		}
 
-		$article = (object)$article;
-		$result = $this->languages->get_description($article, 'article');
-		if (!empty($result->data)) $article = $result->data;
+		$article = (object) $article;
+
+		$result = $this->languages->getDescription($article, 'article');
+
+		if (!empty($result->data)) {
+			$article = $result->data;
+		}
 
 		if ($this->db->query("INSERT INTO __articles SET ?%", $article)) {
-			$id = $this->db->insert_id();
+			$id = $this->db->insertId();
 			$this->db->query("UPDATE __articles SET `last_modified`=NOW(), position=id WHERE id=?", $id);
 
 			if (!empty($result->description)) {
-				$this->languages->action_description($id, $result->description, 'article');
+				$this->languages->actionDescription($id, $result->description, 'article');
 			}
-			return $id;
-		} else
-			return false;
-	}
 
-	/*
-	*
-	* Update article
-	* @param $post
-	*
-	*/
-	public function update_article($id, $post)
-	{
-		$post = (object)$post;
-		$result = $this->languages->get_description($post, 'article');
-		if (!empty($result->data)) $post = $result->data;
-
-		$query = $this->db->placehold("UPDATE __articles SET `last_modified`=NOW(), ?% WHERE id in(?@) LIMIT ?", $post, (array)$id, count((array)$id));
-		if ($this->db->query($query)) {
-			if (!empty($result->description)) {
-				$this->languages->action_description($id, $result->description, 'article', $this->languages->lang_id());
-			}
 			return $id;
-		} else
+		} else {
 			return false;
+		}
 	}
 
 	/**
-	 * The function contributes +1 to the article view
-	 * @param $id
-	 * @retval object
+	 * Update an article
 	 */
-	public function update_views($id)
+	public function updateArticle($id, $post)
+	{
+		$post = (object)$post;
+		$result = $this->languages->getDescription($post, 'article');
+
+		if (!empty($result->data)) {
+			$post = $result->data;
+		}
+
+		$query = $this->db->placehold("UPDATE __articles SET `last_modified` = NOW(), ?% WHERE id IN(?@) LIMIT ?", $post, (array) $id, count((array) $id));
+
+		if ($this->db->query($query)) {
+			if (!empty($result->description)) {
+				$this->languages->actionDescription($id, $result->description, 'article', $this->languages->langId());
+			}
+			return $id;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Update views
+	 */
+	public function updateViews($id)
 	{
 		$this->db->query("UPDATE __articles SET views=views+1 WHERE id=?", $id);
+
 		return true;
 	}
 
-	/*
-	*
-	* Delete article
-	* @param $id
-	*
-	*/
-	public function delete_article($id)
+	/**
+	 * Delete article
+	 */
+	public function deleteArticle($id)
 	{
 		if (!empty($id)) {
-			$this->delete_image($id);
-			$query = $this->db->placehold("DELETE FROM __articles WHERE id=? LIMIT 1", intval($id));
+			$this->deleteImage($id);
+			$query = $this->db->placehold("DELETE FROM __articles WHERE id=? LIMIT 1", (int) $id);
+
 			if ($this->db->query($query)) {
-				// Remove languages
-				$query = $this->db->placehold("DELETE FROM __lang_articles WHERE article_id=?", intval($id));
+				$query = $this->db->placehold("DELETE FROM __lang_articles WHERE article_id=?", (int) $id);
 				$this->db->query($query);
 
-				// Remove comments
-				$query = $this->db->placehold("DELETE FROM __comments WHERE type='article' AND object_id=? LIMIT 1", intval($id));
-				if ($this->db->query($query))
-					return true;
+				$query = $this->db->placehold("DELETE FROM __comments WHERE type = 'article' AND object_id=?", (int) $id);
+				$this->db->query($query);
+
+				return true;
 			}
 		}
 		return false;
 	}
 
-	public function delete_image($article_id)
+	/**
+	 * Delete image
+	 */
+	public function deleteImage($articleId)
 	{
-		$query = $this->db->placehold("SELECT image FROM __articles WHERE id=?", intval($article_id));
-		$this->db->query($query);
-		$filename = $this->db->result('image');
-		if (!empty($filename)) {
-			$query = $this->db->placehold("UPDATE __articles SET image=NULL WHERE id=?", $article_id);
+		$query = $this->db->placehold("SELECT image FROM __articles WHERE id=?", (int) $articleId);
+
+		if ($this->db->query($query)) {
+			$filenames = $this->db->results('image');
+		}
+
+		if (!empty($filenames)) {
+			$query = $this->db->placehold("UPDATE __articles SET image = NULL WHERE id=?", $articleId);
 			$this->db->query($query);
-			$query = $this->db->placehold("SELECT count(*) as count FROM __articles WHERE image=? LIMIT 1", $filename);
-			$this->db->query($query);
-			$count = $this->db->result('count');
-			if ($count == 0) {
-				$file = pathinfo($filename, PATHINFO_FILENAME);
-				$ext = pathinfo($filename, PATHINFO_EXTENSION);
-				$webp = 'webp';
 
-				// Remove all resizes
-				$rezised_images = glob($this->config->root_dir . $this->config->resized_articles_images_dir . $file . "*." . $ext);
-				if (is_array($rezised_images)) {
-					foreach (glob($this->config->root_dir . $this->config->resized_articles_images_dir . $file . "*." . $ext) as $f) {
-						@unlink($f);
+			foreach ($filenames as $filename) {
+				$query = $this->db->placehold("SELECT count(*) AS count FROM __articles WHERE image=? LIMIT 1", $filename);
+				$this->db->query($query);
+				$count = $this->db->result('count');
+
+				if ($count == 0) {
+					$file = pathinfo($filename, PATHINFO_FILENAME);
+					$ext = pathinfo($filename, PATHINFO_EXTENSION);
+					$webp = 'webp';
+
+					$resizedImages = glob($this->config->root_dir . $this->config->resized_articles_images_dir . $file . "*." . $ext);
+
+					if (is_array($resizedImages)) {
+						foreach ($resizedImages as $f) {
+							if (is_file($f)) {
+								unlink($f);
+							}
+						}
 					}
-				}
 
-				$rezised_images = glob($this->config->root_dir . $this->config->resized_articles_images_dir . $file . "*." . $webp);
-				if (is_array($rezised_images)) {
-					foreach (glob($this->config->root_dir . $this->config->resized_articles_images_dir . $file . "*." . $webp) as $f) {
-						@unlink($f);
+					$resizedImages = glob($this->config->root_dir . $this->config->resized_articles_images_dir . $file . "*." . $webp);
+
+					if (is_array($resizedImages)) {
+						foreach ($resizedImages as $f) {
+							if (is_file($f)) {
+								unlink($f);
+							}
+						}
 					}
-				}
 
-				@unlink($this->config->root_dir . $this->config->articles_images_dir . $filename);
+					unlink($this->config->root_dir . $this->config->articles_images_dir . $filename);
+				}
 			}
 		}
 	}
 
-	/*
-	*
-	* Next article
-	* @param $post
-	*
-	*/
-	public function get_next_article($id)
+	/**
+	 * Get next article
+	 */
+	public function getNextArticle($id)
 	{
 		$this->db->query("SELECT date FROM __articles WHERE id=? LIMIT 1", $id);
 		$date = $this->db->result('date');
+
 		$this->db->query("SELECT category_id FROM __articles WHERE id=? LIMIT 1", $id);
-		$category_id = $this->db->result('category_id');
+		$categoryId = $this->db->result('category_id');
 
 		$this->db->query(
-			"(SELECT id FROM __articles WHERE date=? AND id>? AND visible  ORDER BY id limit 1)
-		                   UNION
-		                  (SELECT id FROM __articles WHERE date>? AND category_id=? AND visible ORDER BY date, id limit 1)",
+			"(SELECT id FROM __articles WHERE date=? AND id>? AND visible ORDER BY id LIMIT 1)
+        	UNION
+        	(SELECT id FROM __articles WHERE date>? AND category_id=? AND visible ORDER BY date, id LIMIT 1)",
 			$date,
 			$id,
 			$date,
-			$category_id
+			$categoryId
 		);
-		$next_id = $this->db->result('id');
-		if ($next_id)
-			return $this->get_article(intval($next_id));
-		else
-			return false;
+
+		$nextId = $this->db->result('id');
+		if ($nextId) {
+			return $this->getArticle((int) $nextId);
+		}
+
+		return false;
 	}
 
-	/*
-	*
-	* Previous article
-	* @param $post
-	*
-	*/
-	public function get_prev_article($id)
+	/**
+	 * Get previous article
+	 */
+	public function getPrevArticle(int $id)
 	{
 		$this->db->query("SELECT date FROM __articles WHERE id=? LIMIT 1", $id);
 		$date = $this->db->result('date');
+
 		$this->db->query("SELECT category_id FROM __articles WHERE id=? LIMIT 1", $id);
-		$category_id = $this->db->result('category_id');
+		$categoryId = $this->db->result('category_id');
 
 		$this->db->query(
-			"(SELECT id FROM __articles WHERE date=? AND id<? AND visible ORDER BY id DESC limit 1)
-		                   UNION
-		                  (SELECT id FROM __articles WHERE date<? AND category_id=? AND visible ORDER BY date DESC, id DESC limit 1)",
+			"(SELECT id FROM __articles WHERE date=? AND id<? AND visible ORDER BY id DESC LIMIT 1)
+			UNION
+			(SELECT id FROM __articles WHERE date<? AND category_id=? AND visible ORDER BY date DESC, id DESC LIMIT 1)",
 			$date,
 			$id,
 			$date,
-			$category_id
+			$categoryId
 		);
-		$prev_id = $this->db->result('id');
-		if ($prev_id)
-			return $this->get_article(intval($prev_id));
-		else
-			return false;
+
+		$prevId = $this->db->result('id');
+		if ($prevId) {
+			return $this->getArticle((int) $prevId);
+		}
+
+		return false;
 	}
 }

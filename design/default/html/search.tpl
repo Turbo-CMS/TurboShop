@@ -21,69 +21,52 @@
 	<div class="row">
 		<div class="col-md-8 offset-md-2 mt-4">
 			<div class="pt-3 pb-4">
-				<form class="input-group my-4" action="{$lang_link}search">
-					<input class="form-control" autocomplete="off" type="text" name="keyword" value="{$keyword|escape}" placeholder="{$lang->search}...">
+				<form class="input-group search-panel my-4" id="search-param" action="{$lang_link}search">
+					<button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"><span id="search-concept">{$lang->global_pages}</span></button>
+					<ul class="dropdown-menu">
+						<li><a class="dropdown-item active" data-input="pages-search" href="#{$lang_link}search">{$lang->global_pages}</a></li>
+						<li><a class="dropdown-item" data-input="blog-search" href="#{$lang_link}blog">{$lang->global_blog}</a></li>
+						<li><a class="dropdown-item" data-input="articles-search" href="#{$lang_link}articles">{$lang->global_articles}</a></li>
+						<li><a class="dropdown-item" data-input="products-search" href="#{$lang_link}all-products">{$lang->global_products}</a></li>
+					</ul>
+					<input id="pages-search" class="form-control" autocomplete="off" type="text" name="keyword" value="{if isset($keyword)}{$keyword|escape}{/if}" placeholder="{$lang->search}...">
 					<button type="submit" class="btn btn-success"><i class="fal fa-search me-1"></i> {$lang->search}</button>
 				</form>
 				<div class="mt-4 text-center">
-					{if $keyword}
+					{if isset($keyword)}
 						<h4>{$lang->search}: {$keyword|escape}</h4>
+					{else}
+						{$lang->enter_search_query}
 					{/if}
+					{if isset($pages_count)}{$pages_count}{/if}
 				</div>
 			</div>
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-md-12">
-			{if $keyword}
-				{if $posts || $pages_search || $articles}
-
-					<!-- Blog -->
-					{foreach $posts as $post}
-						<div class="search-item mt-3">
-							<h4 class="mb-1"><a data-post="{$post->id}" class="text-decoration-none" href="{$lang_link}blog/{$post->url}">{$post->name|escape}</a></h4>
-							<div class="font-13 mb-3">{$config->root_url}/{$lang_link}blog/{$post->url}</div>
-							<small>{$post->date|date}</small>
-							<p class="mb-0 text-muted">{$post->annotation|strip_tags|truncate:250}</p>
-						</div>
-					{/foreach}
-
-					<!-- Articles -->
-					{foreach $articles as $article}
-						<div class="search-item mt-3">
-							<h4 class="mb-1"><a data-article="{$article->id}" class="text-decoration-none" href="{$lang_link}article/{$article->url}">{$article->name|escape}</a></h4>
-							<div class="font-13 mb-3">{$config->root_url}/{$lang_link}article/{$article->url}</div>
-							<small>{$article->date|date}</small>
-							<p class="mb-0 text-muted">{$article->annotation|strip_tags|truncate:250}</p>
-						</div>
-					{/foreach}
-
-					<!-- Pages -->
+			{if isset($keyword)}
+				{if $pages_search}
 					{foreach $pages_search as $page}
-						{if $page->visible}
-							<div class="search-item mt-3">
-								<h4 class="mb-1"><a data-page="{$page->id}" class="text-decoration-none" href="{$lang_link}{$page->url}">{$page->name|escape}</a></h4>
-								<div class="font-13 mb-3">{$config->root_url}/{$lang_link}{$page->url}</div>
-								<p class="mb-0 text-muted">{$page->body|strip_tags|truncate:250}</p>
-							</div>
+						{if $page->url!="404"}
+							{if $page->visible}
+								<div class="search-item my-3">
+									<h4 class="mb-1"><a data-page="{$page->id}" class="text-decoration-none" href="{$lang_link}{$page->url}">{$page->name|escape}</a></h4>
+									<div class="font-13 mb-3">{$config->root_url}/{$lang_link}{$page->url}</div>
+									<p class="mb-0 text-muted">{$page->body|strip_tags|truncate:250}</p>
+								</div>
+							{/if}
 						{/if}
 					{/foreach}
-
 					<div class="col-md-12">
 						{include file='pagination.tpl'}
 					</div>
 				{else}
-					<p class="text-center">
+					<div class="text-center">
 						{$lang->nothing_found}
-					</p>
+					</div>
 				{/if}
-
-			{else}
-				<p class="text-center">
-					{$lang->enter_search_query}
-				</p>
 			{/if}
-			<div class="clearfix"></div>
 		</div>
 	</div>
 </div>

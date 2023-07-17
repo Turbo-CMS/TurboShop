@@ -1,6 +1,6 @@
 <?php
 
-require_once('Turbo.php');
+require_once 'Turbo.php';
 
 class Cache extends Turbo
 {
@@ -16,6 +16,7 @@ class Cache extends Turbo
 		'port' => 11211,
 		'lifeTimeCache' => 86400,
 	];
+
 	/**
 	 * PHP extension type flag to use
 	 * True - memcache
@@ -25,28 +26,33 @@ class Cache extends Turbo
 
 	public function init()
 	{
-		if ($this->settings->cache_type == 1)
+		if ($this->settings->cache_type == 1) {
 			$cache_type = 'memcached';
-		else
+		} else {
 			$cache_type = 'memcache';
+		}
 
 		$this->isMemcached = $this->isMemcachedUse();
+
 		if (!extension_loaded($cache_type)) {
 			throw new Exception("Php extension {$cache_type} not found. Please install the memcache extension.");
 		}
-		$this->isMemcached ? $this->mem = new Memcached() : $this->mem = new Memcache();
+
+		$this->mem = $this->isMemcached ? new Memcached() : new Memcache();
 		$this->mem->addServer($this->configuration['host'], $this->configuration['port']);
 	}
 
 	public function get($stringKey)
 	{
-		if ($this->mem != null)
+		if ($this->mem != null) {
 			$result = $this->mem->get($this->stringToHash($stringKey));
+		}
 
-		if (!empty($result))
+		if (!empty($result)) {
 			return $result;
-		else
+		} else {
 			return false;
+		}
 	}
 
 	/**
@@ -57,15 +63,16 @@ class Cache extends Turbo
 	 */
 	public function set($stringKey, $value)
 	{
-		if ($this->settings->cache_time > 0)
+		if ($this->settings->cache_time > 0) {
 			$lifeCache = $this->settings->cache_time;
-		else
+		} else {
 			$lifeCache = $this->configuration['lifeTimeCache'];
+		}
 
 		if ($this->isMemcached) {
 			$this->mem->set($this->stringToHash($stringKey), $value, $lifeCache);
 		} else {
-			$this->mem->set($this->stringToHash($stringKey), $value, 0, $lifeCache); // For compression, replace 0 with MEMCACHE_COMPRESSED
+			$this->mem->set($this->stringToHash($stringKey), $value, 0, $lifeCache);
 		}
 	}
 
@@ -94,12 +101,12 @@ class Cache extends Turbo
 	 */
 	private function stringToHash($stringKey)
 	{
-		// uniqueize the hash by domain
 		$stringKey = $this->config->root_url . $stringKey;
-		if ($this->isMemcached)
+		if ($this->isMemcached) {
 			return md5('key' . $stringKey);
-		else
+		} else {
 			return md5($stringKey);
+		}
 	}
 
 	/**
@@ -107,7 +114,8 @@ class Cache extends Turbo
 	 */
 	private function isMemcachedUse()
 	{
-		if ($this->settings->cache_type == 1)
+		if ($this->settings->cache_type == 1) {
 			return true;
+		}
 	}
 }

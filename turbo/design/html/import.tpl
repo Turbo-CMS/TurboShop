@@ -17,7 +17,7 @@
 
 <div id="import-error" class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none;"></div>
 
-{if $message_error}
+{if isset($message_error)}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -53,7 +53,7 @@
 {if $message_error != 'no_permission'}
 	<form method="post" enctype="multipart/form-data">
 		<input type="hidden" name="session_id" value="{$smarty.session.id}">
-		{if $filename || $import}
+		{if isset($filename) || isset($import)}
 			<div class="row">
 				<div class="col-12">
 					<div class="card">
@@ -61,7 +61,7 @@
 							<h5 class="card-title mb-0">{$btr->import_file|escape} {$file->name|escape} ({($file->size/1024)|round:'2'} {$btr->global_kb|escape})</h5>
 						</div>
 						<div class="card-body">
-							{if $filename}
+							{if isset($filename)}
 								<div class="alert alert-primary alert-dismissible" role="alert">
 									<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 									<div class="alert-message">
@@ -211,7 +211,6 @@
 				$(".js-select").remove();
 				parent.append(select_column.clone());
 
-				/* Setting the select for the current element */
 				var select = parent.find("select.js-select"),
 					new_feature = parent.find(".js-new-feature"),
 					input = parent.find("[name*='csv_fields']");
@@ -219,7 +218,6 @@
 				new_feature.prop("disabled", edit.data("is-exist") ? true : false);
 				select.find("option[value='" + input.val() + "']").prop("selected", true);
 
-				/* Disable already selected values */
 				$("[name*='csv_fields']").each(function() {
 					if ($(this).val() != "") {
 						select.find("option[value='" + $(this).val() + "']").prop("disabled", true);
@@ -279,15 +277,15 @@
 			});
 		});
 	{/literal}
-	{if $import}
+	{if isset($import)}
 		{literal}
 			var in_process = false;
 			var count = 1;
-			// On document load
+
 			$(function() {
 				Piecon.setOptions({fallback: 'force'});
 				Piecon.setProgress(0);
-				var progress_item = $("#progressbar"); // specify element selector with animation
+				var progress_item = $("#progressbar");
 				$(".progress").show();
 				do_import('', progress_item);
 			});

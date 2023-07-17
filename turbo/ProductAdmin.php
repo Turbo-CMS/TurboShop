@@ -1,22 +1,23 @@
 <?php
 
-require_once('api/Turbo.php');
+require_once 'api/Turbo.php';
 
 class ProductAdmin extends Turbo
 {
 	public function fetch()
 	{
-		$options = array();
-		$product_categories = array();
-		$variants = array();
-		$images = array();
-		$product_features = array();
-		$related_products = array();
-		$product_videos = array();
-		$files 	= array();
+		$options = [];
+		$productCategories = [];
+		$variants = [];
+		$images = [];
+		$relatedProducts = [];
+		$recommendedProducts = [];
+		$productVideos = [];
+		$files = [];
 
-		if ($this->request->method('post') && !empty($_POST)) {
-			$product = new stdClass;
+		if ($this->request->isMethod('post') && !empty($_POST)) {
+			$product = new stdClass();
+
 			$product->id = $this->request->post('id', 'integer');
 			$product->name = $this->request->post('name');
 			$product->visible = $this->request->post('visible', 'boolean');
@@ -25,410 +26,477 @@ class ProductAdmin extends Turbo
 			$product->is_new = $this->request->post('is_new', 'boolean');
 			$product->is_hit = $this->request->post('is_hit', 'boolean');
 			$product->to_export = $this->request->post('to_export', 'boolean');
-
 			$product->url = trim($this->request->post('url', 'string'));
 			$product->meta_title = $this->request->post('meta_title');
 			$product->meta_keywords = $this->request->post('meta_keywords');
 			$product->meta_description = $this->request->post('meta_description');
-
 			$product->annotation = $this->request->post('annotation');
 			$product->body = $this->request->post('body');
-
 			$product->rating = $this->request->post('rating', 'float');
 			$product->votes = $this->request->post('votes', 'integer');
-
 			$product->sale_to = $this->request->post('sale_to');
+
 			if (empty($product->sale_to)) {
 				$product->sale_to = null;
 			}
 
-			// Product variants
 			if ($this->request->post('variants')) {
 				foreach ($this->request->post('variants') as $n => $va) {
 					foreach ($va as $i => $v) {
-						if (empty($variants[$i]))
-							$variants[$i] = new stdClass;
+						if (empty($variants[$i])) {
+							$variants[$i] = new stdClass();
+						}
+
 						$variants[$i]->$n = $v;
 					}
 				}
 			}
 
-			// Product categories
-			$product_categories = $this->request->post('categories');
-			if (is_array($product_categories)) {
-				foreach ($product_categories as $c) {
-					$x = new stdClass;
+			$productCategories = $this->request->post('categories');
+
+			if (is_array($productCategories)) {
+				$pc = [];
+
+				foreach ($productCategories as $c) {
+					$x = new stdClass();
 					$x->id = $c;
 					$pc[] = $x;
 				}
-				$product_categories = $pc;
+
+				$productCategories = $pc;
 			}
 
-			// Product options
 			$options = $this->request->post('options');
+
 			if (is_array($options)) {
+				$po = [];
+
 				foreach ($options as $f_id => $val) {
-					$po[$f_id] = new stdClass;
+					$po[$f_id] = new stdClass();
 					$po[$f_id]->feature_id = $f_id;
 					$po[$f_id]->value = $val;
 				}
+
 				$options = $po;
 			}
 
-			// Related products
+			$relatedProducts = [];
+
 			if (is_array($this->request->post('related_products'))) {
 				foreach ($this->request->post('related_products') as $p) {
-					$rp[$p] = new stdClass;
+					$rp[$p] = new stdClass();
 					$rp[$p]->product_id = $product->id;
 					$rp[$p]->related_id = $p;
 				}
-				$related_products = $rp;
+
+				$relatedProducts = $rp;
 			}
 
-			// Video
+			$recommendedProducts = [];
+
+			if (is_array($this->request->post('recommended_products'))) {
+				foreach ($this->request->post('recommended_products') as $r) {
+					$re[$r] = new stdClass();
+					$re[$r]->product_id = $product->id;
+					$re[$r]->recommended_id = $r;
+				}
+
+				$recommendedProducts = $re;
+			}
+
 			if (is_array($this->request->post('videos'))) {
-				foreach ($this->request->post('videos') as $k => $v)
+				$productVideos = [];
+
+				foreach ($this->request->post('videos') as $k => $v) {
 					if (!empty($v)) {
-						$product_videos[$k] = new stdClass;
-						$product_videos[$k]->link = $v;
+						$productVideos[$k] = new stdClass();
+						$productVideos[$k]->link = $v;
 						$tmp = explode('/', $v);
 						$tmp = $tmp[count($tmp) - 1];
 						$tmp = stristr($tmp, 'v=');
-						$b_p = strpos($tmp, '&');
-						if ($b_p) {
-							$tmp = substr($tmp, 0, $b_p);
+						$bP = strpos($tmp, '&');
+
+						if ($bP) {
+							$tmp = substr($tmp, 0, $bP);
 						}
+
 						$tmp = substr($tmp, 2);
-						$product_videos[$k]->vid = $tmp;
+						$productVideos[$k]->vid = $tmp;
 					}
+				}
 			}
 
-			// Do not allow an empty product name
 			if (empty($product->name)) {
 				$this->design->assign('message_error', 'empty_name');
-				if (!empty($product->id))
-					$images = $this->products->get_images(array('product_id' => $product->id));
-			}
-			// Do not allow duplicate section URLs
-			elseif (($p = $this->products->get_product($product->url)) && $p->id != $product->id) {
+
+				if (!empty($product->id)) {
+					$images = $this->products->getImages(['product_id' => $product->id]);
+				}
+			} elseif (($p = $this->products->getProduct($product->url)) && $p->id != $product->id) {
 				$this->design->assign('message_error', 'url_exists');
-				if (!empty($product->id))
-					$images = $this->products->get_images(array('product_id' => $product->id));
+
+				if (!empty($product->id)) {
+					$images = $this->products->getImages(array('product_id' => $product->id));
+				}
 			} else {
 				if (empty($product->id)) {
-					// Last-Modified
 					if ($product->brand_id > 0) {
 						$this->db->query('update __brands set last_modified=now() where id=?', $product->brand_id);
 					}
 
-					$product->id = $this->products->add_product($product);
-					$product = $this->products->get_product($product->id);
+					$product->id = $this->products->addProduct($product);
+					$product = $this->products->getProduct($product->id);
 					$this->design->assign('message_success', 'added');
 				} else {
-					// Last-Modified                    
 					$this->db->query('select brand_id from __products where id=?', $product->id);
-					$b_ids = $this->db->results('brand_id');
-					if (!empty($b_ids)) {
-						$this->db->query('update __brands set last_modified=now() where id in(?@)', $b_ids);
+					$bIds = $this->db->results('brand_id');
+
+					if (!empty($bIds)) {
+						$this->db->query('update __brands set last_modified=now() where id in(?@)', $bIds);
 					}
 
-					$this->products->update_product($product->id, $product);
-					$product = $this->products->get_product($product->id);
+					$this->products->updateProduct($product->id, $product);
+					$product = $this->products->getProduct($product->id);
 					$this->design->assign('message_success', 'updated');
 				}
 
 				if ($product->id) {
-					// Last-Modified
-					$this->db->query('select category_id from __products_categories where product_id=?', $product->id);
-					$c_ids = $this->db->results('category_id');
-					if (!empty($c_ids)) {
-						$this->db->query('update __categories set last_modified=now() where id in(?@)', $c_ids);
-					}
-
-					// Product categories
-					$query = $this->db->placehold('DELETE FROM __products_categories WHERE product_id=?', $product->id);
+					$query = $this->db->placehold('SELECT category_id FROM __products_categories WHERE product_id=?', $product->id);
 					$this->db->query($query);
-					if (is_array($product_categories)) {
-						foreach ($product_categories as $i => $category)
-							$this->categories->add_product_category($product->id, $category->id, $i);
+					$cIds = $this->db->results('category_id');
+
+					if (!empty($cIds)) {
+						$this->db->query($this->db->placehold('UPDATE __categories SET last_modified=NOW() WHERE id IN(?@)', $cIds));
 					}
 
-					// Variants
+					$this->db->query($this->db->placehold('DELETE FROM __products_categories WHERE product_id=?', $product->id));
+
+					if (is_array($productCategories)) {
+						foreach ($productCategories as $i => $category) {
+							$this->categories->addProductCategory($product->id, $category->id, $i);
+						}
+					}
+
 					if (is_array($variants)) {
-						$variants_ids = array();
+						$variantIds = [];
+
 						foreach ($variants as $index => &$variant) {
-							if ($variant->stock == '∞' || $variant->stock == '')
+							if ($variant->stock == '∞' || $variant->stock == '') {
 								$variant->stock = null;
-
-							if (!empty($variant->id))
-								$this->variants->update_variant($variant->id, $variant);
-							else {
-								$variant->product_id = $product->id;
-								$variant->id = $this->variants->add_variant($variant);
 							}
-							$variant = $this->variants->get_variant($variant->id);
-							if (!empty($variant->id))
-								$variants_ids[] = $variant->id;
+
+							if (!empty($variant->id)) {
+								$this->variants->updateVariant($variant->id, $variant);
+							} else {
+								$variant->product_id = $product->id;
+								$variant->id = $this->variants->addVariant($variant);
+							}
+
+							$variant = $this->variants->getVariant($variant->id);
+
+							if (!empty($variant->id)) {
+								$variantIds[] = $variant->id;
+							}
 						}
 
-						// Delete untransmitted variants
-						$current_variants = $this->variants->get_variants(array('product_id' => $product->id));
-						foreach ($current_variants as $current_variant)
-							if (!in_array($current_variant->id, $variants_ids))
-								$this->variants->delete_variant($current_variant->id);
+						$currentVariants = $this->variants->getVariants(['product_id' => $product->id]);
 
-						// if(!empty($))
+						foreach ($currentVariants as $currentVariant) {
+							if (!in_array($currentVariant->id, $variantIds)) {
+								$this->variants->deleteVariant($currentVariant->id);
+							}
+						}
 
-						// Sort options
-						asort($variants_ids);
-						$i = 0;
-						foreach ($variants_ids as $variant_id) {
-							$this->variants->update_variant($variants_ids[$i], array('position' => $variant_id));
-							$i++;
+						asort($variantIds);
+
+						foreach ($variantIds as $position => $variantId) {
+							$this->variants->updateVariant($variantId, ['position' => $position]);
 						}
 					}
 
-					// Delete images
-					$images = (array)$this->request->post('images');
-					$current_images = $this->products->get_images(array('product_id' => $product->id));
-					foreach ($current_images as $image) {
-						if (!in_array($image->id, $images))
-							$this->products->delete_image($image->id);
+					$images = (array) $this->request->post('images');
+					$currentImages = $this->products->getImages(['product_id' => $product->id]);
+
+					foreach ($currentImages as $image) {
+						if (!in_array($image->id, $images)) {
+							$this->products->deleteImage($image->id);
+						}
 					}
 
-					// Image order
 					if ($images = $this->request->post('images')) {
 						$i = 0;
+
 						foreach ($images as $id) {
-							$this->products->update_image($id, array('position' => $i));
+							$this->products->updateImage($id, ['position' => $i]);
 							$i++;
 						}
 					}
 
-					// Image upload
 					if ($images = $this->request->files('images')) {
 						for ($i = 0; $i < count($images['name']); $i++) {
-							if ($image_name = $this->image->upload_image($images['tmp_name'][$i], $images['name'][$i])) {
-								$this->products->add_image($product->id, $image_name);
+							if ($imageName = $this->image->uploadImage($images['tmp_name'][$i], $images['name'][$i])) {
+								$this->products->addImage($product->id, $imageName);
 							} else {
 								$this->design->assign('error', 'error uploading image');
 							}
 						}
 					}
 
-					// Image upload from the internet and drag-n-drop files
 					if ($images = $this->request->post('images_urls')) {
 						foreach ($images as $url) {
-							// If not an empty address and the file is not local
-							if (!empty($url) && $url != 'http://' && $url != 'https://' && strstr($url, '/') !== false)
-								$this->products->add_image($product->id, $url);
-							elseif ($dropped_images = $this->request->files('dropped_images')) {
-								$key = array_search($url, $dropped_images['name']);
-								if ($key !== false && $image_name = $this->image->upload_image($dropped_images['tmp_name'][$key], $dropped_images['name'][$key]))
-									$this->products->add_image($product->id, $image_name);
+							if (!empty($url) && $url != 'http://' && $url != 'https://' && strstr($url, '/') !== false) {
+								$this->products->addImage($product->id, $url);
+							} elseif ($droppedImages = $this->request->files('dropped_images')) {
+								$key = array_search($url, $droppedImages['name']);
+								if ($key !== false && $imageName = $this->image->uploadImage($droppedImages['tmp_name'][$key], $droppedImages['name'][$key])) {
+									$this->products->addImage($product->id, $imageName);
+								}
 							}
 						}
 					}
-					$images = $this->products->get_images(array('product_id' => $product->id));
 
-					// Delete files
-					$files 	= (array)$this->request->post('files');
-					$current_files = $this->files->get_files(array('object_id' => $product->id, 'type' => 'product'));
-					foreach ($current_files as $file)
-						if (!isset($file->id, $files['id']) || !is_array($files['id']) || !in_array($file->id, $files['id']))
-							$this->files->delete_file($file->id);
+					$images = $this->products->getImages(['product_id' => $product->id]);
 
-					// File order
+					$files = (array) $this->request->post('files');
+					$currentFiles = $this->files->getFiles(['object_id' => $product->id, 'type' => 'product']);
+
+					foreach ($currentFiles as $file) {
+						if (!isset($file->id, $files['id']) || !is_array($files['id']) || !in_array($file->id, $files['id'])) {
+							$this->files->deleteFile($file->id);
+						}
+					}
+
 					if ($files = $this->request->post('files')) {
 						$i = 0;
+
 						foreach ($files['id'] as $k => $id) {
-							$this->files->update_file($id, array('name' => $files['name'][$k], 'position' => $i));
+							$this->files->updateFile($id, ['name' => $files['name'][$k], 'position' => $i]);
 							$i++;
 						}
 					}
 
-					// File upload
 					if ($files = $this->request->files('files')) {
 						for ($i = 0; $i < count($files['name']); $i++) {
-							if ($file_name = $this->files->upload_file($files['tmp_name'][$i], $files['name'][$i])) {
-								$this->files->add_file($product->id, 'product', $file_name);
+							if ($fileName = $this->files->uploadFile($files['tmp_name'][$i], $files['name'][$i])) {
+								$this->files->addFile($product->id, 'product', $fileName);
 							} else {
 								$this->design->assign('error', 'error uploading file');
 							}
 						}
 					}
 
-					$files = $this->files->get_files(array('object_id' => $product->id, 'type' => 'product'));
+					$files = $this->files->getFiles(['object_id' => $product->id, 'type' => 'product']);
 
-					// Product features
+					foreach ($this->features->getProductOptions($product->id) as $po) {
+						$this->features->deleteOption($product->id, $po->feature_id);
+					}
 
-					// Remove everything from the product
-					foreach ($this->features->get_product_options($product->id) as $po)
-						$this->features->delete_option($product->id, $po->feature_id);
+					$categoryFeatures = [];
 
-					// Properties of the current category
-					$category_features = array();
-					foreach ($this->features->get_features(array('category_id' => $product_categories[0])) as $f)
-						$category_features[] = $f->id;
+					foreach ($this->features->getFeatures(['category_id' => $productCategories[0]]) as $f) {
+						$categoryFeatures[] = $f->id;
+					}
 
-					if (is_array($options))
+					if (is_array($options)) {
 						foreach ($options as $option) {
-							if (in_array($option->feature_id, $category_features))
+							if (in_array($option->feature_id, $categoryFeatures)) {
 								if (is_array($option->value)) {
 									$pos = 0;
+
 									foreach ($option->value as $value) {
-										@$this->features->update_option($product->id, $option->feature_id, $value, $option->translit, $pos++);
+										$translit = isset($option->translit) ? $option->translit : '';
+										if ($this->features->updateOption($product->id, $option->feature_id, $value, $translit, $pos++)) {
+											$this->features->updateOption($product->id, $option->feature_id, $value, $translit, $pos++);
+										}
 									}
 								} else {
-									$this->features->update_option($product->id, $option->feature_id, $option->value, $option->translit);
+									$translit = isset($option->translit) ? $option->translit : '';
+									$this->features->updateOption($product->id, $option->feature_id, $option->value, $translit);
 								}
+							}
 						}
+					}
 
-					// New features
-					$new_features_names = $this->request->post('new_features_names');
-					$new_features_values = $this->request->post('new_features_values');
-					if (is_array($new_features_names) && is_array($new_features_values)) {
-						foreach ($new_features_names as $i => $name) {
-							$value = trim($new_features_values[$i]);
+					$newFeaturesNames = $this->request->post('new_features_names');
+					$newFeaturesValues = $this->request->post('new_features_values');
+
+					if (is_array($newFeaturesNames) && is_array($newFeaturesValues)) {
+						foreach ($newFeaturesNames as $i => $name) {
+							$value = trim($newFeaturesValues[$i]);
+
 							if (!empty($name) && !empty($value)) {
 								$query = $this->db->placehold("SELECT * FROM __features WHERE name=? LIMIT 1", trim($name));
 								$this->db->query($query);
-								$feature_id = $this->db->result('id');
-								if (empty($feature_id)) {
-									$feature_id = $this->features->add_feature(array('name' => trim($name)));
+
+								$featureId = $this->db->result('id');
+
+								if (empty($featureId)) {
+									$featureId = $this->features->addFeature(array('name' => trim($name)));
 								}
-								$this->features->add_feature_category($feature_id, reset($product_categories)->id);
-								$this->features->update_option($product->id, $feature_id, $value);
+
+								$this->features->addFeatureCategory($featureId, reset($productCategories)->id);
+								$this->features->updateOption($product->id, $featureId, $value);
 							}
 						}
-						// Product options
-						$options = $this->features->get_product_options($product->id);
+
+						$options = $this->features->getProductOptions($product->id);
 					}
 
-					// Related products
 					$query = $this->db->placehold('DELETE FROM __related_products WHERE product_id=?', $product->id);
 					$this->db->query($query);
-					if (is_array($related_products)) {
+
+					if (is_array($relatedProducts)) {
 						$pos = 0;
-						foreach ($related_products  as $i => $related_product)
-							$this->products->add_related_product($product->id, $related_product->related_id, $pos++);
+
+						foreach ($relatedProducts as $i => $relatedProduct) {
+							$this->products->addRelatedProduct($product->id, $relatedProduct->related_id, $pos++);
+						}
 					}
 
-					// Video
+					$query = $this->db->placehold('DELETE FROM __recommended_products WHERE product_id=?', $product->id);
+					$this->db->query($query);
+
+					if (is_array($recommendedProducts)) {
+						$pos = 0;
+
+						foreach ($recommendedProducts as $i => $recommendedProduct) {
+							$this->products->addRecommendedProduct($product->id, $recommendedProduct->recommended_id, $pos++);
+						}
+					}
+
 					$query = $this->db->placehold('DELETE FROM __products_videos WHERE product_id=?', $product->id);
 					$this->db->query($query);
-					if (is_array($product_videos)) {
+
+					if (is_array($productVideos)) {
 						$pos = 0;
-						foreach ($product_videos  as $i => $video)
-							$this->products->add_product_video($product->id, $video->link, $pos++);
+
+						foreach ($productVideos as $i => $video) {
+							$this->products->addProductVideo($product->id, $video->link, $pos++);
+						}
 					}
 				}
 			}
-
 		} else {
 			$id = $this->request->get('id', 'integer');
-			$product = $this->products->get_product(intval($id));
+			$product = $this->products->getProduct((int) $id);
 
 			if ($product) {
-
-				// Product categories
-				$product_categories = $this->categories->get_categories(array('product_id' => $product->id));
-
-				// Product variants
-				$variants = $this->variants->get_variants(array('product_id' => $product->id));
-
-				// Product images
-				$images = $this->products->get_images(array('product_id' => $product->id));
-
-				// Product options
-				$options = $this->features->get_options(array('product_id' => $product->id));
-
-				// Related products
-				$related_products = $this->products->get_related_products(array('product_id' => $product->id));
-
-				// Video
-				$product_videos = $this->products->get_videos(array('product_id' => $product->id));
-
-				// Files
-				$files = $this->files->get_files(array('object_id' => $product->id, 'type' => 'product'));
+				$productCategories = $this->categories->getCategories(['product_id' => $product->id]);
+				$variants = $this->variants->getVariants(['product_id' => $product->id]);
+				$images = $this->products->getImages(['product_id' => $product->id]);
+				$options = $this->features->getOptions(['product_id' => $product->id]);
+				$relatedProducts = $this->products->getRelatedProducts(['product_id' => $product->id]);
+				$recommendedProducts = $this->products->getRecommendedProducts(['product_id' => $product->id]);
+				$productVideos = $this->products->getVideos(['product_id' => $product->id]);
+				$files = $this->files->getFiles(['object_id' => $product->id, 'type' => 'product']);
 			} else {
-				// Immediately active
-				$product = new stdClass;
+				$product = new stdClass();
 				$product->visible = 1;
 			}
 		}
 
-		if (empty($variants))
-			$variants = array(1);
-
-		if (empty($product_categories)) {
-			$product_categories[0] = new stdClass;
-			if ($category_id = $this->request->get('category_id'))
-				$product_categories[0]->id = $category_id;
-			else
-				$product_categories = array(1);
-		}
-		if (empty($product->brand_id) && $brand_id = $this->request->get('brand_id')) {
-			$product->brand_id = $brand_id;
+		if (empty($variants)) {
+			$variants = [1];
 		}
 
-		if (!empty($related_products)) {
-			foreach ($related_products as &$r_p)
-				$r_products[$r_p->related_id] = &$r_p;
-			$temp_products = $this->products->get_products(array('id' => array_keys($r_products)));
-			foreach ($temp_products as $temp_product)
-				$r_products[$temp_product->id] = $temp_product;
+		if (empty($productCategories)) {
+			$productCategories[0] = new stdClass();
 
-			$related_products_images = $this->products->get_images(array('product_id' => array_keys($r_products)));
-			foreach ($related_products_images as $image) {
-				$r_products[$image->product_id]->images[] = $image;
+			if ($categoryId = $this->request->get('category_id')) {
+				$productCategories[0]->id = $categoryId;
+			} else {
+				$productCategories = [1];
+			}
+		}
+
+		if (empty($product->brand_id) && $brandId = $this->request->get('brand_id')) {
+			$product->brand_id = $brandId;
+		}
+
+		if (!empty($relatedProducts)) {
+			foreach ($relatedProducts as &$relatedProduct) {
+				$rProducts[$relatedProduct->related_id] = &$relatedProduct;
+			}
+
+			$tempProducts = $this->products->getProducts(['id' => array_keys($rProducts)]);
+
+			foreach ($tempProducts as $tempProduct) {
+				$rProducts[$tempProduct->id] = $tempProduct;
+			}
+
+			$relatedProductsImages = $this->products->getImages(['product_id' => array_keys($rProducts)]);
+
+			foreach ($relatedProductsImages as $image) {
+				$rProducts[$image->product_id]->images[] = $image;
+			}
+		}
+
+		if (!empty($recommendedProducts)) {
+			foreach ($recommendedProducts as &$recommendedProduct) {
+				$rProducts[$recommendedProduct->recommended_id] = &$recommendedProduct;
+			}
+
+			$tempProducts = $this->products->getProducts(['id' => array_keys($rProducts)]);
+
+			foreach ($tempProducts as $tempProduct) {
+				$rProducts[$tempProduct->id] = $tempProduct;
+			}
+
+			$recommendedProductsImages = $this->products->getImages(['product_id' => array_keys($rProducts)]);
+
+			foreach ($recommendedProductsImages as $image) {
+				$rProducts[$image->product_id]->images[] = $image;
 			}
 		}
 
 		if (is_array($options)) {
-			$temp_options = array();
+			$tempOptions = [];
+
 			foreach ($options as $option) {
-				if (empty($temp_options[$option->feature_id]))
-					$temp_options[$option->feature_id] = new stdClass;
-				$temp_options[$option->feature_id]->feature_id = $option->feature_id;
-				if (is_array($option->value))
-					$temp_options[$option->feature_id]->values = $option->value;
-				else
-					$temp_options[$option->feature_id]->values[] = $option->value;
+				if (empty($tempOptions[$option->feature_id])) {
+					$tempOptions[$option->feature_id] = new stdClass();
+				}
+
+				$tempOptions[$option->feature_id]->feature_id = $option->feature_id;
+
+				if (is_array($option->value)) {
+					$tempOptions[$option->feature_id]->values = $option->value;
+				} else {
+					$tempOptions[$option->feature_id]->values[] = $option->value;
+				}
 			}
 
-			$options = $temp_options;
+			$options = $tempOptions;
 		}
 
 		$this->design->assign('product', $product);
-
-		$this->design->assign('product_categories', $product_categories);
+		$this->design->assign('product_categories', $productCategories);
 		$this->design->assign('product_variants', $variants);
 		$this->design->assign('product_images', $images);
 		$this->design->assign('options', $options);
-		$this->design->assign('related_products', $related_products);
-		$this->design->assign('product_videos', $product_videos);
+		$this->design->assign('related_products', $relatedProducts);
+		$this->design->assign('recommended_products', $recommendedProducts);
+		$this->design->assign('product_videos', $productVideos);
 		$this->design->assign('cms_files', $files);
 
-		// All brands
-		$brands = $this->brands->get_brands();
+		$brands = $this->brands->getBrands();
 		$this->design->assign('brands', $brands);
 
-		// All categories
-		$categories = $this->categories->get_categories_tree();
+		$categories = $this->categories->getCategoriesTree();
 		$this->design->assign('categories', $categories);
 
-		// All product features
-		$category = reset($product_categories);
-		if (!is_object($category))
+		$category = reset($productCategories);
+
+		if (!is_object($category)) {
 			$category = reset($categories);
-		if (is_object($category)) {
-			$features = $this->features->get_features(array('category_id' => $category->id));
+		}
+
+		if (is_object($category) && isset($category->id)) {
+			$features = $this->features->getFeatures(['category_id' => $category->id]);
 			$this->design->assign('features', $features);
 		}
 
-		// All currencies
-		$this->design->assign('currencies', $this->money->get_currencies(array('enabled' => 1)));
+		$this->design->assign('currencies', $this->money->getCurrencies(['enabled' => 1]));
 
 		return $this->design->fetch('product.tpl');
 	}

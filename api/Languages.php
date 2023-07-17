@@ -1,144 +1,165 @@
 <?php
 
-require_once('Turbo.php');
+require_once 'Turbo.php';
 
 class Languages extends Turbo
 {
-	public $tables = array(
-		'faq'              => 'faq',
-		'blog'             => 'blog',
-		'page'             => 'pages',
-		'file'             => 'files',
-		'brand'            => 'brands',
-		'article'          => 'articles',
-		'product'          => 'products',
-		'variant'          => 'variants',
-		'feature'          => 'features',
-		'delivery'         => 'delivery',
-		'category'         => 'categories',
-		'currency'         => 'currencies',
-		'banner_image'     => 'banners_images',
-		'payment'          => 'payment_methods',
+	private $tables = [
+		'faq' => 'faq',
+		'blog' => 'blog',
+		'page' => 'pages',
+		'file' => 'files',
+		'brand' => 'brands',
+		'article' => 'articles',
+		'product' => 'products',
+		'variant' => 'variants',
+		'feature' => 'features',
+		'delivery' => 'delivery',
+		'category' => 'categories',
+		'currency' => 'currencies',
+		'banner_image' => 'banners_images',
+		'payment' => 'payment_methods',
 		'article_category' => 'articles_categories'
-	);
+	];
 
-	public $languages = array();
-	public $lang_id;
-	private $available_languages;
+	public $languages = [];
+	public $langId;
+	private $availableLanguages;
 
 	public function __construct()
 	{
 		parent::__construct();
-		$this->init_languages();
+		$this->initLanguages();
 	}
 
-	// Selecting the list of site languages
-	public function lang_list()
+	public function langList()
 	{
-		if (!isset($this->available_languages)) {
+		if (!isset($this->availableLanguages)) {
 			include_once("turbo/lang/languages_list.php");
-			$this->available_languages = isset($langs) ? $langs : array();
+			$this->availableLanguages = isset($langs) ? $langs : [];
 		}
-		return $this->available_languages;
+
+		return $this->availableLanguages;
 	}
 
-	public function get_fields($object = '')
+	public function getFields($object = '')
 	{
-		$fields['files']                       = array('name');
-		$fields['features']                    = array('name');
-		$fields['currencies']                  = array('name', 'sign');
-		$fields['variants']                    = array('name', 'color');
-		$fields['faq']                         = array('name', 'answer');
-		$fields['delivery']                    = array('name', 'description');
-		$fields['payment_methods']             = array('name', 'description');
-		$fields['banners_images']              = array('name', 'alt', 'title', 'description', 'url', 'button');
-		$fields['pages']                       = array('name', 'meta_title', 'meta_keywords', 'meta_description', 'header', 'body');
-		$fields['blog']                        = array('name', 'meta_title', 'meta_keywords', 'meta_description', 'annotation', 'text');
-		$fields['products']                    = array('name', 'meta_title', 'meta_keywords', 'meta_description', 'annotation', 'body');
-		$fields['categories']                  = array('name', 'name_h1', 'meta_title', 'meta_keywords', 'meta_description', 'description');
-		$fields['brands']                      = array('name', 'name_h1', 'meta_title', 'meta_keywords', 'meta_description', 'description');
-		$fields['articles_categories']         = array('name', 'name_h1', 'meta_title', 'meta_keywords', 'meta_description', 'description');
-		$fields['articles']                    = array('name', 'author',  'meta_title', 'meta_keywords', 'meta_description', 'annotation', 'text');
+		$fields['files'] = ['name'];
+		$fields['features'] = ['name'];
+		$fields['currencies'] = ['name', 'sign'];
+		$fields['variants'] = ['name', 'color'];
+		$fields['faq'] = ['name', 'answer'];
+		$fields['delivery'] = ['name', 'description'];
+		$fields['payment_methods'] = ['name', 'description'];
+		$fields['banners_images'] = ['name', 'alt', 'title', 'description', 'url', 'button'];
+		$fields['pages'] = ['name', 'meta_title', 'meta_keywords', 'meta_description', 'header', 'body'];
+		$fields['blog'] = ['name', 'meta_title', 'meta_keywords', 'meta_description', 'annotation', 'text'];
+		$fields['products'] = ['name', 'meta_title', 'meta_keywords', 'meta_description', 'annotation', 'body'];
+		$fields['categories'] = ['name', 'name_h1', 'meta_title', 'meta_keywords', 'meta_description', 'description'];
+		$fields['brands'] = ['name', 'name_h1', 'meta_title', 'meta_keywords', 'meta_description', 'description'];
+		$fields['articles_categories'] = ['name', 'name_h1', 'meta_title', 'meta_keywords', 'meta_description', 'description'];
+		$fields['articles'] = ['name', 'author', 'meta_title', 'meta_keywords', 'meta_description', 'annotation', 'text'];
 
-		if ($object && !empty($fields[$object]))
+		if ($object != '' && isset($fields[$object])) {
 			return $fields[$object];
-		else
-			return $fields;
+		}
+
+		return $fields;
 	}
 
-	public function get_query($params = array())
+	/**
+	 * Get query
+	 */
+	public function getQuery($params = [])
 	{
-		$lang   = (isset($params['lang']) && $params['lang'] ? $params['lang'] : $this->lang_id());
+		$lang   = (isset($params['lang']) && $params['lang'] ? $params['lang'] : $this->langId());
 		$object = $params['object'];
 
-		if (!empty($params['px'])) $px = $params['px'];
-		else $px = $object[0];
+		if (!empty($params['px'])) {
+			$px = $params['px'];
+		} else {
+			$px = $object[0];
+		}
 
 		$this->db->query("SHOW TABLES LIKE '%__languages%'");
 		$exist = $this->db->result();
 
 		if (isset($lang)  && $exist && !empty($this->languages)) {
 			$f = 'l';
-			$lang_join = 'LEFT JOIN __lang_' . $this->tables[$object] . ' l ON l.' . $object . '_id=' . $px . '.id AND l.lang_id = ' . (int)$lang;
+			$langJoin = 'LEFT JOIN __lang_' . $this->tables[$object] . ' l ON l.' . $object . '_id=' . $px . '.id AND l.lang_id = ' . (int) $lang;
 		} else {
 			$f = $px;
-			$lang_join = '';
+			$langJoin = '';
 		}
-		$lang_col = $f . '.' . implode(', ' . $f . '.', $this->get_fields($this->tables[$object]));
+
+		$langCol = $f . '.' . implode(', ' . $f . '.', $this->getFields($this->tables[$object]));
 
 		$result = new stdClass;
-		$result->join   = $lang_join;
-		$result->fields = $lang_col;
+		$result->join   = $langJoin;
+		$result->fields = $langCol;
 
 		return $result;
 	}
 
-	function lang_id()
+	/**
+	 * Lang id
+	 */
+	function langId()
 	{
-		if (empty($this->languages))
+		if (empty($this->languages)) {
 			return false;
+		}
 
-		if (isset($this->lang_id))
-			return $this->lang_id;
+		if (isset($this->langId)) {
+			return $this->langId;
+		}
 
 		if ($this->request->get('lang_id', 'integer')) {
 			unset($_SESSION['lang_id']);
-			$this->lang_id = $_SESSION['lang_id'] = $this->request->get('lang_id', 'integer');
+			$this->langId = $_SESSION['lang_id'] = $this->request->get('lang_id', 'integer');
 		}
 
 		if ($this->request->get('lang_label', 'string') && !$this->request->get('lang_id', 'integer')) {
-			$lang_id = null;
+			$langId = null;
+
 			foreach ($this->languages as $l) {
 				if ($this->request->get('lang_label', 'string') == $l->label) {
-					$lang_id = $l->id;
+					$langId = $l->id;
 					break;
 				}
 			}
-			$this->lang_id = $_SESSION['lang_id'] = $lang_id;
-			return $this->lang_id;
+
+			$this->langId = $_SESSION['lang_id'] = $langId;
+			return $this->langId;
 		}
 
-		if (empty($this->lang_id) && !empty($_SESSION['lang_id']) && !empty($this->languages[$_SESSION['lang_id']])) {
-			$this->lang_id  = $_SESSION['lang_id'];
+		if (empty($this->langId) && !empty($_SESSION['lang_id']) && !empty($this->languages[$_SESSION['lang_id']])) {
+			$this->langId  = $_SESSION['lang_id'];
 		}
-		
-		if (empty($this->lang_id)) {
+
+		if (empty($this->langId)) {
 			$first_lang = reset($this->languages);
-			$this->lang_id = $first_lang->id;
+			$this->langId = $first_lang->id;
 		}
 
-		return $this->lang_id;
+		return $this->langId;
 	}
 
-	function set_lang_id($id)
+	/**
+	 * Set lang id
+	 */
+	function setLangId($id)
 	{
-		$this->lang_id = $_SESSION['lang_id'] = $id;
+		$this->langId = $_SESSION['lang_id'] = $id;
 	}
 
-	function languages($filter = array())
+	/**
+	 * Languages
+	 */
+	function languages($filter = [])
 	{
 		if (empty($this->languages)) {
-			$this->init_languages();
+			$this->initLanguages();
 		}
 
 		if (!empty($filter['id'])) {
@@ -146,95 +167,126 @@ class Languages extends Turbo
 		}
 
 		if (!empty($filter['label'])) {
-			foreach ($this->languages as $lang)
-				if ($lang->label == $filter['label'])
+			foreach ($this->languages as $lang) {
+				if ($lang->label == $filter['label']) {
 					return $lang;
+				}
+			}
 		}
 
 		return $this->languages;
 	}
 
-	function init_languages()
+	/**
+	 * Initializes languages
+	 */
+	function initLanguages()
 	{
-		if (!empty($this->languages))
+		if (!empty($this->languages)) {
 			return $this->languages;
+		}
 
-		if ($langs = $this->get_languages()) {
-			foreach ($langs as $l)
+		if ($langs = $this->getLanguages()) {
+			foreach ($langs as $l) {
 				$this->languages[$l->id] = $l;
+			}
 		} else {
 			return false;
 		}
 	}
 
-	public function get_language($id)
+	/**
+	 * Get language
+	 */
+	public function getLanguage($id)
 	{
-		$query = $this->db->placehold("SELECT * FROM __languages WHERE id=? LIMIT 1", intval($id));
+		$query = $this->db->placehold("SELECT * FROM __languages WHERE id=? LIMIT 1", (int) $id);
 		$this->db->query($query);
+
 		return $this->db->result();
 	}
 
-	public function get_languages($filter = array())
+	/**
+	 * Get languages
+	 */
+	public function getLanguages($filter = [])
 	{
 		$this->db->query("SHOW TABLES LIKE '%__languages%'");
-		if (!$this->db->result())
-			return false;
 
-		$query = "SELECT * FROM __languages WHERE 1 ORDER BY position";
-		if ($this->db->query($query))
-			return $this->db->results();
-		else
+		if (!$this->db->result()) {
 			return false;
+		}
+
+		$query = $this->db->placehold("SELECT * FROM __languages WHERE 1 ORDER BY position");
+
+		if ($this->db->query($query)) {
+			return $this->db->results();
+		} else {
+			return false;
+		}
 	}
 
-	public function update_language($id, $data)
+	/**
+	 * Update language
+	 */
+	public function updateLanguage($id, $data)
 	{
-		$data = (object)$data;
+		$data = (object) $data;
+		$language = $this->getLanguage($id);
 
-		$language = $this->get_language($id);
-
-		$query = $this->db->placehold("UPDATE __languages SET ?% WHERE id in(?@)", $data, (array)$id);
+		$query = $this->db->placehold("UPDATE __languages SET ?% WHERE id IN(?@)", $data, (array) $id);
 		$this->db->query($query);
 
 		if (isset($data->label) && ($data->label && !empty($language) && $language->label !== $data->label)) {
-			foreach ($this->tables as $table)
-				$this->db->query("UPDATE __lang_" . $table . " SET lang_label=? WHERE lang_id=?", $data->label, $id);
+			foreach ($this->tables as $table) {
+				$this->db->query("UPDATE __lang_" . $table . "SET lang_label=? WHERE lang_id=?", $data->label, $id);
+			}
 		}
+
 		return $id;
 	}
 
-	public function add_language($data)
+	/**
+	 * Add language
+	 */
+	public function addLanguage($data)
 	{
-		$data = (object)$data;
-
-		$languages = $this->get_languages();
+		$data = (object) $data;
+		$languages = $this->getLanguages();
 		$lang = $this->settings->lang;
 		$data->position = 1;
+
 		if (!empty($languages)) {
 			$languag = reset($languages);
 			$data->position = $languag->position + 1;
 		}
 
-		// if there is no field in translations, add it
 		$this->db->query("SHOW FIELDS FROM __translations WHERE field=?", 'lang_' . $data->label);
+
 		if (!$this->db->result()) {
 			$this->db->query("ALTER TABLE __translations ADD COLUMN `lang_$data->label` VARCHAR(255) NOT NULL DEFAULT ''");
 			$this->db->query("UPDATE __translations SET lang_$data->label = lang_$lang");
 		}
 
 		$query = $this->db->placehold('INSERT INTO __languages SET ?%', $data);
-		if (!$this->db->query($query))
+
+		if (!$this->db->query($query)) {
 			return false;
+		}
 
-		$last_id = $this->db->insert_id();
+		$lastId = $this->db->insertId();
 
-		if ($last_id) {
-			$description_fields = $this->get_fields();
+		if ($lastId) {
+			$description_fields = $this->getFields();
 
 			foreach ($this->tables as $object => $tab) {
-				$this->db->query('INSERT INTO __lang_' . $tab . ' (' . implode(',', $description_fields[$tab]) . ', ' . $object . '_id, lang_id, lang_label)
-							  SELECT ' . implode(',', $description_fields[$tab]) . ', id, ?, ?
-							  FROM __' . $tab . '', $last_id, $data->label);
+				$this->db->query(
+					'INSERT INTO __lang_' . $tab . ' (' . implode(',', $description_fields[$tab]) . ', ' . $object . '_id, lang_id, lang_label)
+					SELECT ' . implode(',', $description_fields[$tab]) . ', id, ?, ?
+					FROM __' . $tab . '',
+					$lastId,
+					$data->label
+				);
 			}
 
 			if (!empty($languages)) {
@@ -242,101 +294,131 @@ class Languages extends Turbo
 				$options = $this->db->results();
 				if (!empty($options)) {
 					foreach ($options as $o) {
-						$this->db->query("REPLACE INTO __options SET lang_id=?, value=?, product_id=?, feature_id=?", $last_id, $o->value, $o->product_id, $o->feature_id);
+						$this->db->query("REPLACE INTO __options SET lang_id=?, value=?, product_id=?, feature_id=?", $lastId, $o->value, $o->product_id, $o->feature_id);
 					}
 				}
 
-				@$settings = $this->settings->get_settings($this->languag->id);
+				if (isset($this->languag->id)) {
+					$settings = $this->settings->get_settings($this->languag->id);
+				}
+
 				if (!empty($settings)) {
 					foreach ($settings as $s) {
-						$this->db->query("REPLACE INTO __settings_lang SET lang_id=?, name=?, value=?", $last_id, $s->name, $s->value);
+						$this->db->query("REPLACE INTO __settings_lang SET lang_id=?, name=?, value=?", $lastId, $s->name, $s->value);
 					}
 				}
 
-				@$seo = $this->seo->get_seo($this->languag->id);
+				if (isset($this->languag->id)) {
+					$seo = $this->seo->get_seo($this->languag->id);
+				}
+
 				if (!empty($seo)) {
 					foreach ($seo as $s) {
-						$this->db->query("REPLACE INTO __seo_lang SET lang_id=?, name=?, value=?", $last_id, $s->name, $s->value);
+						$this->db->query("REPLACE INTO __seo_lang SET lang_id=?, name=?, value=?", $lastId, $s->name, $s->value);
 					}
 				}
 			} else {
-				$this->db->query("UPDATE __options SET lang_id=?", $last_id);
-				$this->db->query("UPDATE __settings_lang SET lang_id=?", $last_id);
-				$this->db->query("UPDATE __seo_lang SET lang_id=?", $last_id);
+				$this->db->query("UPDATE __options SET lang_id=?", $lastId);
+				$this->db->query("UPDATE __settings_lang SET lang_id=?", $lastId);
+				$this->db->query("UPDATE __seo_lang SET lang_id=?", $lastId);
 			}
-			$this->dump_translation();
-			return $last_id;
+			$this->dumpTranslation();
+			return $lastId;
 		}
 	}
 
-	public function delete_language($id)
+	/**
+	 * Delete language
+	 */
+	public function deleteLanguage($id)
 	{
 		if (!empty($id)) {
-			$lang = $this->get_language($id);
+			$lang = $this->getLanguage($id);
+
 			$query = $this->db->placehold("DELETE FROM __languages WHERE id=? LIMIT 1", intval($id));
 			$this->db->query($query);
 
-			foreach ($this->tables as $table)
-				$this->db->query("DELETE FROM  __lang_" . $table . " WHERE lang_id=?", intval($id));
+			foreach ($this->tables as $table) {
+				$this->db->query("DELETE FROM __lang_" . $table . " WHERE lang_id=?", (int) $id);
+			}
 
-			$this->db->query("DELETE FROM  __options WHERE lang_id=?", intval($id));
-			$this->db->query("DELETE FROM __settings_lang WHERE lang_id=?", intval($id));
-			$this->db->query("DELETE FROM __seo_lang WHERE lang_id=?", intval($id));
-			$this->db->query("ALTER TABLE __translations DROP COLUMN `lang_$lang->label`");
-			$this->dump_translation();
+			$this->db->query("DELETE FROM __options WHERE lang_id=?", (int) $id);
+			$this->db->query("DELETE FROM __settings_lang WHERE lang_id=?", (int)  $id);
+			$this->db->query("DELETE FROM __seo_lang WHERE lang_id=?", (int)  $id);
+
+			if (isset($lang->label) && $this->db->query("SHOW COLUMNS FROM __translations LIKE 'lang_$lang->label'")->num_rows > 0) {
+				$this->db->query("ALTER TABLE __translations DROP COLUMN `lang_$lang->label`");
+			}
+
+			$this->dumpTranslation();
 		}
 	}
 
-	public function action_data($object_id, $data, $object)
+	/**
+	 * Action data
+	 */
+	public function actionData($objectId, $data, $object)
 	{
 		if (!in_array($object, array_keys($this->tables)))
 			return false;
 
-		$this->db->query("SELECT count(*) as count FROM __lang_" . $this->tables[$object] . " WHERE lang_id=? AND " . $object . "_id=? LIMIT 1", $data->lang_id, $object_id);
+		$this->db->query("SELECT COUNT(*) AS count FROM __lang_" . $this->tables[$object] . " WHERE lang_id=? AND " . $object . "_id=? LIMIT 1", $data->lang_id, $objectId);
 		$data_lang = $this->db->result('count');
 
 		if ($data_lang == 0) {
-			$object_fild   = $object . '_id';
-			$data->$object_fild = $object_id;
+			$object_fild = $object . '_id';
+			$data->$object_fild = $objectId;
 			$query = $this->db->placehold('INSERT INTO __lang_' . $this->tables[$object] . ' SET ?%', $data);
 			$this->db->query($query);
 			$result = 'add';
 		} elseif ($data_lang == 1) {
-			$this->db->query("UPDATE __lang_" . $this->tables[$object] . " SET ?% WHERE lang_id=? AND " . $object . "_id=?", $data, $data->lang_id, $object_id);
+			$this->db->query("UPDATE __lang_" . $this->tables[$object] . " SET ?% WHERE lang_id=? AND " . $object . "_id=?", $data, $data->lang_id, $objectId);
 			$result = 'update';
 		}
 
 		return $result;
 	}
 
-	public function get_description($data, $object)
+	/**
+	 * Get description
+	 */
+	public function getDescription($data, $object)
 	{
-		if (!in_array($object, array_keys($this->tables)))
+		if (!in_array($object, array_keys($this->tables))) {
 			return false;
+		}
 
 		$languages   = $this->languages();
 		$languag     = reset($languages);
-		$fields      = $this->get_fields($this->tables[$object]);
-		$intersect   = array_intersect($fields, array_keys((array)$data));
+		$fields      = $this->getFields($this->tables[$object]);
+		$intersect   = array_intersect($fields, array_keys((array) $data));
 
-		$new_data = $object;
+		$newData = $object;
+
 		if (!empty($languages) && !empty($intersect)) {
 			$description = new stdClass;
+
 			foreach ($intersect as $f) {
 				$description->$f = $data->$f;
-				if ($languag->id != $this->lang_id) {
+
+				if ($languag->id != $this->langId) {
 					unset($data->$f);
 				}
 			}
+
 			$result = new stdClass();
 			$result->description = $description;
 
 			return $result;
 		}
+
 		return false;
 	}
 
-	public function action_description($object_id, $description, $object, $update_lang = null)
+	/**
+	 * Action description
+	 */
+	public function actionDescription($objectId, $description, $object, $updateLang = null)
 	{
 		if (!in_array($object, array_keys($this->tables))) {
 			return false;
@@ -347,16 +429,16 @@ class Languages extends Turbo
 			return;
 		}
 
-		$fields = $this->get_fields($this->tables[$object]);
+		$fields = $this->getFields($this->tables[$object]);
 		if (!empty($fields)) {
-			if ($update_lang) {
-				$upd_languages[] = $languages[$update_lang];
+			if ($updateLang) {
+				$updLanguages[] = $languages[$updateLang];
 			} else {
-				$upd_languages = $languages;
+				$updLanguages = $languages;
 			}
-			foreach ($upd_languages as $lang) {
+			foreach ($updLanguages as $lang) {
 				$description->lang_id = $lang->id;
-				$this->action_data($object_id, $description, $object);
+				$this->actionData($objectId, $description, $object);
 			}
 			return;
 		} else {
@@ -364,45 +446,54 @@ class Languages extends Turbo
 		}
 	}
 
-	// Translation start
-
-	public function get_translation($id)
+	/**
+	 * Get translation
+	 */
+	public function getTranslation($id)
 	{
-		$query = $this->db->placehold("SELECT * FROM __translations WHERE id=? LIMIT 1", intval($id));
+		$query = $this->db->placehold("SELECT * FROM __translations WHERE id=? LIMIT 1", (int) $id);
 		$this->db->query($query);
+
 		return $this->db->result();
 	}
 
-	public function get_translations($filter = array())
+	/**
+	 * Get translations
+	 */
+	public function getTranslations($filter = [])
 	{
 		$limit = 0;
 		$page = 1;
-		$keyword_filter = '';
+		$keywordFilter = '';
 		$lang = '*';
 		$order = 'label';
-		$lang_id  = $this->lang_id();
-		$set_lang = $this->languages(array('id' => $lang_id));
-		$lg = 'lang_' . $set_lang->label;
+		$langId = $this->langId();
+		$setLang = $this->languages(['id' => $langId]);
+		$lg = 'lang_' . ($setLang instanceof stdClass ? $setLang->label : '');
 
 		if (!empty($filter['lang'])) {
 			$lang = 'label, lang_' . $filter['lang'] . ' as value';
 		}
 
-		if (isset($filter['limit']))
-			$limit = max(1, intval($filter['limit']));
+		if (isset($filter['limit'])) {
+			$limit = max(1, (int) $filter['limit']);
+		}
 
-		if (isset($filter['page']))
-			$page = max(1, intval($filter['page']));
+		if (isset($filter['page'])) {
+			$page = max(1, (int) $filter['page']);
+		}
 
-		if ($limit)
-			$sql_limit = $this->db->placehold(' LIMIT ?, ? ', ($page - 1) * $limit, $limit);
-		else
-			$sql_limit = '';
+		if ($limit) {
+			$sqlLimit = $this->db->placehold('LIMIT ?, ?', ($page - 1) * $limit, $limit);
+		} else {
+			$sqlLimit = '';
+		}
 
 		if (!empty($filter['keyword'])) {
 			$keywords = explode(' ', $filter['keyword']);
-			foreach ($keywords as $keyword)
-				$keyword_filter .= $this->db->placehold('AND ' . $lg . ' LIKE "%' . $this->db->escape(trim($keyword)) . '%" OR label LIKE "%' . $this->db->escape(trim($keyword)) . '%" ');
+			foreach ($keywords as $keyword) {
+				$keywordFilter .= $this->db->placehold('AND ' . $lg . ' LIKE "%' . $this->db->escape(trim($keyword)) . '%" OR label LIKE "%' . $this->db->escape(trim($keyword)) . '%" ');
+			}
 		}
 
 		if (!empty($filter['sort']))
@@ -421,100 +512,129 @@ class Languages extends Turbo
 					break;
 			}
 
-		$query = "SELECT " . $lang . " FROM __translations WHERE 1 $keyword_filter ORDER BY $order $sql_limit";
+		$query = $this->db->placehold("SELECT " . $lang . " FROM __translations WHERE 1 $keywordFilter ORDER BY $order $sqlLimit");
 
 		if ($this->settings->cached == 1 && empty($_SESSION['admin'])) {
 			if ($result = $this->cache->get($query)) {
-				return $result; // return data from memcached
+				return $result;
 			} else {
-				$this->db->query($query); // otherwise pull from the database
+				$this->db->query($query);
 				$result = $this->db->results();
-				$this->cache->set($query, $result); // put into cache
+				$this->cache->set($query, $result);
 				return $result;
 			}
 		} else {
-			if ($this->db->query($query))
+			if ($this->db->query($query)) {
 				return $this->db->results();
+			}
 		}
 	}
 
-	public function count_translations($filter = array())
+	/**
+	 * Count translations
+	 */
+	public function countTranslations($filter = [])
 	{
-		$keyword_filter = '';
-		$lang_id  = $this->lang_id();
-		$set_lang = $this->languages(array('id' => $lang_id));
-		$lg = 'lang_' . $set_lang->label;
+		$keywordFilter = '';
+		$langId = $this->langId();
+		$setLang = $this->languages(['id' => $langId]);
+		$lg = 'lang_' . ($setLang instanceof stdClass ? $setLang->label : '');
 
 		if (!empty($filter['keyword'])) {
 			$keywords = explode(' ', $filter['keyword']);
-			foreach ($keywords as $keyword)
-				$keyword_filter .= $this->db->placehold('AND ' . $lg . ' LIKE "%' . $this->db->escape(trim($keyword)) . '%" OR label LIKE "%' . $this->db->escape(trim($keyword)) . '%" ');
+			foreach ($keywords as $keyword) {
+				$keywordFilter .= $this->db->placehold('AND ' . $lg . ' LIKE "%' . $this->db->escape(trim($keyword)) . '%" OR label LIKE "%' . $this->db->escape(trim($keyword)) . '%" ');
+			}
 		}
 
-		$query = $this->db->placehold("SELECT count(distinct id) as count FROM __translations  WHERE 1 $keyword_filter");
+		$query = $this->db->placehold("SELECT COUNT(DISTINCT id) AS count FROM __translations WHERE 1 $keywordFilter");
 
 		if ($this->settings->cached == 1 && empty($_SESSION['admin'])) {
 			if ($result = $this->cache->get($query)) {
-				return $result; // return data from memcached
+				return $result;
 			} else {
 				if ($this->db->query($query)) {
 					$result = $this->db->result('count');
-					$this->cache->set($query, $result); // put into cache
+					$this->cache->set($query, $result);
 					return $result;
 				} else
 					return false;
 			}
 		} else {
-			if ($this->db->query($query))
+			if ($this->db->query($query)) {
 				return $this->db->result('count');
-			else
+			} else {
 				return false;
+			}
 		}
 	}
 
-	public function update_translation($id, $data)
+	/**
+	 * Update translation
+	 */
+	public function updateTranslation($id, $data)
 	{
-		$query = $this->db->placehold("UPDATE __translations SET ?% WHERE id in(?@)", $data, (array)$id);
+		$query = $this->db->placehold("UPDATE __translations SET ?% WHERE id IN(?@)", $data, (array) $id);
 		$this->db->query($query);
-		$this->dump_translation();
+
+		$this->dumpTranslation();
+
 		return $id;
 	}
 
-	public function add_translation($data)
+	/**
+	 * Add translation
+	 */
+	public function addTranslation($data)
 	{
 		$query = $this->db->placehold('INSERT INTO __translations SET ?%', $data);
-		if (!$this->db->query($query))
+
+		if (!$this->db->query($query)) {
 			return false;
-		$last_id = $this->db->insert_id();
-		$this->dump_translation();
-		return $last_id;
+		}
+
+		$lastId = $this->db->insertId();
+		$this->dumpTranslation();
+
+		return $lastId;
 	}
 
-	public function delete_translation($id)
+	/**
+	 * Delete translation
+	 */
+	public function deleteTranslation($id)
 	{
 		if (!empty($id)) {
-			$query = $this->db->placehold("DELETE FROM __translations WHERE id=? LIMIT 1", intval($id));
+			$query = $this->db->placehold("DELETE FROM __translations WHERE id=? LIMIT 1", (int) $id);
+
 			$this->db->query($query);
-			$this->dump_translation();
+			$this->dumpTranslation();
 		}
 	}
 
-	public function set_translation()
+	/**
+	 * Set translation
+	 */
+	public function setTranslation()
 	{
 		$this->db->query("TRUNCATE TABLE __translations");
 
-		$theme_dir = 'design/' . $this->settings->theme;
-		$filename = $theme_dir . '/translation.sql';
+		$themeDir = 'design/' . $this->settings->theme;
+		$filename = $themeDir . '/translation.sql';
+
 		if (file_exists($filename)) {
 			$this->db->restore($filename);
 		}
 	}
 
-	public function dump_translation()
+	/**
+	 * Dump translation
+	 */
+	public function dumpTranslation()
 	{
-		$theme_dir = 'design/' . $this->settings->theme;
-		$filename = $theme_dir . '/translation.sql';
+		$themeDir = 'design/' . $this->settings->theme;
+		$filename = $themeDir . '/translation.sql';
 		$filename = fopen($filename, 'w');
-		$this->db->dump_table('t_translations', $filename);
+		$this->db->dumpTable('t_translations', $filename);
 	}
 }

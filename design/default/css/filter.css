@@ -22,6 +22,27 @@
 	color: #000;
 }
 
+/* Size filter */
+
+.size-filter .btn {
+	border: 1px solid rgba(0, 0, 0, 0.175);
+	padding-left: 12px;
+    padding-right: 12px;
+}
+
+.size-filter .btn:hover {
+	border: 1px solid rgba(0, 0, 0, 0.175);
+}
+
+.size-filter .btn.active {
+	border: 1px solid rgba(13, 110, 253)!important;
+}
+
+.btn.white.active span.fa-check {
+	opacity: 1;
+	color: #000;
+}
+
 [data-toggle="buttons"]>.btn>input[type="radio"],
 [data-toggle="buttons"]>.btn>input[type="checkbox"] {
 	opacity: 0;
@@ -31,12 +52,17 @@
 
 /* Title sidebar filter */
 
-.icon-action {
-	float: right;
-	font-size: 80%;
-	margin-top: 5px;
+.card-filter .border-filtr {
+	border-top: 1px solid rgba(0, 0, 0, 0.175);
+	border-radius: 0;
 }
 
 .card-filter .card-header a:hover {
 	text-decoration: none;
+}
+
+.icon-action {
+	float: right;
+	font-size: 80%;
+	margin-top: 5px;
 }

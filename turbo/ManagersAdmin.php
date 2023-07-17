@@ -1,33 +1,37 @@
 <?php
 
-require_once('api/Turbo.php');
+require_once 'api/Turbo.php';
 
 class ManagersAdmin extends Turbo
 {
-	function fetch()
+	public function fetch()
 	{
-
-		if ($this->request->method('post')) {
-			// Actions with selected
+		if ($this->request->isMethod('post')) {
 			$logins = $this->request->post('check');
-			if (is_array($logins))
+
+			if (is_array($logins)) {
 				switch ($this->request->post('action')) {
-					case 'delete': {
-							foreach ($logins as $login)
-								$this->managers->delete_manager($login);
-							break;
+					case 'delete':
+						foreach ($logins as $login) {
+							$this->managers->deleteManager($login);
 						}
+						break;
 				}
+			}
 		}
 
-		if (!is_writable($this->managers->passwd_file)) {
+		if (!is_writable($this->managers->passwdFile)) {
 			$this->design->assign('message_error', 'not_writable');
 		}
 
-		$managers = $this->managers->get_managers();
-		$managers_count = $this->managers->count_managers();
+		$managers = $this->managers->getManagers();
+		$managersCount = $this->managers->countManagers();
+
 		$this->design->assign('managers', $managers);
-		$this->design->assign('managers_count', $managers_count);
-		return $this->body = $this->design->fetch('managers.tpl');
+		$this->design->assign('managersCount', $managersCount);
+
+		return $body = $this->design->fetch('managers.tpl');
+
+		return $body;
 	}
 }

@@ -1,37 +1,41 @@
 <?php
 
-require_once('api/Turbo.php');
+require_once 'api/Turbo.php';
 
 class StatsAdmin extends Turbo
 {
 	public function fetch()
 	{
-		$filter = array();
+		$filter = [];
 
-		// Label filter
-		$label = $this->orders->get_label($this->request->get('label'));
+		$labelId = $this->request->get('label');
+		$label = $this->orders->getLabel($labelId);
+
 		if (!empty($label)) {
 			$filter['label'] = $label->id;
 			$this->design->assign('label', $label);
 		}
 
-		$date_filter = $this->request->get('date_filter');
-		if (!empty($date_filter)) {
-			$filter['date_filter'] = $date_filter;
-			$this->design->assign('date_filter', $date_filter);
+		$dateFilter = $this->request->get('date_filter');
+
+		if (!empty($dateFilter)) {
+			$filter['date_filter'] = $dateFilter;
+			$this->design->assign('date_filter', $dateFilter);
 		}
 
-		$date_from = $this->request->get('date_from');
-		$date_to = $this->request->get('date_to');
+		$dateFrom = $this->request->get('date_from');
+		$dateTo = $this->request->get('date_to');
 
-		if (!empty($date_from)) {
-			$filter['date_from'] = date("Y-m-d 00:00:01", strtotime($date_from));
-			$this->design->assign('date_from', $date_from);
+		if (!empty($dateFrom)) {
+			$filter['date_from'] =
+				date("Y-m-d 00:00:01", strtotime($dateFrom));
+			$this->design->assign('date_from', $dateFrom);
 		}
 
-		if (!empty($date_to)) {
-			$filter['date_to'] = date("Y-m-d 23:59:00", strtotime($date_to));
-			$this->design->assign('date_to', $date_to);
+		if (!empty($dateTo)) {
+			$filter['date_to'] =
+				date("Y-m-d 23:59:00", strtotime($dateTo));
+			$this->design->assign('date_to', $dateTo);
 		}
 
 		if (empty($filter)) {
@@ -40,34 +44,35 @@ class StatsAdmin extends Turbo
 		}
 
 		$status = $this->request->get('status', 'integer');
+
 		if (!empty($status)) {
 			switch ($status) {
 				case '1': {
-						$stat_o = 0;
+						$stat = 0;
 						break;
 					}
 				case '2': {
-						$stat_o = 1;
+						$stat = 1;
 						break;
 					}
 				case '3': {
-						$stat_o = 2;
+						$stat = 2;
 						break;
 					}
 				case '4': {
-						$stat_o = 3;
+						$stat = 3;
 						break;
 					}
 			}
-			$filter['status'] = $stat_o;
+
+			$filter['status'] = $stat;
 			$this->design->assign('status', $status);
 		}
 
-		$this->design->assign('stat', $this->reportstat->get_stat($filter));
-		$this->design->assign('stat_orders', $this->reportstat->get_stat_orders($filter));
+		$this->design->assign('stat', $this->reportstat->getStat($filter));
+		$this->design->assign('stat_orders', $this->reportstat->getStatOrders($filter));
 
-		// Order tags
-		$labels = $this->orders->get_labels();
+		$labels = $this->orders->getLabels();
 		$this->design->assign('labels', $labels);
 
 		return $this->design->fetch('stats.tpl');

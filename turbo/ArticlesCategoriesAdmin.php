@@ -1,44 +1,46 @@
 <?php
 
-require_once('api/Turbo.php');
+require_once 'api/Turbo.php';
 
 class ArticlesCategoriesAdmin extends Turbo
 {
-	function fetch()
-	{
-		if ($this->request->method('post')) {
-			// Actions with selected
-			$ids = $this->request->post('check');
-			if (is_array($ids))
-				switch ($this->request->post('action')) {
-					case 'disable': {
-							foreach ($ids as $id)
-								$this->articles_categories->update_articles_category($id, array('visible' => 0));
-							break;
-						}
-					case 'enable': {
-							foreach ($ids as $id)
-								$this->articles_categories->update_articles_category($id, array('visible' => 1));
-							break;
-						}
-					case 'delete': {
-							foreach ($ids as $id)
-								$this->articles_categories->delete_articles_category($id);
-							break;
-						}
-				}
+    public function fetch()
+    {
+        if ($this->request->isMethod('post')) {
+            $ids = $this->request->post('check');
 
-			// Sorting
-			$positions = $this->request->post('positions');
-			$ids = array_keys($positions);
-			sort($positions);
-			foreach ($positions as $i => $position)
-				$this->articles_categories->update_articles_category($ids[$i], array('position' => $position));
-		}
+            if (is_array($ids)) {
+                switch ($this->request->post('action')) {
+                    case 'disable':
+                        foreach ($ids as $id) {
+                            $this->articles_categories->updateArticlesCategory($id, ['visible' => 0]);
+                        }
+                        break;
+                    case 'enable':
+                        foreach ($ids as $id) {
+                            $this->articles_categories->updateArticlesCategory($id, ['visible' => 1]);
+                        }
+                        break;
+                    case 'delete':
+                        foreach ($ids as $id) {
+                            $this->articlesCategories->deleteArticlesCategory($id);
+                        }
+                        break;
+                }
+            }
 
-		$articles_categories = $this->articles_categories->get_articles_categories_tree();
+            $positions = $this->request->post('positions');
+            $ids = array_keys($positions);
+            sort($positions);
 
-		$this->design->assign('articles_categories', $articles_categories);
-		return $this->design->fetch('articles_categories.tpl');
-	}
+            foreach ($positions as $i => $position) {
+                $this->articlesCategories->updateArticlesCategory($ids[$i], ['position' => $position]);
+            }
+        }
+
+        $articlesCategories = $this->articlesCategories->getArticlesCategoriesTree();
+        $this->design->assign('articles_categories', $articlesCategories);
+
+        return $this->design->fetch('articles_categories.tpl');
+    }
 }

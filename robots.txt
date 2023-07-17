@@ -15,24 +15,6 @@ Disallow: /*?utm
 Disallow: /*&utm
 Disallow: /*?variant
 
-User-agent: Yandex
-Allow: *.css
-Allow: *.js
-Disallow: /404
-Disallow: /turbo/
-Disallow: */order/
-Disallow: */user/
-Disallow: /smarty/
-Disallow: /api/
-Disallow: /compiled/
-Disallow: /resize/
-Disallow: /password.php
-Disallow: /*?currency_id
-Disallow: /*?keyword
-Disallow: /*?utm
-Disallow: /*&utm
-Disallow: /*?variant
-
 User-agent: Googlebot
 Allow: *.css
 Allow: *.js

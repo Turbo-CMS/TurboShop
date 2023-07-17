@@ -4,7 +4,7 @@
 
 <h1 class="h3 mb-3">{$btr->global_theme|escape} {$theme}, {$btr->global_style|escape} {$style_file}</h1>
 
-{if $message_error}
+{if isset($message_error)}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -140,14 +140,13 @@
 	</style>
 	<script>
 		$(function() {
-			// Saving the code by ajax
 			function save() {
 				{/literal}
-				{if $settings->admin_theme == "dark"}
-					$('.CodeMirror').css('background-color', '#0e5e46');
-				{else}
-					$('.CodeMirror').css('background-color', '#d2f1e8');
-				{/if}
+					{if $settings->admin_theme == "dark"}
+						$('.CodeMirror').css('background-color', '#0e5e46');
+					{else}
+						$('.CodeMirror').css('background-color', '#d2f1e8');
+					{/if}
 				{literal}
 				content = editor.getValue();
 				$.ajax({
@@ -161,12 +160,10 @@
 				});
 			}
 
-			// Clicked the Save button
 			$('.js-save').on('click', function() {
 				save();
 			});
 
-			// Processing ctrl+s
 			var isCtrl = false;
 			var isCmd = false;
 			$(document).keyup(function(e) {

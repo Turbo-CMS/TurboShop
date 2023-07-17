@@ -1,4 +1,4 @@
-{if $banner}
+{if isset($banner)}
 	{$meta_title=$banner->name scope=global}
 {else}
 	{$meta_title=$btr->global_banners   scope=global}
@@ -8,7 +8,7 @@
 	<h1 class="d-inline align-middle me-3">
 		{if $banners_images_count}
 			{$btr->global_banners} - {$banners_images_count}
-		{elseif $keyword}
+		{elseif isset($keyword)}
 			{$btr->global_banners} - {$banners_images_count}
 		{else}
 			{$btr->banners_images_none|escape}
@@ -37,17 +37,17 @@
 					<div class="row">
 						<div class="col-md-4 col-lg-4 col-sm-12 mb-3">
 							<select class="selectpicker" onchange="location = this.value;">
-								<option value="{url banner_id=null filter=null}" {if !$filter}{/if}>{$btr->banners_images_all|escape}</option>
-								<option value="{url banner_id=null filter='visible'}" {if $filter=='visible'}selected{/if}>{$btr->banners_images_enable|escape}</option>
-								<option value="{url banner_id=null filter='hidden'}" {if $filter=='hidden'}selected{/if}>{$btr->banners_images_disable|escape}</option>
+								<option value="{url banner_id=null filter=null}" {if !isset($filter)}{/if}>{$btr->banners_images_all|escape}</option>
+								<option value="{url banner_id=null filter='visible'}" {if isset($filter) && $filter == 'visible'}selected{/if}>{$btr->banners_images_enable|escape}</option>
+								<option value="{url banner_id=null filter='hidden'}" {if isset($filter) && $filter == 'hidden'}selected{/if}>{$btr->banners_images_disable|escape}</option>
 							</select>
 						</div>
 						{if $banners}
 							<div class="col-md-4 col-lg-4 col-sm-12 mb-3">
 								<select class="selectpicker" onchange="location = this.value;">
-									<option value="{url banner_id=null}" {if !$banner->id}selected{/if}>{$btr->all_groups|escape}</option>
+									<option value="{url banner_id=null}" {if !isset($banner->id)}selected{/if}>{$btr->all_groups|escape}</option>
 									{foreach $banners as $b}
-										<option value="{url keyword=null page=null banner_id=$b->id}" {if $banner->id == $b->id}selected{/if}>{$b->name|escape}</option>
+										<option value="{url keyword=null page=null banner_id=$b->id}" {if isset($banner) && $banner->id == $b->id}selected{/if}>{$b->name|escape}</option>
 									{/foreach}
 								</select>
 							</div>
@@ -108,7 +108,9 @@
 												<div class="turbo-list-banners-info text-muted">
 													{$img_url=$config->root_url|cat:'/'|cat:$config->banners_images_dir|cat:$banners_image->image}
 													{assign var="info" value=$img_url|getimagesize}
-													{$info.0} X {$info.1} px
+													{if isset($info.0) && isset($info.1)}
+														{$info.0} X {$info.1} px
+													{/if}
 												</div>
 											</div>
 											<div class="turbo-list-boding turbo-list-banners-group">
@@ -184,6 +186,7 @@
 		{/if}
 	</div>
 </div>
+
 {literal}
 	<script>
 		$(function() {

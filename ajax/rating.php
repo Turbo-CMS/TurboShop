@@ -1,29 +1,34 @@
 <?php
+
 session_start();
 chdir('..');
-require_once('api/Turbo.php');
+require_once 'api/Turbo.php';
+
 $turbo = new Turbo();
 
-$product_id = $turbo->request->get('id', 'integer');
+$productId = $turbo->request->get('id', 'integer');
 
-if ($product_id) {
-	$product = $turbo->products->get_product($product_id);
+if ($productId) {
+	$product = $turbo->products->getProduct($productId);
 
 	if (!empty($product)) {
-		if (!isset($_SESSION['rating_ids'])) $_SESSION['rating_ids'] = array();
+		if (!isset($_SESSION['rating_ids'])) {
+			$_SESSION['rating_ids'] = [];
+		}
 
-		if (!in_array($product_id, $_SESSION['rating_ids'])) {
-
-			$_SESSION['rating_ids'][] = $product_id;
-
+		if (!in_array($productId, $_SESSION['rating_ids'])) {
+			$_SESSION['rating_ids'][] = $productId;
 			$rating = $turbo->request->get('rating', 'integer');
-
 			$votes = $product->votes + 1;
-			$rate = ($product->rating * $product->votes + $rating) / ($product->votes + 1);
-
-			$turbo->products->update_product($product_id, array('votes' => $votes, 'rating' => $rate));
-
+			$rate = ($product->rating * $product->votes + $rating) / $votes;
+			$turbo->products->updateProduct($productId, ['votes' => $votes, 'rating' => $rate,]);
 			echo $rate;
-		} else echo -1;
-	} else echo 0;
-} else echo 0;
+		} else {
+			echo -1;
+		}
+	} else {
+		echo 0;
+	}
+} else {
+	echo 0;
+}

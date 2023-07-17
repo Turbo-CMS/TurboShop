@@ -1,217 +1,217 @@
 <?php
 
-require_once('Turbo.php');
+require_once 'Turbo.php';
 
 class Products extends Turbo
 {
-	/**
-	 * The function returns goods
-	 * Possible filter values:
-	 * id - product id or array
-	 * category_id - category id or array
-	 * brand_id - brand id or an array of them
-	 * page - current page, integer
-	 * limit - number of products per page, integer
-	 * sort - order of goods, possible values: position (default), name, price
-	 * keyword - search keyword
-	 * features - filter by product properties, array (feature id => property value)
-	 */
-	public function get_products($filter = array())
-	{
-		// Default
-		$page = 1;
-		$category_id_filter = '';
-		$brand_id_filter = '';
-		$product_id_filter = '';
-		$features_filter = '';
-		$is_new_filter = '';
-		$is_hit_filter = '';
-		$keyword_filter = '';
-		$visible_filter = '';
-		$is_featured_filter = '';
-		$is_export_filter = '';
-		$discounted_filter = '';
-		$in_stock_filter = '';
-		$group_by = '';
-		$order = 'p.position DESC';
-		$variant_filter = '';
-		$color_filter = '';
-		$variant_join = '';
-		$prices = '';
-		$sql_limit = '';
 
-		$lang_id  = $this->languages->lang_id();
-		if ($lang_id) {
-			$px = 'l';
-		} else {
-			$px = 'p';
+	/**
+	 * Get products
+	 */
+	public function getProducts($filter = [])
+	{
+		$page = 1;
+		$categoryIdFilter = '';
+		$brandIdFilter = '';
+		$productIdFilter = '';
+		$featuresFilter = '';
+		$isNewFilter = '';
+		$isHitFilter = '';
+		$keywordFilter = '';
+		$visibleFilter = '';
+		$isFeaturedFilter = '';
+		$isExportFilter = '';
+		$discountedFilter = '';
+		$inStockFilter = '';
+		$groupBy = '';
+		$variantFilter = '';
+		$colorFilter = '';
+		$variantJoin = '';
+		$prices = '';
+		$sqlLimit = '';
+
+		$langId = $this->languages->langId();
+		$px = ($langId) ? 'l' : 'p';
+
+		if (!empty($filter['limit'])) {
+			$limit = max(1, (int) $filter['limit']);
 		}
 
-		if (isset($filter['limit']))
-			$limit = max(1, intval($filter['limit']));
+		if (!empty($filter['page'])) {
+			$page = max(1, (int) $filter['page']);
+		}
 
-		if (isset($filter['page']))
-			$page = max(1, intval($filter['page']));
+		if (isset($limit) && isset($page)) {
+			$sqlLimit = $this->db->placehold('LIMIT ?, ?', ($page - 1) * $limit, $limit);
+		}
 
-		if (isset($limit) && isset($page))
-			$sql_limit = $this->db->placehold(' LIMIT ?, ? ', ($page - 1) * $limit, $limit);
-
-		if (!empty($filter['id']))
-			$product_id_filter = $this->db->placehold('AND p.id in(?@)', (array)$filter['id']);
+		if (!empty($filter['id'])) {
+			$productIdFilter = $this->db->placehold('AND p.id IN(?@)', (array) $filter['id']);
+		}
 
 		if (!empty($filter['category_id'])) {
-			$category_id_filter = $this->db->placehold('INNER JOIN __products_categories pc ON pc.product_id = p.id AND pc.category_id in(?@)', (array)$filter['category_id']);
-			$group_by = "GROUP BY p.id";
+			$categoryIdFilter = $this->db->placehold('INNER JOIN __products_categories pc ON pc.product_id = p.id AND pc.category_id in(?@)', (array) $filter['category_id']);
+			$groupBy = "GROUP BY p.id";
 		}
 
-		if (!empty($filter['brand_id']))
-			$brand_id_filter = $this->db->placehold('AND p.brand_id in(?@)', (array)$filter['brand_id']);
+		if (!empty($filter['brand_id'])) {
+			$brandIdFilter = $this->db->placehold('AND p.brand_id IN(?@)', (array) $filter['brand_id']);
+		}
 
-		if (isset($filter['featured']))
-			$is_featured_filter = $this->db->placehold('AND p.featured=?', intval($filter['featured']));
+		if (isset($filter['featured'])) {
+			$isFeaturedFilter = $this->db->placehold('AND p.featured=?', (int) $filter['featured']);
+		}
 
-		if (!empty($filter['is_new']))
-			$is_new_filter = $this->db->placehold('AND p.is_new=?', intval($filter['is_new']));
+		if (!empty($filter['is_new'])) {
+			$isNewFilter = $this->db->placehold('AND p.is_new=?', (int) $filter['is_new']);
+		}
 
-		if (!empty($filter['is_hit']))
-			$is_hit_filter = $this->db->placehold('AND p.is_hit=?', intval($filter['is_hit']));
+		if (!empty($filter['is_hit'])) {
+			$isHitFilter = $this->db->placehold('AND p.is_hit=?', (int) $filter['is_hit']);
+		}
 
-		if (isset($filter['to_export']))
-			$is_export_filter = $this->db->placehold('AND p.to_export=?', intval($filter['to_export']));
+		if (isset($filter['to_export'])) {
+			$isExportFilter = $this->db->placehold('AND p.to_export=?', (int) $filter['to_export']);
+		}
 
-		if (isset($filter['discounted']))
-			$discounted_filter = $this->db->placehold('AND (SELECT 1 FROM __variants pv WHERE pv.product_id=p.id AND pv.compare_price>0 LIMIT 1) = ?', intval($filter['discounted']));
+		if (isset($filter['discounted'])) {
+			$discountedFilter = $this->db->placehold('AND (SELECT 1 FROM __variants pv WHERE pv.product_id=p.id AND pv.compare_price>0 LIMIT 1) = ?', (int) $filter['discounted']);
+		}
 
-		if (isset($filter['in_stock']))
-			$in_stock_filter = $this->db->placehold('AND (SELECT count(*)>0 FROM __variants pv WHERE pv.product_id=p.id AND pv.price>0 AND (pv.stock IS NULL OR pv.stock>0) LIMIT 1) = ?', intval($filter['in_stock']));
+		if (isset($filter['in_stock'])) {
+			$inStockFilter = $this->db->placehold('AND (SELECT count(*)>0 FROM __variants pv WHERE pv.product_id=p.id AND pv.price>0 AND (pv.stock IS NULL OR pv.stock>0) LIMIT 1) = ?', (int) $filter['in_stock']);
+		}
 
-		if (isset($filter['visible']))
-			$visible_filter = $this->db->placehold('AND p.visible=?', intval($filter['visible']));
+		if (isset($filter['visible'])) {
+			$visibleFilter = $this->db->placehold('AND p.visible=?', (int) $filter['visible']);
+		}
 
-		$currency = $this->money->get_currencies(array('enabled' => 1));
-		$currency = reset($currency);
+		$currencies = $this->money->getCurrencies(['enabled' => 1]);
+		$currency = reset($currencies);
+		$order = 'IF((SELECT COUNT(*) FROM __variants WHERE (stock>0 OR stock IS NULL) AND product_id=p.id LIMIT 1), 1, 0) DESC, p.position DESC';
 
-		if (!empty($filter['sort']))
+		if (!empty($filter['sort'])) {
 			switch ($filter['sort']) {
 				case 'position':
-					$order = 'p.position DESC';
+					$order = 'IF((SELECT COUNT(*) FROM __variants WHERE (stock>0 OR stock IS NULL) AND product_id=p.id LIMIT 1), 1, 0) DESC, p.position DESC';
 					break;
-
-					// by name from A to Z
 				case 'name':
-					$order = 'p.name';
+					$order = 'IF((SELECT COUNT(*) FROM __variants WHERE (stock>0 OR stock IS NULL) AND product_id=p.id LIMIT 1), 1, 0) DESC, p.name';
 					break;
-
-					// by name from Z to A
 				case 'name_desc':
-					$order = 'p.name DESC';
+					$order = 'IF((SELECT COUNT(*) FROM __variants WHERE (stock>0 OR stock IS NULL) AND product_id=p.id LIMIT 1), 1, 0) DESC, p.name DESC';
 					break;
-
-					// by price Low > High
+				case 'name_desc':
+					$order = 'IF((SELECT COUNT(*) FROM __variants WHERE (stock>0 OR stock IS NULL) AND product_id=p.id LIMIT 1), 1, 0) DESC, p.name DESC';
+					break;
 				case 'price':
-					$order = '(SELECT IF((pv.currency_id !=' . $currency->id . ' AND pv.currency_id > 0), (pv.price*(SELECT rate_to FROM __currencies AS c WHERE c.id =pv.currency_id)/(SELECT rate_from FROM __currencies AS c WHERE c.id = pv.currency_id)), pv.price)  FROM __variants pv WHERE (pv.stock IS NULL OR pv.stock>0) AND p.id = pv.product_id AND pv.position=(SELECT MIN(position) FROM __variants WHERE (stock>0 OR stock IS NULL) AND product_id=p.id LIMIT 1) LIMIT 1)';
+					$order = 'IF((SELECT COUNT(*) FROM __variants WHERE (stock>0 OR stock IS NULL) AND product_id=p.id LIMIT 1), 1, 0) DESC, (SELECT IF((pv.currency_id !=' . $currency->id . ' AND pv.currency_id > 0), (pv.price*(SELECT rate_to FROM __currencies AS c WHERE c.id =pv.currency_id)/(SELECT rate_from FROM __currencies AS c WHERE c.id = pv.currency_id)), pv.price)  FROM __variants pv WHERE (pv.stock IS NULL OR pv.stock>0) AND p.id = pv.product_id AND pv.position=(SELECT MIN(position) FROM __variants WHERE (stock>0 OR stock IS NULL) AND product_id=p.id LIMIT 1) LIMIT 1)';
 					break;
-
-					// by price High < Low
 				case 'price_desc':
-					$order = '(SELECT IF((pv.currency_id !=' . $currency->id . ' AND pv.currency_id > 0), (pv.price*(SELECT rate_to FROM __currencies AS c WHERE c.id =pv.currency_id)/(SELECT rate_from FROM __currencies AS c WHERE c.id = pv.currency_id)), pv.price)  FROM __variants pv WHERE (pv.stock IS NULL OR pv.stock>0) AND p.id = pv.product_id AND pv.position=(SELECT MIN(position) FROM __variants WHERE (stock>0 OR stock IS NULL) AND product_id=p.id LIMIT 1) LIMIT 1) DESC';
+					$order = 'IF((SELECT COUNT(*) FROM __variants WHERE (stock>0 OR stock IS NULL) AND product_id=p.id LIMIT 1), 1, 0) DESC, (SELECT IF((pv.currency_id !=' . $currency->id . ' AND pv.currency_id > 0), (pv.price*(SELECT rate_to FROM __currencies AS c WHERE c.id =pv.currency_id)/(SELECT rate_from FROM __currencies AS c WHERE c.id = pv.currency_id)), pv.price)  FROM __variants pv WHERE (pv.stock IS NULL OR pv.stock>0) AND p.id = pv.product_id AND pv.position=(SELECT MIN(position) FROM __variants WHERE (stock>0 OR stock IS NULL) AND product_id=p.id LIMIT 1) LIMIT 1) DESC';
 					break;
-
 				case 'created':
 					$order = 'p.created DESC';
 					break;
-
 				case 'random':
 					$order = 'RAND()';
 					break;
-
 				case 'rating':
-					$order = 'p.rating DESC, p.position DESC';
+					$order = 'IF((SELECT COUNT(*) FROM __variants WHERE (stock>0 OR stock IS NULL) AND product_id=p.id LIMIT 1), 1, 0) DESC, p.rating DESC, p.position DESC';
 					break;
 			}
+		}
 
 		if (isset($filter['variants'])) {
-			$variant_filter = $this->db->placehold(' AND pv.name in(?@)', (array)$filter['variants']);
-			$variant_join = 'LEFT JOIN __variants pv ON pv.product_id = p.id';
+			$variantFilter = $this->db->placehold('AND pv.name IN(?@)', (array) $filter['variants']);
+			$variantJoin = 'LEFT JOIN __variants pv ON pv.product_id = p.id';
 		}
 
 		if (isset($filter['colors'])) {
-			$color_filter = $this->db->placehold(' AND pv.color in(?@)', (array)$filter['colors']);
-			$variant_join = 'LEFT JOIN __variants pv ON pv.product_id = p.id';
+			$colorFilter = $this->db->placehold('AND pv.color IN(?@)', (array) $filter['colors']);
+			$variantJoin = 'LEFT JOIN __variants pv ON pv.product_id = p.id';
 		}
 
 		if (!empty($filter['keyword'])) {
 			$keywords = explode(' ', $filter['keyword']);
 			foreach ($keywords as $keyword) {
 				$kw = $this->db->escape(trim($keyword));
-				if ($kw !== '')
-					$keyword_filter .= $this->db->placehold("AND (p.name LIKE '%$kw%' OR p.meta_keywords LIKE '%$kw%' OR p.id in (SELECT product_id FROM __variants WHERE sku LIKE '%$kw%'))");
+				if ($kw !== '') {
+					$keywordFilter .= $this->db->placehold("AND (p.name LIKE '%$kw%' OR p.meta_keywords LIKE '%$kw%' OR p.id in (SELECT product_id FROM __variants WHERE sku LIKE '%$kw%'))");
+				}
 			}
 		}
 
-		if (!empty($filter['features']) && !empty($filter['features']))
-			foreach ($filter['features'] as $feature => $value)
-				$features_filter .= $this->db->placehold('AND p.id in (SELECT product_id FROM __options WHERE feature_id=? AND translit in(?@) ) ', $feature, (array)$value);
+		if (!empty($filter['features']) && !empty($filter['features'])) {
+			$featuresFilter = '';
+			foreach ($filter['features'] as $feature => $value) {
+				$featuresFilter .= $this->db->placehold('AND p.id IN (SELECT product_id FROM __options WHERE feature_id=? AND translit IN(?@))', $feature, (array) $value);
+			}
+		}
 
-		if (!empty($filter['min_price']) && !empty($filter['max_price']))
-			$prices = $this->db->placehold('AND p.id in(SELECT v.product_id FROM __variants v WHERE IF((v.currency_id !=' . $currency->id . ' AND v.currency_id > 0), (v.price*(SELECT rate_to FROM __currencies AS c WHERE c.id =v.currency_id)/(SELECT rate_from FROM __currencies AS c WHERE c.id = v.currency_id)), v.price) >= ? AND IF((v.currency_id !=' . $currency->id . ' AND v.currency_id > 0), (v.price*(SELECT rate_to FROM __currencies AS c WHERE c.id =v.currency_id)/(SELECT rate_from FROM __currencies AS c WHERE c.id = v.currency_id)), v.price) <= ? AND v.product_id = p.id)', intval($filter['min_price']), intval($filter['max_price']));
+		if (!empty($filter['min_price']) && !empty($filter['max_price'])) {
+			$prices = $this->db->placehold('AND p.id in(SELECT v.product_id FROM __variants v WHERE IF((v.currency_id !=' . $currency->id . ' AND v.currency_id>0), (v.price*(SELECT rate_to FROM __currencies AS c WHERE c.id=v.currency_id)/(SELECT rate_from FROM __currencies AS c WHERE c.id=v.currency_id)), v.price) >=? AND IF((v.currency_id !=' . $currency->id . ' AND v.currency_id>0), (v.price*(SELECT rate_to FROM __currencies AS c WHERE c.id=v.currency_id)/(SELECT rate_from FROM __currencies AS c WHERE c.id=v.currency_id)), v.price) <=? AND v.product_id=p.id)', (int) $filter['min_price'], (int) $filter['max_price']);
+		}
 
-		$lang_sql = $this->languages->get_query(array('object' => 'product'));
+		$langSql = $this->languages->getQuery(['object' => 'product']);
 
-		$query = "SELECT  
-					p.id,
-					p.url,
-					p.brand_id,
-					p.name,
-					p.annotation,
-					p.body,
-					p.position,
-                    p.sale_to,
-					p.created as created,
-					p.visible, 
-                    p.to_export,
-					p.featured,
-					p.is_new, 
-                    p.is_hit, 
-                    p.rating,
-					p.votes,
-					p.meta_title, 
-					p.meta_keywords, 
-					p.meta_description, 
-					b.name as brand,
-					b.url as brand_url,
-                    $lang_sql->fields
-				FROM __products p
-                 $lang_sql->join
-				$category_id_filter 
-				LEFT JOIN __brands b ON p.brand_id = b.id
-				WHERE 
-					1
-					$product_id_filter
-					$brand_id_filter
-					$features_filter
-					$keyword_filter
-					$variant_filter
-					$color_filter
-					$is_featured_filter
-					$is_new_filter
-                    $is_hit_filter
-                    $is_export_filter
-					$discounted_filter
-					$in_stock_filter
-					$visible_filter
-                    $prices
-				$group_by
-				ORDER BY $order
-					$sql_limit";
+		$query = $this->db->placehold(
+			"SELECT  
+				p.id,
+				p.url,
+				p.brand_id,
+				p.name,
+				p.annotation,
+				p.body,
+				p.position,
+				p.sale_to,
+				p.created AS created,
+				p.visible, 
+				p.to_export,
+				p.featured,
+				p.is_new, 
+				p.is_hit, 
+				p.rating,
+				p.votes,
+				p.meta_title, 
+				p.meta_keywords, 
+				p.meta_description, 
+				b.name AS brand,
+				b.url AS brand_url,
+				$langSql->fields
+			FROM __products p
+			$langSql->join
+			$categoryIdFilter 
+			LEFT JOIN __brands b ON p.brand_id=b.id
+			WHERE 
+				1
+				$productIdFilter
+				$brandIdFilter
+				$featuresFilter
+				$keywordFilter
+				$variantFilter
+				$variantJoin
+				$colorFilter
+				$isFeaturedFilter
+				$isNewFilter
+				$isHitFilter
+				$isExportFilter
+				$discountedFilter
+				$inStockFilter
+				$visibleFilter
+				$prices
+			$groupBy
+			ORDER BY $order
+			$sqlLimit"
+		);
 
 		if ($this->settings->cached == 1 && empty($_SESSION['admin'])) {
 			if ($result = $this->cache->get($query)) {
-				return $result; // return data from memcached
+				return $result;
 			} else {
-				$this->db->query($query); // otherwise pull from the database
+				$this->db->query($query);
 				$result = $this->db->results();
-				$this->cache->set($query, $result); // put into cache
+				$this->cache->set($query, $result);
 				return $result;
 			}
 		} else {
@@ -221,202 +221,222 @@ class Products extends Turbo
 	}
 
 	/**
-	 * The function returns the number of goods
-	 * Possible filter values:
-	 * category_id - category id or array
-	 * brand_id - brand id or an array of them
-	 * keyword - search keyword
-	 * features - filter by product properties, array (feature id => property value)
+	 * Count products
 	 */
-	public function count_products($filter = array())
+	public function countProducts($filter = [])
 	{
-		$category_id_filter = '';
-		$brand_id_filter = '';
-		$product_id_filter = '';
-		$keyword_filter = '';
-		$visible_filter = '';
-		$is_featured_filter = '';
-		$is_new_filter = '';
-		$is_hit_filter = '';
-		$is_export_filter = '';
-		$in_stock_filter = '';
-		$discounted_filter = '';
-		$features_filter = '';
-		$variant_filter = '';
-		$color_filter = '';
-		$variant_join = '';
+		$categoryIdFilter = '';
+		$brandIdFilter = '';
+		$productIdFilter = '';
+		$keywordFilter = '';
+		$visibleFilter = '';
+		$isFeaturedFilter = '';
+		$isNewFilter = '';
+		$isHitFilter = '';
+		$isExportFilter = '';
+		$inStockFilter = '';
+		$discountedFilter = '';
+		$featuresFilter = '';
+		$variantFilter = '';
+		$colorFilter = '';
+		$variantJoin = '';
 		$prices = '';
 
-		$lang_id  = $this->languages->lang_id();
-		if ($lang_id) {
-			$px = 'l';
-		} else {
-			$px = 'p';
+		$langId = $this->languages->langId();
+		$px = ($langId) ? 'l' : 'p';
+
+		if (!empty($filter['category_id'])) {
+			$categoryIdFilter = $this->db->placehold('INNER JOIN __products_categories pc ON pc.product_id = p.id AND pc.category_id IN(?@)', (array) $filter['category_id']);
 		}
 
-		if (!empty($filter['category_id']))
-			$category_id_filter = $this->db->placehold('INNER JOIN __products_categories pc ON pc.product_id = p.id AND pc.category_id in(?@)', (array)$filter['category_id']);
+		if (!empty($filter['brand_id'])) {
+			$brandIdFilter = $this->db->placehold('AND p.brand_id IN(?@)', (array) $filter['brand_id']);
+		}
 
-		if (!empty($filter['brand_id']))
-			$brand_id_filter = $this->db->placehold('AND p.brand_id in(?@)', (array)$filter['brand_id']);
-
-		if (!empty($filter['id']))
-			$product_id_filter = $this->db->placehold('AND p.id in(?@)', (array)$filter['id']);
+		if (!empty($filter['id'])) {
+			$productIdFilter = $this->db->placehold('AND p.id IN(?@)', (array) $filter['id']);
+		}
 
 		if (isset($filter['keyword'])) {
 			$keywords = explode(' ', $filter['keyword']);
 			foreach ($keywords as $keyword) {
 				$kw = $this->db->escape(trim($keyword));
-				if ($kw !== '')
-					$keyword_filter .= $this->db->placehold("AND (p.name LIKE '%$kw%' OR p.meta_keywords LIKE '%$kw%' OR p.id in (SELECT product_id FROM __variants WHERE sku LIKE '%$kw%'))");
+				if ($kw !== '') {
+					$keywordFilter .= $this->db->placehold("AND (p.name LIKE '%$kw%' OR p.meta_keywords LIKE '%$kw%' OR p.id in (SELECT product_id FROM __variants WHERE sku LIKE '%$kw%'))");
+				}
 			}
 		}
 
 		if (isset($filter['variants'])) {
-			$variant_filter = $this->db->placehold(' AND pv.name in(?@)', (array)$filter['variants']);
-			$variant_join = 'LEFT JOIN __variants pv ON pv.product_id = p.id';
+			$variantFilter = $this->db->placehold(' AND pv.name IN(?@)', (array) $filter['variants']);
+			$variantJoin = 'LEFT JOIN __variants pv ON pv.product_id = p.id';
 		}
 
 		if (isset($filter['colors'])) {
-			$color_filter = $this->db->placehold(' AND pv.color in(?@)', (array)$filter['colors']);
-			$variant_join = 'LEFT JOIN __variants pv ON pv.product_id = p.id';
+			$colorFilter = $this->db->placehold(' AND pv.color IN(?@)', (array) $filter['colors']);
+			$variantJoin = 'LEFT JOIN __variants pv ON pv.product_id = p.id';
 		}
 
-		if (isset($filter['featured']))
-			$is_featured_filter = $this->db->placehold('AND p.featured=?', intval($filter['featured']));
+		if (isset($filter['featured'])) {
+			$isFeaturedFilter = $this->db->placehold('AND p.featured=?', (int) $filter['featured']);
+		}
 
-		if (!empty($filter['is_new']))
-			$is_new_filter = $this->db->placehold('AND p.is_new=?', intval($filter['is_new']));
+		if (!empty($filter['is_new'])) {
+			$isNewFilter = $this->db->placehold('AND p.is_new=?', (int) $filter['is_new']);
+		}
 
-		if (!empty($filter['is_hit']))
-			$is_hit_filter = $this->db->placehold('AND p.is_hit=?', intval($filter['is_hit']));
+		if (!empty($filter['is_hit'])) {
+			$isHitFilter = $this->db->placehold('AND p.is_hit=?', (int) $filter['is_hit']);
+		}
 
-		if (!empty($filter['to_export']))
-			$is_export_filter = $this->db->placehold('AND p.to_export=?', intval($filter['to_export']));
+		if (!empty($filter['to_export'])) {
+			$isExportFilter = $this->db->placehold('AND p.to_export=?', (int) $filter['to_export']);
+		}
 
-		if (isset($filter['in_stock']))
-			$in_stock_filter = $this->db->placehold('AND (SELECT count(*)>0 FROM __variants pv WHERE pv.product_id=p.id AND pv.price>0 AND (pv.stock IS NULL OR pv.stock>0) LIMIT 1) = ?', intval($filter['in_stock']));
+		if (isset($filter['in_stock'])) {
+			$inStockFilter = $this->db->placehold('AND (SELECT count(*)>0 FROM __variants pv WHERE pv.product_id=p.id AND pv.price>0 AND (pv.stock IS NULL OR pv.stock>0) LIMIT 1) =?', (int) $filter['in_stock']);
+		}
 
-		if (isset($filter['discounted']))
-			$discounted_filter = $this->db->placehold('AND (SELECT 1 FROM __variants pv WHERE pv.product_id=p.id AND pv.compare_price>0 LIMIT 1) = ?', intval($filter['discounted']));
+		if (isset($filter['discounted'])) {
+			$discountedFilter = $this->db->placehold('AND (SELECT 1 FROM __variants pv WHERE pv.product_id=p.id AND pv.compare_price>0 LIMIT 1) =?', (int) $filter['discounted']);
+		}
 
-		if (isset($filter['visible']))
-			$visible_filter = $this->db->placehold('AND p.visible=?', intval($filter['visible']));
+		if (isset($filter['visible'])) {
+			$visibleFilter = $this->db->placehold('AND p.visible=?', (int) $filter['visible']);
+		}
 
-		if (!empty($filter['features']) && !empty($filter['features']))
-			foreach ($filter['features'] as $feature => $value)
-				$features_filter .= $this->db->placehold('AND p.id in (SELECT product_id FROM __options WHERE feature_id=? AND translit in(?@) ) ', $feature, (array)$value);
+		if (!empty($filter['features']) && !empty($filter['features'])) {
+			foreach ($filter['features'] as $feature => $value) {
+				$featuresFilter .= $this->db->placehold('AND p.id IN(SELECT product_id FROM __options WHERE feature_id=? AND translit in(?@) ) ', $feature, (array) $value);
+			}
+		}
 
-		$currency = $this->money->get_currencies(array('enabled' => 1));
+		$currency = $this->money->getCurrencies(['enabled' => 1]);
 		$currency = reset($currency);
 
-		if (!empty($filter['min_price']) && !empty($filter['max_price']))
-			$prices = $this->db->placehold('AND p.id in(SELECT v.product_id FROM __variants v WHERE IF((v.currency_id !=' . $currency->id . ' AND v.currency_id > 0), (v.price*(SELECT rate_to FROM __currencies AS c WHERE c.id =v.currency_id)/(SELECT rate_from FROM __currencies AS c WHERE c.id = v.currency_id)), v.price) >= ? AND IF((v.currency_id !=' . $currency->id . ' AND v.currency_id > 0), (v.price*(SELECT rate_to FROM __currencies AS c WHERE c.id =v.currency_id)/(SELECT rate_from FROM __currencies AS c WHERE c.id = v.currency_id)), v.price) <= ? AND v.product_id = p.id)', intval($filter['min_price']), intval($filter['max_price']));
+		if (!empty($filter['min_price']) && !empty($filter['max_price'])) {
+			$prices = $this->db->placehold('AND p.id IN(SELECT v.product_id FROM __variants v WHERE IF((v.currency_id != ' . $currency->id . ' AND v.currency_id>0), (v.price*(SELECT rate_to FROM __currencies AS c WHERE c.id=v.currency_id)/(SELECT rate_from FROM __currencies AS c WHERE c.id=v.currency_id)), v.price) >=? AND IF((v.currency_id != ' . $currency->id . ' AND v.currency_id > 0), (v.price*(SELECT rate_to FROM __currencies AS c WHERE c.id=v.currency_id)/(SELECT rate_from FROM __currencies AS c WHERE c.id=v.currency_id)), v.price) <=? AND v.product_id=p.id)', (int) $filter['min_price'], (int) $filter['max_price']);
+		}
 
-		$lang_sql = $this->languages->get_query(array('object' => 'product'));
+		$langSql = $this->languages->getQuery(['object' => 'product']);
 
-		$query = "SELECT count(distinct p.id) as count
-				FROM __products AS p
-                $lang_sql->join
-				$category_id_filter
-				WHERE 1
-					$brand_id_filter
-					$product_id_filter
-					$keyword_filter
-					$variant_filter
-					$color_filter
-					$is_featured_filter
-					$is_new_filter
-					$is_hit_filter
-                    $is_export_filter
-					$in_stock_filter
-					$discounted_filter
-					$visible_filter
-                    $prices
-					$features_filter ";
+		$query = $this->db->placehold(
+			"SELECT COUNT(DISTINCT p.id) AS count
+			FROM __products AS p
+			$langSql->join
+			$categoryIdFilter
+			WHERE 1
+				$brandIdFilter
+				$productIdFilter
+				$keywordFilter
+				$variantFilter
+				$variantJoin
+				$colorFilter
+				$isFeaturedFilter
+				$isNewFilter
+				$isHitFilter
+				$isExportFilter
+				$inStockFilter
+				$discountedFilter
+				$visibleFilter
+				$prices
+				$featuresFilter"
+		);
 
 		if ($this->settings->cached == 1 && empty($_SESSION['admin'])) {
 			if ($result = $this->cache->get($query)) {
-				return $result; // return data from memcached
+				return $result;
 			} else {
 				if ($this->db->query($query)) {
 					$result = $this->db->result('count');
-					$this->cache->set($query, $result); // put into cache
+					$this->cache->set($query, $result);
 					return $result;
-				} else
+				} else {
 					return false;
+				}
 			}
 		} else {
-			if ($this->db->query($query))
+			if ($this->db->query($query)) {
 				return $this->db->result('count');
-			else
+			} else {
 				return false;
+			}
 		}
 	}
 
 	/**
-	 * The function returns a product by id
-	 * @param $id
-	 * @retval object
+	 * Get product
 	 */
-	public function get_product($id)
+	public function getProduct($id)
 	{
-		if (is_int($id))
-			$filter = $this->db->placehold('p.id = ?', $id);
-		else
-			$filter = $this->db->placehold('p.url = ?', $id);
+		if (is_int($id)) {
+			$filter = $this->db->placehold('p.id=?', $id);
+		} else {
+			$filter = $this->db->placehold('p.url=?', $id);
+		}
 
-		$lang_sql = $this->languages->get_query(array('object' => 'product'));
+		$langSql = $this->languages->getQuery(['object' => 'product']);
 
-		$query = "SELECT DISTINCT
-					p.id,
-					p.url,
-					p.brand_id,
-					p.name,
-					p.annotation,
-					p.body,
-					p.position,
-                    p.sale_to,
-					p.created as created,
-					p.visible, 
-                    p.to_export,
-					p.featured,
-					p.is_new,
-					p.is_hit,
-                    p.rating,
-					p.votes,
-					p.meta_title, 
-					p.meta_keywords, 
-					p.meta_description,
-                    p.last_modified,
-                    $lang_sql->fields
-				FROM __products AS p
-                $lang_sql->join
-                WHERE $filter
-                GROUP BY p.id
-                LIMIT 1";
+		$query = $this->db->placehold(
+			"SELECT DISTINCT
+				p.id,
+				p.url,
+				p.brand_id,
+				p.name,
+				p.annotation,
+				p.body,
+				p.position,
+				p.sale_to,
+				p.created AS created,
+				p.visible,
+				p.to_export,
+				p.featured,
+				p.is_new,
+				p.is_hit,
+				p.rating,
+				p.votes,
+				p.meta_title,
+				p.meta_keywords,
+				p.meta_description,
+				p.last_modified,
+				$langSql->fields
+			FROM __products AS p
+			$langSql->join
+			WHERE $filter
+			GROUP BY p.id
+			LIMIT 1"
+		);
+
 		$this->db->query($query);
-		$product = $this->db->result();
-		return $product;
+		return $this->db->result();
 	}
 
-	public function update_product($id, $product)
+	/**
+	 * Update product
+	 */
+	public function updateProduct($id, $product)
 	{
-		$product = (object)$product;
+		$product = (object) $product;
 
-		$query = $this->db->placehold("UPDATE __products SET ?%, last_modified=NOW() WHERE id in (?@) LIMIT ?", $product, (array)$id, count((array)$id));
+		$query = $this->db->placehold("UPDATE __products SET ?%, last_modified=NOW() WHERE id IN(?@) LIMIT ?", $product, (array) $id, count((array) $id));
+
 		if ($this->db->query($query)) {
-			$result = $this->languages->get_description($product, 'product');
+			$result = $this->languages->getDescription($product, 'product');
+
 			if (!empty($result->description)) {
-				$this->languages->action_description($id, $result->description, 'product', $this->languages->lang_id());
+				$this->languages->actionDescription($id, $result->description, 'product', $this->languages->langId());
 			}
+
 			return $id;
 		} else {
 			return false;
 		}
 	}
 
-	public function add_product($product)
+	/**
+	 * Add product
+	 */
+	public function addProduct($product)
 	{
 		$product = (array) $product;
 
@@ -425,383 +445,542 @@ class Products extends Turbo
 			$product['url'] = strtolower(preg_replace("/[^0-9a-zа-я\-]+/ui", '', $product['url']));
 		}
 
-		// If there is a product with this URL, add a number to it
-		while ($this->get_product((string)$product['url'])) {
-			if (preg_match('/(.+)_([0-9]+)$/', $product['url'], $parts))
+		while ($this->getProduct((string)$product['url'])) {
+			if (preg_match('/(.+)_([0-9]+)$/', $product['url'], $parts)) {
 				$product['url'] = $parts[1] . '_' . ($parts[2] + 1);
-			else
+			} else {
 				$product['url'] = $product['url'] . '_2';
+			}
 		}
 
-		$product = (object)$product;
-		$result = $this->languages->get_description($product, 'product');
-		if (!empty($result->data)) $product = $result->data;
+		$product = (object) $product;
+
+		$result = $this->languages->getDescription($product, 'product');
+
+		if (!empty($result->data)) {
+			$product = $result->data;
+		}
 
 		if ($this->db->query("INSERT INTO __products SET ?%", $product)) {
-			$id = $this->db->insert_id();
+			$id = $this->db->insertId();
+
 			$this->db->query("UPDATE __products SET `last_modified`=NOW(), position=id WHERE id=?", $id);
 
 			if (!empty($result->description)) {
-				$this->languages->action_description($id, $result->description, 'product');
+				$this->languages->actionDescription($id, $result->description, 'product');
 			}
+
 			return $id;
-		} else
+		} else {
 			return false;
+		}
 	}
 
-	/*
-	*
-	* Delete product
-	*
-	*/
-	public function delete_product($id)
+	/**
+	 * Delete product
+	 */
+	public function deleteProduct($id)
 	{
 		if (!empty($id)) {
+			$variants = $this->variants->getVariants(['product_id' => $id]);
 
-			// Delete variants
-			$variants = $this->variants->get_variants(array('product_id' => $id));
-			foreach ($variants as $v)
-				$this->variants->delete_variant($v->id);
+			foreach ($variants as $variant) {
+				$this->variants->deleteVariant($variant->id);
+			}
 
-			// Delete images
-			$images = $this->get_images(array('product_id' => $id));
-			foreach ($images as $i)
-				$this->delete_image($i->id);
+			$images = $this->getImages(['product_id' => $id]);
 
-			// Delete video
+			foreach ($images as $image) {
+				$this->deleteImage($image->id);
+			}
+
 			$query = $this->db->placehold('DELETE FROM __products_videos WHERE product_id=?', $id);
 			$this->db->query($query);
 
-			// Delete categories
-			$categories = $this->categories->get_categories(array('product_id' => $id));
-			foreach ($categories as $c)
-				$this->categories->delete_product_category($id, $c->id);
+			$categories = $this->categories->getCategories(['product_id' => $id]);
 
-			// Delete features
-			$options = $this->features->get_options(array('product_id' => $id));
-			foreach ($options as $o)
-				$this->features->delete_option($id, $o->feature_id);
+			foreach ($categories as $category) {
+				$this->categories->deleteProductCategory($id, $category->id);
+			}
 
-			// Delete related products
-			$related = $this->get_related_products($id);
-			foreach ($related as $r)
-				$this->delete_related_product($id, $r->related_id);
+			$options = $this->features->getOptions(['product_id' => $id]);
 
-			// Delete the product from related to others
-			$query = $this->db->placehold("DELETE FROM __related_products WHERE related_id=?", intval($id));
+			foreach ($options as $option) {
+				$this->features->deleteOption($id, $option->feature_id);
+			}
+
+			$related = $this->getRelatedProducts([$id]);
+
+			foreach ($related as $relation) {
+				$this->deleteRelatedProduct($id, $relation->related_id);
+			}
+
+			$query = $this->db->placehold("DELETE FROM __related_products WHERE related_id=?", (int) $id);
 			$this->db->query($query);
 
-			/// Delete comments
-			$comments = $this->comments->get_comments(array('object_id' => $id, 'type' => 'product'));
-			foreach ($comments as $c)
-				$this->comments->delete_comment($c->id);
+			$recommended = $this->getRecommendedProducts([$id]);
 
-			// Delete purchases
-			$this->db->query('UPDATE __purchases SET product_id=NULL WHERE product_id=?', intval($id));
+			foreach ($recommended as $r) {
+				$this->deleteRelatedProduct($id, $r->recommended_id);
+			}
 
-			// Delete languages
-			$query = $this->db->placehold("DELETE FROM __lang_products WHERE product_id=?", intval($id));
+			$query = $this->db->placehold("DELETE FROM __recommended_products WHERE recommended_id=?", (int) $id);
 			$this->db->query($query);
 
-			// Delete product
-			$query = $this->db->placehold("DELETE FROM __products WHERE id=? LIMIT 1", intval($id));
-			if ($this->db->query($query))
+			$comments = $this->comments->getComments(['object_id' => $id, 'type' => 'product']);
+
+			foreach ($comments as $comment) {
+				$this->comments->deleteComment($comment->id);
+			}
+
+			$this->db->query('UPDATE __purchases SET product_id=NULL WHERE product_id=?', (int) $id);
+			$query = $this->db->placehold("DELETE FROM __lang_products WHERE product_id=?", (int) $id);
+			$this->db->query($query);
+
+			$query = $this->db->placehold("DELETE FROM __products WHERE id=? LIMIT 1", (int) $id);
+
+			if ($this->db->query($query)) {
 				return true;
+			}
 		}
+
 		return false;
 	}
 
-	public function duplicate_product($id)
+	/**
+	 * Duplicate product
+	 */
+	public function duplicateProduct($id)
 	{
-		$product = $this->get_product($id);
+		$product = $this->getProduct($id);
 		$product->id = null;
 		$product->external_id = '';
 		$product->created = null;
 
-		// Shift products forward and paste copy to adjacent position
 		$this->db->query('UPDATE __products SET position=position+1 WHERE position>?', $product->position);
-		$new_id = $this->products->add_product($product);
-		$this->db->query('UPDATE __products SET position=? WHERE id=?', $product->position + 1, $new_id);
+		$newId = $this->products->addProduct($product);
+		$this->db->query('UPDATE __products SET position=? WHERE id=?', $product->position + 1, $newId);
+		$this->db->query('UPDATE __products SET url="" WHERE id=?', $newId);
 
-		// Clear URL
-		$this->db->query('UPDATE __products SET url="" WHERE id=?', $new_id);
+		$categories = $this->categories->getProductCategories($id);
 
-		// Duplicate categories
-		$categories = $this->categories->get_product_categories($id);
-		foreach ($categories as $c)
-			$this->categories->add_product_category($new_id, $c->category_id);
+		foreach ($categories as $category) {
+			$this->categories->addProductCategory($newId, $category->category_id);
+		}
 
-		// Duplicate images
-		$images = $this->get_images(array('product_id' => $id));
-		foreach ($images as $image)
-			$this->add_image($new_id, $image->filename);
+		$images = $this->getImages(['product_id' => $id]);
 
-		// Duplicate video
-		$videos = $this->get_videos(array('product_id' => $id));
-		foreach ($videos as $video)
-			$this->add_product_video($new_id, $video->link);
+		foreach ($images as $image) {
+			$this->addImage($newId, $image->filename);
+		}
 
-		// Duplicate variants
-		$variants = $this->variants->get_variants(array('product_id' => $id));
+		$videos = $this->getVideos(['product_id' => $id]);
+
+		foreach ($videos as $video) {
+			$this->addProductVideo($newId, $video->link);
+		}
+
+		$variants = $this->variants->getVariants(['product_id' => $id]);
+
 		foreach ($variants as $variant) {
-			$variant->product_id = $new_id;
+			$variant->product_id = $newId;
 			unset($variant->id);
-			if ($variant->infinity)
+
+			if ($variant->infinity) {
 				$variant->stock = null;
+			}
+
 			unset($variant->infinity);
 
 			if ($variant->oprice) {
 				$variant->price = $variant->oprice;
 			}
+
 			if ($variant->compare_oprice) {
 				$variant->compare_price = $variant->compare_oprice;
 			}
+
 			unset($variant->oprice);
 			unset($variant->compare_oprice);
 			$variant->external_id = '';
-			$this->variants->add_variant($variant);
+			$this->variants->addVariant($variant);
 		}
 
-		// Duplicate features
-		$options = $this->features->get_options(array('product_id' => $id));
-		foreach ($options as $o)
-			$this->features->update_option($new_id, $o->feature_id, $o->value);
+		$options = $this->features->getOptions(['product_id' => $id]);
 
-		// Duplicate related products
-		$related = $this->get_related_products($id);
-		foreach ($related as $r)
-			$this->add_related_product($new_id, $r->related_id);
+		foreach ($options as $option) {
+			$this->features->updateOption($newId, $option->feature_id, $option->value);
+		}
 
-		$this->multi_duplicate_product($id, $new_id);
-		return $new_id;
+		$related = $this->getRelatedProducts([$id]);
+
+		foreach ($related as $r) {
+			$this->addRelatedProduct($newId, $r->related_id);
+		}
+
+		$recommended = $this->getRecommendedProducts([$id]);
+
+		foreach ($recommended as $r) {
+			$this->addRecommendedProduct($newId, $r->recommended_id);
+		}
+
+		$this->multiDuplicateProduct($id, $newId);
+
+		return $newId;
 	}
 
-	public function get_related_products($product_id = array())
+	/**
+	 * Get related products
+	 */
+	public function getRelatedProducts($productIds = [])
 	{
-		if (empty($product_id))
-			return array();
+		if (empty($productIds)) {
+			return [];
+		}
 
-		$product_id_filter = $this->db->placehold('AND product_id in(?@)', (array)$product_id);
+		$productIdFilter = $this->db->placehold('AND product_id IN(?@)', $productIds);
 
-		$query = $this->db->placehold("SELECT product_id, related_id, position
-					FROM __related_products
-					WHERE 
-					1
-					$product_id_filter   
-					ORDER BY position       
-					");
+		$query = $this->db->placehold("SELECT product_id, related_id, position FROM __related_products WHERE 1 $productIdFilter ORDER BY position");
+		$this->db->query($query);
+
+		return $this->db->results();
+	}
+
+	/**
+	 * Get related products id
+	 */
+	public function getRelatedProductIds($productIds = [])
+	{
+		$relatedProductIds = [];
+
+		if (empty($productIds)) {
+			return $relatedProductIds;
+		}
+
+		$productIdFilter = $this->db->placehold('AND product_id IN(?@)', (array) $productIds);
+
+		$query = $this->db->placehold("SELECT DISTINCT related_id FROM __related_products WHERE 1 $productIdFilter");
+		$this->db->query($query);
+
+		$results = $this->db->results();
+
+		foreach ($results as $result) {
+			$relatedProductIds[] = $result->related_id;
+		}
+
+		return $relatedProductIds;
+	}
+
+	/**
+	 * Add related product
+	 */
+	public function addRelatedProduct($productId, $relatedId, $position = 0)
+	{
+		$query = $this->db->placehold('INSERT IGNORE INTO __related_products SET product_id=?, related_id=?, position=?', $productId, $relatedId, $position);
+		$this->db->query($query);
+
+		return $relatedId;
+	}
+
+	/**
+	 * Delete related product
+	 */
+	public function deleteRelatedProduct($productId, $relatedId)
+	{
+		$query = $this->db->placehold("DELETE FROM __related_products WHERE product_id=? AND related_id=? LIMIT 1", $productId, $relatedId);
+		$this->db->query($query);
+	}
+
+	/**
+	 * Get recommended products
+	 */
+	public function getRecommendedProducts($productIds = [])
+	{
+		if (empty($productIds)) {
+			return [];
+		}
+
+		$productIdFilter = $this->db->placehold('AND product_id IN(?@)', $productIds);
+
+		$query = $this->db->placehold("SELECT product_id, recommended_id, position FROM __recommended_products WHERE 1 $productIdFilter ORDER BY position");
+		$this->db->query($query);
+
+		return $this->db->results();
+	}
+
+	/**
+	 * Add recommended product 
+	 */
+	public function addRecommendedProduct($productId, $recommendedId, $position = 0)
+	{
+		$query = $this->db->placehold("INSERT IGNORE INTO __recommended_products SET product_id=?, recommended_id=?, position=?", $productId, $recommendedId, $position);
+		$this->db->query($query);
+
+		return $recommendedId;
+	}
+
+	/**
+	 * Delete recommended product
+	 */
+	public function deleteRecommendedProduct($productId, $recommendedId)
+	{
+		$query = $this->db->placehold("DELETE FROM __recommended_products WHERE product_id=? AND recommended_id=? LIMIT 1", (int) $productId, (int) $recommendedId);
+		$this->db->query($query);
+	}
+
+	/**
+	 * Get images
+	 */
+	function getImages($filter = [])
+	{
+		$productIdFilter = '';
+		$groupBy = '';
+
+		if (!empty($filter['product_id'])) {
+			$productIdFilter = $this->db->placehold('AND i.product_id IN(?@)', (array) $filter['product_id']);
+		}
+
+		$query = $this->db->placehold(
+			"SELECT i.id, i.product_id, i.name, i.filename, i.position
+			FROM __images AS i 
+			WHERE 1 $productIdFilter $groupBy 
+			ORDER BY i.product_id, i.position"
+		);
 
 		$this->db->query($query);
 		return $this->db->results();
 	}
 
-	// The function returns related products
-	public function add_related_product($product_id, $related_id, $position = 0)
+	/**
+	 * Add image
+	 */
+	public function addImage($productId, $filename, $name = '')
 	{
-		$query = $this->db->placehold("INSERT IGNORE INTO __related_products SET product_id=?, related_id=?, position=?", $product_id, $related_id, $position);
-		$this->db->query($query);
-		return $related_id;
-	}
-
-	// Deleting a related product
-	public function delete_related_product($product_id, $related_id)
-	{
-		$query = $this->db->placehold("DELETE FROM __related_products WHERE product_id=? AND related_id=? LIMIT 1", intval($product_id), intval($related_id));
-		$this->db->query($query);
-	}
-
-	function get_images($filter = array())
-	{
-		$product_id_filter = '';
-		$group_by = '';
-
-		if (!empty($filter['product_id']))
-			$product_id_filter = $this->db->placehold('AND i.product_id in(?@)', (array)$filter['product_id']);
-
-		// Images
-		$query = $this->db->placehold("SELECT i.id, i.product_id, i.name, i.filename, i.position
-									FROM __images AS i WHERE 1 $product_id_filter $group_by ORDER BY i.product_id, i.position");
-		$this->db->query($query);
-		return $this->db->results();
-	}
-
-	public function add_image($product_id, $filename, $name = '')
-	{
-		$query = $this->db->placehold("SELECT id FROM __images WHERE product_id=? AND filename=?", $product_id, $filename);
+		$query = $this->db->placehold("SELECT id FROM __images WHERE product_id=? AND filename=?", $productId, $filename);
 		$this->db->query($query);
 		$id = $this->db->result('id');
+
 		if (empty($id)) {
-			$query = $this->db->placehold("INSERT INTO __images SET product_id=?, filename=?", $product_id, $filename);
+			$query = $this->db->placehold("INSERT INTO __images SET product_id=?, filename=?, name=?", $productId, $filename, $name);
 			$this->db->query($query);
-			$id = $this->db->insert_id();
+			$id = $this->db->insertId();
+
 			$query = $this->db->placehold("UPDATE __images SET position=id WHERE id=?", $id);
 			$this->db->query($query);
 		}
-		return ($id);
+
+		return $id;
 	}
 
-	public function update_image($id, $image)
+	/**
+	 * Update image
+	 */
+	public function updateImage($id, $image)
 	{
-
 		$query = $this->db->placehold("UPDATE __images SET ?% WHERE id=?", $image, $id);
 		$this->db->query($query);
 
-		return ($id);
+		return $id;
 	}
 
-	public function delete_image($id)
+	/**
+	 * Delete image
+	 */
+	public function deleteImage($id)
 	{
 		$query = $this->db->placehold("SELECT filename FROM __images WHERE id=?", $id);
 		$this->db->query($query);
+
 		$filename = $this->db->result('filename');
+
 		$query = $this->db->placehold("DELETE FROM __images WHERE id=? LIMIT 1", $id);
 		$this->db->query($query);
-		$query = $this->db->placehold("SELECT count(*) as count FROM __images WHERE filename=? LIMIT 1", $filename);
+
+		$query = $this->db->placehold("SELECT count(*) AS count FROM __images WHERE filename=? LIMIT 1", $filename);
 		$this->db->query($query);
+
 		$count = $this->db->result('count');
+
 		if ($count == 0) {
 			$file = pathinfo($filename, PATHINFO_FILENAME);
 			$ext = pathinfo($filename, PATHINFO_EXTENSION);
 			$webp = 'webp';
 
-			// Remove all resizes
-			$rezised_images = glob($this->config->root_dir . $this->config->resized_images_dir . $file . ".*x*." . $ext);
-			if (is_array($rezised_images))
-				foreach (glob($this->config->root_dir . $this->config->resized_images_dir . $file . ".*x*." . $ext) as $f)
-					@unlink($f);
+			$resizedImages = glob($this->config->root_dir . $this->config->resized_images_dir . $file . "*." . $ext);
 
-			$rezised_images = glob($this->config->root_dir . $this->config->resized_images_dir . $file . ".*x*." . $webp);
-			if (is_array($rezised_images))
-				foreach (glob($this->config->root_dir . $this->config->resized_images_dir . $file . ".*x*." . $webp) as $f)
-					@unlink($f);
+			if (is_array($resizedImages)) {
+				foreach ($resizedImages as $f) {
+					if (is_file($f)) {
+						unlink($f);
+					}
+				}
+			}
 
-			@unlink($this->config->root_dir . $this->config->original_images_dir . $filename);
+			$resizedImages = glob($this->config->root_dir . $this->config->resized_images_dir . $file . "*." . $webp);
+
+			if (is_array($resizedImages)) {
+				foreach ($resizedImages as $f) {
+					if (is_file($f)) {
+						unlink($f);
+					}
+				}
+			}
+
+			unlink($this->config->root_dir . $this->config->original_images_dir . $filename);
 		}
 	}
 
-	/*
-	*
-	* Next product
-	*
-	*/
-	public function get_next_product($id)
+	/**
+	 * Get next product
+	 */
+	public function getNextProduct($id)
 	{
-		$this->db->query("SELECT position FROM __products WHERE id=? LIMIT 1", $id);
-		$position = $this->db->result('position');
+		$this->db->query("SELECT position FROM __products WHERE id = ? LIMIT 1", $id);
+		$position = (int) $this->db->result('position');
 
 		$this->db->query("SELECT pc.category_id FROM __products_categories pc WHERE product_id=? ORDER BY position LIMIT 1", $id);
-		$category_id = $this->db->result('category_id');
+		$categoryId = (int) $this->db->result('category_id');
 
-		$query = $this->db->placehold("SELECT id FROM __products p, __products_categories pc
-										WHERE pc.product_id=p.id AND p.position>? 
-										AND pc.position=(SELECT MIN(pc2.position) FROM __products_categories pc2 WHERE pc.product_id=pc2.product_id)
-										AND pc.category_id=? 
-										AND p.visible ORDER BY p.position limit 1", $position, $category_id);
+		$query = $this->db->placehold(
+			"SELECT id 
+			FROM __products p, __products_categories pc
+			WHERE pc.product_id=p.id AND p.position>? 
+			AND pc.position=(SELECT MIN(pc2.position) FROM __products_categories pc2 WHERE pc.product_id=pc2.product_id)
+			AND pc.category_id=? 
+			AND p.visible 
+			ORDER BY p.position 
+			LIMIT 1",
+			$position,
+			$categoryId
+		);
+
 		$this->db->query($query);
-
-		return $this->get_product((int)$this->db->result('id'));
+		return $this->getProduct((int) $this->db->result('id'));
 	}
 
-	/*
-	*
-	* Previous product
-	*
-	*/
-	public function get_prev_product($id)
+	/**
+	 * Get previous product
+	 */
+	public function getPrevProduct($id)
 	{
 		$this->db->query("SELECT position FROM __products WHERE id=? LIMIT 1", $id);
-		$position = $this->db->result('position');
+		$position = (int) $this->db->result('position');
 
-		$this->db->query("SELECT pc.category_id FROM __products_categories pc WHERE product_id=? ORDER BY position LIMIT 1", $id);
-		$category_id = $this->db->result('category_id');
+		$this->db->query("SELECT pc.category_id FROM __products_categories pc  WHERE product_id=? ORDER BY position LIMIT 1", $id);
+		$categoryId = (int) $this->db->result('category_id');
 
-		$query = $this->db->placehold("SELECT id FROM __products p, __products_categories pc
-										WHERE pc.product_id=p.id AND p.position<? 
-										AND pc.position=(SELECT MIN(pc2.position) FROM __products_categories pc2 WHERE pc.product_id=pc2.product_id)
-										AND pc.category_id=? 
-										AND p.visible ORDER BY p.position DESC limit 1", $position, $category_id);
+		$query = $this->db->placehold(
+			"SELECT id 
+			FROM __products p, __products_categories pc
+			WHERE pc.product_id=p.id AND p.position<? 
+			AND pc.position=(SELECT MIN(pc2.position) FROM __products_categories pc2 WHERE pc.product_id=pc2.product_id)
+			AND pc.category_id=? 
+			AND p.visible 
+			ORDER BY p.position DESC 
+			LIMIT 1",
+			$position,
+			$categoryId
+		);
+
 		$this->db->query($query);
-
-		return $this->get_product((int)$this->db->result('id'));
+		return $this->getProduct((int) $this->db->result('id'));
 	}
 
-	function get_videos($filter = array())
+	/**
+	 * Get videos 
+	 */
+	function getVideos($filter = [])
 	{
-		$product_id_filter = '';
-		$group_by = '';
-		$videos = array();
+		$productIdFilter = '';
+		$groupBy = '';
+		$videos = [];
 
-		if (!empty($filter['product_id']))
-			$product_id_filter = $this->db->placehold('AND product_id in(?@)', (array)$filter['product_id']);
+		if (!empty($filter['product_id'])) {
+			$productIdFilter = $this->db->placehold('AND product_id IN(?@)', (array) $filter['product_id']);
+		}
 
-		// Images
-		$query = $this->db->placehold("SELECT *
-									FROM __products_videos WHERE 1 $product_id_filter $group_by ORDER BY product_id, position");
+		$query = $this->db->placehold("SELECT * FROM __products_videos WHERE 1 $productIdFilter $groupBy ORDER BY product_id, position");
 		$this->db->query($query);
 		$results = $this->db->results();
-		foreach ($results as &$v) {
-			preg_match('~v=([A-Za-z0-9_-]+)~', $v->link, $match);
-			$v->vid = $match[1];
-			$videos[] = $v;
+
+		foreach ($results as &$video) {
+			preg_match('~v=([A-Za-z0-9_-]+)~', $video->link, $match);
+			$video->vid = $match[1];
+			$videos[] = $video;
 		}
+
 		return $videos;
 	}
 
-	public function add_product_video($product_id, $link, $position = 0)
+	/**
+	 * Add video
+	 */
+	public function addProductVideo($productId, $link, $position = 0)
 	{
-		$query = $this->db->placehold("SELECT id FROM __products_videos WHERE product_id=? AND link=?", $product_id, $link);
+		$query = $this->db->placehold("SELECT id FROM __products_videos WHERE product_id=? AND link=?", $productId, $link);
 		$this->db->query($query);
 		$id = $this->db->result('id');
+
 		if (empty($id)) {
-			$query = $this->db->placehold("INSERT INTO __products_videos SET product_id=?, link=?", $product_id, $link);
+			$query = $this->db->placehold("INSERT INTO __products_videos SET product_id=?, link=?", $productId, $link);
 			$this->db->query($query);
-			$id = $this->db->insert_id();
+			$id = $this->db->insertId();
 			$query = $this->db->placehold("UPDATE __products_videos SET position=id WHERE id=?", $id);
 			$this->db->query($query);
 		}
-		return ($id);
+
+		return $id;
 	}
 
-	public function multi_duplicate_product($id, $new_id)
+	/**
+	 * Duplicate product
+	 */
+	public function multiDuplicateProduct($id, $newId)
 	{
-		$lang_id = $this->languages->lang_id();
-		if (!empty($lang_id)) {
-			$languages = $this->languages->get_languages();
-			$prd_fields = $this->languages->get_fields('products');
-			$variant_fields = $this->languages->get_fields('variants');
+		$langId = $this->languages->langId();
+
+		if (!empty($langId)) {
+			$languages = $this->languages->getLanguages();
+			$prdFields = $this->languages->getFields('products');
+			$variantFields = $this->languages->getFields('variants');
+
 			foreach ($languages as $language) {
-				if ($language->id != $lang_id) {
-					$this->languages->set_lang_id($language->id);
-					//Product
-					if (!empty($prd_fields)) {
-						$old_prd = $this->get_product($id);
-						$upd_prd = new stdClass();
-						foreach ($prd_fields as $field) {
-							$upd_prd->{$field} = $old_prd->{$field};
+				if ($language->id != $langId) {
+					$this->languages->setLangId($language->id);
+					if (!empty($prdFields)) {
+						$oldPrd = $this->getProduct($id);
+						$updPrd = new stdClass();
+
+						foreach ($prdFields as $field) {
+							$updPrd->{$field} = $oldPrd->{$field};
 						}
-						$this->update_product($new_id, $upd_prd);
+
+						$updPrd = get_object_vars($updPrd);
+						$this->updateProduct($newId, $updPrd);
 					}
 
-					// Duplicate variants
-					if (!empty($variant_fields)) {
-						$variants = $this->variants->get_variants(array('product_id' => $new_id));
-						$old_variants = $this->variants->get_variants(array('product_id' => $id));
-						foreach ($old_variants as $i => $old_variant) {
-							$upd_variant = new stdClass();
-							foreach ($variant_fields as $field) {
-								$upd_variant->{$field} = $old_variant->{$field};
+					if (!empty($variantFields)) {
+						$variants = $this->variants->getVariants(['product_id' => $newId]);
+						$oldVariants = $this->variants->getVariants(['product_id' => $id]);
+
+						foreach ($oldVariants as $i => $oldVariant) {
+							$updVariant = new stdClass();
+
+							foreach ($variantFields as $field) {
+								$updVariant->{$field} = $oldVariant->{$field};
 							}
-							$this->variants->update_variant($variants[$i]->id, $upd_variant);
+
+							$this->variants->updateVariant($variants[$i]->id, $updVariant);
 						}
 					}
 
-					// Duplicate features
-					$options = $this->features->get_options(array('product_id' => $id));
-					foreach ($options as $o) {
-						$this->features->update_option($new_id, $o->feature_id, $o->value);
+					$options = $this->features->getOptions(['product_id' => $id]);
+
+					foreach ($options as $option) {
+						$this->features->updateOption($newId, $option->feature_id, $option->value);
 					}
 
-					$this->languages->set_lang_id($lang_id);
+					$this->languages->setLangId($langId);
 				}
 			}
 		}

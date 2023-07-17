@@ -2,11 +2,9 @@
 
 require_once('api/Turbo.php');
 
-// This class selects a module depending on the Section parameter and displays it on the screen
 class IndexAdmin extends Turbo
 {
-	// Correspondence of modules and names of the corresponding rights
-	private $modules_permissions = array(
+	private $modules_permissions = [
 		'DashboardAdmin'            => 'dashboard',
 		'ProductsAdmin'             => 'products',
 		'ProductAdmin'              => 'products',
@@ -37,7 +35,7 @@ class IndexAdmin extends Turbo
 		'ArticlesAdmin'             => 'blog',
 		'ArticleAdmin'              => 'blog',
 		'CommentsAdmin'             => 'comments',
-		'CommentAdmin'       		=> 'comments',
+		'CommentAdmin'              => 'comments',
 		'FeedbacksAdmin'            => 'feedbacks',
 		'CallbacksAdmin'            => 'callbacks',
 		'SubscribesAdmin'           => 'subscribes',
@@ -76,76 +74,73 @@ class IndexAdmin extends Turbo
 		'LanguagesAdmin'            => 'languages',
 		'TranslationAdmin'          => 'languages',
 		'TranslationsAdmin'         => 'languages'
-	);
+	];
 
-	// Constructor
 	public function __construct()
 	{
-		// Calling the base class constructor
 		parent::__construct();
 
-		// Translation of the admin panel
-		$backend_translations = $this->backend_translations;
+		$backendTranslations = $this->backendTranslations;
 		$file = "turbo/lang/" . $this->settings->lang . ".php";
+
 		if (!file_exists($file)) {
 			foreach (glob("turbo/lang/??.php") as $f) {
 				$file = "turbo/lang/" . pathinfo($f, PATHINFO_FILENAME) . ".php";
 				break;
 			}
 		}
+
 		require_once($file);
 
-		$this->design->set_templates_dir('turbo/design/html');
-		$this->design->set_compiled_dir('turbo/design/compiled');
+		$this->design->setTemplatesDir('turbo/design/html');
+		$this->design->setCompiledDir('turbo/design/compiled');
 
-		// JS functions 
-		$this->design->smarty->registerPlugin('block', 'js', array($this, 'add_javascript_block'));
-		$this->design->smarty->registerPlugin('function', 'unset_js', array($this, 'unset_javascript_function'));
-		$this->design->smarty->registerPlugin('function', 'javascript', array($this, 'print_javascript'));
+		$this->design->smarty->registerPlugin('block', 'js', [$this, 'addJavascriptBlock']);
+		$this->design->smarty->registerPlugin('function', 'unset_js', [$this, 'unsetJavascriptFunction']);
+		$this->design->smarty->registerPlugin('function', 'javascript', [$this, 'printJavascript']);
 
-		// CSS functions
-		$this->design->smarty->registerPlugin('block', 'css', array($this, 'add_stylesheet_block'));
-		$this->design->smarty->registerPlugin('function', 'unset_css', array($this, 'unset_stylesheet_function'));
-		$this->design->smarty->registerPlugin('function', 'stylesheet', array($this, 'print_stylesheet'));
+		$this->design->smarty->registerPlugin('block', 'css', [$this, 'addStylesheetBlock']);
+		$this->design->smarty->registerPlugin('function', 'unset_css', [$this, 'unsetStylesheetFunction']);
+		$this->design->smarty->registerPlugin('function', 'stylesheet', [$this, 'printStylesheet']);
 
 		$this->design->assign('seo', $this->seo);
 		$this->design->assign('settings', $this->settings);
-		$this->design->assign('config',	$this->config);
+		$this->design->assign('config',  $this->config);
 
-		$is_mobile = $this->design->is_mobile();
-		$is_tablet = $this->design->is_tablet();
-		$this->design->assign('is_mobile', $is_mobile);
-		$this->design->assign('is_tablet', $is_tablet);
+		$isMobile = $this->design->isMobile();
+		$isTablet = $this->design->isTablet();
+		$this->design->assign('is_mobile', $isMobile);
+		$this->design->assign('is_tablet', $isTablet);
 
-		// Language
 		$languages = $this->languages->languages();
 		$this->design->assign('languages', $languages);
 
-		$lang_id = $this->languages->lang_id();
-		$this->design->assign('lang_id', $lang_id);
+		$langId = $this->languages->langId();
+		$this->design->assign('lang_id', $langId);
 
-		$lang_label = '';
-		$lang_link = '';
-		if ($lang_id && $languages) $lang_label = $languages[$lang_id]->label;
+		$langLabel = '';
+		$langLink = '';
 
-		$first_lang = $this->languages->languages();
-		$first_lang = reset($first_lang);
-		if (isset($first_lang->id) && ($first_lang->id != $lang_id)) {
-			$lang_link = $lang_label . '/';
+		if ($langId && $languages) {
+			$langLabel = $languages[$langId]->label;
 		}
 
-		$this->design->assign('lang_label', $lang_label);
-		$this->design->assign('lang_link', $lang_link);
+		$firstLang = $this->languages->languages();
+		$firstLang = reset($firstLang);
 
-		// Administrator
-		$this->manager = $this->managers->get_manager();
+		if (isset($firstLang->id) && ($firstLang->id != $langId)) {
+			$langLink = $langLabel . '/';
+		}
+
+		$this->design->assign('lang_label', $langLabel);
+		$this->design->assign('lang_link', $langLink);
+
+		$this->manager = $this->managers->getManager();
 		$this->design->assign('manager', $this->manager);
 
-		// We take the name of the module from the get-request
 		$module = $this->request->get('module', 'string');
 		$module = preg_replace("/[^A-Za-z0-9]+/", "", $module);
 
-		// If you didn't request a module, use the first allowed module
 		if (empty($module) || !is_file('turbo/' . $module . '.php')) {
 			foreach ($this->modules_permissions as $m => $p) {
 				if ($this->managers->access($p)) {
@@ -154,192 +149,210 @@ class IndexAdmin extends Turbo
 				}
 			}
 		}
-		if (empty($module))
-			$module = 'ProductsAdmin';
 
-		// We connect the file with the necessary module
+		if (empty($module)) {
+			$module = 'ProductsAdmin';
+		}
+
 		require_once('turbo/' . $module . '.php');
 
-		$this->design->assign('btr', $backend_translations);
+		$this->design->assign('btr', $backendTranslations);
 
-		// We create the corresponding module
-		if (class_exists($module))
+		if (class_exists($module)) {
 			$this->module = new $module();
-		else
+		} else {
 			die("Error creating $module class");
+		}
 	}
+
+	private $manager;
+	private $module;
 
 	function fetch()
 	{
-		$currency = $this->money->get_currency();
+		$currency = $this->money->getCurrency();
 		$this->design->assign("currency", $currency);
 
-		// Checking module access rights
-		if (
-			isset($this->modules_permissions[get_class($this->module)])
-			&& $this->managers->access($this->modules_permissions[get_class($this->module)])
-		) {
+		if (isset($this->modules_permissions[get_class($this->module)]) && $this->managers->access($this->modules_permissions[get_class($this->module)])) {
 			$content = $this->module->fetch();
 			$this->design->assign("content", $content);
 		} else {
 			$this->design->assign("content", "Permission denied");
 		}
 
-		// Counters for the top menu
-		$new_orders_counter = $this->orders->count_orders(array('status' => 0));
-		$this->design->assign("new_orders_counter", $new_orders_counter);
+		$newOrdersCounter = $this->orders->countOrders(['status' => 0]);
+		$this->design->assign('new_orders_counter', $newOrdersCounter);
 
-		$new_comments_counter = $this->comments->count_comments(array('approved' => 0));
-		$this->design->assign("new_comments_counter", $new_comments_counter);
+		$newCommentsCounter = $this->comments->countComments(['approved' => 0]);
+		$this->design->assign('new_comments_counter', $newCommentsCounter);
 
-		$new_feedbacks_counter = $this->feedbacks->count_feedbacks(array('processed' => 0));
-		$this->design->assign("new_feedbacks_counter", $new_feedbacks_counter);
+		$newFeedbacksCounter = $this->feedbacks->countFeedbacks(['processed' => 0]);
+		$this->design->assign('new_feedbacks_counter', $newFeedbacksCounter);
 
-		$new_callbacks_counter = $this->callbacks->count_callbacks(array('processed' => 0));
-		$this->design->assign("new_callbacks_counter", $new_callbacks_counter);
+		$newCallbacksCounter = $this->callbacks->countCallbacks(['processed' => 0]);
+		$this->design->assign('new_callbacks_counter', $newCallbacksCounter);
 
-		$new_subscribes_counter = $this->subscribes->count_subscribes(array('processed' => 0));
-		$this->design->assign("new_subscribes_counter", $new_subscribes_counter);
+		$newSubscribesCounter = $this->subscribes->countSubscribes(['processed' => 0]);
+		$this->design->assign('new_subscribes_counter', $newSubscribesCounter);
 
-		$this->design->assign("all_counter", $new_orders_counter + $new_comments_counter + $new_feedbacks_counter + $new_callbacks_counter + $new_subscribes_counter);
+		$totalCounter = $newOrdersCounter + $newCommentsCounter + $newFeedbacksCounter + $newCallbacksCounter + $newSubscribesCounter;
+		$this->design->assign('all_counter', $totalCounter);
 
-		// Current menu
-		$menu_id = $this->request->get('menu_id', 'integer');
-		$menus = $this->pages->get_menus();
-		$menu = $this->pages->get_menu($menu_id);
+		$menuId = $this->request->get('menu_id', 'integer');
+		$menus = $this->pages->getMenus();
+		$menu = $this->pages->getMenu($menuId);
 		$this->design->assign('menu', $menu);
 		$this->design->assign('menus', $menus);
 
-		// Create the current site wrapper (usually index.tpl) 
 		$wrapper = $this->design->smarty->getTemplateVars('wrapper');
-		if (is_null($wrapper))
-			$wrapper = 'index.tpl';
 
-		if (!empty($wrapper))
-			return $this->body = $this->design->fetch($wrapper);
-		else
-			return $this->body = $content;
+		if (is_null($wrapper)) {
+			$wrapper = 'index.tpl';
+		}
+
+		if (!empty($wrapper)) {
+			$body = $this->design->fetch($wrapper);
+			return $body;
+		} else {
+			$body = $content;
+			return $body;
+		}
 	}
 
-	/*
-    * Functions for working with javascript files
-    * Register js file(s) or code
-    */
-
-	public function add_javascript_block($params, $content, $smarty, &$repeat)
+	/**
+	 * Add JavaScript file
+	 */
+	public function addJavascriptBlock($params, $content, $smarty, &$repeat)
 	{
-		if (!isset($params['id']) || $repeat || (empty($content)) && empty($params['include']))
+		if (!isset($params['id']) || $repeat || (empty($content)) && empty($params['include'])) {
 			return false;
+		}
 
-		if (!isset($params['priority']))
+		if (!isset($params['priority'])) {
 			$params['priority'] = 10;
+		}
 
-		if (!empty($params['include']))
-			$this->js->add_files($params['id'], $params['include'], $params['priority']);
+		if (!empty($params['include'])) {
+			$this->js->addFiles($params['id'], $params['include'], $params['priority']);
+		}
 
-		if (!empty($content))
-			$this->js->add_code($params['id'], $content, $params['priority']);
+		if (!empty($content)) {
+			$this->js->addCode($params['id'], $content, $params['priority']);
+		}
 
 		if (!empty($params['render'])) {
-			if (!isset($params['minify']))
+			if (!isset($params['minify'])) {
 				$params['minify'] = null;
+			}
 
-			if (!isset($params['combine']))
+			if (!isset($params['combine'])) {
 				$params['combine'] = true;
+			}
 
 			return $this->js->render($params['id'], $params['minify'], $params['combine']);
 		}
 	}
 
-	/*
-    * Unregister js file(s) or code
-    */
-
-	public function unset_javascript_function($params, $smarty)
+	/**
+	 * Unregister JavaScript file
+	 */
+	public function unsetJavascriptFunction($params, $smarty)
 	{
-		if (!isset($params['id']))
+		if (!isset($params['id'])) {
 			return false;
+		}
 
 		$this->js->unplug($params['id']);
 	}
 
-	/*
-    * Output of packed js file 
-    */
-
-	public function print_javascript($params)
+	/**
+	 * Render packed JavaScript file
+	 */
+	public function printJavascript($params)
 	{
-		if (!isset($params['id']))
+		if (!isset($params['id'])) {
 			$params['id'] = null;
+		}
 
-		if (!isset($params['combine']))
+		if (!isset($params['combine'])) {
 			$params['combine'] = true;
+		}
 
-		if (!isset($params['minify']))
+		if (!isset($params['minify'])) {
 			$params['minify'] = null;
+		}
 
 		return $this->js->render($params['id'], $params['minify'], $params['combine']);
 	}
 
-	/*
-    * Functions for working with style files
-    * Register css file(s) or code 
-    */
-
-	public function add_stylesheet_block($params, $content, $smarty, &$repeat)
+	/**
+	 * Register css file
+	 */
+	public function addStylesheetBlock($params, $content, $smarty, &$repeat)
 	{
-		if (!isset($params['id']) || $repeat || (empty($content)) && empty($params['include']))
+		if (!isset($params['id']) || $repeat || (empty($content)) && empty($params['include'])) {
 			return false;
+		}
 
-		if (!isset($params['priority']))
+		if (!isset($params['priority'])) {
 			$params['priority'] = 10;
+		}
 
-		if (!isset($params['less']))
+		if (!isset($params['less'])) {
 			$params['less'] = false;
+		}
 
-		if (!empty($params['include']))
-			$this->css->add_files($params['id'], $params['include'], $params['priority'], $params['less']);
+		if (!empty($params['include'])) {
+			$this->css->addFiles($params['id'], $params['include'], $params['priority'], $params['less']);
+		}
 
-		if (!empty($content))
-			$this->css->add_code($params['id'], $content, $params['priority'], $params['less']);
+		if (!empty($content)) {
+			$this->css->addCode($params['id'], $content, $params['priority'], $params['less']);
+		}
 
 		if (!empty($params['render'])) {
-			if (!isset($params['minify']))
+			if (!isset($params['minify'])) {
 				$params['minify'] = null;
+			}
 
-			if (!isset($params['combine']))
+			if (!isset($params['combine'])) {
 				$params['combine'] = true;
+			}
 
 			return $this->css->render($params['id'], $params['minify'], $params['combine']);
 		}
 	}
 
-	/*
-    * Unregister css file(s) or code
-    */
-
-	public function unset_stylesheet_function($params, $smarty)
+	/**
+	 * Unregisters CSS file
+	 */
+	public function unsetStylesheetFunction($params, $smarty)
 	{
-		if (!isset($params['id']))
+		if (!isset($params['id'])) {
 			return false;
+		}
 
 		$this->css->unplug($params['id']);
+
+		return true;
 	}
 
-	/*
-    * Output of packed css file 
-    */
-
-	public function print_stylesheet($params)
+	/**
+	 * Print packed CSS file
+	 */
+	public function printStylesheet($params)
 	{
-		if (!isset($params['id']))
+		if (!isset($params['id'])) {
 			$params['id'] = null;
+		}
 
-		if (!isset($params['combine']))
+		if (!isset($params['combine'])) {
 			$params['combine'] = true;
+		}
 
-		if (!isset($params['minify']))
+		if (!isset($params['minify'])) {
 			$params['minify'] = null;
+		}
 
 		return $this->css->render($params['id'], $params['minify'], $params['combine']);
 	}
