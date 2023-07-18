@@ -166,23 +166,23 @@ class Articles extends Turbo
 	/**
 	 * Count articles
 	 */
-	public function countArticles($filters = [])
+	public function countArticles($filter = [])
 	{
 		$postIdFilter = '';
 		$categoryIdFilter = '';
 		$visibleFilter = '';
 		$keywordFilter = '';
 
-		if (!empty($filters['id'])) {
-			$postIdFilter = $this->db->placehold('AND a.id IN(?@)', (array) $filters['id']);
+		if (!empty($filter['id'])) {
+			$postIdFilter = $this->db->placehold('AND a.id IN(?@)', (array) $filter['id']);
 		}
 
-		if (!empty($filters['category_id'])) {
-			$categoryIdFilter = $this->db->placehold('AND a.category_id IN(?@)', (array) $filters['category_id']);
+		if (!empty($filter['category_id'])) {
+			$categoryIdFilter = $this->db->placehold('AND a.category_id IN(?@)', (array) $filter['category_id']);
 		}
 
-		if (isset($filters['visible'])) {
-			$visibleFilter = $this->db->placehold('AND a.visible=?', (int) $filters['visible']);
+		if (isset($filter['visible'])) {
+			$visibleFilter = $this->db->placehold('AND a.visible=?', (int) $filter['visible']);
 		}
 
 		if (isset($filter['keyword'])) {

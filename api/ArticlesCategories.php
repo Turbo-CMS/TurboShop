@@ -113,7 +113,7 @@ class ArticlesCategories extends Turbo
 			$category = $result->data;
 		}
 
-		$query = $this->db->placehold("UPDATE __articles_categories SET `last_modified`=NOW(), ?% WHERE id=? LIMIT 1", $category, $id);
+		$query = $this->db->placehold("UPDATE __articles_categories SET `last_modified`=NOW(), ?% WHERE id=? LIMIT 1", $category, (int) $id);
 		$this->db->query($query);
 
 		if (!empty($result->description)) {
@@ -125,6 +125,7 @@ class ArticlesCategories extends Turbo
 
 		return (int) $id;
 	}
+	
 
 	/**
 	 * Delete articles category

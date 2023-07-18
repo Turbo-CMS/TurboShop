@@ -450,14 +450,14 @@ class Image extends Turbo
 			}
 
 			foreach ($thumb as $frame) {
-				$frame->thumbnailImage($dst_w, $dst_h);
-				$frame->setImagePage($dst_w, $dst_h, 0, 0);
+				$frame->thumbnailImage((int) $dst_w, (int) $dst_h);
+				$frame->setImagePage((int) $dst_w, (int) $dst_h, 0, 0);
 
 				if ($sharpen > 0) {
 					$thumb->adaptiveSharpenImage($sharpen, $sharpen);
 				}
 
-				$canvas->compositeImage($frame, $frame->getImageCompose(), ($max_w - $dst_w) / 2, ($max_h - $dst_h) / 2);
+				$canvas->compositeImage($frame, $frame->getImageCompose(), (int) (($max_w - $dst_w) / 2), (int) (($max_h - $dst_h) / 2));
 
 				if (isset($overlay) && is_object($overlay)) {
 					$canvas->compositeImage($overlay, imagick::COMPOSITE_OVER, $watermark_x, $watermark_y);

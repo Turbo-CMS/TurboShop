@@ -5,10 +5,10 @@ require_once 'Turbo.php';
 class Config
 {
 
+	private $vars = [];
+
 	public $version = '4.3.7';
 	public $configFile = 'config/config.php';
-
-	private $vars = [];
 
 	public function __construct()
 	{
@@ -45,9 +45,9 @@ class Config
 
 		$this->vars['subfolder'] = $subdir . '/';
 		$this->vars['root_dir'] =  dirname(dirname(__FILE__)) . '/';
-		$maxUpload = (int)(ini_get('upload_max_filesize'));
-		$maxPost = (int)(ini_get('post_max_size'));
-		$memoryLimit = (int)(ini_get('memory_limit'));
+		$maxUpload = (int) (ini_get('upload_max_filesize'));
+		$maxPost = (int) (ini_get('post_max_size'));
+		$memoryLimit = (int) (ini_get('memory_limit'));
 		$this->vars['max_upload_filesize'] = min($maxUpload, $maxPost, $memoryLimit) * 1024 * 1024;
 
 		$s = stat(dirname(dirname(__FILE__)) . '/' . $this->configFile);
@@ -93,7 +93,7 @@ class Config
 	 */
 	public function token($text)
 	{
-		return md5($text . $this->vars['salt']);
+		return md5($text . $this->salt);
 	}
 
 	/**
@@ -101,7 +101,7 @@ class Config
 	 */
 	public function checkToken($text, $token)
 	{
-		if (!empty($token) && $token == $this->token($text)) {
+		if (!empty($token) && $token === $this->token($text)) {
 			return true;
 		}
 

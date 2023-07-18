@@ -313,6 +313,7 @@ class ArticlesView extends View
 		}
 
 		$body = $this->design->fetch('articles.tpl');
+		
 		return $body;
 	}
 }

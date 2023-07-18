@@ -11,7 +11,7 @@
 
 ## Download
 
-[Download distribute](https://github.com/Turbo-CMS/TurboShop/releases)
+[Installer distribution](https://github.com/Turbo-CMS/TurboShop/releases)
 
 ## How to install
 

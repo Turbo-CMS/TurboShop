@@ -19,17 +19,20 @@ class Cart extends Turbo
 		$cart->total_weight = 0;
 
 		if (!empty($_SESSION['shopping_cart'])) {
-			$session_items = $_SESSION['shopping_cart'];
-			$variants = $this->variants->getVariants(['id' => array_keys($session_items)]);
+			$sessionItems = $_SESSION['shopping_cart'];
+			$variants = $this->variants->getVariants(['id' => array_keys($sessionItems)]);
 
 			if (!empty($variants)) {
 				$items = [];
+				$productsIds = [];
 
 				foreach ($variants as $variant) {
 					$item = new stdClass();
 					$item->variant = $variant;
-					$item->amount = $session_items[$variant->id];
+					$item->amount = $sessionItems[$variant->id];
+
 					$items[$variant->id] = $item;
+
 					$productsIds[] = $variant->product_id;
 				}
 
@@ -78,6 +81,7 @@ class Cart extends Turbo
 
 				if (isset($_SESSION['coupon_code'])) {
 					$cart->coupon = $this->coupons->getCoupon($_SESSION['coupon_code']);
+
 					if ($cart->coupon && $cart->coupon->valid && $cart->total_price >= $cart->coupon->min_order_price) {
 						if ($cart->coupon->type == 'absolute') {
 							$cart->coupon_discount = $cart->total_price > $cart->coupon->value ? $cart->coupon->value : $cart->total_price;

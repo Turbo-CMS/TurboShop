@@ -59,9 +59,10 @@ class UserView extends View
         }
 
         $orders = $this->orders->getOrders(['user_id' => $this->user->id]);
+        
         $this->design->assign('orders', $orders);
-
         $this->design->assign('meta_title', $this->user->name);
+
         $body = $this->design->fetch('user.tpl');
 
         return $body;

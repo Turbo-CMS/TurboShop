@@ -151,6 +151,7 @@ class ReviewsView extends View
         header('Last-Modified: ' . $lastModified);
 
         $body = $this->design->fetch('reviews.tpl');
+        
         return $body;
     }
 }

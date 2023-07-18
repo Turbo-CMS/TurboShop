@@ -30,26 +30,26 @@
 				<i class="align-middle" data-feather="printer"></i>
 			</a>
 		</div>
-	{/if}
-	{if $labels}
-		<div class="d-none d-lg-inline-block me-3 mb-3">
-			<a class="nav-link dropdown-toggle order-dropdown-toggle" href="#" id="labelsDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{$btr->global_select_label|escape}</a>
-			<div class="dropdown-menu dropdown-menu-start js-labels-hide box-labels-hide" aria-labelledby="labelsDropdown">
-				<ul class="option-labels-box">
-					{foreach $labels as $l}
-						<li class="js-ajax-labels badge d-block text-start my-2" data-order-id="{isset($order->id)}" style="background-color: {$l->color|escape}">
-							<input id="l{isset($order->id)}_{$l->id}" type="checkbox" class="d-none" name="order_labels[]" value="{$l->id}" {if in_array($l->id, $order_labels) && is_array($order_labels)}checked=""{/if}>
-							<label for="l{isset($order->id)}_{$l->id}" class="cursor-pointer w-100"><span class="d-inline-block align-middle ms-3">{$l->name|escape}</span></label>
-						</li>
-					{/foreach}
-				</ul>
+		{if $labels}
+			<div class="d-none d-lg-inline-block me-3 mb-3">
+				<a class="nav-link dropdown-toggle order-dropdown-toggle" href="#" id="labelsDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{$btr->global_select_label|escape}</a>
+				<div class="dropdown-menu dropdown-menu-start js-labels-hide box-labels-hide" aria-labelledby="labelsDropdown">
+					<ul class="option-labels-box">
+						{foreach $labels as $l}
+							<li class="js-ajax-labels badge d-block text-start my-2" data-order-id="{$order->id}" style="background-color: {$l->color|escape}">
+								<input id="{$order->id}_{$l->id}" type="checkbox" class="d-none" name="order_labels[]" value="{$l->id}" {if in_array($l->id, $order_labels) && is_array($order_labels)}checked="" {/if}>
+								<label for="{$order->id}_{$l->id}" class="cursor-pointer w-100"><span class="d-inline-block align-middle ms-3">{$l->name|escape}</span></label>
+							</li>
+						{/foreach}
+					</ul>
+				</div>
 			</div>
-		</div>
-		<div class="d-none d-lg-inline-block mb-3">
-			<div class="js-ajax-label">
-				{include file="labels_ajax.tpl"}
+			<div class="d-none d-lg-inline-block mb-3">
+				<div class="js-ajax-label">
+					{include file="labels_ajax.tpl"}
+				</div>
 			</div>
-		</div>
+		{/if}
 	{/if}
 	{if isset($message_error)}
 		<div class="row">

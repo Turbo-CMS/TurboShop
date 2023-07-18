@@ -71,5 +71,4 @@ header('Cache-Control: must-revalidate');
 header('Pragma: no-cache');
 header('Expires: -1');
 
-// Output the JSON-encoded response
 print json_encode($responseObj);
