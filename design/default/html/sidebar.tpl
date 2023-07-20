@@ -126,10 +126,10 @@
 				<div class="card-body">
 					<select class="form-select" onchange="location.href=this.value" size="1" aria-label="Select currency">
 						{foreach from=$currencies item=c}
-							{if $c->enabled} <option value="
-								{url currency_id=$c->id}" {if $c->id==$currency->id}selected="selected" {/if}>{$c->name|escape}</option>
-						{/if}
-					{/foreach}
+							{if $c->enabled} 
+								<option value="{url currency_id=$c->id}" {if $c->id==$currency->id}selected="selected"{/if}>{$c->name|escape}</option>
+							{/if}
+						{/foreach}
 				</select>
 			</div>
 		</div>
