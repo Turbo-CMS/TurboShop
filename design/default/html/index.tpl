@@ -136,12 +136,12 @@
 	{* Styles *}
 	{if isset($smarty.cookies.mode) && $smarty.cookies.mode == 'mode'}
 		{css id="styles" include=[
-				"design/{$settings->theme|escape}/css/style-dark.css"
+			"design/{$settings->theme|escape}/css/style-dark.css"
 		]}{/css}
 		{stylesheet minify=true}
 	{else}
 		{css id="styles" include=[
-				"design/{$settings->theme|escape}/css/style-light.css"
+			"design/{$settings->theme|escape}/css/style-light.css"
 		]}{/css}
 		{stylesheet minify=true}
 	{/if}
@@ -285,18 +285,16 @@
 					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 						{foreach $pages as $p}
 							{if $p->menu_id == 1}
-								{if $p->visible && isset($p->subpages)}
+								{if $p->visible}
 									<li itemprop="name" class="nav-item dropdown {if $page && $page->id == $p->id}active{/if}">
-										<a itemprop="url" class="nav-link dropdown-toggle" href="{$lang_link}{$p->url}" id="dropdown{$p->id}" data-page="{$p->id}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{$p->header}</a>
-										<div class="dropdown-menu" aria-labelledby="dropdown{$p->id}">
-											{foreach $p->subpages as $p2}
-												<a itemprop="url" data-page="{$p2->id}" class="dropdown-item" href="{$lang_link}{$p2->url}">{$p2->header}</a>
-											{/foreach}
-										</div>
-									</li>
-								{else}
-									<li itemprop="name" class="nav-item {if $page && $page->id == $p->id}active{/if}">
-										<a itemprop="url" data-page="{$p->id}" class="nav-link" href="{$lang_link}{$p->url}">{$p->header}</a>
+										<a itemprop="url" class="nav-link {if isset($p->subpages)}dropdown-toggle{/if}" href="{$lang_link}{$p->url}" id="dropdown{$p->id}" data-page="{$p->id}" {if isset($p->subpages)}data-bs-toggle="dropdown" aria-expanded="false"{/if} aria-haspopup="true">{$p->header}</a>
+										{if isset($p->subpages)}
+											<div class="dropdown-menu" aria-labelledby="dropdown{$p->id}">
+												{foreach $p->subpages as $p2}
+													<a itemprop="url" data-page="{$p2->id}" class="dropdown-item" href="{$lang_link}{$p2->url}">{$p2->header}</a>
+												{/foreach}
+											</div>
+										{/if}
 									</li>
 								{/if}
 							{/if}
@@ -498,7 +496,7 @@
 					{/foreach}
 				</div>
 			{/if}
-			
+
 			{* Articles *}
 			{get_articles var=last_articles limit=3}
 			{if isset($last_articles)}
@@ -836,7 +834,7 @@
 
 		{js id="post" priority=99 include=[
 			"design/{$settings->theme|escape}/js/post.js",
-			"design/{$settings->theme|escape}/js/jquery.toc.js"
+		"design/{$settings->theme|escape}/js/jquery.toc.js"
 		]}{/js}
 		{javascript minify=true}
 	{/if}
@@ -850,7 +848,7 @@
 
 		{js id="description" priority=99 include=[
 			"design/{$settings->theme|escape}/js/block.description.js",
-			"design/{$settings->theme|escape}/js/owl.carousel.min.js"
+		"design/{$settings->theme|escape}/js/owl.carousel.min.js"
 		]}{/js}
 		{javascript minify=true}
 	{/if}
@@ -881,7 +879,7 @@
 
 		{js id="filter" priority=99 include=[
 			"design/{$settings->theme|escape}/js/ion.rangeSlider/ion.rangeSlider.min.js",
-			"design/{$settings->theme|escape}/js/price-slider.js"
+		"design/{$settings->theme|escape}/js/price-slider.js"
 		]}{/js}
 		{javascript minify=true}
 	{/if}
@@ -890,7 +888,7 @@
 	{if $module=='ProductView'}
 		{js id="product" priority=99 include=[
 			"design/{$settings->theme|escape}/js/product.js",
-			"design/{$settings->theme|escape}/js/rating-product.js"
+		"design/{$settings->theme|escape}/js/rating-product.js"
 		]}{/js}
 		{javascript minify=true}
 
@@ -898,12 +896,12 @@
 		{if !empty($product->sale_to)}
 
 			{css id="countdown" include=[
-													"design/{$settings->theme|escape}/js/jq-timeTo/timeTo.css"
+				"design/{$settings->theme|escape}/js/jq-timeTo/timeTo.css"
 			]}{/css}
 			{stylesheet minify=true}
 
 			{js id="countdown" priority=99 include=[
-													"design/{$settings->theme|escape}/js/jq-timeTo/jquery.time-to.js"
+				"design/{$settings->theme|escape}/js/jq-timeTo/jquery.time-to.js"
 			]}{/js}
 			{javascript minify=true}
 
@@ -999,5 +997,4 @@
 		{/foreach}
 	{/if}
 </body>
-
 </html>

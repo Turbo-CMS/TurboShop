@@ -73,7 +73,7 @@ class ReportStatsProdAdmin extends Turbo
 		}
 
 		$id = $this->request->get('id', 'integer');
-		$product = $this->products->get_product((int) $id);
+		$product = $this->products->getProduct((int) $id);
 		$this->design->assign('product', $product);
 
 		if ($product) {
