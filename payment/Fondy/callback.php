@@ -28,7 +28,7 @@ if (empty($_POST)) {
     list($order_id,) = explode(fondycsl::ORDER_SEPARATOR, $_POST['order_id']);
     $order = $turbo->orders->get_order((int) $order_id);
     $paymentMethod = $turbo->payment->getPaymentMethod($order->payment_method_id);
-    $paymentCurrency = $turbo->money->getCurrency(intval($paymentMethod->currency_id));
+    $paymentCurrency = $turbo->money->getCurrency((int) $paymentMethod->currency_id);
     $settings = $turbo->payment->getPaymentSettings($paymentMethod->id);
 
     $options = [
@@ -66,7 +66,7 @@ if (empty($_POST)) {
     list($order_id,) = explode(fondycsl::ORDER_SEPARATOR, $_POST['order_id']);
     $order = $turbo->orders->getOrder((int) $order_id);
     $paymentMethod = $turbo->payment->getPaymentMethod($order->payment_method_id);
-    $paymentCurrency = $turbo->money->getCurrency(intval($paymentMethod->currency_id));
+    $paymentCurrency = $turbo->money->getCurrency((int) $paymentMethod->currency_id);
     $settings = $turbo->payment->getPaymentSettings($paymentMethod->id);
 
     $options = [
