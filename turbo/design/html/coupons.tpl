@@ -145,7 +145,7 @@
 				</div>
 			</div>
 		{else}
-			<h5 class="card-title ms-1 my-3">{$btr->coupons_no|escape}</h5>
+			<h5 class="card-title ms-1 my-3">{$btr->coupons_not|escape}</h5>
 		{/if}
 	</div>
 </div>

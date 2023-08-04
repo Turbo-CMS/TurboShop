@@ -1,73 +1,73 @@
 <?php
- 
-require_once('api/Turbo.php');
+
+require_once 'api/Turbo.php';
 
 class Paypal extends Turbo
-{	
-	public function checkout_form($order_id, $button_text = null)
+{
+	public function checkoutForm($orderId, $buttonText = null)
 	{
-		
-		if(empty($button_text))
-			$button_text = $this->translations->proceed_to_checkout;
-		
-		$order = $this->orders->getOrder((int)$order_id);
-		$purchases = $this->orders->getPurchases(array('order_id'=>intval($order->id)));
+		if (empty($buttonText)) {
+			$buttonText = $this->translations->proceed_to_checkout;
+		}
 
-		$payment_method = $this->payment->getPaymentMethod($order->payment_method_id);
-		$currency = $this->money->getCurrency(intval($payment_method->currency_id));
-		$payment_settings = $this->payment->getPaymentSettings($payment_method->id);
-			
-		if($payment_settings['mode'] == 'sandbox') $paypal_url = "https://www.sandbox.paypal.com/cgi-bin/webscr";
-		else $paypal_url = "https://www.paypal.com/cgi-bin/webscr";
-			
-		$ipn_url = $this->config->root_url.'/payment/Paypal/callback.php';
-		$success_url = $this->config->root_url.'/order/'.$order->url;
-		$fail_url = $this->config->root_url.'/order/'.$order->url;
+		$order = $this->orders->getOrder((int) $orderId);
+		$purchases = $this->orders->getPurchases(['order_id' => (int) $order->id]);
 
-		$button =	"<form method='post' action= '".$paypal_url."'>
+		$paymentMethod = $this->payment->getPaymentMethod($order->payment_method_id);
+		$currency = $this->money->getCurrency(intval($paymentMethod->currency_id));
+		$paymentSettings = $this->payment->getPaymentSettings($paymentMethod->id);
+
+		if ($paymentSettings['mode'] == 'sandbox') {
+			$paypalUrl = "https://www.sandbox.paypal.com/cgi-bin/webscr";
+		} else {
+			$paypalUrl = "https://www.paypal.com/cgi-bin/webscr";
+		}
+
+		$ipnUrl = $this->config->root_url . '/payment/Paypal/callback.php';
+		$successUrl = $this->config->root_url . '/order/' . $order->url;
+		$failUrl = $this->config->root_url . '/order/' . $order->url;
+
+		$button =	"<form method='post' action= '" . $paypalUrl . "'>
 					<input type='hidden' name='charset' value='utf-8'>
-					<input type='hidden' name='currency_code' value='".$currency->code."'>
-					<input type='hidden' name='invoice' value='".$order->id."'>
-					<input type='hidden' name='business' value='".$payment_settings['business']."'>
+					<input type='hidden' name='currency_code' value='" . $currency->code . "'>
+					<input type='hidden' name='invoice' value='" . $order->id . "'>
+					<input type='hidden' name='business' value='" . $paymentSettings['business'] . "'>
 					<input type='hidden' name='cmd' value='_cart'>
 					<input type='hidden' name='upload' value='1'>
 					<input type='hidden' name='rm' value='2'>
-					<input type='hidden' name='notify_url' value='$ipn_url'>
-					<input type='hidden' name='return' value='$success_url'>
-					<input type='hidden' name='cancel_return' value='$fail_url'>
+					<input type='hidden' name='notify_url' value='$ipnUrl'>
+					<input type='hidden' name='return' value='$successUrl'>
+					<input type='hidden' name='cancel_return' value='$failUrl'>
 					";
-					
-		if($order->discount>0)
-			$button .= "<input type='hidden' name='discount_rate_cart' value='".$order->discount."'>";
-					
-		if($order->coupon_discount>0)
-		{
-			$coupon_discount = $this->money->convert($order->coupon_discount, $payment_method->currency_id, false);
-			$button .= "<input type='hidden' name='discount_amount_cart' value='".$coupon_discount."'>";
-		}
-					
-		$i = 1;
-		foreach($purchases as $purchase)
-		{			
-			$price = $this->money->convert($purchase->price, $payment_method->currency_id, false);
-			$price = number_format($price, 2, '.', '');
-			$button .=	"<input type='hidden' name='item_name_".$i."' value='".$purchase->product_name.' '.$purchase->variant_name."'>
-						<input type='hidden' name='amount_".$i."' value='".$price."'>
-						<input type='hidden' name='quantity_".$i."' value='".$purchase->amount."'>";
-			$i++;
-		}
-			
-		$delivery_price = 0;
-		if($order->delivery_id && !$order->separate_delivery && $order->delivery_price>0)
-		{
-			$delivery_price = $this->money->convert($order->delivery_price, $payment_method->currency_id, false);
-			$delivery_price = number_format($delivery_price, 2, '.', '');
-			$button .=	"<input type='hidden' name='shipping_1' value='".$delivery_price."'>";
+
+		if ($order->discount > 0) {
+			$button .= "<input type='hidden' name='discount_rate_cart' value='" . $order->discount . "'>";
 		}
 
-		$button .=	"<input type='image' src='https://www.paypalobjects.com/en_US/i/btn/btn_xpressCheckout.gif' value='".$button_text."'>
+		if ($order->coupon_discount > 0) {
+			$couponDiscount = $this->money->convert($order->coupon_discount, $paymentMethod->currency_id, false);
+			$button .= "<input type='hidden' name='discount_amount_cart' value='" . $couponDiscount . "'>";
+		}
+
+		$i = 1;
+		foreach ($purchases as $purchase) {
+			$price = $this->money->convert($purchase->price, $paymentMethod->currency_id, false);
+			$price = number_format($price, 2, '.', '');
+			$button .=	"<input type='hidden' name='item_name_" . $i . "' value='" . $purchase->product_name . ' ' . $purchase->variant_name . "'>
+						<input type='hidden' name='amount_" . $i . "' value='" . $price . "'>
+						<input type='hidden' name='quantity_" . $i . "' value='" . $purchase->amount . "'>";
+			$i++;
+		}
+
+		$deliveryPrice = 0;
+		if ($order->delivery_id && !$order->separate_delivery && $order->delivery_price > 0) {
+			$deliveryPrice = $this->money->convert($order->delivery_price, $paymentMethod->currency_id, false);
+			$deliveryPrice = number_format($deliveryPrice, 2, '.', '');
+			$button .=	"<input type='hidden' name='shipping_1' value='" . $deliveryPrice . "'>";
+		}
+
+		$button .=	"<input type=submit class='btn btn-success btn-checkout' value='" . $buttonText . "'>
 					</form>";
 		return $button;
 	}
-
 }

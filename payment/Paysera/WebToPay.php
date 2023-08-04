@@ -2312,13 +2312,13 @@ class WebToPay_RequestBuilder {
      * @return array
      */
     protected function createRequest(array $request) {
-        $data = $this->util->encodeSafeUrlBase64(http_build_query($request, null, '&'));
+        $data = $this->util->encodeSafeUrlBase64(http_build_query($request, '', '&'));
         return array(
             'data' => $data,
             'sign' => md5($data . $this->projectPassword),
         );
     }
-
+    
     /**
      * Returns specification of fields for request.
      *

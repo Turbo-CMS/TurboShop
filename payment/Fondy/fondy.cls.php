@@ -13,11 +13,14 @@ class fondycsl
         $data = array_filter($data, function($var) {
             return $var !== '' && $var !== null;
         });
+
         ksort($data);
         $str = $password;
+        
         foreach ($data as $k => $v) {
             $str .= self::SIGNATURE_SEPARATOR . $v;
         }
+
         if ($encoded) {
             return sha1($str);
         } else {
@@ -31,17 +34,20 @@ class fondycsl
         }
    
 		$responseSignature = $response['signature'];
+
 		if (isset($response['response_signature_string'])){
 			unset($response['response_signature_string']);
 		}
+
 		if (isset($response['signature'])){
 			unset($response['signature']);
 		}
+
 		if (fondycsl::getSignature($response, $oplataSettings['secretkey']) != $responseSignature) {
             return 'An error has occurred during payment. Signature is not valid.';
         }
+        
         return true;
     }
 
 }
-?>

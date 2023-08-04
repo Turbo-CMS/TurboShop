@@ -131,8 +131,8 @@
 											</div>
 											<div class="turbo-list-boding turbo-list-status">
 												<div class="form-check form-switch">
-													<input class="form-check-input js-ajax-action {if $c->enabled}js-active-class{/if}" id="id_{$c->id}" data-module="currency" data-action="enabled" data-id="{$c->id}" name="enabled" value="1" type="checkbox" {if $c->enabled}checked="" {/if}>
-													<label class="form-check-label" for="id_{$c->id}"></label>
+													<input class="form-check-input js-ajax-action {if $c->enabled}js-active-class{/if}" id="id-{$c->id}" data-module="currency" data-action="enabled" data-id="{$c->id}" name="enabled" value="1" type="checkbox" {if $c->enabled}checked="" {/if}>
+													<label class="form-check-label" for="id-{$c->id}"></label>
 												</div>
 											</div>
 											<div class="turbo-list-boding cur-settings">
@@ -175,7 +175,7 @@
 														<div class="mb-0">
 															<div class="input-group">
 																<input class="form-control" name="currency[rate_from][]" type="text" value="">
-																<div class="input-group-text"></div>
+																<div class="input-group-text">&nbsp;&nbsp;</div>
 															</div>
 														</div>
 													</div>

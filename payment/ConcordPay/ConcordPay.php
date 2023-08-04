@@ -1,6 +1,6 @@
 <?php
 
-require_once('api/Turbo.php');
+require_once 'api/Turbo.php';
 
 /**
  * Class Concordpay
@@ -28,73 +28,77 @@ class ConcordPay extends Turbo
      *
      * @var string[]
      */
-    protected $keysForSignature = array(
+    protected $keysForSignature = [
         'merchant_id',
         'order_id',
         'amount',
         'currency_iso',
         'description'
-    );
+    ];
+
     /**
      * Allowed operation types for orders.
      *
      * @var string[]
      */
-    protected $operationTypes = array(
+    protected $operationTypes = [
         'payment',
         'reverse'
-    );
+    ];
 
     /**
-     * @param $order_id
-     * @param null $button_text
+     * @param $orderId
+     * @param null $buttonText
      * @return string
      */
-    public function checkout_form($order_id, $button_text = null)
+    public function checkoutForm($orderId, $buttonText = null)
     {
-        if (empty($button_text)) {
-            $button_text = $this->translations->proceed_to_checkout;
+        if (empty($buttonText)) {
+            $buttonText = $this->translations->proceed_to_checkout;
         }
-        $order     = $this->orders->getOrder((int)$order_id);
-        $purchases = $this->orders->getPurchases(array('order_id' => (int)$order->id));
 
-        $payment_method   = $this->payment->getPaymentMethod($order->payment_method_id);
-        $payment_currency = $this->money->getCurrency((int)$payment_method->currency_id);
+        $order = $this->orders->getOrder((int) $orderId);
+        $purchases = $this->orders->getPurchases(['order_id' => (int) $order->id]);
 
-        $settings = $this->payment->getPaymentSettings($payment_method->id);
-        $amount   = round($this->money->convert($order->total_price, $payment_method->currency_id, false), 2);
-        $currency = $payment_currency->code ?? self::CURRENCY_UAH;
+        $paymentMethod = $this->payment->getPaymentMethod($order->payment_method_id);
+        $paymentCurrency = $this->money->getCurrency((int) $paymentMethod->currency_id);
 
-        $productNames  = array();
-        $productQty    = array();
-        $productPrices = array();
+        $settings = $this->payment->getPaymentSettings($paymentMethod->id);
+        $amount = round($this->money->convert($order->total_price, $paymentMethod->currency_id, false), 2);
+        $currency = $paymentCurrency->code ?? self::CURRENCY_UAH;
+
+        $productNames = [];
+        $productQty = [];
+        $productPrices = [];
+
         foreach ($purchases as $purchase) {
-            $productNames[]  = trim($purchase->product_name . ' ' . $purchase->variant_name);
-            $productPrices[] = $this->money->convert($purchase->price, $payment_method->currency_id, false);
-            $productQty[]    = $purchase->amount;
+            $productNames[] = trim($purchase->product_name . ' ' . $purchase->variant_name);
+            $productPrices[] = $this->money->convert($purchase->price, $paymentMethod->currency_id, false);
+            $productQty[] = $purchase->amount;
         }
 
-        $root_url = $this->config->root_url;
-        $option = array();
-        $option['operation']    = 'Purchase';
-        $option['merchant_id']  = $settings['concordpay_merchant'];
-        $option['amount']       = $amount;
-        $option['order_id']     = $order->id . '#' . time();
+        $rootUrl = $this->config->root_url;
+        $option = [];
+        $option['operation'] = 'Purchase';
+        $option['merchant_id'] = $settings['concordpay_merchant'];
+        $option['amount'] = $amount;
+        $option['order_id'] = $order->id . '#' . time();
         $option['currency_iso'] = $currency;
-        $option['description']  = 'Оплата картой на сайте' . ' ' . htmlspecialchars($_SERVER["HTTP_HOST"]) .
+        $option['description'] = 'Payment by card on the site' . ' ' . htmlspecialchars($_SERVER["HTTP_HOST"]) .
             ', ' . $order->name . ', ' . $order->phone;
-        $option['add_params']   = [];
-        $option['approve_url']  = "$root_url/order/" . $order->url;
-        $option['decline_url']  = "$root_url/order/" . $order->url;
-        $option['cancel_url']   = "$root_url/order/" . $order->url;
-        $option['callback_url'] = "$root_url/payment/ConcordPay/callback.php";
+        $option['add_params'] = [];
+        $option['approve_url'] = "$rootUrl/order/" . $order->url;
+        $option['decline_url'] = "$rootUrl/order/" . $order->url;
+        $option['cancel_url'] = "$rootUrl/order/" . $order->url;
+        $option['callback_url'] = "$rootUrl/payment/ConcordPay/callback.php";
         // Statistics.
         $option['client_first_name'] = $this->getName($order->name)['client_first_name'];
         $option['client_last_name']  = $this->getName($order->name)['client_last_name'];
         $option['email']             = $order->email ?? '';
-        $option['phone']             = $order->phone ?? '' ;
+        $option['phone']             = $order->phone ?? '';
 
-        $hash = array();
+        $hash = [];
+
         foreach ($this->keysForSignature as $dataKey) {
             if (!isset($option[$dataKey])) {
                 continue;
@@ -104,19 +108,20 @@ class ConcordPay extends Turbo
                     $hash[] = $v;
                 }
             } else {
-                $hash [] = $option[$dataKey];
+                $hash[] = $option[$dataKey];
             }
         }
+
         $hash = implode(';', $hash);
 
         $option['signature'] = hash_hmac('md5', $hash, $settings['concordpay_secretkey']);
 
         $form = '<form method="post" action="' . $this->url . '" accept-charset="utf-8">';
         foreach ($option as $name => $value) {
-            $form .= $this->print_input($name, $value);
+            $form .= $this->printInput($name, $value);
         }
 
-        $form .= '<input type="submit" class="btn btn-success btn-checkout" value="' . $button_text . '">';
+        $form .= '<input type="submit" class="btn btn-success btn-checkout" value="' . $buttonText . '">';
         $form .= '</form>';
 
         return $form;
@@ -129,14 +134,14 @@ class ConcordPay extends Turbo
      * @param array|string $value Attribute value.
      * @return string
      */
-    protected function print_input($name, $value)
+    protected function printInput($name, $value)
     {
         $str = '';
         if (!is_array($value)) {
             return '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars($value) . '">';
         }
         foreach ($value as $v => $data_key) {
-            $str .= $this->print_input($name . '[' . $v .']', $data_key);
+            $str .= $this->printInput($name . '[' . $v . ']', $data_key);
         }
         return $str;
     }

@@ -100,7 +100,7 @@ class Managers extends Turbo
 			$m[1] = "";
 		}
 
-		if (is_array($manager->permissions)) {
+		if (isset($manager->permissions) && is_array($manager->permissions)) {
 			if (count(array_diff($this->permissionsList, $manager->permissions)) > 0) {
 				$m[2] = implode(",", $manager->permissions);
 			} else {
@@ -158,6 +158,8 @@ class Managers extends Turbo
 
 		if ($updatedFlag) {
 			file_put_contents($this->passwdFile, implode("\n", $lines));
+
+			$manager->login = '';
 
 			if ($m = $this->getManager($manager->login)) {
 				return $m->login;

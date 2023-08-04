@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {* General Page *}
-<html class="h-100" {if $language->label}lang="{$language->label|escape}"{/if} {if isset($smarty.cookies.mode) && $smarty.cookies.mode == 'mode'}data-bs-theme="dark"{/if} {if $module == 'FAQView'}itemscope itemtype="https://schema.org/FAQPage"{/if}>
+<html class="h-100" {if isset($language->label)}lang="{$language->label|escape}"{/if} {if isset($smarty.cookies.mode) && $smarty.cookies.mode == 'mode'}data-bs-theme="dark"{/if} {if $module == 'FAQView'}itemscope itemtype="https://schema.org/FAQPage"{/if}>
 
 <head>
 	<base href="{$config->root_url}/">

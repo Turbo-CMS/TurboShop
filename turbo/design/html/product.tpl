@@ -290,9 +290,9 @@
 												<div class="form-label"></div>
 												<a href="javascript:;" {if isset($product->id)}class="add-images"{/if}>
 													{if $settings->admin_theme == "dark"}
-														<img src="design/images/picture{if !isset($variant->images_ids)}_empty_dark{/if}.svg" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->select_color_image|escape}">
+														<img src="design/images/picture{if isset($variant->images_ids) && !$variant->images_ids}_empty_dark{/if}.svg" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->select_color_image|escape}">
 													{else}
-														<img src="design/images/picture{if !isset($variant->images_ids)}_empty{/if}.svg" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->select_color_image|escape}">
+														<img src="design/images/picture{if isset($variant->images_ids) && !$variant->images_ids}_empty{/if}.svg" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->select_color_image|escape}">
 													{/if}
 												</a>
 												<input name="variants[images_ids][]" type="hidden" value="{if isset($variant->images_ids)}{$variant->images_ids|escape}{/if}">

@@ -1,50 +1,48 @@
 ﻿<?php
-require_once('api/Turbo.php');
+
+require_once 'api/Turbo.php';
 
 class Payeer extends Turbo
-{	
-	public function checkout_form($order_id, $button_text = null)
+{
+	public function checkoutForm($orderId, $buttonText = null)
 	{
-		if(empty($button_text))
-		{
-			$button_text = $this->translations->proceed_to_checkout;
+		if (empty($buttonText)) {
+			$buttonText = $this->translations->proceed_to_checkout;
 		}
-		
-		$order = $this->orders->getOrder((int)$order_id);
-		$payment_method = $this->payment->getPaymentMethod($order->payment_method_id);
-		$payment_currency = $this->money->getCurrency(intval($payment_method->currency_id));
-		$settings = $this->payment->getPaymentSettings($payment_method->id);	
 
-		$m_url = $settings['payeer_merchanturl'];
-		$m_shop = $settings['payeer_merchantid'];
-		$m_orderid = $order->id;
-		$m_amount = number_format($order->total_price, 2, '.', '');
-		$m_curr = $payment_currency->code == 'RUR' ? 'RUB' : $payment_currency->code;
-		$m_desc = base64_encode($order->comment);
+		$order = $this->orders->getOrder((int) $orderId);
+		$paymentMethod = $this->payment->getPaymentMethod($order->payment_method_id);
+		$paymentCurrency = $this->money->getCurrency(intval($paymentMethod->currency_id));
+		$settings = $this->payment->getPaymentSettings($paymentMethod->id);
 
-		$arHash = array(
-			$m_shop,
-			$m_orderid,
-			$m_amount,
-			$m_curr,
-			$m_desc,
+		$mUrl = $settings['payeer_merchanturl'];
+		$mShop = $settings['payeer_merchantid'];
+		$mOrderid = $order->id;
+		$mAmount = number_format($order->total_price, 2, '.', '');
+		$mCurr = $paymentCurrency->code == 'RUR' ? 'RUB' : $paymentCurrency->code;
+		$mDesc = base64_encode($order->comment);
+
+		$arHash = [
+			$mShop,
+			$mOrderid,
+			$mAmount,
+			$mCurr,
+			$mDesc,
 			$settings['payeer_secret']
-		);
-		
+		];
+
 		$sign = strtoupper(hash('sha256', implode(":", $arHash)));
-		
+
 		$button = '
-		<form method="GET" action="' . $m_url . '">
-			<input type="hidden" name="m_shop" value="' . $m_shop . '">
-			<input type="hidden" name="m_orderid" value="' . $m_orderid . '">
-			<input type="hidden" name="m_amount" value="' . $m_amount . '">
-			<input type="hidden" name="m_curr" value="' . $m_curr . '">
-			<input type="hidden" name="m_desc" value="' . $m_desc . '">
+		<form method="GET" action="' . $mUrl . '">
+			<input type="hidden" name="m_shop" value="' . $mShop . '">
+			<input type="hidden" name="m_orderid" value="' . $mOrderid . '">
+			<input type="hidden" name="m_amount" value="' . $mAmount . '">
+			<input type="hidden" name="m_curr" value="' . $mCurr . '">
+			<input type="hidden" name="m_desc" value="' . $mDesc . '">
 			<input type="hidden" name="m_sign" value="' . $sign . '">
-			<input type="submit" name="m_process" value="' . $button_text . '" />
+			<input type="submit" name="m_process" class="btn btn-success btn-checkout" value="' . $buttonText . '" />
 		</form>';
-		
 		return $button;
 	}
 }
-?>

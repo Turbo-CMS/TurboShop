@@ -84,7 +84,7 @@
 		<input type="hidden" id="hidden">
 		<input type="hidden" id="parent" name="parent_id" value="0">
 		<input type="hidden" id="admin" name="admin" value="{if isset($smarty.session.admin) && $smarty.session.admin == 'admin'}1{else}0{/if}">
-		{if !isset($smarty.session.admin) && !$smarty.session.admin == 'admin'}
+		{if isset($smarty.session.admin) && !$smarty.session.admin == 'admin'}
 			<span>
 				<div id="rating" class="row mb-1">
 					<div class="col-12 col-md-6" style="font-size: 1em;">

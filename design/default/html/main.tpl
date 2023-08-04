@@ -118,6 +118,11 @@
 {/if}
 
 {* Page title *}
-<h1>{$page->header}</h1>
+{if isset($page->header)}
+	<h1 data-page="{$page->id}">{$page->header}</h1>
+{/if}
+
 {* Page body *}
-{$page->body}
+{if isset($page->body)}
+	{$page->body}
+{/if}

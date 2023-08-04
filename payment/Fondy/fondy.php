@@ -1,67 +1,74 @@
 ﻿<?php
 
-require_once('api/Turbo.php');
-require_once('payment/fondy/fondy.cls.php');
+require_once 'api/Turbo.php';
+require_once 'payment/fondy/fondy.cls.php';
 
 class Fondy extends Turbo
-{	
-	public function checkout_form($order_id, $button_text = null)
+{
+	public function checkoutForm($orderId, $buttonText = null)
 	{
-		if(empty($button_text))
-			$button_text = $this->translations->proceed_to_checkout;
-		
-		$order = $this->orders->getOrder((int)$order_id);
-		$payment_method = $this->payment->getPaymentMethod($order->payment_method_id);
-		$payment_currency = $this->money->getCurrency(intval($payment_method->currency_id));
-		$settings = $this->payment->getPaymentSettings($payment_method->id);
-		
-		$price = round($this->money->convert($order->total_price, $payment_method->currency_id, false), 2);
-		
+		if (empty($buttonText)) {
+			$buttonText = $this->translations->proceed_to_checkout;
+		}
+
+		$order = $this->orders->getOrder((int) $orderId);
+		$paymentMethod = $this->payment->getPaymentMethod($order->payment_method_id);
+		$paymentCurrency = $this->money->getCurrency(intval($paymentMethod->currency_id));
+		$settings = $this->payment->getPaymentSettings($paymentMethod->id);
+
+		$price = round($this->money->convert($order->total_price, $paymentMethod->currency_id, false), 2);
+
 		// Order description
-		$desc = 'Order:'.$order->id;
-		
+		$desc = 'Order:' . $order->id;
+
 		// Payment method
 		$paymode = $settings['fondy_paymode'];
 
-		$success_url = $this->config->root_url.'/order/';
-		$result_url = $this->config->root_url.'/payment/fondy/callback.php';
-    
-		$currency = $payment_currency->code;
-		if ($currency == 'UAH')
-		  $currency = 'UAH';
-        if ($settings['lang']=='') {
-            $settings['lang'] ='ua';
-        }
-		$oplata_args = array(
-			'order_id' => $order_id . fondycsl::ORDER_SEPARATOR . time(),
+		$successUrl = $this->config->root_url . '/order/';
+		$resultUrl = $this->config->root_url . '/payment/fondy/callback.php';
+
+		$currency = $paymentCurrency->code;
+
+		if ($currency == 'UAH') {
+			$currency = 'UAH';
+		}
+
+		if ($settings['lang'] == '') {
+			$settings['lang'] = 'ua';
+		}
+
+		$oplataArgs = [
+			'order_id' => $orderId . fondycsl::ORDER_SEPARATOR . time(),
 			'merchant_id' => $settings['fondy_merchantid'],
 			'order_desc' => $desc,
 			'amount' => $price * 100,
 			'currency' => $currency,
-			'server_callback_url' => $result_url,
-			'response_url' => $result_url,
+			'server_callback_url' => $resultUrl,
+			'response_url' => $resultUrl,
 			'lang' =>  $settings['lang'],
-			'sender_email' => $order->email);
+			'sender_email' => $order->email
+		];
 
-		$oplata_args['signature'] = fondycsl::getSignature($oplata_args, $settings[fondy_secret]);
-		$url = $this->get_checkout($oplata_args);
+		define('fondy_secret', 'your-secret-value');
+		$oplataArgs['signature'] = fondycsl::getSignature($oplataArgs, $settings[fondy_secret]);
+		$url = $this->getCheckout($oplataArgs);
 		$out = '';
-		if ($settings['mode'] == 'redirect'){
-			$out .='<style>
+		if ($settings['mode'] == 'redirect') {
+			$out .= '<style>
 			.btn btn-success btn-checkout{
 				text-decoration: none;
 				top: 10px;
 				position: relative;
 			}
 			</style>';
-			$out .='<a href="'. $url . '"class="btn btn-success btn-checkout">'.$button_text.'</a>';
-		}else{
+			$out .= '<a href="' . $url . '"class="btn btn-success btn-checkout">' . $buttonText . '</a>';
+		} else {
 			$out = '<script src="https://api.fondy.eu/static_common/v1/checkout/ipsp.js"></script>
 			<div id="checkout">
 			<div id="checkout_wrapper">
 			</div>
 			</div>';
-				 $out .='
+			$out .= '
 				 <style>
 			#checkout_wrapper a{
 				font-size: 20px;
@@ -110,35 +117,40 @@ class Fondy extends Turbo
 				};
 				checkoutInit("' . $url . '");
 				</script>';
-			}
-				return $out;
+		}
+		return $out;
 	}
-	protected function get_checkout($args){
-		if(is_callable('curl_init')){
-		$ch = curl_init();
+
+	protected function getCheckout($args)
+	{
+		if (is_callable('curl_init')) {
+			$ch = curl_init();
 			curl_setopt($ch, CURLOPT_URL, 'https://api.fondy.eu/api/checkout/url/');
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
 			curl_setopt($ch, CURLOPT_POST, true);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(array('request'=>$args)));
-			
+			curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(array('request' => $args)));
+
 			$result = json_decode(curl_exec($ch));
 			$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-				
-			if ( $httpCode != 200 ){
+
+			if ($httpCode != 200) {
 				echo "Return code is {$httpCode} \n"
-					.curl_error($ch);
-					exit;
-			} 
-			if ($result->response->response_status == 'failure'){
+					. curl_error($ch);
+				exit;
+			}
+
+			if ($result->response->response_status == 'failure') {
 				echo $result->response->error_message;
 				exit;
 			}
+
 			$url = $result->response->checkout_url;
+
 			return $url;
-		}else{
+		} else {
 			echo "Curl not found!";
 			die;
-		}			
+		}
 	}
 }

@@ -6,23 +6,21 @@ class PaymentModule extends Turbo
 {
 	/**
 	 * Returns checkout form
-	 *
-	 * @return string $form - HTML form to be displayed on the checkout page
 	 */
-	public function checkout_form()
+	public function checkoutForm()
 	{
 		$form = '<input type=submit value="Pay">';
+
 		return $form;
 	}
 
 	/**
-	 * Returns settings for the payment module
-	 *
-	 * @return string $form - HTML form to be displayed in the payment module settings
+	 * Returns settings
 	 */
 	public function settings()
 	{
 		$form = '<input type=submit value="Pay">';
+
 		return $form;
 	}
 }

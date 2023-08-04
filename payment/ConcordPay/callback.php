@@ -1,8 +1,8 @@
 <?php
 
 chdir('../../');
-require_once('api/Turbo.php');
-require_once('payment/ConcordPay/ConcordPay.php');
+require_once 'api/Turbo.php';
+require_once 'payment/ConcordPay/ConcordPay.php';
 $turbo     = new Turbo();
 $concordpay = new ConcordPay();
 
@@ -13,36 +13,36 @@ $data = json_decode(file_get_contents("php://input"), true);
  *
  * @var string[]
  */
-$keysForSignature = array(
+$keysForSignature = [
     'merchantAccount',
     'orderReference',
     'amount',
     'currency'
-);
+];
 
-$order_parse = !empty($data['orderReference']) ? explode('#', $data['orderReference']) : null;
+$orderParse = !empty($data['orderReference']) ? explode('#', $data['orderReference']) : null;
 
-if (is_array($order_parse)) {
-    $order_id = $order_parse[0];
+if (is_array($orderParse)) {
+    $orderId = $orderParse[0];
 } else {
-    $order_id = $order_parse;
+    $orderId = $orderParse;
 }
 
 // Get order from database.
-$order = $turbo->orders->get_order((int)$order_id);
+$order = $turbo->orders->getOrder((int) $orderId);
 if (empty($order)) {
     die('Order not found');
 }
 
 // Get payment method from database.
-$method = $turbo->payment->get_payment_method((int)$order->payment_method_id);
+$method = $turbo->payment->getPaymentMethod((int) $order->payment_method_id);
 if (empty($method)) {
     die('Unknown payment method');
 }
 
 // Currency must match
-$payment_currency = $turbo->money->get_currency((int)$method->currency_id);
-if ($data['currency'] !== $payment_currency->code) {
+$paymentCurrency = $turbo->money->getCurrency((int) $method->currency_id);
+if ($data['currency'] !== $paymentCurrency->code) {
     die('Bad currency');
 }
 
@@ -66,10 +66,10 @@ if ($orderAmount !== $concordpayAmount) {
 $settings = unserialize($method->settings, [true]);
 $merchant = $settings['concordpay_merchant'];
 
-$sign = array();
+$sign = [];
 foreach ($keysForSignature as $dataKey) {
     if (array_key_exists($dataKey, $data)) {
-        $sign [] = $data[$dataKey];
+        $sign[] = $data[$dataKey];
     }
 }
 
@@ -86,32 +86,32 @@ if (isset($data['transactionStatus']) && $data['transactionStatus'] === ConcordP
 }
 
 if (isset($data['transactionStatus']) && $data['transactionStatus'] === ConcordPay::PAYMENT_STATUS_APPROVED) {
-    $payment_date = new DateTime('now', new DateTimeZone('UTC'));
+    $paymentDate = new DateTime('now', new DateTimeZone('UTC'));
     if ($data['type'] === ConcordPay::RESPONSE_TYPE_PAYMENT) {
         // Ordinary payment.
-        $turbo->orders->update_order(
-            (int)$order->id,
-            array(
-                'paid'         => ConcordPay::ORDER_PAYMENT_STATUS_PAID,
-                'payment_date' => $payment_date->format('Y-m-d H:i:s')
-            )
+        $turbo->orders->updateOrder(
+            (int) $order->id,
+            [
+                'paid' => ConcordPay::ORDER_PAYMENT_STATUS_PAID,
+                'payment_date' => $paymentDate->format('Y-m-d H:i:s')
+            ]
         );
-        $turbo->orders->close((int)$order->id);
+        $turbo->orders->close((int) $order->id);
     } elseif ($data['type'] === ConcordPay::RESPONSE_TYPE_REVERSE) {
         // Refunded payment.
-        $turbo->orders->update_order(
-            (int)$order->id,
-            array(
-                'paid'         => ConcordPay::ORDER_PAYMENT_STATUS_NOT_PAID,
-                'status'       => 2,
-                'payment_date' => $payment_date->format('Y-m-d H:i:s'),
-                'note'         => 'Payment returned to customer'
-            )
+        $turbo->orders->updateOrder(
+            (int) $order->id,
+            [
+                'paid' => ConcordPay::ORDER_PAYMENT_STATUS_NOT_PAID,
+                'status' => 2,
+                'payment_date' => $paymentDate->format('Y-m-d H:i:s'),
+                'note' => 'Payment returned to customer'
+            ]
         );
     }
 
-    $turbo->notify->email_order_user((int)$order->id);
-    $turbo->notify->email_order_admin((int)$order->id);
+    $turbo->notify->emailOrderUser((int) $order->id);
+    $turbo->notify->emailOrderAdmin((int) $order->id);
 }
 
 // Redirect user to the order page

@@ -7,7 +7,7 @@ class OrderView extends View
 	public function __construct()
 	{
 		parent::__construct();
-		$this->design->smarty->registerPlugin("function", "checkout_form", [$this, 'checkoutForm']);
+		$this->design->smarty->registerPlugin("function", "checkoutForm", [$this, 'checkoutForm']);
 	}
 
 	public function fetch()
@@ -122,7 +122,7 @@ class OrderView extends View
 			include_once("payment/$moduleName/$moduleName.php");
 			$module = new $moduleName();
 			$buttonText = isset($params['button_text']) ? $params['button_text'] : '';
-			$form = $module->checkout_form($params['order_id'], $buttonText);
+			$form = $module->checkoutForm($params['order_id'], $buttonText);
 		}
 		
 		return $form;
