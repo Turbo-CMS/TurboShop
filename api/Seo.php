@@ -14,7 +14,7 @@ class seo extends Turbo
 	}
 
 	/**
-	 * Magic method get
+	 * Magic Method Get
 	 */
 	public function __get($name)
 	{
@@ -32,7 +32,7 @@ class seo extends Turbo
 	}
 
 	/**
-	 * Magic method set
+	 * Magic Method Set
 	 */
 	public function __set($name, $value)
 	{
@@ -48,7 +48,7 @@ class seo extends Turbo
 			$value = (string) $value;
 		}
 
-		$this->db->query('SELECT count(*) as count FROM __seo WHERE name=?', $name);
+		$this->db->query('SELECT count(*) AS count FROM __seo WHERE name=?', $name);
 
 		if ($this->db->result('count') > 0) {
 			$this->db->query('UPDATE __seo SET value=? WHERE name=?', $value, $name);
@@ -58,7 +58,7 @@ class seo extends Turbo
 	}
 
 	/**
-	 * Initializes SEO settings
+	 * Initializes SEO Settings
 	 */
 	private function initSeo()
 	{
@@ -84,7 +84,7 @@ class seo extends Turbo
 	}
 
 	/**
-	 * Add setting SEO
+	 * Add Setting SEO
 	 */
 	private function add($name, $value)
 	{

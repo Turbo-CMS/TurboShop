@@ -1,36 +1,37 @@
-<link href="turbo/design/js/admintooltip/css/admintooltip.css" rel="stylesheet">
+{css id="admintooltip" include=["turbo/design/js/admintooltip/css/admintooltip.css"]}{/css}
+{stylesheet minify=true}
 
 {literal}
 	<script>
 		$(function() {
-			$("<a href='turbo/' class='admin_bookmark'><span class='settings-toggle-option'><i class='custom-icon custom-icon-palette-settings'></i></span></a>").appendTo('body');
-			tooltip = $("<div class='tooltips'><div class='tooltipHeader'></div><div class='tooltipBody'></div><div class='tooltipFooter'></div></div>").appendTo($('body'));
-			$('.tooltips').on('mouseleave', function(){tooltipcanclose=true;setTimeout("close_tooltip();", 300);});
-			$('.tooltips').on('mouseover', function(){tooltipcanclose=false;});
+			$("<a href='turbo/' class='admin-bookmark'><span class='settings-toggle-option'><i class='custom-icon custom-icon-palette-settings'></i></span></a>").appendTo('body');
+			tooltip = $("<div class='admin-tooltip'><div class='admin-tooltip-header'></div><div class='admin-tooltip-body'></div><div class='admin-tooltip-footer'></div></div>").appendTo($('body'));
+			$('.admin-tooltip').on('mouseleave', function(){tooltipcanclose=true;setTimeout("closeTooltip();", 300);});
+			$('.admin-tooltip').on('mouseover', function(){tooltipcanclose=false;});
 
-			$('[data-page]').on('mouseover', show_tooltip);
-			$('[data-category]').on('mouseover', show_tooltip);
-			$('[data-brand]').on('mouseover', show_tooltip);
-			$('[data-product]').on('mouseover', show_tooltip);
-			$('[data-post]').on('mouseover', show_tooltip);
-			$('[data-articles-category]').on('mouseover', show_tooltip);
-			$('[data-article]').on('mouseover', show_tooltip);
-			$('[data-feature]').on('mouseover', show_tooltip);
+			$('[data-page]').on('mouseover', showTooltip);
+			$('[data-category]').on('mouseover', showTooltip);
+			$('[data-brand]').on('mouseover', showTooltip);
+			$('[data-product]').on('mouseover', showTooltip);
+			$('[data-post]').on('mouseover', showTooltip);
+			$('[data-articles-category]').on('mouseover', showTooltip);
+			$('[data-article]').on('mouseover', showTooltip);
+			$('[data-feature]').on('mouseover', showTooltip);
 		});
 
-		function show_tooltip() {
+		function showTooltip() {
 			tooltipcanclose = false;
 			tooltip.show();
-			$(this).on('mouseleave', function(){tooltipcanclose=true;setTimeout("close_tooltip();", 500);});
+			$(this).on('mouseleave', function(){tooltipcanclose=true;setTimeout("closeTooltip();", 500);});
 
 			flip = !($(this).offset().left + tooltip.width() + 25 < $('body').width());
 
 			tooltip.css('top', $(this).height() + 5 + $(this).offset().top + 'px');
 			tooltip.css('left', ($(this).offset().left + $(this).outerWidth() * 0.5 - (flip ? tooltip.width() - 40 : 0) + 0) + 'px');
-			tooltip.find('.tooltipHeader').addClass(flip ? 'tooltipHeaderFlip' : 'tooltipHeaderDirect').removeClass(flip ? 'tooltipHeaderDirect' : 'tooltipHeaderFlip');
+			tooltip.find('.admin-tooltip-header').addClass(flip ? 'admin-tooltip-header-flip' : 'admin-tooltip-header-direct').removeClass(flip ? 'admin-tooltip-header-direct' : 'admin-tooltip-header-flip');
 
 			from = encodeURIComponent(window.location);
-			tooltipcontent = '';
+			tooltipContent = '';
 
 			var lang = '&lang_id={/literal}{$language->id}{literal}';
 			if (typeof lang_id != 'undefined') {
@@ -38,44 +39,44 @@
 			}
 
 			if (id = $(this).attr('data-page')) {
-				tooltipcontent = "<a href='turbo/index.php?module=PageAdmin&id="+id+"&return="+from+lang+"' class=admin_tooltip_edit>{/literal}{$btr->global_edit}{literal}</a>";
-				tooltipcontent += "<a href='turbo/index.php?module=PageAdmin&return="+from+lang+"' class=admin_tooltip_add>{/literal}{$btr->admintooltip_add_page}{literal}</a>";
+				tooltipContent = "<a href='turbo/index.php?module=PageAdmin&id="+id+"&return="+from+lang+"'class='admin-tooltip-edit'>{/literal}{$btr->global_edit}{literal}</a>";
+				tooltipContent += "<a href='turbo/index.php?module=PageAdmin&return="+from+lang+"'class='admin-tooltip-add'>{/literal}{$btr->admintooltip_add_page}{literal}</a>";
 			}
 
 			if (id = $(this).attr('data-category')) {
-				tooltipcontent = "<a href='turbo/index.php?module=CategoryAdmin&id="+id+"&return="+from+lang+"' class=admin_tooltip_edit>{/literal}{$btr->global_edit}{literal}</a>";
-				tooltipcontent += "<a href='turbo/index.php?module=ProductAdmin&category_id="+id+"&return="+from+lang+"' class=admin_tooltip_add>{/literal}{$btr->admintooltip_add_product}{literal}</a>";
+				tooltipContent = "<a href='turbo/index.php?module=CategoryAdmin&id="+id+"&return="+from+lang+"'class='admin-tooltip-edit'>{/literal}{$btr->global_edit}{literal}</a>";
+				tooltipContent += "<a href='turbo/index.php?module=ProductAdmin&category_id="+id+"&return="+from+lang+"'class='admin-tooltip-add'>{/literal}{$btr->admintooltip_add_product}{literal}</a>";
 			}
 
 			if (id = $(this).attr('data-brand')) {
-				tooltipcontent = "<a href='turbo/index.php?module=BrandAdmin&id="+id+"&return="+from+lang+"' class=admin_tooltip_edit>{/literal}{$btr->global_edit}{literal}</a>";
+				tooltipContent = "<a href='turbo/index.php?module=BrandAdmin&id="+id+"&return="+from+lang+"'class='admin-tooltip-edit'>{/literal}{$btr->global_edit}{literal}</a>";
 			}
 
 			if (id = $(this).attr('data-product')) {
-				tooltipcontent = "<a href='turbo/index.php?module=ProductAdmin&id="+id+"&return="+from+lang+"' class=admin_tooltip_edit>{/literal}{$btr->global_edit}{literal}</a>";
+				tooltipContent = "<a href='turbo/index.php?module=ProductAdmin&id="+id+"&return="+from+lang+"'class='admin-tooltip-edit'>{/literal}{$btr->global_edit}{literal}</a>";
 			}
 
 			if (id = $(this).attr('data-articles-category')) {
-				tooltipcontent = "<a href='turbo/index.php?module=ArticlesCategoryAdmin&id="+id+"&return="+from+"' class=admin_tooltip_edit>{/literal}{$btr->global_edit}{literal}</a>";
-				tooltipcontent += "<a href='turbo/index.php?module=ArticleAdmin&return="+from+"' class=admin_tooltip_add>{/literal}{$btr->admintooltip_add_article}{literal}</a>";
+				tooltipContent = "<a href='turbo/index.php?module=ArticlesCategoryAdmin&id="+id+"&return="+from+"'class='admin-tooltip-edit'>{/literal}{$btr->global_edit}{literal}</a>";
+				tooltipContent += "<a href='turbo/index.php?module=ArticleAdmin&return="+from+"' class='admin-tooltip-add'>{/literal}{$btr->admintooltip_add_article}{literal}</a>";
 			}
 
 			if (id = $(this).attr('data-article')) {
-				tooltipcontent = "<a href='turbo/index.php?module=ArticleAdmin&id="+id+"&return="+from+"' class=admin_tooltip_edit>{/literal}{$btr->global_edit}{literal}</a>";
+				tooltipContent = "<a href='turbo/index.php?module=ArticleAdmin&id="+id+"&return="+from+"'class='admin-tooltip-edit'>{/literal}{$btr->global_edit}{literal}</a>";
 			}
 
 			if (id = $(this).attr('data-post')) {
-				tooltipcontent = "<a href='turbo/index.php?module=PostAdmin&id="+id+"&return="+from+lang+"' class=admin_tooltip_edit>{/literal}{$btr->global_edit}{literal}</a>";
+				tooltipContent = "<a href='turbo/index.php?module=PostAdmin&id="+id+"&return="+from+lang+"'class='admin-tooltip-edit'>{/literal}{$btr->global_edit}{literal}</a>";
 			}
 
 			if (id = $(this).attr('data-feature')) {
-				tooltipcontent = "<a href='turbo/index.php?module=FeatureAdmin&id="+id+"&return="+from+lang+"' class=admin_tooltip_edit>{/literal}{$btr->global_edit}{literal}</a>";
+				tooltipContent = "<a href='turbo/index.php?module=FeatureAdmin&id="+id+"&return="+from+lang+"'class='admin-tooltip-edit'>{/literal}{$btr->global_edit}{literal}</a>";
 			}
 
-			$('.tooltipBody').html(tooltipcontent);
+			$('.admin-tooltip-body').html(tooltipContent);
 		}
 
-		function close_tooltip() {
+		function closeTooltip() {
 			if (tooltipcanclose) {
 				tooltipcanclose = false;
 				tooltip.hide();
@@ -83,8 +84,8 @@
 		}
 
 		function ShowTooltip(i, content) {
-			tooltip = document.getElementById('tooltip');
-			document.getElementById('tooltipBody').innerHTML = content;
+			tooltip = document.getElementById('admin-tooltip');
+			document.getElementById('admin-tooltip-body').innerHTML = content;
 			tooltip.style.display = 'block';
 			var xleft = 0;
 			var xtop = 0;
@@ -112,7 +113,7 @@
 			tooltip.style.top = xheight - 3 + xtop + 'px';
 			tooltip.style.left = (xleft - (flip ? bwidth : 0) + 25) + 'px';
 
-			document.getElementById('tooltipHeader').className = flip ? 'tooltipHeaderFlip' : 'tooltipHeaderDirect';
+			document.getElementById('admin-tooltip-header').className = flip ? 'admin-tooltip-header-flip' : 'admin-tooltip-header-direct';
 
 			return false;
 		}

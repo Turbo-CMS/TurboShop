@@ -274,9 +274,9 @@
 																	<div class="purchases-bodyng purchases-table-orders-name">
 																		{$purchase->product_name|escape} {if $purchase->variant_color}/ {$purchase->variant_color|escape}{/if} {if $purchase->variant_name}/ {$purchase->variant_name|escape}{/if}
 																	</div>
-																	<div class="purchases-bodyng purchases-table-orders-price">{$purchase->price|convert} {$currency->sign|escape}</div>
+																	<div class="purchases-bodyng purchases-table-orders-price">{$purchase->price} {$currency->sign|escape}</div>
 																	<div class="purchases-bodyng purchases-table-orders-unit"> {$purchase->amount}{$settings->units|escape}</div>
-																	<div class="purchases-bodyng purchases-table-orders-total"> {($purchase->amount*$purchase->price)|convert} {$currency->sign|escape}</div>
+																	<div class="purchases-bodyng purchases-table-orders-total"> {$purchase->amount*$purchase->price} {$currency->sign|escape}</div>
 																</div>
 															</div>
 														{/foreach}
@@ -337,9 +337,7 @@
 </div>
 
 {* Piecon *}
-{js id="piecon" priority=99 include=[
-	"turbo/design/js/piecon/piecon.min.js"
-]}{/js}
+{js id="piecon" priority=99 include=["turbo/design/js/piecon/piecon.min.js"]}{/js}
 {javascript minify=true}
 
 {literal}

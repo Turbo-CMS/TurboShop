@@ -4,12 +4,12 @@ session_start();
 require_once '../../api/Turbo.php';
 
 $turbo = new Turbo();
-
 $limit = 30;
 
-$langId = $turbo->languages->LangId();
+$langId = $turbo->languages->langId();
 $px = ($langId ? 'l' : 'p');
 $langSql = $turbo->languages->getQuery(['object' => 'product', 'px' => 'p']);
+
 $keyword = $turbo->request->get('query', 'string');
 $keywords = explode(' ', $keyword);
 $keywordSql = '';

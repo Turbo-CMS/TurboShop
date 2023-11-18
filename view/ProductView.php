@@ -6,19 +6,21 @@ class ProductView extends View
 {
 	function fetch()
 	{
-
 		$productUrl = $this->request->get('product_url', 'string');
 
 		if (empty($productUrl)) {
 			return false;
 		}
 
+		// Get Products
 		$product = $this->products->getProduct((string) $productUrl);
 
+		// Visible Admin
 		if (empty($product) || (!$product->visible && empty($_SESSION['admin']))) {
 			return false;
 		}
 
+		// Last Modified
 		$lastModifiedUnix = strtotime($product->last_modified);
 		$lastModified = gmdate("D, d M Y H:i:s \G\M\T", $lastModifiedUnix);
 		$ifModifiedSince = false;
@@ -38,6 +40,7 @@ class ProductView extends View
 
 		header('Last-Modified: ' . $lastModified);
 
+		// Variants
 		$product->images = $this->products->getImages(['product_id' => $product->id]);
 		$product->image = &$product->images[0];
 
@@ -62,6 +65,7 @@ class ProductView extends View
 			$product->variant = reset($variants);
 		}
 
+		// Features
 		if ($productValues = $this->features->getProductOptions(['product_id' => $product->id])) {
 
 			foreach ($productValues as $pv) {
@@ -84,15 +88,17 @@ class ProductView extends View
 			}
 		}
 
+		// Comments
 		if (!empty($this->user)) {
 			$this->design->assign('comment_name', $this->user->name);
 		}
 
 		$this->design->assign('comment_rating', 5);
 
+		// Comment Form
 		if ($this->request->isMethod('post') && $this->request->post('comment')) {
 			$comment = new stdClass();
-			
+
 			$comment->name = $this->request->post('name');
 			$comment->text = $this->request->post('text');
 			$comment->rating = $this->request->post('rating', 'integer');
@@ -130,8 +136,7 @@ class ProductView extends View
 			}
 		}
 
-		$itemsPerPage = $this->settings->comments_num;
-
+		// Comments List
 		$filter = [
 			'approved' => 1,
 			'type' => 'product',
@@ -140,6 +145,7 @@ class ProductView extends View
 			'ip' => $_SERVER['REMOTE_ADDR']
 		];
 
+		// Sort
 		if ($sort = $this->request->get('sort', 'string')) {
 			$_SESSION['sort'] = $sort;
 		}
@@ -151,9 +157,15 @@ class ProductView extends View
 		}
 
 		$this->design->assign('sort', $filter['sort']);
+
+		// Pagination Comments
+		$itemsPerPage = $this->settings->comments_num;
+
 		$currentPage = $this->request->get('page', 'integer');
 		$currentPage = max(1, $currentPage);
+
 		$this->design->assign('current_page_num', $currentPage);
+
 		$commentsCount = $this->comments->countComments($filter);
 
 		if ($this->request->get('page') == 'all') {
@@ -181,6 +193,7 @@ class ProductView extends View
 		$this->db->query("SELECT SUM(rating)/COUNT(id) AS ratings FROM __comments WHERE id IN (SELECT id FROM __comments WHERE type='product' AND object_id = $product->id AND approved=1 AND admin=0 AND rating > 0)");
 		$this->design->assign('ratings', floatval($this->db->result('ratings')));
 
+		// Related Products
 		$relatedIds = [];
 		$relatedProducts = [];
 		$recommendedIds = [];
@@ -269,14 +282,18 @@ class ProductView extends View
 		$this->design->assign('related_products', $relatedProducts);
 		$this->design->assign('recommended_products', $recommendedProducts);
 
+		// Files
 		$files = $this->files->getFiles(['object_id' => $product->id, 'type' => 'product']);
 		$this->design->assign('cms_files', $files);
 
+		// Video
 		$product->videos = $this->products->getVideos(['product_id' => $product->id]);
 
+		// Next Prev
 		$this->design->assign('next_product', $this->products->getNextProduct($product->id));
 		$this->design->assign('prev_product', $this->products->getPrevProduct($product->id));
 
+		// Timer Action
 		if (!empty($product->sale_to) && strtotime($product->sale_to) <= time()) {
 			$product->sale_to = null;
 
@@ -290,14 +307,18 @@ class ProductView extends View
 			}
 		}
 
+		// Design
 		$this->design->assign('product', $product);
-		$this->design->assign('comments', $comments);
 
+		// Category
 		$productCategories = $this->categories->getCategories(['product_id' => $product->id]);
 		$category = reset($productCategories);
-		$this->design->assign('brand', $this->brands->getBrand((int) $product->brand_id));
 		$this->design->assign('category', reset($productCategories));
 
+		// Brand
+		$this->design->assign('brand', $this->brands->getBrand((int) $product->brand_id));
+
+		// Browsed Products 
 		$maxVisitedProducts = 100;
 		$expire = time() + 60 * 60 * 24 * 30;
 		$browsedProducts = [];
@@ -314,6 +335,7 @@ class ProductView extends View
 		$cookieVal = implode(',', array_slice($browsedProducts, -$maxVisitedProducts, $maxVisitedProducts));
 		setcookie('browsed_products', $cookieVal, $expire, '/');
 
+		// Meta Tags
 		$this->design->assign('meta_title', $product->meta_title);
 		$this->design->assign('meta_keywords', $product->meta_keywords);
 		$this->design->assign('meta_description', $product->meta_description);
@@ -331,7 +353,7 @@ class ProductView extends View
 
 		$autoMetaParts = [
 			'{product}' => $product ? $product->name : '',
-			'{category}' => $category ? $category->name : '',
+			'{category}' => isset($category, $category->name) ? $category->name : '',
 			'{brand}' => isset($brand, $brand->name) ? $brand->name : '',
 			'{page}' => $page ? $page->header : '',
 			'{price}' => ($product->variant && $product->variant->price != null) ? $this->money->convert($product->variant->price) . ' ' . $this->currency->sign : '',
@@ -351,6 +373,7 @@ class ProductView extends View
 
 		$this->design->assign('auto_meta', $autoMeta);
 
+		// Display
 		return $this->design->fetch('product.tpl');
 	}
 }

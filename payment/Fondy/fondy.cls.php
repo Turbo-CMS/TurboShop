@@ -1,4 +1,5 @@
 <?php
+
 class fondycsl
 {
     const RESPONCE_SUCCESS = 'success';
@@ -10,13 +11,13 @@ class fondycsl
 
     public static function getSignature($data, $password, $encoded = true)
     {
-        $data = array_filter($data, function($var) {
+        $data = array_filter($data, function ($var) {
             return $var !== '' && $var !== null;
         });
 
         ksort($data);
         $str = $password;
-        
+
         foreach ($data as $k => $v) {
             $str .= self::SIGNATURE_SEPARATOR . $v;
         }
@@ -27,27 +28,27 @@ class fondycsl
             return $str;
         }
     }
+
     public static function isPaymentValid($oplataSettings, $response)
     {
         if ($oplataSettings['merchant'] != $response['merchant_id']) {
             return 'An error has occurred during payment. Merchant data is incorrect.';
         }
-   
-		$responseSignature = $response['signature'];
 
-		if (isset($response['response_signature_string'])){
-			unset($response['response_signature_string']);
-		}
+        $responseSignature = $response['signature'];
 
-		if (isset($response['signature'])){
-			unset($response['signature']);
-		}
+        if (isset($response['response_signature_string'])) {
+            unset($response['response_signature_string']);
+        }
 
-		if (fondycsl::getSignature($response, $oplataSettings['secretkey']) != $responseSignature) {
+        if (isset($response['signature'])) {
+            unset($response['signature']);
+        }
+
+        if (fondycsl::getSignature($response, $oplataSettings['secretkey']) != $responseSignature) {
             return 'An error has occurred during payment. Signature is not valid.';
         }
-        
+
         return true;
     }
-
 }

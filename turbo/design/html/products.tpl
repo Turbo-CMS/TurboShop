@@ -184,8 +184,8 @@
 											</div>
 											<div class="turbo-list-boding turbo-list-status">
 												<div class="form-check form-switch">
-													<input class="form-check-input js-ajax-action {if $product->visible}js-active-class{/if}" id="id_{$product->id}" data-module="product" data-action="visible" data-id="{$product->id}" name="visible" value="1" type="checkbox" {if $product->visible}checked="" {/if}>
-													<label class="form-check-label" for="id_{$product->id}"></label>
+													<input class="form-check-input js-ajax-action {if $product->visible}js-active-class{/if}" id="id-{$product->id}" data-module="product" data-action="visible" data-id="{$product->id}" name="visible" value="1" type="checkbox" {if $product->visible}checked="" {/if}>
+													<label class="form-check-label" for="id-{$product->id}"></label>
 												</div>
 											</div>
 											<div class=" turbo-list-setting turbo-list-products-setting">
@@ -362,6 +362,7 @@
 		{/if}
 	</div>
 </div>
+
 {literal}
 	<script>
 		$(function() {

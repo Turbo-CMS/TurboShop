@@ -16,20 +16,24 @@ class BlogView extends View
 	}
 
 	/**
-	 * Fetch post
+	 * Fetch Post
 	 */
 	private function fetchPost($url)
 	{
+		// Get Post
 		$post = $this->blog->getPost($url);
 
+		// Views
 		if ($post && $post->visible && empty($_SESSION['admin'])) {
 			$this->blog->updateViews($post->id);
 		}
 
+		// Visible Admin
 		if (!$post || (!$post->visible && empty($_SESSION['admin']))) {
 			return false;
 		}
 
+		// Last Modified
 		$lastModifiedUnix = strtotime($post->last_modified);
 		$lastModified = gmdate('D, d M Y H:i:s \G\M\T', $lastModifiedUnix);
 		$ifModifiedSince = false;
@@ -49,10 +53,12 @@ class BlogView extends View
 
 		header('Last-Modified: ' . $lastModified);
 
+		// Comments
 		if (!empty($this->user)) {
 			$this->design->assign('comment_name', $this->user->name);
 		}
 
+		// Comment Form
 		if ($this->request->isMethod('post') && $this->request->post('comment')) {
 			$comment = new stdClass();
 
@@ -85,6 +91,7 @@ class BlogView extends View
 				}
 
 				$commentId = $this->comments->addComment($comment);
+
 				$this->notify->emailCommentAdmin($commentId);
 
 				unset($_SESSION['captcha_code']);
@@ -92,8 +99,7 @@ class BlogView extends View
 			}
 		}
 
-		$itemsPerPage = $this->settings->comments_num;
-
+		// Comments list
 		$filter = [
 			'approved' => 1,
 			'type' => 'blog',
@@ -102,6 +108,7 @@ class BlogView extends View
 			'ip' => $_SERVER['REMOTE_ADDR'],
 		];
 
+		// Sort
 		if ($sort = $this->request->get('sort', 'string')) {
 			$_SESSION['sort'] = $sort;
 		}
@@ -114,9 +121,14 @@ class BlogView extends View
 
 		$this->design->assign('sort', $filter['sort']);
 
+		// Pagination Comments
+		$itemsPerPage = $this->settings->comments_num;
+
 		$currentPage = $this->request->get('page', 'integer');
 		$currentPage = max(1, $currentPage);
+
 		$this->design->assign('current_page_num', $currentPage);
+
 		$commentsCount = $this->comments->countComments($filter);
 
 		if ($this->request->get('page') == 'all') {
@@ -124,11 +136,13 @@ class BlogView extends View
 		}
 
 		$pagesNum = ceil($commentsCount / $itemsPerPage);
+
 		$this->design->assign('total_pages_num', $pagesNum);
 
 		$filter['page'] = $currentPage;
 		$filter['limit'] = $itemsPerPage;
 
+		// Get Comments
 		$comments = $this->comments->getComments($filter);
 
 		$children = [];
@@ -137,17 +151,21 @@ class BlogView extends View
 			$children[$c->parent_id][] = $c;
 		}
 
+		// Design
 		$this->design->assign('post', $post);
 		$this->design->assign('comments', $comments);
 		$this->design->assign('children', $children);
 		$this->design->assign('comments_count', $commentsCount);
 
+		// Tags
 		$tags = explode(',', $post->meta_keywords);
 		$this->design->assign('tags', array_map("trim", $tags));
 
+		// Next Prev
 		$this->design->assign('next_post', $this->blog->getNextPost($post->id));
 		$this->design->assign('prev_post', $this->blog->getPrevPost($post->id));
 
+		// Meta Tags
 		$this->design->assign('meta_title', $post->meta_title);
 		$this->design->assign('meta_keywords', $post->meta_keywords);
 		$this->design->assign('meta_description', $post->meta_description);
@@ -177,16 +195,18 @@ class BlogView extends View
 
 		$this->design->assign('auto_meta', $autoMeta);
 
+		// Display
 		return $this->design->fetch('post.tpl');
 	}
 
 	/**
-	 * Fetches blog
+	 * Fetches Blog
 	 */
 	private function fetchBlog()
 	{
 		$filter = [];
 
+		// Search
 		$keyword = $this->request->get('keyword');
 
 		if (!empty($keyword)) {
@@ -194,6 +214,7 @@ class BlogView extends View
 			$this->design->assign('keyword', $keyword);
 		}
 
+		// Sort
 		$sort = $this->request->get('sort', 'string');
 
 		if ($sort) {
@@ -208,13 +229,16 @@ class BlogView extends View
 
 		$this->design->assign('sort', $filter['sort']);
 
+		// Pagination
 		$itemsPerPage = $this->settings->blog_num;
 
 		$filter['visible'] = 1;
 
 		$currentPage = $this->request->get('page', 'integer');
 		$currentPage = max(1, $currentPage);
+
 		$this->design->assign('current_page_num', $currentPage);
+
 		$postsCount = $this->blog->countPosts($filter);
 
 		if ($this->request->get('page') == 'all') {
@@ -222,19 +246,24 @@ class BlogView extends View
 		}
 
 		$pagesNumber = ceil($postsCount / $itemsPerPage);
+
 		$this->design->assign('total_pages_num', $pagesNumber);
 
 		$filter['page'] = $currentPage;
 		$filter['limit'] = $itemsPerPage;
 
+		// Get Posts
 		$posts = $this->blog->getPosts($filter);
 
+		// Count Comments
 		foreach ($posts as $post) {
-			$post->commentsCount = $this->comments->countComments(['object_id' => $post->id, 'type' => 'blog', 'approved' => 1]);
+			$post->comments_count = $this->comments->countComments(['object_id' => $post->id, 'type' => 'blog', 'approved' => 1]);
 		}
 
+		// Design
 		$this->design->assign('posts', $posts);
 
+		// Meta Tags
 		if ($this->page) {
 			$this->design->assign('meta_title', $this->page->meta_title);
 			$this->design->assign('meta_keywords', $this->page->meta_keywords);
@@ -267,6 +296,7 @@ class BlogView extends View
 
 		$this->design->assign('auto_meta', $autoMeta);
 
+		// Last Modified
 		$lastModifiedUnix = strtotime($this->settings->lastModifyPosts);
 		$lastModified = gmdate('D, d M Y H:i:s \G\M\T', $lastModifiedUnix);
 		$ifModifiedSince = false;
@@ -286,6 +316,7 @@ class BlogView extends View
 
 		header('Last-Modified: ' . $lastModified);
 
+		// Display
 		$body = $this->design->fetch('blog.tpl');
 
 		return $body;

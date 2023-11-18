@@ -20,6 +20,7 @@
 								<input class="form-check-input js-check-all js-check-all-single" type="checkbox" value="">
 							</label>
 						</div>
+						<div class="turbo-list-heading turbo-list-photo">{$btr->global_photo|escape}</div>
 						<div class="turbo-list-heading turbo-list-payment-name">{$btr->global_title|escape}</div>
 						<div class="turbo-list-heading turbo-list-status">{$btr->global_enable|escape}</div>
 						<div class="turbo-list-heading turbo-list-delete"></div>
@@ -37,6 +38,21 @@
 											<input class="form-check-input js-check-all-single" type="checkbox" name="check[]" value="{$payment_method->id}">
 										</label>
 									</div>
+									<div class="turbo-list-boding turbo-list-photo small-photo boding-small turbo-list-payment-photo">
+										{if $payment_method->icon}
+											<a href="{url module=PaymentMethodAdmin id=$payment_method->id return=$smarty.server.REQUEST_URI}">
+												<img src="../{$config->payment_images_dir}{$payment_method->icon}" alt="{$payment_method->name|escape}">
+											</a>
+										{elseif $payment_method->code}
+											<a href="{url module=PaymentMethodAdmin id=$payment_method->id return=$smarty.server.REQUEST_URI}">
+												<i class="align-middle" data-feather="code"></i>
+											</a>
+										{else}
+											<a href="{url module=PaymentMethodAdmin id=$payment_method->id return=$smarty.server.REQUEST_URI}">
+												<i class="align-middle" data-feather="camera"></i>
+											</a>
+										{/if}
+									</div>
 									<div class="turbo-list-boding turbo-list-payment-name">
 										<a href="{url module=PaymentMethodAdmin id=$payment_method->id return=$smarty.server.REQUEST_URI}" class="fw-bold text-body text-decoration-none">
 											{$payment_method->name|escape}
@@ -44,8 +60,8 @@
 									</div>
 									<div class="turbo-list-boding turbo-list-status">
 										<div class="form-check form-switch">
-											<input class="form-check-input js-ajax-action {if $payment_method->enabled}js-active-class{/if}" id="id_{$payment_method->id}" data-module="payment" data-action="enabled" data-id="{$payment_method->id}" name="visible" value="1" type="checkbox" {if $payment_method->enabled}checked="" {/if}>
-											<label class="form-check-label" for="id_{$payment_method->id}"></label>
+											<input class="form-check-input js-ajax-action {if $payment_method->enabled}js-active-class{/if}" id="id-{$payment_method->id}" data-module="payment" data-action="enabled" data-id="{$payment_method->id}" name="visible" value="1" type="checkbox" {if $payment_method->enabled}checked="" {/if}>
+											<label class="form-check-label" for="id-{$payment_method->id}"></label>
 										</div>
 									</div>
 									<div class="turbo-list-boding turbo-list-delete">

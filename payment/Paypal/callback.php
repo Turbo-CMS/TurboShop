@@ -26,9 +26,9 @@ if (empty($method)) {
 $settings = unserialize($method->settings);
 
 if ($settings['mode'] == 'sandbox') {
-	$paypalUrl = "https://www.sandbox.paypal.com/cgi-bin/webscr";
+	$paypalUrl = "https://ipnpb.sandbox.paypal.com/cgi-bin/webscr";
 } else {
-	$paypalUrl = "https://www.paypal.com/cgi-bin/webscr";
+	$paypalUrl = "https://ipnpb.paypal.com/cgi-bin/webscr";
 }
 
 // Verify transaction
@@ -116,5 +116,5 @@ $turbo->notify->emailOrderAdmin((int) $order->id);
 
 function logg($str)
 {
-	file_put_contents('payment/Paypal/log.txt', file_get_contents('payment/Paypal/log.txt') . "\r\n" . date("m.d.Y H:i:s") . ' ' . $str);
+	file_put_contents('payment/PayPal/log.txt', file_get_contents('payment/PayPal/log.txt') . "\r\n" . date("m.d.Y H:i:s") . ' ' . $str);
 }

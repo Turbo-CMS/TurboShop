@@ -7,13 +7,19 @@ class PageView extends View
 	public function fetch()
 	{
 		$url = $this->request->get('page_url', 'string');
+
+		// Get Page
 		$page = $this->pages->getPage($url);
 
+		// Visible Admin
 		if (empty($page) || (!$page->visible && empty($_SESSION['admin']))) {
 			return false;
 		}
 
+		// Design
 		$this->design->assign('page', $page);
+
+		// Meta Tags
 		$this->design->assign('meta_title', $page->meta_title);
 		$this->design->assign('meta_keywords', $page->meta_keywords);
 		$this->design->assign('meta_description', $page->meta_description);
@@ -42,6 +48,7 @@ class PageView extends View
 
 		$this->design->assign('auto_meta', $autoMeta);
 
+		// Last Modified
 		$lastModifiedUnix = strtotime($page->last_modified);
 		$lastModified     = gmdate("D, d M Y H:i:s \G\M\T", $lastModifiedUnix);
 		$ifModifiedSince  = false;
@@ -61,6 +68,7 @@ class PageView extends View
 
 		header('Last-Modified: ' . $lastModified);
 
+		// Display
 		return $this->design->fetch('page.tpl');
 	}
 }

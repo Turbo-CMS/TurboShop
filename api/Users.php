@@ -7,7 +7,7 @@ class Users extends Turbo
 	private $salt = '8e86a279d6e182b3c811c559e6b15484';
 
 	/**
-	 * Get users
+	 * Get Users
 	 */
 	public function getUsers($filter = [])
 	{
@@ -82,9 +82,8 @@ class Users extends Turbo
 		return $this->db->results();
 	}
 
-
 	/**
-	 * Count users
+	 * Count Users
 	 */
 	public function countUsers($filter = [])
 	{
@@ -114,7 +113,7 @@ class Users extends Turbo
 	}
 
 	/**
-	 * Get user
+	 * Get User
 	 */
 	public function getUser($id)
 	{
@@ -160,7 +159,7 @@ class Users extends Turbo
 	}
 
 	/**
-	 * Add user
+	 * Add User
 	 */
 	public function addUser($user)
 	{
@@ -184,7 +183,7 @@ class Users extends Turbo
 	}
 
 	/**
-	 * Update user
+	 * Update User
 	 */
 	public function updateUser($id, $user)
 	{
@@ -201,7 +200,7 @@ class Users extends Turbo
 	}
 
 	/**
-	 * Delete user
+	 * Delete User
 	 */
 	public function deleteUser($id)
 	{
@@ -219,7 +218,7 @@ class Users extends Turbo
 	}
 
 	/**
-	 * Get groups
+	 * Get Groups
 	 */
 	public function getGroups()
 	{
@@ -230,7 +229,7 @@ class Users extends Turbo
 	}
 
 	/**
-	 * Get group
+	 * Get Group
 	 */
 	public function getGroup($id)
 	{
@@ -242,7 +241,7 @@ class Users extends Turbo
 	}
 
 	/**
-	 * Add group
+	 * Add Group
 	 */
 	public function addGroup($group)
 	{
@@ -253,7 +252,7 @@ class Users extends Turbo
 	}
 
 	/**
-	 * Update group
+	 * Update Group
 	 */
 	public function updateGroup($id, $group)
 	{
@@ -264,7 +263,7 @@ class Users extends Turbo
 	}
 
 	/**
-	 * Delete group
+	 * Delete Group
 	 */
 	public function deleteGroup($id)
 	{
@@ -283,7 +282,7 @@ class Users extends Turbo
 	}
 
 	/**
-	 * Check password
+	 * Check Password
 	 */
 	public function checkPassword($email, $password)
 	{

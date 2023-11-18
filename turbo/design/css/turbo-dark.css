@@ -63,11 +63,17 @@ img {
 }
 
 .z-1 {
-    z-index: 1!important;
+	z-index: 1 !important;
 }
 
 .new-video {
-	display:none;
+	display: none;
+}
+
+.dropdown .list-group .list-group-item:last-child {
+	border-bottom: none;
+	border-bottom-right-radius: inherit;
+	border-bottom-left-radius: inherit;
 }
 
 /************************************************************************* Sidebar  */
@@ -265,6 +271,20 @@ img {
 .js-fast-save button {
 	display: inline-block;
 	float: none;
+}
+
+.alert-dismissible .btn-return {
+	padding: 0.95rem 0.95rem;
+	position: absolute;
+	opacity: 0.5;
+	color: #fff;
+	right: 0;
+	top: 0;
+	z-index: 2;
+}
+
+.alert-dismissible .btn-return:hover {
+	opacity: 0.75;
 }
 
 /************************************************************************* Form  */
@@ -881,6 +901,12 @@ textarea.form-control {
 	width: 25px;
 }
 
+.turbo-list .turbo-list-photo.small-photo .feather-code {
+	stroke: #4e5863;
+	height: 25px;
+	width: 25px;
+}
+
 .turbo-list .turbo-list-related-photo {
 	width: 50px;
 	text-align: center !important;
@@ -1011,6 +1037,16 @@ textarea.form-control {
 	max-height: 30px;
 }
 
+.turbo-list .turbo-list-delivery-photo a img {
+	max-width: 100%;
+	max-height: 30px;
+}
+
+.turbo-list .turbo-list-payment-photo a img {
+	max-width: 100%;
+	max-height: 30px;
+}
+
 .turbo-list .turbo-list-banners-photo a img {
 	max-width: 100%;
 	max-height: 60px;
@@ -1069,13 +1105,13 @@ textarea.form-control {
 }
 
 .turbo-list .turbo-list-delivery-name {
-	width: calc(100% - 460px);
+	width: calc(100% - 535px);
 	position: relative;
 	text-align: left;
 }
 
 .turbo-list .turbo-list-payment-name {
-	width: calc(100% - 240px);
+	width: calc(100% - 315px);
 	position: relative;
 	text-align: left;
 }
@@ -1283,6 +1319,11 @@ textarea.form-control {
 }
 
 .turbo-list .turbo-list-brands-tag {
+	width: 420px;
+	text-align: left;
+}
+
+.turbo-list .turbo-list-banners-tag {
 	width: 420px;
 	text-align: left;
 }
@@ -2411,7 +2452,27 @@ textarea.form-control {
 }
 
 .order-dropdown-toggle:after {
-    margin-left: 0.5em;
+	margin-left: 0.5em;
+}
+
+.paid.form-check-input:checked {
+	background-color: #1cbb8c;
+	border-color: #1cbb8c;
+}
+
+.paid.form-check-input:focus {
+	border-color: #33c298;
+	box-shadow: 0 0 0 0.2rem rgba(24, 159, 119, 0.5);
+	outline: 0
+}
+
+.form-switch .paid.form-check-input:focus {
+	background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3E%3Ccircle r='3' fill='%238dddc5'/%3E%3C/svg%3E")
+}
+
+.form-switch .paid.form-check-input:checked {
+	background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3E%3Ccircle r='3' fill='%23fff'/%3E%3C/svg%3E");
+	background-position: 100%
 }
 
 /************************************************************************* comments.tpl  */
@@ -2526,6 +2587,10 @@ textarea.form-control {
 	max-width: 100%;
 	text-align: center;
 	max-height: 400px;
+}
+
+textarea.banner-textarea {
+	min-height: calc(1.9125rem + 152px);
 }
 
 /************************************************************************* categories.tpl  */
@@ -2836,4 +2901,66 @@ textarea.form-control {
 .nested-boxed-watermark {
 	padding: 15px;
 	margin-bottom: 15px;
+}
+
+/************************************************************************* delivery.tpl, payment_method.tpl */
+
+.checkout-images-list {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	margin-left: -1%;
+	margin-right: -1%;
+	margin-bottom: -10px;
+	overflow: hidden;
+}
+
+.checkout-images-list li {
+	min-height: 70px;
+	overflow: hidden;
+	margin-left: 1%;
+	margin-right: 1%;
+	margin-bottom: 10px;
+	position: relative;
+	height: 70px;
+	line-height: 70px;
+	background: transparent;
+	width: 70px;
+	float: left;
+	text-align: center;
+	cursor: pointer;
+	-moz-transition: 0.1s all;
+	-webkit-transition: 0.1s all;
+	transition: 0.1s all;
+	box-sizing: border-box;
+}
+
+.checkout-image-item {
+	padding: 0;
+	float: left;
+	width: 18%;
+	text-align: center;
+	line-height: 100px;
+	cursor: grab;
+	border-radius: 0.2rem;
+}
+
+.checkout-image-item:hover .remove-image {
+	position: absolute;
+	top: 0;
+	right: 0;
+	display: block;
+	width: 40px;
+	height: 40px;
+	border: none;
+	z-index: 10;
+}
+
+.checkout-image {
+	max-width: 70px;
+	margin: 0 auto;
+}
+
+.checkout-image img {
+	max-width: 36px;
 }

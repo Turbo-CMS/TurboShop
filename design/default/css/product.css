@@ -1,4 +1,4 @@
-/* Carusel images */
+/* Product gallery */
 
 .product .carousel {
 	min-height: 320px;
@@ -29,18 +29,8 @@
 	line-height: 100%;
 }
 
-.thumbnail {
-	max-height: 70px;
-	min-height: 70px;
-}
-
-.img-thumbnail {
-	min-width: 100px;
-}
-
 .icon-focus {
 	color: #fff;
-	font-family: "MobiriseIcons";
 	font-size: 3rem;
 	left: calc(50% - 24px);
 	opacity: 0;
@@ -49,6 +39,51 @@
 	transition: opacity 0.2s ease-in-out 0s;
 	z-index: 5;
 }
+
+/* Product gallery thumblist */
+
+.product-gallery-thumblist {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: start;
+	margin-left: -10px;
+}
+
+.product-gallery-thumblist-item {
+	margin: 0.3125rem;
+}
+
+.product-gallery-thumblist-item {
+	display: block;
+	position: relative;
+	width: 5rem;
+	height: 5rem;
+	margin: 0.625rem;
+	transition: border-color 0.2s ease-in-out;
+	border-radius: 0.3125rem;
+	text-decoration: none !important;
+	overflow: hidden;
+	text-align: center !important;
+}
+
+.product-gallery-thumblist-item>img {
+	max-height: 70px;
+	min-height: 70px;
+	padding: 5px;
+	transition: opacity 0.2s ease-in-out;
+	opacity: 0.6;
+}
+
+.product-gallery-thumblist-item.selected {
+	border-color: #0d6efd;
+}
+
+.product-gallery-thumblist-item.selected>img,
+.product-gallery-thumblist-item:hover img {
+	opacity: 1;
+}
+
+/* Badges */
 
 .icons {
 	position: absolute !important;
@@ -61,6 +96,18 @@
 .icons .badge {
 	margin: 5px 0 0 0;
 }
+
+/* Product details */
+
+@media (min-width: 992px) {
+	.product-details {
+		width: 100%;
+		max-width: 26rem;
+		padding-top: 0.25rem;
+	}
+}
+
+/* Variants */
 
 .variants label input {
 	display: none;
@@ -99,6 +146,6 @@
 	color: #000;
 }
 
-.variants-size .btn{
+.variants-size .btn {
 	min-width: 33px;
 }

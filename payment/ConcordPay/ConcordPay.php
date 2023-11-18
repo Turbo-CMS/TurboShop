@@ -91,7 +91,7 @@ class ConcordPay extends Turbo
         $option['decline_url'] = "$rootUrl/order/" . $order->url;
         $option['cancel_url'] = "$rootUrl/order/" . $order->url;
         $option['callback_url'] = "$rootUrl/payment/ConcordPay/callback.php";
-        // Statistics.
+        // Statistics
         $option['client_first_name'] = $this->getName($order->name)['client_first_name'];
         $option['client_last_name']  = $this->getName($order->name)['client_last_name'];
         $option['email']             = $order->email ?? '';
@@ -140,8 +140,8 @@ class ConcordPay extends Turbo
         if (!is_array($value)) {
             return '<input type="hidden" name="' . $name . '" value="' . htmlspecialchars($value) . '">';
         }
-        foreach ($value as $v => $data_key) {
-            $str .= $this->printInput($name . '[' . $v . ']', $data_key);
+        foreach ($value as $v => $dataKey) {
+            $str .= $this->printInput($name . '[' . $v . ']', $dataKey);
         }
         return $str;
     }

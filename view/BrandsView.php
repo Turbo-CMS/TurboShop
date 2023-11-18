@@ -6,9 +6,13 @@ class BrandsView extends View
 {
     public function fetch()
     {
+        // Get Brands
         $brands = $this->brands->getBrands();
+
+        // Design
         $this->design->assign('brands', $brands);
 
+        // Meta Tags
         if ($this->page) {
             $this->design->assign('meta_title', $this->page->meta_title);
             $this->design->assign('meta_keywords', $this->page->meta_keywords);
@@ -39,6 +43,7 @@ class BrandsView extends View
 
         $this->design->assign('auto_meta', $autoMeta);
 
+        // Last Modified
         if (isset($lastModifiedUnix)) {
             $lastModified = gmdate("D, d M Y H:i:s \G\M\T", $lastModifiedUnix);
             $ifModifiedSince = false;
@@ -59,6 +64,7 @@ class BrandsView extends View
             header('Last-Modified: ' . $lastModified);
         }
 
+        // Display
         return $this->design->fetch('brands.tpl');
     }
 }

@@ -5,7 +5,7 @@ require_once 'Turbo.php';
 class Features extends Turbo
 {
 	/**
-	 * Get features
+	 * Get Features
 	 */
 	function getFeatures($filter = [])
 	{
@@ -89,7 +89,7 @@ class Features extends Turbo
 	}
 
 	/**
-	 * Count features
+	 * Count Features
 	 */
 	public function countFeatures($filters = [])
 	{
@@ -151,7 +151,7 @@ class Features extends Turbo
 	}
 
 	/**
-	 * Get feature
+	 * Get Feature
 	 */
 	public function getFeature($id)
 	{
@@ -187,7 +187,7 @@ class Features extends Turbo
 	}
 
 	/**
-	 * Get compare
+	 * Get Compare
 	 */
 	public function getCompare($id)
 	{
@@ -216,7 +216,7 @@ class Features extends Turbo
 	}
 
 	/**
-	 * Get feature categories
+	 * Get Feature Categories
 	 */
 	function getFeatureCategories($id)
 	{
@@ -227,7 +227,7 @@ class Features extends Turbo
 	}
 
 	/**
-	 * Add feature
+	 * Add Feature
 	 */
 	public function addFeature($feature)
 	{
@@ -270,7 +270,7 @@ class Features extends Turbo
 	}
 
 	/**
-	 * Update feature
+	 * Update Feature
 	 */
 	public function updateFeature($id, $feature)
 	{
@@ -292,7 +292,7 @@ class Features extends Turbo
 	}
 
 	/**
-	 * Delete feature
+	 * Delete Feature
 	 */
 	public function deleteFeature($id = [])
 	{
@@ -316,7 +316,7 @@ class Features extends Turbo
 	}
 
 	/**
-	 * Delete option
+	 * Delete Option
 	 */
 	public function deleteOption($productId, $featureId)
 	{
@@ -332,7 +332,7 @@ class Features extends Turbo
 	}
 
 	/**
-	 * Update option
+	 * Update Option
 	 */
 	public function updateOption($productId, $featureId, $value, $translit = '')
 	{
@@ -357,7 +357,7 @@ class Features extends Turbo
 	}
 
 	/**
-	 * Add feature category
+	 * Add Feature Category
 	 */
 	public function addFeatureCategory($id, $categoryId)
 	{
@@ -367,7 +367,7 @@ class Features extends Turbo
 	}
 
 	/**
-	 * Update feature categories
+	 * Update Feature Categories
 	 */
 	public function updateFeatureCategories($id, $categories)
 	{
@@ -403,7 +403,7 @@ class Features extends Turbo
 	}
 
 	/**
-	 * Get options
+	 * Get Options
 	 */
 	public function getOptions($filter = [])
 	{
@@ -495,7 +495,7 @@ class Features extends Turbo
 	}
 
 	/**
-	 * Get product options
+	 * Get Product Options
 	 */
 	public function getProductOptions($productId)
 	{
@@ -534,7 +534,7 @@ class Features extends Turbo
 	}
 
 	/**
-	 * Transliterate
+	 * Translit
 	 */
 	public function translit($text)
 	{

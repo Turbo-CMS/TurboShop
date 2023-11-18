@@ -5,7 +5,7 @@ require_once 'Turbo.php';
 class Brands extends Turbo
 {
 	/**
-	 * Get brands
+	 * Get Brands
 	 */
 	public function getBrands($filter = [])
 	{
@@ -91,7 +91,7 @@ class Brands extends Turbo
 	}
 
 	/**
-	 * Get brand
+	 * Get Brand
 	 */
 	public function getBrand($id)
 	{
@@ -130,7 +130,7 @@ class Brands extends Turbo
 	}
 
 	/**
-	 * Add brand
+	 * Add Brand
 	 */
 	public function addBrand($brand)
 	{
@@ -170,7 +170,7 @@ class Brands extends Turbo
 	}
 
 	/**
-	 * Update brand
+	 * Update Brand
 	 */
 	public function updateBrand($id, $brand)
 	{
@@ -192,7 +192,7 @@ class Brands extends Turbo
 	}
 
 	/**
-	 * Delete brand
+	 * Delete Brand
 	 */
 	public function deleteBrand($id)
 	{
@@ -210,7 +210,7 @@ class Brands extends Turbo
 	}
 
 	/**
-	 * Delete image
+	 * Delete Image
 	 */
 	public function deleteImage($brandId)
 	{
@@ -262,7 +262,7 @@ class Brands extends Turbo
 	}
 
 	/**
-	 * Transliterate
+	 * Translit
 	 */
 	public function translit($text)
 	{

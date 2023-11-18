@@ -124,8 +124,8 @@
 											</div>
 											<div class="turbo-list-boding turbo-list-status">
 												<div class="form-check form-switch">
-													<input class="form-check-input js-ajax-action {if $banners_image->visible}js-active-class{/if}" id="id_{$banners_image->id}" data-module="banners_image" data-action="visible" data-id="{$banners_image->id}" name="visible" value="1" type="checkbox" {if $banners_image->visible}checked="" {/if}>
-													<label class="form-check-label" for="id_{$banners_image->id}"></label>
+													<input class="form-check-input js-ajax-action {if $banners_image->visible}js-active-class{/if}" id="id-{$banners_image->id}" data-module="banners_image" data-action="visible" data-id="{$banners_image->id}" name="visible" value="1" type="checkbox" {if $banners_image->visible}checked="" {/if}>
+													<label class="form-check-label" for="id-{$banners_image->id}"></label>
 												</div>
 											</div>
 											<div class="turbo-list-boding turbo-list-delete">

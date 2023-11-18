@@ -19,6 +19,7 @@ class BannersImageAdmin extends Turbo
             $bannersImage->button = $this->request->post('button');
             $bannersImage->color = $this->request->post('color');
             $bannersImage->style = $this->request->post('style');
+            $bannersImage->code = $this->request->post('code');
             $bannersImage->title = $this->request->post('title');
             $bannersImage->alt = $this->request->post('alt');
             $bannersImage->description = $this->request->post('description');

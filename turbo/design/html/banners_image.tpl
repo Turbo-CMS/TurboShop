@@ -24,6 +24,12 @@
 					{else}
 						{$message_success|escape}
 					{/if}
+					{if $smarty.get.return}
+						<a class="alert-link fw-normal btn-return text-decoration-none me-5" href="{$smarty.get.return}">
+							<i class="align-middle mt-n1" data-feather="corner-up-left"></i>
+							{$btr->global_back|escape}
+						</a>
+					{/if}
 					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>
 			</div>
@@ -60,7 +66,7 @@
 						<div class="col-lg-2 col-md-3 col-sm-12">
 							<div class="d-flex justify-content-center align-content-center flex-wrap flex-md-column h-100">
 								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
-									<input class="form-check-input ms-2" type="checkbox" id="visible" name="visible" value="1" type="checkbox" {if isset($banners_image->visible) && $banners_image->visible}checked=""{/if}>
+									<input class="form-check-input ms-2" type="checkbox" id="visible" name="visible" value="1" type="checkbox" {if isset($banners_image->visible) && $banners_image->visible}checked="" {/if}>
 									<label class="form-check-label ms-2" for="visible">{$btr->global_enable|escape}</label>
 								</div>
 							</div>
@@ -106,6 +112,10 @@
 									</select>
 								</div>
 								<div class="mb-3">
+									<div class="form-label">{$btr->global_code|escape}</div>
+									<input name="code" class="form-control" type="text" value="{if isset($banners_image->code)}{$banners_image->code|escape}{/if}">
+								</div>
+								<div class="mb-3">
 									<div class="form-label">{$btr->banners_image_button|escape}</div>
 									<input name="button" class="form-control" type="text" value="{if isset($banners_image->button)}{$banners_image->button|escape}{/if}">
 								</div>
@@ -121,7 +131,7 @@
 								</div>
 								<div class="mb-3">
 									<div class="form-label">{$btr->global_description|escape}</div>
-									<textarea name="description" class="form-control turbo-textarea">{if isset($banners_image->description)}{$banners_image->description|escape}{/if}</textarea>
+									<textarea name="description" class="form-control banner-textarea turbo-textarea">{if isset($banners_image->description)}{$banners_image->description|escape}{/if}</textarea>
 								</div>
 
 							</div>
@@ -228,14 +238,10 @@
 </form>
 
 {* Colorpicker *}
-{css id="colorpicker" include=[
-	"turbo/design/js/colorpicker/css/bootstrap-colorpicker.min.css"
-]}{/css}
+{css id="colorpicker" include=["turbo/design/js/colorpicker/css/bootstrap-colorpicker.min.css"]}{/css}
 {stylesheet minify=true}
 
-{js id="colorpicker" priority=99 include=[
-	"turbo/design/js/colorpicker/js/bootstrap-colorpicker.min.js"
-]}{/js}
+{js id="colorpicker" priority=99 include=["turbo/design/js/colorpicker/js/bootstrap-colorpicker.min.js"]}{/js}
 {javascript minify=true}
 
 {literal}

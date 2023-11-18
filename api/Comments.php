@@ -5,7 +5,7 @@ require_once 'Turbo.php';
 class Comments extends Turbo
 {
 	/**
-	 * Get comment
+	 * Get Comment
 	 */
 	public function getComment($id)
 	{
@@ -37,7 +37,7 @@ class Comments extends Turbo
 	}
 
 	/**
-	 * Get comments
+	 * Get Comments
 	 */
 	public function getComments($filter = [])
 	{
@@ -132,7 +132,7 @@ class Comments extends Turbo
 	}
 
 	/**
-	 * Counts comments 
+	 * Counts Comments 
 	 */
 	public function countComments($filter = [])
 	{
@@ -184,7 +184,7 @@ class Comments extends Turbo
 	}
 
 	/**
-	 * Adds comment
+	 * Add Comment
 	 */
 	public function addComment($comment)
 	{
@@ -195,7 +195,7 @@ class Comments extends Turbo
 		}
 
 		$id = $this->db->insertId();
-		
+
 		$comment = (array) $comment;
 
 		if (isset($comment['approved'], $comment['object_id']) && $comment['approved'] == 1) {
@@ -219,7 +219,7 @@ class Comments extends Turbo
 	}
 
 	/**
-	 * Updates comment
+	 * Updates Comment
 	 */
 	public function updateComment($id, $comment)
 	{
@@ -230,7 +230,7 @@ class Comments extends Turbo
 	}
 
 	/**
-	 * Deletes comment
+	 * Deletes Comment
 	 */
 	public function deleteComment($id)
 	{

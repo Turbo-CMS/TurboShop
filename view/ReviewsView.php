@@ -12,9 +12,10 @@ class ReviewsView extends View
 
         $this->design->assign('comment_rating', 5);
 
+        // Form
         if ($this->request->isMethod('post') && $this->request->post('comment')) {
             $comment = new stdClass();
-            
+
             $comment->name = $this->request->post('name');
             $comment->text = $this->request->post('text');
             $comment->rating = $this->request->post('rating', 'integer');
@@ -51,8 +52,7 @@ class ReviewsView extends View
             }
         }
 
-        $itemsPerPage = $this->settings->comments_num;
-
+        // Reviews list
         $filter = [
             'approved' => 1,
             'type' => 'review',
@@ -60,6 +60,7 @@ class ReviewsView extends View
             'has_parent' => false,
         ];
 
+        // Sort
         if ($sort = $this->request->get('sort', 'string')) {
             $_SESSION['sort'] = $sort;
         }
@@ -71,9 +72,15 @@ class ReviewsView extends View
         }
 
         $this->design->assign('sort', $filter['sort']);
+
+        // Pagination
+        $itemsPerPage = $this->settings->comments_num;
+
         $currentPage = $this->request->get('page', 'integer');
         $currentPage = max(1, $currentPage);
+
         $this->design->assign('current_page_num', $currentPage);
+
         $commentsCount = $this->comments->countComments($filter);
 
         if ($this->request->get('page') == 'all') {
@@ -85,7 +92,8 @@ class ReviewsView extends View
 
         $filter['page'] = $currentPage;
         $filter['limit'] = $itemsPerPage;
-        
+
+        // Get Comments
         $comments = $this->comments->getComments($filter);
 
         $children = [];
@@ -94,13 +102,15 @@ class ReviewsView extends View
             $children[$comment->parent_id][] = $comment;
         }
 
+        // Design
         $this->design->assign('comments', $comments);
         $this->design->assign('children', $children);
-
         $this->design->assign('comments_count', $commentsCount);
+
         $this->db->query("SELECT SUM(rating)/COUNT(id) AS ratings FROM __comments WHERE type='review' AND approved=1 AND admin=0 AND rating > 0");
         $this->design->assign('ratings', floatval($this->db->result('ratings')));
 
+        // Meta Tags
         if ($this->page) {
             $this->design->assign('meta_title', $this->page->meta_title);
             $this->design->assign('meta_keywords', $this->page->meta_keywords);
@@ -131,6 +141,7 @@ class ReviewsView extends View
 
         $this->design->assign('auto_meta', $autoMeta);
 
+        // Last Modified
         $lastModifiedUnix = strtotime($this->settings->lastModifyReviews);
         $lastModified = gmdate("D, d M Y H:i:s \G\M\T", $lastModifiedUnix);
         $ifModifiedSince = false;
@@ -150,8 +161,9 @@ class ReviewsView extends View
 
         header('Last-Modified: ' . $lastModified);
 
+        // Display
         $body = $this->design->fetch('reviews.tpl');
-        
+
         return $body;
     }
 }

@@ -7,10 +7,12 @@ class MainView extends View
     public function fetch()
     {
         if ($this->page) {
+            // Meta Tags
             $this->design->assign('meta_title', $this->page->meta_title);
             $this->design->assign('meta_keywords', $this->page->meta_keywords);
             $this->design->assign('meta_description', $this->page->meta_description);
 
+            // Last Modified
             $lastModifiedUnix = strtotime($this->page->last_modified);
             $lastModified = gmdate('D, d M Y H:i:s \G\M\T', $lastModifiedUnix);
             $ifModifiedSince = false;
@@ -31,6 +33,7 @@ class MainView extends View
             header('Last-Modified: ' . $lastModified);
         }
 
+        // Display
         return $this->design->fetch('main.tpl');
     }
 }

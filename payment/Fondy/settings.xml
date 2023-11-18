@@ -5,31 +5,18 @@
 	</name>
 	<settings>
 		<variable>fondy_merchantid</variable>
-		<name>Merchant ID</name>
+		<name>{$lang->merchant_id}</name>
 	</settings>
 	<settings>
 		<variable>fondy_secret</variable>
-		<name>The secret key</name>
+		<name>{$lang->secret_key}</name>
 	</settings>
-     
-        <settings>
+    <settings>
 		<variable>fondy_paymode</variable>
-		<name>Payment method</name>
+		<name>{$lang->deferred_payment}</name>
 	</settings>
 	<settings>
 		<variable>fondy_lang</variable>
-		<name>Window Language</name>
-	</settings>
-	<settings>
-		<variable>mode</variable>
-		<name>Mode</name>
-		<options>
-			<name>Display on the page</name>
-			<value>onpage</value>
-		</options>
-		<options>
-			<name>Redirect to payment page</name>
-			<value>redirect</value>
-		</options>
+		<name>{$lang->window_language}</name>
 	</settings>
 </module>

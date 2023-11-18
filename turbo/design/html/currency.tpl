@@ -257,12 +257,10 @@
 	</div>
 </div>
 
-
 <script>
 	var сurrency_recalculate = '{$btr->currency_recalculate|escape}';
 	var сurrency_recalculate_rate = '{$btr->currency_recalculate_rate|escape}';
 </script>
-
 
 {literal}
 	<script>

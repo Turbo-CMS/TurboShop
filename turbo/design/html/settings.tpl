@@ -771,9 +771,7 @@
 </form>
 
 {* Flag icon *}
-{css id="flag" include=[
-	"turbo/design/css/flag-icon.min.css"
-]}{/css}
+{css id="flag" include=["turbo/design/css/flag-icon.min.css"]}{/css}
 {stylesheet minify=true}
 
 <script>

@@ -14,6 +14,12 @@
 					{if $message_success == 'updated'}
 						{$btr->comment_updated|escape}
 					{/if}
+					{if $smarty.get.return}
+						<a class="alert-link fw-normal btn-return text-decoration-none me-5" href="{$smarty.get.return}">
+							<i class="align-middle mt-n1" data-feather="corner-up-left"></i>
+							{$btr->global_back|escape}
+						</a>
+					{/if}
 					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>
 			</div>

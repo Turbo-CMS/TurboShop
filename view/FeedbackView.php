@@ -8,6 +8,7 @@ class FeedbackView extends View
 	{
 		$feedback = new stdClass();
 
+		// Feedback form
 		if ($this->request->isMethod('post') && $this->request->post('feedback')) {
 			$feedback->name = $this->request->post('name');
 			$feedback->email = $this->request->post('email');
@@ -36,6 +37,7 @@ class FeedbackView extends View
 			}
 		}
 
+		// Meta Tags
 		if ($this->page) {
 			$this->design->assign('meta_title', $this->page->meta_title);
 			$this->design->assign('meta_keywords', $this->page->meta_keywords);
@@ -66,6 +68,7 @@ class FeedbackView extends View
 
 		$this->design->assign('auto_meta', $autoMeta);
 
+		// Display
 		return $this->design->fetch('feedback.tpl');
 	}
 }

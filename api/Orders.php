@@ -5,7 +5,7 @@ require_once 'Turbo.php';
 class Orders extends Turbo
 {
 	/**
-	 * Get order
+	 * Get Order
 	 */
 	public function getOrder($id)
 	{
@@ -56,7 +56,7 @@ class Orders extends Turbo
 	}
 
 	/**
-	 * Get orders
+	 * Get Orders
 	 */
 	function getOrders($filter = [])
 	{
@@ -169,7 +169,7 @@ class Orders extends Turbo
 	}
 
 	/**
-	 * Count orders
+	 * Count Orders
 	 */
 	public function countOrders($filter = [])
 	{
@@ -221,7 +221,7 @@ class Orders extends Turbo
 	}
 
 	/**
-	 * Update order
+	 * Update Order
 	 */
 	public function updateOrder($id, $order)
 	{
@@ -232,7 +232,7 @@ class Orders extends Turbo
 	}
 
 	/**
-	 * Delete order
+	 * Delete Order
 	 */
 	public function deleteOrder($id)
 	{
@@ -249,7 +249,7 @@ class Orders extends Turbo
 	}
 
 	/**
-	 * Add order
+	 * Add Order
 	 */
 	public function addOrder($order)
 	{
@@ -269,7 +269,7 @@ class Orders extends Turbo
 	}
 
 	/**
-	 * Get label
+	 * Get Label
 	 */
 	public function getLabel($id)
 	{
@@ -279,7 +279,7 @@ class Orders extends Turbo
 	}
 
 	/**
-	 * Get labels
+	 * Get Labels
 	 */
 	public function getLabels()
 	{
@@ -289,7 +289,7 @@ class Orders extends Turbo
 	}
 
 	/**
-	 * Add label
+	 * Add Label
 	 */
 	public function addLabel($label)
 	{
@@ -317,7 +317,7 @@ class Orders extends Turbo
 	}
 
 	/**
-	 * Delete label
+	 * Delete Label
 	 */
 	public function deleteLabel($id)
 	{
@@ -333,7 +333,7 @@ class Orders extends Turbo
 	}
 
 	/**
-	 * Get order labels
+	 * Get Order Labels
 	 */
 	function getOrderLabels($orderIds = [])
 	{
@@ -365,7 +365,7 @@ class Orders extends Turbo
 	}
 
 	/**
-	 * Update order labels
+	 * Update Order Labels
 	 */
 	public function updateOrderLabels($id, $labelsIds)
 	{
@@ -382,7 +382,7 @@ class Orders extends Turbo
 	}
 
 	/**
-	 * Add order labels
+	 * Add Order Labels
 	 */
 	public function addOrderLabels($id, $labelsIds)
 	{
@@ -396,7 +396,7 @@ class Orders extends Turbo
 	}
 
 	/**
-	 * Delete order
+	 * Delete Order
 	 */
 	public function deleteOrderLabels($id, $labelsIds)
 	{
@@ -410,7 +410,7 @@ class Orders extends Turbo
 	}
 
 	/**
-	 * Get purchase
+	 * Get Purchase
 	 */
 	public function getPurchase($id)
 	{
@@ -421,7 +421,7 @@ class Orders extends Turbo
 	}
 
 	/**
-	 * Get purchases
+	 * Get Purchases
 	 */
 	public function getPurchases($filter = [])
 	{
@@ -438,7 +438,7 @@ class Orders extends Turbo
 	}
 
 	/**
-	 * Update purchase
+	 * Update Purchase
 	 */
 	public function updatePurchase($id, $purchase)
 	{
@@ -488,7 +488,7 @@ class Orders extends Turbo
 	}
 
 	/**
-	 * Add purchase
+	 * Add Purchase
 	 */
 	public function addPurchase($purchase)
 	{
@@ -563,7 +563,7 @@ class Orders extends Turbo
 	}
 
 	/**
-	 * Delete purchase
+	 * Delete Purchase
 	 */
 	public function deletePurchase($id)
 	{
@@ -706,7 +706,7 @@ class Orders extends Turbo
 	}
 
 	/**
-	 * Update total price
+	 * Update Total Price
 	 */
 	private function updateTotalPrice($orderId)
 	{
@@ -724,7 +724,7 @@ class Orders extends Turbo
 	}
 
 	/**
-	 * Get next order
+	 * Get Next Order
 	 */
 	public function getNextOrder($id, $status = null)
 	{
@@ -745,7 +745,7 @@ class Orders extends Turbo
 	}
 
 	/**
-	 * Get previous order
+	 * Get Prev Order
 	 */
 	public function getPrevOrder($id, $status = null)
 	{

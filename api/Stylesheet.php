@@ -13,7 +13,7 @@ class Stylesheet extends Turbo
 	protected $less_object = null;
 
 	/**
-	 * Add file
+	 * Add File
 	 */
 	public function addFiles($id, $files, $priority = 10, $less = false)
 	{
@@ -48,7 +48,7 @@ class Stylesheet extends Turbo
 	}
 
 	/**
-	 * Add code
+	 * Add Code
 	 */
 	public function addCode($id, $code, $priority = 10, $less = false)
 	{
@@ -85,7 +85,7 @@ class Stylesheet extends Turbo
 	/**
 	 * Render
 	 */
-	public function render($event_id = null, $minify = null, $combine = true)
+	public function render($eventId = null, $minify = null, $combine = true)
 	{
 
 		if (is_null($minify)) {
@@ -109,10 +109,10 @@ class Stylesheet extends Turbo
 			}
 		}
 
-		if (!is_null($event_id)) {
-			if (isset($this->events[$event_id])) {
-				$events_data = $this->events[$event_id]->data;
-				$this->unplug($event_id);
+		if (!is_null($eventId)) {
+			if (isset($this->events[$eventId])) {
+				$events_data = $this->events[$eventId]->data;
+				$this->unplug($eventId);
 			}
 		} else {
 			uasort($this->events, [$this, 'sortPriorityCallback']);
@@ -135,7 +135,7 @@ class Stylesheet extends Turbo
 		if (!$combine && !$minify) {
 			foreach ($events_data as $css => $data) {
 				if ($data->less) {
-					$this->verify_less($css, $data);
+					$this->verifyLess($css, $data);
 				}
 
 				if ($data->type == 'code') {
@@ -167,8 +167,8 @@ class Stylesheet extends Turbo
 					} else {
 						$prefix = pathinfo($e->original, PATHINFO_FILENAME);
 					}
-				} elseif (!is_null($event_id)) {
-					$prefix = $event_id;
+				} elseif (!is_null($eventId)) {
+					$prefix = $eventId;
 				}
 
 				$result = $this->proteced($events_data, $prefix, $minify);
@@ -190,14 +190,14 @@ class Stylesheet extends Turbo
 
 		list($cacheFile, $cachePath) = $this->getCacheFile($data, $prefix);
 
-		$less_verify = [];
+		$lessVerify = [];
 
 		if ($this->less_used) {
 			$new_data = [];
 
 			foreach ($data as $css => $_data) {
 				if ($_data->less) {
-					$less_verify[] = $this->verify_less($css, $_data);
+					$lessVerify[] = $this->verifyLess($css, $_data);
 				}
 
 				$new_data[$css] = $_data;
@@ -206,7 +206,7 @@ class Stylesheet extends Turbo
 			$data = $new_data;
 		}
 
-		if (in_array(false, $less_verify) && is_file($cachePath)) {
+		if (in_array(false, $lessVerify) && is_file($cachePath)) {
 			unlink($cachePath);
 		}
 
@@ -235,25 +235,25 @@ class Stylesheet extends Turbo
 	}
 
 	/**
-	 * Get event
+	 * Get Event
 	 */
-	protected function getEvent($event_id)
+	protected function getEvent($eventId)
 	{
-		if (isset($this->events[$event_id])) {
-			return $this->events[$event_id];
+		if (isset($this->events[$eventId])) {
+			return $this->events[$eventId];
 		}
 
 		$event = new stdClass();
-		$event->id = $event_id;
+		$event->id = $eventId;
 		$event->data = [];
 		$event->order = $this->order_num++;
 		return $event;
 	}
 
 	/**
-	 * Verify less
+	 * Verify Less
 	 */
-	protected function verify_less(&$resource, &$data)
+	protected function verifyLess(&$resource, &$data)
 	{
 		$valid = true;
 
@@ -308,7 +308,7 @@ class Stylesheet extends Turbo
 	}
 
 	/**
-	 * Get minifier
+	 * Get Minifier
 	 */
 	protected function getMinifier($data, $minify)
 	{
@@ -326,7 +326,7 @@ class Stylesheet extends Turbo
 	}
 
 	/**
-	 * Get cache file
+	 * Get Cache File
 	 */
 	protected function getCacheFile($data, $prefix)
 	{
@@ -336,17 +336,17 @@ class Stylesheet extends Turbo
 		return [$cacheFile, $this->config->root_dir . $cacheFile];
 	}
 
-	protected function renderTag($content, $css_file)
+	protected function renderTag($content, $cssFile)
 	{
 		if ($content) {
 			return '<style type="text/css">' . $content . '</style>';
 		} else {
-			return '<link href="' . $css_file . '" rel="stylesheet"/>';
+			return '<link href="' . $cssFile . '" rel="stylesheet"/>';
 		}
 	}
 
 	/**
-	 * String hashing
+	 * String Hashing
 	 */
 	protected function hash($str)
 	{
@@ -355,7 +355,7 @@ class Stylesheet extends Turbo
 	}
 
 	/** 
-	 * Sort array by priority 
+	 * Sort Priority Callback
 	 */
 	public function sortPriorityCallback($a, $b)
 	{

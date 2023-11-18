@@ -5,7 +5,7 @@ require_once 'Turbo.php';
 class Banners extends Turbo
 {
 	/**
-	 * Get banners images
+	 * Get Banners Images
 	 */
 	public function getBannersImages($filter = [])
 	{
@@ -62,6 +62,7 @@ class Banners extends Turbo
 				bi.url,
 				bi.color,
 				bi.style,
+				bi.code,
 				bi.button,
 				bi.alt,
 				bi.title,
@@ -97,7 +98,7 @@ class Banners extends Turbo
 	}
 
 	/**
-	 * Count banners images
+	 * Count Banners Images
 	 */
 	public function countBannersImages($filter = [])
 	{
@@ -146,7 +147,7 @@ class Banners extends Turbo
 	}
 
 	/**
-	 * GET banners image
+	 * GET Banners Image
 	 */
 	public function getBannersImage($id)
 	{
@@ -167,6 +168,7 @@ class Banners extends Turbo
 					bi.url,
 					bi.color,
 					bi.style,
+					bi.code,
 					bi.button,
 					bi.alt,
 					bi.title,
@@ -189,7 +191,7 @@ class Banners extends Turbo
 	}
 
 	/**
-	 * Add banners image
+	 * Add Banners Image
 	 */
 	public function addBannersImage($bannersImage)
 	{
@@ -211,7 +213,7 @@ class Banners extends Turbo
 	}
 
 	/**
-	 * Update banners image
+	 * Update Banners Image
 	 */
 	public function updateBannersImage($id, $bannersImage)
 	{
@@ -232,7 +234,7 @@ class Banners extends Turbo
 	}
 
 	/**
-	 * Delete banners image
+	 * Delete Banners Image
 	 */
 	public function deleteBannersImage($id)
 	{
@@ -251,7 +253,7 @@ class Banners extends Turbo
 	}
 
 	/**
-	 * Delete image
+	 * Delete Image
 	 */
 	public function deleteImage($id)
 	{
@@ -303,7 +305,7 @@ class Banners extends Turbo
 	}
 
 	/**
-	 * Delete background
+	 * Delete Background
 	 */
 	public function deleteBackground($id)
 	{
@@ -356,7 +358,7 @@ class Banners extends Turbo
 	}
 
 	/**
-	 * Get banners
+	 * Get Banners
 	 */
 	public function getBanners($filter = [])
 	{
@@ -378,7 +380,7 @@ class Banners extends Turbo
 	}
 
 	/**
-	 * Get banner
+	 * Get Banner
 	 */
 	public function getBanner($id, $visible = false, $showFilterArray = [])
 	{
@@ -422,7 +424,7 @@ class Banners extends Turbo
 	}
 
 	/**
-	 * Updates banner
+	 * Updates Banner
 	 */
 	public function updateBanner($id, $banner)
 	{
@@ -435,7 +437,7 @@ class Banners extends Turbo
 	}
 
 	/**
-	 * Adds a banner.
+	 * Adds Banner
 	 */
 	public function addBanner($banner)
 	{
@@ -452,7 +454,7 @@ class Banners extends Turbo
 	}
 
 	/**
-	 * Delete banner
+	 * Delete Banner
 	 */
 	public function deleteBanner($id)
 	{

@@ -6,7 +6,7 @@ class Subscribes extends Turbo
 {
 
 	/**
-	 * Get subscribe
+	 * Get Subscribe
 	 */
 	public function getSubscribe($id)
 	{
@@ -20,7 +20,7 @@ class Subscribes extends Turbo
 	}
 
 	/**
-	 * Get subscribes
+	 * Get Subscribes
 	 */
 	public function getSubscribes($filter = [], $newOnTop = false)
 	{
@@ -55,7 +55,7 @@ class Subscribes extends Turbo
 	}
 
 	/**
-	 * Count subscribes
+	 * Count Subscribes
 	 */
 	public function countSubscribes($filter = [])
 	{
@@ -80,7 +80,7 @@ class Subscribes extends Turbo
 	}
 
 	/**
-	 * Add subscribes
+	 * Add Subscribes
 	 */
 	public function addSubscribe($subscribe)
 	{
@@ -96,7 +96,7 @@ class Subscribes extends Turbo
 	}
 
 	/**
-	 * Update subscribes
+	 * Update Subscribes
 	 */
 	public function updateSubscribe($id, $subscribe)
 	{
@@ -115,7 +115,7 @@ class Subscribes extends Turbo
 	}
 
 	/**
-	 * Delete subscribes
+	 * Delete Subscribes
 	 */
 	public function deleteSubscribe($id)
 	{

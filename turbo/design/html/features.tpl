@@ -94,14 +94,14 @@
 									</div>
 									<div class="turbo-list-boding turbo-list-url-status">
 										<div class="form-check form-switch">
-											<input class="form-check-input js-ajax-action {if $feature->url_in_product}js-active-class{/if}" id="id_{$feature->id}" data-module="feature" data-action="url_in_product" data-id="{$feature->id}" name="url_in_product" value="1" type="checkbox" {if $feature->url_in_product}checked="" {/if}>
-											<label class="form-check-label" for="id_{$feature->id}"></label>
+											<input class="form-check-input js-ajax-action {if $feature->url_in_product}js-active-class{/if}" id="id-{$feature->id}" data-module="feature" data-action="url_in_product" data-id="{$feature->id}" name="url_in_product" value="1" type="checkbox" {if $feature->url_in_product}checked="" {/if}>
+											<label class="form-check-label" for="id-{$feature->id}"></label>
 										</div>
 									</div>
 									<div class="turbo-list-boding turbo-list-status">
 										<div class="form-check form-switch">
-											<input class="form-check-input js-ajax-action {if $feature->in_filter}js-active-class{/if}" id="id_{$feature->id}" data-module="feature" data-action="in_filter" data-id="{$feature->id}" name="in_filter" value="1" type="checkbox" {if $feature->in_filter}checked="" {/if}>
-											<label class="form-check-label" for="id_{$feature->id}"></label>
+											<input class="form-check-input js-ajax-action {if $feature->in_filter}js-active-class{/if}" id="id-{$feature->id}" data-module="feature" data-action="in_filter" data-id="{$feature->id}" name="in_filter" value="1" type="checkbox" {if $feature->in_filter}checked="" {/if}>
+											<label class="form-check-label" for="id-{$feature->id}"></label>
 										</div>
 									</div>
 									<div class="turbo-list-boding turbo-list-delete">

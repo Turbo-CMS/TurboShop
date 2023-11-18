@@ -14,7 +14,7 @@ class Request extends Turbo
 	}
 
 	/**
-	 * Is method
+	 * Is Method
 	 */
 	public function isMethod($method = null)
 	{
@@ -98,7 +98,7 @@ class Request extends Turbo
 	}
 
 	/**
-	 * Stripslashes recursive
+	 * Stripslashes Recursive
 	 */
 	private function stripslashesRecursive($var)
 	{
@@ -116,7 +116,7 @@ class Request extends Turbo
 	}
 
 	/**
-	 * Check session
+	 * Check Session
 	 */
 	public function checkSession()
 	{
@@ -131,7 +131,7 @@ class Request extends Turbo
 	}
 
 	/**
-	 * Url
+	 * URL
 	 */
 	public function url($params = [])
 	{

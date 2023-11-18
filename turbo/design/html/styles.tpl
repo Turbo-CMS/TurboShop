@@ -98,20 +98,14 @@
 {/if}
 
 {* Codemirror *}
-{css id="codemirror-css" include=[
-	"turbo/design/js/codemirror/lib/codemirror.css"
-]}{/css}
+{css id="codemirror-css" include=["turbo/design/js/codemirror/lib/codemirror.css"]}{/css}
 {stylesheet minify=true}
 
 {if $settings->admin_theme == "dark"}
-	{css id="codemirror-css" include=[
-		"turbo/design/js/codemirror/theme/dark.css"
-	]}{/css}
+	{css id="codemirror-css" include=["turbo/design/js/codemirror/theme/dark.css"]}{/css}
 	{stylesheet minify=true}
 {else}
-	{css id="codemirror-css" include=[
-		"turbo/design/js/codemirror/theme/style-css.css"
-	]}{/css}
+	{css id="codemirror-css" include=["turbo/design/js/codemirror/theme/style-css.css"]}{/css}
 	{stylesheet minify=true}
 {/if}
 

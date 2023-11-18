@@ -68,7 +68,7 @@ class Languages extends Turbo
 	}
 
 	/**
-	 * Get query
+	 * Get Query
 	 */
 	public function getQuery($params = [])
 	{
@@ -102,7 +102,7 @@ class Languages extends Turbo
 	}
 
 	/**
-	 * Lang id
+	 * Lang ID
 	 */
 	function langId()
 	{
@@ -146,7 +146,7 @@ class Languages extends Turbo
 	}
 
 	/**
-	 * Set lang id
+	 * Set Lang ID
 	 */
 	function setLangId($id)
 	{
@@ -178,7 +178,7 @@ class Languages extends Turbo
 	}
 
 	/**
-	 * Initializes languages
+	 * Initializes Languages
 	 */
 	function initLanguages()
 	{
@@ -196,7 +196,7 @@ class Languages extends Turbo
 	}
 
 	/**
-	 * Get language
+	 * Get Language
 	 */
 	public function getLanguage($id)
 	{
@@ -207,7 +207,7 @@ class Languages extends Turbo
 	}
 
 	/**
-	 * Get languages
+	 * Get Languages
 	 */
 	public function getLanguages($filter = [])
 	{
@@ -227,7 +227,7 @@ class Languages extends Turbo
 	}
 
 	/**
-	 * Update language
+	 * Update Language
 	 */
 	public function updateLanguage($id, $data)
 	{
@@ -247,7 +247,7 @@ class Languages extends Turbo
 	}
 
 	/**
-	 * Add language
+	 * Add Language
 	 */
 	public function addLanguage($data)
 	{
@@ -328,7 +328,7 @@ class Languages extends Turbo
 	}
 
 	/**
-	 * Delete language
+	 * Delete Language
 	 */
 	public function deleteLanguage($id)
 	{
@@ -355,7 +355,7 @@ class Languages extends Turbo
 	}
 
 	/**
-	 * Action data
+	 * Action Data
 	 */
 	public function actionData($objectId, $data, $object)
 	{
@@ -380,7 +380,7 @@ class Languages extends Turbo
 	}
 
 	/**
-	 * Get description
+	 * Get Description
 	 */
 	public function getDescription($data, $object)
 	{
@@ -416,7 +416,7 @@ class Languages extends Turbo
 	}
 
 	/**
-	 * Action description
+	 * Action Description
 	 */
 	public function actionDescription($objectId, $description, $object, $updateLang = null)
 	{
@@ -447,7 +447,7 @@ class Languages extends Turbo
 	}
 
 	/**
-	 * Get translation
+	 * Get Translation
 	 */
 	public function getTranslation($id)
 	{
@@ -458,7 +458,7 @@ class Languages extends Turbo
 	}
 
 	/**
-	 * Get translations
+	 * Get Translations
 	 */
 	public function getTranslations($filter = [])
 	{
@@ -531,7 +531,7 @@ class Languages extends Turbo
 	}
 
 	/**
-	 * Count translations
+	 * Count Translations
 	 */
 	public function countTranslations($filter = [])
 	{
@@ -570,7 +570,7 @@ class Languages extends Turbo
 	}
 
 	/**
-	 * Update translation
+	 * Update Translation
 	 */
 	public function updateTranslation($id, $data)
 	{
@@ -583,7 +583,7 @@ class Languages extends Turbo
 	}
 
 	/**
-	 * Add translation
+	 * Add Translation
 	 */
 	public function addTranslation($data)
 	{
@@ -600,7 +600,7 @@ class Languages extends Turbo
 	}
 
 	/**
-	 * Delete translation
+	 * Delete Translation
 	 */
 	public function deleteTranslation($id)
 	{
@@ -613,7 +613,7 @@ class Languages extends Turbo
 	}
 
 	/**
-	 * Set translation
+	 * Set Translation
 	 */
 	public function setTranslation()
 	{
@@ -628,7 +628,7 @@ class Languages extends Turbo
 	}
 
 	/**
-	 * Dump translation
+	 * Dump Translation
 	 */
 	public function dumpTranslation()
 	{

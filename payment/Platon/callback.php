@@ -4,24 +4,21 @@ chdir('../../');
 require_once 'api/Turbo.php';
 $turbo = new Turbo();
 
-// The amount the buyer paid. The fractional part is separated by a dot.
+// Amount
 $amount = $_POST['amount'];
 
-// Seller's internal purchase number
-// In this field, the id of the order in our store is passed.
+// Order number
 $orderId = (int) $_POST['order'];
 
 // Control signature
 $sign = $_POST['sign'];
 
-// Проверим статус
+// Check the status
 if ($_POST['status'] !== 'SALE') {
 	die('Incorrect Status');
 }
 
-////////////////////////////////////////////////
-// Select an order from the database
-////////////////////////////////////////////////
+// Select order
 $order = $turbo->orders->getOrder((int) $orderId);
 
 if (empty($order)) {
@@ -30,12 +27,10 @@ if (empty($order)) {
 
 // You can not pay for an already paid order 
 if ($order->paid) {
-	die('This order has already been paid.');
+	die('This order has already been paid');
 }
 
-////////////////////////////////////////////////
-// Select the appropriate payment method from the database
-////////////////////////////////////////////////
+// Select payment method
 $method = $turbo->payment->getPaymentMethod((int) $order->payment_method_id);
 
 if (empty($method)) {
@@ -55,9 +50,7 @@ if ($amount != $turbo->money->convert($order->total_price, $method->currency_id,
 	die("incorrect price\n");
 }
 
-////////////////////////////////////
 // Product Availability Check
-////////////////////////////////////
 $purchases = $turbo->orders->getPurchases(['order_id' => (int) $order->id]);
 
 foreach ($purchases as $purchase) {

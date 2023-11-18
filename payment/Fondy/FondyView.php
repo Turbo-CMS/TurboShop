@@ -9,28 +9,28 @@ class FondyView extends View
 		parent::__construct();
 	}
 
-	//////////////////////////////////////////
-	// Main function
-	//////////////////////////////////////////
+	/**
+	 * Main function
+	 */
 	public function fetch()
 	{
-		// Cart contents
+		// Cart
 		$this->design->assign('cart', $this->cart->getCart());
 
-		// Product categories
+		// Categories
 		$this->design->assign('categories', $this->categories->getCategoriesTree());
 
 		// Pages
 		$pages = $this->pages->getPages(['visible' => 1]);
 		$this->design->assign('pages', $pages);
 
-		// Create the main block of the page
-		$content = $this->design->fetch('payment/fondy/fondy.tpl');
+		// Create block
+		$content = $this->design->fetch('payment/Fondy/fondy.tpl');
 
-		// Passing the main block to the template
+		// Content
 		$this->design->assign('content', $content);
 
-		// Create the current site wrapper (usually index.tpl)
+		// Wrapper
 		$wrapper = $this->design->smarty->getTemplateVars('wrapper');
 
 		if (empty($wrapper)) {

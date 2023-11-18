@@ -5,7 +5,7 @@ require_once 'Turbo.php';
 class Notify extends Turbo
 {
 	/**
-	 * Send email
+	 * Send Email
 	 */
 	function email($to, $subject, $message, $from = '', $replyTo = '')
 	{
@@ -26,7 +26,7 @@ class Notify extends Turbo
 	}
 
 	/**
-	 * Email order user
+	 * Email Order User
 	 */
 	public function emailOrderUser($orderId)
 	{
@@ -75,26 +75,33 @@ class Notify extends Turbo
 		$images = $this->products->getImages(['product_id' => $productsIds]);
 
 		foreach ($images as $image) {
-			$products[$image['product_id']]['images'][] = $image;
+			if (isset($products[$image->product_id])) {
+				$products[$image->product_id]->images[] = $image;
+			}
 		}
 
 		$variants = [];
 
 		foreach ($this->variants->getVariants(['id' => $variantsIds]) as $variant) {
-			$variants[$variant['id']] = $variant;
-			$products[$variant['product_id']]['variants'][] = $variant;
+			$variants[$variant->id] = $variant;
+
+			if (isset($products[$variant->product_id])) {
+				$products[$variant->product_id]->variants[] = $variant;
+			}
 		}
 
 		foreach ($purchases as &$purchase) {
 			if (!empty($products[$purchase->product_id])) {
 				$purchase->product = $products[$purchase->product_id];
 			}
+
 			if (!empty($variants[$purchase->variant_id])) {
 				$purchase->variant = $variants[$purchase->variant_id];
 			}
 		}
 
 		$delivery = $this->delivery->getDelivery($order->delivery_id);
+
 		$this->design->assign('delivery', $delivery);
 		$this->design->assign('order', $order);
 		$this->design->assign('purchases', $purchases);
@@ -103,7 +110,7 @@ class Notify extends Turbo
 			$this->design->assign('currency', current($this->money->getCurrencies(['enabled' => true])));
 		}
 
-		$emailTemplate = $this->design->fetch($this->config->root_dir . 'design/' . $this->settings->theme . '/html/email_order.tpl');
+		$emailTemplate = $this->design->fetch($this->config->root_dir . 'design/' . $this->settings->theme . '/html/email/email_order.tpl');
 		$subject = $this->design->getVar('subject');
 		$from = ($this->settings->notify_from_name ? $this->settings->notify_from_name . " <" . $this->settings->notify_from_email . ">" : $this->settings->notify_from_email);
 		$this->email($order->email, $subject, $emailTemplate, $from);
@@ -126,7 +133,7 @@ class Notify extends Turbo
 	}
 
 	/**
-	 * Email order admin
+	 * Email Order Admin
 	 */
 	public function emailOrderAdmin($orderId)
 	{
@@ -191,17 +198,16 @@ class Notify extends Turbo
 		$this->design->assign('main_currency', $this->money->getCurrency());
 
 		$backendTranslations = $this->backendTranslations;
+		$file = "turbo/lang/" . $this->settings->email_lang . ".php";
 
-		$file = $_SERVER['DOCUMENT_ROOT'] . '/turbo/lang/' . $this->settings->email_lang . '.php';
 		if (!file_exists($file)) {
-			foreach (glob($_SERVER['DOCUMENT_ROOT'] . '/turbo/lang/??.php') as $f) {
-				$file = $_SERVER['DOCUMENT_ROOT'] . '/turbo/lang/' . pathinfo($f, PATHINFO_FILENAME) . '.php';
+			foreach (glob("turbo/lang/??.php") as $f) {
+				$file = "turbo/lang/" . pathinfo($f, PATHINFO_FILENAME) . ".php";
 				break;
 			}
 		}
 
 		require_once $file;
-
 		$this->design->assign('btr', $backendTranslations);
 
 		$emailTemplate = $this->design->fetch($this->config->root_dir . 'turbo/design/html/email_order_admin.tpl');
@@ -210,7 +216,7 @@ class Notify extends Turbo
 	}
 
 	/**
-	 * Email comment admin
+	 * Email Comment Admin
 	 */
 	public function emailCommentAdmin($commentId)
 	{
@@ -231,11 +237,11 @@ class Notify extends Turbo
 		$this->design->assign('comment', $comment);
 
 		$backendTranslations = $this->backendTranslations;
-		$file = $_SERVER['DOCUMENT_ROOT'] . '/turbo/lang/' . $this->settings->email_lang . '.php';
+		$file = "turbo/lang/" . $this->settings->email_lang . ".php";
 
 		if (!file_exists($file)) {
-			foreach (glob($_SERVER['DOCUMENT_ROOT'] . '/turbo/lang/??.php') as $f) {
-				$file = $_SERVER['DOCUMENT_ROOT'] . '/turbo/lang/' . pathinfo($f, PATHINFO_FILENAME) . '.php';
+			foreach (glob("turbo/lang/??.php") as $f) {
+				$file = "turbo/lang/" . pathinfo($f, PATHINFO_FILENAME) . ".php";
 				break;
 			}
 		}
@@ -249,7 +255,7 @@ class Notify extends Turbo
 	}
 
 	/**
-	 * Email password remind
+	 * Email Password Remind
 	 */
 	public function emailPasswordRemind($userId, $code)
 	{
@@ -261,7 +267,7 @@ class Notify extends Turbo
 		$this->design->assign('user', $user);
 		$this->design->assign('code', $code);
 
-		$emailTemplate = $this->design->fetch($this->config->root_dir . 'design/' . $this->settings->theme . '/html/email_password_remind.tpl');
+		$emailTemplate = $this->design->fetch($this->config->root_dir . 'design/' . $this->settings->theme . '/html/email/email_password_remind.tpl');
 		$subject = $this->design->getVar('subject');
 		$from = ($this->settings->notify_from_name ? $this->settings->notify_from_name . " <" . $this->settings->notify_from_email . ">" : $this->settings->notify_from_email);
 		$this->email($user->email, $subject, $emailTemplate, $from);
@@ -273,7 +279,7 @@ class Notify extends Turbo
 	}
 
 	/**
-	 * Email feedback admin
+	 * Email Feedback Admin
 	 */
 	public function emailFeedbackAdmin($feedbackId)
 	{
@@ -284,18 +290,16 @@ class Notify extends Turbo
 		$this->design->assign('feedback', $feedback);
 
 		$backendTranslations = $this->backendTranslations;
-
-		$file = $_SERVER['DOCUMENT_ROOT'] . '/turbo/lang/' . $this->settings->email_lang . '.php';
+		$file = "turbo/lang/" . $this->settings->email_lang . ".php";
 
 		if (!file_exists($file)) {
-			foreach (glob($_SERVER['DOCUMENT_ROOT'] . '/turbo/lang/??.php') as $f) {
-				$file = $_SERVER['DOCUMENT_ROOT'] . '/turbo/lang/' . pathinfo($f, PATHINFO_FILENAME) . '.php';
+			foreach (glob("turbo/lang/??.php") as $f) {
+				$file = "turbo/lang/" . pathinfo($f, PATHINFO_FILENAME) . ".php";
 				break;
 			}
 		}
 
 		require_once $file;
-
 		$this->design->assign('btr', $backendTranslations);
 
 		$emailTemplate = $this->design->fetch($this->config->root_dir . 'turbo/design/html/email_feedback_admin.tpl');
@@ -306,7 +310,7 @@ class Notify extends Turbo
 	}
 
 	/**
-	 * Email callback admin
+	 * Email Callback Admin
 	 */
 	public function emailCallbackAdmin($callbackId)
 	{
@@ -317,18 +321,16 @@ class Notify extends Turbo
 		$this->design->assign('callback', $callback);
 
 		$backendTranslations = $this->backendTranslations;
-
-		$file = $_SERVER['DOCUMENT_ROOT'] . '/turbo/lang/' . $this->settings->email_lang . '.php';
+		$file = "turbo/lang/" . $this->settings->email_lang . ".php";
 
 		if (!file_exists($file)) {
-			foreach (glob($_SERVER['DOCUMENT_ROOT'] . '/turbo/lang/??.php') as $f) {
-				$file = $_SERVER['DOCUMENT_ROOT'] . '/turbo/lang/' . pathinfo($f, PATHINFO_FILENAME) . '.php';
+			foreach (glob("turbo/lang/??.php") as $f) {
+				$file = "turbo/lang/" . pathinfo($f, PATHINFO_FILENAME) . ".php";
 				break;
 			}
 		}
 
 		require_once $file;
-
 		$this->design->assign('btr', $backendTranslations);
 
 		$emailTemplate = $this->design->fetch($this->config->root_dir . 'turbo/design/html/email_callback_admin.tpl');

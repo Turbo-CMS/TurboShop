@@ -153,6 +153,7 @@
 		var date_to = '{$date_to}';
 	{/if}
 </script>
+
 {literal}
 	<script>
 		$(window).on("load", function() {

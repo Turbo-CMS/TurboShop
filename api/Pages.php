@@ -4,9 +4,8 @@ require_once 'Turbo.php';
 
 class Pages extends Turbo
 {
-
 	/**
-	 * Get page
+	 * Get Page
 	 */
 	public function getPage($id)
 	{
@@ -44,7 +43,7 @@ class Pages extends Turbo
 	}
 
 	/**
-	 * Get pages
+	 * Get Pages
 	 */
 	public function getPages($filter = [])
 	{
@@ -121,7 +120,7 @@ class Pages extends Turbo
 	}
 
 	/**
-	 * Add page
+	 * Add Page
 	 */
 	public function addPage($page)
 	{
@@ -150,7 +149,7 @@ class Pages extends Turbo
 	}
 
 	/**
-	 * Update page
+	 * Update Page
 	 */
 	public function updatePage($id, $page)
 	{
@@ -176,7 +175,7 @@ class Pages extends Turbo
 	}
 
 	/**
-	 * Delete page
+	 * Delete Page
 	 */
 	public function deletePage($id)
 	{
@@ -196,7 +195,7 @@ class Pages extends Turbo
 	public $menu;
 
 	/**
-	 * Get menus
+	 * Get Menus
 	 */
 	public function getMenus()
 	{
@@ -213,7 +212,7 @@ class Pages extends Turbo
 	}
 
 	/**
-	 * Initialize menu
+	 * Initialize Menu
 	 */
 	private function initMenu()
 	{
@@ -232,7 +231,7 @@ class Pages extends Turbo
 	}
 
 	/**
-	 * Add menu
+	 * Add Menu
 	 */
 	public function addMenu($menu)
 	{
@@ -251,7 +250,7 @@ class Pages extends Turbo
 	}
 
 	/**
-	 * Update menu
+	 * Update Menu
 	 */
 	public function updateMenu($id, $menu)
 	{
@@ -267,7 +266,7 @@ class Pages extends Turbo
 	}
 
 	/**
-	 * Delete menu
+	 * Delete Menu
 	 */
 	public function deleteMenu($id)
 	{
@@ -285,7 +284,7 @@ class Pages extends Turbo
 	}
 
 	/**
-	 * Get menu
+	 * Get Menu
 	 */
 	public function getMenu($menuId)
 	{
@@ -299,7 +298,7 @@ class Pages extends Turbo
 	private $pagesTree;
 
 	/**
-	 * Get pages tree
+	 * Get Pages Tree
 	 */
 	public function getPagesTree($filter = [])
 	{
@@ -310,7 +309,7 @@ class Pages extends Turbo
 	}
 
 	/**
-	 * Initialize pages
+	 * Initialize Pages
 	 */
 	private function initPages($filter = [])
 	{

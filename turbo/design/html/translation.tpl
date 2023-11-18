@@ -6,9 +6,9 @@
 
 <h1 class="mb-3">
 	{if !$translation->id}
-		{$btr->translation_add|escape}{if $settings->admin_theme} {$btr->global_theme} {$settings->admin_theme|escape}{/if}
+		{$btr->translation_add|escape}
 	{else}
-		{$translation->label|escape}{if $settings->admin_theme} {$btr->global_theme} {$settings->admin_theme|escape}{/if}
+		{$translation->label|escape}
 	{/if}
 </h1>
 
@@ -34,6 +34,12 @@
 						{$btr->translation_added|escape}
 					{elseif $message_success == 'updated'}
 						{$btr->translation_updated|escape}
+					{/if}
+					{if $smarty.get.return}
+						<a class="alert-link fw-normal btn-return text-decoration-none me-5" href="{$smarty.get.return}">
+							<i class="align-middle mt-n1" data-feather="corner-up-left"></i>
+							{$btr->global_back|escape}
+						</a>
 					{/if}
 					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>
@@ -79,7 +85,7 @@
 							<div class="col-12">
 								<div class="mb-3">
 									<div class="form-label">{$btr->translation_name|escape}</div>
-									<input name="label" class="form-control" type="text" value="{if isset($translation->label)}{$translation->label}{/if}" {if $locked_theme}readonly=""{/if} />
+									<input name="label" class="form-control" type="text" value="{if isset($translation->label)}{$translation->label}{/if}" {if $locked_theme}readonly="" {/if} />
 								</div>
 							</div>
 						</div>
@@ -93,7 +99,7 @@
 											</div>
 											{$lang->name|escape}
 										</div>
-										<textarea name="lang_{$lang->label}" class="form-control" rows="5" {if $locked_theme}readonly=""{/if}>{if $translation->id}{$translation->lang_{$lang->label}}{/if}</textarea>
+										<textarea name="lang_{$lang->label}" class="form-control" rows="5" {if $locked_theme}readonly="" {/if}>{if $translation->id}{$translation->lang_{$lang->label}}{/if}</textarea>
 									</div>
 								</div>
 							{/foreach}

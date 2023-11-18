@@ -11,6 +11,7 @@ class WishlistView extends View
 		$maxVisitedProducts = 100;
 		$expire = time() + 60 * 60 * 24 * 365;
 
+		// Add Product
 		if ($this->request->get('product_url', 'string')) {
 			if (!empty($_COOKIE['wishlist_products'])) {
 				$wishlistProducts = explode(',', $_COOKIE['wishlist_products']);
@@ -27,6 +28,7 @@ class WishlistView extends View
 			header('location: ' . $this->config->root_url . '/' . $this->langLink . 'wishlist/');
 		}
 
+		// Remove Product
 		if ($this->request->get('remove_product_url', 'string')) {
 			if ($this->request->get('remove_product_url', 'string') == 'all') {
 				setcookie("wishlist_products", "", $expire, "/");
@@ -47,6 +49,7 @@ class WishlistView extends View
 			}
 		}
 
+		// Product
 		if (!empty($_COOKIE['wishlist_products'])) {
 			$wishlistProducts = explode(',', $_COOKIE['wishlist_products']);
 
@@ -129,6 +132,7 @@ class WishlistView extends View
 				$product->relatedProducts = $dataRelatedProducts;
 			}
 
+			// Design
 			$this->design->assign('products', $products);
 		} else {
 			unset($_COOKIE['wishlist_products']);
@@ -137,6 +141,7 @@ class WishlistView extends View
 
 		$this->design->assign('wishlist', true);
 
+		// Meta Tags
 		if ($this->page) {
 			$this->design->assign('meta_title', $this->page->meta_title);
 			$this->design->assign('meta_keywords', $this->page->meta_keywords);
@@ -167,6 +172,7 @@ class WishlistView extends View
 
 		$this->design->assign('auto_meta', $autoMeta);
 
+		// Display
 		return $this->design->fetch('wishlist.tpl');
 	}
 }

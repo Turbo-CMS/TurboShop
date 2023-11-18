@@ -11,6 +11,7 @@ class UserView extends View
             exit();
         }
 
+        // Form
         if ($this->request->isMethod('post') && $this->request->post('name')) {
             $name = $this->request->post('name');
             $email = $this->request->post('email');
@@ -33,11 +34,8 @@ class UserView extends View
                 $this->design->assign('error', 'empty_name');
             } elseif (empty($email)) {
                 $this->design->assign('error', 'empty_email');
-            } elseif (empty($phone)) {
-                $this->design->assign('error', 'empty_phone');
-            } elseif (empty($address)) {
-                $this->design->assign('error', 'empty_address');
             } elseif ($user_id = $this->users->updateUser($this->user->id, ['name' => $name, 'email' => $email, 'phone' => $phone, 'address' => $address])) {
+                $this->design->assign('success', true);
                 $this->user = $this->users->getUser((int) $user_id);
                 $this->design->assign('name', $this->user->name);
                 $this->design->assign('user', $this->user);
@@ -58,11 +56,14 @@ class UserView extends View
             $this->design->assign('address', $this->user->address);
         }
 
+        // Orders
         $orders = $this->orders->getOrders(['user_id' => $this->user->id]);
-        
+
+        // Design
         $this->design->assign('orders', $orders);
         $this->design->assign('meta_title', $this->user->name);
 
+        // Display
         $body = $this->design->fetch('user.tpl');
 
         return $body;

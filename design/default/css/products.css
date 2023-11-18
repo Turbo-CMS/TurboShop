@@ -8,6 +8,10 @@
 	line-height: 240px;
 }
 
+.compare .image {
+	line-height: 100px;
+}
+
 .image img {
 	max-width: 100%;
 	vertical-align: middle;
@@ -96,6 +100,7 @@
 .card-product-grid .fix-height {
 	height: 130px;
 	overflow: hidden;
+	padding-left: 1px;
 }
 
 @media (max-width:1199px) {
@@ -139,35 +144,35 @@
 	font-size: 1.2rem;
 }
 
-.related-products  {
+.related-products {
 	display: flex;
-    flex-direction: row;
-    align-items: center;
+	flex-direction: row;
+	align-items: center;
 }
 
 .related-products a {
 	display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    width: 20px;
-    height: 20px;
-    vertical-align: bottom;
-    text-align: center;
-    border-radius: 50%;
-    box-sizing: border-box;
-    border: 1px solid transparent;
-    transition: all .2s ease-in-out;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	width: 20px;
+	height: 20px;
+	vertical-align: bottom;
+	text-align: center;
+	border-radius: 50%;
+	box-sizing: border-box;
+	border: 1px solid transparent;
+	transition: all .2s ease-in-out;
 }
 
 .related-products a span {
 	position: relative;
-    display: block;
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    overflow: hidden;
-    line-height: 16px;
+	display: block;
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+	overflow: hidden;
+	line-height: 16px;
 }
 
 .related-products .white span {
@@ -175,5 +180,5 @@
 }
 
 .related-products a.active {
-	border: 1px solid rgba(13, 110, 253)!important;
+	border: 1px solid rgba(13, 110, 253) !important;
 }

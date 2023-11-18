@@ -8,7 +8,7 @@ class Categories extends Turbo
 	private $categoriesTree;
 
 	/**
-	 * Get categories
+	 * Get Categories
 	 */
 	public function getCategories($filter = [])
 	{
@@ -73,7 +73,7 @@ class Categories extends Turbo
 	}
 
 	/**
-	 * Get product categories
+	 * Get Product Categories
 	 */
 	public function getProductCategories($productId)
 	{
@@ -84,7 +84,7 @@ class Categories extends Turbo
 	}
 
 	/**
-	 * Get categories tree
+	 * Get Categories Tree
 	 */
 	public function getCategoriesTree()
 	{
@@ -96,7 +96,7 @@ class Categories extends Turbo
 	}
 
 	/**
-	 * Get category
+	 * Get Category
 	 */
 	public function getCategory($id)
 	{
@@ -118,7 +118,7 @@ class Categories extends Turbo
 	}
 
 	/**
-	 * Add category
+	 * Add Category
 	 */
 	public function addCategory($category)
 	{
@@ -159,7 +159,7 @@ class Categories extends Turbo
 	}
 
 	/**
-	 * Update category
+	 * Update Category
 	 */
 	public function updateCategory($id, $category)
 	{
@@ -185,7 +185,7 @@ class Categories extends Turbo
 	}
 
 	/**
-	 * Delete category
+	 * Delete Category
 	 */
 	public function deleteCategory($ids)
 	{
@@ -196,6 +196,7 @@ class Categories extends Turbo
 				$this->deleteImage($category->children);
 				$this->deleteIcon($category->children);
 			}
+			
 			if (!empty($category->children)) {
 				$query = $this->db->placehold("DELETE FROM __categories WHERE id IN(?@)", $category->children);
 				$this->db->query($query);
@@ -204,6 +205,7 @@ class Categories extends Turbo
 				$this->db->query($query);
 
 				$this->db->query("DELETE FROM __lang_categories WHERE category_id IN(?@)", $category->children);
+				$this->db->query($query);
 			}
 		}
 
@@ -214,7 +216,7 @@ class Categories extends Turbo
 	}
 
 	/**
-	 * Add product category
+	 * Add Product Category
 	 */
 	public function addProductCategory($productId, $categoryId, $position = 0)
 	{
@@ -223,7 +225,7 @@ class Categories extends Turbo
 	}
 
 	/**
-	 * Delete product category
+	 * Delete Product Category
 	 */
 	public function deleteProductCategory($productId, $categoryId)
 	{
@@ -232,7 +234,7 @@ class Categories extends Turbo
 	}
 
 	/**
-	 * Delete image
+	 * Delete Image
 	 */
 	public function deleteImage($categoriesIds)
 	{
@@ -288,7 +290,7 @@ class Categories extends Turbo
 	}
 
 	/**
-	 * Delete icon
+	 * Delete Icon
 	 */
 	public function deleteIcon($categoriesIds)
 	{
@@ -320,7 +322,7 @@ class Categories extends Turbo
 	}
 
 	/**
-	 * Initializes categories 
+	 * Initializes Categories 
 	 */
 	private function initCategories()
 	{

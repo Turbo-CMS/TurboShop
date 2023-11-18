@@ -24,6 +24,12 @@
 					{elseif $message_success == 'updated'}
 						{$btr->coupons_updated|escape}
 					{/if}
+					{if $smarty.get.return}
+						<a class="alert-link fw-normal btn-return text-decoration-none me-5" href="{$smarty.get.return}">
+							<i class="align-middle mt-n1" data-feather="corner-up-left"></i>
+							{$btr->global_back|escape}
+						</a>
+					{/if}
 					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>
 			</div>
@@ -52,7 +58,7 @@
 
 <div class="card">
 	<div class="card-body">
-		<form method="post" id="product" class="clearfix" enctype="multipart/form-data">
+		<form method="post" enctype="multipart/form-data">
 			<input type="hidden" name="session_id" value="{$smarty.session.id}">
 			<div class="turbo-list turbo-list-order">
 				<div class="turbo-list-head">

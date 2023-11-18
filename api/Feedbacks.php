@@ -5,7 +5,7 @@ require_once 'Turbo.php';
 class Feedbacks extends Turbo
 {
 	/**
-	 * Get feedback
+	 * Get Feedback
 	 */
 	public function getFeedback($id)
 	{
@@ -32,7 +32,7 @@ class Feedbacks extends Turbo
 	}
 
 	/**
-	 * Get feedbacks
+	 * Get Feedbacks
 	 */
 	public function getFeedbacks($filter = [], $newOnTop = false)
 	{
@@ -94,7 +94,7 @@ class Feedbacks extends Turbo
 	}
 
 	/**
-	 * Counts feedbacks
+	 * Counts Feedbacks
 	 */
 	public function countFeedbacks($filter = [])
 	{
@@ -123,7 +123,7 @@ class Feedbacks extends Turbo
 	}
 
 	/**
-	 * Add feedback
+	 * Add Feedback
 	 */
 	public function addFeedback($feedback)
 	{
@@ -138,7 +138,7 @@ class Feedbacks extends Turbo
 	}
 
 	/**
-	 * Update feedback
+	 * Update Feedback
 	 */
 	public function updateFeedback($id, $feedback)
 	{
@@ -160,7 +160,7 @@ class Feedbacks extends Turbo
 
 
 	/**
-	 * Delete feedback
+	 * Delete Feedback
 	 */
 	public function deleteFeedback($id)
 	{

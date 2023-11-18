@@ -81,7 +81,7 @@ class Design extends Turbo
 	}
 
 	/**
-	 * Set templates directory
+	 * Set Templates Directory
 	 */
 	public function setTemplatesDir($dir)
 	{
@@ -89,7 +89,7 @@ class Design extends Turbo
 	}
 
 	/**
-	 * Set compiled directory
+	 * Set Compiled Directory
 	 */
 	public function setCompiledDir($dir)
 	{
@@ -97,7 +97,7 @@ class Design extends Turbo
 	}
 
 	/**
-	 * Get var
+	 * Get Var
 	 */
 	public function getVar($name)
 	{
@@ -105,7 +105,7 @@ class Design extends Turbo
 	}
 
 	/**
-	 * Clear cached
+	 * Clear Cached
 	 */
 	public function clearCache()
 	{
@@ -143,7 +143,7 @@ class Design extends Turbo
 	}
 
 	/**
-	 * Resize modifier
+	 * Resize Modifier
 	 */
 	public function resizeModifier($filename, $width = 0, $height = 0, $setWatermark = false)
 	{
@@ -151,7 +151,7 @@ class Design extends Turbo
 	}
 
 	/**
-	 * Resize catalog
+	 * Resize Catalog
 	 */
 	public function resizeCatalogModifier($filename, $width = 0, $height = 0, $setWatermark = false)
 	{
@@ -159,7 +159,7 @@ class Design extends Turbo
 	}
 
 	/**
-	 * Resize posts 
+	 * Resize Posts 
 	 */
 	public function resizePostsModifier($filename, $width = 0, $height = 0, $setWatermark = false)
 	{
@@ -167,7 +167,7 @@ class Design extends Turbo
 	}
 
 	/**
-	 * Resize articles
+	 * Resize Articles
 	 */
 	public function resizeArticlesModifier($filename, $width = 0, $height = 0, $setWatermark = false)
 	{
@@ -175,7 +175,7 @@ class Design extends Turbo
 	}
 
 	/**
-	 * Resize brands
+	 * Resize Brands
 	 */
 	public function resizeBrandsModifier($filename, $width = 0, $height = 0, $setWatermark = false)
 	{
@@ -183,7 +183,7 @@ class Design extends Turbo
 	}
 
 	/**
-	 * Resize banners
+	 * Resize Banners
 	 */
 	public function resizeBannersModifier($filename, $width = 0, $height = 0, $setWatermark = false)
 	{
@@ -191,7 +191,7 @@ class Design extends Turbo
 	}
 
 	/**
-	 * Token modifier
+	 * Token Modifier
 	 */
 	public function tokenModifier($text)
 	{
@@ -199,7 +199,7 @@ class Design extends Turbo
 	}
 
 	/**
-	 * URL modifier
+	 * URL Modifier
 	 */
 	public function urlModifier($params)
 	{
@@ -211,7 +211,7 @@ class Design extends Turbo
 	}
 
 	/**
-	 * Plural modifier
+	 * Plural Modifier
 	 */
 	public function pluralModifier($number, $singular, $plural1, $plural2 = null)
 	{
@@ -242,7 +242,7 @@ class Design extends Turbo
 	}
 
 	/**
-	 * First modifier
+	 * First Modifier
 	 */
 	public function firstModifier($params = [])
 	{
@@ -254,7 +254,7 @@ class Design extends Turbo
 	}
 
 	/**
-	 * Cut modifier
+	 * Cut Modifier
 	 */
 	public function cutModifier($array = [], $num = 1)
 	{
@@ -266,7 +266,7 @@ class Design extends Turbo
 	}
 
 	/**
-	 * Date modifier
+	 * Date Modifier
 	 */
 	public function dateModifier($date, $format = null)
 	{
@@ -282,7 +282,7 @@ class Design extends Turbo
 	}
 
 	/**
-	 * Time modifier
+	 * Time Modifier
 	 */
 	public function timeModifier($date, $format = null)
 	{
@@ -300,7 +300,7 @@ class Design extends Turbo
 	}
 
 	/**
-	 * API modifier
+	 * API Modifier
 	 */
 	public function apiPlugin($params, Smarty &$smarty)
 	{
@@ -319,7 +319,7 @@ class Design extends Turbo
 	}
 
 	/**
-	 * Is mobile
+	 * Is Mobile
 	 */
 	public function isMobile()
 	{
@@ -327,7 +327,7 @@ class Design extends Turbo
 	}
 
 	/**
-	 * Is tablet
+	 * Is Tablet
 	 */
 	public function isTablet()
 	{
@@ -335,7 +335,7 @@ class Design extends Turbo
 	}
 
 	/**
-	 * Floor modifier
+	 * Floor Modifier
 	 */
 	function floorModifier($number)
 	{
@@ -343,7 +343,7 @@ class Design extends Turbo
 	}
 
 	/**
-	 * Ceil modifier
+	 * Ceil Modifier
 	 */
 	function ceilModifier($number)
 	{
@@ -351,7 +351,7 @@ class Design extends Turbo
 	}
 
 	/**
-	 * Stristr modifier
+	 * Stristr Modifier
 	 */
 	function stristrModifier($text)
 	{
@@ -359,7 +359,7 @@ class Design extends Turbo
 	}
 
 	/**
-	 * In array modifier
+	 * In Array Modifier
 	 */
 	function inArrayModifier($value, $array)
 	{
@@ -367,7 +367,7 @@ class Design extends Turbo
 	}
 
 	/**
-	 * Array slice modifier
+	 * Array Slice Modifier
 	 */
 	function arraySliceModifier($input, $start, $length)
 	{
@@ -375,7 +375,7 @@ class Design extends Turbo
 	}
 
 	/**
-	 * Getimagesize modifier
+	 * Getimagesize Modifier
 	 */
 	function getimagesizeModifier($value)
 	{
@@ -383,7 +383,7 @@ class Design extends Turbo
 	}
 
 	/**
-	 * Urlencode modifier
+	 * Urlencode Modifier
 	 */
 	function urlencodeModifier($value)
 	{

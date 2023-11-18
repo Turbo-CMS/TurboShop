@@ -5,10 +5,10 @@
 	</name>
 	<settings>
 		<variable>platon_key</variable>
-		<name>Key</name>
+		<name>{$lang->key}</name>
 	</settings>
 	<settings>
-		<variable>platon_password</variable>
-		<name>Password</name>
+		<variable>platon_password</variable> 
+		<name>{$lang->password}</name>
 	</settings>
 </module>

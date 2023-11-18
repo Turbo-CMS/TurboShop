@@ -5,10 +5,10 @@
 	</name>
 	<settings>
 		<variable>liqpay_public_key</variable>
-		<name>Public key</name>
+		<name>{$lang->public_key}</name>
 	</settings>
 	<settings>
 		<variable>liqpay_private_key</variable>
-		<name>Private key</name>
+		<name>{$lang->private_key}</name>
 	</settings>
 </module>

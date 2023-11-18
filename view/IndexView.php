@@ -16,9 +16,10 @@ class IndexView extends View
 
 	public function fetch()
 	{
-
+		// Subscribe
 		if ($this->request->isMethod('post') && $this->request->post('subscribe')) {
 			$email = $this->request->post('subscribe_email');
+			$this->design->assign('email', $email);
 			$this->db->query("select count(id) as cnt from __subscribes where email=?", $email);
 			$cnt = $this->db->result('cnt');
 
@@ -32,6 +33,7 @@ class IndexView extends View
 			}
 		}
 
+		// Callback
 		if ($this->request->isMethod('post') && $this->request->post('callback')) {
 			$callback = new stdClass();
 
@@ -60,10 +62,10 @@ class IndexView extends View
 			}
 		}
 
+		// Fast Order
 		if (isset($_POST['IsFastOrder'])) {
 			if (isset($_POST['checkout'])) {
 				$order = new stdClass();
-
 				$order->name = $this->request->post('name');
 				$order->email = $this->request->post('email');
 				$order->address = $this->request->post('address');
@@ -118,6 +120,7 @@ class IndexView extends View
 			}
 		}
 
+		// Admintooltip
 		if (isset($_SESSION['admin'])) {
 			$backendTranslations = $this->backendTranslations;
 			$file = "turbo/lang/" . $this->settings->lang . ".php";
@@ -135,7 +138,7 @@ class IndexView extends View
 			$this->design->assign('admintooltip', $this->design->fetch($this->config->root_dir . 'turbo/design/html/admintooltip.tpl'));
 		}
 
-
+		// User Scripts
 		$counters = [];
 
 		foreach ((array)$this->settings->counters as $c) {
@@ -144,20 +147,24 @@ class IndexView extends View
 			}
 		}
 
+		// Design
 		$this->design->assign('counters', $counters);
 		$this->design->assign('cart', $this->cart->getCart());
 		$this->design->assign('categories', $this->categories->getCategoriesTree());
 		$this->design->assign('articles_categories', $this->articlesCategories->getArticlesCategoriesTree());
 
+		// Pages
 		$pages = $this->pages->getPagesTree(['visible' => 1]);
 		$this->design->assign('pages', $pages);
 
+		// Mobile Detect
 		$isMobile = $this->design->isMobile();
 		$isTablet = $this->design->isTablet();
 
 		$this->design->assign('is_mobile', $isMobile);
 		$this->design->assign('is_tablet', $isTablet);
 
+		// Module
 		$module = $this->request->get('module', 'string');
 		$module = preg_replace("/[^A-Za-z0-9]+/", "", $module);
 
@@ -177,6 +184,7 @@ class IndexView extends View
 			return false;
 		}
 
+		// Content
 		$content = $this->main->fetch();
 
 		if (!$content) {
@@ -186,19 +194,21 @@ class IndexView extends View
 		$this->design->assign('content', $content);
 		$this->design->assign('module', $module);
 
+		// Wrapper
 		$wrapper = $this->design->getVar('wrapper');
 
 		if (is_null($wrapper)) {
 			$wrapper = 'index.tpl';
 		}
 
+		// Site work
 		if (empty($_SESSION['admin'])) {
 			if ($this->settings->site_work == 'off') {
 				header('HTTP/1.0 503 Service Temporarily Unavailable');
 				header('Status: 503 Service Temporarily Unavailable');
 				header('Retry-After: 300');
 
-				return $this->design->fetch('tech.tpl');
+				return $this->design->fetch('service/tech.tpl');
 			}
 		}
 

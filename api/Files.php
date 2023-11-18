@@ -13,7 +13,7 @@ class Files extends Turbo
     }
 
     /**
-     * Get files
+     * Get Files
      */
     public function getFiles($filter = [])
     {
@@ -52,7 +52,7 @@ class Files extends Turbo
     }
 
     /**
-     * Add file
+     * Add File
      */
     public function addFile($objectId, $type, $filename)
     {
@@ -75,7 +75,7 @@ class Files extends Turbo
     }
 
     /**
-     * Update file
+     * Update File
      */
     public function updateFile($id, $file)
     {
@@ -93,7 +93,7 @@ class Files extends Turbo
     }
 
     /**
-     * Delete file
+     * Delete File
      */
     public function deleteFile($id)
     {
@@ -119,7 +119,7 @@ class Files extends Turbo
     }
 
     /**
-     * Upload file
+     * Upload File
      */
     public function uploadFile($filename, $name)
     {

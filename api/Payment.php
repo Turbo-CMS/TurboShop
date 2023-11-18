@@ -5,7 +5,7 @@ require_once 'Turbo.php';
 class Payment extends Turbo
 {
 	/**
-	 * Get payment methods
+	 * Get Payment Methods
 	 */
 	public function getPaymentMethods($filter = [])
 	{
@@ -39,7 +39,7 @@ class Payment extends Turbo
 	}
 
 	/**
-	 * Get payment method
+	 * Get Payment Method
 	 */
 	public function getPaymentMethod($id)
 	{
@@ -54,7 +54,7 @@ class Payment extends Turbo
 	}
 
 	/**
-	 * Get payment settings
+	 * Get Payment Settings
 	 */
 	public function getPaymentSettings($methodId)
 	{
@@ -72,7 +72,7 @@ class Payment extends Turbo
 	}
 
 	/**
-	 * Get payment modules
+	 * Get Payment Modules
 	 */
 	public function getPaymentModules()
 	{
@@ -86,20 +86,27 @@ class Payment extends Turbo
 
 			if (!empty($dir) && $dir != "." && $dir != ".." && is_dir($modulesDir . $dir)) {
 				if (is_readable($modulesDir . $dir . '/settings.xml') && $xml = simplexml_load_file($modulesDir . $dir . '/settings.xml')) {
-					$module = new stdClass();
+					$moduleTranslations = $this->getModuleBackendTranslations($dir);
 
+					$module = new stdClass();
 					$module->name = (string)$xml->name;
 					$module->settings = [];
 
 					foreach ($xml->settings as $setting) {
+						$settingName = (string) $setting->name;
+						$translationName = preg_replace('~{\$lang->(.+)?}~', '$1', $settingName);
+						$settingName = isset($moduleTranslations[$translationName]) ? $moduleTranslations[$translationName] : $settingName;
 						$moduleSettings = new stdClass();
-						$moduleSettings->name = (string) $setting->name;
+						$moduleSettings->name = $settingName;
 						$moduleSettings->variable = (string) $setting->variable;
-
 						$moduleSettings->options = [];
+
 						foreach ($setting->options as $option) {
+							$optionName = (string) $option->name;
+							$translationName = preg_replace('~{\$lang->(.+)?}~', '$1', $optionName);
+							$optionName = isset($moduleTranslations[$translationName]) ? $moduleTranslations[$translationName] : $optionName;
 							$optionDetails = new stdClass();
-							$optionDetails->name = (string) $option->name;
+							$optionDetails->name = $optionName;
 							$optionDetails->value = (string) $option->value;
 							$moduleSettings->options[(string) $option->value] = $optionDetails;
 						}
@@ -118,7 +125,24 @@ class Payment extends Turbo
 	}
 
 	/**
-	 * Get payment deliveries
+	 * Get Module Translations
+	 */
+	public function getModuleBackendTranslations($dir)
+	{
+		$langLabel = $this->settings->lang;
+		$moduleDir = $this->config->root_dir . 'payment/' . $dir;
+
+		$lang = [];
+
+		if (is_file($moduleDir . '/lang/' . $langLabel . '.php')) {
+			include $moduleDir . '/lang/' . $langLabel . '.php';
+		}
+
+		return $lang;
+	}
+
+	/**
+	 * Get Payment Deliveries
 	 */
 	public function getPaymentDeliveries($id)
 	{
@@ -129,7 +153,7 @@ class Payment extends Turbo
 	}
 
 	/**
-	 * Update payment method
+	 * Update Payment Method
 	 */
 	public function updatePaymentMethod($id, $paymentMethod)
 	{
@@ -150,7 +174,7 @@ class Payment extends Turbo
 	}
 
 	/**
-	 * Update payment settings
+	 * Update Payment Settings
 	 */
 	public function updatePaymentSettings($methodId, $settings)
 	{
@@ -165,7 +189,7 @@ class Payment extends Turbo
 	}
 
 	/**
-	 * Update payment deliveries
+	 * Update Payment Deliveries
 	 */
 	public function updatePaymentDeliveries($id, $deliveriesIds)
 	{
@@ -180,12 +204,12 @@ class Payment extends Turbo
 	}
 
 	/**
-	 * Add payment method
+	 * Add Payment Method
 	 */
 	public function addPaymentMethod($paymentMethod)
 	{
 		$result = $this->languages->getDescription($paymentMethod, 'payment');
-		$paymentMethod = (object)$paymentMethod;
+		$paymentMethod = (object) $paymentMethod;
 
 		if (!$this->db->query('INSERT INTO __payment_methods SET ?%', $paymentMethod)) {
 			return false;
@@ -203,7 +227,7 @@ class Payment extends Turbo
 	}
 
 	/**
-	 * Delete payment method
+	 * Delete Payment Method
 	 */
 	public function deletePaymentMethod($id)
 	{
@@ -215,6 +239,35 @@ class Payment extends Turbo
 			$this->db->query($query);
 
 			$this->db->query('DELETE FROM __lang_payment_methods WHERE payment_id=?', (int) $id);
+		}
+	}
+
+	/**
+	 * Delete Icon
+	 */
+	public function deleteIcon($paymentMethod)
+	{
+		$paymentMethod = (array) $paymentMethod;
+		$query = $this->db->placehold("SELECT icon FROM __payment_methods WHERE id IN(?@)", $paymentMethod);
+
+		if ($this->db->query($query)) {
+			$filenames = $this->db->results('icon');
+		}
+
+		if (!empty($filenames)) {
+			$query = $this->db->placehold("UPDATE __payment_methods SET icon=NULL WHERE id IN(?@)", $paymentMethod);
+			$this->db->query($query);
+
+			foreach ($filenames as $filename) {
+				$query = $this->db->placehold("SELECT COUNT(*) AS count FROM __payment_methods WHERE icon=?", $filename);
+				$this->db->query($query);
+
+				$count = $this->db->result('count');
+
+				if ($count == 0) {
+					unlink($this->config->root_dir . $this->config->payment_images_dir . $filename);
+				}
+			}
 		}
 	}
 }

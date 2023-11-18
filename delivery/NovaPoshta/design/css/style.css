@@ -1,0 +1,15 @@
+.bootstrap-select.is-valid .dropdown-toggle,
+.was-validated .bootstrap-select select.no-validate+.dropdown-toggle {
+    border-color: #6c757d;
+}
+
+.was-validated .bootstrap-select.no-validate .dropdown-menu .bs-searchbox .form-control {
+    border-color: #495057;
+    padding-right: 0rem;
+    background: none;
+}
+
+.was-validated .bootstrap-select.no-validate .dropdown-menu .bs-searchbox .form-control:valid:focus {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25)
+}

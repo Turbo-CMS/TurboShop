@@ -8,7 +8,7 @@ class ArticlesCategories extends Turbo
 	private $articlesCategoriesTree;
 
 	/**
-	 * Get articles categories
+	 * Get Articles Categories
 	 */
 	public function getArticlesCategories($filter = [])
 	{
@@ -20,7 +20,7 @@ class ArticlesCategories extends Turbo
 	}
 
 	/**
-	 * Get articles categories tree
+	 * Get Articles Categories Tree
 	 */
 	public function getArticlesCategoriesTree()
 	{
@@ -32,7 +32,7 @@ class ArticlesCategories extends Turbo
 	}
 
 	/**
-	 * Get article category
+	 * Get Article Category
 	 */
 	public function getArticlesCategory($id)
 	{
@@ -54,7 +54,7 @@ class ArticlesCategories extends Turbo
 	}
 
 	/**
-	 * Add articles category
+	 * Add Articles Category
 	 */
 	public function addArticlesCategory($category)
 	{
@@ -98,7 +98,7 @@ class ArticlesCategories extends Turbo
 	}
 
 	/**
-	 * Update articles category
+	 * Update Articles Category
 	 */
 	public function updateArticlesCategory($id, $category)
 	{
@@ -125,10 +125,9 @@ class ArticlesCategories extends Turbo
 
 		return (int) $id;
 	}
-	
 
 	/**
-	 * Delete articles category
+	 * Delete Articles Category
 	 */
 	public function deleteArticlesCategory($id)
 	{
@@ -146,8 +145,9 @@ class ArticlesCategories extends Turbo
 				$this->db->query($query);
 
 				$this->initArticlesCategories();
-			
+
 				$this->db->query("DELETE FROM __lang_articles_categories WHERE article_category_id=?", $childId);
+				$this->db->query($query);
 			}
 		}
 
@@ -155,7 +155,7 @@ class ArticlesCategories extends Turbo
 	}
 
 	/**
-	 * Delete image
+	 * Delete Image
 	 */
 	public function deleteImage($categoriesIds)
 	{
@@ -210,7 +210,7 @@ class ArticlesCategories extends Turbo
 	}
 
 	/**
-	 * Initializes article categories
+	 * Initializes Articles Categories
 	 */
 	private function initArticlesCategories()
 	{
@@ -266,7 +266,7 @@ class ArticlesCategories extends Turbo
 				if (isset($pointers[$category->parent_id])) {
 					$pointers[$category->id] = $pointers[$category->parent_id]->subcategories[] = $category;
 					$curr = $pointers[$category->id];
-					$pointers[$category->id]->path = array_merge((array)$pointers[$category->parent_id]->path, array($curr));
+					$pointers[$category->id]->path = array_merge((array) $pointers[$category->parent_id]->path, array($curr));
 					unset($articlesCategories[$k]);
 					$flag = true;
 				}

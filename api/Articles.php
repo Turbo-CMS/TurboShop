@@ -5,7 +5,7 @@ require_once 'Turbo.php';
 class Articles extends Turbo
 {
 	/**
-	 * Get article
+	 * Get Article
 	 */
 	public function getArticle($id)
 	{
@@ -52,7 +52,7 @@ class Articles extends Turbo
 	}
 
 	/**
-	 * Get articles
+	 * Get Articles
 	 */
 	public function getArticles($filter = [])
 	{
@@ -62,6 +62,7 @@ class Articles extends Turbo
 		$categoryIdFilter = '';
 		$visibleFilter = '';
 		$keywordFilter = '';
+		$authorFilter = '';
 		$order = 'a.position DESC';
 		$langId = $this->languages->langId();
 		$px = ($langId ? 'l' : 'a');
@@ -110,6 +111,13 @@ class Articles extends Turbo
 			}
 		}
 
+		if (isset($filter['author'])) {
+			$authors = explode(' ', $filter['author']);
+			foreach ($authors as $author) {
+				$authorFilter .= $this->db->placehold('AND (' . $px . '.author LIKE "%' . $this->db->escape(trim($author)) . '%") ');
+			}
+		}
+
 		$sqlLimit = $this->db->placehold('LIMIT ?, ?', ($page - 1) * $limit, $limit);
 
 		$langSql = $this->languages->getQuery(['object' => 'article', 'px' => 'a']);
@@ -142,7 +150,8 @@ class Articles extends Turbo
 				$postIdFilter 
 				$categoryIdFilter 
 				$visibleFilter 
-				$keywordFilter 
+				$keywordFilter
+				$authorFilter 
 			ORDER BY 
 				$order 
 				$sqlLimit"
@@ -164,7 +173,7 @@ class Articles extends Turbo
 	}
 
 	/**
-	 * Count articles
+	 * Count Articles
 	 */
 	public function countArticles($filter = [])
 	{
@@ -172,6 +181,7 @@ class Articles extends Turbo
 		$categoryIdFilter = '';
 		$visibleFilter = '';
 		$keywordFilter = '';
+		$authorFilter = '';
 
 		if (!empty($filter['id'])) {
 			$postIdFilter = $this->db->placehold('AND a.id IN(?@)', (array) $filter['id']);
@@ -192,9 +202,16 @@ class Articles extends Turbo
 			}
 		}
 
+		if (isset($filter['author'])) {
+			$authors = explode(' ', $filter['author']);
+			foreach ($authors as $author) {
+				$authorFilter .= $this->db->placehold('AND (a.author LIKE "%' . $this->db->escape(trim($author)) . '%") ');
+			}
+		}
+
 		$query = $this->db->placehold(
 			"SELECT COUNT(DISTINCT a.id) AS count
-            FROM __articles a WHERE 1 $postIdFilter $categoryIdFilter $visibleFilter $keywordFilter"
+             FROM __articles a WHERE 1 $postIdFilter $categoryIdFilter $visibleFilter $keywordFilter $authorFilter"
 		);
 
 		if ($this->settings->cached == 1 && empty($_SESSION['admin'])) {
@@ -217,7 +234,7 @@ class Articles extends Turbo
 	}
 
 	/**
-	 * Add article
+	 * Add Article
 	 */
 	public function addArticle($article)
 	{
@@ -259,7 +276,7 @@ class Articles extends Turbo
 	}
 
 	/**
-	 * Update an article
+	 * Update Article
 	 */
 	public function updateArticle($id, $post)
 	{
@@ -283,7 +300,7 @@ class Articles extends Turbo
 	}
 
 	/**
-	 * Update views
+	 * Update Views
 	 */
 	public function updateViews($id)
 	{
@@ -293,7 +310,7 @@ class Articles extends Turbo
 	}
 
 	/**
-	 * Delete article
+	 * Delete Article
 	 */
 	public function deleteArticle($id)
 	{
@@ -315,7 +332,7 @@ class Articles extends Turbo
 	}
 
 	/**
-	 * Delete image
+	 * Delete Image
 	 */
 	public function deleteImage($articleId)
 	{
@@ -366,7 +383,7 @@ class Articles extends Turbo
 	}
 
 	/**
-	 * Get next article
+	 * Get Next Article
 	 */
 	public function getNextArticle($id)
 	{
@@ -387,6 +404,7 @@ class Articles extends Turbo
 		);
 
 		$nextId = $this->db->result('id');
+
 		if ($nextId) {
 			return $this->getArticle((int) $nextId);
 		}
@@ -395,7 +413,7 @@ class Articles extends Turbo
 	}
 
 	/**
-	 * Get previous article
+	 * Get Prev Article
 	 */
 	public function getPrevArticle(int $id)
 	{
@@ -416,6 +434,7 @@ class Articles extends Turbo
 		);
 
 		$prevId = $this->db->result('id');
+
 		if ($prevId) {
 			return $this->getArticle((int) $prevId);
 		}

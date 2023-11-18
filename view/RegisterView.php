@@ -13,6 +13,7 @@ class RegisterView extends View
 
         $defaultStatus = 1;
 
+        // Form
         if ($this->request->isMethod('post') && $this->request->post('register')) {
             $name = $this->request->post('name');
             $email = $this->request->post('email');
@@ -51,6 +52,7 @@ class RegisterView extends View
             }
         }
 
+        // Display
         return $this->design->fetch('register.tpl');
     }
 }

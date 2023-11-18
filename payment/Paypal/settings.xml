@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module>
 	<name>
-		Paypal
+		PayPal
 	</name>
 	<settings>
 		<variable>business</variable>
-		<name>Merchant email</name>
+		<name>{$lang->merchant_email}</name>
 	</settings>
 	<settings>
 		<variable>mode</variable>
-		<name>Mode</name>
-		<options>
-			<name>Real payments</name>
+		<name>{$lang->mode}</name>
+		<options> 
+			<name>{$lang->real_payments}</name>
 			<value>real</value>
 		</options>
 		<options>
-			<name>Sandbox mode</name>
+			<name>{$lang->sandbox_mode}</name>
 			<value>sandbox</value>
 		</options>
 	</settings>

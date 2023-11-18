@@ -5,7 +5,7 @@ require_once 'Turbo.php';
 class Variants extends Turbo
 {
     /**
-     * Get variants
+     * Get Variants
      */
     public function getVariants($filter = [])
     {
@@ -79,7 +79,7 @@ class Variants extends Turbo
     }
 
     /**
-     * Get variant
+     * Get Variant
      */
     public function getVariant($id)
     {
@@ -129,7 +129,7 @@ class Variants extends Turbo
     }
 
     /**
-     * Update variant
+     * Update Variant
      */
     public function updateVariant($id, $variant)
     {
@@ -156,7 +156,7 @@ class Variants extends Turbo
     }
 
     /**
-     * Add variant
+     * Add Variant
      */
     public function addVariant($variant)
     {
@@ -170,17 +170,17 @@ class Variants extends Turbo
         $query = $this->db->placehold("INSERT INTO __variants SET ?%", $variant);
         $this->db->query($query);
 
-        $variant_id = $this->db->insertId();
+        $variantId = $this->db->insertId();
 
         if (!empty($result->description)) {
-            $this->languages->actionDescription($variant_id, $result->description, 'variant');
+            $this->languages->actionDescription($variantId, $result->description, 'variant');
         }
 
-        return $variant_id;
+        return $variantId;
     }
 
     /**
-     * Delete variant
+     * Delete Variant
      */
     public function deleteVariant($id)
     {

@@ -25,7 +25,7 @@ if ($('.raty.raty-read').length > 0){
 		},
 		starOff: 'far fa-star',
 		starOn: 'fa fa-star',
-		starHalf: 'fas fa-star-half-alt'
+		starHalf: 'far fa-star-half-stroke'
 	});
 }
 
@@ -45,7 +45,7 @@ if ($('.raty.raty-write').length > 0){
 						score: score,
 						starOff: 'far fa-star',
 						starOn: 'fa fa-star',
-						starHalf: 'fas fa-star-half-alt'
+						starHalf: 'far fa-star-half-stroke'
 					});
 					$('#rate').toast('show');
 				}
@@ -56,6 +56,6 @@ if ($('.raty.raty-write').length > 0){
 		},
 		starOff: 'far fa-star',
 		starOn: 'fa fa-star',
-		starHalf: 'fas fa-star-half-alt'
+		starHalf: 'far fa-star-half-stroke'
 	});
 }

@@ -14,7 +14,7 @@ class Settings extends Turbo
 	}
 
 	/**
-	 * Magic method get
+	 * Magic Method Get
 	 */
 	public function __get($name)
 	{
@@ -32,7 +32,7 @@ class Settings extends Turbo
 	}
 
 	/**
-	 * Magic method set
+	 * Magic Method Set
 	 */
 	public function __set($name, $value)
 	{
@@ -48,7 +48,7 @@ class Settings extends Turbo
 			$value = (string) $value;
 		}
 
-		$this->db->query('SELECT COUNT(*) as count FROM __settings WHERE name=?', $name);
+		$this->db->query('SELECT COUNT(*) AS count FROM __settings WHERE name=?', $name);
 		if ($this->db->result('count') > 0) {
 			$this->db->query('UPDATE __settings SET value=? WHERE name=?', $value, $name);
 		} else {
@@ -57,7 +57,7 @@ class Settings extends Turbo
 	}
 
 	/**
-	 * Initializes settings
+	 * Initializes Settings
 	 */
 	public function initSettings()
 	{
@@ -83,7 +83,7 @@ class Settings extends Turbo
 	}
 
 	/**
-	 * Add setting
+	 * Add Setting
 	 */
 	private function add($name, $value)
 	{
@@ -102,7 +102,7 @@ class Settings extends Turbo
 	}
 
 	/**
-	 * Update setting
+	 * Update Setting
 	 */
 	public function update($name, $value)
 	{
@@ -132,7 +132,7 @@ class Settings extends Turbo
 	}
 
 	/**
-	 * Get settings
+	 * Get Settings
 	 */
 	public function getSettings($langId = null)
 	{

@@ -2,7 +2,7 @@
 
 require_once 'api/Turbo.php';
 
-class Paypal extends Turbo
+class PayPal extends Turbo
 {
 	public function checkoutForm($orderId, $buttonText = null)
 	{
@@ -23,7 +23,7 @@ class Paypal extends Turbo
 			$paypalUrl = "https://www.paypal.com/cgi-bin/webscr";
 		}
 
-		$ipnUrl = $this->config->root_url . '/payment/Paypal/callback.php';
+		$ipnUrl = $this->config->root_url . '/payment/PayPal/callback.php';
 		$successUrl = $this->config->root_url . '/order/' . $order->url;
 		$failUrl = $this->config->root_url . '/order/' . $order->url;
 
@@ -54,8 +54,8 @@ class Paypal extends Turbo
 			$price = $this->money->convert($purchase->price, $paymentMethod->currency_id, false);
 			$price = number_format($price, 2, '.', '');
 			$button .=	"<input type='hidden' name='item_name_" . $i . "' value='" . $purchase->product_name . ' ' . $purchase->variant_name . "'>
-						<input type='hidden' name='amount_" . $i . "' value='" . $price . "'>
-						<input type='hidden' name='quantity_" . $i . "' value='" . $purchase->amount . "'>";
+						 <input type='hidden' name='amount_" . $i . "' value='" . $price . "'>
+						 <input type='hidden' name='quantity_" . $i . "' value='" . $purchase->amount . "'>";
 			$i++;
 		}
 

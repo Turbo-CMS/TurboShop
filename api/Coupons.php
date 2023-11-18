@@ -6,7 +6,7 @@ class Coupons extends Turbo
 {
 
 	/**
-	 * Get coupon
+	 * Get Coupon
 	 */
 	public function getCoupon($id)
 	{
@@ -41,7 +41,7 @@ class Coupons extends Turbo
 	}
 
 	/**
-	 * Get coupons
+	 * Get Coupons
 	 */
 	public function getCoupons($filter = [])
 	{
@@ -105,7 +105,7 @@ class Coupons extends Turbo
 	}
 
 	/**
-	 * Count coupons 
+	 * Count Coupons 
 	 */
 	public function countCoupons($filter = [])
 	{
@@ -142,7 +142,7 @@ class Coupons extends Turbo
 	}
 
 	/**
-	 * Add coupon
+	 * Add Coupon
 	 */
 	public function addCoupon($coupon)
 	{
@@ -160,7 +160,7 @@ class Coupons extends Turbo
 	}
 
 	/**
-	 * Update coupon
+	 * Update Coupon
 	 */
 	public function updateCoupon($id, $coupon)
 	{
@@ -171,7 +171,7 @@ class Coupons extends Turbo
 	}
 
 	/**
-	 * Deletes coupon
+	 * Deletes Coupon
 	 */
 	public function deleteCoupon($id)
 	{

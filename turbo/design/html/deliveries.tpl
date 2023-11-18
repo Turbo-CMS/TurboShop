@@ -20,6 +20,7 @@
 								<input class="form-check-input js-check-all js-check-all-single" type="checkbox" value="">
 							</label>
 						</div>
+						<div class="turbo-list-heading turbo-list-photo">{$btr->global_photo|escape}</div>
 						<div class="turbo-list-heading turbo-list-delivery-name">{$btr->global_title|escape}</div>
 						<div class="turbo-list-heading turbo-list-delivery-condit">{$btr->global_conditions|escape}</div>
 						<div class="turbo-list-heading turbo-list-status">{$btr->global_enable|escape}</div>
@@ -37,6 +38,21 @@
 										<label class="form-check">
 											<input class="form-check-input js-check-all-single" type="checkbox" name="check[]" value="{$delivery->id}">
 										</label>
+									</div>
+									<div class="turbo-list-boding turbo-list-photo small-photo boding-small turbo-list-delivery-photo">
+										{if $delivery->icon}
+											<a href="{url module=DeliveryAdmin id=$delivery->id return=$smarty.server.REQUEST_URI}">
+												<img src="../{$config->delivery_images_dir}{$delivery->icon}" alt="{$delivery->name|escape}">
+											</a>
+										{elseif $delivery->code}
+											<a href="{url module=DeliveryAdmin id=$delivery->id return=$smarty.server.REQUEST_URI}">
+												<i class="align-middle" data-feather="code"></i>
+											</a>
+										{else}
+											<a href="{url module=DeliveryAdmin id=$delivery->id return=$smarty.server.REQUEST_URI}">
+												<i class="align-middle" data-feather="camera"></i>
+											</a>
+										{/if}
 									</div>
 									<div class="turbo-list-boding turbo-list-delivery-name">
 										<a href="{url module=DeliveryAdmin id=$delivery->id return=$smarty.server.REQUEST_URI}" class="fw-bold text-body text-decoration-none">
@@ -71,8 +87,8 @@
 									</div>
 									<div class="turbo-list-boding turbo-list-status">
 										<div class="form-check form-switch">
-											<input class="form-check-input js-ajax-action {if $delivery->enabled}js-active-class{/if}" id="id_{$delivery->id}" data-module="delivery" data-action="enabled" data-id="{$delivery->id}" name="enabled" value="1" type="checkbox" {if $delivery->enabled}checked="" {/if}>
-											<label class="form-check-label" for="id_{$delivery->id}"></label>
+											<input class="form-check-input js-ajax-action {if $delivery->enabled}js-active-class{/if}" id="id-{$delivery->id}" data-module="delivery" data-action="enabled" data-id="{$delivery->id}" name="enabled" value="1" type="checkbox" {if $delivery->enabled}checked="" {/if}>
+											<label class="form-check-label" for="id-{$delivery->id}"></label>
 										</div>
 									</div>
 									<div class="turbo-list-boding turbo-list-delete">

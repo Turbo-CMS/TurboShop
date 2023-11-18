@@ -6,17 +6,21 @@ class SitemapView extends View
 {
 	function fetch()
 	{
+		// Blog
 		$posts = $this->blog->getPosts(['visible' => 1]);
 		$this->design->assign('posts', $posts);
 
+		// Products
 		$categories = $this->categories->getCategoriesTree();
 		$categories = $this->categoryTree($categories);
 		$this->design->assign('cats', $categories);
 
+		// Articles
 		$articlesCategories = $this->articlesCategories->getArticlesCategoriesTree();
 		$articlesCategories = $this->articleCategoryTree($articlesCategories);
 		$this->design->assign('articles_cats', $articlesCategories);
 
+		// Meta Tags
 		if ($this->page) {
 			$this->design->assign('meta_title', $this->page->meta_title);
 			$this->design->assign('meta_keywords', $this->page->meta_keywords);
@@ -43,14 +47,15 @@ class SitemapView extends View
 			$autoMeta->$key = preg_replace("/\{.*\}/", '', $autoMeta->$key);
 		}
 
-		$this->design->assign('posts', $posts);
-		$this->design->assign('cats', $categories);
-		$this->design->assign('articles_cats', $articlesCategories);
 		$this->design->assign('auto_meta', $autoMeta);
 
+		// Display
 		return $this->design->fetch('sitemap.tpl');
 	}
 
+	/**
+	 * Products Category Tree
+	 */
 	private function categoryTree($categories)
 	{
 		foreach ($categories as $key => $category) {
@@ -64,6 +69,9 @@ class SitemapView extends View
 		return $categories;
 	}
 
+	/**
+	 * Article Category Tree
+	 */
 	private function articleCategoryTree($articlesCategories)
 	{
 		foreach ($articlesCategories as $key => $articleCategory) {

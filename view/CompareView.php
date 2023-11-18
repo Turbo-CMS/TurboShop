@@ -8,6 +8,7 @@ class CompareView extends View
 
     public function fetch()
     {
+        // Add Product
         if ($this->request->get('product_url', 'string')) {
             $_SESSION['compared_products'][$this->request->get('product_url', 'string')] = $this->request->get('product_url', 'string');
             header('location: ' . $this->config->root_url . '/' . $this->langLink . 'compare/');
@@ -19,6 +20,7 @@ class CompareView extends View
             }
         }
 
+        // Remove Product
         if ($this->request->get('remove_product_url', 'string')) {
             if ($this->request->get('remove_product_url', 'string') == 'all') {
                 unset($_SESSION['compared_products']);
@@ -29,6 +31,7 @@ class CompareView extends View
             header('location: ' . $this->config->root_url . '/' . $this->langLink . 'compare/');
         }
 
+        // Product
         if (isset($_SESSION['compared_products'])) {
             $products = [];
 
@@ -104,6 +107,7 @@ class CompareView extends View
             }
         }
 
+        // Features
         if (isset($_SESSION['compare_features'])) {
             $compareFeatures = [];
 
@@ -116,10 +120,12 @@ class CompareView extends View
 
         unset($_SESSION['compare_features']);
 
+        // Design
         if (isset($products)) {
             $this->design->assign('products', $products);
         }
 
+        // Meta Tags
         if ($this->page) {
             $this->design->assign('meta_title', $this->page->meta_title);
             $this->design->assign('meta_keywords', $this->page->meta_keywords);
@@ -150,6 +156,7 @@ class CompareView extends View
 
         $this->design->assign('auto_meta', $autoMeta);
 
+        // Display
         return $this->design->fetch('compare.tpl');
     }
 }

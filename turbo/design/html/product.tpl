@@ -34,6 +34,12 @@
 					{else}
 						{$message_success|escape}
 					{/if}
+					{if $smarty.get.return}
+						<a class="alert-link fw-normal btn-return text-decoration-none me-5" href="{$smarty.get.return}">
+							<i class="align-middle mt-n1" data-feather="corner-up-left"></i>
+							{$btr->global_back|escape}
+						</a>
+					{/if}
 					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>
 			</div>
@@ -954,31 +960,21 @@
 {include file='tinymce_init.tpl'}
 
 {* Autocomplete *}
-{js id="autocomplete" priority=99 include=[
-	"turbo/design/js/autocomplete/jquery.autocomplete-min.js"
-]}{/js}
+{js id="autocomplete" priority=99 include=["turbo/design/js/autocomplete/jquery.autocomplete-min.js"]}{/js}
 {javascript minify=true}
 
 {* Fancybox *}
-{css id="fancybox" include=[
-	"turbo/design/js/fancybox/jquery.fancybox.min.css"
-]}{/css}
+{css id="fancybox" include=["turbo/design/js/fancybox/jquery.fancybox.min.css"]}{/css}
 {stylesheet minify=true}
 
-{js id="fancybox" priority=99 include=[
-	"turbo/design/js/fancybox/jquery.fancybox.min.js"
-]}{/js}
+{js id="fancybox" priority=99 include=["turbo/design/js/fancybox/jquery.fancybox.min.js"]}{/js}
 {javascript minify=true}
 
 {* Colorpicker *}
-{css id="colorpicker" include=[
-	"turbo/design/js/colorpicker/css/bootstrap-colorpicker.min.css"
-]}{/css}
+{css id="colorpicker" include=["turbo/design/js/colorpicker/css/bootstrap-colorpicker.min.css"]}{/css}
 {stylesheet minify=true}
 
-{js id="colorpicker" priority=99 include=[
-	"turbo/design/js/colorpicker/js/bootstrap-colorpicker.min.js"
-]}{/js}
+{js id="colorpicker" priority=99 include=["turbo/design/js/colorpicker/js/bootstrap-colorpicker.min.js"]}{/js}
 {javascript minify=true}
 
 {literal}

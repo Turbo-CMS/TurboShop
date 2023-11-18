@@ -124,9 +124,7 @@
 </div>
 
 {* Loader *}
-{js id="loader" priority=99 include=[
-	"turbo/design/js/loader.js"
-	]}{/js}
+{js id="loader" priority=99 include=["turbo/design/js/loader.js"]}{/js}
 {javascript minify=true}
 
 {literal}
@@ -145,8 +143,6 @@
 	{literal}
 		<script>
 			google.load("visualization", "1", {packages:["corechart"]});
-
-			// Statistics on the amount of orders
 			google.setOnLoadCallback(drawChart);
 
 			function drawChart() {
@@ -171,7 +167,6 @@
 				chart.draw(google.visualization.arrayToDataTable(serie), options);
 			}
 
-			// Statistics on the number of orders
 			google.setOnLoadCallback(drawChartOrders);
 
 			function drawChartOrders() {

@@ -24,6 +24,12 @@
 					{else}
 						{$message_success|escape}
 					{/if}
+					{if $smarty.get.return}
+						<a class="alert-link fw-normal btn-return text-decoration-none me-5" href="{$smarty.get.return}">
+							<i class="align-middle mt-n1" data-feather="corner-up-left"></i>
+							{$btr->global_back|escape}
+						</a>
+					{/if}
 					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>
 			</div>
@@ -66,7 +72,7 @@
 						<div class="col-lg-2 col-md-3 col-sm-12">
 							<div class="d-flex justify-content-center align-content-center flex-wrap flex-md-column h-100">
 								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
-									<input class="form-check-input ms-2" type="checkbox" id="enabled" name="enabled" value="1" type="checkbox" {if isset($payment_method->enabled) && $payment_method->enabled}checked=""{/if}>
+									<input class="form-check-input ms-2" type="checkbox" id="enabled" name="enabled" value="1" type="checkbox" {if isset($payment_method->enabled) && $payment_method->enabled}checked="" {/if}>
 									<label class="form-check-label ms-2" for="enabled">{$btr->global_enable|escape}</label>
 								</div>
 							</div>
@@ -88,7 +94,7 @@
 							</a>
 						</div>
 					</div>
-					<h5 class="card-title mb-0">{$btr->payment_method_settings|escape}</h5>
+					<h5 class="card-title mb-0">{$btr->global_method_settings|escape}</h5>
 				</div>
 				<div class="collapse-card">
 					<div class="card-body">
@@ -97,9 +103,9 @@
 								<div class="row">
 									<div class="col-lg-6">
 										<div class="form-group clearfix">
-											<div class="form-label">{$btr->payment_method_type|escape}</div>
+											<div class="form-label">{$btr->global_method_type|escape}</div>
 											<select name="module" class="selectpicker">
-												<option value='null'>{$btr->payment_method_manual|escape}</option>
+												<option value='null'>{$btr->global_method_manual|escape}</option>
 												{foreach $payment_modules as $payment_module}
 													<option value="{$payment_module@key|escape}" {if isset($payment_method->module) && $payment_method->module == $payment_module@key}selected{/if}>{$payment_module->name|escape}</option>
 												{/foreach}
@@ -118,7 +124,7 @@
 									</div>
 									<div class="col-12 mt-3">
 										{foreach $payment_modules as $payment_module}
-											<div class="row js-module-settings" {if $payment_method->id}{if $payment_module@key != $payment_method->module}style="display:none;"{/if}{else}style="display:none;"{/if} module="{$payment_module@key}">
+											<div class="row js-module-settings" {if $payment_method->id}{if $payment_module@key != $payment_method->module}style="display:none;" {/if}{else}style="display:none;" {/if} module="{$payment_module@key}">
 												<h4>{$payment_module->name|escape}</h4>
 												{foreach $payment_module->settings as $setting}
 													{$variable_name = $setting->variable}
@@ -164,9 +170,52 @@
 		</div>
 	</div>
 
-	<div class="row">
-		<div class="col-12">
-			<div class="card">
+	<div class="row gx-2">
+		<div class="col-lg-4 col-md-12">
+			<div class="card mh-250px">
+				<div class="card-header">
+					<div class="card-actions float-end">
+						<div class="d-block d-lg-none position-relative collapse-icon">
+							<a href="javascript:;" class="collapse-chevron">
+								<i class="align-middle" data-feather="chevron-up"></i>
+							</a>
+						</div>
+					</div>
+					<h5 class="card-title mb-0">{$btr->global_icon|escape}</h5>
+				</div>
+				<div class="collapse-card">
+					<div class="card-body">
+						<ul class="checkout-images-list mb-1">
+							<li class="checkout-image-item border-image-item-two {if isset($payment_method->icon) && $payment_method->icon}border{/if}">
+								{if isset($payment_method->icon) && $payment_method->icon}
+									<input type="hidden" class="js-accept-delete-two" name="delete_icon" value="">
+									<div class="js-parent-image-two">
+										<div class="checkout-image image-wrapper js-image-wrapper-two text-xs-center">
+											<a href="javascript:;" class="js-delete-item-two remove-image"></a>
+											<img src="../{$config->payment_images_dir}{$payment_method->icon}" alt="">
+										</div>
+									</div>
+								{else}
+									<div class="js-parent-image-two"></div>
+								{/if}
+								<div class="js-upload-image-two dropzone-block-image {if isset($payment_method->icon) && $payment_method->icon}d-none{/if}">
+									<i class="align-middle" data-feather="plus"></i>
+									<input class="dropzone-image-two" name="icon" type="file">
+								</div>
+								<div class="checkout-image image-wrapper js-image-wrapper-two js-new-image-two text-xs-center">
+									<a href="javascript:;" class="js-delete-item-two remove-image"></a>
+									<img src="" alt="">
+								</div>
+							</li>
+						</ul>
+						<div class="form-label">{$btr->icon_code|escape}</div>
+						<input class="form-control" name="code" type="text" value="{if isset($payment_method->code)}{$payment_method->code|escape}{/if}">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-8 col-md-12">
+			<div class="card mh-250px">
 				<div class="card-header">
 					<div class="card-actions float-end">
 						<div class="d-block d-lg-none position-relative collapse-icon">

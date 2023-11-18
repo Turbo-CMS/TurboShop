@@ -1,4 +1,4 @@
-a.admin_bookmark {
+a.admin-bookmark {
     left: 0.5rem;
     display: block;
     position: fixed;
@@ -8,9 +8,8 @@ a.admin_bookmark {
     padding-top: 8px;
     border-radius: 50%;
     text-align: center;
-    vertical-align: middle;
     line-height: 1;
-    text-decoration: none!important;
+    text-decoration: none !important;
     z-index: 1029;
     cursor: pointer;
     border: 1px solid #e7e7e7;
@@ -25,7 +24,7 @@ a.admin_bookmark {
     top: -1px !important;
 }
 
-a.admin_bookmark i {
+a.admin-bookmark i {
     -webkit-transition: all 4s ease;
     -ms-transition: all 4s ease;
     transition: all 4s ease;
@@ -34,7 +33,7 @@ a.admin_bookmark i {
     transform: rotate(0deg);
 }
 
-a.admin_bookmark:hover i {
+a.admin-bookmark:hover i {
     -webkit-transform: rotate(360deg);
     -ms-transform: rotate(360deg);
     transform: rotate(360deg);
@@ -50,29 +49,29 @@ a.admin_bookmark:hover i {
     transition: all 0s ease 0s;
 }
 
-.tooltips a {
+.admin-tooltip a {
     display: block;
     color: #495057;
-	font-size: 13px;
+    font-size: 13px;
     padding: 5px 5px 5px 25px;
-	vertical-align: middle;
     background-position: left center;
     background-repeat: no-repeat;
+    text-decoration: none;
 }
 
-.tooltips a:hover {
+.admin-tooltip a:hover {
     background-color: #f4f7f9;
 }
 
-a.admin_tooltip_edit {
-   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23495057' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-edit-2'%3E%3Cpath d='M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z'%3E%3C/path%3E%3C/svg%3E");
+a.admin-tooltip-edit {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23495057' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-edit-2'%3E%3Cpath d='M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z'%3E%3C/path%3E%3C/svg%3E");
 }
 
-a.admin_tooltip_add {
+a.admin-tooltip-add {
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23495057' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-file-plus'%3E%3Cpath d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z'%3E%3C/path%3E%3Cpolyline points='14 2 14 8 20 8'%3E%3C/polyline%3E%3Cline x1='12' y1='18' x2='12' y2='12'%3E%3C/line%3E%3Cline x1='9' y1='15' x2='15' y2='15'%3E%3C/line%3E%3C/svg%3E");
 }
 
-.tooltips {
+.admin-tooltip {
     width: 187px;
     top: 0px;
     left: 0px;
@@ -86,7 +85,7 @@ a.admin_tooltip_add {
     opacity: 0.85;
 }
 
-.tooltipHeader {
+.admin-tooltip-header {
     width: 187px;
     height: 19px;
     padding: 0;
@@ -97,8 +96,8 @@ a.admin_tooltip_add {
     display: block;
 }
 
-.tooltipHeaderDirect {
-	content: '';
+.admin-tooltip-header-direct {
+    content: '';
     position: absolute;
     width: 10px;
     height: 10px;
@@ -110,8 +109,8 @@ a.admin_tooltip_add {
     border-top: 1px solid rgba(0, 0, 0, 0.15);
 }
 
-.tooltipHeaderFlip {
-	content: '';
+.admin-tooltip-header-flip {
+    content: '';
     position: absolute;
     width: 10px;
     height: 10px;
@@ -123,7 +122,7 @@ a.admin_tooltip_add {
     border-top: 1px solid rgba(0, 0, 0, 0.15);
 }
 
-.tooltipFooter {
+.admin-tooltip-footer {
     width: 187px;
     height: 3px;
     padding: 0;
@@ -134,13 +133,13 @@ a.admin_tooltip_add {
     display: block;
 }
 
-.tooltipBody {
+.admin-tooltip-body {
     padding: 10px;
     color: #495057;
     background-color: #FFFFFF;
-	border: 1px solid rgba(0, 0, 0, 0.15);
-	box-shadow: 0 0.1rem 0.2rem rgba(0, 0, 0, 0.05);
-	border-radius: 0.2rem;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0.1rem 0.2rem rgba(0, 0, 0, 0.05);
+    border-radius: 0.2rem;
     width: 187px;
     margin: 0;
     font: normal normal 12px/14px Verdana, Arial, serif;

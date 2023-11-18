@@ -59,8 +59,8 @@
 											</div>
 											<div class="turbo-list-boding turbo-list-status">
 												<div class="form-check form-switch">
-													<input class="form-check-input js-ajax-action {if $faq->visible}js-active-class{/if}" id="id_{$faq->id}" data-module="faq" data-action="visible" data-id="{$faq->id}" name="visible" value="1" type="checkbox" {if $faq->visible}checked="" {/if}>
-													<label class="form-check-label" for="id_{$faq->id}"></label>
+													<input class="form-check-input js-ajax-action {if $faq->visible}js-active-class{/if}" id="id-{$faq->id}" data-module="faq" data-action="visible" data-id="{$faq->id}" name="visible" value="1" type="checkbox" {if $faq->visible}checked="" {/if}>
+													<label class="form-check-label" for="id-{$faq->id}"></label>
 												</div>
 											</div>
 											<div class="turbo-list-boding turbo-list-delete">

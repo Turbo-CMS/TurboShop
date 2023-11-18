@@ -149,9 +149,7 @@
 </div>
 
 {* Loader *}
-{js id="loader" priority=99 include=[
-	"turbo/design/js/loader.js"
-]}{/js}
+{js id="loader" priority=99 include=["turbo/design/js/loader.js"]}{/js}
 {javascript minify=true}
 
 {literal}

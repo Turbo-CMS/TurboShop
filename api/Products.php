@@ -6,7 +6,7 @@ class Products extends Turbo
 {
 
 	/**
-	 * Get products
+	 * Get Products
 	 */
 	public function getProducts($filter = [])
 	{
@@ -221,7 +221,7 @@ class Products extends Turbo
 	}
 
 	/**
-	 * Count products
+	 * Count Products
 	 */
 	public function countProducts($filter = [])
 	{
@@ -365,7 +365,7 @@ class Products extends Turbo
 	}
 
 	/**
-	 * Get product
+	 * Get Product
 	 */
 	public function getProduct($id)
 	{
@@ -412,7 +412,7 @@ class Products extends Turbo
 	}
 
 	/**
-	 * Update product
+	 * Update Product
 	 */
 	public function updateProduct($id, $product)
 	{
@@ -434,7 +434,7 @@ class Products extends Turbo
 	}
 
 	/**
-	 * Add product
+	 * Add Product
 	 */
 	public function addProduct($product)
 	{
@@ -477,7 +477,7 @@ class Products extends Turbo
 	}
 
 	/**
-	 * Delete product
+	 * Delete Product
 	 */
 	public function deleteProduct($id)
 	{
@@ -548,7 +548,7 @@ class Products extends Turbo
 	}
 
 	/**
-	 * Duplicate product
+	 * Duplicate Product
 	 */
 	public function duplicateProduct($id)
 	{
@@ -630,7 +630,7 @@ class Products extends Turbo
 	}
 
 	/**
-	 * Get related products
+	 * Get Related Products
 	 */
 	public function getRelatedProducts($productIds = [])
 	{
@@ -647,7 +647,7 @@ class Products extends Turbo
 	}
 
 	/**
-	 * Get related products id
+	 * Get Related Products ID
 	 */
 	public function getRelatedProductIds($productIds = [])
 	{
@@ -672,7 +672,7 @@ class Products extends Turbo
 	}
 
 	/**
-	 * Add related product
+	 * Add Related Product
 	 */
 	public function addRelatedProduct($productId, $relatedId, $position = 0)
 	{
@@ -683,7 +683,7 @@ class Products extends Turbo
 	}
 
 	/**
-	 * Delete related product
+	 * Delete Related Product
 	 */
 	public function deleteRelatedProduct($productId, $relatedId)
 	{
@@ -709,7 +709,7 @@ class Products extends Turbo
 	}
 
 	/**
-	 * Add recommended product 
+	 * Add Recommended Product 
 	 */
 	public function addRecommendedProduct($productId, $recommendedId, $position = 0)
 	{
@@ -720,7 +720,7 @@ class Products extends Turbo
 	}
 
 	/**
-	 * Delete recommended product
+	 * Delete Recommended Product
 	 */
 	public function deleteRecommendedProduct($productId, $recommendedId)
 	{
@@ -729,7 +729,7 @@ class Products extends Turbo
 	}
 
 	/**
-	 * Get images
+	 * Get Images
 	 */
 	function getImages($filter = [])
 	{
@@ -752,7 +752,7 @@ class Products extends Turbo
 	}
 
 	/**
-	 * Add image
+	 * Add Image
 	 */
 	public function addImage($productId, $filename, $name = '')
 	{
@@ -773,7 +773,7 @@ class Products extends Turbo
 	}
 
 	/**
-	 * Update image
+	 * Update Image
 	 */
 	public function updateImage($id, $image)
 	{
@@ -784,7 +784,7 @@ class Products extends Turbo
 	}
 
 	/**
-	 * Delete image
+	 * Delete Image
 	 */
 	public function deleteImage($id)
 	{
@@ -831,7 +831,7 @@ class Products extends Turbo
 	}
 
 	/**
-	 * Get next product
+	 * Get Next Product
 	 */
 	public function getNextProduct($id)
 	{
@@ -859,7 +859,7 @@ class Products extends Turbo
 	}
 
 	/**
-	 * Get previous product
+	 * Get Prev Product
 	 */
 	public function getPrevProduct($id)
 	{
@@ -887,7 +887,7 @@ class Products extends Turbo
 	}
 
 	/**
-	 * Get videos 
+	 * Get Videos 
 	 */
 	function getVideos($filter = [])
 	{
@@ -913,7 +913,7 @@ class Products extends Turbo
 	}
 
 	/**
-	 * Add video
+	 * Add Video
 	 */
 	public function addProductVideo($productId, $link, $position = 0)
 	{
@@ -933,7 +933,7 @@ class Products extends Turbo
 	}
 
 	/**
-	 * Duplicate product
+	 * Duplicate Product
 	 */
 	public function multiDuplicateProduct($id, $newId)
 	{

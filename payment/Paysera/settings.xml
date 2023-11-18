@@ -5,21 +5,21 @@
 	</name>
 	<settings>
 		<variable>paysera_project_id</variable>
-		<name>Project ID</name>
+		<name>{$lang->project_id}</name>
 	</settings>
 	<settings>
 		<variable>paysera_password</variable>
-		<name>Project password</name>
+		<name>{$lang->password}</name>
 	</settings>
 	<settings>
 		<variable>paysera_test_mode</variable>
-		<name>Test mode</name>
+		<name>{$lang->test_mode}</name>
 		<options>
-			<name>Test payments</name>
+			<name>{$lang->test}</name> 
 			<value>1</value>
 		</options>
 		<options>
-			<name>Real payments</name>
+			<name>{$lang->real}</name>
 			<value>0</value>
 		</options>
 	</settings>

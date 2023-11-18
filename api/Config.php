@@ -7,7 +7,7 @@ class Config
 
 	private $vars = [];
 
-	public $version = '4.3.9';
+	public $version = '4.4.4';
 	public $configFile = 'config/config.php';
 
 	public function __construct()
@@ -51,8 +51,7 @@ class Config
 		$this->vars['max_upload_filesize'] = min($maxUpload, $maxPost, $memoryLimit) * 1024 * 1024;
 
 		$s = stat(dirname(dirname(__FILE__)) . '/' . $this->configFile);
-		$this->vars['salt'] = md5(md5_file(dirname(dirname(__FILE__)) . '/' . $this->configFile) .
-			$s['dev'] . $s['ino'] . $s['uid'] . $s['mtime']);
+		$this->vars['salt'] = md5(md5_file(dirname(dirname(__FILE__)) . '/' . $this->configFile) . $s['dev'] . $s['ino'] . $s['uid'] . $s['mtime']);
 
 		if (!empty($this->vars['php_timezone'])) {
 			date_default_timezone_set($this->vars['php_timezone']);
@@ -62,7 +61,7 @@ class Config
 	}
 
 	/**
-	 * Magic methods get
+	 * Magic Methods Get
 	 */
 	public function __get($name)
 	{
@@ -74,7 +73,7 @@ class Config
 	}
 
 	/**
-	 * Magic methods set
+	 * Magic Methods Set
 	 */
 	public function __set($name, $value)
 	{
@@ -89,7 +88,7 @@ class Config
 	}
 
 	/**
-	 * Generates token
+	 * Generates Token
 	 */
 	public function token($text)
 	{
@@ -97,7 +96,7 @@ class Config
 	}
 
 	/**
-	 * Check token 
+	 * Check Token 
 	 */
 	public function checkToken($text, $token)
 	{

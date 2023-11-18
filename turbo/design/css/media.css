@@ -97,7 +97,7 @@
 	.turbo-list-products-setting {
 		display: none;
 	}
-	
+
 	.turbo-list-setting.feature-save {
 		display: block;
 	}
@@ -110,13 +110,17 @@
 	.turbo-list .turbo-list-brands-tag {
 		width: 260px;
 	}
+	
+	.turbo-list .turbo-list-banners-tag {
+		width: 260px;
+	}
 
 	.turbo-list .turbo-list-delivery-name {
-		width: calc(100% - 240px);
+		width: calc(100% - 315px);
 	}
 
 	.turbo-list .turbo-list-payment-name {
-		width: calc(100% - 240px);
+		width: calc(100% - 315px);
 	}
 
 	.turbo-list .turbo-list-blog-name {
@@ -143,7 +147,7 @@
 		width: calc(100% - 360px);
 	}
 
-.turbo-list .turbo-list-import-name {
+	.turbo-list .turbo-list-import-name {
 		width: calc(100% - 345px);
 	}
 
@@ -251,11 +255,11 @@
 		border-bottom-right-radius: 0;
 		border-bottom-left-radius: 0;
 	}
-	
+
 	body[data-theme=dark] .feature-name {
 		border-right: 1px solid #7a828a;
 	}
-	
+
 	body[data-theme=dark] .new-feature-row .new-feature.new-feature-name {
 		border-bottom: 1px solid #7a828a;
 	}
@@ -434,15 +438,15 @@
 	.turbo-list .turbo-list-related-name {
 		width: calc(100% - 50px);
 	}
-	
+
 	.turbo-list .turbo-list-recommended-name {
 		width: calc(100% - 50px);
 	}
-	
+
 	.turbo-list .turbo-list-files-name {
 		width: calc(100% - 50px);
 	}
-	
+
 	.turbo-list .turbo-list-video-name {
 		width: calc(100% - 50px);
 	}

@@ -1,3 +1,20 @@
+/* No validate */
+
+.form-control.no-validate:valid {
+	padding-right: 0rem;
+	background: none;
+}
+
+.form-select.no-validate:valid:not([multiple]):not([size]) {
+	--bs-form-select-bg-icon: none;
+}
+
+/* Delivery & Payments */
+
+.accordion-bottom {
+	border-bottom: none !important;
+}
+
 /* Table */
 
 table.cart-table thead tr th+th {
@@ -26,9 +43,9 @@ table.cart-table tbody td+td {
 }
 
 table.cart-table tbody td:last-child {
-	width: 10%;
+	width: 15%;
 	padding: 20px 0 20px 4px;
-	text-align: right;
+	text-align: center;
 }
 
 table.cart-table tbody td .btn-delete-item {

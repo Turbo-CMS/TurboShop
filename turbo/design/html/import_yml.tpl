@@ -247,20 +247,14 @@
 {/if}
 
 {* jQuery UI *}
-{css id="jqueryui" include=[
-	"turbo/design/js/jquery/jquery-ui.min.css"
-]}{/css}
+{css id="jqueryui" include=["turbo/design/js/jquery/jquery-ui.min.css"]}{/css}
 {stylesheet minify=true}
 
-{js id="jqueryui" priority=99 include=[
-	"turbo/design/js/jquery/jquery-ui.min.js"
-]}{/js}
+{js id="jqueryui" priority=99 include=["turbo/design/js/jquery/jquery-ui.min.js"]}{/js}
 {javascript minify=true}
 
 {* Piecon *}
-{js id="piecon" priority=99 include=[
-	"turbo/design/js/piecon/piecon.min.js"
-]}{/js}
+{js id="piecon" priority=99 include=["turbo/design/js/piecon/piecon.min.js"]}{/js}
 {javascript minify=true}
 
 <script>

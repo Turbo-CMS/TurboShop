@@ -111,14 +111,10 @@
 </div>
 
 {* Fancybox *}
-{css id="fancybox" include=[
-	"turbo/design/js/fancybox/jquery.fancybox.min.css"
-]}{/css}
+{css id="fancybox" include=["turbo/design/js/fancybox/jquery.fancybox.min.css"]}{/css}
 {stylesheet minify=true}
 
-{js id="fancybox" priority=99 include=[
-	"turbo/design/js/fancybox/jquery.fancybox.min.js"
-]}{/js}
+{js id="fancybox" priority=99 include=["turbo/design/js/fancybox/jquery.fancybox.min.js"]}{/js}
 {javascript minify=true}
 
 {literal}

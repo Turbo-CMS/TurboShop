@@ -8,6 +8,7 @@ class SearchView extends View
     {
         $filter['visible'] = 1;
 
+        // Search
         $keyword = $this->request->get('keyword', 'string');
 
         if (!empty($keyword)) {
@@ -15,14 +16,13 @@ class SearchView extends View
             $this->design->assign('keyword', $keyword);
         }
 
-        $posts = $this->blog->getPosts($filter);
-        $pagesSearch = $this->pages->getPages($filter);
-        $articles = $this->articles->getArticles($filter);
+        // Get Pages
+        $pagesSearch = $this->pages->getPages($filter); 
 
-        $this->design->assign('posts', $posts);
-        $this->design->assign('articles', $articles);
+        // Design
         $this->design->assign('pages_search', $pagesSearch);
 
+        // Meta Tags
         if ($this->page) {
             $this->design->assign('meta_title', $this->page->meta_title);
             $this->design->assign('meta_keywords', $this->page->meta_keywords);
@@ -52,6 +52,7 @@ class SearchView extends View
 
         $this->design->assign('auto_meta', $autoMeta);
 
+        // Display
         return $this->design->fetch('search.tpl');
     }
 }

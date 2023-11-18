@@ -25,7 +25,7 @@ class Database extends Turbo
 	}
 
 	/**
-	 * Database connection
+	 * Database Connection
 	 */
 	public function connect()
 	{
@@ -63,7 +63,7 @@ class Database extends Turbo
 	}
 
 	/**
-	 * Disconnects 
+	 * Disconnect
 	 */
 	public function disconnect()
 	{
@@ -75,7 +75,7 @@ class Database extends Turbo
 	}
 
 	/**
-	 * Database query
+	 * Database Query
 	 */
 	public function query()
 	{
@@ -183,7 +183,7 @@ class Database extends Turbo
 	}
 
 	/**
-	 * Num rows
+	 * Num Rows
 	 */
 	public function numRows()
 	{
@@ -195,7 +195,7 @@ class Database extends Turbo
 	}
 
 	/**
-	 * Affected rows
+	 * Affected Rows
 	 */
 	public function affectedRows()
 	{
@@ -207,7 +207,7 @@ class Database extends Turbo
 	}
 
 	/**
-	 * Get Mysql info
+	 * Get Mysql Info
 	 */
 	public function getMysqlInfo()
 	{
@@ -222,11 +222,10 @@ class Database extends Turbo
 	}
 
 	/**
-	 * Sql compile placeholder
+	 * Sql Compile Placeholder
 	 */
 	private function sqlCompilePlaceholder($tmpl)
 	{
-
 		$compiled = [];
 		$p = 0;
 		$i = 0;
@@ -274,7 +273,7 @@ class Database extends Turbo
 	}
 
 	/**
-	 * Sql placeholder ex
+	 * Sql Placeholder Ex
 	 */
 	private function sqlPlaceholderEx($tmpl, $args, &$errormsg)
 	{
@@ -457,7 +456,7 @@ class Database extends Turbo
 	}
 
 	/**
-	 * Dump table
+	 * Dump Table
 	 */
 	public function dumpTable($table, $h)
 	{

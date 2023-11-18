@@ -16,20 +16,24 @@ class ArticlesView extends View
 	}
 
 	/**
-	 * Fetch article
+	 * Fetch Article
 	 */
-	private function fetchArticle($url)
+	private function fetchArticle($url) 
 	{
+		// Get Article
 		$post = $this->articles->getArticle($url);
 
+		// Views
 		if ($post->visible && empty($_SESSION['admin'])) {
 			$this->articles->updateViews($post->id);
 		}
 
+		// Visible Admin
 		if (!$post || (!$post->visible && empty($_SESSION['admin']))) {
 			return false;
 		}
 
+		// Last Modified
 		$lastModifiedUnix = strtotime($post->last_modified);
 		$lastModified = gmdate("D, d M Y H:i:s \G\M\T", $lastModifiedUnix);
 		$ifModifiedSince = false;
@@ -49,10 +53,12 @@ class ArticlesView extends View
 
 		header('Last-Modified: ' . $lastModified);
 
+		// Comments
 		if (!empty($this->user)) {
 			$this->design->assign('comment_name', $this->user->name);
 		}
 
+		// Comment Form
 		if ($this->request->isMethod('post') && $this->request->post('comment')) {
 			$comment = new stdClass();
 
@@ -85,6 +91,7 @@ class ArticlesView extends View
 				}
 
 				$commentId = $this->comments->addComment($comment);
+
 				$this->notify->emailCommentAdmin($commentId);
 
 				unset($_SESSION['captcha_code']);
@@ -92,8 +99,7 @@ class ArticlesView extends View
 			}
 		}
 
-		$itemsPerPage = $this->settings->comments_num;
-
+		// Comments List
 		$filter = [
 			'approved' => 1,
 			'type' => 'article',
@@ -102,6 +108,7 @@ class ArticlesView extends View
 			'ip' => $_SERVER['REMOTE_ADDR']
 		];
 
+		// Sort
 		if ($sort = $this->request->get('sort', 'string')) {
 			$_SESSION['sort'] = $sort;
 		}
@@ -114,10 +121,15 @@ class ArticlesView extends View
 
 		$this->design->assign('sort', $filter['sort']);
 
+		// Pagination Comments
+		$itemsPerPage = $this->settings->comments_num;
 		$currentPage = max(1, $this->request->get('page', 'integer'));
+
 		$this->design->assign('current_page_num', $currentPage);
+
 		$commentsCount = $this->comments->countComments($filter);
 		$pagesNum = ceil($commentsCount / $itemsPerPage);
+
 		$this->design->assign('total_pages_num', $pagesNum);
 
 		if ($this->request->get('page') == 'all') {
@@ -127,6 +139,7 @@ class ArticlesView extends View
 		$filter['page'] = $currentPage;
 		$filter['limit'] = $itemsPerPage;
 
+		// Get Comments
 		$comments = $this->comments->getComments($filter);
 
 		$children = [];
@@ -135,14 +148,17 @@ class ArticlesView extends View
 			$children[$c->parent_id][] = $c;
 		}
 
+		// Design
 		$this->design->assign('post', $post);
 		$this->design->assign('comments', $comments);
 		$this->design->assign('children', $children);
 		$this->design->assign('comments_count', $commentsCount);
 
+		// Category
 		$category = $this->articlesCategories->getArticlesCategory((int)$post->category_id);
-		$this->design->assign('category', $category);
+		$this->design->assign('articles_category', $category);
 
+		// Meta Tags
 		$tags = explode(',', $post->meta_keywords);
 		$this->design->assign('tags', array_map("trim", $tags));
 
@@ -179,23 +195,36 @@ class ArticlesView extends View
 
 		$this->design->assign('auto_meta', $autoMeta);
 
+		// Display
 		return $this->design->fetch('article.tpl');
 	}
 
 	/**
-	 * Fetch articles
+	 * Fetch Articles
 	 */
 	private function fetchArticles()
 	{
 		$filter = [];
 
+		// Search
 		$keyword = $this->request->get('keyword');
+
 		if (!empty($keyword)) {
 			$this->design->assign('keyword', $keyword);
 			$filter['keyword'] = $keyword;
 		}
 
+		// Author
+		$author = $this->request->get('author');
+
+		if (!empty($author)) {
+			$this->design->assign('author', $author);
+			$filter['author'] = $author;
+		}
+
+		// Category
 		$categoryUrl = trim($this->request->get('category', 'string'));
+
 		if (!empty($categoryUrl)) {
 			$category = $this->articlesCategories->getArticlesCategory((string) $categoryUrl);
 
@@ -203,10 +232,12 @@ class ArticlesView extends View
 				return false;
 			}
 
-			$this->design->assign('category', $category);
+			$this->design->assign('articles_category', $category);
+
 			$filter['category_id'] = $category->children;
 		}
 
+		// Sort
 		if ($sort = $this->request->get('sort', 'string')) {
 			$_SESSION['sort'] = $sort;
 		}
@@ -219,13 +250,16 @@ class ArticlesView extends View
 
 		$this->design->assign('sort', $filter['sort']);
 
+		// Pagination
 		$itemsPerPage = $this->settings->articles_num;
 
 		$filter['visible'] = 1;
 
 		$currentPage = $this->request->get('page', 'integer');
 		$currentPage = max(1, $currentPage);
+
 		$this->design->assign('current_page_num', $currentPage);
+
 		$postsCount = $this->articles->countArticles($filter);
 
 		if ($this->request->get('page') == 'all') {
@@ -233,20 +267,25 @@ class ArticlesView extends View
 		}
 
 		$pagesNum = ceil($postsCount / $itemsPerPage);
+
 		$this->design->assign('total_pages_num', $pagesNum);
 
 		$filter['page'] = $currentPage;
 		$filter['limit'] = $itemsPerPage;
 
+		// Get Articles
 		$posts = $this->articles->getArticles($filter);
 
+		// Count Comments - Post Category
 		foreach ($posts as $post) {
 			$post->comments_count = $this->comments->countComments(['object_id' => $post->id, 'type' => 'article', 'approved' => 1,]);
-			$post->category = $this->articlesCategories->getArticlesCategory((int)$post->category_id);
+			$post->category = $this->articlesCategories->getArticlesCategory((int) $post->category_id);
 		}
 
+		// Design
 		$this->design->assign('posts', $posts);
 
+		// Meta Tags
 		$autoMeta = new stdClass();
 
 		$autoMetaParts = [
@@ -292,6 +331,7 @@ class ArticlesView extends View
 
 		$this->design->assign('auto_meta', $autoMeta);
 
+		// Last Modified
 		if (isset($lastModifiedUnix)) {
 			$lastModified = gmdate("D, d M Y H:i:s \G\M\T", $lastModifiedUnix);
 			$ifModifiedSince = false;
@@ -312,8 +352,9 @@ class ArticlesView extends View
 			header('Last-Modified: ' . $lastModified);
 		}
 
+		// Display
 		$body = $this->design->fetch('articles.tpl');
-		
+
 		return $body;
 	}
 }

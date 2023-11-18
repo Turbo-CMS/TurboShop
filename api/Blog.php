@@ -5,7 +5,7 @@ require_once 'Turbo.php';
 class Blog extends Turbo
 {
 	/**
-	 * Get post
+	 * Get Post
 	 */
 	public function getPost($id)
 	{
@@ -50,7 +50,7 @@ class Blog extends Turbo
 	}
 
 	/**
-	 * Get posts
+	 * Get Posts
 	 */
 	public function getPosts($filter = [])
 	{
@@ -148,7 +148,7 @@ class Blog extends Turbo
 	}
 
 	/**
-	 * Count posts
+	 * Count Posts
 	 */
 	public function countPosts($filter = [])
 	{
@@ -199,7 +199,7 @@ class Blog extends Turbo
 	}
 
 	/**
-	 * Add a post 
+	 * Add Post 
 	 */
 	public function addPost($post)
 	{
@@ -233,7 +233,7 @@ class Blog extends Turbo
 	}
 
 	/**
-	 * Update post.
+	 * Update Post
 	 */
 	public function updatePost($id, $post)
 	{
@@ -257,7 +257,7 @@ class Blog extends Turbo
 	}
 
 	/**
-	 * Update view
+	 * Update View
 	 */
 	public function updateViews($id)
 	{
@@ -267,7 +267,7 @@ class Blog extends Turbo
 	}
 
 	/**
-	 * Delete post
+	 * Delete Post
 	 */
 	public function deletePost($id)
 	{
@@ -290,7 +290,7 @@ class Blog extends Turbo
 	}
 
 	/**
-	 * Delete image
+	 * Delete Image
 	 */
 	public function deleteImage($postId)
 	{
@@ -342,7 +342,7 @@ class Blog extends Turbo
 	}
 
 	/**
-	 * Get next post
+	 * Get Next Post
 	 */
 	public function getNextPost($id)
 	{
@@ -359,7 +359,7 @@ class Blog extends Turbo
 		);
 
 		$nextId = $this->db->result('id');
-		
+
 		if ($nextId) {
 			return $this->getPost((int) $nextId);
 		} else {
@@ -368,7 +368,7 @@ class Blog extends Turbo
 	}
 
 	/**
-	 * Get previous post
+	 * Get Prev Post
 	 */
 	public function getPrevPost($id)
 	{

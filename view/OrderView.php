@@ -10,6 +10,9 @@ class OrderView extends View
 		$this->design->smarty->registerPlugin("function", "checkoutForm", [$this, 'checkoutForm']);
 	}
 
+	/**
+	 * Main function
+	 */
 	public function fetch()
 	{
 		return $this->fetchOrder();
@@ -57,7 +60,7 @@ class OrderView extends View
 		}
 
 		$products = [];
-		
+
 		foreach ($this->products->getProducts(['id' => $productsIds]) as $product) {
 			$products[$product->id] = $product;
 		}
@@ -69,7 +72,7 @@ class OrderView extends View
 		}
 
 		$variants = [];
-		
+
 		foreach ($this->variants->getVariants(['id' => $variantsIds]) as $variant) {
 			$variants[$variant->id] = $variant;
 		}
@@ -88,12 +91,15 @@ class OrderView extends View
 			}
 		}
 
+		// Delivery
 		$delivery = $this->delivery->getDelivery($order->delivery_id);
-
 		$this->design->assign('delivery', $delivery);
+
+		// Design
 		$this->design->assign('order', $order);
 		$this->design->assign('purchases', $purchases);
-		
+
+		// Payment methods
 		if ($order->payment_method_id) {
 			$paymentMethod = $this->payment->getPaymentMethod($order->payment_method_id);
 			$this->design->assign('payment_method', $paymentMethod);
@@ -101,9 +107,12 @@ class OrderView extends View
 
 		$paymentMethods = $this->payment->getPaymentMethods(['delivery_id' => $order->delivery_id, 'enabled' => 1]);
 		$this->design->assign('payment_methods', $paymentMethods);
+
+		//All currencies
 		$allCurrencies = $this->money->getCurrencies();
 		$this->design->assign('all_currencies', $allCurrencies);
 
+		// Display
 		$body = $this->design->fetch('order.tpl');
 
 		return $body;
@@ -124,7 +133,7 @@ class OrderView extends View
 			$buttonText = isset($params['button_text']) ? $params['button_text'] : '';
 			$form = $module->checkoutForm($params['order_id'], $buttonText);
 		}
-		
+
 		return $form;
 	}
 }

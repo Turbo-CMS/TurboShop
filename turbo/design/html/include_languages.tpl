@@ -43,7 +43,7 @@
 		</a>
 		<div class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
 			{foreach $languages as $lang}
-				<a class="dropdown-item {if $lang->id == $lang_id}active{/if}" href="{url lang_id=$lang->id}">
+				<a class="dropdown-item {if $lang->id == $lang_id}active{/if}" href="{url lang_id=$lang->id id=$id}">
 					<img src="design/flags/4x3/{$lang->label}.svg" alt="{$lang->name|escape}" width="20" class="align-middle me-1" />
 					<span class="align-middle">{$lang->name|escape}</span>
 				</a>

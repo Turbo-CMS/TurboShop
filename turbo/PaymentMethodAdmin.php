@@ -4,6 +4,8 @@ require_once 'api/Turbo.php';
 
 class PaymentMethodAdmin extends Turbo
 {
+    private $allowedImageExtentions = ['png', 'gif', 'jpg', 'jpeg', 'ico', 'svg'];
+
     public function fetch()
     {
         $paymentMethod = new stdClass();
@@ -12,6 +14,7 @@ class PaymentMethodAdmin extends Turbo
             $paymentMethod->id = $this->request->post('id', 'integer');
             $paymentMethod->enabled = $this->request->post('enabled', 'boolean');
             $paymentMethod->name = $this->request->post('name');
+            $paymentMethod->code = $this->request->post('code');
             $paymentMethod->currency_id = $this->request->post('currency_id');
             $paymentMethod->description = $this->request->post('description');
             $paymentMethod->module = $this->request->post('module', 'string');
@@ -35,6 +38,18 @@ class PaymentMethodAdmin extends Turbo
                 if ($paymentMethod->id) {
                     $this->payment->updatePaymentSettings($paymentMethod->id, $paymentSettings);
                     $this->payment->updatePaymentDeliveries($paymentMethod->id, $paymentDeliveries);
+                }
+
+                if ($this->request->post('delete_icon')) {
+                    $this->payment->deleteIcon($paymentMethod->id);
+                }
+
+                $icon = $this->request->files('icon');
+
+                if (!empty($icon['name']) && in_array(strtolower(pathinfo($icon['name'], PATHINFO_EXTENSION)), $this->allowedImageExtentions)) {
+                    $this->payment->deleteIcon($paymentMethod->id);
+                    move_uploaded_file($icon['tmp_name'], $this->root_dir . $this->config->payment_images_dir . $icon['name']);
+                    $this->payment->updatePaymentMethod($paymentMethod->id, ['icon' => $icon['name']]);
                 }
 
                 $paymentMethod = $this->payment->getPaymentMethod($paymentMethod->id);

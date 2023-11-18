@@ -32,6 +32,12 @@
 					{elseif $message_success == 'updated'}
 						{$btr->post_updated|escape}
 					{/if}
+					{if $smarty.get.return}
+						<a class="alert-link fw-normal btn-return text-decoration-none me-5" href="{$smarty.get.return}">
+							<i class="align-middle mt-n1" data-feather="corner-up-left"></i>
+							{$btr->global_back|escape}
+						</a>
+					{/if}
 					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>
 			</div>
@@ -75,7 +81,7 @@
 							</div>
 							<div class="mb-3">
 								<div class="form-label">{$btr->global_author|escape}</div>
-								<input class="form-control" name="author" type="text" value="{if isset($post->author)}{$post->author|escape}{/if}">
+								<input class="js-author-complite form-control" name="author" type="text" value="{if isset($post->author)}{$post->author|escape}{/if}">
 							</div>
 							<div class="row">
 								<div class="col-12 col-lg-6 col-md-10">
@@ -253,6 +259,10 @@
 {* TinyMCE *}
 {include file='tinymce_init.tpl'}
 
+{* Autocomplete *}
+{js id="autocomplete" priority=99 include=["turbo/design/js/autocomplete/jquery.autocomplete-min.js"]}{/js} 
+{javascript minify=true}
+
 {literal}
 	<script>
 		$(window).on("load", function() {
@@ -260,6 +270,20 @@
 				dateFormat: "d.m.Y",
 				locale: "{/literal}{if $settings->lang =='ua'}uk{else}{$settings->lang}{/if}{literal}"
 			});
+		});
+
+		$(".js-author-complite").autocomplete({
+			serviceUrl: 'ajax/search_authors.php',
+			minChars: 0,
+			noCache: false,
+			onSelect: function(suggestion) {
+				$('input[name="author"]').val(suggestion.data.author);
+			},
+			formatResult: function(suggestions, currentValue) {
+				var reEscape = new RegExp('(\\' + ['/', '.', '*', '+', '?', '|', '(', ')', '[', ']', '{', '}', '\\'].join('|\\') + ')', 'g');
+				var pattern = '(' + currentValue.replace(reEscape, '\\$1') + ')';
+				return "<span>" + suggestions.value.replace(new RegExp(pattern, 'gi'), '<strong>$1<\/strong>') + "</span>";
+			}
 		});
 	</script>
 {/literal}

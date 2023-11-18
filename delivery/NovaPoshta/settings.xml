@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+	<name>
+		NovaPoshta
+	</name>
+	<settings>
+		<variable>api_key</variable>
+		<name>{$lang->api_key}</name>
+	</settings>
+	<settings>
+		<variable>np_language</variable>
+		<name>{$lang->language}</name>
+        <options>
+            <name>UA</name>
+            <value>ua</value>
+        </options>
+		<options>
+			<name>RU</name>
+			<value>ru</value>
+		</options>
+	</settings>
+</module>

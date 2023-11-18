@@ -11,7 +11,7 @@ class Javascript extends Turbo
 	protected $order_num = 0;
 
 	/**
-	 * Add file
+	 * Add File
 	 */
 	public function addFiles($id, $files, $priority = 10)
 	{
@@ -41,7 +41,7 @@ class Javascript extends Turbo
 	}
 
 	/**
-	 * Add code
+	 * Add Code
 	 */
 	public function addCode($id, $code, $priority = 10)
 	{
@@ -73,7 +73,7 @@ class Javascript extends Turbo
 	/**
 	 * Render
 	 */
-	public function render($event_id = null, $minify = null, $combine = true)
+	public function render($eventId = null, $minify = null, $combine = true)
 	{
 
 		if (is_null($minify)) {
@@ -97,10 +97,10 @@ class Javascript extends Turbo
 			}
 		}
 
-		if (!is_null($event_id)) {
-			if (isset($this->events[$event_id])) {
-				$events_data = $this->events[$event_id]->data;
-				$this->unplug($event_id);
+		if (!is_null($eventId)) {
+			if (isset($this->events[$eventId])) {
+				$events_data = $this->events[$eventId]->data;
+				$this->unplug($eventId);
 			}
 		} else {
 			uasort($this->events, [$this, 'sortPriorityCallback']);
@@ -123,9 +123,9 @@ class Javascript extends Turbo
 		if (!$combine && !$minify) {
 			foreach ($events_data as $js => $data) {
 				if ($data->type == 'code') {
-					$result .= $this->render_tag($js);
+					$result .= $this->renderTag($js);
 				} else {
-					$result .= $this->render_tag(false, $data->original);
+					$result .= $this->renderTag(false, $data->original);
 				}
 			}
 		} else {
@@ -152,8 +152,8 @@ class Javascript extends Turbo
 					} else {
 						$prefix = pathinfo($e->original, PATHINFO_FILENAME);
 					}
-				} elseif (!is_null($event_id)) {
-					$prefix = $event_id;
+				} elseif (!is_null($eventId)) {
+					$prefix = $eventId;
 				}
 
 				$result = $this->proteced($events_data, $prefix, $minify);
@@ -191,20 +191,20 @@ class Javascript extends Turbo
 			}
 		}
 
-		return $this->render_tag($content, $cacheFile);
+		return $this->renderTag($content, $cacheFile);
 	}
 
 	/**
-	 * Get event
+	 * Get Event
 	 */
-	protected function getEvent($event_id)
+	protected function getEvent($eventId)
 	{
-		if (isset($this->events[$event_id])) {
-			return $this->events[$event_id];
+		if (isset($this->events[$eventId])) {
+			return $this->events[$eventId];
 		}
 
 		$event = new stdClass();
-		$event->id = $event_id;
+		$event->id = $eventId;
 		$event->data = [];
 		$event->order = $this->order_num++;
 
@@ -212,9 +212,9 @@ class Javascript extends Turbo
 	}
 
 	/**
-	 * Render tag
+	 * Render Tag
 	 */
-	public function render_tag($content, $js_file = null)
+	public function renderTag($content, $js_file = null)
 	{
 		$tag = '<script type="text/javascript"';
 
@@ -254,7 +254,7 @@ class Javascript extends Turbo
 	}
 
 	/**
-	 * Get cache file
+	 * Get Cache File
 	 */
 	protected function getCacheFile($data, $prefix)
 	{
@@ -275,7 +275,7 @@ class Javascript extends Turbo
 	}
 
 	/**
-	 * Sort priority callback
+	 * Sort Priority Callback
 	 */
 	public function sortPriorityCallback($a, $b)
 	{

@@ -5,7 +5,7 @@ require_once 'Turbo.php';
 class ReportStat extends Turbo
 {
 	/**
-	 * Get statistics
+	 * Get Statistics
 	 */
 	function getStat($filter = [])
 	{
@@ -109,7 +109,7 @@ class ReportStat extends Turbo
 	}
 
 	/**
-	 * Get statistics orders 
+	 * Get Statistics Orders 
 	 */
 	function getStatOrders($filter = [])
 	{
@@ -213,7 +213,7 @@ class ReportStat extends Turbo
 	}
 
 	/**
-	 * Get report purchases
+	 * Get Report Purchases
 	 */
 	public function getReportPurchases($filter = [])
 	{
@@ -281,7 +281,7 @@ class ReportStat extends Turbo
 	}
 
 	/**
-	 * Get report purchases count
+	 * Get Report Purchases Count
 	 */
 	public function getReportPurchasesCount($filter = [])
 	{
@@ -294,7 +294,7 @@ class ReportStat extends Turbo
 	}
 
 	/**
-	 * Get report product
+	 * Get Report Product
 	 */
 	function getReportProduct($filter = [], $id = null)
 	{
@@ -331,7 +331,7 @@ class ReportStat extends Turbo
 	}
 
 	/**
-	 * Get product report statistics 
+	 * Get Product Report Statistics 
 	 */
 	function getReportProductStat($filter = [], $id = null)
 	{
@@ -368,7 +368,7 @@ class ReportStat extends Turbo
 	}
 
 	/**
-	 * Makes filter
+	 * Makes Filter
 	 */
 	private function makeFilter($filter = [])
 	{
@@ -435,7 +435,7 @@ class ReportStat extends Turbo
 	}
 
 	/**
-	 * Get categorized statistical
+	 * Get Categorized Statistical
 	 */
 	public function getCategorizedStat($filter = [])
 	{

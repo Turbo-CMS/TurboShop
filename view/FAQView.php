@@ -8,6 +8,7 @@ class FaqView extends View
 	{
 		$filter = [];
 
+		// Search
 		$keyword = $this->request->get('keyword');
 
 		if (!empty($keyword)) {
@@ -15,6 +16,7 @@ class FaqView extends View
 			$filter['keyword'] = $keyword;
 		}
 
+		// Sort
 		if ($sort = $this->request->get('sort', 'string')) {
 			$_SESSION['sort'] = $sort;
 		}
@@ -27,11 +29,16 @@ class FaqView extends View
 
 		$this->design->assign('sort', $filter['sort']);
 
-		$itemsPerPage = $this->settings->blog_num;
+		// Pagination
+		$itemsPerPage = '20';
+
 		$filter['visible'] = 1;
+
 		$currentpage = $this->request->get('page', 'integer');
 		$currentpage = max(1, $currentpage);
+
 		$this->design->assign('current_page_num', $currentpage);
+
 		$faqCount = $this->blog->countPosts($filter);
 
 		if ($this->request->get('page') == 'all') {
@@ -39,14 +46,19 @@ class FaqView extends View
 		}
 
 		$pagesNum = ceil($faqCount / $itemsPerPage);
+
 		$this->design->assign('total_pages_num', $pagesNum);
 
 		$filter['page'] = $currentpage;
 		$filter['limit'] = $itemsPerPage;
 
+		// Get Faq
 		$faqs = $this->faq->getFaqs($filter);
+
+		// Design
 		$this->design->assign('faqs', $faqs);
 
+		// Meta Tags
 		if ($this->page) {
 			$this->design->assign('meta_title', $this->page->meta_title);
 			$this->design->assign('meta_keywords', $this->page->meta_keywords);
@@ -79,6 +91,7 @@ class FaqView extends View
 
 		$this->design->assign('auto_meta', $autoMeta);
 
+		// Last Modified
 		$lastModifiedUnix = strtotime($this->settings->lastModifyFAQ);
 		$lastModified = gmdate("D, d M Y H:i:s \G\M\T", $lastModifiedUnix);
 
@@ -99,6 +112,7 @@ class FaqView extends View
 
 		header('Last-Modified: ' . $lastModified);
 
+		// Display
 		$body = $this->design->fetch('faq.tpl');
 
 		return $body;

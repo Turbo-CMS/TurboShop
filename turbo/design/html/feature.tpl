@@ -26,6 +26,12 @@
 					{else}
 						{$message_success|escape}
 					{/if}
+					{if $smarty.get.return}
+						<a class="alert-link fw-normal btn-return text-decoration-none me-5" href="{$smarty.get.return}">
+							<i class="align-middle mt-n1" data-feather="corner-up-left"></i>
+							{$btr->global_back|escape}
+						</a>
+					{/if}
 					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>
 			</div>
@@ -70,8 +76,8 @@
 									<div class="mt-2 mb-3">
 										<div class="input-group">
 											<span class="input-group-text">URL</span>
-											<input name="url" class="form-control js-url {if isset($feature->id)}js-disabled{/if}" {if isset($feature->id)}readonly=""{/if} type="text" value="{if isset($feature->url)}{$feature->url|escape}{/if}">
-											<input type="checkbox" id="block-translit" class="d-none" value="1" {if isset($feature->id)}checked=""{/if}>
+											<input name="url" class="form-control js-url {if isset($feature->id)}js-disabled{/if}" {if isset($feature->id)}readonly="" {/if} type="text" value="{if isset($feature->url)}{$feature->url|escape}{/if}">
+											<input type="checkbox" id="block-translit" class="d-none" value="1" {if isset($feature->id)}checked="" {/if}>
 											<span class="input-group-text js-disable-url">
 												{if isset($feature->id)}
 													<i class="url-lock"></i>
@@ -85,7 +91,7 @@
 								<div class="col-lg-6 col-md-6 col-xs-12">
 									<div class="d-flex justify-content-center align-content-start flex-wrap flex-md-column h-100">
 										<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
-											<input class="form-check-input ms-2" type="checkbox" id="url-in-product" name="url_in_product" value="1" type="checkbox" {if isset($feature->url_in_product)}checked=""{/if}>
+											<input class="form-check-input ms-2" type="checkbox" id="url-in-product" name="url_in_product" value="1" type="checkbox" {if isset($feature->url_in_product)}checked="" {/if}>
 											<label class="form-check-label ms-2" for="url-in-product">{$btr->feature_url_in_product|escape}</label>
 										</div>
 									</div>
@@ -95,15 +101,15 @@
 						<div class="col-lg-2 col-md-3 col-sm-12">
 							<div class="d-flex justify-content-center align-content-center flex-wrap flex-md-column h-100">
 								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
-									<input class="form-check-input ms-2" type="checkbox" id="in-filter" name="in_filter" value="1" type="checkbox" {if isset($feature->in_filter) && $feature->in_filter}checked=""{/if}>
+									<input class="form-check-input ms-2" type="checkbox" id="in-filter" name="in_filter" value="1" type="checkbox" {if isset($feature->in_filter) && $feature->in_filter}checked="" {/if}>
 									<label class="form-check-label ms-2" for="in-filter">{$btr->feature_filter|escape}</label>
 								</div>
 								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
-									<input class="form-check-input ms-2" type="checkbox" id="is-color" name="is_color" value="1" type="checkbox" {if isset($feature->is_color) && $feature->is_color}checked=""{/if}>
+									<input class="form-check-input ms-2" type="checkbox" id="is-color" name="is_color" value="1" type="checkbox" {if isset($feature->is_color) && $feature->is_color}checked="" {/if}>
 									<label class="form-check-label ms-2" for="is-color">{$btr->color_filter|escape}</label>
 								</div>
 								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
-									<input class="form-check-input ms-2" type="checkbox" id="is-size" name="is_size" value="1" type="checkbox" {if isset($feature->is_size) && $feature->is_size}checked=""{/if}>
+									<input class="form-check-input ms-2" type="checkbox" id="is-size" name="is_size" value="1" type="checkbox" {if isset($feature->is_size) && $feature->is_size}checked="" {/if}>
 									<label class="form-check-label ms-2" for="is-size">{$btr->size_filter|escape}</label>
 								</div>
 							</div>
@@ -292,7 +298,7 @@
 					dataType: 'json',
 					url: "ajax/update_options.php",
 					data: {feature_id: '{/literal}{if isset($feature->id)}{$feature->id}{/if}{literal}', value: value, translit: translit, old_value: old_value, session_id: session_id},
-					success: function (data) {
+					success: function(data) {
 						var msg = "";
 						if (data) {
 							$this.removeClass('unapproved');

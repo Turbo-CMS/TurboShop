@@ -12,7 +12,7 @@ class Platon extends Turbo
 
 		$order = $this->orders->getOrder((int) $orderId);
 		$paymentMethod = $this->payment->getPaymentMethod($order->payment_method_id);
-		$paymentCurrency = $this->money->getCurrency(intval($paymentMethod->currency_id));
+		$paymentCurrency = $this->money->getCurrency((int) $paymentMethod->currency_id);
 		$settings = $this->payment->getPaymentSettings($paymentMethod->id);
 
 		$price = round($this->money->convert($order->total_price, $paymentMethod->currency_id, false), 2);

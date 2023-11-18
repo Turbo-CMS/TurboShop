@@ -13,6 +13,7 @@
 
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
+	{* CSS *}
 	{if $settings->admin_theme == "dark"}
 		{css id="main" include=[
 			"turbo/design/css/dark.css",
@@ -34,6 +35,8 @@
 		]}{/css}
 		{stylesheet minify=true}
 	{/if}
+
+	{* JS *}
 	{js id="libs" priority=99 include=[
 		"turbo/design/js/jquery/jquery.js",
 		"turbo/design/js/jquery/jquery.form.min.js",
@@ -50,12 +53,12 @@
 			<div class="sidebar-content js-simplebar">
 				<a class="sidebar-brand" href="index.php?module=DashboardAdmin">
 					{if $settings->admin_theme == "light"}
-						<img src="design/images/logo_dark.svg" class="align-middle" alt="TurboCMS" />
+						<img src="design/images/logo_dark.svg" class="align-middle" alt="TurboCMS">
 						<span class="sidebar-brand-text align-middle me-3">
 							<img src="design/images/logo_title_dark.svg" alt="TurboCMS">
 						</span>
 					{else}
-						<img src="design/images/logo.svg" class="align-middle" alt="TurboCMS" />
+						<img src="design/images/logo.svg" class="align-middle" alt="TurboCMS">
 						<span class="sidebar-brand-text align-middle me-3">
 							<img src="design/images/logo_title.svg" alt="TurboCMS">
 						</span>
@@ -319,11 +322,11 @@
 					{/if}
 					{if in_array('design', $manager->permissions)}
 						<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('ThemeAdmin', 'TemplatesAdmin', 'StylesAdmin', 'ImagesAdmin', 'TranslationsAdmin', 'TranslationAdmin'))}active{/if}">
-							<a data-bs-target="#design" data-bs-toggle="collapse" {if isset($smarty.get.module) && in_array($smarty.get.module, array('ThemeAdmin', 'TemplatesAdmin', 'StylesAdmin', 'ImagesAdmin', 'TranslationsAdmin', 'TranslationAdmin'))}class="sidebar-link" aria-expanded="true" {else}class="sidebar-link collapsed" aria-expanded="false" {/if}>
+							<a data-bs-target="#design" data-bs-toggle="collapse" {if isset($smarty.get.module) && in_array($smarty.get.module, array('ThemeAdmin', 'TemplatesAdmin', 'StylesAdmin', 'ImagesAdmin', 'TranslationsAdmin', 'TranslationAdmin', 'ThemeSettingsAdmin'))}class="sidebar-link" aria-expanded="true" {else}class="sidebar-link collapsed" aria-expanded="false" {/if}>
 								<i class="align-middle" data-feather="layout"></i>
 								<span class="align-middle">{$btr->global_design|escape}</span>
 							</a>
-							<ul id="design" class="sidebar-dropdown list-unstyled collapse {if isset($smarty.get.module) && in_array($smarty.get.module, array('ThemeAdmin', 'TemplatesAdmin', 'StylesAdmin', 'ImagesAdmin', 'TranslationsAdmin', 'TranslationAdmin'))}show{/if}" data-bs-parent="#sidebar">
+							<ul id="design" class="sidebar-dropdown list-unstyled collapse {if isset($smarty.get.module) && in_array($smarty.get.module, array('ThemeAdmin', 'TemplatesAdmin', 'StylesAdmin', 'ImagesAdmin', 'TranslationsAdmin', 'TranslationAdmin', 'ThemeSettingsAdmin'))}show{/if}" data-bs-parent="#sidebar">
 								<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('ThemeAdmin'))}active{/if}">
 									<a class="sidebar-link" href="index.php?module=ThemeAdmin">{$btr->global_templates|escape}</a>
 								</li>
@@ -338,6 +341,9 @@
 								</li>
 								<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('TranslationsAdmin', 'TranslationAdmin'))}active{/if}">
 									<a class="sidebar-link" href="index.php?module=TranslationsAdmin">{$btr->global_translations|escape}</a>
+								</li>
+								<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('ThemeSettingsAdmin'))}active{/if}">
+									<a class="sidebar-link" href="index.php?module=ThemeSettingsAdmin">{$btr->global_theme_settings|escape}</a>
 								</li>
 							</ul>
 						</li>
@@ -434,7 +440,7 @@
 							<div class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0" aria-labelledby="alertsDropdown">
 								<div class="dropdown-menu-header">
 									{if $all_counter}
-										{$all_counter} {$btr->new_notifications|escape}
+										{$btr->new_notifications|escape} ({$all_counter})
 									{else}
 										{$btr->no_notification|escape}
 									{/if}
@@ -445,13 +451,13 @@
 											{if $new_orders_counter > 0}
 												<a href="index.php?module=OrdersAdmin" class="list-group-item">
 													<div class="row g-0 align-items-center">
-														<div class="col-2">
-															<i class="text-success" data-feather="shopping-cart"></i>
+														<div class="col-1">
+															<i class="text-success mt-n1" data-feather="shopping-cart"></i>
 														</div>
-														<div class="col-8">
-															<div class="text-dark">{$btr->global_orders|escape}</div>
+														<div class="col-9">
+															<div class="text-dark ms-1">{$btr->global_orders|escape}</div>
 														</div>
-														<div class="col-2">
+														<div class="col-2 text-end">
 															<span class="badge bg-success">{$new_orders_counter}</span>
 														</div>
 													</div>
@@ -462,13 +468,13 @@
 											{if $new_comments_counter > 0}
 												<a href="index.php?module=CommentsAdmin" class="list-group-item">
 													<div class="row g-0 align-items-center">
-														<div class="col-2">
-															<i class="text-danger" data-feather="message-square"></i>
+														<div class="col-1">
+															<i class="text-danger mt-n1" data-feather="message-square"></i>
 														</div>
-														<div class="col-8">
-															<div class="text-dark">{$btr->global_comments|escape}</div>
+														<div class="col-9">
+															<div class="text-dark ms-1">{$btr->global_comments|escape}</div>
 														</div>
-														<div class="col-2">
+														<div class="col-2 text-end">
 															<span class="badge bg-danger">{$new_comments_counter}</span>
 														</div>
 													</div>
@@ -479,13 +485,13 @@
 											{if $new_feedbacks_counter > 0}
 												<a href="index.php?module=FeedbacksAdmin" class="list-group-item">
 													<div class="row g-0 align-items-center">
-														<div class="col-2">
-															<i class="text-warning" data-feather="mail"></i>
+														<div class="col-1">
+															<i class="text-warning mt-n1" data-feather="mail"></i>
 														</div>
-														<div class="col-8">
-															<div class="text-dark">{$btr->global_feedback|escape}</div>
+														<div class="col-9">
+															<div class="text-dark ms-1">{$btr->global_feedback|escape}</div>
 														</div>
-														<div class="col-2">
+														<div class="col-2 text-end">
 															<span class="badge bg-warning">{$new_feedbacks_counter}</span>
 														</div>
 													</div>
@@ -496,13 +502,13 @@
 											{if $new_subscribes_counter > 0}
 												<a href="index.php?module=SubscribesAdmin" class="list-group-item">
 													<div class="row g-0 align-items-center">
-														<div class="col-2">
-															<i class="text-info" data-feather="at-sign"></i>
+														<div class="col-1">
+															<i class="text-info mt-n1" data-feather="at-sign"></i>
 														</div>
-														<div class="col-8">
-															<div class="text-dark">{$btr->global_subscribes|escape}</div>
+														<div class="col-9">
+															<div class="text-dark ms-1">{$btr->global_subscribes|escape}</div>
 														</div>
-														<div class="col-2">
+														<div class="col-2 text-end">
 															<span class="badge bg-info">{$new_subscribes_counter}</span>
 														</div>
 													</div>
@@ -513,13 +519,13 @@
 											{if $new_callbacks_counter > 0}
 												<a href="index.php?module=CallbacksAdmin" class="list-group-item">
 													<div class="row g-0 align-items-center">
-														<div class="col-2">
-															<i class="text-primary" data-feather="phone"></i>
+														<div class="col-1">
+															<i class="text-primary mt-n1" data-feather="phone"></i>
 														</div>
-														<div class="col-8">
-															<div class="text-dark">{$btr->global_callback|escape}</div>
+														<div class="col-9">
+															<div class="text-dark ms-1">{$btr->global_callback|escape}</div>
 														</div>
-														<div class="col-2">
+														<div class="col-2 text-end">
 															<span class="badge bg-primary">{$new_callbacks_counter}</span>
 														</div>
 													</div>
@@ -566,12 +572,12 @@
 					<div class="row text-muted">
 						<div class="col-6 text-start">
 							<p class="mb-0">
-								<a href="index.php?module=DashboardAdmin" class="text-muted"><strong>TurboCMS</strong></a> &copy;
+								<a href="index.php?module=DashboardAdmin" class="text-muted">&copy; {$smarty.now|date_format:"Y"} <strong>TurboCMS</strong></a>
 							</p>
 						</div>
 						<div class="col-6 text-end">
 							<p class="mb-0">
-								{$smarty.now|date_format:"Y"} v.{$config->version} | {$manager->login|escape}
+								TurboShop v.{$config->version} | {$manager->login|escape}
 							</p>
 						</div>
 					</div>
@@ -607,11 +613,11 @@
 		</div>
 	{/if}
 
-	{js id="app" priority=99 include=[
-		"turbo/design/js/app.js"
-	]}{/js}
+	{* App *}
+	{js id="app" priority=99 include=["turbo/design/js/app.js"]}{/js}
 	{javascript minify=true}
 	
+	{* Flatpickr Lang *}
 	{if $settings->lang !='en'}
 		<script src="https://npmcdn.com/flatpickr/dist/l10n/{if $settings->lang =='ua'}uk{else}{$settings->lang}{/if}.js"></script>
 	{/if}

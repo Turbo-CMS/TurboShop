@@ -93,6 +93,12 @@ resized_posts_images_dir = files/posts/preview/;
 articles_images_dir = files/articles/;
 resized_articles_images_dir = files/articles/preview/;
 
+;Delivery images
+delivery_images_dir = files/delivery/;
+
+;Payment images
+payment_images_dir = files/payment/;
+
 [files]
 
 ;File directory

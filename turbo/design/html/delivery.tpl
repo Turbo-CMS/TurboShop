@@ -22,6 +22,12 @@
 					{elseif $message_success == 'updated'}
 						{$btr->delivery_updated|escape}
 					{/if}
+					{if $smarty.get.return}
+						<a class="alert-link fw-normal btn-return text-decoration-none me-5" href="{$smarty.get.return}">
+							<i class="align-middle mt-n1" data-feather="corner-up-left"></i>
+							{$btr->global_back|escape}
+						</a>
+					{/if}
 					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>
 			</div>
@@ -65,7 +71,7 @@
 						<div class="col-lg-2 col-md-3 col-sm-12">
 							<div class="d-flex justify-content-center align-content-center flex-wrap flex-md-column h-100">
 								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
-									<input class="form-check-input ms-2" type="checkbox" id="enabled" name="enabled" value="1" type="checkbox" {if isset($delivery->enabled) && $delivery->enabled}checked=""{/if}>
+									<input class="form-check-input ms-2" type="checkbox" id="enabled" name="enabled" value="1" type="checkbox" {if isset($delivery->enabled) && $delivery->enabled}checked="" {/if}>
 									<label class="form-check-label ms-2" for="enabled">{$btr->global_enable|escape}</label>
 								</div>
 							</div>
@@ -76,9 +82,129 @@
 		</div>
 	</div>
 
+	<div class="row">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-header">
+					<div class="card-actions float-end">
+						<div class="d-block d-lg-none position-relative collapse-icon">
+							<a href="javascript:;" class="collapse-chevron">
+								<i class="align-middle" data-feather="chevron-up"></i>
+							</a>
+						</div>
+					</div>
+					<h5 class="card-title mb-0">{$btr->global_method_settings|escape}</h5>
+				</div>
+				<div class="collapse-card">
+					<div class="card-body">
+						<div class="row">
+							<div class="col-12">
+								<div class="row">
+									<div class="col-lg-6">
+										<div class="form-group clearfix">
+											<div class="form-label">{$btr->global_method_type|escape}</div>
+											<select name="module" class="selectpicker">
+												<option value='null'>{$btr->global_method_manual|escape}</option>
+												{foreach $delivery_modules as $delivery_module}
+													<option value="{$delivery_module@key|escape}" {if isset($delivery->module) && $delivery->module == $delivery_module@key}selected{/if}>{$delivery_module->name|escape}</option>
+												{/foreach}
+											</select>
+										</div>
+									</div>
+									<div class="col-12 mt-3">
+										{foreach $delivery_modules as $delivery_module}
+											<div class="row js-module-settings" {if $delivery->id}{if $delivery_module@key != $delivery->module}style="display:none;" {/if}{else}style="display:none;" {/if} module="{$delivery_module@key}">
+												<h4>{$delivery_module->name|escape}</h4>
+												{foreach $delivery_module->settings as $setting}
+													{$variable_name = $setting->variable}
+													{if !empty($setting->options) && $setting->options|@count>1}
+														<div class="col-lg-6">
+															<div class="mb-3">
+																<div class="form-label">{$setting->name|escape}</div>
+																<select name="delivery_settings[{$setting->variable}]" class="selectpicker">
+																	{foreach $setting->options as $option}
+																		<option value="{$option->value}" {if isset($delivery_settings[$setting->variable]) && $option->value == $delivery_settings[$setting->variable]}selected{/if}>{$option->name|escape}</option>
+																	{/foreach}
+																</select>
+															</div>
+														</div>
+													{elseif !empty($setting->options) && $setting->options|@count==1}
+														{$option = $setting->options|@first}
+														<div class="col-lg-6">
+															<div class="d-flex align-items-center mb-3">
+																<div class="form-check">
+																	<input class="form-check-input js-check-all-single me-2" type="checkbox" id="delivery-settings-{$option->value|escape}" name="delivery_settings[{$setting->variable}]" value="{$option->value|escape}" {if $option->value==$delivery_settings[$setting->variable]}checked{/if} id="{$setting->variable}">
+																</div>
+																<label class="form-check-label" for="delivery-settings-{$option->value|escape}">{$setting->name|escape}</label>
+															</div>
+														</div>
+													{else}
+														<div class="col-lg-6">
+															<div class="mb-3">
+																<div class="form-label" for="{$setting->variable}">{$setting->name|escape}</div>
+																<input name="delivery_settings[{$setting->variable}]" class="form-control" type="text" value="{if isset($delivery_settings[$setting->variable])}{$delivery_settings[$setting->variable]|escape}{/if}" id="{$setting->variable}">
+															</div>
+														</div>
+													{/if}
+												{/foreach}
+											</div>
+										{/foreach}
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<div class="row gx-2">
-		<div class="col-lg-5 col-md-12">
-			<div class="card mh-210px">
+		<div class="col-lg-4 col-md-12">
+			<div class="card mh-250px">
+				<div class="card-header">
+					<div class="card-actions float-end">
+						<div class="d-block d-lg-none position-relative collapse-icon">
+							<a href="javascript:;" class="collapse-chevron">
+								<i class="align-middle" data-feather="chevron-up"></i>
+							</a>
+						</div>
+					</div>
+					<h5 class="card-title mb-0">{$btr->global_icon|escape}</h5>
+				</div>
+				<div class="collapse-card">
+					<div class="card-body">
+						<ul class="checkout-images-list mb-1">
+							<li class="checkout-image-item border-image-item-two {if isset($delivery->icon) && $delivery->icon}border{/if}">
+								{if isset($delivery->icon) && $delivery->icon}
+									<input type="hidden" class="js-accept-delete-two" name="delete_icon" value="">
+									<div class="js-parent-image-two">
+										<div class="checkout-image image-wrapper js-image-wrapper-two text-xs-center">
+											<a href="javascript:;" class="js-delete-item-two remove-image"></a>
+											<img src="../{$config->delivery_images_dir}{$delivery->icon}" alt="">
+										</div>
+									</div>
+								{else}
+									<div class="js-parent-image-two"></div>
+								{/if}
+								<div class="js-upload-image-two dropzone-block-image {if isset($delivery->icon) && $delivery->icon}d-none{/if}">
+									<i class="align-middle" data-feather="plus"></i>
+									<input class="dropzone-image-two" name="icon" type="file">
+								</div>
+								<div class="checkout-image image-wrapper js-image-wrapper-two js-new-image-two text-xs-center">
+									<a href="javascript:;" class="js-delete-item-two remove-image"></a>
+									<img src="" alt="">
+								</div>
+							</li>
+						</ul>
+						<div class="form-label">{$btr->icon_code|escape}</div>
+						<input class="form-control" name="code" type="text" value="{if isset($delivery->code)}{$delivery->code|escape}{/if}">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-8 col-md-12">
+			<div class="card mh-250px">
 				<div class="card-header">
 					<div class="card-actions float-end">
 						<div class="d-block d-lg-none position-relative collapse-icon">
@@ -123,7 +249,10 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-lg-7 col-md-12">
+	</div>
+
+	<div class="row gx-2">
+		<div class="col-12">
 			<div class="card mh-210px">
 				<div class="card-header">
 					<div class="card-actions float-end">
@@ -214,5 +343,14 @@
 				$(this).addClass("active");
 				break;
 		}
+	});
+
+	$(function() {
+		$('div.js-module-settings').filter(':hidden').find("input, select, textarea").attr("disabled", true);
+		$('select[name=module]').on('change', function() {
+			$('div.js-module-settings').hide().find("input, select, textarea").attr("disabled", true);
+			$('div.js-module-settings[module=' + $(this).val() + ']').show().find("input, select, textarea").attr("disabled", false);
+			$('div.js-module-settings[module=' + $(this).val() + ']').find('select').selectpicker('refresh');
+		});
 	});
 </script>

@@ -5,12 +5,13 @@ require_once 'Turbo.php';
 class Cart extends Turbo
 {
 	/**
-	 * Get cart
+	 * Get Cart
 	 */
 	public function getCart()
 	{
 		$cart = new stdClass();
 		$cart->purchases = [];
+		$cart->total_cart = 0;
 		$cart->total_price = 0;
 		$cart->total_products = 0;
 		$cart->coupon = null;
@@ -65,6 +66,7 @@ class Cart extends Turbo
 						}
 
 						$cart->purchases[] = $purchase;
+						$cart->total_cart += $item->variant->price * $item->amount;
 						$cart->total_price += $item->variant->price * $item->amount;
 						$cart->total_weight += $item->variant->weight * $item->amount;
 						$cart->total_products += $item->amount;
@@ -101,7 +103,7 @@ class Cart extends Turbo
 	}
 
 	/**
-	 * Add item
+	 * Add Item
 	 */
 	public function addItem($variantId, $amount = 1)
 	{
@@ -120,7 +122,7 @@ class Cart extends Turbo
 	}
 
 	/**
-	 * Update item
+	 * Update Item
 	 */
 	public function updateItem($variantId, $amount = 1)
 	{
@@ -134,7 +136,7 @@ class Cart extends Turbo
 	}
 
 	/**
-	 * Delete item
+	 * Delete Item
 	 */
 	public function deleteItem($variantId)
 	{
@@ -142,7 +144,7 @@ class Cart extends Turbo
 	}
 
 	/**
-	 * Empty cart
+	 * Empty Cart
 	 */
 	public function emptyCart()
 	{
@@ -151,11 +153,11 @@ class Cart extends Turbo
 	}
 
 	/**
-	 * Applies coupon 
+	 * Apply Coupon 
 	 */
 	public function applyCoupon($couponCode)
 	{
-		$coupon = $this->coupons->getCoupon((string)$couponCode);
+		$coupon = $this->coupons->getCoupon((string) $couponCode);
 
 		if ($coupon && $coupon->valid) {
 			$_SESSION['coupon_code'] = $coupon->code;

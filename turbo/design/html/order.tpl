@@ -78,6 +78,12 @@
 						{else}
 							{$message_success|escape}
 						{/if}
+						{if $smarty.get.return}
+							<a class="alert-link fw-normal btn-return text-decoration-none me-5" href="{$smarty.get.return}">
+								<i class="align-middle mt-n1" data-feather="corner-up-left"></i>
+								{$btr->global_back|escape}
+							</a>
+						{/if}
 						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 					</div>
 				</div>
@@ -394,7 +400,7 @@
 						<div class="row">
 							<div class="col-12">
 								<div class="form-check form-switch form-check-reverse float-start mt-3">
-									<input class="form-check-input" type="checkbox" id="paid" name="paid" value="1" {if isset($order->paid) && $order->paid}checked=""{/if}>
+									<input class="paid form-check-input" type="checkbox" id="paid" name="paid" value="1" {if isset($order->paid) && $order->paid}checked=""{/if}>
 									<label class="form-check-label me-2" for="paid">{$btr->order_paid|escape}</label>
 								</div>
 							</div>
@@ -523,15 +529,11 @@
 </form>
 
 {* Autocomplete *}
-{js id="autocomplete" priority=99 include=[
-	"turbo/design/js/autocomplete/jquery.autocomplete-min.js"
-]}{/js}
+{js id="autocomplete" priority=99 include=["turbo/design/js/autocomplete/jquery.autocomplete-min.js"]}{/js}
 {javascript minify=true}
 
 {* Flag icon *}
-{css id="flag" include=[
-	"turbo/design/css/flag-icon.min.css"
-]}{/css}
+{css id="flag" include=["turbo/design/css/flag-icon.min.css"]}{/css}
 {stylesheet minify=true}
 
 {literal}

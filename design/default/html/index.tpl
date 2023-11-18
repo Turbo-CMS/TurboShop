@@ -71,7 +71,7 @@
 			<meta name="twitter:image" content="{$config->root_url}/design/{$settings->theme|escape}/images/logo.png">
 		{/if}
 		<meta property="og:description" content='{$post->annotation|strip_tags|escape}'>
-		{*twitter*}
+		{* Twitter *}
 		<meta name="twitter:card" content="summary">
 		<meta name="twitter:title" content="{$post->name|escape}">
 		<meta name="twitter:description" content="{$post->annotation|strip_tags|escape}">
@@ -115,7 +115,7 @@
 		<meta name="robots" content="noindex,nofollow">
 	{elseif $smarty.get.module == "BlogView" && isset($smarty.get.sort) || isset($smarty.get.keyword)}
 		<meta name="robots" content="noindex,follow">
-	{elseif $smarty.get.module == "ArticlesView" && isset($smarty.get.sort) || isset($smarty.get.keyword)}
+	{elseif $smarty.get.module == "ArticlesView" && isset($smarty.get.sort) || isset($smarty.get.keyword) || isset($smarty.get.author)}
 		<meta name="robots" content="noindex,follow">
 	{else}
 		<meta name="robots" content="index,follow">
@@ -133,19 +133,7 @@
 		{/if}
 	{/foreach}
 
-	{* Styles *}
-	{if isset($smarty.cookies.mode) && $smarty.cookies.mode == 'mode'}
-		{css id="styles" include=[
-			"design/{$settings->theme|escape}/css/style-dark.css"
-		]}{/css}
-		{stylesheet minify=true}
-	{else}
-		{css id="styles" include=[
-			"design/{$settings->theme|escape}/css/style-light.css"
-		]}{/css}
-		{stylesheet minify=true}
-	{/if}
-
+	{* CSS *}
 	{css id="main" include=[
 		"design/{$settings->theme|escape}/css/bootstrap.min.css",
 		"design/{$settings->theme|escape}/css/style.css",
@@ -157,16 +145,21 @@
 	{stylesheet minify=true}
 
 	{if $module == 'ProductView'}
-		{css id="product" include=[
-			"design/{$settings->theme|escape}/css/product.css"
-		]}{/css}
+		{css id="product" include=["design/{$settings->theme|escape}/css/product.css"]}{/css}
 		{stylesheet minify=true}
 	{/if}
 
 	{if $module=='CartView' || $module=='OrderView' }
-		{css id="cart" include=[
-			"design/{$settings->theme|escape}/css/cart.css"
-		]}{/css}
+		{css id="cart" include=["design/{$settings->theme|escape}/css/cart.css"]}{/css}
+		{stylesheet minify=true}
+	{/if}
+
+	{* Color Theme *}
+	{if isset($smarty.cookies.mode) && $smarty.cookies.mode == 'mode'}
+		{css id="styles" include=["design/{$settings->theme|escape}/css/style-dark.css"]}{/css}
+		{stylesheet minify=true}
+	{else}
+		{css id="styles" include=["design/{$settings->theme|escape}/css/style-light.css"]}{/css}
 		{stylesheet minify=true}
 	{/if}
 
@@ -178,6 +171,13 @@
 	<link rel="icon" type="image/png" sizes="16x16" href="design/{$settings->theme|escape}/images/favicon-16x16.png">
 	<link rel="manifest" href="design/{$settings->theme|escape}/images/site.webmanifest">
 	<link rel="mask-icon" color="#198754" href="design/{$settings->theme|escape}/images/safari-pinned-tab.svg">
+
+	{* jQuery & Bootstrap *}
+	{js id="main" priority=99 include=[
+		"design/{$settings->theme|escape}/js/jquery.min.js",
+		"design/{$settings->theme|escape}/js/bootstrap.bundle.min.js"
+	]}{/js}
+	{javascript minify=true}
 
 	{* Custom Scripts *}
 	{if isset($counters['head'])}
@@ -196,237 +196,58 @@
 		{/foreach}
 	{/if}
 
-	<!-- Quickview Modal -->
+	{* Quickview Modal *}
 	<div id="quickview-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered modal-xl">
 			<div class="modal-content"></div>
 		</div>
 	</div>
 
-	<!-- Fast Order Modal -->
-	<div class="modal fade" id="FastOrder" tabindex="-1" role="dialog" aria-labelledby="ModalFastOrder" aria-hidden="true">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="ModalFastOrder">{$lang->fast_order}</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
-				<form class="form fast_order_form" method="post">
-					<input type="hidden" class="fast-order-inputarea" name="variant_id" id="fast-order-product-id" value="">
-					<input type="hidden" name="IsFastOrder" value="true">
-					<div class="modal-body">
-						{if isset($fastorder_error)}
-							<div class="alert alert-danger" role="alert">
-								{if $fastorder_error == 'empty_name'}
-									{$lang->enter_your_name}
-								{elseif $fastorder_error == 'empty_phone'}
-									{$lang->enter_phone_number}
-								{elseif $fastorder_error == 'captcha'}
-									{$lang->captcha_incorrect}
-								{else}
-									{$fastorder_error}
-								{/if}
-							</div>
-						{/if}
-						<p id="fast-order-product-name" class="modal-caption"></p>
-						<div class="form-group has-feedback">
-							<div class="input-group mb-3">
-								<div class="input-group-text"><i class="fv-icon-no-has fal fa-user"></i></div>
-								<input type="text" class="form-control" name="name" value="{if isset($user->name)}{$user->name|escape}{elseif isset($name)}{$name|escape}{/if}" placeholder="{$lang->name}" required>
-							</div>
-						</div>
-						<div class="form-group">
-							<div class="input-group mb-3">
-								<div class="input-group-text"><i class="fv-icon-no-has fal fa-phone-alt"></i></div>
-								<input type="text" class="form-control" name="phone" id="fastorder-mask" value="{if isset($user->phone)}{$user->phone|escape}{elseif isset($phone)}{$phone|escape}{/if}" placeholder="{$lang->phone}" maxlength="255" required>
-							</div>
-						</div>
-						<div class="form-group">
-							<div class="input-group mb-3">
-								<div class="input-group-text"><i class="fv-icon-no-has fal fa-at"></i></div>
-								<input type="text" class="form-control" name="email" value="{if isset($user->email)}{$user->email|escape}{elseif isset($email)}{$email|escape}{/if}" placeholder="Email" maxlength="255" required>
-							</div>
-						</div>
-						<div class="form-group">
-							<div class="input-group mb-3">
-								<div class="input-group-text"><i class="fv-icon-no-has fal fa-map-marker-alt"></i></div>
-								<input type="text" class="form-control" name="address" value="{if isset($user->address)}{$user->address|escape}{elseif isset($address)}{$address|escape}{/if}" placeholder="{$lang->address}" maxlength="255">
-							</div>
-						</div>
-						{if $settings->captcha_fastorder}
-							<div class="row">
-								<div class="form-group col-sm-6 pb-3">
-									{get_captcha var="captcha_fastorder"}
-									<div class="secret-number">{$captcha_fastorder[0]|escape} + ? = {$captcha_fastorder[1]|escape}</div>
-								</div>
-								<div class="form-group col-sm-6">
-									<input type="text" class="form-control" name="captcha_code" value="" placeholder="{$lang->enter_captcha}" autocomplete="off" required>
-								</div>
-							</div>
-						{/if}
-					</div>
-					<div class="modal-footer">
-						<input type="submit" class="btn btn-success mx-auto" name="checkout" value="{$lang->send}">
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
+	{* Login Modal *}
+	{include file='modals/login.tpl'}
 
-	<!-- Header -->
+	{* Fast Order Modal *}
+	{include file='modals/fast_order.tpl'}
+
+	{* Header *}
 	<header>
-		<!-- Navigation -->
-		<nav itemscope itemtype="https://schema.org/SiteNavigationElement" class="navbar navbar-expand-lg {if isset($smarty.cookies.mode) && $smarty.cookies.mode == 'mode'}navbar-dark bg-body-tertiary{else}navbar-light bg-light{/if} fixed-top">
-			<div class="container">
-				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu" aria-controls="navbarMenu" aria-expanded="false" aria-label="Menu">
-					<span class="navbar-toggler-icon"></span>
-				</button>
-				<div class="collapse navbar-collapse" id="navbarMenu">
-					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-						{foreach $pages as $p}
-							{if $p->menu_id == 1}
-								{if $p->visible}
-									<li itemprop="name" class="nav-item dropdown {if $page && $page->id == $p->id}active{/if}">
-										<a itemprop="url" class="nav-link {if isset($p->subpages)}dropdown-toggle{/if}" href="{$lang_link}{$p->url}" id="dropdown{$p->id}" data-page="{$p->id}" {if isset($p->subpages)}data-bs-toggle="dropdown" aria-expanded="false"{/if} aria-haspopup="true">{$p->header}</a>
-										{if isset($p->subpages)}
-											<div class="dropdown-menu" aria-labelledby="dropdown{$p->id}">
-												{foreach $p->subpages as $p2}
-													<a itemprop="url" data-page="{$p2->id}" class="dropdown-item" href="{$lang_link}{$p2->url}">{$p2->header}</a>
-												{/foreach}
-											</div>
-										{/if}
-									</li>
-								{/if}
-							{/if}
-						{/foreach}
-					</ul>
-					<ul class="nav navbar-nav navbar-right">
-						<li class="nav-link">
-							<div class="form-check form-switch">
-								{if isset($smarty.cookies.mode) && $smarty.cookies.mode == 'mode'}
-									<input type="checkbox" onclick="document.cookie='mode=;path=/';document.location.reload();" class="form-check-input" id="darkSwitch">
-									<label class="custom-control-label" for="darkSwitch"><i class="fal fa-moon"></i></label>
-								{else}
-									<input type="checkbox" onclick="document.cookie='mode=mode;path=/';document.location.reload();" class="form-check-input" id="darkSwitch" checked>
-									<label class="custom-control-label" for="darkSwitch"><i class="fal fa-sun"></i></label>
-								{/if}
-							</div>
-						</li>
-						{* Languages *}
-						{if $languages|count> 1}
-							{$cnt = 0}
-							{foreach $languages as $ln}
-								{if $ln->enabled}
-									{$cnt = $cnt+1}
-								{/if}
-							{/foreach}
-							{if $cnt>1}
-								<li class="nav-item dropdown">
-									{foreach $languages as $l}
-										{if $language->id == $l->id}
-											<a class="nav-link dropdown-toggle" href="{$lang_link}" id="dropdownLang" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="flag-icon flag-icon-{$l->label}"></span> {$l->label|upper}</a>
-										{/if}
-									{/foreach}
-									<div class="dropdown-menu" aria-labelledby="dropdownLang">
-										{foreach $languages as $l}
-											{if $l->enabled}
-												<a href="{$l->url}" class="dropdown-item {if $language->id == $l->id}active{/if}"><span class="flag-icon flag-icon-{$l->label}"></span> {$l->name}</a>
-											{/if}
-										{/foreach}
-									</div>
-								</li>
-							{/if}
-						{/if}
-						<li class="nav-link">
-							<span id="wishlist_informer">
-								{include file='wishlist_informer.tpl'}
-							</span>
-						</li>
-						<li class="nav-link">
-							<span id="compare_informer">
-								{include file='compare_informer.tpl'}
-							</span>
-						</li>
-						{if $user}
-							<li class="nav-item"><a class="nav-link text-decoration-none" href="{$lang_link}user"><i class="fal fa-user"></i> {$user->name}</a></li>
-							<li class="nav-item"><a class="nav-link text-decoration-none" href="{$lang_link}user/logout"><i class="fal fa-sign-out"></i> {$lang->logout}</a></li>
-						{else}
-							<li class="nav-item"><a class="nav-link text-decoration-none" href="{$lang_link}user/login"><i class="fal fa-sign-in"></i> {$lang->login}</a></li>
-							<li class="nav-item"><a class="nav-link text-decoration-none" href="{$lang_link}user/register"><i class="fal fa-user-plus"></i> {$lang->registration}</a></li>
-						{/if}
-					</ul>
-				</div>
-				<!-- Cart -->
-				<div id="cart_informer">
-					{include file='cart_informer.tpl'}
-				</div>
-			</div>
-		</nav>
-		<!-- Logo Header -->
-		<div class="container">
-			<div class="row">
-				<!-- Logo -->
-				<div class="col-lg-6 mt-2">
-					<h1 class="mt-4">
-						{if $module=='MainView'}
-							<i class="fal fa-shopping-bag text-success"></i> TurboShop
-						{else}
-							<a class="{if isset($smarty.cookies.mode) && $smarty.cookies.mode == 'mode'}text-white{else}text-dark{/if} card-link text-decoration-none" href="{if $lang_link}{$lang_link}{else}/{/if}"><i class="fal fa-shopping-bag text-success"></i> TurboShop</a>
-						{/if}
-					</h1>
-				</div>
-				<!-- Header Contacts -->
-				<div class="col-lg-6 mt-2">
-					<p class="text-end">{$lang->phone_number}<br>
-						{$lang->contact_details}
-					<div class="callback float-end">
-						<a class="btn btn-success btn-sm" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#CallbackModal" role="button"><i class="fal fa-phone-alt"></i> <span>{$lang->callback}</span></a>
-					</div>
-					</p>
-				</div>
-			</div>
-		</div>
+		{if $theme_settings->header_type == "1"}
+			{include file='headers/header_1.tpl'}
+		{elseif $theme_settings->header_type == "2"}
+			{include file='headers/header_2.tpl'}
+		{/if}
 	</header>
 
-	<!-- Page Content -->
+	{* Page Content *}
 	<main>
 		<div class="container">
 			<div class="row">
-				<!-- Sidebar -->
-				{include file='sidebar.tpl'}
-				<!-- /.col-lg-3 -->
-				<div class="col-lg-9 order-lg-2 order-1">
-					<!-- Sidebar Button -->
-					<nav class="navbar navbar-expand-lg navbar-dark bg-primary d-lg-none mt-4 rounded">
-						<div class="container-fluid">
-							<a class="navbar-brand" href="#">{$lang->catalog}</a>
-							<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar">
-								<span class="navbar-toggler-icon"></span>
-							</button>
-						</div>
-					</nav>
+				{* Sidebar *}
+				{if $theme_settings->main_type != "2" || $module!='MainView'}
+					{include file='sidebars/sidebar.tpl'}
+				{/if}
+				<div class="{if $theme_settings->main_type == "2" && $module == 'MainView'}col-lg-12{else}col-lg-9{/if} order-lg-2 order-1">
 					{* Slider *}
-					{include file='slider.tpl'}
-					<!-- Content -->
+					{include file='banners/slider.tpl'}
+					{* Content *}
 					{$content}
 				</div>
-				<!-- /.col-lg-9 -->
 			</div>
-			<!-- /.row -->
 		</div>
-		<!-- /.container -->
 	</main>
-	<!-- /.main -->
 
-	<!-- Container -->
-	<div class="container mt-5">
+	{* Container *}
+	<div class="container mt-3">
 		{* Brands *}
 		{if $module=='MainView'}
 			{get_brands var=all_brands visible_brand=1}
 			{if $all_brands}
 				<div class="section-heading">
-					<a href="{$lang_link}brands" class="btn btn-outline-primary float-end">{$lang->see_all}</a>
-					<h2 class="section-title my-2">{$lang->global_brands}</h2>
+					<a href="{$lang_link}brands" class="btn btn-outline-primary float-end">
+						{$lang->see_all}
+						<i class="fal fa-chevron-right ms-2"></i>
+					</a>
+					<h2 class="my-2">{$lang->global_brands}</h2>
 				</div>
 				<hr class="text-black-50">
 				<div class="row">
@@ -435,10 +256,12 @@
 							<div class="col-md-4 col-lg-3 col-xl-2">
 								<div class="box item-logo">
 									{if $b->image}
-										<a href="{$lang_link}brands/{$b->url}"><img src="{$b->image|resize_brands:125:42}" alt="{$b->name|escape}" title="{$b->name|escape}"></a>
+										<a data-brand="{$b->id}" href="{$lang_link}brands/{$b->url}">
+											<img src="{$b->image|resize_brands:125:42}" alt="{$b->name|escape}" title="{$b->name|escape}">
+										</a>
 									{else}
 										<a href="{$lang_link}brands/{$b->url}" class="text-decoration-none">
-											<h3>{$b->name|escape}</h3>
+											<h3 data-brand="{$b->id}">{$b->name|escape}</h3>
 										</a>
 									{/if}
 								</div>
@@ -457,7 +280,7 @@
 			<div class="row">
 				{foreach $browsed_products as $product}
 					<div class="col-md-6 col-lg-4 col-xl-3">
-						{include file='grid.tpl'}
+						{include file='products/grid.tpl'}
 					</div>
 				{/foreach}
 			</div>
@@ -468,13 +291,13 @@
 			{get_posts var=last_posts limit=3}
 			{if isset($last_posts)}
 				<div class="section-heading">
-					<a href="{$lang_link}blog" class="btn btn-outline-primary float-end">{$lang->see_all}</a>
+					<a href="{$lang_link}blog" class="btn btn-outline-primary float-end">{$lang->see_all}<i class="fal fa-chevron-right ms-2"></i></a>
 					<h2 class="section-title my-2">{$lang->global_blog}</h2>
 				</div>
 				<hr class="text-black-50">
 				<div class="row">
 					{foreach $last_posts as $post}
-						<div class="col-md-6 col-lg-4 mb-5">
+						<div class="col-md-6 col-lg-4 mb-3">
 							<div class="card h-100">
 								{if $post->image}
 									<img class="card-img-top" src="{$post->image|resize_posts:750:300}" alt="{$post->name|escape}">
@@ -484,12 +307,12 @@
 									</span>
 								{/if}
 								<div class="card-body">
-									<h5><a data-post="{$post->id}" class="card-title text-decoration-none" href="{$lang_link}blog/{$post->url}">{$post->name|escape}</a></h5>
-									<p class="card-text"><small class="text-muted">{$post->date|date}</small></p>
-									<p class="card-text">{$post->annotation|strip_tags|truncate:150}</p>
+									<h5 class="card-title"><a data-post="{$post->id}" class="text-decoration-none" href="{$lang_link}blog/{$post->url}">{$post->name|escape}</a></h5>
+									<div class="my-1"><small class="text-muted">{$post->date|date}</small></div>
+									<div class="my-1">{$post->annotation|strip_tags|truncate:150}</div>
 								</div>
 								<div class="card-footer">
-									<a href="{$lang_link}blog/{$post->url}" class="btn btn-primary btn-sm">{$lang->more_details}</a>
+									<a href="{$lang_link}blog/{$post->url}" class="btn btn-primary btn-sm">{$lang->more_details}<i class="fal fa-arrow-right ms-2"></i></a>
 								</div>
 							</div>
 						</div>
@@ -501,13 +324,13 @@
 			{get_articles var=last_articles limit=3}
 			{if isset($last_articles)}
 				<div class="section-heading">
-					<a href="{$lang_link}articles" class="btn btn-outline-primary float-end">{$lang->see_all}</a>
+					<a href="{$lang_link}articles" class="btn btn-outline-primary float-end">{$lang->see_all}<i class="fal fa-chevron-right ms-2"></i></a>
 					<h2 class="section-title my-2">{$lang->global_articles}</h2>
 				</div>
 				<hr class="text-black-50">
 				<div class="row">
 					{foreach $last_articles as $article}
-						<div class="col-md-6 col-lg-4 mb-5">
+						<div class="col-md-6 col-lg-4 mb-3">
 							<div class="card h-100">
 								{if $article->image}
 									<img class="card-img-top" src="{$article->image|resize_articles:750:300}" alt="{$article->name|escape}">
@@ -517,12 +340,27 @@
 									</span>
 								{/if}
 								<div class="card-body">
-									<h5><a data-article="{$article->id}" class="card-title text-decoration-none" href="{$lang_link}article/{$article->url}">{$article->name|escape}</a></h5>
-									<p class="card-text"><small class="text-muted">{$article->date|date}</small></p>
-									<p class="card-text">{$article->annotation|strip_tags|truncate:150}</p>
+									<h5 class="card-title"><a data-article="{$article->id}" class="text-decoration-none" href="{$lang_link}article/{$article->url}">{$article->name|escape}</a></h5>
+									<div class="small text-muted">
+										<i class="fal fa-calendar me-1"></i>
+										<span itemprop="datePublished" class="text-muted me-1" content="{$article->date}">{$article->date|date}</span>
+										{if $article->author}
+											<i class="fal fa-user-edit me-1"></i>
+											<a class="mr-2 text-decoration-none me-1" href="{$lang_link}articles/?author={$article->author|escape}">
+												{$article->author|escape}
+											</a>
+										{/if}
+										{if $article->category->name}
+											<i class="fal fa-edit me-1"></i>
+											<a href="{$lang_link}articles/{$article->category->url}" class="text-decoration-none">
+												{$article->category->name}
+											</a>
+										{/if}
+									</div>
+									<div class="my-1">{$article->annotation|strip_tags|truncate:150}</div>
 								</div>
 								<div class="card-footer">
-									<a href="{$lang_link}article/{$article->url}" class="btn btn-primary btn-sm">{$lang->more_details}</a>
+									<a href="{$lang_link}article/{$article->url}" class="btn btn-primary btn-sm">{$lang->more_details}<i class="fal fa-arrow-right ms-2"></i></a>
 								</div>
 							</div>
 						</div>
@@ -532,252 +370,66 @@
 		{/if}
 	</div>
 
-	<!-- Subscribe -->
-	<div class="container-fluid bg-dark mt-auto">
-		<div class="row">
-			<div class="col-md-4 offset-md-4">
-				<form class="form-group my-5" id="FormValidation" method="post" novalidate>
-					{if isset($subscribe_error)}
-						<label class="error text-danger">
-							{if $subscribe_error == 'email_exist'}
-								{$lang->you_are_already_subscribed}
-							{/if}
-							{if $subscribe_error == 'empty_email'}
-								{$lang->enter_your_email}
-							{/if}
-						</label>
-					{/if}
-					{if isset($subscribe_success)}
-						<label class="success text-success">
-							{$lang->you_have_been_successfully_subscribed}
-						</label>
-					{/if}
-					<div class="input-group mb-2">
-						<input type="email" class="form-control {if isset($subscribe_error)}border-danger{/if} {if isset($subscribe_success)}border-success{/if}" name="subscribe_email" value="" placeholder="{$lang->enter_your_email}" size="20" required>
-						<button type="submit" class="btn btn-warning" name="subscribe" id="btnValidation" value="{$lang->subscribe_to}"><i class="fa fa-envelope"></i></button>
-					</div>
-				</form>
-			</div>
-			<hr class="text-black-50">
-		</div>
-	</div>
+	<div class="my-3"></div>
 
-	<!-- Footer -->
-	<footer itemscope itemtype="https://schema.org/WPFooter" class="page-footer font-small bg-dark text-white">
-		<div class="container text-center text-md-start">
-			<div class="row text-center text-md-start">
-				<!-- Footer Description -->
-				<div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
-					<h6 class="text-uppercase mb-4 font-weight-bold">{$settings->company_name|escape}</h6>
-					<p>{$lang->main_description}</p>
+	{* Footer *}
+	{if $theme_settings->footer_type == "1"}
+		{include file="footer/footer_1.tpl"}
+	{elseif $theme_settings->footer_type == "2"}
+		{include file="footer/footer_2.tpl"}
+	{/if}
+
+	{* Toolbar mobile *}
+	<nav class="handheld-toolbar fixed-bottom bg-body-tertiary d-block d-lg-none shadow-top">
+		<div class="container-fluid text-center">
+			<div class="row align-items-start py-2">
+				<div class="col border-end">
+					{if $theme_settings->main_type == "2" && $module == 'MainView'}
+						<button type="button" class="btn btn-link" data-bs-toggle="offcanvas" data-bs-target="#navbar-default" role="button" aria-controls="navbar-default">
+							<i class="fal fa-bars text-muted fs-4"></i>
+						</button>
+					{else}
+						<button type="button" class="btn btn-link" data-bs-toggle="offcanvas" href="#sidebar" role="button" aria-controls="sidebar">
+							<i class="fal fa-bars text-muted fs-4"></i>
+						</button>
+					{/if}
 				</div>
-				<hr class="text-black-50 w-100 clearfix d-md-none">
-				<!-- Footer Links -->
-				<div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
-					<h6 class="text-uppercase mb-4 font-weight-bold">{$lang->about_shop}</h6>
-					{foreach $pages as $p}
-						{if $p->menu_id == 1}
-							<p {if $page && $page->id == $p->id}class="selected" {/if}>
-								<a data-page="{$p->id}" class="text-decoration-none" href="{$lang_link}{$p->url}">{$p->header|escape}</a>
-							</p>
-						{/if}
-					{/foreach}
+				<div class="col border-end">
+					<button type="button" class="btn btn-link">
+						<a href="{$lang_link}wishlist"><i class="fal fa-heart text-muted fs-4"></i></a>
+					</button>
 				</div>
-				<hr class="text-black-50 w-100 clearfix d-md-none">
-				<!-- Footer Links -->
-				<div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
-					<h6 class="text-uppercase mb-4 font-weight-bold">{$lang->information}</h6>
-					{foreach $pages as $p}
-						{if $p->menu_id == 3}
-							<p {if $page && $page->id == $p->id}class="selected" {/if}>
-								<a data-page="{$p->id}" class="text-decoration-none" href="{$lang_link}{$p->url}">{$p->header|escape}</a>
-							</p>
-						{/if}
-					{/foreach}
+				<div class="col border-end">
+					<button type="button" class="btn btn-link">
+						<a href="{$lang_link}compare"><i class="fal fa-sync text-muted fs-4"></i></a>
+					</button>
 				</div>
-				<hr class="text-black-50 w-100 clearfix d-md-none">
-				<div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
-					<!-- Footer Contacts -->
-					<h6 class="text-uppercase mb-4 font-weight-bold">{$lang->contacts}</h6>
-					<p><i class="fal fa-map-marker-alt text-white-50 me-2"></i>{$lang->contact_details}</p>
-					<p><i class="fal fa-envelope text-white-50 me-2"></i> info@gmail.com</p>
-					<p><i class="fal fa-phone-alt text-white-50 me-2"></i> (123) 456-78-90</p>
-					<p><i class="fal fa-print text-white-50 me-2"></i> (987) 654-32-10</p>
-					<!-- Footer Payment -->
-					<p class="text-white-50">
-						<i class="fab fa-lg fa-cc-visa"></i>
-						<i class="fab fa-lg fa-cc-mastercard"></i>
-						<i class="fab fa-lg fa-cc-paypal"></i>
-						<i class="fab fa-lg fa-cc-stripe"></i>
-						<i class="fab fa-lg fa-cc-apple-pay"></i>
-					</p>
-				</div>
-			</div>
-			<hr class="text-black-50">
-			<div class="row d-flex align-items-center">
-				<div class="col-md-4 col-lg-4">
-					<!-- Copyright -->
-					<p class="text-center text-md-start text-white-50">© <span itemprop="copyrightYear">{$smarty.now|date_format:"Y"}</span> <strong>TurboCMS</strong></p>
-				</div>
-				<!-- Made -->
-				<div class="col-md-4 col-lg-4">
-					<p class="text-center text-md-center text-white-50"><i class="flag-icon flag-icon-ua"></i>
-						<strong>Made in Ukraine</strong>
-					</p>
-				</div>
-				<div class="col-md-4 col-lg-4 ml-lg-0">
-					<!-- Social Buttons -->
-					<div class="text-center text-md-end">
-						<ul class="list-unstyled list-inline">
-							<li class="list-inline-item">
-								<a href="#" class="btn-floating btn-sm rgba-white-slight mx-1">
-									<i class="fab fa-facebook-f"></i>
-								</a>
-							</li>
-							<li class="list-inline-item">
-								<a href="#" class="btn-floating btn-sm rgba-white-slight mx-1">
-									<i class="fab fa-twitter"></i>
-								</a>
-							</li>
-							<li class="list-inline-item">
-								<a href="#" class="btn-floating btn-sm rgba-white-slight mx-1">
-									<i class="fab fa-google-plus-g"></i>
-								</a>
-							</li>
-							<li class="list-inline-item">
-								<a href="#" class="btn-floating btn-sm rgba-white-slight mx-1">
-									<i class="fab fa-linkedin-in"></i>
-								</a>
-							</li>
-							<li class="list-inline-item">
-								<a href="{$lang_link}sitemap" class="btn-floating btn-sm rgba-white-slight mx-1">
-									<i class="fa fa-sitemap"></i>
-								</a>
-							</li>
-						</ul>
+				<div class="col">
+					<div id="cart-informer-footer">
+						{include file='informers/cart_informer_footer.tpl'}
 					</div>
 				</div>
 			</div>
 		</div>
-	</footer>
+	</nav>
 
-	<!-- Back to Top -->
+	{* Back to Top *}
 	<a href="#" id="back-to-top" title="Back to top"><i class="fal fa-angle-double-up"></i></a>
 
-	<!-- Callback Modal -->
-	<div class="modal fade fade bd-example-modal-sm" id="CallbackModal" tabindex="-1" role="dialog" aria-labelledby="CallbackModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-sm" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title" id="CallbackModalLabel">{$lang->request_a_call}</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
-				<form class="form feedback_form" method="post">
-					<div class="modal-body">
-						{if isset($call_error)}
-							<div class="alert alert-danger" role="alert">
-								{if $call_error == 'empty_name'}
-									{$lang->enter_your_name}
-								{elseif $call_error == 'empty_phone'}
-									{$lang->enter_phone_number}
-								{elseif $call_error == 'captcha'}
-									{$lang->captcha_incorrect}
-								{else}
-									{$call_error}
-								{/if}
-							</div>
-						{/if}
-						<p class="modal-caption">{$lang->leave_your_phone_number}</p>
-						<div class="input-group mb-3">
-							<div class="input-group-text"><i class="fal fa-user"></i></div>
-							<input type="text" class="form-control" name="name" value="{if isset($callname)}{$callname|escape}{elseif isset($user->name)}{$user->name|escape}{/if}" placeholder="{$lang->name}" required>
-						</div>
-						<div class="input-group mb-3">
-							<div class="input-group-text"><i class="fal fa-phone-alt"></i></div>
-							<input type="text" class="form-control" name="phone" id="call-mask" value="{if isset($callphone)}{$callphone|escape}{elseif isset($user->phone)}{$user->phone|escape}{/if}" placeholder="{$lang->phone}" maxlength="255" required>
-						</div>
-						{if $settings->captcha_callback}
-							<div class="row">
-								<div class="form-group col-sm-6 pb-3">
-									{get_captcha var="captcha_callback"}
-									<div class="secret-number">{$captcha_callback[0]|escape} + ? = {$captcha_callback[1]|escape}</div>
-								</div>
-								<div class="form-group col-sm-6">
-									<input type="text" class="form-control" name="captcha_code" value="" placeholder="{$lang->captcha}" autocomplete="off" required>
-								</div>
-							</div>
-						{/if}
-					</div>
-					<div class="modal-footer">
-						<input type="submit" class="btn btn-primary mx-auto" name="callback" value="{$lang->send}">
-					</div>
-				</form>
-			</div>
-		</div>
-	</div>
+	{* Callback Modal *}
+	{include file="modals/callback.tpl"}
 
-	<!-- Toast callback success -->
-	<div class="position-fixed top-0 start-50 translate-middle-x p-3 mt-5" style="z-index: 1060">
-		<div id="CallbackToast" class="toast fade hide align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
-			<div class="d-flex">
-				<div class="toast-body">
-					{$lang->message_sent}
-				</div>
-				<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-			</div>
-		</div>
-	</div>
+	{* Toast Callback *}
+	{include file="modals/toast_callback.tpl"}
 
-	<!-- Subscribe Modal -->
-	<div class="position-fixed top-0 start-50 translate-middle-x p-3 mt-5" style="z-index: 1060">
-		<div id="Subscribe" class="toast fade hide align-items-center text-white {if isset($subscribe_error)}bg-danger{/if} {if isset($subscribe_success)}bg-success{/if} border-0" role="alert" aria-live="assertive" aria-atomic="true">
-			<div class="d-flex">
-				<div class="toast-body">
-					{if isset($subscribe_error)}
-						{if $subscribe_error == 'email_exist'}
-							{$lang->already_subscribe}
-						{/if}
-						{if $subscribe_error == 'empty_email'}
-							{$lang->enter_your_email}
-						{/if}
-					{/if}
-					{if isset($subscribe_success)}
-						{$lang->success_subscribe}
-					{/if}
-				</div>
-				<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-			</div>
-		</div>
-	</div>
+	{* Subscribe Modal *}
+	{include file="modals/subscribe.tpl"}
 
-	<!-- Toast rate danger -->
-	<div class="position-fixed top-0 start-50 translate-middle-x p-3 mt-5" style="z-index: 1060">
-		<div id="rate-danger" class="toast fade hide align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
-			<div class="d-flex">
-				<div class="toast-body">
-					{$lang->already_voted}
-				</div>
-				<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-			</div>
-		</div>
-	</div>
+	{* Toast Rate *}
+	{include file="modals/toast_rate.tpl"}
 
-	<!-- Toast rate success -->
-	<div class="position-fixed top-0 start-50 translate-middle-x p-3 mt-5" style="z-index: 1060">
-		<div id="rate" class="toast fade hide align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
-			<div class="d-flex">
-				<div class="toast-body">
-					{$lang->vote_counted}
-				</div>
-				<button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-			</div>
-		</div>
-	</div>
-
-	{* Javascripts *}
+	{* JS *}
 	{js id="main" priority=99 include=[
-		"design/{$settings->theme|escape}/js/jquery.min.js",
-		"design/{$settings->theme|escape}/js/bootstrap.bundle.min.js",
 		"design/{$settings->theme|escape}/js/jquery.maskedinput.min.js",
 		"design/{$settings->theme|escape}/js/jquery.autocomplete-min.js",
 		"design/{$settings->theme|escape}/js/jquery.fancybox.min.js",
@@ -787,99 +439,83 @@
 	{javascript minify=true}
 
 	{* Products *}
-	{js id="products" priority=99 include=[
-		"design/{$settings->theme|escape}/js/products.js"
-	]}{/js}
+	{js id="products" priority=99 include=["design/{$settings->theme|escape}/js/products.js"]}{/js}
 	{javascript minify=true}
 
-	{* Search *}
-	{if isset($page) && !empty($page) && $page->url=="search"}
-		{js id="search" priority=99 include=[
-			"design/{$settings->theme|escape}/js/search.js"
-		]}{/js}
+	{if $module=='CartView'}
+		{js id="cart" priority=99 include=["design/{$settings->theme|escape}/js/cart.js"]}{/js}
 		{javascript minify=true}
 	{/if}
 
-	{* Reviews rating *}
+	{if $module=='OrderView'}
+		{js id="cart" priority=99 include=["design/{$settings->theme|escape}/js/order.js"]}{/js}
+		{javascript minify=true}
+	{/if}
+
+	{* Search *}
+	{js id="search" priority=99 include=["design/{$settings->theme|escape}/js/search.js"]}{/js}
+	{javascript minify=true}
+
+	{* Reviews Rating *}
 	{if $module == 'ReviewsView' || $module == 'ProductView'}
-		{js id="rating" priority=99 include=[
-			"design/{$settings->theme|escape}/js/rating.js"
-		]}{/js}
+		{js id="rating" priority=99 include=["design/{$settings->theme|escape}/js/rating.js"]}{/js}
 		{javascript minify=true}
 	{/if}
 
 	{* Blog & Articles *}
 	{if $module == 'BlogView' && isset($post) || $module=='ArticlesView' && isset($post)}
 		{if isset($smarty.cookies.mode) && $smarty.cookies.mode == 'mode'}
-			{css id="prism" include=[
-				"design/{$settings->theme|escape}/css/prism-dark.css"
-			]}{/css}
+			{css id="prism" include=["design/{$settings->theme|escape}/css/prism-dark.css"]}{/css}
 			{stylesheet minify=true}
 		{else}
-			{css id="prism" include=[
-				"design/{$settings->theme|escape}/css/prism.css"
-			]}{/css}
+			{css id="prism" include=["design/{$settings->theme|escape}/css/prism.css"]}{/css}
 			{stylesheet minify=true}
 		{/if}
 
-		{js id="prism" priority=99 include=[
-			"design/{$settings->theme|escape}/js/prism.js"
-		]}{/js}
+		{js id="prism" priority=99 include=["design/{$settings->theme|escape}/js/prism.js"]}{/js}
 		{javascript minify=false}
 
-		{css id="post" include=[
-			"design/{$settings->theme|escape}/css/post.css"
-		]}{/css}
+		{css id="post" include=["design/{$settings->theme|escape}/css/post.css"]}{/css}
 		{stylesheet minify=true}
 
 		{js id="post" priority=99 include=[
 			"design/{$settings->theme|escape}/js/post.js",
-		"design/{$settings->theme|escape}/js/jquery.toc.js"
+			"design/{$settings->theme|escape}/js/jquery.toc.js"
 		]}{/js}
 		{javascript minify=true}
 	{/if}
 
 	{* Description *}
 	{if $module == 'BlogView' && isset($post) || $module=='ArticlesView' && isset($post) || $module=='PageView' || $module=='ProductView'}
-		{css id="description" include=[
-			"design/{$settings->theme|escape}/css/owl.carousel.css"
-		]}{/css}
+		{css id="description" include=["design/{$settings->theme|escape}/css/owl.carousel.css"]}{/css}
 		{stylesheet minify=true}
 
 		{js id="description" priority=99 include=[
 			"design/{$settings->theme|escape}/js/block.description.js",
-		"design/{$settings->theme|escape}/js/owl.carousel.min.js"
+			"design/{$settings->theme|escape}/js/owl.carousel.min.js"
 		]}{/js}
 		{javascript minify=true}
 	{/if}
 
 	{* Filter *}
 	{if $module == 'ProductsView'}
-		{css id="filter" include=[
-			"design/{$settings->theme|escape}/css/filter.css"
-		]}{/css}
+		{css id="filter" include=["design/{$settings->theme|escape}/css/filter.css"]}{/css}
 		{stylesheet minify=true}
 
-		{css id="filter" include=[
-			"design/{$settings->theme|escape}/js/ion.rangeSlider/ion.rangeSlider.css"
-		]}{/css}
+		{css id="filter" include=["design/{$settings->theme|escape}/js/ion.rangeSlider/ion.rangeSlider.css"]}{/css}
 		{stylesheet minify=true}
 
 		{if isset($smarty.cookies.mode) && $smarty.cookies.mode == 'mode'}
-			{css id="filter" include=[
-				"design/{$settings->theme|escape}/js/ion.rangeSlider/ion.rangeSlider.skinTurbo.dark.css"
-			]}{/css}
+			{css id="filter" include=["design/{$settings->theme|escape}/js/ion.rangeSlider/ion.rangeSlider.skinTurbo.dark.css"]}{/css}
 			{stylesheet minify=true}
 		{else}
-			{css id="filter" include=[
-				"design/{$settings->theme|escape}/js/ion.rangeSlider/ion.rangeSlider.skinTurbo.css"
-			]}{/css}
+			{css id="filter" include=["design/{$settings->theme|escape}/js/ion.rangeSlider/ion.rangeSlider.skinTurbo.css"]}{/css}
 			{stylesheet minify=true}
 		{/if}
 
 		{js id="filter" priority=99 include=[
 			"design/{$settings->theme|escape}/js/ion.rangeSlider/ion.rangeSlider.min.js",
-		"design/{$settings->theme|escape}/js/price-slider.js"
+			"design/{$settings->theme|escape}/js/price-slider.js"
 		]}{/js}
 		{javascript minify=true}
 	{/if}
@@ -888,21 +524,16 @@
 	{if $module=='ProductView'}
 		{js id="product" priority=99 include=[
 			"design/{$settings->theme|escape}/js/product.js",
-		"design/{$settings->theme|escape}/js/rating-product.js"
+			"design/{$settings->theme|escape}/js/rating-product.js"
 		]}{/js}
 		{javascript minify=true}
 
-		{* Timer action *}
+		{* Timer Action *}
 		{if !empty($product->sale_to)}
-
-			{css id="countdown" include=[
-				"design/{$settings->theme|escape}/js/jq-timeTo/timeTo.css"
-			]}{/css}
+			{css id="countdown" include=["design/{$settings->theme|escape}/js/jq-timeTo/timeTo.css"]}{/css}
 			{stylesheet minify=true}
 
-			{js id="countdown" priority=99 include=[
-				"design/{$settings->theme|escape}/js/jq-timeTo/jquery.time-to.js"
-			]}{/js}
+			{js id="countdown" priority=99 include=["design/{$settings->theme|escape}/js/jq-timeTo/jquery.time-to.js"]}{/js}
 			{javascript minify=true}
 
 			<script>
@@ -920,14 +551,14 @@
 						lang: "{$language->label|escape}",
 						callback: function() {
 							prd.find('#countdown').hide();
-							prd.find('#countdown_title').hide();
-							real = prd.find('form.variants .offers_price_old .price_value').first().html();
+							prd.find('#countdown-title').hide();
+							real = prd.find('form.variants .offers-price-old .price-value').first().html();
 							if (typeof(real) == 'undefinded' || real == null) {
 								return;
 							}
 
-							prd.find('form.variants .offers_price_old').first().remove();
-							prd.find('form.variants .offers_price .price_value').first().html(real);
+							prd.find('form.variants .offers-price-old').first().remove();
+							prd.find('form.variants .offers-price .price-value').first().html(real);
 						}
 					});
 				});
@@ -938,28 +569,31 @@
 	{if isset($call_sent)}
 		<script>
 			$(window).on("load", function() {
-				$('#CallbackToast').toast('show');
+				$('#callbackToast').toast('show');
 			});
 		</script>
 	{/if}
+
 	{if isset($call_error)}
 		<script>
 			$(window).on("load", function() {
-				$('#CallbackModal').modal('show');
+				$('#callbackModal').modal('show');
 			});
 		</script>
 	{/if}
+
 	{if isset($subscribe_success) || isset($subscribe_error)}
 		<script>
 			$(window).on("load", function() {
-				$('#Subscribe').toast('show');
+				$('#subscribe').toast('show');
 			});
 		</script>
 	{/if}
+
 	{if isset($fastorder_error)}
 		<script>
 			$(window).on("load", function() {
-				$('#FastOrder').modal('show');
+				$('#fastOrder').modal('show');
 			});
 		</script>
 	{/if}
@@ -972,17 +606,13 @@
 
 	{* Online Chat *}
 	{if $settings->chat_viber || $settings->chat_whats_app || $settings->chat_telegram || $settings->chat_facebook}
-		{css id="chat" include=[
-			"design/{$settings->theme|escape}/css/online-chat.css"
-		]}{/css}
+		{css id="chat" include=["design/{$settings->theme|escape}/css/online-chat.css"]}{/css}
 		{stylesheet minify=true}
 
-		{js id="chat" priority=99 include=[
-			"design/{$settings->theme|escape}/js/online-chat.js"
-		]}{/js}
+		{js id="chat" priority=99 include=["design/{$settings->theme|escape}/js/online-chat.js"]}{/js}
 		{javascript minify=true}
 
-		{include file="online_chat.tpl"}
+		{include file="service/online_chat.tpl"}
 	{/if}
 
 	{* Admintooltip *}
@@ -997,4 +627,5 @@
 		{/foreach}
 	{/if}
 </body>
+
 </html>

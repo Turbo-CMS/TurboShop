@@ -19,7 +19,7 @@ class Payeer extends Turbo
 		$mShop = $settings['payeer_merchantid'];
 		$mOrderid = $order->id;
 		$mAmount = number_format($order->total_price, 2, '.', '');
-		$mCurr = $paymentCurrency->code == 'RUR' ? 'RUB' : $paymentCurrency->code;
+		$mCurr = $paymentCurrency->code == 'USD' ? 'USD' : $paymentCurrency->code;
 		$mDesc = base64_encode($order->comment);
 
 		$arHash = [

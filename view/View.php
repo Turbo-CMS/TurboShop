@@ -29,6 +29,7 @@ class View extends Turbo
 		} else {
 			self::$viewInstance = $this;
 
+			// Langs
 			$langLabels = [];
 			$languages = $this->languages->languages();
 
@@ -70,9 +71,9 @@ class View extends Turbo
 			if (!empty($languages)) {
 				$firstLang = reset($languages);
 				$ruri = explode('/', $_SERVER['REQUEST_URI']);
-				$as = $firstLang->id !== $this->languages->LangId() ? 2 : 1;
+				$as = $firstLang->id !== $this->languages->langId() ? 2 : 1;
 
-				if (is_array($ruri) && $firstLang->id == $this->languages->LangId() && $ruri[1] == $firstLang->label) {
+				if (is_array($ruri) && $firstLang->id == $this->languages->langId() && $ruri[1] == $firstLang->label) {
 					header('HTTP/1.1 301 Moved Permanently');
 					header('Location: ' . $this->config->root_url . '/' . implode('/', array_slice($ruri, 2)));
 					exit();
@@ -87,6 +88,7 @@ class View extends Turbo
 				}
 			}
 
+			// Currencies
 			$this->currencies = $this->money->getCurrencies(['enabled' => true]);
 
 			if ($currencyId = $this->request->get('currency_id', 'integer')) {
@@ -100,6 +102,7 @@ class View extends Turbo
 				$this->currency = reset($this->currencies);
 			}
 
+			// User
 			if (isset($_SESSION['user_id'])) {
 				$user_id = (int) $_SESSION['user_id'];
 				$user = $this->users->getUser($user_id);
@@ -110,14 +113,17 @@ class View extends Turbo
 				}
 			}
 
+			// Compare
 			$compare_products = isset($_SESSION['compared_products']) ? count($_SESSION['compared_products']) : 0;
 			$this->design->assign('compare_products', $compare_products);
 
+			// Wishlist
 			if (!empty($_COOKIE['wishlist_products'])) {
 				$wishlist_products = explode(',', $_COOKIE['wishlist_products']);
 				$this->design->assign('wishlist_products', $wishlist_products);
 			}
 
+			// Page
 			$subDir = substr(dirname(dirname(__FILE__)), strlen($_SERVER['DOCUMENT_ROOT']));
 			$pageUrl = trim(substr($_SERVER['REQUEST_URI'], strlen($subDir)), "/");
 
@@ -134,6 +140,7 @@ class View extends Turbo
 				$pageUrl = $_GET['page_url'];
 			}
 
+			// Design
 			$this->design->assign('language', $this->language);
 			$this->design->assign('languages', $languages);
 			$this->design->assign('lang', $this->translations);
@@ -149,10 +156,11 @@ class View extends Turbo
 			$this->design->assign('settings', $this->settings);
 			$this->design->assign('currency', $this->currency);
 			$this->design->assign('currencies', $this->currencies);
+			$this->design->assign('theme_settings', $this->themeSettings);
 
+			// Plugins
 			$this->design->smarty->registerPlugin('block', 'js', [$this, 'addJavascriptBlock']);
 			$this->design->smarty->registerPlugin('block', 'css', [$this, 'addStylesheetBlock']);
-
 			$this->design->smarty->registerPlugin("function", "get_faqs", [$this, 'getFaqsPlugin']);
 			$this->design->smarty->registerPlugin("function", "get_posts", [$this, 'getPostsPlugin']);
 			$this->design->smarty->registerPlugin("function", "get_banner", [$this, 'getBannerPlugin']);
@@ -175,21 +183,26 @@ class View extends Turbo
 		}
 	}
 
+	/**
+	 * Display
+	 */
 	function fetch()
 	{
 		return false;
 	}
 
 	/**
-	 * Get featured categories plugin
+	 * Get Featured Categories plugin
 	 */
 	public function getFeaturedCategoriesPlugin($params, $smarty)
 	{
+		if (!isset($params['visible'])) {
+			$params['visible'] = 1;
+		}
+
 		if (!isset($params['featured'])) {
 			$params['featured'] = 1;
 		}
-
-		$params['visible'] = 1;
 
 		if (!empty($params['var'])) {
 			$smarty->assign($params['var'], $this->categories->getCategories($params));
@@ -197,7 +210,7 @@ class View extends Turbo
 	}
 
 	/**
-	 * Get captcha plugin
+	 * Get Captcha plugin
 	 */
 	public function getCaptchaPlugin($params, $smarty)
 	{
@@ -220,7 +233,7 @@ class View extends Turbo
 	}
 
 	/**
-	 * Get banner plugin
+	 * Get Banner plugin
 	 */
 	public function getBannerPlugin($params, $smarty)
 	{
@@ -251,7 +264,7 @@ class View extends Turbo
 	}
 
 	/**
-	 * Get post plugin
+	 * Get Post plugin
 	 */
 	public function getPostsPlugin($params, $smarty)
 	{
@@ -275,7 +288,7 @@ class View extends Turbo
 	}
 
 	/**
-	 * Get FAQs plugin
+	 * Get FAQ plugin
 	 */
 	public function getFaqsPlugin($params, $smarty)
 	{
@@ -295,7 +308,7 @@ class View extends Turbo
 	}
 
 	/**
-	 * Get articles plugin
+	 * Get Articles plugin
 	 */
 	public function getArticlesPlugin($params, $smarty)
 	{
@@ -320,7 +333,7 @@ class View extends Turbo
 	}
 
 	/**
-	 * Gets comments plugin
+	 * Get Comments plugin
 	 */
 	public function getCommentsPlugin($params, $smarty)
 	{
@@ -381,7 +394,7 @@ class View extends Turbo
 	}
 
 	/**
-	 * Get brands plugin
+	 * Get Brands plugin
 	 */
 	public function getBrandsPlugin($params, $smarty)
 	{
@@ -395,7 +408,7 @@ class View extends Turbo
 	}
 
 	/**
-	 * Gets products plugin
+	 * Gets Products plugin
 	 */
 	public function getProductsPlugin($params, $smarty)
 	{
@@ -493,7 +506,7 @@ class View extends Turbo
 	}
 
 	/**
-	 * Get browsed products
+	 * Get Browsed Products plugin
 	 */
 	public function getBrowsedProducts($params, $smarty)
 	{
@@ -590,7 +603,7 @@ class View extends Turbo
 	}
 
 	/**
-	 * Get featured products plugin
+	 * Get Featured Products plugin
 	 */
 	public function getFeaturedProductsPlugin($params, $smarty)
 	{
@@ -598,7 +611,9 @@ class View extends Turbo
 			$params['visible'] = 1;
 		}
 
-		$params['featured'] = 1;
+		if (!isset($params['featured'])) {
+			$params['featured'] = 1;
+		}
 
 		if (!empty($params['var'])) {
 			$products = [];
@@ -695,7 +710,7 @@ class View extends Turbo
 	}
 
 	/**
-	 * Get new products plugin
+	 * Get New Products plugin
 	 */
 	public function getIsNewProductsPlugin($params, $smarty)
 	{
@@ -703,7 +718,9 @@ class View extends Turbo
 			$params['visible'] = 1;
 		}
 
-		$params['is_new'] = 1;
+		if (!isset($params['is_new'])) {
+			$params['is_new'] = 1;
+		}
 
 		if (!empty($params['var'])) {
 			$products = [];
@@ -801,7 +818,7 @@ class View extends Turbo
 	}
 
 	/**
-	 * Get hit products plugin
+	 * Get Hit Products plugin
 	 */
 	public function getIsHitProductsPlugin($params, $smarty)
 	{
@@ -809,7 +826,9 @@ class View extends Turbo
 			$params['visible'] = 1;
 		}
 
-		$params['is_hit'] = 1;
+		if (!isset($params['is_hit'])) {
+			$params['is_hit'] = 1;
+		}
 
 		if (!empty($params['var'])) {
 			$products = [];
@@ -906,7 +925,7 @@ class View extends Turbo
 	}
 
 	/**
-	 * Get new products plugin
+	 * Get Last Products plugin
 	 */
 	public function getNewProductsPlugin($params, $smarty)
 	{
@@ -1012,7 +1031,7 @@ class View extends Turbo
 	}
 
 	/**
-	 * Get discounted products plugin
+	 * Get Discounted Products plugin
 	 */
 	public function getDiscountedProductsPlugin($params, $smarty)
 	{
@@ -1020,7 +1039,9 @@ class View extends Turbo
 			$params['visible'] = 1;
 		}
 
-		$params['discounted'] = 1;
+		if (!isset($params['discounted'])) {
+			$params['discounted'] = 1;
+		}
 
 		if (!empty($params['var'])) {
 			$products = [];
@@ -1183,7 +1204,7 @@ class View extends Turbo
 	}
 
 	/**
-	 * Register css file
+	 * Register CSS file
 	 */
 	public function addStylesheetBlock($params, $content, $smarty, &$repeat)
 	{

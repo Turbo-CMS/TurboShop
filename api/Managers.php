@@ -22,7 +22,7 @@ class Managers extends Turbo
 	}
 
 	/**
-	 * Get managers
+	 * Get Managers
 	 */
 	public function getManagers()
 	{
@@ -51,7 +51,7 @@ class Managers extends Turbo
 	}
 
 	/**
-	 * Count managers
+	 * Count Managers
 	 */
 	public function countManagers($filter = [])
 	{
@@ -59,7 +59,7 @@ class Managers extends Turbo
 	}
 
 	/**
-	 * Get manager
+	 * Get Manager
 	 */
 	public function getManager($login = null)
 	{
@@ -84,7 +84,7 @@ class Managers extends Turbo
 	}
 
 	/**
-	 * Add manager
+	 * Add Manager
 	 */
 	public function addManager($manager)
 	{
@@ -119,7 +119,7 @@ class Managers extends Turbo
 	}
 
 	/**
-	 * Add manager
+	 * Add Manager
 	 */
 	public function updateManager($login, $manager)
 	{
@@ -170,7 +170,7 @@ class Managers extends Turbo
 	}
 
 	/**
-	 * Delete manager
+	 * Delete Manager
 	 */
 	public function deleteManager($login)
 	{
@@ -189,7 +189,7 @@ class Managers extends Turbo
 	}
 
 	/**
-	 * Crypt apr1 md5
+	 * Crypt APR1-MD5
 	 */
 	private function cryptApr1Md5($plainpasswd)
 	{

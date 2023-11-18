@@ -7,7 +7,7 @@ class ImagesAdmin extends Turbo
     public function fetch()
     {
         $imagesDir = 'design/' . $this->settings->theme . '/images/';
-        $allowedExtensions = ['png', 'gif', 'jpg', 'jpeg', 'ico'];
+        $allowedExtensions = ['png', 'gif', 'jpg', 'jpeg', 'ico', 'svg'];
         $images = [];
 
         if ($this->request->isMethod('post') && !is_file($imagesDir . '../locked')) {

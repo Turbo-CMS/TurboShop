@@ -22,7 +22,7 @@
 								</label>
 							</div>
 							<div class="turbo-list-heading turbo-list-banners-name">{$btr->banners_group_name|escape}</div>
-							<div class="turbo-list-heading turbo-list-brands-tag">{$btr->banners_display|escape}</div>
+							<div class="turbo-list-heading turbo-list-banners-tag">{$btr->banners_display|escape}</div>
 							<div class="turbo-list-heading turbo-list-status">{$btr->global_enable|escape}</div>
 							<div class="turbo-list-heading turbo-list-delete"></div>
 						</div>
@@ -44,7 +44,7 @@
 												{$banner->name|escape}
 											</a>
 										</div>
-										<div class="turbo-list-boding turbo-list-brands-tag">
+										<div class="turbo-list-boding turbo-list-banners-tag">
 											<div class="wrap_tags">
 												{if $banner->show_all_pages}
 													<span class="badge badge-success-light">{$btr->global_all_pages|escape}</span>
@@ -85,8 +85,8 @@
 										</div>
 										<div class="turbo-list-boding turbo-list-status">
 											<div class="form-check form-switch">
-												<input class="form-check-input js-ajax-action {if $banner->visible}js-active-class{/if}" id="id_{$banner->id}" data-module="banner" data-action="visible" data-id="{$banner->id}" name="visible" value="1" type="checkbox" {if $banner->visible}checked="" {/if}>
-												<label class="form-check-label" for="id_{$banner->id}"></label>
+												<input class="form-check-input js-ajax-action {if $banner->visible}js-active-class{/if}" id="id-{$banner->id}" data-module="banner" data-action="visible" data-id="{$banner->id}" name="visible" value="1" type="checkbox" {if $banner->visible}checked="" {/if}>
+												<label class="form-check-label" for="id-{$banner->id}"></label>
 											</div>
 										</div>
 										<div class="turbo-list-boding turbo-list-delete">

@@ -150,20 +150,14 @@
 {/if}
 
 {* Codemirror *}
-{css id="codemirror-html" include=[
-	"turbo/design/js/codemirror/lib/codemirror.css"
-]}{/css}
+{css id="codemirror-html" include=["turbo/design/js/codemirror/lib/codemirror.css"]}{/css}
 {stylesheet minify=true}
 
 {if $settings->admin_theme == "dark"}
-	{css id="codemirror-html" include=[
-		"turbo/design/js/codemirror/theme/dark.css"
-	]}{/css}
+	{css id="codemirror-html" include=["turbo/design/js/codemirror/theme/dark.css"]}{/css}
 	{stylesheet minify=true}
 {else}
-	{css id="codemirror-html" include=[
-		"turbo/design/js/codemirror/theme/light.css"
-	]}{/css}
+	{css id="codemirror-html" include=["turbo/design/js/codemirror/theme/light.css"]}{/css}
 	{stylesheet minify=true}
 {/if}
 

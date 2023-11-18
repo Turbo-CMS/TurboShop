@@ -5,10 +5,10 @@
 	</name>
 	<settings>
 		<variable>concordpay_merchant</variable>
-		<name>Vendor ID</name>
+		<name>{$lang->merchant}</name>
 	</settings>
 	<settings>
-		<variable>concordpay_secretkey</variable>
-		<name>Secret key</name>
+		<variable>concordpay_secretkey</variable> 
+		<name>{$lang->secretkey}</name>
 	</settings>
 </module>

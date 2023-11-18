@@ -1,3 +1,7 @@
+.logo-main {
+	color: #fff;
+}
+
 .price {
 	color: #fff;
 }
@@ -42,14 +46,6 @@
 	color: #0d6efd;
 }
 
-.autocomplete-suggestions {
-	background-color: #212529 !important;
-}
-
-.autocomplete-suggestions strong {
-	color: #9ec5fe;
-}
-
 .quickview .img-thumbnail {
 	background-color: #212529;
 }
@@ -58,18 +54,66 @@
 	box-shadow: none !important;
 }
 
-/* Carusel images */
+/* All Departament */
 
-.img-thumbnail:hover {
-	border: 1px solid #0d6efd;
+.all-departament .dropdown-item {
+	color: #dee2e6;
 }
 
-.img-thumbnail.selected {
-	border: 1px solid #0d6efd;
+.all-departament .dropdown-item:focus,
+.all-departament .dropdown-item:hover {
+	color: #dee2e6;
+	background-color: #2b3035;
 }
 
-.img-thumbnail.selected:focus {
-	box-shadow: 0 0 0 0.2rem rgba(49, 132, 253, 0.25);
+.all-departament .dropdown-item.active,
+.all-departament .dropdown-item:active {
+	color: #fff;
+	background-color: #0d6efd;
+}
+
+/* Search Autocomplete */
+
+.autocomplete-suggestions {
+	background-color: #212529 !important;
+	border: 1px solid #495057 !important;
+}
+
+.autocomplete-selected {
+	background-color: #2b3035;
+}
+
+.autocomplete-suggestions strong {
+	color: #9ec5fe;
+}
+
+/* No validate */
+
+.form-check-input.no-validate:valid,
+.form-select.no-validate:valid:not([multiple]):not([size]),
+.form-control.no-validate:valid {
+	border-color: #495057;
+}
+
+.form-control.no-validate:valid:focus,
+.form-select.no-validate:valid:not([multiple]):not([size]):focus {
+	border-color: #86b7fe;
+	box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25)
+}
+
+.form-check-input.no-validate:valid:checked {
+	background-color: #0d6efd;
+	border-color: #0d6efd;
+}
+
+.form-check-input.no-validate:valid:focus {
+	box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* Product gallery thumblist */
+
+.product-gallery-thumblist-item {
+	border: 1px solid #495057;
 }
 
 .owl-carousel .owl-dots .owl-dot.active span,
@@ -77,16 +121,16 @@
 	background: #0d6efd;
 }
 
-a.admin_bookmark {
+a.admin-bookmark {
 	border: 1px solid #495057 !important;
 	background-color: #2b3035 !important;
 }
 
 .size-filter .btn {
-	border: 1px solid rgba(255, 255, 255, 0.15)!important;
-	color: #adb5bd!important;
+	border: 1px solid rgba(255, 255, 255, 0.15) !important;
+	color: #adb5bd !important;
 }
 
 .size-filter .btn:hover {
-	border: 1px solid rgba(255, 255, 255, 0.15)!important;
+	border: 1px solid rgba(255, 255, 255, 0.15) !important;
 }

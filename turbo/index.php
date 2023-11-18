@@ -3,9 +3,12 @@
 chdir('..');
 
 $timeStart = microtime(true);
+
 ini_set('session.gc_maxlifetime', 86400);
 ini_set('session.cookie_lifetime', 0);
+
 session_start();
+
 $_SESSION['id'] = session_id();
 
 require_once 'turbo/IndexAdmin.php';

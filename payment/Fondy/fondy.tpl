@@ -1,18 +1,20 @@
 {* Order page *}
 
-{$meta_title = "Your order №`$invoice.transaction`" scope=parent}
+{$meta_title = "Ваш заказ №`$invoice.transaction`" scope=global}
 
 {if $invoice.status == 'approved'}
-	<H1>The order has been successfully paid.</H1>
-	<p>Sum: {$invoice.amount}</p>
-	<br>
-	<p>Your order №:{$invoice.transaction}</p>
-	<br>
+	<div class="alert alert-success mt-4" role="alert">
+		<h4 class="alert-heading">Заказ успешно оплачен.</h4>
+		<p><strong>Сумма:</strong> {$invoice.amount}</p>
+		<hr>
+		<p><strong>Ваш заказ:</strong> №{$invoice.transaction}</p>
+	</div>
 {else}
-	<H1>Payment error.</H1>
-	<p>Error code: {$invoice.error_code}</p>
-	<br>
-<p>Error description: {$invoice.error_message}</p>
+	<p>Описание ошибки :{$invoice.error_message}</p>
+	<div class="alert alert-danger mt-4" role="alert">
+		<h4 class="alert-heading">Ошибка оплаты.</h4>
+		<p><strong>Код ошибки:</strong> {$invoice.error_code}</p>
+		<hr>
+		<p><strong>Описание ошибки:</strong> {$invoice.error_message}</p>
+	</div>
 {/if}
-
-

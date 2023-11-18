@@ -5,7 +5,7 @@ require_once 'Turbo.php';
 class Delivery extends Turbo
 {
 	/**
-	 * Get delivery
+	 * Get Delivery
 	 */
 	public function getDelivery($id)
 	{
@@ -13,12 +13,16 @@ class Delivery extends Turbo
 
 		$query = $this->db->placehold(
 			"SELECT d.id,
+					d.module,
 					d.name,
+					d.icon, 
+					d.code,
 					d.description,
 					d.free_from,
 					d.price,
 					d.enabled,
 					d.position,
+					d.settings,
 					d.separate_payment,
 					$langSql->fields 
 			 FROM __delivery d
@@ -33,7 +37,7 @@ class Delivery extends Turbo
 	}
 
 	/**
-	 * Get deliveries
+	 * Get Deliveries
 	 */
 	public function getDeliveries($filter = [])
 	{
@@ -48,12 +52,16 @@ class Delivery extends Turbo
 		$query = $this->db->placehold(
 			"SELECT
                 d.id,
+				d.module,
                 d.name,
+				d.icon, 
+				d.code,
                 d.description,
                 d.free_from,
                 d.price,
                 d.enabled,
                 d.position,
+				d.settings,
                 d.separate_payment,
                 $langSql->fields
             FROM
@@ -71,7 +79,110 @@ class Delivery extends Turbo
 	}
 
 	/**
-	 * Updates delivery 
+	 * Get Delivery Settings
+	 */
+	public function getDeliverySettings($methodId)
+	{
+		$query = $this->db->placehold(
+			"SELECT settings FROM __delivery WHERE id=? LIMIT 1",
+			$methodId
+		);
+
+		$this->db->query($query);
+
+		$settings = $this->db->result('settings');
+		$settings = unserialize($settings);
+
+		return $settings;
+	}
+
+	/**
+	 * Get Delivery Modules
+	 */
+	public function getDeliveryModules()
+	{
+		$modulesDir = $this->config->root_dir . 'delivery/';
+
+		$modules = [];
+		$handler = opendir($modulesDir);
+
+		while ($dir = readdir($handler)) {
+			$dir = preg_replace("/[^A-Za-z0-9]+/", "", $dir);
+
+			if (!empty($dir) && $dir != "." && $dir != ".." && is_dir($modulesDir . $dir)) {
+				if (is_readable($modulesDir . $dir . '/settings.xml') && $xml = simplexml_load_file($modulesDir . $dir . '/settings.xml')) {
+					$moduleTranslations = $this->getModuleBackendTranslations($dir);
+
+					$module = new stdClass();
+					$module->name = (string)$xml->name;
+					$module->settings = [];
+
+					foreach ($xml->settings as $setting) {
+						$settingName = (string) $setting->name;
+						$translationName = preg_replace('~{\$lang->(.+)?}~', '$1', $settingName);
+						$settingName = isset($moduleTranslations[$translationName]) ? $moduleTranslations[$translationName] : $settingName;
+						$moduleSettings = new stdClass();
+						$moduleSettings->name = $settingName;
+						$moduleSettings->variable = (string) $setting->variable;
+						$moduleSettings->options = [];
+
+						foreach ($setting->options as $option) {
+							$optionName = (string) $option->name;
+							$translationName = preg_replace('~{\$lang->(.+)?}~', '$1', $optionName);
+							$optionName = isset($moduleTranslations[$translationName]) ? $moduleTranslations[$translationName] : $optionName;
+							$optionDetails = new stdClass();
+							$optionDetails->name = $optionName;
+							$optionDetails->value = (string) $option->value;
+							$moduleSettings->options[(string) $option->value] = $optionDetails;
+						}
+
+						$module->settings[(string) $setting->variable] = $moduleSettings;
+					}
+
+					$modules[$dir] = $module;
+				}
+			}
+		}
+
+		closedir($handler);
+
+		return $modules;
+	}
+
+	/**
+	 * Get Module Translations
+	 */
+	public function getModuleBackendTranslations($dir)
+	{
+		$langLabel = $this->settings->lang;
+		$moduleDir = $this->config->root_dir . 'delivery/' . $dir;
+
+		$lang = [];
+
+		if (is_file($moduleDir . '/lang/' . $langLabel . '.php')) {
+			include $moduleDir . '/lang/' . $langLabel . '.php';
+		}
+
+		return $lang;
+	}
+
+	/**
+	 * Update Delivery Settings
+	 */
+	public function updateDeliverySettings($methodId, $settings)
+	{
+		if (!is_string($settings)) {
+			$settings = serialize($settings);
+		}
+
+		$query = $this->db->placehold("UPDATE __delivery SET settings=? WHERE id IN(?@) LIMIT 1", $settings, (array) $methodId);
+		$this->db->query($query);
+
+		return $methodId;
+	}
+
+	/**
+	 * Updates Delivery 
 	 */
 	public function updateDelivery($id, $delivery)
 	{
@@ -89,7 +200,7 @@ class Delivery extends Turbo
 	}
 
 	/**
-	 * Add delivery
+	 * Add Delivery
 	 */
 	public function addDelivery($delivery)
 	{
@@ -114,7 +225,7 @@ class Delivery extends Turbo
 	}
 
 	/**
-	 * Deletes delivery 
+	 * Deletes Delivery 
 	 */
 	public function deleteDelivery($id)
 	{
@@ -129,7 +240,7 @@ class Delivery extends Turbo
 	}
 
 	/**
-	 * Get delivery payments
+	 * Get Delivery Payments
 	 */
 	public function getDeliveryPayments($id)
 	{
@@ -140,7 +251,7 @@ class Delivery extends Turbo
 	}
 
 	/**
-	 * Update delivery payments
+	 * Update Delivery Payments
 	 */
 	public function updateDeliveryPayments($id, $paymentMethodsIds)
 	{
@@ -150,6 +261,35 @@ class Delivery extends Turbo
 		if (is_array($paymentMethodsIds)) {
 			foreach ($paymentMethodsIds as $pId) {
 				$this->db->query("INSERT INTO __delivery_payment SET delivery_id=?, payment_method_id=?", $id, $pId);
+			}
+		}
+	}
+
+	/**
+	 * Delete Icon
+	 */
+	public function deleteIcon($delivery)
+	{
+		$delivery = (array) $delivery;
+		$query = $this->db->placehold("SELECT icon FROM __delivery WHERE id IN(?@)", $delivery);
+
+		if ($this->db->query($query)) {
+			$filenames = $this->db->results('icon');
+		}
+
+		if (!empty($filenames)) {
+			$query = $this->db->placehold("UPDATE __delivery SET icon=NULL WHERE id IN(?@)", $delivery);
+			$this->db->query($query);
+
+			foreach ($filenames as $filename) {
+				$query = $this->db->placehold("SELECT COUNT(*) AS count FROM __delivery WHERE icon=?", $filename);
+				$this->db->query($query);
+
+				$count = $this->db->result('count');
+
+				if ($count == 0) {
+					unlink($this->config->root_dir . $this->config->delivery_images_dir . $filename);
+				}
 			}
 		}
 	}

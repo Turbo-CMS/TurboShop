@@ -4,26 +4,26 @@
         WayForPay
 	</name>
 	<settings>
-		<variable>wayforpay_merchant</variable>
-		<name>Merchant ID</name>
+		<variable>wayforpay_merchant</variable> 
+		<name>{$lang->merchant_id}</name>
 	</settings>
 	<settings>
 		<variable>wayforpay_secretkey</variable>
-		<name>Merchant secret key</name>
+		<name>{$lang->secretkey}</name>
 	</settings>
 	<settings>
 		<variable>wayforpay_language</variable>
-		<name>Payment page language</name>
+		<name>{$lang->language}</name>
         <options>
-            <name>Ukrainian</name>
+            <name>{$lang->ukrainian}</name>
             <value>UA</value>
         </options>
 		<options>
-			<name>English</name>
+			<name>{$lang->english}</name>
 			<value>EN</value>
 		</options>
 		<options>
-			<name>Russian</name>
+			<name>{$lang->russian}</name>
 			<value>RU</value>
 		</options>
 	</settings>

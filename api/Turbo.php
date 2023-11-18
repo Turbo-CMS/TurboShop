@@ -43,6 +43,7 @@ class Turbo
 		'reportstat' => 'ReportStat',
 		'subscribes' => 'Subscribes',
 		'translations' => 'Translations',
+		'themeSettings' => 'ThemeSettings',
 		'articlesCategories' => 'ArticlesCategories',
 		'backendTranslations' => 'BackendTranslations'
 	];
@@ -55,7 +56,7 @@ class Turbo
 	}
 
 	/**
-	 * Magic method get
+	 * Magic Method Get
 	 */
 	public function __get($name)
 	{

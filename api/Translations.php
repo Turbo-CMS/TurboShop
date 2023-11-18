@@ -13,7 +13,7 @@ class Translations extends Turbo
 	}
 
 	/**
-	 * Initializes translations
+	 * Initializes Translations
 	 */
 	public function initTranslations()
 	{
@@ -32,7 +32,7 @@ class Translations extends Turbo
 	}
 
 	/**
-	 * Get translation 
+	 * Get Translation 
 	 */
 	public function __get($name)
 	{

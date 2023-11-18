@@ -4,7 +4,7 @@ require_once 'api/Turbo.php';
 
 class CategoryAdmin extends Turbo
 {
-	private $allowedImageExtentions = ['png', 'gif', 'jpg', 'jpeg', 'ico'];
+	private $allowedImageExtentions = ['png', 'gif', 'jpg', 'jpeg', 'ico', 'svg'];
 
 	public function fetch()
 	{
@@ -63,7 +63,7 @@ class CategoryAdmin extends Turbo
 					$this->categories->updateCategory($category->id, ['icon' => $icon['name']]);
 				}
 
-				$category = $this->categories->getCategory(intval($category->id));
+				$category = $this->categories->getCategory((int) $category->id);
 			}
 		} else {
 			$category->id = $this->request->get('id', 'integer');

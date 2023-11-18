@@ -105,9 +105,7 @@
 {/if}
 
 {* Piecon *}
-{js id="piecon" priority=99 include=[
-	"turbo/design/js/piecon/piecon.min.js"
-]}{/js}
+{js id="piecon" priority=99 include=["turbo/design/js/piecon/piecon.min.js"]}{/js}
 {javascript minify=true}
 
 {literal}

@@ -81,15 +81,15 @@
 								</div>
 								<div class="turbo-list-heading turbo-list-users-name">
 									<span>{$btr->global_name|escape}</span>
-									<a href="{url sort=name}" {if $sort == 'name'}class="active"{/if}>{include file='svg_icon.tpl' svgId='sorts'}</a>
+									<a href="{url sort=name}" {if $sort == 'name'}class="active" {/if}>{include file='svg_icon.tpl' svgId='sorts'}</a>
 								</div>
 								<div class="turbo-list-heading turbo-list-users-email">
 									<span>Email</span>
-									<a href="{url sort=email}" {if $sort == 'email'}class="active"{/if}>{include file='svg_icon.tpl' svgId='sorts'}</a>
+									<a href="{url sort=email}" {if $sort == 'email'}class="active" {/if}>{include file='svg_icon.tpl' svgId='sorts'}</a>
 								</div>
 								<div class="turbo-list-heading turbo-list-users-date">
 									<span>{$btr->global_registration_date|escape}</span>
-									<a href="{url sort=date}" {if $sort == 'date'}class="active"{/if}>{include file='svg_icon.tpl' svgId='sorts'}</a>
+									<a href="{url sort=date}" {if $sort == 'date'}class="active" {/if}>{include file='svg_icon.tpl' svgId='sorts'}</a>
 								</div>
 								<div class="turbo-list-heading turbo-list-users-group">{$btr->global_group|escape}</div>
 								<div class="turbo-list-heading turbo-list-count">{$btr->users_orders|escape}</div>
@@ -130,8 +130,8 @@
 											</div>
 											<div class="turbo-list-boding turbo-list-status">
 												<div class="form-check form-switch">
-													<input class="form-check-input js-ajax-action {if $user->enabled}js-active-class{/if}" id="id_{$user->id}" data-module="user" data-action="enabled" data-id="{$user->id}" name="enabled" value="1" type="checkbox" {if $user->enabled}checked="" {/if}>
-													<label class="form-check-label" for="id_{$user->id}"></label>
+													<input class="form-check-input js-ajax-action {if $user->enabled}js-active-class{/if}" id="id-{$user->id}" data-module="user" data-action="enabled" data-id="{$user->id}" name="enabled" value="1" type="checkbox" {if $user->enabled}checked="" {/if}>
+													<label class="form-check-label" for="id-{$user->id}"></label>
 												</div>
 											</div>
 											<div class="turbo-list-boding turbo-list-delete">
@@ -190,9 +190,7 @@
 </div>
 
 {* Piecon *}
-{js id="piecon" priority=99 include=[
-	"turbo/design/js/piecon/piecon.min.js"
-]}{/js}
+{js id="piecon" priority=99 include=["turbo/design/js/piecon/piecon.min.js"]}{/js}
 {javascript minify=true}
 
 <script>

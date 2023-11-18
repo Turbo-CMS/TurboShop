@@ -1,5 +1,7 @@
 <!DOCTYPE html>
+
 {$wrapper='' scope=global}
+
 <html>
 
 <head>
@@ -258,4 +260,5 @@
 		</table>
 	</div>
 </body>
+
 </html>

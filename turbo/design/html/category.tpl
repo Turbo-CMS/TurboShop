@@ -34,6 +34,12 @@
 					{else}
 						{$message_success|escape}
 					{/if}
+					{if $smarty.get.return}
+						<a class="alert-link fw-normal btn-return text-decoration-none me-5" href="{$smarty.get.return}">
+							<i class="align-middle mt-n1" data-feather="corner-up-left"></i>
+							{$btr->global_back|escape}
+						</a>
+					{/if}
 					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>
 			</div>
@@ -84,8 +90,8 @@
 									<div class="mt-2 mb-3 mb-h">
 										<div class="input-group">
 											<span class="input-group-text">URL</span>
-											<input name="url" class="js-meta-field form-control js-url" type="text" value="{if isset($category->url)}{$category->url|escape}{/if}" {if isset($category->id)}readonly=""{/if}>
-											<input type="checkbox" id="block-translit" class="d-none" value="1" {if isset($category->id)}checked=""{/if}>
+											<input name="url" class="js-meta-field form-control js-url" type="text" value="{if isset($category->url)}{$category->url|escape}{/if}" {if isset($category->id)}readonly="" {/if}>
+											<input type="checkbox" id="block-translit" class="d-none" value="1" {if isset($category->id)}checked="" {/if}>
 											<span class="input-group-text js-disable-url">
 												{if isset($category->id)}
 													<i class="url-lock"></i>
@@ -121,11 +127,11 @@
 						<div class="col-lg-2 col-md-3 col-sm-12">
 							<div class="d-flex justify-content-center align-content-center flex-wrap flex-md-column h-100">
 								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
-									<input class="form-check-input ms-2" type="checkbox" id="visible" name="visible" value="1" type="checkbox" {if isset($category->visible) && $category->visible}checked=""{/if}>
+									<input class="form-check-input ms-2" type="checkbox" id="visible" name="visible" value="1" type="checkbox" {if isset($category->visible) && $category->visible}checked="" {/if}>
 									<label class="form-check-label ms-2" for="visible">{$btr->global_enable|escape}</label>
 								</div>
 								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
-									<input class="form-check-input ms-2" type="checkbox" id="featured" name="featured" value="1" type="checkbox" {if isset($category->featured) && $category->featured}checked=""{/if}>
+									<input class="form-check-input ms-2" type="checkbox" id="featured" name="featured" value="1" type="checkbox" {if isset($category->featured) && $category->featured}checked="" {/if}>
 									<label class="form-check-label ms-2" for="featured">{$btr->categories_featured|escape}</label>
 								</div>
 							</div>

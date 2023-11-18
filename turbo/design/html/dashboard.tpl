@@ -173,15 +173,11 @@
 </div>
 
 {* Loader *}
-{js id="loader" priority=99 include=[
-	"turbo/design/js/loader.js"
-]}{/js}
+{js id="loader" priority=99 include=["turbo/design/js/loader.js"]}{/js}
 {javascript minify=true}
 
 {* Highcharts *}
-{js id="highcharts" priority=99 include=[
-	"turbo/design/js/highcharts/highcharts.js"
-]}{/js}
+{js id="highcharts" priority=99 include=["turbo/design/js/highcharts/highcharts.js"]}{/js}
 {javascript minify=true}
 
 {if $settings->admin_theme == "dark"}

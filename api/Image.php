@@ -89,7 +89,7 @@ class Image extends Turbo
 	}
 
 	/**
-	 * Add resize params
+	 * Add Resize Params
 	 */
 	public function addResizeParams($filename, $width = 0, $height = 0, $setWatermark = false)
 	{
@@ -116,7 +116,7 @@ class Image extends Turbo
 	}
 
 	/**
-	 * Get resize parameters
+	 * Get Resize Parameters
 	 */
 	public function getResizeParams($filename)
 	{
@@ -134,7 +134,7 @@ class Image extends Turbo
 	}
 
 	/**
-	 * Downloads image
+	 * Downloads Image
 	 */
 	public function downloadImage($filename)
 	{
@@ -167,7 +167,7 @@ class Image extends Turbo
 	}
 
 	/**
-	 * Uploads image
+	 * Uploads Image
 	 */
 	public function uploadImage($filename, $name)
 	{
@@ -194,7 +194,7 @@ class Image extends Turbo
 	}
 
 	/**
-	 * Image constrain gd
+	 * Image Constrain GD
 	 */
 	private function imageConstrainGd($src_file, $dst_file, $max_w, $max_h, $watermark = null, $watermark_offset_x = 0, $watermark_offset_y = 0, $watermark_opacity = 1)
 	{
@@ -407,7 +407,7 @@ class Image extends Turbo
 	}
 
 	/**
-	 * Image constrain imagick
+	 * Image Constrain Imagick
 	 */
 	private function imageConstrainImagick($src_file, $dst_file, $max_w, $max_h, $watermark = null, $watermark_offset_x = 0, $watermark_offset_y = 0, $watermark_opacity = 1.0, $sharpen = 0.2)
 	{
@@ -517,7 +517,7 @@ class Image extends Turbo
 	}
 
 	/**
-	 * Calc contrain size
+	 * Calc Contrain Size
 	 */
 	function calcContrainSize($src_w, $src_h, $max_w = 0, $max_h = 0)
 	{
@@ -542,7 +542,7 @@ class Image extends Turbo
 	}
 
 	/**
-	 * Correct filename
+	 * Correct Filename
 	 */
 	public function correctFilename($filename)
 	{
@@ -558,7 +558,7 @@ class Image extends Turbo
 	}
 
 	/**
-	 * Imagecopymerge alpha
+	 * Imagecopymerge Alpha
 	 */
 	private function imagecopymergeAlpha($dst_img, $src_img, $dst_x, $dst_y, $src_x, $src_y, $src_w, $src_h, $pct)
 	{

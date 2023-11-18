@@ -41,7 +41,7 @@
 										<div class="d-flex align-items-center">
 											<label class="form-check-label" for="export-not-stock">{$btr->settings_feed_ava_false|escape}</label>
 											<div class="form-check form-switch ms-2">
-												<input class="form-check-input" id="export-not-stock" name="export_export_not_in_stock" value="1" type="checkbox" {if $settings->export_export_not_in_stock}checked="" {/if}>
+												<input class="form-check-input" id="export-not-stock" name="export_export_not_in_stock" value="1" type="checkbox" {if $settings->export_export_not_in_stock}checked=""{/if}>
 											</div>
 										</div>
 									</div>
@@ -49,7 +49,7 @@
 										<div class="d-flex align-items-center">
 											<label class="form-check-label" for="export-for-store">{$btr->settings_feed_store|escape}</label>
 											<div class="form-check form-switch ms-2">
-												<input class="form-check-input" id="export-for-store" name="export_available_for_retail_store" value="1" type="checkbox" {if $settings->export_available_for_retail_store}checked="" {/if}>
+												<input class="form-check-input" id="export-for-store" name="export_available_for_retail_store" value="1" type="checkbox" {if $settings->export_available_for_retail_store}checked=""{/if}>
 											</div>
 										</div>
 									</div>
@@ -57,7 +57,7 @@
 										<div class="d-flex align-items-center">
 											<label class="form-check-label" for="export-for-reservation">{$btr->settings_feed_pickup|escape}</label>
 											<div class="form-check form-switch ms-2">
-												<input class="form-check-input" id="export-for-reservation" name="export_available_for_reservation" value="1" type="checkbox" {if $settings->export_available_for_reservation}checked="" {/if}>
+												<input class="form-check-input" id="export-for-reservation" name="export_available_for_reservation" value="1" type="checkbox" {if $settings->export_available_for_reservation}checked=""{/if}>
 											</div>
 										</div>
 									</div>
@@ -65,7 +65,7 @@
 										<div class="d-flex align-items-center">
 											<label class="form-check-label" for="export-short-description">{$btr->settings_feed_descr|escape}</label>
 											<div class="form-check form-switch ms-2">
-												<input class="form-check-input" id="export-short-description" name="export_short_description" value="1" type="checkbox" {if $settings->export_short_description}checked="" {/if}>
+												<input class="form-check-input" id="export-short-description" name="export_short_description" value="1" type="checkbox" {if $settings->export_short_description}checked=""{/if}>
 											</div>
 										</div>
 									</div>
@@ -73,7 +73,7 @@
 										<div class="d-flex align-items-center">
 											<label class="form-check-label" for="export-manufacturer-warranty">{$btr->settings_feed_manufacturer_warranty|escape}</label>
 											<div class="form-check form-switch ms-2">
-												<input class="form-check-input" id="export-manufacturer-warranty" name="export_has_manufacturer_warranty" value="1" type="checkbox" {if $settings->export_has_manufacturer_warranty}checked="" {/if}>
+												<input class="form-check-input" id="export-manufacturer-warranty" name="export_has_manufacturer_warranty" value="1" type="checkbox" {if $settings->export_has_manufacturer_warranty}checked=""{/if}>
 											</div>
 										</div>
 									</div>
@@ -81,7 +81,7 @@
 										<div class="d-flex align-items-center">
 											<label class="form-check-label" for="export-seller-warranty">{$btr->settings_feed_seller_warranty|escape}</label>
 											<div class="form-check form-switch ms-2">
-												<input class="form-check-input" id="export-seller-warranty" name="export_has_seller_warranty" value="1" type="checkbox" {if $settings->export_has_seller_warranty}checked="" {/if}>
+												<input class="form-check-input" id="export-seller-warranty" name="export_has_seller_warranty" value="1" type="checkbox" {if $settings->export_has_seller_warranty}checked=""{/if}>
 											</div>
 										</div>
 									</div>
@@ -89,7 +89,7 @@
 										<div class="d-flex align-items-center">
 											<label class="form-check-label" for="no-export-without-price">{$btr->settings_feed_no_export_without_price|escape}</label>
 											<div class="form-check form-switch ms-2">
-												<input class="form-check-input" id="no-export-without-price" name="export_no_export_without_price" value="1" type="checkbox" {if $settings->export_no_export_without_price}checked="" {/if}>
+												<input class="form-check-input" id="no-export-without-price" name="export_no_export_without_price" value="1" type="checkbox" {if $settings->export_no_export_without_price}checked=""{/if}>
 											</div>
 										</div>
 									</div>

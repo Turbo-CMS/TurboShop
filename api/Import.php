@@ -41,7 +41,7 @@ class Import extends Turbo
     protected $valuesIds = [];
 
     /**
-     * Get internal column name
+     * Get Internal Column Name
      */
     private function getInternalColumnName($name)
     {
@@ -61,7 +61,7 @@ class Import extends Turbo
     }
 
     /**
-     * Initializes internal columns
+     * Initializes Internal Columns
      */
     protected function initInternalColumns($fields = [])
     {
@@ -94,7 +94,7 @@ class Import extends Turbo
     }
 
     /**
-     * Init columns
+     * Init Columns
      */
     protected function initColumns()
     {

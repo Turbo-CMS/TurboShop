@@ -5,7 +5,7 @@ require_once 'Turbo.php';
 class Callbacks extends Turbo
 {
     /**
-     * Get callback
+     * Get Callback
      */
     public function getCallback($id)
     {
@@ -33,7 +33,7 @@ class Callbacks extends Turbo
     }
 
     /**
-     * Get callback
+     * Get Callback
      */
     public function getCallbacks($filter = [], $newOnTop = false)
     {
@@ -83,7 +83,7 @@ class Callbacks extends Turbo
     }
 
     /**
-     * Count callbacks
+     * Count Callbacks
      */
     public function countCallbacks($filter = [])
     {
@@ -112,7 +112,7 @@ class Callbacks extends Turbo
     }
 
     /**
-     * Add callback
+     * Add Callback
      */
     public function addCallback($callback)
     {
@@ -127,7 +127,7 @@ class Callbacks extends Turbo
     }
 
     /**
-     * Update callback
+     * Update Callback
      */
     public function updateCallback($id, $callback)
     {
@@ -146,7 +146,7 @@ class Callbacks extends Turbo
     }
 
     /**
-     * Delete callback
+     * Delete Callback
      */
     public function deleteCallback($id)
     {

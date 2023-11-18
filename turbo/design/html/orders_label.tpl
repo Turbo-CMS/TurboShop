@@ -6,7 +6,7 @@
 
 <div class="d-md-flex mb-3">
 	<h1 class="d-inline align-middle me-3">
-	{if isset($label->id)}
+		{if isset($label->id)}
 			{$btr->orders_label|escape}: {$label->name|escape}
 		{else}
 			{$btr->orders_new_label|escape}
@@ -23,6 +23,12 @@
 						{$btr->orders_added_label|escape}
 					{elseif $message_success == 'updated'}
 						{$btr->orders_updated_label|escape}
+					{/if}
+					{if $smarty.get.return}
+						<a class="alert-link fw-normal btn-return text-decoration-none me-5" href="{$smarty.get.return}">
+							<i class="align-middle mt-n1" data-feather="corner-up-left"></i>
+							{$btr->global_back|escape}
+						</a>
 					{/if}
 					<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 				</div>
@@ -72,14 +78,10 @@
 </form>
 
 {* Colorpicker *}
-{css id="colorpicker" include=[
-	"turbo/design/js/colorpicker/css/bootstrap-colorpicker.min.css"
-]}{/css}
+{css id="colorpicker" include=["turbo/design/js/colorpicker/css/bootstrap-colorpicker.min.css"]}{/css}
 {stylesheet minify=true}
 
-{js id="colorpicker" priority=99 include=[
-	"turbo/design/js/colorpicker/js/bootstrap-colorpicker.min.js"
-]}{/js}
+{js id="colorpicker" priority=99 include=["turbo/design/js/colorpicker/js/bootstrap-colorpicker.min.js"]}{/js}
 {javascript minify=true}
 
 {literal}

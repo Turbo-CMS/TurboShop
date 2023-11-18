@@ -1,10 +1,10 @@
 <?php
 
-require_once('api/Turbo.php');
+require_once 'api/Turbo.php';
 
 class IndexAdmin extends Turbo
 {
-	private $modules_permissions = [
+	private $modulesPermissions = [
 		'DashboardAdmin'            => 'dashboard',
 		'ProductsAdmin'             => 'products',
 		'ProductAdmin'              => 'products',
@@ -54,6 +54,7 @@ class IndexAdmin extends Turbo
 		'StylesAdmin'               => 'design',
 		'TemplatesAdmin'            => 'design',
 		'ImagesAdmin'               => 'design',
+		'ThemeSettingsAdmin'        => 'design',
 		'SeoAdmin'                  => 'seo',
 		'SettingsCounterAdmin'      => 'scripts',
 		'SettingsAdmin'             => 'settings',
@@ -142,7 +143,7 @@ class IndexAdmin extends Turbo
 		$module = preg_replace("/[^A-Za-z0-9]+/", "", $module);
 
 		if (empty($module) || !is_file('turbo/' . $module . '.php')) {
-			foreach ($this->modules_permissions as $m => $p) {
+			foreach ($this->modulesPermissions as $m => $p) {
 				if ($this->managers->access($p)) {
 					$module = $m;
 					break;
@@ -173,7 +174,7 @@ class IndexAdmin extends Turbo
 		$currency = $this->money->getCurrency();
 		$this->design->assign("currency", $currency);
 
-		if (isset($this->modules_permissions[get_class($this->module)]) && $this->managers->access($this->modules_permissions[get_class($this->module)])) {
+		if (isset($this->modulesPermissions[get_class($this->module)]) && $this->managers->access($this->modulesPermissions[get_class($this->module)])) {
 			$content = $this->module->fetch();
 			$this->design->assign("content", $content);
 		} else {

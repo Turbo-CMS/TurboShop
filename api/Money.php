@@ -11,20 +11,12 @@ class Money extends Turbo
 	{
 		parent::__construct();
 
-		if (isset($this->settings->price_decimals_point)) {
-			$this->decimalsPoint = $this->settings->price_decimals_point;
-		}
-
-		if (isset($this->settings->price_thousands_separator)) {
-			$this->thousandsSeparator = $this->settings->price_thousands_separator;
-		}
-
 		$this->design->smarty->registerPlugin('modifier', 'convert', [$this, 'convert']);
 		$this->initCurrencies();
 	}
 
 	/**
-	 * Initialize currencies
+	 * Initialize Currencies
 	 */
 	public function initCurrencies()
 	{
@@ -62,7 +54,7 @@ class Money extends Turbo
 	}
 
 	/**
-	 * Get currencies
+	 * Get Currencies
 	 */
 	public function getCurrencies($filter = [])
 	{
@@ -77,7 +69,7 @@ class Money extends Turbo
 	}
 
 	/**
-	 * Get currency
+	 * Get Currency
 	 */
 	public function getCurrency($id = null)
 	{
@@ -97,7 +89,7 @@ class Money extends Turbo
 	}
 
 	/**
-	 * Add currency
+	 * Add Currency
 	 */
 	public function addCurrency($currency)
 	{
@@ -122,7 +114,7 @@ class Money extends Turbo
 	}
 
 	/**
-	 * Update currency
+	 * Update Currency
 	 */
 	public function updateCurrency($id, $currency)
 	{
@@ -144,7 +136,7 @@ class Money extends Turbo
 	}
 
 	/**
-	 * Delete currency
+	 * Delete Currency
 	 */
 	public function deleteCurrency($id)
 	{

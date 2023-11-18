@@ -2,6 +2,9 @@
 
 class TgNotify extends Turbo
 {
+	/**
+	 * Exec Curl Request
+	 */
 	private function execCurlRequest($handle)
 	{
 		$response = curl_exec($handle);
@@ -22,27 +25,30 @@ class TgNotify extends Turbo
 			return false;
 		} else if ($httpCode != 200) {
 			$response = json_decode($response, true);
-			
+
 			error_log("Request has failed with error {$response['error_code']}: {$response['description']}\n");
-			
+
 			if ($httpCode == 401) {
 				throw new Exception('Invalid access token provided');
 			}
-			
+
 			return false;
 		} else {
 			$response = json_decode($response, true);
-			
+
 			if (isset($response['description'])) {
 				error_log("Request was successfull: {$response['description']}\n");
 			}
-			
+
 			$response = $response['result'];
 		}
 
 		return $response;
 	}
 
+	/**
+	 * API Request
+	 */
 	public function apiRequest($method, $parameters)
 	{
 		if (!is_string($method)) {
@@ -73,6 +79,9 @@ class TgNotify extends Turbo
 		return $this->execCurlRequest($handle);
 	}
 
+	/**
+	 * Massege
+	 */
 	public function message($orderId)
 	{
 		if (!($order = $this->orders->getOrder((int) $orderId))) {
@@ -172,6 +181,9 @@ class TgNotify extends Turbo
 		$this->apiRequest("sendMessage", ['chat_id' => $this->settings->tg_channel, 'parse_mode' => 'HTML', "text" => $textString]);
 	}
 
+	/**
+	 * Massege Callback
+	 */
 	public function messageCallback($callback_id)
 	{
 		if (!($callback = $this->callbacks->getCallback((int) $callback_id))) {

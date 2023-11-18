@@ -10,6 +10,9 @@ class ProductsView extends View
 	private $isWrongParams = 0;
 	private $noIndexFilter = false;
 
+	/**
+	 * SEO Filter
+	 */
 	public function __construct()
 	{
 		parent::__construct();
@@ -104,6 +107,9 @@ class ProductsView extends View
 		$this->design->smarty->registerPlugin('function', 'furl', array($this, 'filterChpuUrl'));
 	}
 
+	/**
+	 * Filter URL
+	 */
 	public function filterChpuUrl($params)
 	{
 		if (is_array(reset($params))) {
@@ -215,6 +221,9 @@ class ProductsView extends View
 		return $resultString;
 	}
 
+	/**
+	 * Sort Brands
+	 */
 	private function filterChpuSortBrands($brandsUrls = [])
 	{
 		if (empty($brandsUrls)) {
@@ -226,6 +235,9 @@ class ProductsView extends View
 		return $this->db->results('url');
 	}
 
+	/**
+	 * Sort Features
+	 */
 	private function filterChpuSortFeatures($features = [])
 	{
 		if (empty($features)) {
@@ -245,12 +257,16 @@ class ProductsView extends View
 		return $resultString;
 	}
 
+	/**
+	 * Products list
+	 */
 	function fetch()
 	{
 		if ($this->isWrongParams) {
 			return false;
 		}
 
+		// GET Parameters
 		$categoryUrl = $this->request->get('category', 'string');
 		$brandUrl = $this->request->get('brand', 'string');
 		$mode = $this->request->get('mode', 'string');
@@ -284,11 +300,12 @@ class ProductsView extends View
 		$filter['min_price'] = $currentMinPrice / $rateFrom * $rateTo;
 		$filter['max_price'] = $currentMaxPrice / $rateFrom * $rateTo;
 
+		// Brand
 		if ($val = $this->request->get('b')) {
 			$filter['brand_id'] = $val;
 		} elseif (!empty($brandUrl)) {
 			$brand = $this->brands->getBrand((string) $brandUrl);
-			
+
 			if (empty($brand)) {
 				return false;
 			}
@@ -297,9 +314,10 @@ class ProductsView extends View
 			$filter['brand_id'] = $brand->id;
 		}
 
+		// Category
 		if (!empty($categoryUrl)) {
 			$category = $this->categories->getCategory((string) $categoryUrl);
-			
+
 			if (empty($category) || (!$category->visible && empty($_SESSION['admin']))) {
 				return false;
 			}
@@ -308,12 +326,14 @@ class ProductsView extends View
 			$filter['category_id'] = $category->children;
 		}
 
+		// Search
 		$keyword = $this->request->get('keyword');
 		if (!empty($keyword)) {
 			$this->design->assign('keyword', $keyword);
 			$filter['keyword'] = $keyword;
 		}
 
+		// Sort
 		if ($sort = $this->request->get('sort', 'string')) {
 			$_SESSION['sort'] = $sort;
 		}
@@ -326,6 +346,7 @@ class ProductsView extends View
 
 		$this->design->assign('sort', $filter['sort']);
 
+		// Price Filter
 		$priceProducts = [];
 		$priceProductIds = [];
 
@@ -337,6 +358,7 @@ class ProductsView extends View
 			$priceProductIds = array_keys($priceProducts);
 		}
 
+		// Features
 		if (!empty($category)) {
 			$features = [];
 			$filter['features'] = [];
@@ -389,10 +411,14 @@ class ProductsView extends View
 			$this->design->assign('features', $features);
 		}
 
+		// Pagination
 		$itemsPerPage = $this->settings->products_num;
+
 		$currentPage = $this->request->get('page', 'integer');
 		$currentPage = max(1, $currentPage);
+
 		$this->design->assign('current_page_num', $currentPage);
+
 		$productsCount = $this->products->countProducts($filter);
 
 		if ($this->request->get('page') == 'all') {
@@ -400,17 +426,21 @@ class ProductsView extends View
 		}
 
 		$pagesNum = ceil($productsCount / $itemsPerPage);
+
 		$this->design->assign('total_pages_num', $pagesNum);
 		$this->design->assign('total_products_num', $productsCount);
+
 		$filter['page'] = $currentPage;
 		$filter['limit'] = $itemsPerPage;
 
+		// Discount User
 		$discount = 0;
 
 		if (isset($_SESSION['user_id']) && $user = $this->users->getUser((int) $_SESSION['user_id'])) {
 			$discount = $user->discount;
 		}
-		
+
+		// Products
 		$products = [];
 
 		foreach ($this->products->getProducts($filter) as $product) {
@@ -423,7 +453,7 @@ class ProductsView extends View
 
 		if (!empty($products)) {
 			$productsIds = array_keys($products);
-			
+
 			foreach ($products as &$product) {
 				$product->variants = [];
 				$product->images = [];
@@ -464,10 +494,15 @@ class ProductsView extends View
 					}
 				}
 
-				$features = $this->features->getProductOptions($productsIds);
+				if ($productValues = $this->features->getProductOptions(['product_id' => $product->id])) {
 
-				foreach ($features as &$feature) {
-					$products[$feature->product_id]->features[] = $feature;
+					foreach ($productValues as $pv) {
+						if (!isset($product->features[$pv->feature_id])) {
+							$product->features[$pv->feature_id] = $pv;
+						}
+
+						$product->features[$pv->feature_id]->values[] = $pv;
+					}
 				}
 
 				$dataRelatedProducts = [];
@@ -512,14 +547,17 @@ class ProductsView extends View
 				$product->related_products = $dataRelatedProducts;
 			}
 
+			// Design
 			$this->design->assign('products', $products);
 		}
 
+		// Brands
 		if (!empty($category)) {
 			$brands = $this->brands->getBrands($filter);
 			$category->brands = $brands;
 		}
 
+		// Price Filter
 		unset($filter['min_price']);
 		unset($filter['max_price']);
 		unset($filter['limit']);
@@ -558,6 +596,7 @@ class ProductsView extends View
 		$this->design->assign('current_minprice', $currentMinPrice * $rateTo / $rateFrom);
 		$this->design->assign('current_maxprice', $currentMaxPrice * $rateTo / $rateFrom);
 
+		// Meta Tags
 		$autoMeta = new stdClass();
 
 		$autoMetaParts = [
@@ -620,6 +659,7 @@ class ProductsView extends View
 
 		$this->design->assign('auto_meta', $autoMeta);
 
+		// Last Modified
 		if (isset($lastModifiedUnix)) {
 			$lastModified = gmdate("D, d M Y H:i:s \G\M\T", $lastModifiedUnix);
 			$ifModifiedSince = false;
@@ -640,8 +680,9 @@ class ProductsView extends View
 			header('Last-Modified: ' . $lastModified);
 		}
 
+		// Display
 		$body = $this->design->fetch('products.tpl');
-		
+
 		return $body;
 	}
 }
