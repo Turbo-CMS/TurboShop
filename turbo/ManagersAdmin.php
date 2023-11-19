@@ -28,7 +28,7 @@ class ManagersAdmin extends Turbo
 		$managersCount = $this->managers->countManagers();
 
 		$this->design->assign('managers', $managers);
-		$this->design->assign('managersCount', $managersCount);
+		$this->design->assign('managers_count', $managersCount);
 
 		return $body = $this->design->fetch('managers.tpl');
 
