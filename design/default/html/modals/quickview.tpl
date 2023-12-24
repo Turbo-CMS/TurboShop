@@ -49,7 +49,7 @@
 				<h3 class="my-3">{$product->name|escape}</h3>
 
 				{* Brand *}
-				{if isset($brand->image)}
+				{if isset($brand->image) && $brand->image}
 					<div class="float-end">
 						<a href="{$lang_link}catalog/{$category->url}/{$brand->url}">
 							<img src="{$brand->image|resize_brands:75:25}" alt="{$brand->name|escape}" title="{$brand->name|escape}">

@@ -15,7 +15,7 @@
 		<form class="search mb-3" method="get">
 			<input type="hidden" name="module" value="FAQsAdmin">
 			<div class="input-group">
-				<input name="keyword" class="form-control" placeholder="{$btr->faq_search|escape}" type="text" value="{if isset($keyword)}{$keyword|escape}{/if}">
+				<input name="keyword" class="form-control" placeholder="{$btr->global_search|escape}" type="text" value="{if isset($keyword)}{$keyword|escape}{/if}">
 				<button class="btn btn-primary" type="submit"><i class="align-middle mt-n1" data-feather="search"></i></button>
 			</div>
 		</form>

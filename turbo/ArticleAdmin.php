@@ -29,18 +29,19 @@ class ArticleAdmin extends Turbo
 			} else {
 				if (empty($post->id)) {
 					if ($post->category_id > 0) {
-						$this->db->query('update __articles_categories set last_modified=now() where id=?', $post->category_id);
+						$this->db->query("UPDATE __articles_categories SET last_modified=NOW() WHERE id=?", $post->category_id);
 					}
 
 					$post->id = $this->articles->addArticle($post);
 					$post = $this->articles->getArticle($post->id);
 					$this->design->assign('message_success', 'added');
 				} else {
-					$this->db->query('select category_id from __articles where id=?', $post->id);
+					$this->db->query("SELECT category_id FROM __articles WHERE id=?", $post->id);
+
 					$cIds = $this->db->results('category_id');
 
 					if (!empty($cIds)) {
-						$this->db->query('update __articles_categories set last_modified=now() where id IN(?@)', $cIds);
+						$this->db->query("UPDATE __articles_categories SET last_modified=NOW() WHERE id IN(?@)", $cIds);
 					}
 
 					$this->articles->updateArticle($post->id, $post);

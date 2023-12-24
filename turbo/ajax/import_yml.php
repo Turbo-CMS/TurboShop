@@ -1,6 +1,7 @@
 <?php
 
 session_start();
+
 require_once '../../api/Turbo.php';
 
 class ImportAjax extends Turbo
@@ -45,6 +46,7 @@ class ImportAjax extends Turbo
 		$result = new stdClass;
 
 		$file = fopen($this->importFilesDir . $this->importFile, 'r');
+
 		$this->columns = fgetcsv($file, null, $this->columnDelimiter);
 
 		foreach ($this->columns as &$column) {
@@ -107,20 +109,28 @@ class ImportAjax extends Turbo
 			$product['name'] = trim($item['name']);
 		}
 
-		if (isset($item['meta_title'])) {
+		if (!empty($item['meta_title'])) {
 			$product['meta_title'] = trim($item['meta_title']);
+		} elseif (!empty($item['name'])) {
+			$product['meta_title'] = $item['name'];
 		}
 
-		if (isset($item['meta_keywords'])) {
+		if (!empty($item['meta_keywords'])) {
 			$product['meta_keywords'] = trim($item['meta_keywords']);
+		} elseif (!empty($item['name'])) {
+			$product['meta_keywords'] = $item['name'];
 		}
 
-		if (isset($item['meta_description'])) {
+		if (!empty($item['meta_description'])) {
 			$product['meta_description'] = trim($item['meta_description']);
+		} elseif (!empty($item['description'])) {
+			$product['meta_description'] = $item['description'];
 		}
 
-		if (isset($item['annotation'])) {
+		if (!empty($item['annotation'])) {
 			$product['annotation'] = trim($item['annotation']);
+		} elseif (!empty($item['description'])) {
+			$product['annotation'] = $item['description'];
 		}
 
 		if (isset($item['description'])) {
@@ -144,7 +154,7 @@ class ImportAjax extends Turbo
 		if (!empty($item['brand'])) {
 			$item['brand'] = trim($item['brand']);
 
-			$this->db->query('SELECT id FROM __brands WHERE name=?', $item['brand']);
+			$this->db->query("SELECT id FROM __brands WHERE name=?", $item['brand']);
 
 			if (!$product['brand_id'] = $this->db->result('id')) {
 				$product['brand_id'] = $this->brands->addBrand([
@@ -195,10 +205,10 @@ class ImportAjax extends Turbo
 
 		if (!empty($variant['sku'])) {
 			$this->db->query(
-				'SELECT v.id AS variant_id, v.product_id
+				"SELECT v.id AS variant_id, v.product_id
 				FROM __variants v, __products p
 				WHERE v.sku=? AND v.product_id=p.id
-				LIMIT 1',
+				LIMIT 1",
 				$variant['sku']
 			);
 
@@ -222,30 +232,30 @@ class ImportAjax extends Turbo
 		if ((empty($productId) || empty($variantId)) && isset($item['name'])) {
 			if (!empty($variant['sku']) && empty($variant['name'])) {
 				$this->db->query(
-					'SELECT v.id AS variant_id, p.id AS product_id
+					"SELECT v.id AS variant_id, p.id AS product_id
 					FROM __products p
-					LEFT JOIN __variants v ON v.product_id = p.id
-					WHERE v.sku = ?
-					LIMIT 1',
+					LEFT JOIN __variants v ON v.product_id=p.id
+					WHERE v.sku=?
+					LIMIT 1",
 					$variant['sku']
 				);
 			} elseif (isset($item['variant'])) {
 				$this->db->query(
-					'SELECT v.id AS variant_id, p.id AS product_id
+					"SELECT v.id AS variant_id, p.id AS product_id
 					FROM __products p
-					LEFT JOIN __variants v ON v.product_id = p.id AND v.name = ?
-					WHERE p.name = ?
-					LIMIT 1',
+					LEFT JOIN __variants v ON v.product_id=p.id AND v.name=?
+					WHERE p.name=?
+					LIMIT 1",
 					$item['variant'],
 					$item['name']
 				);
 			} else {
 				$this->db->query(
-					'SELECT v.id AS variant_id, p.id AS product_id
+					"SELECT v.id AS variant_id, p.id AS product_id
 					FROM __products p
-					LEFT JOIN __variants v ON v.product_id = p.id
-					WHERE p.name = ?
-					LIMIT 1',
+					LEFT JOIN __variants v ON v.product_id=p.id
+					WHERE p.name=?
+					LIMIT 1",
 					$item['name']
 				);
 			}
@@ -267,10 +277,10 @@ class ImportAjax extends Turbo
 				}
 
 				$this->db->query(
-					'SELECT max(v.position) AS pos 
-					 FROM __variants v 
-					 WHERE v.product_id=?
-					 LIMIT 1',
+					"SELECT max(v.position) AS pos 
+					FROM __variants v 
+					WHERE v.product_id=?
+					LIMIT 1",
 					$productId
 				);
 
@@ -303,7 +313,7 @@ class ImportAjax extends Turbo
 						$imageFilename = pathinfo($image, PATHINFO_BASENAME);
 
 						$this->db->query(
-							'SELECT filename FROM __images WHERE product_id=? AND (filename=? OR filename=?) LIMIT 1',
+							"SELECT filename FROM __images WHERE product_id=? AND (filename=? OR filename=?) LIMIT 1",
 							$productId,
 							$imageFilename,
 							$image
@@ -319,7 +329,7 @@ class ImportAjax extends Turbo
 			foreach ($item as $featureName => $featureValue) {
 				if (!in_array($featureName, $this->internalColumnsNames)) {
 					if ($categoryId && $featureValue !== '') {
-						$this->db->query('SELECT f.id FROM __features f WHERE f.name=? LIMIT 1', $featureName);
+						$this->db->query("SELECT f.id FROM __features f WHERE f.name=? LIMIT 1", $featureName);
 
 						if (!$featureId = $this->db->result('id')) {
 							$featureId = $this->features->addFeature(['name' => $featureName, 'url' => $this->translit($featureName)]);
@@ -327,14 +337,22 @@ class ImportAjax extends Turbo
 
 						if (!empty($featureValue)) {
 							$this->features->addFeatureCategory($featureId, $categoryId);
-							while ($this->features->getOptions(['product_id' => $productId, 'feature_id' => $featureId])) {
-								$this->features->deleteOption($productId, $featureId);
-							}
-
-							$pos = 0;
 
 							foreach (explode('|', $featureValue) as $fValue) {
-								$this->features->updateOption($productId, $featureId, $fValue, $pos++);
+								$this->db->query("SELECT id FROM __options WHERE feature_id=? AND value=? LIMIT 1", $featureId, $fValue);
+
+								$existingOptionId = $this->db->result('id');
+
+								if ($existingOptionId) {
+									$this->features->addProductOption($productId, $existingOptionId);
+								} else {
+									$option = new stdClass();
+									$option->feature_id = $featureId;
+									$option->value = $fValue;
+									$valueId = $this->features->addOption($option);
+
+									$this->features->addProductOption($productId, $valueId);
+								}
 							}
 						}
 					}
@@ -357,7 +375,7 @@ class ImportAjax extends Turbo
 		foreach ($names as $name) {
 			$name = trim(str_replace("\\$delimiter", $delimiter, $name));
 			if (!empty($name)) {
-				$this->db->query('SELECT id FROM __categories WHERE name=? AND parent_id=?', $name, $parent);
+				$this->db->query("SELECT id FROM __categories WHERE name=? AND parent_id=?", $name, $parent);
 				$id = $this->db->result('id');
 
 				if (empty($id)) {
@@ -417,4 +435,5 @@ header("Pragma: no-cache");
 header("Expires: -1");
 
 $json = json_encode($importAjax->import());
+
 print $json;

@@ -98,7 +98,7 @@ foreach ($turbo->db->results() as $article) {
 }
 
 foreach ($turbo->categories->getCategories() as $category) {
-    if ($category->visible) {
+    if (isset($category->visible) && $category->visible) {
         $url = $turbo->config->root_url . '/' . $langLink . 'catalog/' . esc($category->url);
 
         echo "\t<url>\n";

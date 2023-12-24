@@ -110,11 +110,11 @@ class BlogView extends View
 
 		// Sort
 		if ($sort = $this->request->get('sort', 'string')) {
-			$_SESSION['sort'] = $sort;
+			$_SESSION['comments_post'] = $sort;
 		}
 
-		if (!empty($_SESSION['sort'])) {
-			$filter['sort'] = $_SESSION['sort'];
+		if (!empty($_SESSION['comments_post'])) {
+			$filter['sort'] = $_SESSION['comments_post'];
 		} else {
 			$filter['sort'] = 'rate';
 		}
@@ -218,11 +218,11 @@ class BlogView extends View
 		$sort = $this->request->get('sort', 'string');
 
 		if ($sort) {
-			$_SESSION['sort'] = $sort;
+			$_SESSION['sort_blog'] = $sort;
 		}
 
-		if (!empty($_SESSION['sort'])) {
-			$filter['sort'] = $_SESSION['sort'];
+		if (!empty($_SESSION['sort_blog'])) {
+			$filter['sort'] = $_SESSION['sort_blog'];
 		} else {
 			$filter['sort'] = 'date';
 		}

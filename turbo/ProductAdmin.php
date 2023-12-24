@@ -66,20 +66,6 @@ class ProductAdmin extends Turbo
 				$productCategories = $pc;
 			}
 
-			$options = $this->request->post('options');
-
-			if (is_array($options)) {
-				$po = [];
-
-				foreach ($options as $f_id => $val) {
-					$po[$f_id] = new stdClass();
-					$po[$f_id]->feature_id = $f_id;
-					$po[$f_id]->value = $val;
-				}
-
-				$options = $po;
-			}
-
 			$relatedProducts = [];
 
 			if (is_array($this->request->post('related_products'))) {
@@ -141,18 +127,20 @@ class ProductAdmin extends Turbo
 			} else {
 				if (empty($product->id)) {
 					if ($product->brand_id > 0) {
-						$this->db->query('update __brands set last_modified=now() where id=?', $product->brand_id);
+						$this->db->query("UPDATE __brands SET last_modified=NOW() WHERE id=?", $product->brand_id);
 					}
 
 					$product->id = $this->products->addProduct($product);
 					$product = $this->products->getProduct($product->id);
+
 					$this->design->assign('message_success', 'added');
 				} else {
-					$this->db->query('select brand_id from __products where id=?', $product->id);
+					$this->db->query("SELECT brand_id FROM __products WHERE id=?", $product->id);
+
 					$bIds = $this->db->results('brand_id');
 
 					if (!empty($bIds)) {
-						$this->db->query('update __brands set last_modified=now() where id in(?@)', $bIds);
+						$this->db->query("UPDATE __brands SET last_modified=NOW() WHERE id IN(?@)", $bIds);
 					}
 
 					$this->products->updateProduct($product->id, $product);
@@ -161,15 +149,16 @@ class ProductAdmin extends Turbo
 				}
 
 				if ($product->id) {
-					$query = $this->db->placehold('SELECT category_id FROM __products_categories WHERE product_id=?', $product->id);
+					$query = $this->db->placehold("SELECT category_id FROM __products_categories WHERE product_id=?", $product->id);
 					$this->db->query($query);
+
 					$cIds = $this->db->results('category_id');
 
 					if (!empty($cIds)) {
-						$this->db->query($this->db->placehold('UPDATE __categories SET last_modified=NOW() WHERE id IN(?@)', $cIds));
+						$this->db->query($this->db->placehold("UPDATE __categories SET last_modified=NOW() WHERE id IN(?@)", $cIds));
 					}
 
-					$this->db->query($this->db->placehold('DELETE FROM __products_categories WHERE product_id=?', $product->id));
+					$this->db->query($this->db->placehold("DELETE FROM __products_categories WHERE product_id=?", $product->id));
 
 					if (is_array($productCategories)) {
 						foreach ($productCategories as $i => $category) {
@@ -287,31 +276,37 @@ class ProductAdmin extends Turbo
 
 					$files = $this->files->getFiles(['object_id' => $product->id, 'type' => 'product']);
 
-					foreach ($this->features->getProductOptions($product->id) as $po) {
-						$this->features->deleteOption($product->id, $po->feature_id);
-					}
-
 					$categoryFeatures = [];
 
 					foreach ($this->features->getFeatures(['category_id' => $productCategories[0]]) as $f) {
 						$categoryFeatures[] = $f->id;
 					}
 
-					if (is_array($options)) {
-						foreach ($options as $option) {
-							if (in_array($option->feature_id, $categoryFeatures)) {
-								if (is_array($option->value)) {
-									$pos = 0;
+					$this->features->deleteProductOption($product->id);
 
-									foreach ($option->value as $value) {
-										$translit = isset($option->translit) ? $option->translit : '';
-										if ($this->features->updateOption($product->id, $option->feature_id, $value, $translit, $pos++)) {
-											$this->features->updateOption($product->id, $option->feature_id, $value, $translit, $pos++);
+					if ($optionsIds = $this->request->post('options_id')) {
+						$optionsValues = $this->request->post('options_values');
+
+						foreach ($optionsIds as $featureId => $optionsId) {
+							foreach ($optionsId as $k => $valueId) {
+
+								$value = trim($optionsValues[$featureId][$k]);
+								if (!empty($value)) {
+									if (!empty($valueId)) {
+										$this->features->updateOption($valueId, ['value' => $value]);
+									} else {
+
+										if (!$valueId) {
+											$option = new stdClass();
+											$option->value = $value;
+											$option->feature_id = $featureId;
+											$valueId = $this->features->addOption($option);
 										}
 									}
-								} else {
-									$translit = isset($option->translit) ? $option->translit : '';
-									$this->features->updateOption($product->id, $option->feature_id, $option->value, $translit);
+								}
+
+								if (!empty($valueId)) {
+									$this->features->addProductOption($product->id, $valueId);
 								}
 							}
 						}
@@ -331,29 +326,32 @@ class ProductAdmin extends Turbo
 								$featureId = $this->db->result('id');
 
 								if (empty($featureId)) {
-									$featureId = $this->features->addFeature(array('name' => trim($name)));
+									$featureId = $this->features->addFeature(['name' => trim($name)]);
 								}
 
 								$this->features->addFeatureCategory($featureId, reset($productCategories)->id);
-								$this->features->updateOption($product->id, $featureId, $value);
+
+								$option = new stdClass();
+								$option->feature_id = $featureId;
+								$option->value = $value;
+								$valueId = $this->features->addOption($option);
+
+								$this->features->addProductOption($product->id, $valueId);
 							}
 						}
-
-						$options = $this->features->getProductOptions($product->id);
 					}
 
-					$query = $this->db->placehold('DELETE FROM __related_products WHERE product_id=?', $product->id);
+					$query = $this->db->placehold("DELETE FROM __related_products WHERE product_id=?", $product->id);
 					$this->db->query($query);
 
 					if (is_array($relatedProducts)) {
 						$pos = 0;
-
 						foreach ($relatedProducts as $i => $relatedProduct) {
 							$this->products->addRelatedProduct($product->id, $relatedProduct->related_id, $pos++);
 						}
 					}
 
-					$query = $this->db->placehold('DELETE FROM __recommended_products WHERE product_id=?', $product->id);
+					$query = $this->db->placehold("DELETE FROM __recommended_products WHERE product_id=?", $product->id);
 					$this->db->query($query);
 
 					if (is_array($recommendedProducts)) {
@@ -364,12 +362,11 @@ class ProductAdmin extends Turbo
 						}
 					}
 
-					$query = $this->db->placehold('DELETE FROM __products_videos WHERE product_id=?', $product->id);
+					$query = $this->db->placehold("DELETE FROM __products_videos WHERE product_id=?", $product->id);
 					$this->db->query($query);
 
 					if (is_array($productVideos)) {
 						$pos = 0;
-
 						foreach ($productVideos as $i => $video) {
 							$this->products->addProductVideo($product->id, $video->link, $pos++);
 						}
@@ -384,7 +381,6 @@ class ProductAdmin extends Turbo
 				$productCategories = $this->categories->getCategories(['product_id' => $product->id]);
 				$variants = $this->variants->getVariants(['product_id' => $product->id]);
 				$images = $this->products->getImages(['product_id' => $product->id]);
-				$options = $this->features->getOptions(['product_id' => $product->id]);
 				$relatedProducts = $this->products->getRelatedProducts(['product_id' => $product->id]);
 				$recommendedProducts = $this->products->getRecommendedProducts(['product_id' => $product->id]);
 				$productVideos = $this->products->getVideos(['product_id' => $product->id]);
@@ -401,7 +397,6 @@ class ProductAdmin extends Turbo
 
 		if (empty($productCategories)) {
 			$productCategories[0] = new stdClass();
-
 			if ($categoryId = $this->request->get('category_id')) {
 				$productCategories[0]->id = $categoryId;
 			} else {
@@ -419,13 +414,11 @@ class ProductAdmin extends Turbo
 			}
 
 			$tempProducts = $this->products->getProducts(['id' => array_keys($rProducts)]);
-
 			foreach ($tempProducts as $tempProduct) {
 				$rProducts[$tempProduct->id] = $tempProduct;
 			}
 
 			$relatedProductsImages = $this->products->getImages(['product_id' => array_keys($rProducts)]);
-
 			foreach ($relatedProductsImages as $image) {
 				$rProducts[$image->product_id]->images[] = $image;
 			}
@@ -437,36 +430,22 @@ class ProductAdmin extends Turbo
 			}
 
 			$tempProducts = $this->products->getProducts(['id' => array_keys($rProducts)]);
-
 			foreach ($tempProducts as $tempProduct) {
 				$rProducts[$tempProduct->id] = $tempProduct;
 			}
 
 			$recommendedProductsImages = $this->products->getImages(['product_id' => array_keys($rProducts)]);
-
 			foreach ($recommendedProductsImages as $image) {
 				$rProducts[$image->product_id]->images[] = $image;
 			}
 		}
 
-		if (is_array($options)) {
-			$tempOptions = [];
+		$options = [];
 
-			foreach ($options as $option) {
-				if (empty($tempOptions[$option->feature_id])) {
-					$tempOptions[$option->feature_id] = new stdClass();
-				}
-
-				$tempOptions[$option->feature_id]->feature_id = $option->feature_id;
-
-				if (is_array($option->value)) {
-					$tempOptions[$option->feature_id]->values = $option->value;
-				} else {
-					$tempOptions[$option->feature_id]->values[] = $option->value;
-				}
+		if (!empty($product->id)) {
+			foreach ($this->features->getOptions(['product_id' => $product->id]) as $o) {
+				$options[$o->feature_id][] = $o;
 			}
-
-			$options = $tempOptions;
 		}
 
 		$this->design->assign('product', $product);
@@ -499,5 +478,21 @@ class ProductAdmin extends Turbo
 		$this->design->assign('currencies', $this->money->getCurrencies(['enabled' => 1]));
 
 		return $this->design->fetch('product.tpl');
+	}
+
+	/**
+	 * Translit
+	 */
+	public function translit($text)
+	{
+		$cyr = explode('-', "А-а-Б-б-В-в-Ґ-ґ-Г-г-Д-д-Е-е-Ё-ё-Є-є-Ж-ж-З-з-И-и-І-і-Ї-ї-Й-й-К-к-Л-л-М-м-Н-н-О-о-П-п-Р-р-С-с-Т-т-У-у-Ф-ф-Х-х-Ц-ц-Ч-ч-Ш-ш-Щ-щ-Ъ-ъ-Ы-ы-Ь-ь-Э-э-Ю-ю-Я-я");
+		$lat = explode('-', "A-a-B-b-V-v-G-g-G-g-D-d-E-e-E-e-E-e-ZH-zh-Z-z-I-i-I-i-I-i-J-j-K-k-L-l-M-m-N-n-O-o-P-p-R-r-S-s-T-t-U-u-F-f-H-h-TS-ts-CH-ch-SH-sh-SCH-sch---Y-y---E-e-YU-yu-YA-ya");
+
+		$res = str_replace($cyr, $lat, $text);
+		$res = preg_replace("/[\s\-_]+/ui", '', $res);
+		$res = preg_replace('/[^\p{L}\p{Nd}\d-]/ui', '', $res);
+		$res = strtolower($res);
+
+		return $res;
 	}
 }

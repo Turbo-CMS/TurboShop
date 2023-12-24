@@ -126,13 +126,13 @@ class IndexAdmin extends Turbo
 			$langLabel = $languages[$langId]->label;
 		}
 
-		$firstLang = $this->languages->languages();
-		$firstLang = reset($firstLang);
+		$firstLang = reset($languages);
 
 		if (isset($firstLang->id) && ($firstLang->id != $langId)) {
 			$langLink = $langLabel . '/';
 		}
 
+		$this->design->assign('first_lang', $firstLang->id);
 		$this->design->assign('lang_label', $langLabel);
 		$this->design->assign('lang_link', $langLink);
 

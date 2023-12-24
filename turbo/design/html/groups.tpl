@@ -41,11 +41,10 @@
 												</a>
 											</div>
 											<div class="turbo-list-boding turbo-list-usergroups-sale">
-												<span class="tag tag-danger">{$btr->global_discount|escape} {$group->discount} %</span>
+												<span class="tag tag-danger">{$btr->global_discount|escape} {$group->discount*1}%</span>
 											</div>
 											<div class="turbo-list-boding turbo-list-delete">
-												{*delete*}
-												<div data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->user_groups_delete|escape}">
+												<div data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
 													<button type="button" class="btn-delete js-remove" data-bs-toggle="modal" data-bs-target="#actionModal" onclick="success_action($(this));">
 														<i class="align-middle" data-feather="trash-2"></i>
 													</button>

@@ -31,7 +31,7 @@ class CurrencyAdmin extends Turbo
                 $currenciesIds[] = (int) $currency->id;
             }
 
-            $query = $this->db->placehold('DELETE FROM __currencies WHERE id NOT IN(?@)', $currenciesIds);
+            $query = $this->db->placehold("DELETE FROM __currencies WHERE id NOT IN(?@)", $currenciesIds);
             $this->db->query($query);
 
             $oldCurrency = $this->money->getCurrency();

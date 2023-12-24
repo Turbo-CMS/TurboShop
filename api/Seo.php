@@ -48,12 +48,12 @@ class seo extends Turbo
 			$value = (string) $value;
 		}
 
-		$this->db->query('SELECT count(*) AS count FROM __seo WHERE name=?', $name);
+		$this->db->query("SELECT count(*) AS count FROM __seo WHERE name=?", $name);
 
 		if ($this->db->result('count') > 0) {
-			$this->db->query('UPDATE __seo SET value=? WHERE name=?', $value, $name);
+			$this->db->query("UPDATE __seo SET value=? WHERE name=?", $value, $name);
 		} else {
-			$this->db->query('INSERT INTO __seo SET value=?, name=?', $value, $name);
+			$this->db->query("INSERT INTO __seo SET value=?, name=?", $value, $name);
 		}
 	}
 
@@ -63,7 +63,7 @@ class seo extends Turbo
 	private function initSeo()
 	{
 		$this->vars = [];
-		$this->db->query('SELECT name, value FROM __seo');
+		$this->db->query("SELECT name, value FROM __seo");
 
 		foreach ($this->db->results() as $result) {
 			if (!($this->vars[$result->name] = @unserialize($result->value))) {
@@ -72,6 +72,7 @@ class seo extends Turbo
 		}
 
 		$this->varsLang = [];
+
 		$multi = $this->getSeo();
 
 		if (is_array($multi)) {
@@ -115,6 +116,7 @@ class seo extends Turbo
 
 		$this->varsLang[$name] = $value;
 		$value = is_array($value) ? serialize($value) : (string) $value;
+
 		$langId = $this->languages->langId();
 		$intoLang = '';
 
@@ -138,15 +140,16 @@ class seo extends Turbo
 	 */
 	public function getSeo($langId = null)
 	{
-		if (!is_null($langId) && !($l = $this->languages->get_language((int) $langId))) {
+		if (!is_null($langId) && !($l = $this->languages->getLanguage((int) $langId))) {
 			return false;
 		}
 
 		$langId  = !is_null($langId) ? $langId : $this->languages->langId();
+
 		$langIdFilter = '';
 
 		if ($langId) {
-			$langIdFilter = $this->db->placehold("AND lang_id=?", $langId);
+			$langIdFilter = $this->db->placehold('AND lang_id=?', $langId);
 		}
 
 		$this->db->query("SELECT * FROM __seo_lang WHERE 1 $langIdFilter");

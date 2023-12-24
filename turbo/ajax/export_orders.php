@@ -1,6 +1,7 @@
 <?php
 
 session_start();
+
 require_once '../../api/Turbo.php';
 
 class ExportAjax extends Turbo
@@ -29,7 +30,9 @@ class ExportAjax extends Turbo
         }
 
         session_write_close();
+
         unset($_SESSION['lang_id']);
+
         $this->db->query('SET NAMES cp1251');
 
         $page = $this->request->get('page');
@@ -38,14 +41,16 @@ class ExportAjax extends Turbo
             $page = 1;
 
             if (is_writable($this->exportFilesDir . $this->filename)) {
-                unlink($this->exportFilesDir . $this->filename);
+                @unlink($this->exportFilesDir . $this->filename);
             }
         }
 
         $f = fopen($this->exportFilesDir . $this->filename, 'ab');
+
         $filter = [];
         $filter['page'] = $page;
         $filter['limit'] = $this->ordersCount;
+
         $status = $this->request->get('status', 'integer');
 
         if ($status < 4) {
@@ -99,11 +104,13 @@ class ExportAjax extends Turbo
         }
 
         fclose($f);
+
         return $result;
     }
 }
 
 $exportAjax = new ExportAjax();
+
 $data = $exportAjax->fetch();
 
 if ($data) {

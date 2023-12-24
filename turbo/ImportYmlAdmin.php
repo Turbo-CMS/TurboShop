@@ -118,7 +118,7 @@ class ImportYmlAdmin extends Turbo
 
 				fclose($fOpen);
 				gzclose($gzOpen);
-				unlink($temp2);
+				@unlink($temp2);
 			}
 
 			$isXml = $this->isXml($temp);
@@ -132,7 +132,7 @@ class ImportYmlAdmin extends Turbo
 				}
 			}
 
-			unlink($temp);
+			@unlink($temp);
 		} elseif ($this->request->isMethod('post') && $this->request->post("file_fields")) {
 			$ymlCurrencies = $this->getYmlCurrencies($this->importFilesDir . $this->request->post("file_fields"));
 
@@ -144,8 +144,9 @@ class ImportYmlAdmin extends Turbo
 
 			$langId = $this->languages->langId();
 			$px = ($langId ? 'l' : 'f');
-			$langSql = $this->languages->getQuery(array('object' => 'feature', 'px' => 'f'));
-			$this->db->query('SELECT ' . $px . '.name FROM __features f ' . $langSql->join . ' ORDER BY f.position');
+			$langSql = $this->languages->getQuery(['object' => 'feature', 'px' => 'f']);
+			
+			$this->db->query("SELECT $px.name FROM __features f $langSql->join ORDER BY f.position");
 			$features = $this->db->results('name');
 
 			$this->design->assign('features',  $features);
@@ -426,7 +427,7 @@ class ImportYmlAdmin extends Turbo
 		}
 
 		if (file_exists($csvfile)) {
-			unlink($csvfile);
+			@unlink($csvfile);
 		}
 
 		if (!$fcsv = fopen($csvfile, 'w')) {

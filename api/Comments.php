@@ -23,9 +23,9 @@ class Comments extends Turbo
 				c.admin, 
 				c.rate, 
 				c.rating 
-			 FROM __comments c 
-			 WHERE id=? 
-			 LIMIT 1",
+			FROM __comments c 
+			WHERE id=? 
+			LIMIT 1",
 			(int) $id
 		);
 
@@ -124,7 +124,9 @@ class Comments extends Turbo
 				$hasParent
 				$keywordFilter
 				$approvedFilter
-			ORDER BY $sort $sqlLimit"
+			ORDER BY 
+				$sort 
+				$sqlLimit"
 		);
 
 		$this->db->query($query);
@@ -167,8 +169,8 @@ class Comments extends Turbo
 
 		$query = $this->db->placehold(
 			"SELECT COUNT(DISTINCT c.id) AS count
-			 FROM __comments c 
-			 WHERE 1
+			FROM __comments c 
+			WHERE 1
 			   $objectIdFilter
 			   $typeFilter
 			   $hasParent
@@ -188,7 +190,7 @@ class Comments extends Turbo
 	 */
 	public function addComment($comment)
 	{
-		$query = $this->db->placehold('INSERT INTO __comments SET ?%, date=NOW()', $comment);
+		$query = $this->db->placehold("INSERT INTO __comments SET ?%, date=NOW()", $comment);
 
 		if (!$this->db->query($query)) {
 			return false;
@@ -201,13 +203,13 @@ class Comments extends Turbo
 		if (isset($comment['approved'], $comment['object_id']) && $comment['approved'] == 1) {
 			switch ($comment['type']) {
 				case 'blog':
-					$this->db->query('UPDATE __blog SET last_modified=NOW() WHERE id=?', (int) $comment['object_id']);
+					$this->db->query("UPDATE __blog SET last_modified=NOW() WHERE id=?", (int) $comment['object_id']);
 					break;
 				case 'product':
-					$this->db->query('UPDATE __products SET last_modified=NOW() WHERE id=?', (int) $comment['object_id']);
+					$this->db->query("UPDATE __products SET last_modified=NOW() WHERE id=?", (int) $comment['object_id']);
 					break;
 				case 'article':
-					$this->db->query('UPDATE __articles SET last_modified=NOW() WHERE id=?', (int) $comment['object_id']);
+					$this->db->query("UPDATE __articles SET last_modified=NOW() WHERE id=?", (int) $comment['object_id']);
 					break;
 				case 'review':
 					$this->settings->lastModifyReviews = date('Y-m-d H:i:s');
@@ -235,20 +237,20 @@ class Comments extends Turbo
 	public function deleteComment($id)
 	{
 		if (!empty($id)) {
-			$this->db->query('SELECT object_id, type, approved FROM __comments WHERE id=?', (int) $id);
+			$this->db->query("SELECT object_id, type, approved FROM __comments WHERE id=?", (int) $id);
 
 			$comment = $this->db->result();
 
 			if ($comment->approved == 1) {
 				switch ($comment->type) {
 					case 'blog':
-						$this->db->query('UPDATE __blog SET last_modified=now() WHERE id=?', (int) $comment->object_id);
+						$this->db->query("UPDATE __blog SET last_modified=NOW() WHERE id=?", (int) $comment->object_id);
 						break;
 					case 'product':
-						$this->db->query('UPDATE __products SET last_modified=now() WHERE id=?', (int) $comment->object_id);
+						$this->db->query("UPDATE __products SET last_modified=NOW() WHERE id=?", (int) $comment->object_id);
 						break;
 					case 'article':
-						$this->db->query('UPDATE __articles SET last_modified=now() WHERE id=?', (int) $comment->object_id);
+						$this->db->query("UPDATE __articles SET last_modified=NOW() WHERE id=?", (int) $comment->object_id);
 						break;
 				}
 			}

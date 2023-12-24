@@ -64,8 +64,7 @@
 								{($image->size/1024)|round:2} {$btr->global_kb|escape}
 							{else}
 								{$image->size} {$btr->global_byte|escape}
-							{/if},
-							{$image->width}&times;{$image->height} px
+							{/if}{if $image->width || $image->height}, {$image->width}&times;{$image->height} px{/if}
 						</div>
 					</div>
 				</div>

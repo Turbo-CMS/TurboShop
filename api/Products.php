@@ -88,6 +88,7 @@ class Products extends Turbo
 
 		$currencies = $this->money->getCurrencies(['enabled' => 1]);
 		$currency = reset($currencies);
+
 		$order = 'IF((SELECT COUNT(*) FROM __variants WHERE (stock>0 OR stock IS NULL) AND product_id=p.id LIMIT 1), 1, 0) DESC, p.position DESC';
 
 		if (!empty($filter['sort'])) {
@@ -137,7 +138,7 @@ class Products extends Turbo
 			foreach ($keywords as $keyword) {
 				$kw = $this->db->escape(trim($keyword));
 				if ($kw !== '') {
-					$keywordFilter .= $this->db->placehold("AND (p.name LIKE '%$kw%' OR p.meta_keywords LIKE '%$kw%' OR p.id in (SELECT product_id FROM __variants WHERE sku LIKE '%$kw%'))");
+					$keywordFilter .= $this->db->placehold("AND ($px.name LIKE '%$kw%' OR $px.meta_keywords LIKE '%$kw%' OR p.id IN (SELECT product_id FROM __variants WHERE sku LIKE '%$kw%'))");
 				}
 			}
 		}
@@ -145,12 +146,12 @@ class Products extends Turbo
 		if (!empty($filter['features']) && !empty($filter['features'])) {
 			$featuresFilter = '';
 			foreach ($filter['features'] as $feature => $value) {
-				$featuresFilter .= $this->db->placehold('AND p.id IN (SELECT product_id FROM __options WHERE feature_id=? AND translit IN(?@))', $feature, (array) $value);
+				$featuresFilter .= $this->db->placehold('AND p.id IN(SELECT po.product_id FROM __products_options AS po LEFT JOIN __options AS o ON o.id=po.option_id WHERE feature_id=? AND translit IN(?@))', $feature, (array) $value);
 			}
 		}
 
 		if (!empty($filter['min_price']) && !empty($filter['max_price'])) {
-			$prices = $this->db->placehold('AND p.id in(SELECT v.product_id FROM __variants v WHERE IF((v.currency_id !=' . $currency->id . ' AND v.currency_id>0), (v.price*(SELECT rate_to FROM __currencies AS c WHERE c.id=v.currency_id)/(SELECT rate_from FROM __currencies AS c WHERE c.id=v.currency_id)), v.price) >=? AND IF((v.currency_id !=' . $currency->id . ' AND v.currency_id>0), (v.price*(SELECT rate_to FROM __currencies AS c WHERE c.id=v.currency_id)/(SELECT rate_from FROM __currencies AS c WHERE c.id=v.currency_id)), v.price) <=? AND v.product_id=p.id)', (int) $filter['min_price'], (int) $filter['max_price']);
+			$prices = $this->db->placehold('AND p.id IN(SELECT v.product_id FROM __variants v WHERE IF((v.currency_id !=' . $currency->id . ' AND v.currency_id>0), (v.price*(SELECT rate_to FROM __currencies AS c WHERE c.id=v.currency_id)/(SELECT rate_from FROM __currencies AS c WHERE c.id=v.currency_id)), v.price) >=? AND IF((v.currency_id !=' . $currency->id . ' AND v.currency_id>0), (v.price*(SELECT rate_to FROM __currencies AS c WHERE c.id=v.currency_id)/(SELECT rate_from FROM __currencies AS c WHERE c.id=v.currency_id)), v.price) <=? AND v.product_id=p.id)', (int) $filter['min_price'], (int) $filter['max_price']);
 		}
 
 		$langSql = $this->languages->getQuery(['object' => 'product']);
@@ -180,11 +181,10 @@ class Products extends Turbo
 				b.url AS brand_url,
 				$langSql->fields
 			FROM __products p
-			$langSql->join
-			$categoryIdFilter 
+				$langSql->join
+				$categoryIdFilter 
 			LEFT JOIN __brands b ON p.brand_id=b.id
-			WHERE 
-				1
+			WHERE 1
 				$productIdFilter
 				$brandIdFilter
 				$featuresFilter
@@ -200,9 +200,10 @@ class Products extends Turbo
 				$inStockFilter
 				$visibleFilter
 				$prices
-			$groupBy
-			ORDER BY $order
-			$sqlLimit"
+				$groupBy
+			ORDER BY 
+				$order
+				$sqlLimit"
 		);
 
 		if ($this->settings->cached == 1 && empty($_SESSION['admin'])) {
@@ -262,7 +263,7 @@ class Products extends Turbo
 			foreach ($keywords as $keyword) {
 				$kw = $this->db->escape(trim($keyword));
 				if ($kw !== '') {
-					$keywordFilter .= $this->db->placehold("AND (p.name LIKE '%$kw%' OR p.meta_keywords LIKE '%$kw%' OR p.id in (SELECT product_id FROM __variants WHERE sku LIKE '%$kw%'))");
+					$keywordFilter .= $this->db->placehold("AND ($px.name LIKE '%$kw%' OR $px.meta_keywords LIKE '%$kw%' OR p.id IN (SELECT product_id FROM __variants WHERE sku LIKE '%$kw%'))");
 				}
 			}
 		}
@@ -307,7 +308,7 @@ class Products extends Turbo
 
 		if (!empty($filter['features']) && !empty($filter['features'])) {
 			foreach ($filter['features'] as $feature => $value) {
-				$featuresFilter .= $this->db->placehold('AND p.id IN(SELECT product_id FROM __options WHERE feature_id=? AND translit in(?@) ) ', $feature, (array) $value);
+				$featuresFilter .= $this->db->placehold('AND p.id IN(SELECT po.product_id FROM __products_options AS po LEFT JOIN __options AS o ON o.id=po.option_id WHERE feature_id=? AND translit in(?@) ) ', $feature, (array) $value);
 			}
 		}
 
@@ -323,8 +324,8 @@ class Products extends Turbo
 		$query = $this->db->placehold(
 			"SELECT COUNT(DISTINCT p.id) AS count
 			FROM __products AS p
-			$langSql->join
-			$categoryIdFilter
+				$langSql->join
+				$categoryIdFilter
 			WHERE 1
 				$brandIdFilter
 				$productIdFilter
@@ -401,13 +402,14 @@ class Products extends Turbo
 				p.last_modified,
 				$langSql->fields
 			FROM __products AS p
-			$langSql->join
+				$langSql->join
 			WHERE $filter
 			GROUP BY p.id
 			LIMIT 1"
 		);
 
 		$this->db->query($query);
+		
 		return $this->db->result();
 	}
 
@@ -463,8 +465,7 @@ class Products extends Turbo
 
 		if ($this->db->query("INSERT INTO __products SET ?%", $product)) {
 			$id = $this->db->insertId();
-
-			$this->db->query("UPDATE __products SET `last_modified`=NOW(), position=id WHERE id=?", $id);
+			$this->db->query("UPDATE __products SET last_modified=NOW(), position=id WHERE id=?", $id);
 
 			if (!empty($result->description)) {
 				$this->languages->actionDescription($id, $result->description, 'product');
@@ -494,7 +495,7 @@ class Products extends Turbo
 				$this->deleteImage($image->id);
 			}
 
-			$query = $this->db->placehold('DELETE FROM __products_videos WHERE product_id=?', $id);
+			$query = $this->db->placehold("DELETE FROM __products_videos WHERE product_id=?", $id);
 			$this->db->query($query);
 
 			$categories = $this->categories->getCategories(['product_id' => $id]);
@@ -503,10 +504,12 @@ class Products extends Turbo
 				$this->categories->deleteProductCategory($id, $category->id);
 			}
 
-			$options = $this->features->getOptions(['product_id' => $id]);
+			$this->features->deleteProductOption($id);
 
-			foreach ($options as $option) {
-				$this->features->deleteOption($id, $option->feature_id);
+			$files = $this->files->getFiles(['object_id' => $id, 'type' => 'product']);
+
+			foreach ($files as $file) {
+				$this->files->deleteFile($file->id);
 			}
 
 			$related = $this->getRelatedProducts([$id]);
@@ -533,12 +536,12 @@ class Products extends Turbo
 				$this->comments->deleteComment($comment->id);
 			}
 
-			$this->db->query('UPDATE __purchases SET product_id=NULL WHERE product_id=?', (int) $id);
+			$this->db->query("UPDATE __purchases SET product_id=NULL WHERE product_id=?", (int) $id);
+
 			$query = $this->db->placehold("DELETE FROM __lang_products WHERE product_id=?", (int) $id);
 			$this->db->query($query);
 
 			$query = $this->db->placehold("DELETE FROM __products WHERE id=? LIMIT 1", (int) $id);
-
 			if ($this->db->query($query)) {
 				return true;
 			}
@@ -557,10 +560,12 @@ class Products extends Turbo
 		$product->external_id = '';
 		$product->created = null;
 
-		$this->db->query('UPDATE __products SET position=position+1 WHERE position>?', $product->position);
+		$this->db->query("UPDATE __products SET position=position+1 WHERE position>?", $product->position);
+
 		$newId = $this->products->addProduct($product);
-		$this->db->query('UPDATE __products SET position=? WHERE id=?', $product->position + 1, $newId);
-		$this->db->query('UPDATE __products SET url="" WHERE id=?', $newId);
+
+		$this->db->query("UPDATE __products SET position=? WHERE id=?", $product->position + 1, $newId);
+		$this->db->query("UPDATE __products SET url='' WHERE id=?", $newId);
 
 		$categories = $this->categories->getProductCategories($id);
 
@@ -578,6 +583,16 @@ class Products extends Turbo
 
 		foreach ($videos as $video) {
 			$this->addProductVideo($newId, $video->link);
+		}
+
+		$files = $this->files->getFiles(['object_id' => $id, 'type' => 'product']);
+
+		foreach ($files as $file) {
+			$f = new stdClass();
+			$f->object_id = $newId;
+			$f->name = $file->name;
+			$f->filename = $file->filename;
+			$this->files->copyFile($f);
 		}
 
 		$variants = $this->variants->getVariants(['product_id' => $id]);
@@ -602,14 +617,16 @@ class Products extends Turbo
 
 			unset($variant->oprice);
 			unset($variant->compare_oprice);
+			
 			$variant->external_id = '';
+
 			$this->variants->addVariant($variant);
 		}
 
-		$options = $this->features->getOptions(['product_id' => $id]);
+		$options = $this->features->getProductOptionId($id);
 
 		foreach ($options as $option) {
-			$this->features->updateOption($newId, $option->feature_id, $option->value);
+			$this->features->addProductOption($newId, $option->option_id);
 		}
 
 		$related = $this->getRelatedProducts([$id]);
@@ -676,7 +693,7 @@ class Products extends Turbo
 	 */
 	public function addRelatedProduct($productId, $relatedId, $position = 0)
 	{
-		$query = $this->db->placehold('INSERT IGNORE INTO __related_products SET product_id=?, related_id=?, position=?', $productId, $relatedId, $position);
+		$query = $this->db->placehold("INSERT IGNORE INTO __related_products SET product_id=?, related_id=?, position=?", $productId, $relatedId, $position);
 		$this->db->query($query);
 
 		return $relatedId;
@@ -741,10 +758,19 @@ class Products extends Turbo
 		}
 
 		$query = $this->db->placehold(
-			"SELECT i.id, i.product_id, i.name, i.filename, i.position
+			"SELECT 
+				i.id, 
+				i.product_id, 
+				i.name, 
+				i.filename, 
+				i.position
 			FROM __images AS i 
-			WHERE 1 $productIdFilter $groupBy 
-			ORDER BY i.product_id, i.position"
+			WHERE 1 
+				$productIdFilter 
+				$groupBy 
+			ORDER BY 
+				i.product_id, 
+				i.position"
 		);
 
 		$this->db->query($query);
@@ -758,11 +784,13 @@ class Products extends Turbo
 	{
 		$query = $this->db->placehold("SELECT id FROM __images WHERE product_id=? AND filename=?", $productId, $filename);
 		$this->db->query($query);
+
 		$id = $this->db->result('id');
 
 		if (empty($id)) {
 			$query = $this->db->placehold("INSERT INTO __images SET product_id=?, filename=?, name=?", $productId, $filename, $name);
 			$this->db->query($query);
+
 			$id = $this->db->insertId();
 
 			$query = $this->db->placehold("UPDATE __images SET position=id WHERE id=?", $id);
@@ -800,33 +828,30 @@ class Products extends Turbo
 		$this->db->query($query);
 
 		$count = $this->db->result('count');
-
 		if ($count == 0) {
 			$file = pathinfo($filename, PATHINFO_FILENAME);
 			$ext = pathinfo($filename, PATHINFO_EXTENSION);
 			$webp = 'webp';
 
 			$resizedImages = glob($this->config->root_dir . $this->config->resized_images_dir . $file . "*." . $ext);
-
 			if (is_array($resizedImages)) {
 				foreach ($resizedImages as $f) {
 					if (is_file($f)) {
-						unlink($f);
+						@unlink($f);
 					}
 				}
 			}
 
 			$resizedImages = glob($this->config->root_dir . $this->config->resized_images_dir . $file . "*." . $webp);
-
 			if (is_array($resizedImages)) {
 				foreach ($resizedImages as $f) {
 					if (is_file($f)) {
-						unlink($f);
+						@unlink($f);
 					}
 				}
 			}
 
-			unlink($this->config->root_dir . $this->config->original_images_dir . $filename);
+			@unlink($this->config->root_dir . $this->config->original_images_dir . $filename);
 		}
 	}
 
@@ -855,6 +880,7 @@ class Products extends Turbo
 		);
 
 		$this->db->query($query);
+
 		return $this->getProduct((int) $this->db->result('id'));
 	}
 
@@ -883,6 +909,7 @@ class Products extends Turbo
 		);
 
 		$this->db->query($query);
+
 		return $this->getProduct((int) $this->db->result('id'));
 	}
 
@@ -901,6 +928,7 @@ class Products extends Turbo
 
 		$query = $this->db->placehold("SELECT * FROM __products_videos WHERE 1 $productIdFilter $groupBy ORDER BY product_id, position");
 		$this->db->query($query);
+
 		$results = $this->db->results();
 
 		foreach ($results as &$video) {
@@ -919,12 +947,14 @@ class Products extends Turbo
 	{
 		$query = $this->db->placehold("SELECT id FROM __products_videos WHERE product_id=? AND link=?", $productId, $link);
 		$this->db->query($query);
-		$id = $this->db->result('id');
 
+		$id = $this->db->result('id');
 		if (empty($id)) {
 			$query = $this->db->placehold("INSERT INTO __products_videos SET product_id=?, link=?", $productId, $link);
 			$this->db->query($query);
+
 			$id = $this->db->insertId();
+
 			$query = $this->db->placehold("UPDATE __products_videos SET position=id WHERE id=?", $id);
 			$this->db->query($query);
 		}
@@ -941,12 +971,14 @@ class Products extends Turbo
 
 		if (!empty($langId)) {
 			$languages = $this->languages->getLanguages();
+			$fileFields = $this->languages->getFields('files');
 			$prdFields = $this->languages->getFields('products');
 			$variantFields = $this->languages->getFields('variants');
 
 			foreach ($languages as $language) {
 				if ($language->id != $langId) {
 					$this->languages->setLangId($language->id);
+
 					if (!empty($prdFields)) {
 						$oldPrd = $this->getProduct($id);
 						$updPrd = new stdClass();
@@ -959,6 +991,21 @@ class Products extends Turbo
 						$this->updateProduct($newId, $updPrd);
 					}
 
+					if (!empty($fileFields)) {
+						$files = $this->files->getFiles(['object_id' => $newId]);
+						$oldFiles = $this->files->getFiles(['object_id' => $id]);
+
+						foreach ($oldFiles as $i => $oldFile) {
+							$updFile = new stdClass();
+
+							foreach ($fileFields as $field) {
+								$updFile->{$field} = $oldFile->{$field};
+							}
+
+							$this->files->updateFile($files[$i]->id, $updFile);
+						}
+					}
+					
 					if (!empty($variantFields)) {
 						$variants = $this->variants->getVariants(['product_id' => $newId]);
 						$oldVariants = $this->variants->getVariants(['product_id' => $id]);
@@ -972,12 +1019,6 @@ class Products extends Turbo
 
 							$this->variants->updateVariant($variants[$i]->id, $updVariant);
 						}
-					}
-
-					$options = $this->features->getOptions(['product_id' => $id]);
-
-					foreach ($options as $option) {
-						$this->features->updateOption($newId, $option->feature_id, $option->value);
 					}
 
 					$this->languages->setLangId($langId);

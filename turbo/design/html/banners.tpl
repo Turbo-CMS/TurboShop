@@ -1,7 +1,7 @@
-{$meta_title=$btr->banners_groups scope=global}
+{$meta_title=$btr->banners_groups_title scope=global}
 
 <div class="d-md-flex mb-3">
-	<h1 class="d-inline align-middle me-3">{$btr->banners_groups|escape}</h1>
+	<h1 class="d-inline align-middle me-3">{$btr->banners_groups_title|escape}</h1>
 	<div class="d-grid gap-2 d-sm-block mt-2 mt-md-0">
 		<a class="btn btn-primary" href="{url module=BannerAdmin return=$smarty.server.REQUEST_URI}"><i data-feather="plus"></i> {$btr->banners_add|escape}</a>
 	</div>

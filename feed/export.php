@@ -34,11 +34,11 @@ print "<categories>";
 foreach ($categories as $category) {
     if (property_exists($category, 'id')) {
         print "<category id='{$category->id}'";
-        
+
         if (property_exists($category, 'parent_id') && $category->parent_id > 0) {
             print " parentId='{$category->parent_id}'";
         }
-        
+
         print ">" . htmlspecialchars($category->name) . "</category>";
     }
 }
@@ -47,7 +47,7 @@ print "</categories>";
 
 $features = [];
 $stockFilter = $turbo->settings->export_export_not_in_stock ? '' : ' AND (v.stock >0 OR v.stock is NULL) ';
-$price_filter = $turbo->settings->export_no_export_without_price ? ' AND v.price >0 ' : '';
+$priceFilter = $turbo->settings->export_no_export_without_price ? ' AND v.price >0 ' : '';
 
 $turbo->db->query("SET SQL_BIG_SELECTS=1");
 $turbo->db->query("
@@ -77,7 +77,9 @@ $turbo->db->query("
     WHERE 
         1 
         AND p.visible 
-        $stockFilter 
+        AND p.to_export
+        $stockFilter
+        $priceFilter 
     GROUP BY v.id 
     ORDER BY p.id, v.position
 ");

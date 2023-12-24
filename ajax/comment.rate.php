@@ -6,6 +6,7 @@ header("Pragma: no-cache");
 header("Expires: -1");
 
 session_start();
+
 require_once '../api/Turbo.php';
 
 $turbo = new Turbo();
@@ -13,7 +14,6 @@ $turbo = new Turbo();
 $output = ['success' => 0, 'value' => 0, 'message' => ''];
 
 if ($turbo->request->isMethod('get') && $turbo->request->get('id') && $turbo->request->get('rate')) {
-
     $commentId = $turbo->request->get('id');
 
     if (!isset($_SESSION['comment_rate_ids'])) {
@@ -34,7 +34,9 @@ if ($turbo->request->isMethod('get') && $turbo->request->get('id') && $turbo->re
     }
 
     $output['value'] = $comment->rate;
+    
     $turbo->comments->updateComment($commentId, $comment);
+
     $_SESSION['comment_rate_ids'][] = $commentId;
 }
 

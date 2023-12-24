@@ -1,6 +1,7 @@
 <?php
 
 session_start();
+
 require_once '../../api/Turbo.php';
 
 class ExportAjax extends Turbo
@@ -12,6 +13,9 @@ class ExportAjax extends Turbo
         'url' => 'URL',
         'visible' => 'Visible',
         'featured' => 'Featured',
+        'is_new' => 'New',
+        'is_hit' => 'Hit',
+        'to_export' => 'Export XML',
         'brand' => 'Brand',
         'variant' => 'Variant',
         'color' => 'Variant color',
@@ -44,17 +48,19 @@ class ExportAjax extends Turbo
         $this->db->query('SET NAMES cp1251');
 
         $page = $this->request->get('page');
+
         if (empty($page) || $page == 1) {
             $page = 1;
 
             if (is_writable($this->exportFilesDir . $this->fileName)) {
-                unlink($this->exportFilesDir . $this->fileName);
+                @unlink($this->exportFilesDir . $this->fileName);
             }
         }
 
         $file = fopen($this->exportFilesDir . $this->fileName, 'ab');
 
         $features = $this->features->getFeatures();
+
         foreach ($features as $feature) {
             $this->columnsNames[$feature->name] = $feature->name;
         }
@@ -188,6 +194,7 @@ class ExportAjax extends Turbo
 }
 
 $exportAjax = new ExportAjax();
+
 $data = $exportAjax->fetch();
 
 if ($data) {
@@ -197,5 +204,6 @@ if ($data) {
     header('Expires: -1');
 
     $json = json_encode($data);
+
     print $json;
 }

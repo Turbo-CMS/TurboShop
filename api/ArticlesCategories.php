@@ -10,7 +10,7 @@ class ArticlesCategories extends Turbo
 	/**
 	 * Get Articles Categories
 	 */
-	public function getArticlesCategories($filter = [])
+	public function getArticlesCategories()
 	{
 		if (!isset($this->articlesCategoriesTree)) {
 			$this->initArticlesCategories();
@@ -76,6 +76,7 @@ class ArticlesCategories extends Turbo
 		}
 
 		$category = (object) $category;
+
 		$result = $this->languages->getDescription($category, 'article_category');
 
 		if (!empty($result->data)) {
@@ -83,6 +84,7 @@ class ArticlesCategories extends Turbo
 		}
 
 		$this->db->query("INSERT INTO __articles_categories SET ?%", $category);
+
 		$id = $this->db->insertId();
 
 		$this->db->query("UPDATE __articles_categories SET position=id WHERE id=?", $id);
@@ -107,13 +109,14 @@ class ArticlesCategories extends Turbo
 		}
 
 		$category = (object) $category;
+
 		$result = $this->languages->getDescription($category, 'article_category');
 
 		if (!empty($result->data)) {
 			$category = $result->data;
 		}
 
-		$query = $this->db->placehold("UPDATE __articles_categories SET `last_modified`=NOW(), ?% WHERE id=? LIMIT 1", $category, (int) $id);
+		$query = $this->db->placehold("UPDATE __articles_categories SET last_modified=NOW(), ?% WHERE id=? LIMIT 1", $category, (int) $id);
 		$this->db->query($query);
 
 		if (!empty($result->description)) {
@@ -186,7 +189,7 @@ class ArticlesCategories extends Turbo
 					if (is_array($resizedImages)) {
 						foreach ($resizedImages as $f) {
 							if (is_file($f)) {
-								unlink($f);
+								@unlink($f);
 							}
 						}
 					}
@@ -196,12 +199,12 @@ class ArticlesCategories extends Turbo
 					if (is_array($resizedImages)) {
 						foreach ($resizedImages as $f) {
 							if (is_file($f)) {
-								unlink($f);
+								@unlink($f);
 							}
 						}
 					}
 
-					unlink($this->config->root_dir . $this->config->categories_images_dir . $filename);
+					@unlink($this->config->root_dir . $this->config->categories_images_dir . $filename);
 				}
 			}
 
@@ -239,7 +242,7 @@ class ArticlesCategories extends Turbo
 				c.last_modified, 
 				$langSql->fields 
 			FROM __articles_categories c 
-			$langSql->join 
+				$langSql->join 
 			ORDER BY c.parent_id, c.position"
 		);
 
@@ -249,6 +252,7 @@ class ArticlesCategories extends Turbo
 			} else {
 				$this->db->query($query);
 				$result = $this->db->results();
+
 				$this->cache->set($query, $result);
 				$articlesCategories = $result;
 			}

@@ -35,7 +35,7 @@
 									</div>
 									<div class="turbo-list-boding turbo-list-check">
 										<label class="form-check">
-											<input class="form-check-input js-check-all-single" type="checkbox" name="check[]" value="{$language->id}">
+											<input class="form-check-input js-check-all-single" type="checkbox" name="check[]" value="{$language->id}" {if $language@first}disabled{/if}>
 										</label>
 									</div>
 									<div class="turbo-list-boding turbo-list-photo turbo-list-languages-photo">
@@ -50,17 +50,19 @@
 									</div>
 									<div class="turbo-list-boding turbo-list-status">
 										<div class="form-check form-switch">
-											<input class="form-check-input js-ajax-action {if $language->enabled}js-active-class{/if}" id="id-{$language->id}" data-module="language" data-action="enabled" data-id="{$language->id}" name="enabled" value="1" type="checkbox" {if $language->enabled}checked="" {/if}>
+											<input class="form-check-input js-ajax-action {if $language->enabled}js-active-class{/if}" id="id-{$language->id}" data-module="language" data-action="enabled" data-id="{$language->id}" name="enabled" value="1" type="checkbox" {if $language->enabled}checked=""{/if}>
 											<label class="form-check-label" for="id-{$language->id}"></label>
 										</div>
 									</div>
-									<div class="turbo-list-boding turbo-list-delete">
-										<div data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
-											<button type="button" class="btn-delete js-remove" data-bs-toggle="modal" data-bs-target="#actionModal" onclick="success_action($(this));">
-												<i class="align-middle" data-feather="trash-2"></i>
-											</button>
+									{if !$language@first}
+										<div class="turbo-list-boding turbo-list-delete">
+											<div data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
+												<button type="button" class="btn-delete js-remove" data-bs-toggle="modal" data-bs-target="#actionModal" onclick="success_action($(this));">
+													<i class="align-middle" data-feather="trash-2"></i>
+												</button>
+											</div>
 										</div>
-									</div>
+									{/if}
 								</div>
 							</div>
 						{/foreach}

@@ -125,7 +125,7 @@
 								{/if}
 								{if isset($keyword)}
 									<li class="sidebar-item active">
-										<a class="sidebar-link" href="{url module=OrdersAdmin keyword=$keyword id=null label=null}">{$btr->global_search_order|escape}</a>
+										<a class="sidebar-link" href="{url module=OrdersAdmin keyword=$keyword id=null label=null}">{$btr->global_search|escape}</a>
 									</li>
 								{/if}
 								{if in_array('labels', $manager->permissions)}
@@ -990,20 +990,20 @@
 			}
 			
 			$(window).on('load', function() {
-				 $(document).on("click", ".card-actions", function() {
-					$(this).closest(".card").find('.collapse-chevron').toggleClass('rotate-180');
-					$(this).closest(".card").find(".collapse-card").slideToggle(500);
+				 $(document).on('click', '.card-actions', function() {
+					$(this).closest('.card').find('.collapse-chevron').toggleClass('rotate-180');
+					$(this).closest('.card').find('.collapse-card').slideToggle(500);
 				});
 				
-				$(document).on("click", ".js-disable-url", function() {
-					if ($(".js-url").attr("readonly")) {
-						$(".js-url").removeAttr("readonly");
+				$(document).on('click', '.js-disable-url', function() {
+					if ($('.js-url').attr('readonly')) {
+						$('.js-url').removeAttr('readonly');
 					} else {
-						$(".js-url").attr("readonly", true);
+						$('.js-url').attr('readonly', true);
 					}
 
-					$(this).find('i').toggleClass("url-unlock");
-					$("#block-translit").trigger("click");
+					$(this).find('i').toggleClass('url-unlock');
+					$('#block-translit').trigger('click');
 				});
 				
 				if (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)) {

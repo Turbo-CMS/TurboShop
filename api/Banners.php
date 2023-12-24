@@ -71,15 +71,15 @@ class Banners extends Turbo
 				bi.visible,
 				$langSql->fields
 			FROM __banners_images bi
-			$langSql->join
-			WHERE 
-				1 
+				$langSql->join
+			WHERE 1 
 				$bannersImagesIdFilter
 				$bannerIdFilter
 				$visibleFilter
-			$groupBy
-			ORDER BY $order 
-			$sqlLimit"
+				$groupBy
+			ORDER BY 
+				$order 
+				$sqlLimit"
 		);
 
 		if ($this->settings->cached == 1 && empty($_SESSION['admin'])) {
@@ -120,8 +120,8 @@ class Banners extends Turbo
 
 		$query = $this->db->placehold(
 			"SELECT COUNT(DISTINCT bi.id) AS count
-			 FROM __banners_images AS bi
-			 WHERE 1 $bannerIdFilter $bannersImagesIdFilter $visibleFilter"
+			FROM __banners_images AS bi
+			WHERE 1 $bannerIdFilter $bannersImagesIdFilter $visibleFilter"
 		);
 
 		if ($this->settings->cached == 1 && empty($_SESSION['admin'])) {
@@ -131,7 +131,6 @@ class Banners extends Turbo
 				if ($this->db->query($query)) {
 					$result = $this->db->result('count');
 					$this->cache->set($query, $result);
-
 					return $result;
 				} else {
 					return false;
@@ -156,35 +155,36 @@ class Banners extends Turbo
 		}
 
 		$bannerIdFilter = $this->db->placehold('AND bi.id=?', (int) $id);
-
 		$languageFields = $this->languages->getQuery(['object' => 'banner_image', 'px' => 'bi']);
 
 		$query = $this->db->placehold(
-			"SELECT bi.id,
-					bi.banner_id,
-					bi.image,
-					bi.background,
-					bi.name,
-					bi.url,
-					bi.color,
-					bi.style,
-					bi.code,
-					bi.button,
-					bi.alt,
-					bi.title,
-					bi.description,
-					bi.position,
-					bi.visible,
-					$languageFields->fields
-			 FROM   __banners_images bi
+			"SELECT 
+				bi.id,
+				bi.banner_id,
+				bi.image,
+				bi.background,
+				bi.name,
+				bi.url,
+				bi.color,
+				bi.style,
+				bi.code,
+				bi.button,
+				bi.alt,
+				bi.title,
+				bi.description,
+				bi.position,
+				bi.visible,
+				$languageFields->fields
+			FROM __banners_images bi
 				$languageFields->join
-			 WHERE  1 
+			WHERE 1 
 				$bannerIdFilter
-			 LIMIT  1",
+			LIMIT 1",
 			$id
 		);
 
 		$this->db->query($query);
+
 		$bannersImage = $this->db->result();
 
 		return $bannersImage;
@@ -196,11 +196,13 @@ class Banners extends Turbo
 	public function addBannersImage($bannersImage)
 	{
 		$bannersImage = (object) $bannersImage;
+
 		$result = $this->languages->getDescription($bannersImage, 'banner_image');
 
-		if ($this->db->query('INSERT INTO __banners_images SET ?%', $bannersImage)) {
+		if ($this->db->query("INSERT INTO __banners_images SET ?%", $bannersImage)) {
 			$id = $this->db->insertId();
-			$this->db->query('UPDATE __banners_images SET position=id WHERE id=?', $id);
+			
+			$this->db->query("UPDATE __banners_images SET position=id WHERE id=?", $id);
 
 			if (!empty($result->description)) {
 				$this->languages->actionDescription($id, $result->description, 'banner_image');
@@ -218,6 +220,7 @@ class Banners extends Turbo
 	public function updateBannersImage($id, $bannersImage)
 	{
 		$bannersImage = (object) $bannersImage;
+
 		$result = $this->languages->getDescription($bannersImage, 'banner_image');
 
 		$query = $this->db->placehold("UPDATE __banners_images SET ?% WHERE id IN(?@) LIMIT ?", $bannersImage, (array) $id, count((array) $id));
@@ -241,10 +244,12 @@ class Banners extends Turbo
 		if (!empty($id)) {
 			$this->deleteImage($id);
 			$this->deleteBackground($id);
+
 			$query = $this->db->placehold("DELETE FROM __banners_images WHERE id=? LIMIT 1", (int) $id);
 
 			if ($this->db->query($query)) {
 				$this->db->query("DELETE FROM __lang_banners_images WHERE banner_image_id=?", (int) $id);
+
 				return true;
 			}
 		}
@@ -283,7 +288,7 @@ class Banners extends Turbo
 					if (is_array($resizedImages)) {
 						foreach ($resizedImages as $f) {
 							if (is_file($f)) {
-								unlink($f);
+								@unlink($f);
 							}
 						}
 					}
@@ -293,12 +298,12 @@ class Banners extends Turbo
 					if (is_array($resizedImages)) {
 						foreach ($resizedImages as $f) {
 							if (is_file($f)) {
-								unlink($f);
+								@unlink($f);
 							}
 						}
 					}
 
-					unlink($this->config->root_dir . $this->config->banners_images_dir . $filename);
+					@unlink($this->config->root_dir . $this->config->banners_images_dir . $filename);
 				}
 			}
 		}
@@ -317,13 +322,12 @@ class Banners extends Turbo
 
 		if (!empty($filenames)) {
 			$query = $this->db->placehold("UPDATE __banners_images SET background=NULL WHERE id=?", $id);
-
 			$this->db->query($query);
 
 			foreach ($filenames as $filename) {
 				$query = $this->db->placehold("SELECT count(*) AS count FROM __banners_images WHERE background=? LIMIT 1", $filename);
-
 				$this->db->query($query);
+
 				$count = $this->db->result('count');
 
 				if ($count == 0) {
@@ -336,7 +340,7 @@ class Banners extends Turbo
 					if (is_array($resizedImages)) {
 						foreach ($resizedImages as $f) {
 							if (is_file($f)) {
-								unlink($f);
+								@unlink($f);
 							}
 						}
 					}
@@ -346,12 +350,12 @@ class Banners extends Turbo
 					if (is_array($resizedImages)) {
 						foreach ($resizedImages as $f) {
 							if (is_file($f)) {
-								unlink($f);
+								@unlink($f);
 							}
 						}
 					}
 
-					unlink($this->config->root_dir . $this->config->banners_images_dir . $filename);
+					@unlink($this->config->root_dir . $this->config->banners_images_dir . $filename);
 				}
 			}
 		}
@@ -418,8 +422,9 @@ class Banners extends Turbo
 
 		$query = $this->db->placehold("SELECT * FROM __banners WHERE 1 $bannerIdFilter $isVisible $showFilter LIMIT 1");
 		$this->db->query($query);
-		$banner = $this->db->result();
 
+		$banner = $this->db->result();
+		
 		return $banner;
 	}
 
@@ -429,6 +434,7 @@ class Banners extends Turbo
 	public function updateBanner($id, $banner)
 	{
 		$query = $this->db->placehold("UPDATE __banners SET ?% WHERE id IN (?@) LIMIT ?", $banner, (array) $id, count((array) $id));
+
 		if ($this->db->query($query)) {
 			return $id;
 		} else {
@@ -446,7 +452,6 @@ class Banners extends Turbo
 		if ($this->db->query("INSERT INTO __banners SET ?%", $banner)) {
 			$id = $this->db->insertId();
 			$this->db->query("UPDATE __banners SET position=id WHERE id=?", $id);
-
 			return $id;
 		} else {
 			return false;
@@ -459,7 +464,8 @@ class Banners extends Turbo
 	public function deleteBanner($id)
 	{
 		if (!empty($id)) {
-			$this->db->query('SELECT id FROM __banners_images WHERE banner_id=?', (int) $id);
+			$this->db->query("SELECT id FROM __banners_images WHERE banner_id=?", (int) $id);
+
 			$bannersImageIds = $this->db->results('id');
 
 			if (!empty($bannersImageIds)) {
@@ -468,8 +474,8 @@ class Banners extends Turbo
 				}
 			}
 
-			$query = $this->db->placehold('DELETE FROM __banners WHERE id=? LIMIT 1', (int) $id);
-
+			$query = $this->db->placehold("DELETE FROM __banners WHERE id=? LIMIT 1", (int) $id);
+			
 			if ($this->db->query($query)) {
 				return true;
 			}

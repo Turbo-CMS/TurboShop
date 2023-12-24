@@ -5,6 +5,7 @@ if (!empty($_SERVER['HTTP_USER_AGENT'])) {
 }
 
 session_start();
+
 chdir('../../');
 require_once 'api/Turbo.php';
 
@@ -19,7 +20,6 @@ $turbo->design->setCompiledDir('turbo/design/compiled');
 
 $result = [];
 
-// Accepting labels to take action on
 if ($turbo->request->isMethod("post")) {
 	$orderId = $turbo->request->post("order_id", "integer");
 	$state = $turbo->request->post("state", "string");
@@ -43,6 +43,7 @@ if ($turbo->request->isMethod("post")) {
 		$order = new stdClass();
 		$order->labels = $turbo->orders->getOrderLabels((array)$orderId);
 		$turbo->design->assign("order", $order);
+
 		$result['data'] = $turbo->design->fetch("labels_ajax.tpl");
 	}
 } else {

@@ -18,11 +18,13 @@ function processPage($page, $menuId, $level, &$newArray, $exclude)
 }
 
 session_start();
+
 require_once '../../api/Turbo.php';
 
 $turbo = new Turbo();
 
 $backendTranslations = $turbo->backendTranslations;
+
 $file = $_SERVER['DOCUMENT_ROOT'] . '/turbo/lang/' . $turbo->settings->lang . '.php';
 
 if (!file_exists($file)) {
@@ -51,6 +53,7 @@ header("Content-type: application/json; charset=UTF-8");
 header("Cache-Control: must-revalidate");
 header("Pragma: no-cache");
 header("Expires: -1");
+
 $json = json_encode($result);
 
 print $json;

@@ -118,24 +118,31 @@
 	<script>
 		$(window).on("load", function() {
 			var new_menu = $('#new-menu').clone(true);
+
 			$('#new-menu').remove().removeAttr('id');
+
 			$('#add-menu').click(function() {
-				$(new_menu).clone(true).appendTo('.turbo-list-body').fadeIn('slow').find("input[name*=name]").focus();
+				$(new_menu).clone(true).appendTo('.turbo-list-body').fadeIn('slow');
 				return false;
 			});
+
 			$(document).on("click", ".js-remove-new-menu", function() {
 				$(this).closest(".turbo-list-body-item").fadeOut(200);
 				$(this).closest(".turbo-list-body-item").remove();
 			});
+
 			var menu_to_delete;
+
 			$(document).on("click", ".js-remove-menu", function() {
 				menu_to_delete = $(this).data("id");
 			});
+
 			$(document).on("click", ".js-delete-menu-confirm", function() {
 				$('input[type="hidden"][name="action"]').val('delete');
 				$('input[type="hidden"][name="action_id"]').val(menu_to_delete);
 				$(".js-form-list").submit();
 			});
+
 			$(".js-form-list").submit(function() {
 				if ($('input[type="hidden"][name="action"]').val() == 'delete' && !confirm) {
 					$('[data-target="#js-menu-delete"]').trigger('click');

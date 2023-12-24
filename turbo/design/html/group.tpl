@@ -74,7 +74,7 @@
 							<div class="mb-3">
 								<div class="form-label">{$btr->global_discount|escape}</div>
 								<div class="input-group">
-									<input name="discount" class="form-control" type="text" value="{if isset($group->discount)}{$group->discount|escape}{/if}">
+									<input name="discount" class="form-control" type="text" value="{if isset($group->discount)}{$group->discount*1}{/if}">
 									<span class="input-group-text">%</span>
 								</div>
 							</div>

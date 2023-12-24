@@ -10,7 +10,7 @@
 				{$page_from = max(1, $current_page-floor($visible_pages/2)-1)}
 			{/if}
 
-			{if $current_page > $pages_count-ceil($visible_pages/2)}
+			{if $current_page > $pages_count-ceil($visible_pages/2)} 
 				{$page_from = max(1, $pages_count-$visible_pages-1)}
 			{/if}
 

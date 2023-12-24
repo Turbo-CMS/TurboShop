@@ -1,6 +1,7 @@
 <?php
 
 session_start();
+
 chdir('../../');
 require_once 'api/Import.php';
 
@@ -108,6 +109,18 @@ class ImportAjax extends Import
 			$product['featured'] = intval($item['featured']);
 		}
 
+		if (isset($item['is_new'])) {
+			$product['is_new'] = intval($item['is_new']);
+		}
+
+		if (isset($item['is_hit'])) {
+			$product['is_hit'] = intval($item['is_hit']);
+		}
+
+		if (isset($item['to_export'])) {
+			$product['to_export'] = intval($item['to_export']);
+		}
+
 		if (!empty($item['url'])) {
 			$product['url'] = trim($item['url']);
 		} elseif (!empty($item['name'])) {
@@ -128,7 +141,7 @@ class ImportAjax extends Import
 
 		if (!empty($item['brand'])) {
 			$item['brand'] = trim($item['brand']);
-			$this->db->query('SELECT id FROM __brands WHERE name=?', $item['brand']);
+			$this->db->query("SELECT id FROM __brands WHERE name=?", $item['brand']);
 
 			if (!$product['brand_id'] = $this->db->result('id')) {
 				$product['brand_id'] = $this->brands->addBrand([
@@ -195,10 +208,10 @@ class ImportAjax extends Import
 
 		if (!empty($variant['sku'])) {
 			$this->db->query(
-				'SELECT v.id AS variant_id, v.product_id 
+				"SELECT v.id AS variant_id, v.product_id 
 				FROM __variants v, __products p 
 				WHERE v.sku=? AND v.product_id=p.id 
-				LIMIT 1',
+				LIMIT 1",
 				$variant['sku']
 			);
 
@@ -222,30 +235,30 @@ class ImportAjax extends Import
 		if ((empty($productId) || empty($variantId)) && isset($item['name'])) {
 			if (!empty($variant['sku']) && empty($variant['name'])) {
 				$this->db->query(
-					'SELECT v.id AS variant_id, p.id AS product_id 
-					 FROM __products p 
-					 LEFT JOIN __variants v ON v.product_id=p.id 
-					 WHERE v.sku=? 
-					 LIMIT 1',
+					"SELECT v.id AS variant_id, p.id AS product_id 
+					FROM __products p 
+					LEFT JOIN __variants v ON v.product_id=p.id 
+					WHERE v.sku=? 
+					LIMIT 1",
 					$variant['sku']
 				);
 			} elseif (isset($item['variant'])) {
 				$this->db->query(
-					'SELECT v.id AS variant_id, p.id AS product_id 
-					 FROM __products p 
-					 LEFT JOIN __variants v ON v.product_id = p.id AND v.sku=? 
-					 WHERE p.name=? 
-					 LIMIT 1',
+					"SELECT v.id AS variant_id, p.id AS product_id 
+					FROM __products p 
+					LEFT JOIN __variants v ON v.product_id=p.id AND v.sku=? 
+					WHERE p.name=? 
+					LIMIT 1",
 					$item['variant'],
 					$item['name']
 				);
 			} else {
 				$this->db->query(
-					'SELECT v.id AS variant_id, p.id AS product_id 
-					 FROM __products p 
-					 LEFT JOIN __variants v ON v.product_id=p.id 
-					 WHERE p.name=? 
-					 LIMIT 1',
+					"SELECT v.id AS variant_id, p.id AS product_id 
+					FROM __products p 
+					LEFT JOIN __variants v ON v.product_id=p.id 
+					WHERE p.name=? 
+					LIMIT 1",
 					$item['name']
 				);
 			}
@@ -266,7 +279,7 @@ class ImportAjax extends Import
 					$productId = $this->products->addProduct($product);
 				}
 
-				$this->db->query('SELECT max(v.position) AS pos FROM __variants v WHERE v.product_id=? LIMIT 1', $productId);
+				$this->db->query("SELECT max(v.position) AS pos FROM __variants v WHERE v.product_id=? LIMIT 1", $productId);
 
 				$pos = $this->db->result('pos');
 
@@ -303,7 +316,7 @@ class ImportAjax extends Import
 						$imageFilename = pathinfo($image, PATHINFO_BASENAME);
 
 						$this->db->query(
-							'SELECT filename FROM __images WHERE product_id=? AND (filename=? OR filename=?) LIMIT 1',
+							"SELECT filename FROM __images WHERE product_id=? AND (filename=? OR filename=?) LIMIT 1",
 							$productId,
 							$imageFilename,
 							$image
@@ -319,23 +332,29 @@ class ImportAjax extends Import
 			foreach ($item as $featureName => $featureValue) {
 				if (!in_array($featureName, $this->internalColumnsNames)) {
 					if ($categoryId && $featureValue !== '') {
-						$this->db->query('SELECT f.id FROM __features f WHERE f.name=? LIMIT 1', $featureName);
+						$this->db->query("SELECT f.id FROM __features f WHERE f.name=? LIMIT 1", $featureName);
 
 						if (!$featureId = $this->db->result('id')) {
-							$featureId = $this->features->addFeature(array('name' => $featureName, 'url' => $this->translit($featureName)));
+							$featureId = $this->features->addFeature(['name' => $featureName, 'url' => $this->translit($featureName)]);
 						}
 
 						if (!empty($featureValue)) {
 							$this->features->addFeatureCategory($featureId, $categoryId);
 
-							while ($this->features->getOptions(array('product_id' => $productId, 'feature_id' => $featureId))) {
-								$this->features->deleteOption($productId, $featureId);
-							}
-
-							$pos = 0;
-
 							foreach (explode('|', $featureValue) as $fValue) {
-								$this->features->updateOption($productId, $featureId, $fValue, $pos++);
+								$this->db->query("SELECT id FROM __options WHERE feature_id=? AND value=? LIMIT 1", $featureId, $fValue);
+								$existingOptionId = $this->db->result('id');
+
+								if ($existingOptionId) {
+									$this->features->addProductOption($productId, $existingOptionId);
+								} else {
+									$option = new stdClass();
+									$option->feature_id = $featureId;
+									$option->value = $fValue;
+									$valueId = $this->features->addOption($option);
+
+									$this->features->addProductOption($productId, $valueId);
+								}
 							}
 						}
 					}
@@ -359,7 +378,8 @@ class ImportAjax extends Import
 			$name = trim(str_replace("\\$delimiter", $delimiter, $name));
 
 			if (!empty($name)) {
-				$this->db->query('SELECT id FROM __categories WHERE name=? AND parent_id=?', $name, $parent);
+				$this->db->query("SELECT id FROM __categories WHERE name=? AND parent_id=?", $name, $parent);
+
 				$id = $this->db->result('id');
 
 				if (empty($id)) {
@@ -394,6 +414,7 @@ class ImportAjax extends Import
 }
 
 $importAjax = new ImportAjax();
+
 $data = $importAjax->import();
 
 if ($data) {
@@ -403,5 +424,6 @@ if ($data) {
 	header("Expires: -1");
 
 	$json = json_encode($data);
+
 	print $json;
 }

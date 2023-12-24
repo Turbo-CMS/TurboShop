@@ -33,7 +33,6 @@
 		<meta property="og:description" content='{$product->annotation|strip_tags|escape}'>
 		<meta property="og:image" content="{if isset($product->image)}{$product->image->filename|resize:330:300}{/if}">
 		<link rel="image_src" href="{if isset($product->image)}{$product->image->filename|resize:330:300}{/if}">
-		{* Twitter *}
 		<meta name="twitter:card" content="product">
 		<meta name="twitter:url" content="{$config->root_url}{$canonical}">
 		<meta name="twitter:site" content="{$settings->site_name|escape}">
@@ -54,7 +53,6 @@
 			<meta name="twitter:image" content="{$config->root_url}/design/{$settings->theme|escape}/images/logo.png">
 		{/if}
 		<meta property="og:description" content='{$post->annotation|strip_tags|escape}'>
-		{* Twitter *}
 		<meta name="twitter:card" content="summary">
 		<meta name="twitter:title" content="{$post->name|escape}">
 		<meta name="twitter:description" content="{$post->annotation|strip_tags|escape}">
@@ -71,7 +69,6 @@
 			<meta name="twitter:image" content="{$config->root_url}/design/{$settings->theme|escape}/images/logo.png">
 		{/if}
 		<meta property="og:description" content='{$post->annotation|strip_tags|escape}'>
-		{* Twitter *}
 		<meta name="twitter:card" content="summary">
 		<meta name="twitter:title" content="{$post->name|escape}">
 		<meta name="twitter:description" content="{$post->annotation|strip_tags|escape}">
@@ -88,7 +85,6 @@
 			<meta property="og:description" content="{($auto_meta->description|default:$meta_description)|escape}">
 		{/if}
 		<link rel="image_src" href="{$config->root_url}/design/{$settings->theme|escape}/images/logo.png">
-		{* Twitter *}
 		<meta name="twitter:card" content="summary">
 		<meta name="twitter:title" content="{$settings->site_name|escape}">
 		{if $seo->seo_automation == "on"}

@@ -30,7 +30,7 @@
 										<div class="turbo-list-row narrow">
 											<div class="turbo-list-boding turbo-list-check">
 												<label class="form-check">
-													<input class="form-check-input js-check-all-single" type="checkbox" name="check[]" value="{$m->login|escape}">
+													<input class="form-check-input js-check-all-single" type="checkbox" name="check[]" value="{$m->login|escape}" {if $manager->login == $m->login}disabled{/if}>
 												</label>
 											</div>
 
@@ -41,7 +41,7 @@
 											</div>
 											{if $manager->login != $m->login}
 												<div class="turbo-list-boding turbo-list-delete">
-													<div data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->managers_delete|escape}">
+													<div data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
 														<button type="button" class="btn-delete js-remove" data-bs-toggle="modal" data-bs-target="#actionModal" onclick="success_action($(this));">
 															<i class="align-middle" data-feather="trash-2"></i>
 														</button>

@@ -16,7 +16,7 @@
 		<form class="search mb-3" method="get">
 			<input type="hidden" name="module" value="CommentsAdmin">
 			<div class="input-group">
-				<input name="keyword" class="form-control" placeholder="{$btr->feedbacks_search|escape}" type="text" value="{if isset($keyword)}{$keyword|escape}{/if}">
+				<input name="keyword" class="form-control" placeholder="{$btr->global_search|escape}" type="text" value="{if isset($keyword)}{$keyword|escape}{/if}">
 				<button class="btn btn-primary" type="submit"><i class="align-middle mt-n1" data-feather="search"></i></button>
 			</div>
 		</form>
@@ -81,7 +81,7 @@
 												{/if}
 											</div>
 											<div class="turbo-list-boding turbo-list-delete">
-												<div data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete_request|escape}">
+												<div data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
 													<button type="button" class="btn-delete js-remove" data-bs-toggle="modal" data-bs-target="#actionModal" onclick="success_action($(this));">
 														<i class="align-middle" data-feather="trash-2"></i>
 													</button>

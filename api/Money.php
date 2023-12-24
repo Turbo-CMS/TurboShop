@@ -36,14 +36,14 @@ class Money extends Turbo
 				c.position, 
 				c.enabled, 
 				$langSql->fields
-			FROM 
-				__currencies c 
+			FROM __currencies c 
 				$langSql->join 
 			ORDER BY 
 				position"
 		);
 
 		$this->db->query($query);
+
 		$results = $this->db->results();
 
 		foreach ($results as $c) {
@@ -59,6 +59,7 @@ class Money extends Turbo
 	public function getCurrencies($filter = [])
 	{
 		$currencies = [];
+
 		foreach ($this->currencies as $id => $currency) {
 			if ((isset($filter['enabled']) && $filter['enabled'] == 1 && $currency->enabled) || empty($filter['enabled'])) {
 				$currencies[$id] = $currency;
@@ -95,7 +96,7 @@ class Money extends Turbo
 	{
 		$currency = (object) $currency;
 		$result = $this->languages->getDescription($currency, 'currency');
-		$query = $this->db->placehold('INSERT INTO __currencies SET ?%', $currency);
+		$query = $this->db->placehold("INSERT INTO __currencies SET ?%", $currency);
 
 		if (!$this->db->query($query)) {
 			return false;
@@ -108,6 +109,7 @@ class Money extends Turbo
 		}
 
 		$this->db->query("UPDATE __currencies SET position=id WHERE id=?", $id);
+
 		$this->initCurrencies();
 
 		return $id;
@@ -120,7 +122,7 @@ class Money extends Turbo
 	{
 		$currency = (object) $currency;
 		$result = $this->languages->getDescription($currency, 'currency');
-		$query = $this->db->placehold('UPDATE __currencies SET ?% WHERE id in (?@)', $currency, (array) $id);
+		$query = $this->db->placehold("UPDATE __currencies SET ?% WHERE id in (?@)", $currency, (array) $id);
 
 		if (!$this->db->query($query)) {
 			return false;
@@ -143,6 +145,7 @@ class Money extends Turbo
 		if (!empty($id)) {
 			$query = $this->db->placehold("DELETE FROM __currencies WHERE id=? LIMIT 1", (int) $id);
 			$this->db->query($query);
+
 			$this->db->query("DELETE FROM __lang_currencies WHERE currency_id=?", (int) $id);
 		}
 

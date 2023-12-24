@@ -13,7 +13,7 @@ class Users extends Turbo
 	{
 		$limit = 1000;
 		$page = 1;
-
+		$order = 'u.name';
 		$groupIdFilter = '';
 		$keywordFilter = '';
 
@@ -35,8 +35,6 @@ class Users extends Turbo
 				$keywordFilter .= $this->db->placehold('AND (u.name LIKE "%' . $this->db->escape(trim($keyword)) . '%" OR u.email LIKE "%' . $this->db->escape(trim($keyword)) . '%"  OR u.last_ip LIKE "%' . $this->db->escape(trim($keyword)) . '%")');
 			}
 		}
-
-		$order = 'u.name';
 
 		if (!empty($filter['sort'])) {
 			switch ($filter['sort']) {
@@ -104,7 +102,7 @@ class Users extends Turbo
 		$query = $this->db->placehold(
 			"SELECT COUNT(*) AS count 
 			 FROM __users u
-			 LEFT JOIN __groups g ON u.group_id = g.id 
+			 LEFT JOIN __groups g ON u.group_id=g.id 
 			 WHERE 1 $groupIdFilter $keywordFilter"
 		);
 
@@ -137,11 +135,10 @@ class Users extends Turbo
 				u.created,
 				g.discount,
 				g.name AS group_name
-			 FROM
-				__users u
+			 FROM __users u
 			 LEFT JOIN
 				__groups g ON u.group_id=g.id
-			 $where
+			 	$where
 			 LIMIT 1",
 			$id
 		);
@@ -169,7 +166,7 @@ class Users extends Turbo
 			$user['password'] = md5($this->salt . $user['password'] . md5($user['password']));
 		}
 
-		$query = $this->db->placehold('SELECT COUNT(*) AS count FROM __users WHERE email=?', $user['email']);
+		$query = $this->db->placehold("SELECT COUNT(*) AS count FROM __users WHERE email=?", $user['email']);
 		$this->db->query($query);
 
 		if ($this->db->result('count') > 0) {
@@ -235,6 +232,7 @@ class Users extends Turbo
 	{
 		$query = $this->db->placehold("SELECT * FROM __groups WHERE id=? LIMIT 1", $id);
 		$this->db->query($query);
+
 		$group = $this->db->result();
 
 		return $group;

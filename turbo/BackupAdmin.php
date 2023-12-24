@@ -46,7 +46,7 @@ class BackupAdmin extends Turbo
 							trigger_error('Can\'t read the file /temp/turbo.sql');
 						} else {
 							$this->db->restore($dir . 'turbo.sql');
-							unlink($dir . 'turbo.sql');
+							@unlink($dir . 'turbo.sql');
 							$this->design->assign('message_success', 'restored');
 						}
 
@@ -56,7 +56,7 @@ class BackupAdmin extends Turbo
 						$names = $this->request->post('check');
 
 						foreach ($names as $name) {
-							unlink($dir . $name);
+							@unlink($dir . $name);
 						}
 
 						break;
@@ -102,7 +102,7 @@ class BackupAdmin extends Turbo
 					$this->cleanDirectory($fullpath);
 					rmdir($fullpath);
 				} else {
-					unlink($fullpath);
+					@unlink($fullpath);
 				}
 			}
 		}

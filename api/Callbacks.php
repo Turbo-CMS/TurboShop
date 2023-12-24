@@ -17,10 +17,8 @@ class Callbacks extends Turbo
                 c.processed, 
                 c.message, 
                 c.date 
-            FROM 
-                __callbacks c 
-            WHERE 
-                id=? 
+            FROM __callbacks c 
+            WHERE id=? 
             LIMIT 1",
             (int) $id
         );
@@ -69,16 +67,16 @@ class Callbacks extends Turbo
                 c.date, 
                 c.processed, 
                 c.message
-            FROM 
-                __callbacks c 
-            WHERE 
-                1 $processed 
+            FROM __callbacks c 
+            WHERE 1 
+                $processed 
             ORDER BY 
                 c.id $sort 
-            $sqlLimit"
+                $sqlLimit"
         );
 
         $this->db->query($query);
+        
         return $this->db->results();
     }
 
@@ -108,6 +106,7 @@ class Callbacks extends Turbo
         );
 
         $this->db->query($query);
+
         return $this->db->result('count');
     }
 
@@ -123,6 +122,7 @@ class Callbacks extends Turbo
         }
 
         $id = $this->db->insertId();
+
         return $id;
     }
 

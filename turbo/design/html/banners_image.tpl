@@ -1,7 +1,7 @@
 {if isset($banners_image->id)}
 	{$meta_title = $banners_image->name scope=global}
 {else}
-	{$meta_title = $btr->banners_image_add_banner  scope=global}
+	{$meta_title = $btr->banners_image_new_banner scope=global}
 {/if}
 
 <h1 class="mb-3">

@@ -30,8 +30,9 @@ class Features extends Turbo
 
 		if (isset($filter['keyword'])) {
 			$keywords = explode(' ', $filter['keyword']);
-			foreach ($keywords as $keyword)
+			foreach ($keywords as $keyword) {
 				$keywordFilter .= $this->db->placehold('AND (' . $px . '.name LIKE "%' . $this->db->escape(trim($keyword)) . '%") ');
+			}
 		}
 
 		$sqlLimit = $this->db->placehold('LIMIT ?, ?', ($page - 1) * $limit, $limit);
@@ -61,8 +62,8 @@ class Features extends Turbo
 				f.is_color,
 				f.is_size,
 				$langSql->fields
-			FROM __features AS f
-			$langSql->join
+			FROM __features f
+				$langSql->join
 			WHERE 1
 				$categoryIdFilter
 				$inFilter
@@ -70,7 +71,7 @@ class Features extends Turbo
 				$keywordFilter
 			ORDER BY
 				f.position
-			$sqlLimit"
+				$sqlLimit"
 		);
 
 		if ($this->settings->cached == 1 && empty($_SESSION['admin'])) {
@@ -91,29 +92,32 @@ class Features extends Turbo
 	/**
 	 * Count Features
 	 */
-	public function countFeatures($filters = [])
+	public function countFeatures($filter = [])
 	{
 		$idFilter = '';
 		$keywordFilter = '';
 		$inFilterFilter = '';
 		$categoryIdFilter = '';
 
-		if (isset($filters['category_id'])) {
-			$categoryIdFilter = $this->db->placehold('AND id IN(SELECT feature_id FROM __categories_features AS cf WHERE cf.category_id IN(?@))', (array) $filters['category_id']);
+		$langId = $this->languages->langId();
+		$px = ($langId ? 'l' : 'f');
+
+		if (isset($filter['category_id'])) {
+			$categoryIdFilter = $this->db->placehold('AND id IN(SELECT feature_id FROM __categories_features AS cf WHERE cf.category_id IN(?@))', (array) $filter['category_id']);
 		}
 
-		if (isset($filters['in_filter'])) {
-			$inFilterFilter = $this->db->placehold('AND f.in_filter=?', (int) $filters['in_filter']);
+		if (isset($filter['in_filter'])) {
+			$inFilterFilter = $this->db->placehold('AND f.in_filter=?', (int) $filter['in_filter']);
 		}
 
-		if (!empty($filters['id'])) {
-			$idFilter = $this->db->placehold('AND f.id IN(?@)', (array) $filters['id']);
+		if (!empty($filter['id'])) {
+			$idFilter = $this->db->placehold('AND f.id IN(?@)', (array) $filter['id']);
 		}
 
-		if (isset($filters['keyword'])) {
-			$keywords = explode(' ', $filters['keyword']);
+		if (isset($filter['keyword'])) {
+			$keywords = explode(' ', $filter['keyword']);
 			foreach ($keywords as $keyword) {
-				$keywordFilter .= $this->db->placehold('AND (f.name LIKE "%' . $this->db->escape(trim($keyword)) . '%") ');
+				$keywordFilter .= $this->db->placehold('AND (' . $px . '.name LIKE "%' . $this->db->escape(trim($keyword)) . '%") ');
 			}
 		}
 
@@ -174,8 +178,7 @@ class Features extends Turbo
 				f.is_color, 
 				f.is_size, 
 				$langSql->fields 
-			FROM 
-				__features f 
+			FROM __features f 
 				$langSql->join 
 			WHERE 
 				$where 
@@ -202,11 +205,9 @@ class Features extends Turbo
 				f.is_color, 
 				f.is_size, 
 				$langSql->fields 
-			FROM 
-				__features f 
+			FROM __features f 
 				$langSql->join 
-			WHERE 
-				id=? 
+			WHERE id=? 
 			LIMIT 1",
 			$id
 		);
@@ -251,15 +252,15 @@ class Features extends Turbo
 		}
 
 		$feature = (object) $feature;
+
 		$result = $this->languages->getDescription($feature, 'feature');
 
 		$query = $this->db->placehold("INSERT INTO __features SET ?%", $feature);
-
 		$this->db->query($query);
+
 		$id = $this->db->insertId();
 
 		$query = $this->db->placehold("UPDATE __features SET position=id WHERE id=? LIMIT 1", $id);
-
 		$this->db->query($query);
 
 		if (!empty($result->description)) {
@@ -281,7 +282,6 @@ class Features extends Turbo
 		}
 
 		$query = $this->db->placehold("UPDATE __features SET ?% WHERE id IN(?@) LIMIT ?", (array) $feature, (array) $id, count((array) $id));
-
 		$this->db->query($query);
 
 		if (!empty($result->description)) {
@@ -297,63 +297,21 @@ class Features extends Turbo
 	public function deleteFeature($id = [])
 	{
 		if (!empty($id)) {
-			$query = $this->db->placehold('DELETE FROM __features WHERE id=? LIMIT 1', (int) $id);
-
+			$query = $this->db->placehold("DELETE FROM __features WHERE id=? LIMIT 1", (int) $id);
 			$this->db->query($query);
 
-			$query = $this->db->placehold('DELETE FROM __options WHERE feature_id=?', (int) $id);
+			$options = $this->getOptions(['feature_id' => $id]);
 
+			foreach ($options as $option) {
+				$this->deleteOption($option->id);
+			}
+
+			$query = $this->db->placehold("DELETE FROM __categories_features WHERE feature_id=?", (int) $id);
 			$this->db->query($query);
 
-			$query = $this->db->placehold('DELETE FROM __categories_features WHERE feature_id=?', (int) $id);
-
-			$this->db->query($query);
-
-			$query = $this->db->placehold('DELETE FROM __lang_features WHERE feature_id=?', (int) $id);
-
+			$query = $this->db->placehold("DELETE FROM __lang_features WHERE feature_id=?", (int) $id);
 			$this->db->query($query);
 		}
-	}
-
-	/**
-	 * Delete Option
-	 */
-	public function deleteOption($productId, $featureId)
-	{
-		$langId = $this->languages->langId();
-		$whereLang = '';
-
-		if ($langId) {
-			$whereLang = $this->db->placehold('AND lang_id=?', $langId);
-		}
-
-		$query = $this->db->placehold('DELETE FROM __options WHERE product_id=? AND feature_id=? ' . $whereLang . ' LIMIT 1', $productId, $featureId);
-		$this->db->query($query);
-	}
-
-	/**
-	 * Update Option
-	 */
-	public function updateOption($productId, $featureId, $value, $translit = '')
-	{
-		$langId = $this->languages->langId();
-		$whereLang = '';
-		$intoLang = '';
-
-		if ($langId) {
-			$whereLang = $this->db->placehold("AND lang_id=?", $langId);
-			$intoLang = $this->db->placehold("lang_id=?, ", $langId);
-		}
-
-		$translit = isset($translit) ? $translit : '';
-
-		if ($value != '') {
-			$query = $this->db->placehold("REPLACE INTO __options SET " . $intoLang . " value=?, product_id=?, feature_id=?, translit=?", $value, (int) $productId, (int) $featureId, ($translit != '' ? $translit : $this->translit($value)));
-		} else {
-			$query = $this->db->placehold("DELETE FROM __options WHERE feature_id=? AND product_id=? " . $whereLang . "", (int) $featureId, (int) $productId);
-		}
-
-		return $this->db->query($query);
 	}
 
 	/**
@@ -362,7 +320,6 @@ class Features extends Turbo
 	public function addFeatureCategory($id, $categoryId)
 	{
 		$query = $this->db->placehold("INSERT IGNORE INTO __categories_features SET feature_id=?, category_id=?", $id, $categoryId);
-
 		$this->db->query($query);
 	}
 
@@ -372,6 +329,7 @@ class Features extends Turbo
 	public function updateFeatureCategories($id, $categories)
 	{
 		$id = (int) $id;
+
 		$query = $this->db->placehold("DELETE FROM __categories_features WHERE feature_id=?", $id);
 		$this->db->query($query);
 
@@ -387,7 +345,8 @@ class Features extends Turbo
 
 			$query = $this->db->placehold(
 				"DELETE o FROM __options o
-				LEFT JOIN __products_categories pc ON pc.product_id=o.product_id
+				LEFT JOIN __products_options AS po ON po.option_id=o.id	
+				LEFT JOIN __products_categories pc ON pc.product_id=po.product_id
 				WHERE o.feature_id=?
 				AND pc.position=(SELECT MIN(pc2.position) FROM __products_categories pc2 WHERE pc.product_id=pc2.product_id)
 				AND pc.category_id NOT IN(?@)",
@@ -403,10 +362,112 @@ class Features extends Turbo
 	}
 
 	/**
+	 * Add Option
+	 */
+	public function addOption($option)
+	{
+		$option = (object) $option;
+
+		if (empty($option->value) || empty($option->feature_id)) {
+			return false;
+		}
+
+		$option->value = trim($option->value);
+
+		if (empty($option->translit)) {
+			$option->translit = $this->translit($option->value);
+		}
+
+		$option->translit = $this->translit($option->translit);
+
+		$result = $this->languages->getDescription($option, 'option', false);
+
+		if ($this->db->query("INSERT INTO __options SET ?%", $option)) {
+			$id = $this->db->insertId();
+
+			if (empty($option->position)) {
+				$this->db->query("UPDATE __options SET position=id WHERE id=?", $id);
+			}
+
+			if (!empty($result->description)) {
+
+				if (!empty($option->feature_id)) {
+					$result->description->feature_id = $option->feature_id;
+				}
+
+				$this->languages->actionDescription($id, $result->description, 'option');
+			}
+
+			return $id;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Update Option
+	 */
+	public function updateOption($id, $option)
+	{
+		$option = (object) $option;
+
+		if (!empty($option->value)) {
+			$option->value = trim($option->value);
+		}
+
+		if (!empty($option->translit)) {
+			$option->translit = $this->translit($option->translit);
+		}
+
+		$result = $this->languages->getDescription($option, 'option');
+
+		if (empty($option->translit) && !empty($option->value)) {
+			$option->translit = $this->translit($option->value);
+		}
+
+		if (!empty((array)$option)) {
+			$query = $this->db->placehold("UPDATE __options SET ?% WHERE id=? LIMIT 1", $option, (int) $id);
+			$this->db->query($query);
+		}
+
+		if (!empty($result->description)) {
+
+			if (!empty($option->feature_id)) {
+				$result->description->feature_id = $option->feature_id;
+			}
+
+			$this->languages->actionDescription($id, $result->description, 'option', $this->languages->langId());
+		}
+
+		return $id;
+	}
+
+	/**
+	 * Delete Option
+	 */
+	public function deleteOption($id)
+	{
+		if (!empty($id)) {
+			$query = $this->db->placehold("DELETE FROM __options WHERE id=? LIMIT 1", (int) $id);
+			$this->db->query($query);
+
+			$query = $this->db->placehold("DELETE FROM __lang_options WHERE option_id=?", (int) $id);
+			$this->db->query($query);
+
+			$query = $this->db->placehold("DELETE FROM __products_options WHERE option_id=?", (int) $id);
+			$this->db->query($query);
+		}
+	}
+
+	/**
 	 * Get Options
 	 */
 	public function getOptions($filter = [])
 	{
+		$page = 1;
+		$limit = 0;
+		$sqlLimit = '';
+		$optionIdFilter = '';
 		$visibleFilter = '';
 		$brandIdFilter = '';
 		$featuresFilter = '';
@@ -414,12 +475,30 @@ class Features extends Turbo
 		$featureIdFilter = '';
 		$categoryIdFilter = '';
 
+		if (isset($filter['limit'])) {
+			$limit = max(1, (int) $filter['limit']);
+		}
+
+		if (isset($filter['page'])) {
+			$page = max(1, (int) $filter['page']);
+		}
+
+		if ($limit) {
+			$sqlLimit = $this->db->placehold('LIMIT ?, ?', ($page - 1) * $limit, $limit);
+		} else {
+			$sqlLimit = '';
+		}
+
+		if (!empty($filter['id'])) {
+			$optionIdFilter = $this->db->placehold('AND o.id IN(?@)', (array) $filter['id']);
+		}
+
 		if (empty($filter['feature_id']) && empty($filter['product_id'])) {
 			return [];
 		}
 
 		if (isset($filter['feature_id'])) {
-			$featureIdFilter = $this->db->placehold('AND po.feature_id IN(?@)', (array) $filter['feature_id']);
+			$featureIdFilter = $this->db->placehold('AND o.feature_id IN(?@)', (array) $filter['feature_id']);
 		}
 
 		if (isset($filter['product_id'])) {
@@ -427,7 +506,7 @@ class Features extends Turbo
 		}
 
 		if (isset($filter['category_id'])) {
-			$categoryIdFilter = $this->db->placehold('INNER JOIN __products_categories pc ON pc.product_id=po.product_id AND pc.category_id in(?@)', (array) $filter['category_id']);
+			$categoryIdFilter = $this->db->placehold('INNER JOIN __products_categories pc ON pc.product_id=po.product_id AND pc.category_id IN(?@)', (array) $filter['category_id']);
 		}
 
 		if (isset($filter['visible'])) {
@@ -435,51 +514,49 @@ class Features extends Turbo
 		}
 
 		if (isset($filter['brand_id'])) {
-			$brandIdFilter = $this->db->placehold('AND po.product_id in(SELECT id FROM __products WHERE brand_id in(?@))', (array) $filter['brand_id']);
+			$brandIdFilter = $this->db->placehold('AND po.product_id IN(SELECT id FROM __products WHERE brand_id IN(?@))', (array) $filter['brand_id']);
 		}
 
 		if (isset($filter['features'])) {
 			foreach ($filter['features'] as $feature => $value) {
-				$featuresFilter .= $this->db->placehold('AND (po.feature_id=? OR po.product_id IN (SELECT product_id FROM t_options WHERE feature_id=? AND translit IN(?@)))', $feature, $feature, $value);
+				$featuresFilter .= $this->db->placehold('AND (o.feature_id=? OR po.product_id IN (SELECT po.product_id FROM __products_options AS po LEFT JOIN __options AS o ON o.id=po.option_id WHERE feature_id=? AND translit IN(?@)))', $feature, $feature, $value);
 			}
 		}
 
-		$langId = $this->languages->langId();
-		$whereLang = '';
-
-		if ($langId) {
-			$whereLang = $this->db->placehold("AND po.lang_id=?", $langId);
-		}
+		$langSql = $this->languages->getQuery(['object' => 'option']);
 
 		$query = $this->db->placehold(
 			"SELECT 
-				po.product_id, 
-				po.feature_id, 
-				po.value, 
-				po.translit, 
-				COUNT(po.product_id) AS count
-			FROM 
-				__options po
-			$visibleFilter
-			$categoryIdFilter
-			WHERE 
-				1 
-				$whereLang 
+				o.id, 
+				o.feature_id, 
+				o.value, 
+				o.translit,
+				o.position, 
+				COUNT(po.product_id) AS count, 
+				$langSql->fields
+			FROM __options o
+			LEFT JOIN __products_options AS po ON po.option_id=o.id	
+				$langSql->join	
+				$visibleFilter
+				$categoryIdFilter
+			WHERE 1
+				$optionIdFilter 
 				$featureIdFilter 
 				$productIdFilter 
 				$brandIdFilter 
 				$featuresFilter 
 			GROUP BY 
-				po.feature_id, po.value 
+				o.feature_id, o.value 
 			ORDER BY 
-				po.value = 0, 
-				-po.value DESC, 
-				po.value"
+				o.position,
+				o.value = 0, 
+				-o.value DESC, 
+				o.value
+				$sqlLimit"
 		);
 
 		if ($this->settings->cached == 1 && empty($_SESSION['admin'])) {
 			$result = $this->cache->get($query);
-
 			if ($result) {
 				return $result;
 			} else {
@@ -495,18 +572,64 @@ class Features extends Turbo
 	}
 
 	/**
+	 * Count Options
+	 */
+	public function countOptions($filter = [])
+	{
+		$optionIdFilter = '';
+		$featureIdFilter = '';
+
+		if (!empty($filter['id'])) {
+			$optionIdFilter = $this->db->placehold('AND o.id IN(?@)', (array) $filter['id']);
+		}
+
+		if (isset($filter['feature_id'])) {
+			$featureIdFilter = $this->db->placehold('AND o.feature_id IN(?@)', (array) $filter['feature_id']);
+		}
+
+		$langSql = $this->languages->getQuery(['object' => 'option']);
+
+		$query = $this->db->placehold(
+			"SELECT COUNT(DISTINCT o.id) AS count 
+			FROM __options AS o 
+				$langSql->join
+			WHERE 1
+				$optionIdFilter
+				$featureIdFilter"
+		);
+
+		if ($this->settings->cached == 1 && empty($_SESSION['admin'])) {
+			if ($result = $this->cache->get($query)) {
+				return $result;
+			} else {
+				if ($this->db->query($query)) {
+					$result = $this->db->result('count');
+					$this->cache->set($query, $result);
+					return $result;
+				} else {
+					return false;
+				}
+			}
+		} else {
+			if ($this->db->query($query)) {
+				return $this->db->result('count');
+			} else {
+				return false;
+			}
+		}
+	}
+
+	/**
 	 * Get Product Options
 	 */
 	public function getProductOptions($productId)
 	{
 		$langId = $this->languages->langId();
-		$langIdFilter = '';
+		$px = ($langId ? 'l' : 'o');
+		$fpx = ($langId ? 'lf' : 'f');
 
-		if ($langId) {
-			$langIdFilter = $this->db->placehold("AND po.lang_id=?", $langId);
-		}
-
-		$langSql = $this->languages->getQuery(['object' => 'feature', 'px' => 'f']);
+		$langOptionsSql = $this->languages->getQuery(['object' => 'option', 'px_lang' => $px, 'px' => 'o']);
+		$langFeaturesSql = $this->languages->getQuery(['object' => 'feature', 'px_lang' => $fpx, 'px' => 'f']);
 
 		$query = $this->db->placehold(
 			"SELECT
@@ -514,16 +637,19 @@ class Features extends Turbo
 				f.name,
 				f.is_color,
 				f.is_size,
-				po.value,
+				o.id,
+				o.value,
+				o.translit,
 				po.product_id,
-				po.translit,
-				$langSql->fields
-			FROM __options po
-			LEFT JOIN __features f ON f.id = po.feature_id
-			$langSql->join
+				$langOptionsSql->fields,
+                $langFeaturesSql->fields
+			FROM __options o
+			LEFT JOIN __features f ON f.id = o.feature_id
+			LEFT JOIN __products_options AS po ON po.option_id=o.id	
+				$langOptionsSql->join
+            	$langFeaturesSql->join
 			WHERE po.product_id IN(?@)
-				$langIdFilter
-			ORDER BY f.position",
+			ORDER BY f.position, o.position",
 			(array) $productId
 		);
 
@@ -531,6 +657,95 @@ class Features extends Turbo
 		$res = $this->db->results();
 
 		return $res;
+	}
+
+	/**
+	 * Add Product Option
+	 */
+	public function addProductOption($productId, $valueId)
+	{
+
+		if (empty($productId) || empty($valueId)) {
+			return false;
+		}
+
+		$query = $this->db->placehold("INSERT IGNORE INTO __products_options SET product_id=?, option_id=?", $productId, $valueId);
+
+		if ($this->db->query($query)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Get Product Option ID
+	 */
+	public function getProductOptionId($productId)
+	{
+
+		if (empty($productId)) {
+			return false;
+		}
+
+		$query = $this->db->placehold(
+			"SELECT 
+				product_id, 
+				option_id
+			FROM __products_options
+			WHERE 
+				product_id IN(?@)",
+			(array) $productId
+		);
+
+		if ($this->db->query($query)) {
+			return $this->db->results();
+		}
+
+		return false;
+	}
+
+	/**
+	 * Delete Product Options
+	 */
+	public function deleteProductOption($productId, $valueId = null, $featureId = null)
+	{
+		$productIdFilter = '';
+		$valueIdFilter = '';
+		$featureIdFilter = '';
+		$featureIdJoin = '';
+
+		if (empty($productId) && empty($valueId) && empty($featureId)) {
+			return false;
+		}
+
+		if (!empty($productId)) {
+			$productIdFilter = $this->db->placehold("AND po.product_id IN(?@)", (array) $productId);
+		}
+
+		if (!empty($valueId)) {
+			$valueIdFilter = $this->db->placehold("AND po.option_id IN(?@)", (array) $valueId);
+		}
+
+		if (!empty($featureId)) {
+			$featureIdFilter = $this->db->placehold("AND o.feature_id IN(?@)", (array) $featureId);
+			$featureIdJoin  = $this->db->placehold("INNER JOIN __options AS o ON po.option_id=o.id");
+		}
+
+		$query = $this->db->placehold(
+			"DELETE po FROM __products_options AS po
+				$featureIdJoin 
+			WHERE 1 
+				$productIdFilter
+				$valueIdFilter
+				$featureIdFilter"
+		);
+
+		if ($this->db->query($query)) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**

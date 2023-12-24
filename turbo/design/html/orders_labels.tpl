@@ -3,7 +3,7 @@
 <div class="d-md-flex mb-3">
 	<h1 class="d-inline align-middle me-3">{$btr->order_settings_labels|escape}</h1>
 	<div class="d-grid gap-2 d-sm-block mt-2 mt-md-0">
-		<a class="btn btn-primary" href="{url module=OrdersLabelAdmin}"><i data-feather="plus"></i> {$btr->order_settings_add_label|escape}</a>
+		<a class="btn btn-primary" href="{url module=OrdersLabelAdmin return=$smarty.server.REQUEST_URI}"><i data-feather="plus"></i> {$btr->order_settings_add_label|escape}</a>
 	</div>
 </div>
 

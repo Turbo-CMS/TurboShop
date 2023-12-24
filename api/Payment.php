@@ -24,13 +24,15 @@ class Payment extends Turbo
 		$langSql = $this->languages->getQuery(['object' => 'payment']);
 
 		$query = $this->db->placehold(
-			"SELECT *, $langSql->fields
+			"SELECT *, 
+				$langSql->fields
 			FROM __payment_methods p
-			$langSql->join
+				$langSql->join
 			WHERE 1 
 				$deliveryFilter
 				$enabledFilter
-			ORDER BY p.position"
+			ORDER BY 
+				p.position"
 		);
 
 		$this->db->query($query);
@@ -77,7 +79,6 @@ class Payment extends Turbo
 	public function getPaymentModules()
 	{
 		$modulesDir = $this->config->root_dir . 'payment/';
-
 		$modules = [];
 		$handler = opendir($modulesDir);
 
@@ -209,9 +210,10 @@ class Payment extends Turbo
 	public function addPaymentMethod($paymentMethod)
 	{
 		$result = $this->languages->getDescription($paymentMethod, 'payment');
+
 		$paymentMethod = (object) $paymentMethod;
 
-		if (!$this->db->query('INSERT INTO __payment_methods SET ?%', $paymentMethod)) {
+		if (!$this->db->query("INSERT INTO __payment_methods SET ?%", $paymentMethod)) {
 			return false;
 		}
 
@@ -231,14 +233,14 @@ class Payment extends Turbo
 	 */
 	public function deletePaymentMethod($id)
 	{
-		$query = $this->db->placehold('DELETE FROM __delivery_payment WHERE payment_method_id=?', (int) $id);
+		$query = $this->db->placehold("DELETE FROM __delivery_payment WHERE payment_method_id=?", (int) $id);
 		$this->db->query($query);
 
 		if (!empty($id)) {
-			$query = $this->db->placehold('DELETE FROM __payment_methods WHERE id=? LIMIT 1', (int) $id);
+			$query = $this->db->placehold("DELETE FROM __payment_methods WHERE id=? LIMIT 1", (int) $id);
 			$this->db->query($query);
 
-			$this->db->query('DELETE FROM __lang_payment_methods WHERE payment_id=?', (int) $id);
+			$this->db->query("DELETE FROM __lang_payment_methods WHERE payment_id=?", (int) $id);
 		}
 	}
 
@@ -248,6 +250,7 @@ class Payment extends Turbo
 	public function deleteIcon($paymentMethod)
 	{
 		$paymentMethod = (array) $paymentMethod;
+
 		$query = $this->db->placehold("SELECT icon FROM __payment_methods WHERE id IN(?@)", $paymentMethod);
 
 		if ($this->db->query($query)) {
@@ -265,7 +268,7 @@ class Payment extends Turbo
 				$count = $this->db->result('count');
 
 				if ($count == 0) {
-					unlink($this->config->root_dir . $this->config->payment_images_dir . $filename);
+					@unlink($this->config->root_dir . $this->config->payment_images_dir . $filename);
 				}
 			}
 		}

@@ -39,12 +39,14 @@ class Files extends Turbo
                 f.type, 
                 f.position, 
                 $langSql->fields
-             FROM __files AS f 
-             $langSql->join 
+             FROM __files f 
+                $langSql->join 
              WHERE 1 
-                 $objectIdFilter 
-                 $typeFilter 
-             ORDER BY f.object_id, f.position"
+                $objectIdFilter 
+                $typeFilter 
+             ORDER BY 
+                f.object_id, 
+                f.position"
         );
 
         $this->db->query($query);
@@ -75,21 +77,59 @@ class Files extends Turbo
     }
 
     /**
+     * Copy File
+     */
+    public function copyFile($file)
+    {
+        $file = (object) $file;
+
+        $result = $this->languages->getDescription($file, 'file');
+
+        if (!empty($result->data)) {
+            $file = $result->data;
+        }
+
+        $query = $this->db->placehold("INSERT INTO __files SET ?%", $file);
+        $this->db->query($query);
+
+        $id = $this->db->insertId();
+
+        $query = $this->db->placehold("UPDATE __files SET position=id WHERE id=?", $id);
+        $this->db->query($query);
+
+        if (!empty($result->description)) {
+            $this->languages->actionDescription($id, $result->description, 'file');
+        }
+
+        return $id;
+    }
+
+
+    /**
      * Update File
      */
     public function updateFile($id, $file)
     {
         $file = (object) $file;
+
         $result = $this->languages->getDescription($file, 'file');
 
-        $query = $this->db->placehold("UPDATE __files SET ?% WHERE id=?", $file, $id);
-        $this->db->query($query);
+        if (!empty($result->data)) {
+            $file = $result->data;
+        }
+
+        $updatedFile = (array) $file;
+
+        if (!empty($updatedFile)) {
+            $query = $this->db->placehold("UPDATE __files SET ?% WHERE id=? LIMIT 1", $file, (int) $id);
+            $this->db->query($query);
+        }
 
         if (!empty($result->description)) {
             $this->languages->actionDescription($id, $result->description, 'file', $this->languages->langId());
         }
 
-        return ($id);
+        return $id;
     }
 
     /**
@@ -109,12 +149,11 @@ class Files extends Turbo
         $this->db->query($query);
 
         $count = $this->db->result('count');
-        $this->db->query($query);
 
         $this->db->query("DELETE FROM __lang_files WHERE file_id=?", (int) $id);
 
         if ($count == 0) {
-            unlink($this->config->root_dir . $this->config->cms_files_dir . $filename);
+            @unlink($this->config->root_dir . $this->config->cms_files_dir . $filename);
         }
     }
 
@@ -148,7 +187,7 @@ class Files extends Turbo
     }
 
     /**
-     * Correct filename
+     * Correct Filename
      */
     public function correctFilename($filename)
     {

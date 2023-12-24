@@ -42,9 +42,8 @@ class Orders extends Turbo
 				o.note, 
 				o.ip, 
 				o.lang_id
-			FROM 
-				__orders o 
-			$where 
+			FROM __orders o 
+				$where 
 			LIMIT 1"
 		);
 
@@ -138,12 +137,10 @@ class Orders extends Turbo
 				o.total_price,
 				o.note,
 				o.lang_id
-			 FROM 
-				__orders AS o
+			 FROM __orders o
 			 LEFT JOIN 
 				__orders_labels AS ol ON o.id=ol.order_id 
-			 WHERE
-				1
+			 WHERE 1
 				$idFilter 
 				$statusFilter 
 				$userFilter 
@@ -160,7 +157,9 @@ class Orders extends Turbo
 		);
 
 		$this->db->query($query);
+
 		$orders = [];
+
 		foreach ($this->db->results() as $order) {
 			$orders[$order->id] = $order;
 		}
@@ -207,7 +206,7 @@ class Orders extends Turbo
 		$query = $this->db->placehold(
 			"SELECT COUNT(DISTINCT id) as count 
 			FROM __orders AS o
-			LEFT JOIN __orders_labels AS ol ON o.id = ol.order_id
+			LEFT JOIN __orders_labels AS ol ON o.id=ol.order_id
 			WHERE 1
 				$statusFilter
 				$userFilter
@@ -258,6 +257,7 @@ class Orders extends Turbo
 		$order->url = md5(uniqid($this->config->salt, true));
 
 		$setCurrDate = '';
+
 		if (empty($order->date)) {
 			$setCurrDate = ', date=now()';
 		}
@@ -275,6 +275,7 @@ class Orders extends Turbo
 	{
 		$query = $this->db->placehold("SELECT * FROM __labels WHERE id=? LIMIT 1", (int) $id);
 		$this->db->query($query);
+
 		return $this->db->result();
 	}
 
@@ -285,6 +286,7 @@ class Orders extends Turbo
 	{
 		$query = $this->db->placehold("SELECT * FROM __labels ORDER BY position");
 		$this->db->query($query);
+
 		return $this->db->results();
 	}
 
@@ -293,7 +295,7 @@ class Orders extends Turbo
 	 */
 	public function addLabel($label)
 	{
-		$query = $this->db->placehold('INSERT INTO __labels SET ?%', $label);
+		$query = $this->db->placehold("INSERT INTO __labels SET ?%", $label);
 
 		if (!$this->db->query($query)) {
 			return false;
@@ -323,6 +325,7 @@ class Orders extends Turbo
 	{
 		if (!empty($id)) {
 			$query = $this->db->placehold("DELETE FROM __orders_labels WHERE label_id=?", (int) $id);
+
 			if ($this->db->query($query)) {
 				$query = $this->db->placehold("DELETE FROM __labels WHERE id=? LIMIT 1", (int) $id);
 				return $this->db->query($query);
@@ -350,11 +353,9 @@ class Orders extends Turbo
 				l.name,
 				l.color,
 				l.position
-			FROM
-				__labels l
+			FROM __labels l
 				LEFT JOIN __orders_labels ol ON ol.label_id=l.id
-			WHERE
-				1
+			WHERE 1
 				$labelIdFilter   
 			ORDER BY
 				l.position"
@@ -549,6 +550,7 @@ class Orders extends Turbo
 
 		if ($order->closed && !empty($purchase->amount) && !empty($variant->id)) {
 			$stockDiff = $purchase->amount;
+
 			$query = $this->db->placehold("UPDATE __variants SET stock=stock-? WHERE id=? AND stock IS NOT NULL LIMIT 1", $stockDiff, $variant->id);
 			$this->db->query($query);
 		}
@@ -616,7 +618,7 @@ class Orders extends Turbo
 
 		if (!$order->closed) {
 
-			$variantsAmounts = array();
+			$variantsAmounts = [];
 
 			$purchases = $this->getPurchases(array('order_id' => $order->id));
 
@@ -637,6 +639,7 @@ class Orders extends Turbo
 
 			foreach ($purchases as $purchase) {
 				$variant = $this->variants->getVariant($purchase->variant_id);
+
 				if (!$variant->infinity) {
 					$newStock = $variant->stock - $purchase->amount;
 					$this->variants->updateVariant($variant->id, array('stock' => $newStock));

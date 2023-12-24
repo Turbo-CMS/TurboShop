@@ -1,6 +1,7 @@
 <?php
 
 session_start();
+
 require_once '../../api/Turbo.php';
 
 $turbo = new Turbo();
@@ -36,4 +37,5 @@ header('Pragma: no-cache');
 header('Expires: -1');
 
 $json = json_encode($result);
+
 print $json;

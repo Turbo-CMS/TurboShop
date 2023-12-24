@@ -207,26 +207,25 @@
 						<div class="mb-3">
 							<div class="form-label">{$btr->global_brand|escape}</div>
 							<select name="brand_id" class="selectpicker mb-1 js-meta-brand" data-live-search="true">
-								<option value="0" {if !isset($product->brand_id)}selected=""{/if} data-brand_name="">{$btr->global_not_set|escape}</option>
+								<option value="0" {if !isset($product->brand_id)}selected="" {/if}>{$btr->global_not_set|escape}</option>
 								{foreach $brands as $brand}
-									<option value="{$brand->id}" {if isset($product->brand_id) && $product->brand_id == $brand->id}selected="" {/if} data-brand_name="{$brand->name|escape}">{$brand->name|escape}</option>
+									<option value="{$brand->id}" {if isset($product->brand_id) && $product->brand_id == $brand->id}selected=""{/if}>{$brand->name|escape}</option>
 								{/foreach}
 							</select>
 						</div>
 						<div class="mb-0">
 							<div class="form-label">{$btr->global_category|escape}</div>
 							<fieldset class="form-group">
-								<div id="product-categories" {if !$categories}style="display:none;"{/if}>
+								<div id="product-categories" {if !$categories}style="display:none;" {/if}>
 									<div class="product-cats" id="product-cats">
 										{foreach $product_categories as $product_category name=categories}
 											<div class="list">
 												{assign var ='first_category' value=reset($product_categories)}
 												<div class="input-group mb-3">
 													<select name="categories[]" class="selectpicker select-control js-meta-categories" data-live-search="true">
-														<option value="0" data-category_name="">{$btr->not_specified}</option>
 														{function name=category_select level=0}
 															{foreach $categories as $category}
-																<option value="{$category->id}" {if isset($selected->id) && $category->id == $selected->id}selected{/if} category_name="{$category->name|escape}">{section name=sp loop=$level}--{/section} {$category->name|escape}</option>
+																<option value="{$category->id}" {if isset($selected->id) && $category->id == $selected->id}selected{/if}>{section name=sp loop=$level}--{/section} {$category->name|escape}</option>
 																{if isset($category->subcategories)}
 																	{category_select categories=$category->subcategories selected=$selected level=$level+1}
 																{/if}
@@ -234,8 +233,8 @@
 														{/function}
 														{category_select categories=$categories selected=$product_category}
 													</select>
-													<button {if not $smarty.foreach.categories.first}style="display:none;"{/if} class="add btn input-group-addon-categories" type="button"><i class="align-middle" data-feather="plus"></i></button>
-													<button {if $smarty.foreach.categories.first}style="display:none;"{/if} class="delete btn input-group-addon-categories" type="button"><i class="align-middle" data-feather="minus"></i></button>
+													<button {if not $smarty.foreach.categories.first}style="display:none;" {/if} class="add btn input-group-addon-categories" type="button"><i class="align-middle" data-feather="plus"></i></button>
+													<button {if $smarty.foreach.categories.first}style="display:none;" {/if} class="delete btn input-group-addon-categories" type="button"><i class="align-middle" data-feather="minus"></i></button>
 												</div>
 											</div>
 										{/foreach}
@@ -294,11 +293,11 @@
 											</div>
 											<div class="turbo-list-boding variants-item-image">
 												<div class="form-label"></div>
-												<a href="javascript:;" {if isset($product->id)}class="add-images"{/if}>
+												<a href="javascript:;" {if $product_images}class="add-images" {/if}>
 													{if $settings->admin_theme == "dark"}
-														<img src="design/images/picture{if isset($variant->images_ids) && !$variant->images_ids}_empty_dark{/if}.svg" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->select_color_image|escape}">
+														<img src="design/images/picture{if !$product_images || isset($variant->images_ids) && !$variant->images_ids}_empty_dark{/if}.svg" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->select_color_image|escape}">
 													{else}
-														<img src="design/images/picture{if isset($variant->images_ids) && !$variant->images_ids}_empty{/if}.svg" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->select_color_image|escape}">
+														<img src="design/images/picture{if !$product_images || isset($variant->images_ids) && !$variant->images_ids}_empty{/if}.svg" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->select_color_image|escape}">
 													{/if}
 												</a>
 												<input name="variants[images_ids][]" type="hidden" value="{if isset($variant->images_ids)}{$variant->images_ids|escape}{/if}">
@@ -335,7 +334,7 @@
 											{if !$variant@first}
 												<div class="turbo-list-boding turbo-list-delete remove-variant">
 													<div class="form-label"></div>
-													<button type="button" class="btn-delete js-remove-variant" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->variants_delete|escape}">
+													<button type="button" class="btn-delete js-remove-variant" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
 														<i class="align-middle" data-feather="trash-2"></i>
 													</button>
 												</div>
@@ -371,7 +370,7 @@
 										</div>
 										<div class="turbo-list-boding variants-item-image">
 											<div class="form-label"></div>
-											<a href="javascript:;" {if isset($product->id)}class="add-images"{/if}>
+											<a href="javascript:;" {if $product_images}class="add-images" {/if}>
 												{if $settings->admin_theme == "dark"}
 													<img src="design/images/picture_empty_dark.svg" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->select_color_image|escape}">
 												{else}
@@ -411,7 +410,7 @@
 										</div>
 										<div class="turbo-list-boding turbo-list-delete remove-variant">
 											<div class="form-label"></div>
-											<button type="button" class="btn-delete js-remove-variant" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->variants_delete|escape}">
+											<button type="button" class="btn-delete js-remove-variant" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
 												<i class="align-middle" data-feather="trash-2"></i>
 											</button>
 										</div>
@@ -446,86 +445,83 @@
 				<div class="collapse-card">
 					<div class="card-body features-wrap js-features-wrap">
 						{if isset($features)}
-						{foreach $features as $feature}
-							<div class="js-feature-block-{$feature->id}">
-								{assign var="feature_id" value=$feature->id}
-								{if isset($options[$feature->id])}
-									{foreach $options[$feature->id]->values as $feature_value}
+							{foreach $features as $feature}
+								<div class="js-feature-block-{$feature->id}">
+									{assign var="feature_id" value=$feature->id}
+									{foreach $options.$feature_id as $option}
 										<div class="feature-row clearfix">
-											<span feature_id={$feature_id}>
-												<div class="feature-name {if !$feature_value@first}additional-values{/if} {if !$feature_value@first}feature-value-mobile{/if}">
-													{if $feature_value@first}
-														<span title="{$feature->name|escape}">
-															<a href="index.php?module=FeatureAdmin&id={$feature->id}" target="_blank">
-																{$feature->name|escape}
-															</a>
-														</span>
-													{/if}
-												</div>
-												<div class="feature-value {if $feature->is_color}color-picker{/if}">
-													<input class="feature-input js-auto-option {if !$feature_value@first}feature-input-single{/if}" data-id="{$feature_id}" type="text" name="options[{$feature_id}][]" value="{$feature_value|escape}">
-													{if $feature->is_color}<div class="add-on colorPicker-picker"></div>{/if}
-													<button type="button" class="btn {if $feature_value@first} btn-feature {if $feature->is_color}js-add-color{else}js-add{/if}{else} btn-minus-feature js-remove{/if} js-feature-multi-values feature-multi-values">
-														<span class="js-plus" {if !$feature_value@first}style="display: none;"{/if}>
-															<i class="align-middle" data-feather="plus"></i>
-														</span>
-														<span class="js-minus" {if $feature_value@first}style="display: none;"{/if}>
-															<i class="align-middle" data-feather="minus"></i>
-														</span>
-													</button>
-												</div>
-											</span>
-										</div>
-									{foreachelse}
-										<div class="feature-row clearfix">
-											<span feature_id={$feature_id}>
-												<div class="feature-name">
-													<span title="{$feature->name|escape}">
+											<div class="feature-name {if !$option@first}additional-values feature-value-mobile{/if}">
+												{if $option@first}
+													<div title="{$feature->name|escape}">
 														<a href="index.php?module=FeatureAdmin&id={$feature->id}" target="_blank">
 															{$feature->name|escape}
 														</a>
+													</div>
+												{/if}
+											</div>
+											<input {if $lang_id == $first_lang && $option->id}class="js-id-option" {/if} type="hidden" name="options_id[{$feature_id}][]" value="{$option->id}">
+											<div class="feature-value {if $feature->is_color}color-picker{/if}">
+												<input class="feature-input js-auto-option {if !$option@first}feature-input-single{/if}" data-id="{$feature_id}" data-color="{$feature->is_color}" type="text" name="options_values[{$feature_id}][]" value="{$option->value|escape}">
+												{if $feature->is_color}<div class="add-on colorPicker-picker"></div>{/if}
+												<button type="button" class="btn {if $option@first}btn-feature {if $feature->is_color}js-add-color{else}js-add{/if} {else}btn-minus-feature js-remove{/if} js-feature-multi-values feature-multi-values">
+													<span class="js-plus" {if !$option@first}style="display: none;"{/if}>
+														<i class="align-middle" data-feather="plus"></i>
 													</span>
+													<span class="js-minus" {if $option@first}style="display: none;"{/if}>
+														<i class="align-middle" data-feather="minus"></i>
+													</span>
+												</button>
+											</div>
+										</div>
+									{foreachelse}
+										<div class="feature-row clearfix">
+											<div class="feature-name">
+												<div title="{$feature->name|escape}">
+													<a href="index.php?module=FeatureAdmin&id={$feature->id}" target="_blank">
+														{$feature->name|escape}
+													</a>
 												</div>
-												<div class="feature-value {if $feature->is_color}color-picker{/if}">
-													<input class="feature-input js-auto-option" data-id="{$feature_id}" type="text" name="options[{$feature_id}][]" value="">
-													{if $feature->is_color}<div class="add-on colorPicker-picker"></div>{/if}
-													<button type="button" class="btn  btn-feature js-add js-feature-multi-values feature-multi-values">
-														<span class="js-plus">
-															<i class="align-middle" data-feather="plus"></i>
-														</span>
-														<span class="js-minus" style="display: none">
-															<i class="align-middle" data-feather="minus"></i>
-														</span>
-													</button>
-												</div>
-											</span>
+											</div>
+											<input class="js-id-option" type="hidden" name="options_id[{$feature_id}][]" value="">
+											<div class="feature-value {if $feature->is_color}color-picker{/if}">
+												<input class="feature-input js-auto-option" data-id="{$feature_id}" data-color="{$feature->is_color}" type="text" name="options_values[{$feature_id}][]" value="">
+												{if $feature->is_color}<div class="add-on colorPicker-picker"></div>{/if}
+												<button type="button" class="btn btn-feature {if $feature->is_color}js-add-color{else}js-add{/if} js-feature-multi-values feature-multi-values">
+													<span class="js-plus">
+														<i class="align-middle" data-feather="plus"></i>
+													</span>
+													<span class="js-minus" style="display: none">
+														<i class="align-middle" data-feather="minus"></i>
+													</span>
+												</button>
+											</div>
 										</div>
 									{/foreach}
-								{/if}
-							</div>
-						{/foreach}
+								</div>
+							{/foreach}
 						{/if}
 						<div class="js-new-feature" style="display:none;">
-							<div feature_id="" class="new-feature-row clearfix">
+							<div class="new-feature-row clearfix">
 								<div class="wrap-inner-new-feature">
 									<input type="text" class="new-feature new-feature-name" name="new_features_names[]" placeholder="{$btr->product_features_enter|escape}">
 									<input type="text" class="new-feature new-feature-value" name="new_features_values[]" placeholder="{$btr->product_features_value_enter|escape}">
 								</div>
-								<span class="js-delete-feature btn-delete delete-feature">
+								<div class="js-delete-feature btn-delete delete-feature">
 									<i class="align-middle" data-feather="trash-2"></i>
-								</span>
+								</div>
 							</div>
 						</div>
-						<div class="js-new-feature-category">
+						<div class="js-new-feature-category" style="display:none;">
 							<div class="feature-row clearfix">
 								<div class="feature-name">
-									<span title="" class="js-feature-name">
+									<div title="" class="js-feature-name">
 										<a href="" target="_blank"></a>
-									</span>
+									</div>
 								</div>
+								<input class="js-id-option" type="hidden" name="" value="">
 								<div class="feature-value">
-									<input class="feature-input js-auto-option" data-id="" type="text" name="" value="">
-									<button type="button" class="btn  btn-feature js-add js-feature-multi-values feature-multi-values">
+									<input class="feature-input js-auto-option" data-id="" data-color="" type="text" name="" value="">
+									<button type="button" class="btn btn-feature js-add js-feature-multi-values feature-multi-values">
 										<span class="js-plus">
 											<i class="align-middle" data-feather="plus"></i>
 										</span>
@@ -539,13 +535,14 @@
 						<div class="js-new-value" style="display:none;">
 							<div class="feature-row clearfix">
 								<div class="feature-name feature-value-mobile">
-									<span title="" class="js-feature-name">
+									<div title="" class="js-feature-name">
 										<a href="" target="_blank"></a>
-									</span>
+									</div>
 								</div>
+								<input class="js-id-option" type="hidden" name="" value="">
 								<div class="feature-value">
-									<input class="feature-input js-auto-option" data-id="" type="text" name="" value="">
-									<button type="button" class="btn  btn-feature js-add js-feature-multi-values feature-multi-values">
+									<input class="feature-input js-auto-option" data-id="" data-color="" type="text" name="" value="">
+									<button type="button" class="btn btn-feature js-add js-feature-multi-values feature-multi-values">
 										<span class="js-plus">
 											<i class="align-middle" data-feather="plus"></i>
 										</span>
@@ -602,7 +599,7 @@
 												<a href="{url module=ProductAdmin id=$related_product->id}" class="fw-bold text-body text-decoration-none">{$related_product->name|escape}</a>
 											</div>
 											<div class="turbo-list-boding turbo-list-delete">
-												<button type="button" class="btn-delete js-remove-item" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete_product|escape}">
+												<button type="button" class="btn-delete js-remove-item" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
 													<i class="align-middle" data-feather="trash-2"></i>
 												</button>
 											</div>
@@ -622,7 +619,7 @@
 											<a href="" class="fw-bold text-body text-decoration-none related-product-name"></a>
 										</div>
 										<div class="turbo-list-boding turbo-list-delete">
-											<button type="button" class="btn-delete js-remove-item" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete_product|escape}">
+											<button type="button" class="btn-delete js-remove-item" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
 												<i class="align-middle" data-feather="trash-2"></i>
 											</button>
 										</div>
@@ -672,7 +669,7 @@
 												<a href="{url module=ProductAdmin id=$recommended_product->id}" class="fw-bold text-body text-decoration-none">{$recommended_product->name|escape}</a>
 											</div>
 											<div class="turbo-list-boding turbo-list-delete">
-												<button type="button" class="btn-delete js-remove-item" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete_product|escape}">
+												<button type="button" class="btn-delete js-remove-item" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
 													<i class="align-middle" data-feather="trash-2"></i>
 												</button>
 											</div>
@@ -692,7 +689,7 @@
 											<a href="" class="fw-bold text-body text-decoration-none recommended-product-name"></a>
 										</div>
 										<div class="turbo-list-boding turbo-list-delete">
-											<button type="button" class="btn-delete js-remove-item" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete_product|escape}">
+											<button type="button" class="btn-delete js-remove-item" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
 												<i class="align-middle" data-feather="trash-2"></i>
 											</button>
 										</div>
@@ -772,7 +769,7 @@
 												<a class="fw-bold text-body text-decoration-none" href="../{$config->cms_files_dir}{$file->filename|escape}">{$file->filename|escape}</a>
 											</div>
 											<div class="turbo-list-boding turbo-list-delete">
-												<button type="button" class="btn-delete js-remove-item" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete_file|escape}">
+												<button type="button" class="btn-delete js-remove-item" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
 													<i class="align-middle" data-feather="trash-2"></i>
 												</button>
 											</div>
@@ -825,7 +822,7 @@
 												<input name="videos[]" value="{$video->link}" class="form-control">
 											</div>
 											<div class="turbo-list-boding turbo-list-delete">
-												<button type="button" class="btn-delete js-remove-item" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete_video|escape}">
+												<button type="button" class="btn-delete js-remove-item" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
 													<i class="align-middle" data-feather="trash-2"></i>
 												</button>
 											</div>
@@ -844,7 +841,7 @@
 									<input name="videos[]" class="form-control" value="" placeholder="https://www.youtube.com/watch?v=abc">
 								</div>
 								<div class="turbo-list-boding turbo-list-delete">
-									<button type="button" class="btn-delete js-remove-item delete" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete_video|escape}">
+									<button type="button" class="btn-delete js-remove-item delete" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
 										<i class="align-middle" data-feather="trash-2"></i>
 									</button>
 								</div>
@@ -934,7 +931,7 @@
 				</div>
 				<div class="modal-body">
 					<ul>
-						{foreach from=$product_images item=image}
+						{foreach $product_images as $image}
 							<li>
 								<label>
 									<img src="{$image->filename|resize:80:80}" alt="">
@@ -992,6 +989,21 @@
 				time_24hr: true
 			});
 
+			var colorPickerOptions = {
+				colorSelectors: {
+					"black": "#000000",
+					"blue": "#0000ff",
+					"brown": "#a52a2a",
+					"gray": "#808080",
+					"green": "#008000",
+					"red": "#ff0000",
+					"orange": "#ffa500",
+					"yellow": "#ffff00",
+					"white": "#ffffff"
+				},
+				format: "hex"
+			};
+
 			$(document).on("click", ".js-remove-item", function() {
 				$(this).closest(".js-row").fadeOut(200, function() { $(this).remove(); });
 				return false;
@@ -1025,22 +1037,22 @@
 			if (window.File && window.FileReader && window.FileList) {
 				$(".js-dropzone").on('dragover', function(e) {
 					e.preventDefault();
-				{/literal}
-				{if $settings->admin_theme == "dark"}
-					$(this).css('background', '#28323f');
-				{else}
-					$(this).css('background', '#f8f8f8');
-				{/if}
-				{literal}
+					{/literal}
+						{if $settings->admin_theme == "dark"}
+							$(this).css('background', '#28323f');
+						{else}
+							$(this).css('background', '#f8f8f8');
+						{/if}
+					{literal}
 				});
 				$(".js-dropzone").on('dragleave', function() {
-				{/literal}
-				{if $settings->admin_theme == "dark"}
-					$(this).css('background', '#28323f');
-				{else}
-					$(this).css('background', '#f8f8f8');
-				{/if}
-				{literal}
+					{/literal}
+						{if $settings->admin_theme == "dark"}
+							$(this).css('background', '#28323f');
+						{else}
+							$(this).css('background', '#f8f8f8');
+						{/if}
+					{literal}
 				});
 
 				function handleFileSelect(evt) {
@@ -1084,20 +1096,7 @@
 				$(this).closest(".variants-list-item").remove();
 			});
 
-			$('.color-picker').colorpicker({
-				colorSelectors: {
-					"black":  "#000000",
-					"blue":   "#0000ff",
-					"brown":  "#a52a2a",
-					"gray":   "#808080",
-					"green":  "#008000",
-					"red":    "#ff0000",
-					"orange": "#ffa500",
-					"yellow": "#ffff00",
-					"white":  "#ffffff"
-				},
-				format: "hex"
-			});
+			$('.color-picker').colorpicker(colorPickerOptions);
 
 			var color_variant, ids;
 
@@ -1139,13 +1138,13 @@
 				$('#imagesModal :checkbox:checked').each(function() { ids.push($(this).val()); });
 				$(color_variant).closest('div').find('input[type=hidden]').val(ids.join(','));
 				if (ids.length > 0) $(color_variant).closest('div').find('img').attr('src', 'design/images/picture.svg');
-			{/literal}
-			{if $settings->admin_theme == "dark"}
-				else $(color_variant).closest('div').find('img').attr('src', 'design/images/picture_empty_dark.svg');
-			{else}
-				else $(color_variant).closest('div').find('img').attr('src', 'design/images/picture_empty.svg');
-			{/if}
-			{literal}
+				{/literal}
+					{if $settings->admin_theme == "dark"}
+						else $(color_variant).closest('div').find('img').attr('src', 'design/images/picture_empty_dark.svg');
+					{else}
+						else $(color_variant).closest('div').find('img').attr('src', 'design/images/picture_empty.svg');
+					{/if}
+				{literal}
 				$('#imagesModal').modal('hide');
 				return false;
 			});
@@ -1164,20 +1163,7 @@
 				if (!$('.variants-wrapper').is('.single-variant')) {
 					var new_line = $(variant).clone(true);
 					new_line.appendTo('.variants-listadd').fadeIn('slow').find("select").selectpicker();
-					new_line.find(".variants-item-height").addClass('.color-picker').colorpicker({
-						colorSelectors: {
-							"black":  "#000000",
-							"blue":   "#0000ff",
-							"brown":  "#a52a2a",
-							"gray":   "#808080",
-							"green":  "#008000",
-							"red":    "#ff0000",
-							"orange": "#ffa500",
-							"yellow": "#ffff00",
-							"white":  "#ffffff"
-						},
-						format: "hex"
-					});
+					new_line.find(".variants-item-height").addClass('.color-picker').colorpicker(colorPickerOptions);
 				} else {
 					$('.variants-wrapper .variants-item-name').show('slow');
 					$('.variants-wrapper').removeClass('single-variant');
@@ -1193,7 +1179,7 @@
 			new_val.removeClass("js-new-value");
 
 			function show_category_features(category_id) {
-				$('div.js-features-wrap').empty();
+				$('.js-features-wrap').empty();
 				$.ajax({
 					url: "ajax/get_features.php",
 					data: {category_id: category_id, product_id: $("input[name=id]").val()},
@@ -1205,14 +1191,26 @@
 							new_line.addClass('js-feature-block-' + feature.id);
 							new_line.find(".js-feature-name").attr('title', feature.name);
 							new_line.find(".js-feature-name a").text(feature.name).attr('href', "index.php?module=FeatureAdmin&id=" + feature.id);
-							new_line.find("input").attr('name', "options[" + feature.id + "][]").val(feature.value[0]);
-							var values = new_line.find(".js-auto-option");
-							values.data('id', feature.id);
-							values.attr('name', "options[" + feature.id + "][]");
-							if (feature.value.length > 1) {
-								for (var j = 1; j < feature.value.length; j++) {
+							new_line.find(".js-auto-option").attr('name', "options_values[" + feature.id + "][]").val(feature.values[0].value).data('color', feature.is_color);
+							new_line.find(".js-id-option").attr('name', "options_id[" + feature.id + "][]").val(feature.values[0].id);
+							if (feature.is_color === "1") {
+								new_line.find('.feature-value').append('<div class="add-on colorPicker-picker"></div>');
+								new_line.find(".feature-value").addClass('color-picker').colorpicker(colorPickerOptions);
+							}
+							var value = new_line.find(".js-auto-option");
+							id_input = new_line.find(".js-id-option");
+							value.data('id', feature.id);
+							value.attr('name', "options_values[" + feature.id + "][]");
+							id_input.attr('name', "options_id[" + feature.id + "][]");
+							if (feature.values.length > 1) {
+								for (var j = 1; j < feature.values.length; j++) {
 									var new_subline = new_val.clone(true);
-									new_subline.find("input").attr('name', "options[" + feature.id + "][]").val(feature.value[j]);
+									new_subline.find(".js-auto-option").attr('name', "options_values[" + feature.id + "][]").val(feature.values[j].value);
+									new_subline.find(".js-id-option").attr('name', "options_id[" + feature.id + "][]").val(feature.values[j].id);
+									if (feature.is_color === "1") {
+										new_subline.find('.feature-value').append('<div class="add-on colorPicker-picker"></div>');
+										new_subline.find(".feature-value").addClass('color-picker').colorpicker(colorPickerOptions);
+									}
 									new_line.append(new_subline);
 									if (j > 0) {
 										new_subline.find(".js-feature-multi-values")
@@ -1225,17 +1223,39 @@
 										new_subline.find(".feature-name").html("").addClass("additional-values");
 										new_subline.find(".feature-input").html("").addClass("feature-input-single");
 									}
-									new_line.appendTo("div.js-features-wrap");
+									new_subline.show();
+									new_line.appendTo(".js-features-wrap");
 								}
 							}
-							new_line.appendTo('div.js-features-wrap').find("input")
-							.autocomplete({
-								serviceUrl: 'ajax/options_autocomplete.php',
-								minChars: 0,
-								maxHeight: 312,
-								params: {feature_id:feature.id},
-								noCache: false
-							});
+						{/literal}
+						{if $lang_id != $first_lang}
+							{literal}	
+								if (feature.values[0].id) {
+									new_line.find(".js-id-option").removeClass("js-id-option");
+								} else {
+									new_line.find(".js-id-option").addClass("js-id-option");
+								}
+							{/literal}
+						{/if}
+						{literal}
+							new_line.appendTo('.js-features-wrap').find("input")
+								.autocomplete({
+									serviceUrl: 'ajax/options_autocomplete.php',
+									minChars: 0,
+									maxHeight: 312,
+									params: {feature_id:feature.id},
+									noCache: false,
+									onSelect: function(suggestion) {
+										var id_input = $(this).closest('.feature-row').find('.js-id-option');
+										id_input.val(suggestion.data.id);
+										$(this).trigger('change');
+									},
+									onSearchStart: function(params) {
+										var id_input = $(this).closest('.feature-row').find('.js-id-option');
+										id_input.val("");
+									}
+								});
+							new_line.show();
 						}
 					}
 				});
@@ -1246,28 +1266,15 @@
 				var feature_id = $(this).closest(".feature-value").find(".js-auto-option").data("id"),
 					new_value = new_val.clone(true),
 					value_input = new_value.find(".js-auto-option"),
-					id_input = new_value.find(".js-value_id_input");
+					id_input = new_value.find(".js-id-option");
 				value_input.data("id", feature_id);
 				value_input.val("");
-				value_input.attr('name', "options[" + feature_id + "][]");
-				id_input.attr("name", "features_values[" + feature_id + "][]");
+				value_input.attr('name', "options_values[" + feature_id + "][]");
+				id_input.attr("name", "options_id[" + feature_id + "][]");
 				new_value.find(".feature-name").html("").addClass("additional-values");
 				new_value.find(".feature-input").html("").addClass("feature-input-single");
 				new_value.find('.feature-value').append('<div class="add-on colorPicker-picker"></div>');
-				new_value.find(".feature-value").addClass('.color-picker').colorpicker({
-					colorSelectors: {
-						"black":  "#000000",
-						"blue":   "#0000ff",
-						"brown":  "#a52a2a",
-						"gray":   "#808080",
-						"green":  "#008000",
-						"red":    "#ff0000",
-						"orange": "#ffa500",
-						"yellow": "#ffff00",
-						"white":  "#ffffff"
-					},
-					format: "hex"
-				});
+				new_value.find(".feature-value").addClass('.color-picker').colorpicker(colorPickerOptions);
 				new_value.find(".js-feature-multi-values")
 					.removeClass("js-add")
 					.removeClass("btn-feature")
@@ -1280,7 +1287,16 @@
 					minChars: 0,
 					maxHeight: 312,
 					params: {feature_id:feature_id},
-					noCache: false
+					noCache: false,
+					onSelect: function(suggestion) {
+						var id_input = $(this).closest('.feature-row').find('.js-id-option');
+						id_input.val(suggestion.data.id);
+						$(this).trigger('change');
+					},
+					onSearchStart: function(params) {
+						var id_input = $(this).closest('.feature-row').find('.js-id-option');
+						id_input.val("");
+					}
 				});
 				new_value.appendTo(".js-feature-block-" + feature_id).fadeIn('slow');
 				return false;
@@ -1288,15 +1304,20 @@
 
 			$(document).on("click", ".js-feature-multi-values.js-add", function() {
 				var feature_id = $(this).closest(".feature-value").find(".js-auto-option").data("id"),
+					color = $(this).closest(".feature-value").find(".js-auto-option").data("color"),
 					new_value = new_val.clone(true),
 					value_input = new_value.find(".js-auto-option"),
-					id_input = new_value.find(".js-value_id_input");
+					id_input = new_value.find(".js-id-option");
 				value_input.data("id", feature_id);
 				value_input.val("");
-				value_input.attr('name', "options[" + feature_id + "][]");
-				id_input.attr("name", "features_values[" + feature_id + "][]");
+				value_input.attr('name', "options_values[" + feature_id + "][]");
+				id_input.attr("name", "options_id[" + feature_id + "][]");
 				new_value.find(".feature-name").html("").addClass("additional-values");
 				new_value.find(".feature-input").html("").addClass("feature-input-single");
+				if (color === "1") {
+					new_value.find('.feature-value').append('<div class="add-on colorPicker-picker"></div>');
+					new_value.find(".feature-value").addClass('color-picker').colorpicker(colorPickerOptions);
+				}
 				new_value.find(".js-feature-multi-values")
 					.removeClass("js-add")
 					.removeClass("btn-feature")
@@ -1309,7 +1330,16 @@
 					minChars: 0,
 					maxHeight: 312,
 					params: {feature_id:feature_id},
-					noCache: false
+					noCache: false,
+					onSelect: function(suggestion) {
+						var id_input = $(this).closest('.feature-row').find('.js-id-option');
+						id_input.val(suggestion.data.id);
+						$(this).trigger('change');
+					},
+					onSearchStart: function(params) {
+						var id_input = $(this).closest('.feature-row').find('.js-id-option');
+						id_input.val("");
+					}
 				});
 				new_value.appendTo(".js-feature-block-" + feature_id).fadeIn('slow');
 				return false;
@@ -1323,14 +1353,24 @@
 				show_category_features($("option:selected", this).val());
 			});
 
-			$('div.js-features-wrap input[name*=options]').each(function(index) {
-				feature_id = $(this).closest('span').attr('feature_id');
+			$('.js-features-wrap .js-auto-option').each(function(index) {
+				feature_id = $(this).closest(".feature-value").find(".js-auto-option").data("id");
+				id_input = $(this).closest(".feature-row").find(".js-id-option");
 				$(this).autocomplete({
 					serviceUrl: 'ajax/options_autocomplete.php',
 					minChars: 0,
 					maxHeight: 312,
 					params: {feature_id:feature_id},
-					noCache: false
+					noCache: false,
+					onSelect: function(suggestion) {
+						var id_input = $(this).closest('.feature-row').find('.js-id-option');
+						id_input.val(suggestion.data.id);
+						$(this).trigger('change');
+					},
+					onSearchStart: function(params) {
+						var id_input = $(this).closest('.feature-row').find('.js-id-option');
+						id_input.val("");
+					}
 				});
 			});
 
@@ -1419,4 +1459,3 @@
 		});
 	</script>
 {/literal}
-			

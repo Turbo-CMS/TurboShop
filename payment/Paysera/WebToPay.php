@@ -310,7 +310,7 @@ class WebToPay {
         // clear big log file
         if (filesize($logfile) > 1024 * 1024 * pi()) {
             copy($logfile, $logfile.'.old');
-            unlink($logfile);
+            @unlink($logfile);
         }
     }
 }

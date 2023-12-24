@@ -27,7 +27,7 @@ class RegisterView extends View
             $this->design->assign('phone', $phone);
             $this->design->assign('address', $address);
 
-            $this->db->query('SELECT COUNT(*) AS count FROM __users WHERE email=?', $email);
+            $this->db->query("SELECT COUNT(*) AS count FROM __users WHERE email=?", $email);
             $userExists = $this->db->result('count');
 
             if ($userExists) {

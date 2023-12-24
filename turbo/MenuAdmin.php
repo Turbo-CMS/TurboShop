@@ -29,7 +29,7 @@ class MenuAdmin extends Turbo
                 $menusIds[] = $menu->id;
             }
 
-            $query = $this->db->placehold('DELETE FROM __menu WHERE id NOT IN(?@)', $menusIds);
+            $query = $this->db->placehold("DELETE FROM __menu WHERE id NOT IN(?@)", $menusIds);
             $this->db->query($query);
 
             asort($menusIds);

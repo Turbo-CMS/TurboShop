@@ -1,7 +1,7 @@
-{$meta_title =$btr->seo_automation scope=global}
+{$meta_title =$btr->seo_automation_title scope=global}
 
 <div class="d-md-flex mb-3">
-	<h1 class="d-inline align-middle me-3">{$btr->seo_automation|escape}</h1>
+	<h1 class="d-inline align-middle me-3">{$btr->seo_automation_title|escape}</h1>
 </div>
 
 {if isset($message_success)}
@@ -19,7 +19,7 @@
 	</div>
 {/if}
 
-<form method="post" enctype="multipart/form-data">
+<form method="post" enctype="multipart/form-data" class="js-fast-button">
 	<input type="hidden" name="session_id" value="{$smarty.session.id}">
 	<div class="row">
 		<div class="col-12">

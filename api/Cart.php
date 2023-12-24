@@ -31,9 +31,7 @@ class Cart extends Turbo
 					$item = new stdClass();
 					$item->variant = $variant;
 					$item->amount = $sessionItems[$variant->id];
-
 					$items[$variant->id] = $item;
-
 					$productsIds[] = $variant->product_id;
 				}
 
@@ -127,6 +125,7 @@ class Cart extends Turbo
 	public function updateItem($variantId, $amount = 1)
 	{
 		$amount = max(1, $amount);
+
 		$variant = $this->variants->getVariant($variantId);
 
 		if (!empty($variant) && $variant->stock > 0) {

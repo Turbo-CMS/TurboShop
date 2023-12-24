@@ -38,6 +38,7 @@ class ReportStat extends Turbo
 		);
 
 		$this->db->query($query);
+
 		$data = $this->db->results();
 
 		$group = 'day';
@@ -268,12 +269,13 @@ class ReportStat extends Turbo
 				p.sku 
 			FROM __purchases AS p
 			LEFT JOIN __orders AS o ON o.id = p.order_id
-			WHERE 
-				1 
+			WHERE 1 
 				$allFilters
-			GROUP BY p.variant_id
-			ORDER BY $sortProd 
-			$sqlLimit"
+			GROUP BY 
+				p.variant_id
+			ORDER BY 
+				$sortProd 
+				$sqlLimit"
 		);
 
 		$this->db->query($query);
@@ -355,8 +357,8 @@ class ReportStat extends Turbo
 				SUM(p.price * p.amount) AS price, 
 				SUM(p.amount) AS amount
 			FROM __orders AS o 
-				LEFT JOIN __purchases AS p ON o.id = p.order_id 
-				LEFT JOIN __orders_labels AS ol ON o.id=ol.order_id 
+			LEFT JOIN __purchases AS p ON o.id = p.order_id 
+			LEFT JOIN __orders_labels AS ol ON o.id=ol.order_id 
 			WHERE 1 AND p.product_id=? $variantId $allFilters 
 			GROUP BY DATE(o.date) 
 			ORDER BY o.date",
@@ -472,8 +474,8 @@ class ReportStat extends Turbo
 				SUM(pp.amount * pp.price) AS price
 			FROM __purchases pp
 			LEFT JOIN __products p ON p.id=pp.product_id
-			$categoryJoin
-			$ordersJoin
+				$categoryJoin
+				$ordersJoin
 			WHERE 1
 				$categoryFilter
 				$brandFilter

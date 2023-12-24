@@ -1,6 +1,7 @@
 <?php
 
 session_start();
+
 require_once '../api/Turbo.php';
 
 $turbo = new Turbo();
@@ -22,8 +23,9 @@ if (!empty($firstLang)) {
 
 $px = ($langId ? 'l' : 'p');
 $langSql = $turbo->languages->getQuery(['object' => 'page']);
+
 $keyword = $turbo->request->get('query', 'string');
-$sanitizedKeyword = $turbo->db->escape($keyword);
+$sk = $turbo->db->escape($keyword);
 
 $turbo->db->query(
     "SELECT 
@@ -32,8 +34,8 @@ $turbo->db->query(
         $px.name, 
         $langSql->fields
      FROM __pages p
-     $langSql->join
-     WHERE ($px.name LIKE '%$sanitizedKeyword%' OR p.meta_keywords LIKE '%$sanitizedKeyword%') 
+         $langSql->join
+     WHERE ($px.name LIKE '%$sk%' OR p.meta_keywords LIKE '%$sk%') 
      AND visible=1 
      ORDER BY p.name 
      LIMIT ?",
@@ -52,13 +54,13 @@ foreach ($pages as $page) {
     $suggestions[] = $suggestion;
 }
 
-$responseObj = new stdClass();
-$responseObj->query = $keyword;
-$responseObj->suggestions = $suggestions;
+$res = new stdClass();
+$res->query = $keyword;
+$res->suggestions = $suggestions;
 
 header('Content-Type: application/json; charset=UTF-8');
 header('Cache-Control: must-revalidate');
 header('Pragma: no-cache');
 header('Expires: -1');
 
-print json_encode($responseObj);
+print json_encode($res);

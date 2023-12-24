@@ -98,7 +98,7 @@
 				<h1 data-product="{$product->id}" class="h3">{$product->name|escape}</h1>
 
 				{* Brand *}
-				{if isset($brand->image)}
+				{if isset($brand->image) && $brand->image}
 					<div class="float-end">
 						<a href="{$lang_link}catalog/{$category->url}/{$brand->url}">
 							<img src="{$brand->image|resize_brands:75:25}" alt="{$brand->name|escape}" title="{$brand->name|escape}">

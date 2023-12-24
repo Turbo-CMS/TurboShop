@@ -100,7 +100,7 @@
 						</li>
 						<li class="list-inline-item">
 							<a href="#" class="btn-floating btn-sm rgba-white-slight mx-1">
-								<i class="fab fa-twitter bs-twitter"></i>
+								<i class="fab fa-x-twitter"></i>
 							</a>
 						</li>
 						<li class="list-inline-item">

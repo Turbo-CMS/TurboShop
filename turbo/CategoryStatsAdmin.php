@@ -74,7 +74,7 @@ class CategoryStatsAdmin extends Turbo
     {
         foreach ($categories as $k => $v) {
             if (isset($v->subcategories)) {
-                $this->catTree($v->subcategories, $purchases);
+                $this->catTree($v->subcategories, $purchases); 
             }
 
             if (isset($purchases[$v->id])) {

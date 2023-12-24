@@ -1,7 +1,7 @@
-{$meta_title = $btr->global_settings_site scope=global}
+{$meta_title = $btr->global_settings_title scope=global}
 
 <h1 class="mb-3">
-	{$btr->global_settings_site|escape}
+	{$btr->global_settings_title|escape}
 </h1>
 
 {if isset($message_success)}
@@ -21,7 +21,7 @@
 	</div>
 {/if}
 
-<form method="post" enctype="multipart/form-data">
+<form method="post" enctype="multipart/form-data" class="js-fast-button">
 	<input type="hidden" name="session_id" value="{$smarty.session.id}">
 	<div class="row gx-2">
 		<div class="col-lg-6 col-md-12">
@@ -268,7 +268,7 @@
 								<div class="row">
 									<div class="col-xl-3 col-lg-4 col-md-6 my-2">
 										<div class="form-check form-switch form-check-reverse form-check-inline">
-											<input class="form-check-input ms-2" id="tg-notify" name="tg_notify" value="1" type="checkbox" {if $settings->tg_notify}checked="" {/if}>
+											<input class="form-check-input ms-2" id="tg-notify" name="tg_notify" value="1" type="checkbox" {if $settings->tg_notify}checked=""{/if}>
 											<label class="form-check-label" for="tg-notify">{$btr->enable_notifications|escape}</label>
 										</div>
 									</div>
@@ -324,12 +324,6 @@
 							</div>
 							<div class="col-lg-3 col-md-6">
 								<div class="mb-3">
-									<div class="form-label">{$btr->settings_catalog_products_max|escape}</div>
-									<input name="max_order_amount" class="form-control" type="text" value="{$settings->max_order_amount|escape}">
-								</div>
-							</div>
-							<div class="col-lg-3 col-md-6">
-								<div class="mb-3">
 									<div class="form-label">{$btr->settings_catalog_products_on_admin|escape}</div>
 									<input name="products_num_admin" class="form-control" type="text" value="{$settings->products_num_admin|escape}">
 								</div>
@@ -338,6 +332,12 @@
 								<div class="mb-3">
 									<div class="form-label">{$btr->settings_features_on_admin|escape}</div>
 									<input name="features_num_admin" class="form-control" type="text" value="{$settings->features_num_admin|escape}">
+								</div>
+							</div>
+							<div class="col-lg-3 col-md-6">
+								<div class="mb-3">
+									<div class="form-label">{$btr->settings_catalog_products_max|escape}</div>
+									<input name="max_order_amount" class="form-control" type="text" value="{$settings->max_order_amount|escape}">
 								</div>
 							</div>
 							<div class="col-lg-3 col-md-6">
@@ -365,9 +365,8 @@
 								<div class="mb-3">
 									<div class="form-label">{$btr->settings_catalog_thousands|escape}</div>
 									<select name="thousands_separator" class="selectpicker">
-										<option value='' {if $settings->thousands_separator == ''}selected{/if}>{$btr->settings_catalog_without|escape} 1245678 {$currency->sign|escape}</option>
 										<option value=' ' {if $settings->thousands_separator == ' '}selected{/if}>{$btr->settings_catalog_space|escape} 1 245 678 {$currency->sign|escape}</option>
-										<option value=',' {if $settings->thousands_separator == ','}selected{/if}>{$btr->settings_catalog_comma|escape} 1,245,678 {$currency->sign|escape}</option>
+										<option value='' {if $settings->thousands_separator == ''}selected{/if}>{$btr->settings_catalog_without|escape} 1245678 {$currency->sign|escape}</option>
 									</select>
 								</div>
 							</div>

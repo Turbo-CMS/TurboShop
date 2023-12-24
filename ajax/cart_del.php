@@ -1,14 +1,18 @@
 <?php
 
 session_start();
+
 chdir('..');
 require_once 'api/Turbo.php';
 
 $turbo = new Turbo();
 
-$turbo->cart->deleteItem($turbo->request->get('variant', 'integer'));
+$variant = $turbo->request->get('variant', 'integer');
+$turbo->cart->deleteItem($variant);
+
 $cart = $turbo->cart->getCart();
 $turbo->design->assign('cart', $cart);
+
 $currencies = $turbo->money->getCurrencies(['enabled' => 1]);
 
 if (isset($_SESSION['currency_id'])) {

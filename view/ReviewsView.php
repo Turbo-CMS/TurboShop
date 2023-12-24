@@ -62,11 +62,11 @@ class ReviewsView extends View
 
         // Sort
         if ($sort = $this->request->get('sort', 'string')) {
-            $_SESSION['sort'] = $sort;
+            $_SESSION['sort_review'] = $sort;
         }
 
-        if (!empty($_SESSION['sort'])) {
-            $filter['sort'] = $_SESSION['sort'];
+        if (!empty($_SESSION['sort_review'])) {
+            $filter['sort'] = $_SESSION['sort_review'];
         } else {
             $filter['sort'] = 'rate';
         }

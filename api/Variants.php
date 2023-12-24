@@ -51,13 +51,13 @@ class Variants extends Turbo
                 v.position,
                 $langSql->fields
             FROM __variants AS v
-            $langSql->join
-            WHERE 
-                1
+                $langSql->join
+            WHERE 1
                 $productIdFilter          
                 $variantIdFilter
                 $instockFilter
-            ORDER BY v.position",
+            ORDER BY 
+                v.position",
             $this->settings->max_order_amount
         );
 
@@ -107,7 +107,7 @@ class Variants extends Turbo
                 v.weight,
                 $langSql->fields
             FROM __variants v 
-            $langSql->join 
+                $langSql->join 
             WHERE id=? 
             LIMIT 1",
             $this->settings->max_order_amount,
@@ -115,6 +115,7 @@ class Variants extends Turbo
         );
 
         $this->db->query($query);
+
         $variant = $this->db->result();
 
         $variant->oprice = $variant->price;
@@ -161,6 +162,7 @@ class Variants extends Turbo
     public function addVariant($variant)
     {
         $variant = (object) $variant;
+
         $result = $this->languages->getDescription($variant, 'variant');
 
         if (!empty($result->data)) {
@@ -189,6 +191,7 @@ class Variants extends Turbo
             $this->db->query($query);
 
             $this->db->query("UPDATE __purchases SET variant_id=NULL WHERE variant_id=?", (int) $id);
+
             $this->db->query("DELETE FROM __lang_variants WHERE variant_id=?", (int) $id);
         }
     }

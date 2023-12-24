@@ -27,10 +27,9 @@ class Coupons extends Turbo
 				c.single, 
 				c.usages,
 				((DATE(NOW()) <= DATE(c.expire) OR c.expire IS NULL) AND (c.usages=0 OR NOT c.single)) AS valid
-			 FROM 
-				 __coupons c 
-			 $where 
-			 LIMIT 1"
+			FROM __coupons c 
+			 	$where 
+			LIMIT 1"
 		);
 
 		if ($this->db->query($query)) {
@@ -95,8 +94,8 @@ class Coupons extends Turbo
 				$couponIdFilter 
 				$validFilter 
 				$keywordFilter
-			 ORDER BY valid DESC, id DESC 
-			 $sqlLimit",
+			ORDER BY valid DESC, id DESC 
+			 	$sqlLimit",
 			$this->settings->date_format
 		);
 

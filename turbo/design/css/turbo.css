@@ -60,7 +60,11 @@ img {
 .dropdown .list-group .list-group-item:last-child {
 	border-bottom: none;
 	border-bottom-right-radius: inherit;
-    border-bottom-left-radius: inherit;
+	border-bottom-left-radius: inherit;
+}
+
+.input-group .dropdown-menu {
+	margin-left: 0px;
 }
 
 /************************************************************************* Sidebar  */
@@ -1141,13 +1145,13 @@ textarea.form-control {
 }
 
 .turbo-list .turbo-list-coupon-name {
-	width: calc(100% - 760px);
+	width: calc(100% - 765px);
 	position: relative;
 	text-align: left;
 }
 
 .turbo-list .turbo-list-coupon-sale {
-	width: 155px;
+	width: 175px;
 	text-align: center;
 }
 
@@ -1157,7 +1161,7 @@ textarea.form-control {
 }
 
 .turbo-list .turbo-list-coupon-condit {
-	width: 200px;
+	width: 175px;
 	text-align: center;
 }
 
@@ -2054,7 +2058,7 @@ textarea.form-control {
 }
 
 .feature-value-name {
-	width: calc(100% - 480px);
+	width: calc(100% - 500px);
 	text-align: left;
 }
 
@@ -2358,7 +2362,7 @@ textarea.form-control {
 .input-group-addon-categories {
 	position: relative;
 	cursor: pointer;
-	max-width: 43px;
+	width: 35px;
 	white-space: nowrap;
 	vertical-align: middle;
 	padding: 0.3rem 0.5rem;
@@ -2679,7 +2683,7 @@ textarea.banner-textarea {
 	margin: 0 auto;
 }
 
-.category-image img {
+.category-icon img {
 	max-height: 40px;
 }
 

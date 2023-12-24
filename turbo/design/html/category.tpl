@@ -203,7 +203,7 @@
 								{if isset($category->icon) && $category->icon}
 									<input type="hidden" class="js-accept-delete-two" name="delete_icon" value="">
 									<div class="js-parent-image-two">
-										<div class="category-image image-wrapper js-image-wrapper-two text-xs-center">
+										<div class="category-icon image-wrapper js-image-wrapper-two text-xs-center">
 											<a href="javascript:;" class="js-delete-item-two remove-image"></a>
 											<img src="../{$config->categories_images_dir}{$category->icon}" alt="">
 										</div>
@@ -215,7 +215,7 @@
 									<i class="align-middle" data-feather="plus"></i>
 									<input class="dropzone-image-two" name="icon" type="file">
 								</div>
-								<div class="category-image image-wrapper js-image-wrapper-two js-new-image-two text-xs-center">
+								<div class="category-icon image-wrapper js-image-wrapper-two js-new-image-two text-xs-center">
 									<a href="javascript:;" class="js-delete-item-two remove-image"></a>
 									<img src="" alt="">
 								</div>

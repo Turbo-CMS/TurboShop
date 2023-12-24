@@ -104,7 +104,7 @@ class ProductsView extends View
 		}
 
 		$this->design->assign('noindex_filter', $this->noIndexFilter);
-		$this->design->smarty->registerPlugin('function', 'furl', array($this, 'filterChpuUrl'));
+		$this->design->smarty->registerPlugin('function', 'furl', [$this, 'filterChpuUrl']);
 	}
 
 	/**

@@ -30,7 +30,7 @@ class ImagesAdmin extends Turbo
             $deleteImage = trim($this->request->post('delete_image'), '.');
 
             if (!empty($deleteImage)) {
-                unlink($imagesDir . $deleteImage);
+                @unlink($imagesDir . $deleteImage);
             }
 
             if ($images = $this->request->files('upload_images')) {

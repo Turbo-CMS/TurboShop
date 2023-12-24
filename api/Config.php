@@ -7,7 +7,7 @@ class Config
 
 	private $vars = [];
 
-	public $version = '4.4.4';
+	public $version = '4.5.1';
 	public $configFile = 'config/config.php';
 
 	public function __construct()
@@ -45,12 +45,15 @@ class Config
 
 		$this->vars['subfolder'] = $subdir . '/';
 		$this->vars['root_dir'] =  dirname(dirname(__FILE__)) . '/';
+
 		$maxUpload = (int) (ini_get('upload_max_filesize'));
 		$maxPost = (int) (ini_get('post_max_size'));
 		$memoryLimit = (int) (ini_get('memory_limit'));
+
 		$this->vars['max_upload_filesize'] = min($maxUpload, $maxPost, $memoryLimit) * 1024 * 1024;
 
 		$s = stat(dirname(dirname(__FILE__)) . '/' . $this->configFile);
+
 		$this->vars['salt'] = md5(md5_file(dirname(dirname(__FILE__)) . '/' . $this->configFile) . $s['dev'] . $s['ino'] . $s['uid'] . $s['mtime']);
 
 		if (!empty($this->vars['php_timezone'])) {

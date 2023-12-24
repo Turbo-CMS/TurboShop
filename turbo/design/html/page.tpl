@@ -66,7 +66,7 @@
 	</div>
 {/if}
 
-<form method="post" enctype="multipart/form-data">
+<form method="post" enctype="multipart/form-data" class="js-fast-button">
 	<input type="hidden" name="session_id" value="{$smarty.session.id}">
 	<div class="row">
 		<div class="col-12">

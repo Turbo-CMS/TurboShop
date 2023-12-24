@@ -34,12 +34,10 @@ class Blog extends Turbo
 				b.image,
 				b.last_modified,
 				$langSql->fields
-			FROM 
-				__blog b 
+			FROM __blog b 
 				$langSql->join 
 				$where 
-			LIMIT 
-				1"
+			LIMIT 1"
 		);
 
 		if ($this->db->query($query)) {
@@ -99,7 +97,6 @@ class Blog extends Turbo
 		}
 
 		$sqlLimit = $this->db->placehold('LIMIT ?, ?', ($page - 1) * $limit, $limit);
-
 		$langSql = $this->languages->getQuery(['object' => 'blog']);
 
 		$query = $this->db->placehold(
@@ -119,8 +116,7 @@ class Blog extends Turbo
 				b.image,
 				b.last_modified,
 				$langSql->fields
-			FROM
-				__blog b 
+			FROM __blog b 
 				$langSql->join
 			WHERE
 				1
@@ -156,6 +152,9 @@ class Blog extends Turbo
 		$visibleFilter = '';
 		$keywordFilter = '';
 
+		$langId = $this->languages->langId();
+		$px = ($langId ? 'l' : 'b');
+
 		if (!empty($filter['id'])) {
 			$postIdFilter = $this->db->placehold('AND b.id IN(?@)', (array) $filter['id']);
 		}
@@ -167,7 +166,7 @@ class Blog extends Turbo
 		if (isset($filter['keyword'])) {
 			$keywords = explode(' ', $filter['keyword']);
 			foreach ($keywords as $keyword) {
-				$keywordFilter .= $this->db->placehold('AND (b.name LIKE "%' . $this->db->escape(trim($keyword)) . '%" OR b.meta_keywords LIKE "%' . $this->db->escape(trim($keyword)) . '%") ');
+				$keywordFilter .= $this->db->placehold('AND (' . $px . '.name LIKE "%' . $this->db->escape(trim($keyword)) . '%" OR ' . $px . '.meta_keywords LIKE "%' . $this->db->escape(trim($keyword)) . '%") ');
 			}
 		}
 
@@ -217,7 +216,8 @@ class Blog extends Turbo
 		}
 
 		$this->settings->lastModifyPosts = date("Y-m-d H:i:s");
-		$query = $this->db->placehold("INSERT INTO __blog SET `last_modified`=NOW(), ?% $dateQuery", $post);
+
+		$query = $this->db->placehold("INSERT INTO __blog SET last_modified=NOW(), ?% $dateQuery", $post);
 
 		if (!$this->db->query($query)) {
 			return false;
@@ -240,13 +240,14 @@ class Blog extends Turbo
 		$post = (object) $post;
 
 		$result = $this->languages->getDescription($post, 'blog');
+
 		if (!empty($result->data)) {
 			$post = $result->data;
 		}
 
 		$this->settings->lastModifyPosts = date("Y-m-d H:i:s");
 
-		$query = $this->db->placehold("UPDATE __blog SET `last_modified` = NOW(), ?% WHERE id IN (?@) LIMIT ?", $post, (array) $id, count((array) $id));
+		$query = $this->db->placehold("UPDATE __blog SET last_modified=NOW(), ?% WHERE id IN(?@) LIMIT ?", $post, (array) $id, count((array) $id));
 		$this->db->query($query);
 
 		if (!empty($result->description)) {
@@ -273,6 +274,7 @@ class Blog extends Turbo
 	{
 		if (!empty($id)) {
 			$this->deleteImage($id);
+
 			$query = $this->db->placehold("DELETE FROM __blog WHERE id=? LIMIT 1", (int) $id);
 
 			if ($this->db->query($query)) {
@@ -320,7 +322,7 @@ class Blog extends Turbo
 					if (is_array($resizedImages)) {
 						foreach ($resizedImages as $f) {
 							if (is_file($f)) {
-								unlink($f);
+								@unlink($f);
 							}
 						}
 					}
@@ -330,12 +332,12 @@ class Blog extends Turbo
 					if (is_array($resizedImages)) {
 						foreach ($resizedImages as $f) {
 							if (is_file($f)) {
-								unlink($f);
+								@unlink($f);
 							}
 						}
 					}
 
-					unlink($this->config->root_dir . $this->config->posts_images_dir . $filename);
+					@unlink($this->config->root_dir . $this->config->posts_images_dir . $filename);
 				}
 			}
 		}
@@ -347,6 +349,7 @@ class Blog extends Turbo
 	public function getNextPost($id)
 	{
 		$this->db->query("SELECT date FROM __blog WHERE id=? LIMIT 1", $id);
+
 		$date = $this->db->result('date');
 
 		$this->db->query(
@@ -373,6 +376,7 @@ class Blog extends Turbo
 	public function getPrevPost($id)
 	{
 		$this->db->query("SELECT date FROM __blog WHERE id=? LIMIT 1", $id);
+
 		$date = $this->db->result('date');
 
 		$this->db->query(

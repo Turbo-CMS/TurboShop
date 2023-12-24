@@ -52,9 +52,8 @@
 	</div>
 {/if}
 
-<form method="post" enctype="multipart/form-data" class="clearfix">
+<form method="post" enctype="multipart/form-data" class="clearfix js-fast-button">
 	<input type="hidden" name="session_id" value="{$smarty.session.id}">
-
 	<div class="row">
 		<div class="col-12">
 			<div class="card">

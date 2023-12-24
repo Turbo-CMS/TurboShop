@@ -7,7 +7,7 @@
 <div class="d-md-flex mb-3">
 	<h1 class="d-inline align-middle me-3">
 		{if !isset($post->id)}
-			{$btr->new_article|escape}
+			{$btr->add_article|escape}
 		{else}
 			{$post->name|escape}
 		{/if}

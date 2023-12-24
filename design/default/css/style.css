@@ -255,7 +255,7 @@
 	margin-right: 5px;
 }
 
-/* Back top button */
+/* Back Top Button */
 
 #back-to-top {
 	position: fixed;
@@ -405,14 +405,10 @@ iframe {
 	align-items: flex-start;
 }
 
-/* Social colors */
+/* Social Colors */
 
 .bs-facebook:hover {
 	color: #3b5998;
-}
-
-.bs-twitter:hover {
-	color: #1da1f2;
 }
 
 .bs-instagram:hover {

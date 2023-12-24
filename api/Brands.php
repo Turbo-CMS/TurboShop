@@ -32,7 +32,7 @@ class Brands extends Turbo
 
 			if (!empty($filter['features']) && !empty($filter['features'])) {
 				foreach ($filter['features'] as $feature => $value) {
-					$categoryIdFilter .= $this->db->placehold('AND p.id IN (SELECT product_id FROM __options WHERE feature_id=? AND translit IN(?@))', $feature, (array) $value);
+					$categoryIdFilter .= $this->db->placehold('AND p.id IN(SELECT po.product_id FROM __products_options AS po LEFT JOIN __options AS o ON o.id=po.option_id WHERE feature_id=? AND translit IN(?@))', $feature, (array) $value);
 				}
 			}
 
@@ -44,11 +44,11 @@ class Brands extends Turbo
 			$currency = reset($currency);
 
 			if (!empty($filter['min_price'])) {
-				$categoryIdFilter .= $this->db->placehold('AND p.id IN (SELECT product_id FROM __variants WHERE IF((currency_id !=' . $currency->id . ' AND currency_id>0), (price*(SELECT rate_to FROM __currencies AS c WHERE c.id=currency_id)/(SELECT rate_from FROM __currencies AS c WHERE c.id=currency_id)), price) >=?)', floatval($filter['min_price']));
+				$categoryIdFilter .= $this->db->placehold('AND p.id IN(SELECT product_id FROM __variants WHERE IF((currency_id !=' . $currency->id . ' AND currency_id>0), (price*(SELECT rate_to FROM __currencies AS c WHERE c.id=currency_id)/(SELECT rate_from FROM __currencies AS c WHERE c.id=currency_id)), price) >=?)', floatval($filter['min_price']));
 			}
 
 			if (!empty($filter['max_price'])) {
-				$categoryIdFilter .= $this->db->placehold('AND p.id IN (SELECT product_id FROM __variants WHERE IF((currency_id !=' . $currency->id . ' AND currency_id>0), (price*(SELECT rate_to FROM __currencies AS c WHERE c.id=currency_id)/(SELECT rate_from FROM __currencies AS c WHERE c.id=currency_id)), price) <=?)', floatval($filter['max_price']));
+				$categoryIdFilter .= $this->db->placehold('AND p.id IN(SELECT product_id FROM __variants WHERE IF((currency_id !=' . $currency->id . ' AND currency_id>0), (price*(SELECT rate_to FROM __currencies AS c WHERE c.id=currency_id)/(SELECT rate_from FROM __currencies AS c WHERE c.id=currency_id)), price) <=?)', floatval($filter['max_price']));
 			}
 		}
 
@@ -69,10 +69,11 @@ class Brands extends Turbo
 				b.last_modified, 
 				$langSql->fields 
 			FROM __brands b 
-			$langSql->join
-			$visibleBrandFilter 
-			$categoryIdFilter 
-			ORDER BY b.name"
+				$langSql->join
+				$visibleBrandFilter 
+				$categoryIdFilter 
+			ORDER BY 
+				b.name"
 		);
 
 		if ($this->settings->cached == 1 && empty($_SESSION['admin'])) {
@@ -117,8 +118,7 @@ class Brands extends Turbo
 				b.image,
 				b.last_modified,
 				$langSql->fields
-			FROM
-				__brands b
+			FROM __brands b
 				$langSql->join
 			WHERE
 				$filter
@@ -126,6 +126,7 @@ class Brands extends Turbo
 		);
 
 		$this->db->query($query);
+		
 		return $this->db->result();
 	}
 
@@ -160,6 +161,7 @@ class Brands extends Turbo
 		}
 
 		$this->db->query("INSERT INTO __brands SET ?%", $brand);
+
 		$id = $this->db->insertId();
 
 		if (!empty($result->description)) {
@@ -175,13 +177,14 @@ class Brands extends Turbo
 	public function updateBrand($id, $brand)
 	{
 		$brand = (object) $brand;
+
 		$result = $this->languages->getDescription($brand, 'brand');
 
 		if (!empty($result->data)) {
 			$brand = $result->data;
 		}
 
-		$query = $this->db->placehold("UPDATE __brands SET `last_modified`=NOW(), ?% WHERE id=? LIMIT 1", $brand, (int) $id);
+		$query = $this->db->placehold("UPDATE __brands SET last_modified=NOW(), ?% WHERE id=? LIMIT 1", $brand, (int) $id);
 		$this->db->query($query);
 
 		if (!empty($result->description)) {
@@ -240,7 +243,7 @@ class Brands extends Turbo
 					if (is_array($resizedImages)) {
 						foreach ($resizedImages as $f) {
 							if (is_file($f)) {
-								unlink($f);
+								@unlink($f);
 							}
 						}
 					}
@@ -250,12 +253,12 @@ class Brands extends Turbo
 					if (is_array($resizedImages)) {
 						foreach ($resizedImages as $f) {
 							if (is_file($f)) {
-								unlink($f);
+								@unlink($f);
 							}
 						}
 					}
 
-					unlink($this->config->root_dir . $this->config->brands_images_dir . $filename);
+					@unlink($this->config->root_dir . $this->config->brands_images_dir . $filename);
 				}
 			}
 		}

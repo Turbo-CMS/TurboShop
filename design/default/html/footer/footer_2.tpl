@@ -92,7 +92,7 @@
 				</li>
 				<li class="me-3">
 					<a class="link-body-emphasis" href="#">
-						<i class="fab fa-twitter bs-twitter"></i>
+						<i class="fab fa-x-twitter"></i>
 					</a>
 				</li>
 				<li class="me-3">

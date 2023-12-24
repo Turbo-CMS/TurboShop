@@ -1,6 +1,7 @@
 <?php
 
 session_start();
+
 require_once '../../api/Turbo.php';
 
 $turbo = new Turbo();
@@ -37,15 +38,13 @@ $turbo->db->query(
         $px.name,
         i.filename AS image
     FROM __products p
-    $langSql->join
+        $langSql->join
     LEFT JOIN __images i ON i.product_id=p.id AND i.position=(SELECT MIN(position) FROM __images WHERE product_id=p.id LIMIT 1)
     LEFT JOIN __variants pv ON pv.product_id=p.id
-    WHERE 
-        1 
+    WHERE 1 
         $keywordSql 
     ORDER BY $px.name 
-    LIMIT ?
-    ",
+    LIMIT ?",
     $limit
 );
 
@@ -70,7 +69,7 @@ if (!empty($products)) {
             pv.product_id,
             $langSql->fields
         FROM __variants pv 
-        $langSql->join 
+            $langSql->join 
         WHERE 
             pv.product_id IN(?@)
             AND (pv.stock IS NULL OR pv.stock>0)
@@ -105,13 +104,13 @@ foreach ($products as $product) {
     }
 }
 
-$response = new stdClass();
-$response->query = $keyword;
-$response->suggestions = $suggestions;
+$res = new stdClass();
+$res->query = $keyword;
+$res->suggestions = $suggestions;
 
 header('Content-Type: application/json; charset=UTF-8');
 header('Cache-Control: must-revalidate');
 header('Pragma: no-cache');
 header('Expires: -1');
 
-echo json_encode($response);
+echo json_encode($res);

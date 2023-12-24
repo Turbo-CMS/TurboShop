@@ -102,6 +102,7 @@ class Cache extends Turbo
 	private function stringToHash($stringKey)
 	{
 		$stringKey = $this->config->root_url . $stringKey;
+
 		if ($this->isMemcached) {
 			return md5('key' . $stringKey);
 		} else {

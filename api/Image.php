@@ -19,6 +19,7 @@ class Image extends Turbo
 		list($sourceFile, $width, $height, $setWatermark) = $this->getResizeParams($filename);
 
 		$size = ($width ? $width : 0) . 'x' . ($height ? $height : 0) . ($setWatermark ? "w" : '');
+
 		$imageSizes = explode('|', $this->settings->image_sizes);
 
 		if (!in_array($size, $imageSizes)) {
@@ -138,7 +139,7 @@ class Image extends Turbo
 	 */
 	public function downloadImage($filename)
 	{
-		$this->db->query('SELECT 1 FROM __images WHERE filename=? LIMIT 1', $filename);
+		$this->db->query("SELECT 1 FROM __images WHERE filename=? LIMIT 1", $filename);
 
 		if (!$this->db->result()) {
 			return false;
@@ -152,6 +153,7 @@ class Image extends Turbo
 
 		while (file_exists($this->config->root_dir . $this->config->original_images_dir . $newName)) {
 			$newBase = pathinfo($newName, PATHINFO_FILENAME);
+
 			if (preg_match('/_([0-9]+)$/', $newBase, $parts)) {
 				$newName = $base . '_' . ($parts[1] + 1) . '.' . $ext;
 			} else {
@@ -159,7 +161,8 @@ class Image extends Turbo
 			}
 		}
 
-		$this->db->query('UPDATE __images SET filename=? WHERE filename=?', $newName, $filename);
+		$this->db->query("UPDATE __images SET filename=? WHERE filename=?", $newName, $filename);
+
 		fclose(fopen($this->config->root_dir . $this->config->original_images_dir . $newName, 'w'));
 		copy($filename, $this->config->root_dir . $this->config->original_images_dir . $newName);
 
@@ -179,6 +182,7 @@ class Image extends Turbo
 		if (in_array(strtolower($ext), $this->allowedExtensions)) {
 			while (file_exists($this->config->root_dir . $this->config->original_images_dir . $newName)) {
 				$newBase = pathinfo($newName, PATHINFO_FILENAME);
+
 				if (preg_match('/_([0-9]+)$/', $newBase, $parts))
 					$newName = $base . '_' . ($parts[1] + 1) . '.' . $ext;
 				else

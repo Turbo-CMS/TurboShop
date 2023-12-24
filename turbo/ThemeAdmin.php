@@ -33,7 +33,7 @@ class ThemeAdmin extends Turbo
 			$action = $this->request->post('action');
 			$actionTheme  = $this->request->post('theme');
 
-			switch ($this->request->post('action')) {
+			switch ($action) {
 				case 'set_main_theme': {
 						$this->settings->theme = $actionTheme;
 						$this->languages->setTranslation();
@@ -117,7 +117,7 @@ class ThemeAdmin extends Turbo
 			if (is_dir($fullPath)) {
 				$this->dirDelete($fullPath, true);
 			} else {
-				unlink($fullPath);
+				@unlink($fullPath);
 			}
 		}
 

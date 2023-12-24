@@ -6,7 +6,7 @@
 
 <h1 class="mb-3">
 	{if !isset($banner->id)}
-		{$btr->banner_new_group|escape}
+		{$btr->banners_add|escape}
 	{else}
 		{$banner->name|escape}
 	{/if}
@@ -118,7 +118,7 @@
 							<div class="col-lg-3 col-md-6">
 								<div class="mb-3">
 									<label class="form-label">{$btr->global_pages|escape}</label>
-									<select name="pages[]" class="selectpicker js-action_select" multiple="multiple" data-live-search="true" data-size="10" data-selected-text-format="count">
+									<select name="pages[]" class="js-action-select selectpicker d-none" multiple="multiple" data-live-search="true" data-size="10" data-selected-text-format="count">
 										<option value="0" {if !isset($banner->page_selected) || 0|in_array:$banner->page_selected}selected{/if}>{$btr->banner_hide|escape}</option>
 										{foreach from=$pages item=page}
 											{if $page->name != ''}
@@ -131,7 +131,7 @@
 							<div class="col-lg-3 col-md-6">
 								<div class="mb-3">
 									<label class="form-label">{$btr->global_categories|escape}</label>
-									<select name="categories[]" class="selectpicker" multiple="multiple" data-live-search="true" data-size="10" data-selected-text-format="count">
+									<select name="categories[]" class="js-action-select selectpicker d-none" multiple="multiple" data-live-search="true" data-size="10" data-selected-text-format="count">
 										<option value='0' {if !isset($banner->category_selected) || 0|in_array:$banner->category_selected}selected{/if}>{$btr->banner_hide|escape}</option>
 										{function name=category_select level=0}
 											{foreach from=$categories item=category}
@@ -148,7 +148,7 @@
 							<div class="col-lg-3 col-md-6">
 								<div class="mb-3">
 									<label class="form-label">{$btr->global_brands|escape}</label>
-									<select name="brands[]" class="selectpicker" multiple="multiple" data-live-search="true" data-size="10" data-selected-text-format="count">
+									<select name="brands[]" class="js-action-select selectpicker d-none" multiple="multiple" data-live-search="true" data-size="10" data-selected-text-format="count">
 										<option value="0" {if !isset($banner->brand_selected) || 0|in_array:$banner->brand_selected}selected{/if}>{$btr->banner_hide|escape}</option>
 										{foreach from=$brands item=brand}
 											<option value="{$brand->id}" {if isset($banner->brand_selected) && $brand->id|in_array:$banner->brand_selected}selected{/if}>{$brand->name|escape}</option>
@@ -159,7 +159,7 @@
 							<div class="col-lg-3 col-md-6">
 								<div class="mb-3">
 									<label class="form-label">{$btr->article_categories|escape}</label>
-									<select name="articles_categories[]" class="selectpicker" multiple="multiple" data-live-search="true" data-size="10" data-selected-text-format="count">
+									<select name="articles_categories[]" class="js-action-select selectpicker d-none" multiple="multiple" data-live-search="true" data-size="10" data-selected-text-format="count">
 										<option value="0" {if !isset($banner->articles_category_selected) || 0|in_array:$banner->articles_category_selected}selected{/if}>{$btr->banner_hide|escape}</option>
 										{function name=articles_category_selected level=0}
 											{foreach from=$articles_categories item=articles_category}
@@ -190,3 +190,11 @@
 		</div>
 	</div>
 </form>
+
+{literal}
+	<script>
+		$(window).on("load", function() {
+			$('.js-action-select').removeClass('d-none');
+		});
+	</script>
+{/literal}

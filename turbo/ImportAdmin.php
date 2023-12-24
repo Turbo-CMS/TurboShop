@@ -59,7 +59,7 @@ class ImportAdmin extends Import
                     }
                 }
 
-                unlink($temp);
+                @unlink($temp);
             } elseif ($this->request->post('import')) {
                 unset($_SESSION['csv_fields']);
                 $fields = $this->request->post('csv_fields');
@@ -208,12 +208,16 @@ class ImportAdmin extends Import
     {
         $sourceColumns = $this->columns;
         $this->design->assign('columns_names', array_keys($this->columnsNames));
+
         $langId = $this->languages->langId();
         $px = ($langId ? 'l' : 'f');
-        $langSql = $this->languages->getQuery(array('object' => 'feature', 'px' => 'f'));
-        $this->db->query('SELECT ' . $px . '.name FROM __features f ' . $langSql->join . ' ORDER BY f.position');
+        $langSql = $this->languages->getQuery(['object' => 'feature', 'px' => 'f']);
+
+        $this->db->query("SELECT $px.name FROM __features f $langSql->join ORDER BY f.position");
+
         $features = $this->db->results('name');
         $this->design->assign('features', $features);
+
         $this->initInternalColumns();
         $internalColumns = array_keys($this->internalColumnsNames);
 

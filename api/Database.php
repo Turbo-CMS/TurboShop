@@ -67,7 +67,7 @@ class Database extends Turbo
 	 */
 	public function disconnect()
 	{
-		if ($this->mysqli->close()) {
+		if (!@$this->mysqli->close()) {
 			return true;
 		} else {
 			return false;
@@ -84,6 +84,7 @@ class Database extends Turbo
 		}
 
 		$query = call_user_func_array(array($this, 'placehold'), func_get_args());
+
 		$this->res = $this->mysqli->query($query);
 
 		return $this->res;
@@ -232,7 +233,6 @@ class Database extends Turbo
 		$hasNamed = false;
 
 		while (false !== ($start = $p = strpos($tmpl, '?', $p))) {
-
 			switch ($c = substr($tmpl, ++$p, 1)) {
 				case '%':
 				case '@':
@@ -286,7 +286,7 @@ class Database extends Turbo
 		list($compiled, $tmpl, $has_named) = $compiled;
 
 		if ($has_named) {
-			$args = $args[0] ?? null;
+			$args = @$args[0] ?? null;
 		}
 
 		$p = 0;
@@ -305,7 +305,7 @@ class Database extends Turbo
 
 			do {
 				if ($type === '#') {
-					$repl = constant($key);
+					$repl = @constant($key);
 					if ($repl === null) {
 						$error = $errmsg = "UNKNOWN_CONSTANT_$key";
 					}
@@ -444,6 +444,7 @@ class Database extends Turbo
 				$line = fgets($h);
 				if (substr($line, 0, 2) != '--' && $line != '') {
 					$templine .= $line;
+
 					if (substr(trim($line), -1, 1) == ';') {
 						$this->mysqli->query($templine) or print('Error performing query \'<b>' . $templine . '</b>\': ' . $this->mysqli->error . '<br/><br/>');
 						$templine = '';

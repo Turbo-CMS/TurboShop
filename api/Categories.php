@@ -28,10 +28,10 @@ class Categories extends Turbo
 					c.icon, 
 					c.code,
 					c.last_modified 
-				FROM 
-					__categories c 
-				WHERE 
-					1 $featuredFilter $visibleFilter 
+				FROM __categories c 
+				WHERE 1 
+					$featuredFilter 
+					$visibleFilter 
 				ORDER BY 
 					c.position"
 			);
@@ -58,6 +58,7 @@ class Categories extends Turbo
 			$this->db->query($query);
 
 			$categoriesIds = $this->db->results('category_id');
+
 			$result = [];
 
 			foreach ($categoriesIds as $id) {
@@ -138,6 +139,7 @@ class Categories extends Turbo
 		}
 
 		$category = (object) $category;
+
 		$result = $this->languages->getDescription($category, 'category');
 
 		if (!empty($result->data)) {
@@ -171,7 +173,7 @@ class Categories extends Turbo
 			$category = $result->data;
 		}
 
-		$query = $this->db->placehold("UPDATE __categories SET `last_modified`=NOW(), ?% WHERE id=? LIMIT 1", $category, (int) $id);
+		$query = $this->db->placehold("UPDATE __categories SET last_modified=NOW(), ?% WHERE id=? LIMIT 1", $category, (int) $id);
 		$this->db->query($query);
 
 		if (!empty($result->description)) {
@@ -196,7 +198,7 @@ class Categories extends Turbo
 				$this->deleteImage($category->children);
 				$this->deleteIcon($category->children);
 			}
-			
+
 			if (!empty($category->children)) {
 				$query = $this->db->placehold("DELETE FROM __categories WHERE id IN(?@)", $category->children);
 				$this->db->query($query);
@@ -239,6 +241,7 @@ class Categories extends Turbo
 	public function deleteImage($categoriesIds)
 	{
 		$categoriesIds = (array) $categoriesIds;
+
 		$query = $this->db->placehold("SELECT image FROM __categories WHERE id IN(?@)", $categoriesIds);
 
 		if ($this->db->query($query)) {
@@ -265,7 +268,7 @@ class Categories extends Turbo
 					if (is_array($resizedImages)) {
 						foreach ($resizedImages as $f) {
 							if (is_file($f)) {
-								unlink($f);
+								@unlink($f);
 							}
 						}
 					}
@@ -275,12 +278,12 @@ class Categories extends Turbo
 					if (is_array($resizedImages)) {
 						foreach ($resizedImages as $f) {
 							if (is_file($f)) {
-								unlink($f);
+								@unlink($f);
 							}
 						}
 					}
 
-					unlink($this->config->root_dir . $this->config->categories_images_dir . $filename);
+					@unlink($this->config->root_dir . $this->config->categories_images_dir . $filename);
 				}
 			}
 
@@ -295,6 +298,7 @@ class Categories extends Turbo
 	public function deleteIcon($categoriesIds)
 	{
 		$categoriesIds = (array) $categoriesIds;
+
 		$query = $this->db->placehold("SELECT icon FROM __categories WHERE id IN(?@)", $categoriesIds);
 
 		if ($this->db->query($query)) {
@@ -312,7 +316,7 @@ class Categories extends Turbo
 				$count = $this->db->result('count');
 
 				if ($count == 0) {
-					unlink($this->config->root_dir . $this->config->categories_images_dir . $filename);
+					@unlink($this->config->root_dir . $this->config->categories_images_dir . $filename);
 				}
 			}
 
@@ -338,53 +342,57 @@ class Categories extends Turbo
 
 		if ($this->settings->category_count) {
 			$query = $this->db->placehold(
-				"SELECT c.id,
-						c.parent_id,
-						c.name,
-						c.name_h1,
-						c.description,
-						c.featured,
-						c.url,
-						c.meta_title,
-						c.meta_keywords,
-						c.meta_description,
-						c.image,
-						c.icon,
-						c.code,
-						c.visible,
-						c.position,
-						c.last_modified,
-						$langSql->fields,
-						COUNT(p.id) AS products_count
-				 FROM __categories c
-				 $langSql->join
-				 LEFT JOIN __products_categories pc ON pc.category_id=c.id
-				 LEFT JOIN __products p ON p.id=pc.product_id AND p.visible
-				 GROUP BY c.id
-				 ORDER BY c.parent_id, c.position"
+				"SELECT 
+					c.id,
+					c.parent_id,
+					c.name,
+					c.name_h1,
+					c.description,
+					c.featured,
+					c.url,
+					c.meta_title,
+					c.meta_keywords,
+					c.meta_description,
+					c.image,
+					c.icon,
+					c.code,
+					c.visible,
+					c.position,
+					c.last_modified,
+					$langSql->fields,
+					COUNT(p.id) AS products_count
+				FROM __categories c
+				 	$langSql->join
+				LEFT JOIN __products_categories pc ON pc.category_id=c.id
+				LEFT JOIN __products p ON p.id=pc.product_id AND p.visible
+				GROUP BY c.id
+				ORDER BY c.parent_id, c.position"
 			);
 		} else {
 			$query = $this->db->placehold(
-				"SELECT c.id,
-						c.parent_id,
-						c.name,
-						c.name_h1,
-						c.description,
-						c.featured,
-						c.url,
-						c.meta_title,
-						c.meta_keywords,
-						c.meta_description,
-						c.image,
-						c.icon,
-						c.code,
-						c.visible,
-						c.position,
-						c.last_modified,
-						$langSql->fields
-				 FROM __categories c
-				 $langSql->join
-				 ORDER BY c.parent_id, c.position"
+				"SELECT 
+					c.id,
+					c.parent_id,
+					c.name,
+					c.name_h1,
+					c.description,
+					c.featured,
+					c.url,
+					c.meta_title,
+					c.meta_keywords,
+					c.meta_description,
+					c.image,
+					c.icon,
+					c.code,
+					c.visible,
+					c.position,
+					c.last_modified,
+					$langSql->fields
+				FROM __categories c
+				 	$langSql->join
+				ORDER BY 
+				 	c.parent_id, 
+					c.position"
 			);
 		}
 

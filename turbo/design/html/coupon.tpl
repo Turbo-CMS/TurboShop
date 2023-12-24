@@ -9,7 +9,7 @@
 		{if isset($coupon->code)}
 			{$coupon->code}
 		{else}
-			{$btr->coupons_new|escape}
+			{$btr->coupons_add|escape}
 		{/if}
 	</h1>
 </div>
@@ -78,8 +78,8 @@
 							</div>
 							<div class="turbo-list-boding turbo-list-coupon-sale">
 								<div class="input-group">
-									<input class="form-control" name="value" type="text" value="{if isset($coupon->value)}{$coupon->value|escape}{/if}">
-									<select class="selectpicker" name="type">
+									<input class="form-control" name="value" type="text" value="{if isset($coupon->value) && isset($coupon->type) && $coupon->type == 'percentage'}{$coupon->value*1}{else}{$coupon->value|escape}{/if}">
+									<select class="js-coupon-sale selectpicker d-none" name="type">
 										<option value="percentage" {if isset($coupon->type) && $coupon->type=='percentage'}selected{/if}>%</option>
 										<option value="absolute" {if isset($coupon->type) && $coupon->type=='absolute'}selected{/if}>{$currency->sign}</option>
 									</select>
@@ -136,6 +136,8 @@
 				dateFormat: "d.m.Y",
 				locale: "{/literal}{if $settings->lang =='ua'}uk{else}{$settings->lang}{/if}{literal}"
 			});
+
+			$('.js-coupon-sale').removeClass('d-none');
 		});
 	</script>
 {/literal}

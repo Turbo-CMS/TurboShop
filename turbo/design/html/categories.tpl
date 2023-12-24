@@ -93,7 +93,7 @@
 													</button>
 												</div>
 												<div class="turbo-list-boding turbo-list-delete">
-													<div data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->categories_delete|escape}">
+													<div data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
 														<button type="button" class="btn-delete js-remove" data-bs-toggle="modal" data-bs-target="#actionModal" onclick="success_action($(this));">
 															<i class="align-middle" data-feather="trash-2"></i>
 														</button>

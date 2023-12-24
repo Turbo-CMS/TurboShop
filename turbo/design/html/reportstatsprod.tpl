@@ -44,16 +44,18 @@
 						</div>
 					</form>
 					<div class="row">
-						<div class="col-md-3 col-lg-3 col-sm-12 mb-3">
-							<select class="selectpicker" data-live-search="true" data-size="10" onchange="location = this.value;">
-								<option value="{url keyword=null brand_id=null page=null limit=null variant_id=null}" {if !isset($variant_id)}selected{/if}>{$btr->variants_all|escape}</option>
-								{foreach $variants as $variant}
-									<option value='{url keyword=null brand_id=null page=null variant_id={$variant->id}}' {if isset($variant_id) && $variant_id==$variant->id}selected{/if}>
-										{if $variant->color} {$variant->color|escape} / {/if}{$variant->name}
-									</option>
-								{/foreach}
-							</select>
-						</div>
+						{if $variants|count > 1}
+							<div class="col-md-3 col-lg-3 col-sm-12 mb-3">
+								<select class="selectpicker" data-live-search="true" data-size="10" onchange="location = this.value;">
+									<option value="{url keyword=null brand_id=null page=null limit=null variant_id=null}" {if !isset($variant_id)}selected{/if}>{$btr->variants_all|escape}</option>
+									{foreach $variants as $variant}
+										<option value='{url keyword=null brand_id=null page=null variant_id={$variant->id}}' {if isset($variant_id) && $variant_id==$variant->id}selected{/if}>
+											{if $variant->color} {$variant->color|escape} / {/if}{$variant->name}
+										</option>
+									{/foreach}
+								</select>
+							</div>
+						{/if}
 						<div class="col-md-3 col-lg-3 col-sm-12 mb-3">
 							<select class="selectpicker" data-live-search="true" data-size="10" onchange="location = this.value;">
 								<option {if !isset($smarty.get.status)}selected{/if} value="{url status=null}">{$btr->reportstats_all_statuses|escape}</option>

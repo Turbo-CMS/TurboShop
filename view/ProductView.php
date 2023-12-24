@@ -67,12 +67,10 @@ class ProductView extends View
 
 		// Features
 		if ($productValues = $this->features->getProductOptions(['product_id' => $product->id])) {
-
 			foreach ($productValues as $pv) {
 				if (!isset($product->features[$pv->feature_id])) {
 					$product->features[$pv->feature_id] = $pv;
 				}
-
 				$product->features[$pv->feature_id]->values[] = $pv;
 			}
 		}
@@ -98,7 +96,6 @@ class ProductView extends View
 		// Comment Form
 		if ($this->request->isMethod('post') && $this->request->post('comment')) {
 			$comment = new stdClass();
-
 			$comment->name = $this->request->post('name');
 			$comment->text = $this->request->post('text');
 			$comment->rating = $this->request->post('rating', 'integer');
@@ -123,7 +120,6 @@ class ProductView extends View
 				$comment->ip = $_SERVER['REMOTE_ADDR'];
 
 				$this->db->query("SELECT 1 FROM __comments WHERE approved=1 AND ip=? LIMIT 1", $comment->ip);
-
 				if ($this->db->numRows() > 0) {
 					$comment->approved = 1;
 				}
@@ -147,11 +143,11 @@ class ProductView extends View
 
 		// Sort
 		if ($sort = $this->request->get('sort', 'string')) {
-			$_SESSION['sort'] = $sort;
+			$_SESSION['comments_product'] = $sort;
 		}
 
-		if (!empty($_SESSION['sort'])) {
-			$filter['sort'] = $_SESSION['sort'];
+		if (!empty($_SESSION['comments_product'])) {
+			$filter['sort'] = $_SESSION['comments_product'];
 		} else {
 			$filter['sort'] = 'rate';
 		}
@@ -221,7 +217,6 @@ class ProductView extends View
 			}
 
 			$relatedProductsImages = $this->products->getImages(['product_id' => array_keys($relatedProducts)]);
-
 			foreach ($relatedProductsImages as $relatedProductImage) {
 				if (isset($relatedProducts[$relatedProductImage->product_id])) {
 					$relatedProducts[$relatedProductImage->product_id]->images[] = $relatedProductImage;
@@ -229,7 +224,6 @@ class ProductView extends View
 			}
 
 			$relatedProductsVariants = $this->variants->getVariants(['product_id' => array_keys($relatedProducts)]);
-
 			foreach ($relatedProductsVariants as $relatedProductVariant) {
 				if (isset($relatedProducts[$relatedProductVariant->product_id])) {
 					$relatedProducts[$relatedProductVariant->product_id]->variants[] = $relatedProductVariant;
@@ -248,13 +242,11 @@ class ProductView extends View
 
 		if (!empty($recommendedIds)) {
 			$recommendedProductsArray = $this->products->getProducts(['id' => $recommendedIds, 'visible' => 1]);
-
 			foreach ($recommendedProductsArray as $recommendedProduct) {
 				$recommendedProducts[$recommendedProduct->id] = $recommendedProduct;
 			}
 
 			$recommendedProductsImages = $this->products->getImages(['product_id' => array_keys($recommendedProducts)]);
-
 			foreach ($recommendedProductsImages as $recommendedProductImage) {
 				if (isset($recommendedProducts[$recommendedProductImage->product_id])) {
 					$recommendedProducts[$recommendedProductImage->product_id]->images[] = $recommendedProductImage;
@@ -262,7 +254,6 @@ class ProductView extends View
 			}
 
 			$recommendedProductsVariants = $this->variants->getVariants(['product_id' => array_keys($recommendedProducts)]);
-
 			foreach ($recommendedProductsVariants as $recommendedProductVariant) {
 				if (isset($recommendedProducts[$recommendedProductVariant->product_id])) {
 					$recommendedProducts[$recommendedProductVariant->product_id]->variants[] = $recommendedProductVariant;
@@ -296,7 +287,6 @@ class ProductView extends View
 		// Timer Action
 		if (!empty($product->sale_to) && strtotime($product->sale_to) <= time()) {
 			$product->sale_to = null;
-
 			if ($product->variant && $product->variant->compare_price) {
 				$product->variant->price = $product->variant->compare_price;
 				$product->variant->compare_price = 0;
@@ -346,7 +336,6 @@ class ProductView extends View
 
 		$page = null;
 		$autoMeta = new stdClass();
-
 		$autoMeta->title = $this->seo->product_meta_title ?: '';
 		$autoMeta->keywords = $this->seo->product_meta_keywords ?: '';
 		$autoMeta->description = $this->seo->product_meta_description ?: '';

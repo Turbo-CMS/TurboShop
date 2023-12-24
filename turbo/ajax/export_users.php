@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 require_once '../../api/Turbo.php';
 
 class ExportAjax extends Turbo
@@ -30,11 +31,12 @@ class ExportAjax extends Turbo
         $this->db->query('SET NAMES cp1251');
 
         $page = $this->request->get('page');
+
         if (empty($page) || $page == 1) {
             $page = 1;
 
             if (is_writable($this->exportFilesDir . $this->filename)) {
-                unlink($this->exportFilesDir . $this->filename);
+                @unlink($this->exportFilesDir . $this->filename);
             }
         }
 
@@ -78,6 +80,7 @@ class ExportAjax extends Turbo
 }
 
 $export_ajax = new ExportAjax();
+
 $json = json_encode($export_ajax->fetch(), JSON_THROW_ON_ERROR);
 
 header('Content-type: application/json; charset=utf-8');

@@ -114,7 +114,7 @@ class SettingsAdmin extends Turbo
 					if ($handle = opendir($dir)) {
 						while (false !== ($file = readdir($handle))) {
 							if ($file != '.' && $file != '..') {
-								unlink($dir . '/' . $file);
+								@unlink($dir . '/' . $file);
 							}
 						}
 

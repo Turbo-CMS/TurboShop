@@ -48,11 +48,12 @@ class Settings extends Turbo
 			$value = (string) $value;
 		}
 
-		$this->db->query('SELECT COUNT(*) AS count FROM __settings WHERE name=?', $name);
+		$this->db->query("SELECT COUNT(*) AS count FROM __settings WHERE name=?", $name);
+
 		if ($this->db->result('count') > 0) {
-			$this->db->query('UPDATE __settings SET value=? WHERE name=?', $value, $name);
+			$this->db->query("UPDATE __settings SET value=? WHERE name=?", $value, $name);
 		} else {
-			$this->db->query('INSERT INTO __settings SET value=?, name=?', $value, $name);
+			$this->db->query("INSERT INTO __settings SET value=?, name=?", $value, $name);
 		}
 	}
 
@@ -62,7 +63,7 @@ class Settings extends Turbo
 	public function initSettings()
 	{
 		$this->vars = [];
-		$this->db->query('SELECT name, value FROM __settings');
+		$this->db->query("SELECT name, value FROM __settings");
 
 		foreach ($this->db->results() as $result) {
 			if (!($this->vars[$result->name] = @unserialize($result->value))) {
@@ -112,21 +113,20 @@ class Settings extends Turbo
 
 		$this->varsLang[$name] = $value;
 		$value = is_array($value) ? serialize($value) : (string) $value;
-		$langId = $this->languages->langId();
 
+		$langId = $this->languages->langId();
 		$intoLang = '';
 
 		if ($langId) {
 			$intoLang = $this->db->placehold('lang_id=?, ', $langId);
 		}
 
-		$this->db->query('SELECT 1 FROM __settings_lang WHERE name=? LIMIT 1', $name);
+		$this->db->query("SELECT 1 FROM __settings_lang WHERE name=? LIMIT 1", $name);
 
 		if (!$this->db->result()) {
 			return $this->add($name, $value);
 		} else {
 			$q = $this->db->placehold("REPLACE INTO __settings_lang SET $intoLang name=?, value=?", $name, $value);
-
 			return (bool) $this->db->query($q);
 		}
 	}
@@ -153,6 +153,7 @@ class Settings extends Turbo
 		}
 
 		$this->db->query("SELECT * FROM __settings_lang WHERE 1 $langIdFilter");
+
 		return $this->db->results();
 	}
 }

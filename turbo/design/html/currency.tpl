@@ -142,7 +142,7 @@
 											</div>
 											<div class="turbo-list-boding turbo-list-delete">
 												{if !$c@first}
-													<div data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->currency_delete|escape}">
+													<div data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
 														<button type="button" class="btn-delete js-remove-currency" data-bs-toggle="modal" data-id="{$c->id}" data-bs-target="#js-currency-delete" onclick="success_action($(this));">
 															<i class="align-middle" data-feather="trash-2"></i>
 														</button>

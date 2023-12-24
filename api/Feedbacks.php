@@ -77,10 +77,8 @@ class Feedbacks extends Turbo
 				f.message,
 				f.processed,
 				f.date
-			FROM 
-				__feedbacks f
-			WHERE 
-				1 
+			FROM __feedbacks f
+			WHERE 1 
 				$processed 
 				$keywordFilter 
 			ORDER BY 
@@ -90,6 +88,7 @@ class Feedbacks extends Turbo
 		);
 
 		$this->db->query($query);
+
 		return $this->db->results();
 	}
 
@@ -119,6 +118,7 @@ class Feedbacks extends Turbo
 		);
 
 		$this->db->query($query);
+
 		return $this->db->result('count');
 	}
 
@@ -127,13 +127,14 @@ class Feedbacks extends Turbo
 	 */
 	public function addFeedback($feedback)
 	{
-		$query = $this->db->placehold('INSERT INTO __feedbacks SET ?%, date = NOW()', $feedback);
+		$query = $this->db->placehold("INSERT INTO __feedbacks SET ?%, date=NOW()", $feedback);
 
 		if (!$this->db->query($query)) {
 			return false;
 		}
 
 		$id = $this->db->insertId();
+
 		return $id;
 	}
 
@@ -155,6 +156,7 @@ class Feedbacks extends Turbo
 		$query = $this->db->placehold("UPDATE __feedbacks SET ?% $dateQuery WHERE id IN(?@) LIMIT 1", $feedback, (array) $id);
 
 		$this->db->query($query);
+
 		return $id;
 	}
 

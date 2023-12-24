@@ -4,7 +4,7 @@
 	{$meta_title = $btr->order_new scope=global}
 {/if}
 
-<form method="post" id="order" enctype="multipart/form-data">
+<form method="post" id="order" enctype="multipart/form-data" class="js-fast-button">
 	<input type="hidden" name="session_id" value="{$smarty.session.id}">
 	<input name="id" type="hidden" value="{if isset($order->id)}{$order->id|escape}{/if}">
 	<div class="d-inline-block me-3 mb-3">
@@ -12,7 +12,7 @@
 			{if isset($order->id)}
 				{$btr->global_order_number|escape} {$order->id|escape}
 			{else}
-				{$btr->order_new|escape}
+				{$btr->orders_add|escape}
 			{/if}
 		</h1>
 	</div>
@@ -208,12 +208,12 @@
 											</div>
 											<div class="turbo-list-boding turbo-list-order-amount-price">
 												<div class="text-dark">
-													<span>{($purchase->price) * ($purchase->amount)}</span>
-													<span class="">{$currency->sign}</span>
+													<span>{($purchase->price*$purchase->amount)|number_format:2:".":""}</span>
+													<span>{$currency->sign}</span>
 												</div>
 											</div>
 											<div class="turbo-list-boding turbo-list-delete">
-												<button type="button" class="btn-delete js-remove-item" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete_product|escape}">
+												<button type="button" class="btn-delete js-remove-item" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
 													<i class="align-middle" data-feather="trash-2"></i>
 												</button>
 											</div>
@@ -254,12 +254,12 @@
 										<div class="text-dark">
 											{if isset($purchase->price)}
 												<span>{$purchase->price}</span>
-												<span class="">{$currency->sign|escape}</span>
+												<span>{$currency->sign|escape}</span>
 											{/if}
 										</div>
 									</div>
 									<div class="turbo-list-boding turbo-list-delete">
-										<button type="button" class="btn-delete js-remove-item" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete_product|escape}">
+										<button type="button" class="btn-delete js-remove-item" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
 											<i class="align-middle" data-feather="trash-2"></i>
 										</button>
 									</div>
@@ -275,7 +275,7 @@
 							<div class="col-lg-6 col-md-12">
 								{if $purchases}
 									<div class="text-dark fw-bold text-end me-1 mt-2">
-										<div class="h3">{$btr->global_total|escape}: {$subtotal} {$currency->sign|escape}</div>
+										<div class="h3">{$btr->global_total|escape}: {$subtotal|number_format:2:".":""} {$currency->sign|escape}</div>
 									</div>
 								{/if}
 							</div>
@@ -310,7 +310,7 @@
 											</div>
 										</div>
 										<div class="turbo-list-boding turbo-list-order-content-price">
-											<span>{if isset($order->discount)}{($subtotal-$subtotal*$order->discount/100)|round:2}{/if}</span>
+											<span>{if isset($order->discount)}{($subtotal-$subtotal*$order->discount/100)|number_format:2:".":""}{/if}</span>
 											<span>{$currency->sign|escape}</span>
 										</div>
 									</div>
@@ -327,8 +327,8 @@
 											</div>
 										</div>
 										<div class="turbo-list-boding turbo-list-order-content-price">
-											<span>{if isset($order->discount)}{($subtotal-$subtotal*$order->discount/100-$order->coupon_discount)|round:2}{/if}</span>
-											<span class="">{$currency->sign|escape}</span>
+											<span>{if isset($order->discount)}{($subtotal-$subtotal*$order->discount/100-$order->coupon_discount)|number_format:2:".":""}{/if}</span>
+											<span>{$currency->sign|escape}</span>
 										</div>
 									</div>
 								</div>

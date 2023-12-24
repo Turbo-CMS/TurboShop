@@ -12,27 +12,29 @@ class Delivery extends Turbo
 		$langSql = $this->languages->getQuery(['object' => 'delivery']);
 
 		$query = $this->db->placehold(
-			"SELECT d.id,
-					d.module,
-					d.name,
-					d.icon, 
-					d.code,
-					d.description,
-					d.free_from,
-					d.price,
-					d.enabled,
-					d.position,
-					d.settings,
-					d.separate_payment,
-					$langSql->fields 
-			 FROM __delivery d
-			 $langSql->join
-			 WHERE id=? 
-			 LIMIT 1",
+			"SELECT 
+				d.id,
+				d.module,
+				d.name,
+				d.icon, 
+				d.code,
+				d.description,
+				d.free_from,
+				d.price,
+				d.enabled,
+				d.position,
+				d.settings,
+				d.separate_payment,
+				$langSql->fields 
+			FROM __delivery d
+			 	$langSql->join
+			WHERE id=? 
+			LIMIT 1",
 			(int) $id
 		);
 
 		$this->db->query($query);
+
 		return $this->db->result();
 	}
 
@@ -64,17 +66,16 @@ class Delivery extends Turbo
 				d.settings,
                 d.separate_payment,
                 $langSql->fields
-            FROM
-                __delivery d
+            FROM __delivery d
                 $langSql->join
-            WHERE
-                1
+            WHERE 1
                 $enabledFilter
             ORDER BY
-                position"
+                d.position"
 		);
 
 		$this->db->query($query);
+
 		return $this->db->results();
 	}
 
@@ -187,6 +188,7 @@ class Delivery extends Turbo
 	public function updateDelivery($id, $delivery)
 	{
 		$delivery = (object) $delivery;
+
 		$result = $this->languages->getDescription($delivery, 'delivery');
 
 		$query = $this->db->placehold("UPDATE __delivery SET ?% WHERE id IN(?@)", $delivery, (array) $id);
@@ -205,9 +207,10 @@ class Delivery extends Turbo
 	public function addDelivery($delivery)
 	{
 		$delivery = (object) $delivery;
+
 		$result = $this->languages->getDescription($delivery, 'delivery');
 
-		$query = $this->db->placehold('INSERT INTO __delivery SET ?%', $delivery);
+		$query = $this->db->placehold("INSERT INTO __delivery SET ?%", $delivery);
 
 		if (!$this->db->query($query)) {
 			return false;
@@ -235,6 +238,7 @@ class Delivery extends Turbo
 		if (!empty($id)) {
 			$query = $this->db->placehold("DELETE FROM __delivery WHERE id=? LIMIT 1", (int) $id);
 			$this->db->query($query);
+
 			$this->db->query("DELETE FROM __lang_delivery WHERE delivery_id=?", (int) $id);
 		}
 	}
@@ -271,6 +275,7 @@ class Delivery extends Turbo
 	public function deleteIcon($delivery)
 	{
 		$delivery = (array) $delivery;
+
 		$query = $this->db->placehold("SELECT icon FROM __delivery WHERE id IN(?@)", $delivery);
 
 		if ($this->db->query($query)) {
@@ -288,7 +293,7 @@ class Delivery extends Turbo
 				$count = $this->db->result('count');
 
 				if ($count == 0) {
-					unlink($this->config->root_dir . $this->config->delivery_images_dir . $filename);
+					@unlink($this->config->root_dir . $this->config->delivery_images_dir . $filename);
 				}
 			}
 		}

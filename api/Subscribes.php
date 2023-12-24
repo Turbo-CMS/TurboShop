@@ -84,7 +84,7 @@ class Subscribes extends Turbo
 	 */
 	public function addSubscribe($subscribe)
 	{
-		$query = $this->db->placehold('INSERT INTO __subscribes SET ?%, date = NOW()', $subscribe);
+		$query = $this->db->placehold("INSERT INTO __subscribes SET ?%, date=NOW()", $subscribe);
 
 		if (!$this->db->query($query)) {
 			return false;

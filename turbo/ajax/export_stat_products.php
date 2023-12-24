@@ -1,6 +1,7 @@
 <?php
 
 session_start();
+
 require_once '../../api/Turbo.php';
 
 class ExportAjax extends Turbo
@@ -31,7 +32,7 @@ class ExportAjax extends Turbo
             $page = 1;
 
             if (is_writable($this->exportFilesDir . $this->filename)) {
-                unlink($this->exportFilesDir . $this->filename);
+                @unlink($this->exportFilesDir . $this->filename);
             }
         }
 
@@ -42,6 +43,7 @@ class ExportAjax extends Turbo
         }
 
         $filter = [];
+
         $dateFilter = $this->request->get('date_filter');
 
         if (!empty($dateFilter)) {
@@ -83,8 +85,10 @@ class ExportAjax extends Turbo
         $filter['limit'] = 40;
 
         $tempFilter = $filter;
+
         unset($tempFilter['limit']);
         unset($tempFilter['page']);
+
         $totalCount = $this->reportstat->getReportPurchasesCount($tempFilter);
 
         if ($this->request->get('page') == 'all') {
@@ -93,7 +97,9 @@ class ExportAjax extends Turbo
 
         $totalSumm = 0;
         $totalAmount = 0;
+
         $reportStatPurchases = $this->reportstat->getReportPurchases($filter);
+
         $catFilter = $this->request->get('category');
 
         if (isset($filter['category_id'])) {
@@ -130,7 +136,9 @@ class ExportAjax extends Turbo
         }
 
         $total = ['category_name' => 'Total', 'product_name' => ' ', 'price' => $totalSumm, 'amount' => $totalAmount];
+
         fputcsv($f, $total, $this->columnDelimiter);
+
         fclose($f);
 
         if ($this->statCount * $page < $totalCount) {
@@ -142,6 +150,7 @@ class ExportAjax extends Turbo
 }
 
 $exportAjax = new ExportAjax();
+
 $data = $exportAjax->fetch();
 
 if ($data) {

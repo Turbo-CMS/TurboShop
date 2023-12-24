@@ -10,7 +10,7 @@ class ThemeSettings extends Turbo
 	{
 		parent::__construct();
 
-		$this->db->query('SELECT name, value FROM __theme_settings');
+		$this->db->query("SELECT name, value FROM __theme_settings");
 
 		foreach ($this->db->results() as $result) {
 			if (!($this->vars[$result->name] = @unserialize($result->value))) {
@@ -48,12 +48,12 @@ class ThemeSettings extends Turbo
 			$value = (string) $value;
 		}
 
-		$this->db->query('SELECT count(*) AS count FROM __theme_settings WHERE name=?', $name);
+		$this->db->query("SELECT count(*) AS count FROM __theme_settings WHERE name=?", $name);
 
 		if ($this->db->result('count') > 0) {
-			$this->db->query('UPDATE __theme_settings SET value=? WHERE name=?', $value, $name);
+			$this->db->query("UPDATE __theme_settings SET value=? WHERE name=?", $value, $name);
 		} else {
-			$this->db->query('INSERT INTO __theme_settings SET value=?, name=?', $value, $name);
+			$this->db->query("INSERT INTO __theme_settings SET value=?, name=?", $value, $name);
 		}
 	}
 
@@ -83,29 +83,29 @@ class ThemeSettings extends Turbo
 					$settingsTranslations = $this->getThemeTranslations($themeDir);
 
 					$theme = new stdClass();
-					$theme->name = (string)$xml->name;
+					$theme->name = (string) $xml->name;
 					$theme->settings = [];
 
 					foreach ($xml->settings as $setting) {
-						$settingName = (string)$setting->name;
+						$settingName = (string) $setting->name;
 						$translationName = preg_replace('~{\$lang->(.+)?}~', '$1', $settingName);
 						$settingName = isset($settingsTranslations[$translationName]) ? $settingsTranslations[$translationName] : $settingName;
 						$themeSettings = new stdClass();
 						$themeSettings->name = $settingName;
-						$themeSettings->variable = (string)$setting->variable;
+						$themeSettings->variable = (string) $setting->variable;
 						$themeSettings->options = [];
 
 						foreach ($setting->options as $option) {
-							$optionName = (string)$option->name;
+							$optionName = (string) $option->name;
 							$translationName = preg_replace('~{\$lang->(.+)?}~', '$1', $optionName);
 							$optionName = isset($settingsTranslations[$translationName]) ? $settingsTranslations[$translationName] : $optionName;
 							$optionDetails = new stdClass();
 							$optionDetails->name = $optionName;
-							$optionDetails->value = (string)$option->value;
-							$themeSettings->options[(string)$option->value] = $optionDetails;
+							$optionDetails->value = (string) $option->value;
+							$themeSettings->options[(string) $option->value] = $optionDetails;
 						}
 
-						$theme->settings[(string)$setting->variable] = $themeSettings;
+						$theme->settings[(string) $setting->variable] = $themeSettings;
 					}
 
 					$themes[$theme->name] = $theme;

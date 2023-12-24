@@ -7,8 +7,10 @@ class TranslationAdmin extends Turbo
     public function fetch()
     {
         $languages = $this->languages->getLanguages();
+
         $lockedTheme = is_file('design/' . $this->settings->theme . '/locked');
         $this->design->assign('locked_theme', $lockedTheme);
+        
         $translation = new stdClass();
 
         if (!$lockedTheme && $this->request->isMethod('post')) {
@@ -24,7 +26,8 @@ class TranslationAdmin extends Turbo
                 }
             }
 
-            $this->db->query('SELECT * FROM __translations WHERE label=? LIMIT 1', $translation->label);
+            $this->db->query("SELECT * FROM __translations WHERE label=? LIMIT 1", $translation->label);
+
             $existLabel = $this->db->result();
 
             if (!$translation->label) {

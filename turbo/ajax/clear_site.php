@@ -1,6 +1,7 @@
 <?php
 
 session_start();
+
 require_once '../../api/Turbo.php';
 
 class ClearSiteAjax extends Turbo
@@ -14,6 +15,7 @@ class ClearSiteAjax extends Turbo
     private function cleanSite($path)
     {
         $path = rtrim($path, '/') . '/';
+
         $handle = opendir($path);
 
         while (false !== ($file = readdir($handle))) {
@@ -24,7 +26,7 @@ class ClearSiteAjax extends Turbo
                     $this->cleanSite($fullpath);
                     rmdir($fullpath);
                 } else {
-                    unlink($fullpath);
+                    @unlink($fullpath);
                 }
             }
         }
@@ -34,6 +36,7 @@ class ClearSiteAjax extends Turbo
 }
 
 $clearSiteAjax = new ClearSiteAjax();
+
 $json = json_encode($clearSiteAjax->fetch());
 
 header("Content-type: application/json; charset=utf-8");

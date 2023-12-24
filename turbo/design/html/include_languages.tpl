@@ -39,11 +39,11 @@
 {if $languages}
 	<li class="nav-item dropdown">
 		<a class="nav-flag dropdown-toggle" href="#" id="languageDropdown" data-bs-toggle="dropdown">
-			<img src="design/flags/4x3/{$lang_label}.svg" alt="{if isset($lang_name)}{$lang_name}{/if}" title="{if isset($lang_name)}{$lang_name}{/if}" />
+			<img src="design/flags/4x3/{$lang_label}.svg" alt="{if isset($lang_name)}{$lang_name}{/if}" title="{if isset($lang_name)}{$lang_name}{/if}">
 		</a>
 		<div class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
 			{foreach $languages as $lang}
-				<a class="dropdown-item {if $lang->id == $lang_id}active{/if}" href="{url lang_id=$lang->id id=$id}">
+				<a class="dropdown-item {if $lang->id == $lang_id}active{/if}" href="{if isset($id)}{url lang_id=$lang->id id=$id}{else}{url lang_id=$lang->id}{/if}">
 					<img src="design/flags/4x3/{$lang->label}.svg" alt="{$lang->name|escape}" width="20" class="align-middle me-1" />
 					<span class="align-middle">{$lang->name|escape}</span>
 				</a>

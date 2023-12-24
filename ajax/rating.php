@@ -1,6 +1,7 @@
 <?php
 
 session_start();
+
 chdir('..');
 require_once 'api/Turbo.php';
 

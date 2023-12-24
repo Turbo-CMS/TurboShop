@@ -1,6 +1,7 @@
 <?php
 
 session_start();
+
 require_once '../../api/Turbo.php';
 
 class ExportAjax extends Turbo
@@ -31,7 +32,7 @@ class ExportAjax extends Turbo
             $page = 1;
 
             if (is_writable($this->exportFilesDir . $this->filename)) {
-                unlink($this->exportFilesDir . $this->filename);
+                @unlink($this->exportFilesDir . $this->filename);
             }
         }
 
@@ -133,6 +134,7 @@ class ExportAjax extends Turbo
 }
 
 $exportAjax = new ExportAjax();
+
 $data = $exportAjax->fetch();
 
 if ($data) {
@@ -142,5 +144,6 @@ if ($data) {
     header("Expires: -1");
 
     $json = json_encode($data);
+
     print $json;
 }

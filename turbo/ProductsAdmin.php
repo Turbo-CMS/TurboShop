@@ -31,6 +31,8 @@ class ProductsAdmin extends Turbo
 			$filter['brand_id'] = $brand->id;
 		}
 
+		$filter['features'] = $this->request->get('features');
+
 		if ($f = $this->request->get('filter', 'string')) {
 			switch ($f) {
 				case 'featured':

@@ -13,7 +13,7 @@
 </div>
 
 <div class="card">
-	<div class="card-header d-block d-lg-none">
+	<div class="card-header d-block d-lg-none"> 
 		<div class="card-actions float-end">
 			<div class="position-relative collapse-icon">
 				<a href="javascript:;" class="collapse-chevron">
@@ -55,7 +55,7 @@
 								<option value="{url brand=null category=null}" {if !isset($category)}selected{/if}>{$btr->global_all_categories|escape}</option>
 								{function name=category_select level=0}
 									{foreach $categories as $c}
-										<option value='{url brand=null category=$c->id}' {if isset($smarty.get.category_id) && $smarty.get.category == $c->id}selected{/if}>
+										<option value='{url brand=null category=$c->id}' {if isset($smarty.get.category) && $smarty.get.category == $c->id}selected{/if}>
 											{section sp $level}--{/section} {$c->name|escape}
 										</option>
 										{if isset($c->subcategories)}
@@ -106,21 +106,21 @@
 												<span class="fw-bold text-body">
 													<span class="d-none d-sm-block">{$btr->global_sales_amount|escape}:</span>
 													<span class="{if $category->price}text-primary{else}text-body{/if}">
-														{$category->price} {$currency->sign}
+														{$category->price|number_format:2:".":""} {$currency->sign}
 													</span>
 												</span>
 											</div>
 										</div>
 										<div class="turbo-list-boding turbo-list-categorystats-total text-body">
-											{if $category->price}<span class="text_dark">{$category->price} {$currency->sign}</span>{else}{$category->price} {$currency->sign}{/if}
+											{$category->price|number_format:2:".":""} {$currency->sign}
 										</div>
 										<div class="turbo-list-boding turbo-list-categorystats-setting text-body">
-											{if $category->amount}<span class="text_dark">{$category->amount} {$btr->reportstats_units}</span>{else}{$category->amount} {$btr->reportstats_units}{/if}
+											{$category->amount} {$btr->reportstats_units}
 										</div>
 									</div>
 								</div>
 							{/if}
-							{if isset($c->subcategories)}
+							{if isset($category->subcategories)}
 								{categories_list_tree categories=$category->subcategories level=$level+1}
 							{/if}
 						{/foreach}
