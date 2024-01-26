@@ -28,24 +28,27 @@
 						<div class="col-xl-2 col-lg-3 col-md-4">
 							<div class="mb-3 d-grid d-sm-block">
 								<div class="form-label">{$btr->site_cache|escape}</div>
-								<a class="btn btn-danger clear-button" id="clear-site" href="javascript:void(0);">
-									<i class="align-middle" data-feather="refresh-cw"></i> {$btr->clear_cache|escape}
+								<a class="btn btn-danger rotate-icon" id="clear-site" href="javascript:void(0);">
+									<i class="align-middle me-1" data-feather="refresh-cw"></i>
+									{$btr->clear_cache|escape}
 								</a>
 							</div>
 						</div>
 						<div class="col-xl-2 col-lg-3 col-md-4">
 							<div class="mb-3 d-grid d-sm-block">
 								<div class="form-label">{$btr->admin_cache|escape}</div>
-								<a class="btn btn-danger clear-button" id="clear-admin" href="javascript:void(0);">
-									<i class="align-middle" data-feather="refresh-cw"></i> {$btr->clear_cache|escape}
+								<a class="btn btn-danger rotate-icon" id="clear-admin" href="javascript:void(0);">
+									<i class="align-middle me-1" data-feather="refresh-cw"></i>
+									{$btr->clear_cache|escape}
 								</a>
 							</div>
 						</div>
 						<div class="col-xl-2 col-lg-3 col-md-4">
 							<div class="mb-3 d-grid d-sm-block">
 								<div class="form-label">{$btr->clear_resize_images|escape}</div>
-								<a class="btn btn-danger clear-button" id="clear-resize" href="javascript:void(0);">
-									<i class="align-middle" data-feather="refresh-cw"></i> {$btr->remove_resize_images|escape}
+								<a class="btn btn-danger rotate-icon" id="clear-resize" href="javascript:void(0);">
+									<i class="align-middle me-1" data-feather="refresh-cw"></i>
+									{$btr->remove_resize_images|escape}
 								</a>
 							</div>
 						</div>

@@ -103,3 +103,6 @@ payment_images_dir = files/payment/;
 
 ;File directory
 cms_files_dir = files/files/;
+
+;Digital products directory
+downloads_dir = files/downloads/;

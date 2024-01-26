@@ -153,6 +153,85 @@
 							</a>
 						</div>
 					</div>
+					<h5 class="card-title mb-0">{$btr->settings_notify_smtp|escape}</h5>
+				</div>
+				<div class="collapse-card">
+					<div class="card-body">
+						<div class="bg-light rounded mb-3">
+							<div class="p-3">
+								<div class="row">
+									<div class="col-xl-3 col-lg-4 col-md-6 my-2">
+										<div class="form-check form-switch form-check-reverse form-check-inline">
+											<input class="form-check-input ms-2" id="smtp-notify" name="use_smtp" value="1" type="checkbox" {if $settings->use_smtp}checked=""{/if}>
+											<label class="form-check-label" for="smtp-notify">{$btr->settings_notify_use_smtp|escape}</label>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="mb-3">
+									<div class="form-label">{$btr->settings_notify_smtp_server|escape}</div>
+									<input name="smtp_server" class="form-control" type="text" value="{$settings->smtp_server|escape}">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="mb-3">
+									<div class="form-label">{$btr->settings_notify_smtp_port|escape}</div>
+									<input name="smtp_port" class="form-control" type="text" value="{$settings->smtp_port|escape}">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="mb-3">
+									<div class="form-label">{$btr->settings_notify_smtp_user|escape}</div>
+									<input name="smtp_user" class="form-control" type="text" value="{$settings->smtp_user|escape}">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="mb-3">
+									<div class="form-label">{$btr->settings_notify_smtp_pass|escape}</div>
+									<input name="smtp_pass" class="form-control" type="password" value="{$settings->smtp_pass|escape}">
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="mb-3">
+									<button type="button" class="js-test-smtp btn btn-primary rotate-icon">
+										<i class="align-middle me-1" data-feather="refresh-cw"></i>
+										{$btr->settings_notify_do_test_smtp|escape}
+									</button>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="mb-3">
+									<div class="js-test-smtp-status form-label"></div>
+								</div>
+							</div>
+							<div class="js-trace col-12 d-none">
+								<div class="alert alert-primary alert-dismissible mb-2" role="alert">
+									<div class="alert-message">
+										<h4 class="alert-heading">{$btr->settings_notify_test_smtp_trace}</h4>
+										<div class="js-test-smtp-trace"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-header">
+					<div class="card-actions float-end">
+						<div class="d-block d-lg-none position-relative collapse-icon">
+							<a href="javascript:;" class="collapse-chevron">
+								<i class="align-middle" data-feather="chevron-up"></i>
+							</a>
+						</div>
+					</div>
 					<h5 class="card-title mb-0">{$btr->global_customize|escape}</h5>
 				</div>
 				<div class="collapse-card">
@@ -376,7 +455,7 @@
 								<div class="row">
 									<div class="col-xl-3 col-lg-4 col-md-6 my-2">
 										<div class="form-check form-switch form-check-reverse form-check-inline">
-											<input class="form-check-input ms-2" id="category-count" name="category_count" value="1" type="checkbox" {if $settings->category_count}checked="" {/if}>
+											<input class="form-check-input ms-2" id="category-count" name="category_count" value="1" type="checkbox" {if $settings->category_count}checked=""{/if}>
 											<label class="form-check-label" for="category-count">{$btr->count_products_category|escape}</label>
 										</div>
 									</div>
@@ -591,8 +670,8 @@
 							<div class="col-lg-3 col-md-3">
 								<div class="mb-3">
 									<div class="form-label">&nbsp;</div>
-									<button name="clear_cache" type="submit" value="{$btr->clear_cache|escape}" class="btn btn-danger">
-										<i class="align-middle" data-feather="refresh-cw"></i>
+									<button name="clear_cache" type="submit" value="{$btr->clear_cache|escape}" class="btn btn-danger rotate-icon">
+										<i class="align-middle me-1" data-feather="refresh-cw"></i>
 										{$btr->clear_cache|escape}
 									</button>
 								</div>
@@ -623,19 +702,19 @@
 								<div class="row">
 									<div class="col-xl-3 col-lg-4 col-md-6 my-2">
 										<div class="form-check form-switch form-check-reverse form-check-inline">
-											<input class="form-check-input ms-2" id="smart-resize" name="smart_resize" value="1" type="checkbox" {if $settings->smart_resize}checked="" {/if}>
+											<input class="form-check-input ms-2" id="smart-resize" name="smart_resize" value="1" type="checkbox" {if $settings->smart_resize}checked=""{/if}>
 											<label class="form-check-label" for="smart-resize">{$btr->settings_precise_resizing_images|escape}</label>
 										</div>
 									</div>
 									<div class="col-xl-3 col-lg-4 col-md-6 my-2">
 										<div class="form-check form-switch form-check-reverse form-check-inline">
-											<input class="form-check-input ms-2" id="webp-support" name="webp_support" value="1" type="checkbox" {if $settings->webp_support}checked="" {/if}>
+											<input class="form-check-input ms-2" id="webp-support" name="webp_support" value="1" type="checkbox" {if $settings->webp_support}checked=""{/if}>
 											<label class="form-check-label" for="webp-support">{$btr->settings_enable_webp|escape}</label>
 										</div>
 									</div>
 									<div class="col-xl-3 col-lg-4 col-md-6 my-2">
 										<div class="form-check form-switch form-check-reverse form-check-inline">
-											<input class="form-check-input ms-2" id="watermark-enable" name="watermark_enable" value="1" type="checkbox" {if $settings->watermark_enable}checked="" {/if}>
+											<input class="form-check-input ms-2" id="watermark-enable" name="watermark_enable" value="1" type="checkbox" {if $settings->watermark_enable}checked=""{/if}>
 											<label class="form-check-label" for="watermark-enable">{$btr->settings_watermark_enable|escape}</label>
 										</div>
 									</div>
@@ -777,5 +856,38 @@
 	$(document).on("input", ".js-range", function() {
 		$(this).closest(".js-range-wrap").find(".js-show-range").html($(this).val());
 		$(this).closest(".js-range-wrap").find(".js-range-value").val($(this).val());
+	});
+
+	$(document).on('click', '.js-test-smtp', function() {
+		$('.js-test-smtp-status').fadeOut(100);
+
+		var server = $('input[name="smtp_server"]').val(),
+			port = $('input[name="smtp_port"]').val(),
+			user = $('input[name="smtp_user"]').val(),
+			pass = $('input[name="smtp_pass"]').val();
+
+		$.ajax({
+			url: 'ajax/test_smtp.php',
+			type: 'POST',
+			data: {
+				server: server,
+				port: port,
+				user: user,
+				pass: pass
+			},
+			success: function(data) {
+				$('.js-test-smtp-status').text(data.message);
+
+				if (data.status == true) {
+					$('.js-test-smtp-trace').text('').closest('.js-trace').addClass('d-none');
+					$('.js-test-smtp-status').removeClass('text-danger').addClass('text-success');
+				} else {
+					$('.js-test-smtp-trace').html(data.trace).closest('.js-trace').removeClass('d-none');
+					$('.js-test-smtp-status').removeClass('text-success').addClass('text-danger');
+				}
+
+				$('.js-test-smtp-status').fadeIn(500);
+			}
+		});
 	});
 </script>

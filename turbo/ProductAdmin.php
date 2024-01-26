@@ -14,6 +14,7 @@ class ProductAdmin extends Turbo
 		$recommendedProducts = [];
 		$productVideos = [];
 		$files = [];
+		$disallowedExtensions = ['htaccess'];
 
 		if ($this->request->isMethod('post') && !empty($_POST)) {
 			$product = new stdClass();
@@ -172,6 +173,24 @@ class ProductAdmin extends Turbo
 						foreach ($variants as $index => &$variant) {
 							if ($variant->stock == '∞' || $variant->stock == '') {
 								$variant->stock = null;
+							}
+
+							if (!empty($_POST['delete_attachment'][$index])) {
+								$this->variants->deleteAttachment($variant->id);
+							}
+
+							if (!empty($_FILES['attachment']['tmp_name'][$index]) && !empty($_FILES['attachment']['name'][$index])) {
+								$attachmentTmpName = $_FILES['attachment']['tmp_name'][$index];
+								$attachmentName = $_FILES['attachment']['name'][$index];
+
+								$uploadedExtension = strtolower(pathinfo($attachmentName, PATHINFO_EXTENSION));
+
+								if (!in_array($uploadedExtension, $disallowedExtensions)) {
+									move_uploaded_file($attachmentTmpName, $this->config->root_dir . '/' . $this->config->downloads_dir . $attachmentName);
+									$variant->attachment = $attachmentName;
+								} else {
+									$this->design->assign('message_error', 'invalid_file');
+								}
 							}
 
 							if (!empty($variant->id)) {

@@ -1186,7 +1186,7 @@ INSERT INTO `t_lang_features` (`lang_id`, `lang_label`, `feature_id`, `name`) VA
 (1, '', 12, 'Фронтальная камера'),
 (2, '', 13, 'Display'),
 (3, '', 13, 'Екран'),
-(1, '', 13, 'Экрана'),
+(1, '', 13, 'Экран'),
 (2, '', 14, 'Diagonal'),
 (3, '', 14, 'Діагональ'),
 (1, '', 14, 'Диагональ'),
@@ -1731,13 +1731,13 @@ INSERT INTO `t_lang_pages` (`lang_id`, `lang_label`, `page_id`, `name`, `meta_ti
 (2, '', 11, 'Payment', 'Payment', 'Payment\r\n', 'Payment', '<h2>Cash</h2>\r\n<p>You can pay the courier directly in rubles at the time of delivery. The Express delivery within New York next day after order acceptance.</p>\r\n<h2>PayPal</h2>\r\n<p>Make purchases&nbsp;safely,&nbsp;without disclosing information&nbsp;about your credit card.&nbsp;PayPal&nbsp;will protect&nbsp;you if&nbsp;problems occur&nbsp;with purchase.</p>', 'Payment'),
 (3, '', 11, 'Оплата', 'Оплата', 'Оплата\r\n', 'Оплата', '<h2>Готівкою кур\'єру</h2>\r\n<p>Ви можете оплатити замовлення кур\'єру в гривнях безпосередньо в момент доставки. Кур\'єрська доставка здійснюється по Києву на наступний день після прийняття замовлення.</p>\r\n<h2>Банківська картка</h2>\r\n<p>Оплата банківською картою Visa або MasterCard.</p>\r\n<h2>PayPal</h2>\r\n<p>Робіть покупки безпечно, без розкриття інформації про свою кредитну картку. PayPal захистить вас, якщо виникнуть проблеми з покупкою.</p>\r\n<h2>Оплата через Інтеркаса</h2>\r\n<p>Це зручний у використанні сервіс, підключення до якого дозволить Інтернет-магазинам, веб-сайтам та іншим торговим майданчикам приймати всі можливі форми оплати в максимально короткі терміни.</p>\r\n<h2>Оплата карткою через Liqpay</h2>\r\n<p>Завдяки своїй відкритості та універсальності LiqPAY стрімко інтегрується з багатьма платіжними системами і платформами і стає стандартом платіжних операцій.</p>\r\n<h2>Готівкою в офісі Нова Пошта</h2>\r\n<p>При доставці замовлення системою Нова Пошта, ви зможете оплатити замовлення в їхньому офісі безпосередньо в момент отримання товарів.</p>', 'Оплата'),
 (1, '', 12, 'Доставка', 'Доставка', 'Доставка', 'Доставка', '<h2>Курьерская доставка по Киеву</h2>\r\n<p>Курьерская доставка осуществляется на следующий день после оформления заказа, если товар есть в наличии. Курьерская доставка осуществляется в пределах Киева ежедневно с 10.00 до 21.00. Заказ на сумму свыше 1000 гривен доставляется бесплатно.<br /><br />Стоимость бесплатной доставки раcсчитывается от суммы заказа с учтенной скидкой. В случае если сумма заказа после применения скидки менее 1000 грн, осуществляется платная доставка.<br /><br />При сумме заказа менее 1000 грн стоимость доставки составляет от 100 грн.</p>\r\n<h2>Самовывоз</h2>\r\n<p>Удобный,&nbsp;бесплатный и быстрый способ получения заказа.<br />Адрес офиса: <span class=\"JLqJ4b ChMk0b\" data-language-for-alternatives=\"ru\" data-language-to-translate-into=\"uk\" data-phrase-index=\"0\" data-number-of-phrases=\"2\"><span class=\"Q4iAWc\">Киев, ул.</span></span> <span class=\"JLqJ4b ChMk0b\" data-language-for-alternatives=\"ru\" data-language-to-translate-into=\"uk\" data-phrase-index=\"1\" data-number-of-phrases=\"2\"><span class=\"Q4iAWc\">Глубочицкая, 32б</span></span>.</p>\r\n<h2>Доставка с помощью предприятия &laquo;Новая Почта&raquo;</h2>\r\n<p>Удобный и быстрый способ доставки в города Украины. Посылка доставляется в офис &laquo;Новая Почта&raquo; в вашем городе. Для получения необходимо предъявить паспорт и номер грузовой декларации (сообщит наш менеджер после отправки). Посылку желательно получить в течение 24 часов с момента прихода груза, иначе компания &laquo;Новая Почта&raquo; может взыскать с вас дополнительную оплату за хранение. Срок доставки и стоимость вы можете рассчитать на сайте компании.</p>\r\n<h2>Наложенным платежом</h2>\r\n<p>При доставке заказа наложенным платежом с помощью &laquo;Новая Почта&raquo;, вы сможете оплатить заказ непосредственно в момент получения товаров.</p>', 'Доставка'),
-(2, '', 12, 'Delivery', 'Delivery', 'Delivery', 'Delivery', '<h2>Shipping within New York</h2>\r\n<p>Courier delivery is made&nbsp;the next day&nbsp;after ordering,&nbsp;if the item is in stock.&nbsp;Courier delivery is made&nbsp;within the New York&nbsp;daily from&nbsp;10.00 to&nbsp;21.00.&nbsp;For orders&nbsp;more than $300 delivered free of charge.<br><br>Cost&nbsp;free delivery is calculated&nbsp;from&nbsp;the total order&nbsp;with&nbsp;the discount&nbsp;taken into account.&nbsp;If the order amount&nbsp;after applying the discount&nbsp;less than $300,&nbsp;is&nbsp;a paid service.</p>\r\n<p>For orders&nbsp;less than $300,&nbsp;the&nbsp;delivery&nbsp;cost is $50.</p>\r\n<h2>Store pickup</h2>\r\n<p>Convenient, free&nbsp;and&nbsp;fast way of receiving your order.</p>\r\n<p>Office address:&nbsp;41 West 40th Street New York, NY</p>\r\n<h2>C.O.D (Cash On Delivery)</h2>\r\n<p>On delivery order cash on delivery through \"mail of USA\", you will be able to pay for the order at the time goods are received.</p>', 'Delivery'),
+(2, '', 12, 'Delivery', 'Delivery', 'Delivery', 'Delivery', '<h2>Shipping within New York</h2>\r\n<p>Courier delivery is made&nbsp;the next day&nbsp;after ordering,&nbsp;if the item is in stock.&nbsp;Courier delivery is made&nbsp;within the New York&nbsp;daily from&nbsp;10.00 to&nbsp;21.00.&nbsp;For orders&nbsp;more than $300 delivered free of charge.<br><br>Cost&nbsp;free delivery is calculated&nbsp;from&nbsp;the total order&nbsp;with&nbsp;the discount&nbsp;taken into account.&nbsp;If the order amount&nbsp;after applying the discount&nbsp;less than $300,&nbsp;is&nbsp;a paid service.</p>\r\n<p>For orders&nbsp;less than $300,&nbsp;the&nbsp;delivery&nbsp;cost is $50.</p>\r\n<h2>Store pickup</h2>\r\n<p>Convenient, free&nbsp;and&nbsp;fast way of receiving your order.</p>\r\n<p>Office address:&nbsp;41 West 40th Street New York, USA</p>\r\n<h2>C.O.D (Cash On Delivery)</h2>\r\n<p>On delivery order cash on delivery through \"mail of USA\", you will be able to pay for the order at the time goods are received.</p>', 'Delivery'),
 (3, '', 12, 'Доставка', 'Доставка', 'Доставка', 'Доставка', '<h2>Кур\'єрська доставка по Києву</h2>\r\n<p>Кур\'єрська доставка здійснюється на наступний день після оформлення замовлення, якщо товар є в наявності. Кур\'єрська доставка здійснюється в межах Києва; щодня з 10.00 до 21.00. Замовлення на суму понад 300 грн доставляється безкоштовно. Вартість безкоштовної доставки Розраховувати від суми замовлення з врахованої знижкою. У разі якщо сума замовлення після застосування знижки менш 300 грн, здійснюється платна доставка. При сумі замовлення менше 300 грн вартість доставки складає від 50 грн.</p>\r\n<h2>Самовивіз</h2>\r\n<p>Зручний, безкоштовний і швидкий спосіб отримання замовлення. Місцезнаходження компанії: Київ, вул. Глибочицька, 32б.</p>\r\n<h2>Доставка за допомогою підприємства &laquo;Нова Пошта&raquo;</h2>\r\n<p>Зручний і швидкий спосіб доставки у великі міста України. Посилка доставляється в офіс &laquo;Нова пошта&raquo; у Вашому місті. Для отримання необхідно пред\'явити паспорт і номер вантажної декларації (повідомить наш менеджер після відправки). Посилку бажано отримати протягом 24 годин з моменту приходу вантажу, інакше компанія &laquo;Нова Пошта&raquo; може стягнути з Вас додаткову оплату за зберігання. Термін доставки і вартість Ви можете розрахувати на сайті компанії.</p>\r\n<h2>Післяплата</h2>\r\n<p>При доставці замовлення післяплатою за допомогою &laquo;Нова Пошта&raquo;, ви зможете оплатити замовлення безпосередньо в момент отримання товарів.</p>', 'Доставка'),
 (1, '', 13, 'Блог', 'Блог', '', 'Блог', '', 'Блог'),
 (2, '', 13, 'Blog', 'Blog', '', 'Blog', '', 'Blog'),
 (3, '', 13, 'Блог', 'Блог', '', 'Блог', '', 'Блог'),
 (1, '', 14, 'Контакты', 'Контакты', 'Контакты', 'Контакты', '<p><span class=\"JLqJ4b ChMk0b\" data-language-for-alternatives=\"ru\" data-language-to-translate-into=\"uk\" data-phrase-index=\"0\" data-number-of-phrases=\"2\"><span class=\"Q4iAWc\">Киев, ул.</span></span> <span class=\"JLqJ4b ChMk0b\" data-language-for-alternatives=\"ru\" data-language-to-translate-into=\"uk\" data-phrase-index=\"1\" data-number-of-phrases=\"2\"><span class=\"Q4iAWc\">Глубочицкая, </span></span>32б, 02000</p>\r\n<p>Телефон: (095) 545-54-54</p>\r\n<p><iframe style=\"border: 0;\" tabindex=\"0\" src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1269.9307677918514!2d30.49195294945491!3d50.46230305803582!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x84a28f327eb7dc52!2z0JDRgNC10L3QtNCwINC-0YTQuNGB!5e0!3m2!1sru!2sua!4v1609513285692!5m2!1sru!2sua\" width=\"100%\" height=\"450\" frameborder=\"0\" allowfullscreen=\"allowfullscreen\" aria-hidden=\"false\"></iframe></p>', 'Контакты'),
-(2, '', 14, 'Contacts', 'Contacts', 'Contacts', 'Contacts', '<p>41 West 40th Street New York, NY</p>\r\n<p>Phone: (210) 876-5432</p>\r\n<p><iframe style=\"border: 0;\" tabindex=\"0\" src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4399.518506840664!2d-73.97964170435294!3d40.75394620817656!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259aa94a61b4f%3A0x8ebce7fe1262c134!2zNDEgVyA0MHRoIFN0LCBOZXcgWW9yaywgTlkgMTAwMTgsINCh0KjQkA!5e0!3m2!1sru!2sua!4v1609512981791!5m2!1sru!2sua\" width=\"100%\" height=\"450\" frameborder=\"0\" allowfullscreen=\"allowfullscreen\" aria-hidden=\"false\"></iframe></p>', 'Contacts'),
+(2, '', 14, 'Contacts', 'Contacts', 'Contacts', 'Contacts', '<p>41 West 40th Street New York, USA</p>\r\n<p>Phone: (210) 876-5432</p>\r\n<p><iframe style=\"border: 0;\" tabindex=\"0\" src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4399.518506840664!2d-73.97964170435294!3d40.75394620817656!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259aa94a61b4f%3A0x8ebce7fe1262c134!2zNDEgVyA0MHRoIFN0LCBOZXcgWW9yaywgTlkgMTAwMTgsINCh0KjQkA!5e0!3m2!1sru!2sua!4v1609512981791!5m2!1sru!2sua\" width=\"100%\" height=\"450\" frameborder=\"0\" allowfullscreen=\"allowfullscreen\" aria-hidden=\"false\"></iframe></p>', 'Contacts'),
 (3, '', 14, 'Контакти', 'Контакти', 'Контакти', 'Контакти', '<p>Київ, вул. Глибочицька, 32б, 02000</p>\r\n<p>Телефон: (095) 545-54-54</p>\r\n<p><iframe style=\"border: 0;\" tabindex=\"0\" src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1269.9307677918514!2d30.49195294945491!3d50.46230305803582!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x84a28f327eb7dc52!2z0JDRgNC10L3QtNCwINC-0YTQuNGB!5e0!3m2!1sru!2sua!4v1609513285692!5m2!1sru!2sua\" width=\"100%\" height=\"450\" frameborder=\"0\" allowfullscreen=\"allowfullscreen\" aria-hidden=\"false\"></iframe></p>', 'Контакти'),
 (1, '', 15, 'Бренды', 'Бренды', '', 'Бренды', '', 'Бренды'),
 (2, '', 15, 'Brands', 'Brands', '', 'Brands', '', 'Brands'),
@@ -2504,9 +2504,9 @@ INSERT INTO `t_pages` (`id`, `parent_id`, `url`, `name`, `meta_title`, `meta_des
 (9, 0, 'wishlist', 'Wishlist', 'Wishlist', 'Wishlist', 'Wishlist', '', 2, 9, 1, 'Wishlist', '2022-04-20 15:56:52'),
 (10, 0, 'compare', 'Compare', 'Compare', 'Compare', 'Compare', '', 2, 10, 1, 'Compare', '2022-04-20 15:56:30'),
 (11, 0, 'payments', 'Payment', 'Payment', 'Payment\r\n', 'Payment', '<h2>Cash</h2>\r\n<p>You can pay the courier directly in rubles at the time of delivery. The Express delivery within New York next day after order acceptance.</p>\r\n<h2>PayPal</h2>\r\n<p>Make purchases&nbsp;safely,&nbsp;without disclosing information&nbsp;about your credit card.&nbsp;PayPal&nbsp;will protect&nbsp;you if&nbsp;problems occur&nbsp;with purchase.</p>', 1, 11, 1, 'Payment', '2022-04-20 15:50:08'),
-(12, 0, 'deliveries', 'Delivery', 'Delivery', 'Delivery', 'Delivery', '<h2>Shipping within New York</h2>\r\n<p>Courier delivery is made&nbsp;the next day&nbsp;after ordering,&nbsp;if the item is in stock.&nbsp;Courier delivery is made&nbsp;within the New York&nbsp;daily from&nbsp;10.00 to&nbsp;21.00.&nbsp;For orders&nbsp;more than $300 delivered free of charge.<br><br>Cost&nbsp;free delivery is calculated&nbsp;from&nbsp;the total order&nbsp;with&nbsp;the discount&nbsp;taken into account.&nbsp;If the order amount&nbsp;after applying the discount&nbsp;less than $300,&nbsp;is&nbsp;a paid service.</p>\r\n<p>For orders&nbsp;less than $300,&nbsp;the&nbsp;delivery&nbsp;cost is $50.</p>\r\n<h2>Store pickup</h2>\r\n<p>Convenient, free&nbsp;and&nbsp;fast way of receiving your order.</p>\r\n<p>Office address:&nbsp;41 West 40th Street New York, NY</p>\r\n<h2>C.O.D (Cash On Delivery)</h2>\r\n<p>On delivery order cash on delivery through \"mail of USA\", you will be able to pay for the order at the time goods are received.</p>', 1, 12, 1, 'Delivery', '2023-10-20 05:24:15'),
+(12, 0, 'deliveries', 'Delivery', 'Delivery', 'Delivery', 'Delivery', '<h2>Shipping within New York</h2>\r\n<p>Courier delivery is made&nbsp;the next day&nbsp;after ordering,&nbsp;if the item is in stock.&nbsp;Courier delivery is made&nbsp;within the New York&nbsp;daily from&nbsp;10.00 to&nbsp;21.00.&nbsp;For orders&nbsp;more than $300 delivered free of charge.<br><br>Cost&nbsp;free delivery is calculated&nbsp;from&nbsp;the total order&nbsp;with&nbsp;the discount&nbsp;taken into account.&nbsp;If the order amount&nbsp;after applying the discount&nbsp;less than $300,&nbsp;is&nbsp;a paid service.</p>\r\n<p>For orders&nbsp;less than $300,&nbsp;the&nbsp;delivery&nbsp;cost is $50.</p>\r\n<h2>Store pickup</h2>\r\n<p>Convenient, free&nbsp;and&nbsp;fast way of receiving your order.</p>\r\n<p>Office address:&nbsp;41 West 40th Street New York, USA</p>\r\n<h2>C.O.D (Cash On Delivery)</h2>\r\n<p>On delivery order cash on delivery through \"mail of USA\", you will be able to pay for the order at the time goods are received.</p>', 1, 12, 1, 'Delivery', '2023-10-20 05:24:15'),
 (13, 0, 'blog', 'Blog', 'Blog', '', 'Blog', '', 1, 25, 1, 'Blog', '2022-04-20 16:00:55'),
-(14, 0, 'contact', 'Contacts', 'Contacts', 'Contacts', 'Contacts', '<p>41 West 40th Street New York, NY</p>\r\n<p>Phone: (210) 876-5432</p>\r\n<p><iframe style=\"border: 0;\" tabindex=\"0\" src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4399.518506840664!2d-73.97964170435294!3d40.75394620817656!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259aa94a61b4f%3A0x8ebce7fe1262c134!2zNDEgVyA0MHRoIFN0LCBOZXcgWW9yaywgTlkgMTAwMTgsINCh0KjQkA!5e0!3m2!1sru!2sua!4v1609512981791!5m2!1sru!2sua\" width=\"100%\" height=\"450\" frameborder=\"0\" allowfullscreen=\"allowfullscreen\" aria-hidden=\"false\"></iframe></p>', 1, 26, 1, 'Contacts', '2022-04-20 16:01:02'),
+(14, 0, 'contact', 'Contacts', 'Contacts', 'Contacts', 'Contacts', '<p>41 West 40th Street New York, USA</p>\r\n<p>Phone: (210) 876-5432</p>\r\n<p><iframe style=\"border: 0;\" tabindex=\"0\" src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4399.518506840664!2d-73.97964170435294!3d40.75394620817656!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259aa94a61b4f%3A0x8ebce7fe1262c134!2zNDEgVyA0MHRoIFN0LCBOZXcgWW9yaywgTlkgMTAwMTgsINCh0KjQkA!5e0!3m2!1sru!2sua!4v1609512981791!5m2!1sru!2sua\" width=\"100%\" height=\"450\" frameborder=\"0\" allowfullscreen=\"allowfullscreen\" aria-hidden=\"false\"></iframe></p>', 1, 26, 1, 'Contacts', '2022-04-20 16:01:02'),
 (15, 0, 'brands', 'Brands', 'Brands', '', 'Brands', '', 3, 13, 1, 'Brands', '2022-04-20 16:01:15'),
 (16, 0, 'articles', 'Articles', 'Articles', '', 'Articles', '', 3, 15, 1, 'Articles', '2022-04-20 16:01:21'),
 (17, 0, 'catalog', 'Catalog', 'Catalog', '', 'Catalog', '', 3, 4, 1, 'Catalog', '2022-04-20 16:01:10'),
@@ -3543,7 +3543,12 @@ INSERT INTO `t_settings` (`setting_id`, `name`, `value`) VALUES
 (71, 'layout', 'fluid'),
 (72, 'position', 'left'),
 (73, 'comments_num', '15'),
-(74, 'comments_num_admin', '15');
+(74, 'comments_num_admin', '15'),
+(75, 'smtp_server', 'smtp.gmail.com'),
+(76, 'smtp_port', '465'),
+(77, 'smtp_user', ''),
+(78, 'smtp_pass', ''),
+(79, 'use_smtp', '');
 
 -- --------------------------------------------------------
 
@@ -3643,7 +3648,7 @@ CREATE TABLE `t_translations` (
 
 INSERT INTO `t_translations` (`id`, `label`, `lang_ru`, `lang_en`, `lang_ua`) VALUES
 (39, 'callback', 'Заказать звонок', 'Request a call', 'Замовити дзвінок'),
-(40, 'contact_details', 'Киев, ул. Глубочицкая, 32б', '41 West 40th Street New York, NY', 'Київ, вул. Глибочицька, 32б'),
+(40, 'contact_details', 'Киев, ул. Глубочицкая, 32б', '41 West 40th Street New York, USA', 'Київ, вул. Глибочицька, 32б'),
 (6, 'bloge', 'Блоге', 'entries', 'Блогу'),
 (41, 'phone_number', '(903) 782-82-82', '(210) 876-5432', '(095) 545-54-54'),
 (42, 'close', 'Закрыть', 'Close', 'Закрити'),
@@ -3771,17 +3776,17 @@ INSERT INTO `t_translations` (`id`, `label`, `lang_ru`, `lang_en`, `lang_ua`) VA
 (147, 'save', 'Сохранить', 'Save', 'Зберегти'),
 (148, 'your_orders', 'Ваши заказы', 'Your orders', 'Ваші заказы'),
 (149, 'global_order', 'Заказ №', 'Order №', 'Заказ №'),
-(150, 'paid', 'оплачен', 'paid', 'оплачений'),
+(150, 'paid', 'оплачен', 'paid', 'оплачене'),
 (151, 'waiting_processing', 'ждет обработки', 'waiting for processing', 'чекає обробки'),
 (152, 'in_processing', 'в обработке', 'in processing', 'в обробці'),
-(153, 'completed', 'выполнен', 'completed', 'виконаний'),
+(153, 'completed', 'выполнен', 'completed', 'виконане'),
 (154, 'site_closed', 'Сайт закрыт на техническое обслуживание', 'Site closed for maintenance', 'Сайт зараз закритий на технічне обслуговування'),
 (155, 'apologize', 'Приносим извинения за неудобство, но в данный момент сайт находится на техническом обслуживание. Скоро мы вернемся online!', 'We apologize for the inconvenience, but the site is currently undergoing maintenance. We\'ll be back online soon!', 'Приносимо вибачення за незручність, але в даний момент сайт знаходиться на технічному обслуговуванні. Скоро ми повернемося online!'),
 (156, 'forward', 'вперед', 'forward', 'вперед'),
 (157, 'back', 'назад', 'back', 'назад'),
 (158, 'all_at_once', 'все сразу', 'all at once', 'всі відразу'),
 (159, 'order_page', 'Страница заказа', 'Order page', 'Сторінка замовлення'),
-(160, 'accepted', 'принят', 'accepted', 'прийнятий'),
+(160, 'accepted', 'принят', 'accepted', 'прийняте'),
 (161, 'general_name', 'Название', 'Name', 'Назва'),
 (162, 'general_price', 'Цена', 'Price', 'Ціна'),
 (163, 'number', 'Количество', 'Number', 'Кількість'),
@@ -3869,7 +3874,8 @@ INSERT INTO `t_translations` (`id`, `label`, `lang_ru`, `lang_en`, `lang_ua`) VA
 (249, 'subscribe_text', 'Ежемесячный дайджест всего нового от нас.', 'Monthly digest of what\'s new and exciting from us.', 'Щомісячний дайджест нового та цікавого від нас.'),
 (250, 'message_success', 'Успешно сохранено', 'Saved successfully', 'Успішно збережено'),
 (252, 'author', 'Автор', 'Author', 'Автор'),
-(253, 'wishlist', 'Избранное', 'Wishlist', 'Обране');
+(253, 'wishlist', 'Избранное', 'Wishlist', 'Обране'),
+(254, 'download', 'Скачать', 'Download', 'Завантажити');
 
 -- --------------------------------------------------------
 
@@ -3918,6 +3924,8 @@ CREATE TABLE `t_variants` (
   `weight` float(8,2) NOT NULL,
   `stock` mediumint(9) DEFAULT NULL,
   `position` int(11) NOT NULL,
+  `attachment` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
+  `attachment_url` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `external_id` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL,
   `currency_id` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -3926,79 +3934,79 @@ CREATE TABLE `t_variants` (
 -- Dumping data for table `t_variants`
 --
 
-INSERT INTO `t_variants` (`id`, `product_id`, `sku`, `name`, `color`, `color_code`, `images_ids`, `price`, `compare_price`, `weight`, `stock`, `position`, `external_id`, `currency_id`) VALUES
-(1, 1, '', '', '', '', '', '500.00', '0.00', 0.00, NULL, 0, '', 1),
-(2, 2, '', '64 GB', '', '', '', '274.99', '349.99', 0.00, NULL, 0, '', 1),
-(3, 3, '', '', '', '', '', '280.00', '400.00', 0.00, NULL, 0, '', 1),
-(4, 4, '', '', '', '', '', '989.00', '0.00', 0.00, NULL, 4, '', 1),
-(5, 5, '', '', '', '', '', '1692.00', '0.00', 0.00, NULL, 5, '', 1),
-(6, 6, '', '', '', '', '', '1953.00', '0.00', 0.00, NULL, 6, '', 1),
-(7, 7, '', '', '', '', '', '98.00', '0.00', 0.00, NULL, 7, '', 1),
-(8, 8, '', '', '', '', '', '130.00', '0.00', 0.00, NULL, 8, '', 1),
-(9, 9, '', '', 'Red', '#ff0000', '', '150.00', '0.00', 0.00, NULL, 0, '', 1),
-(10, 10, '', '', 'Blue', '#0000ff', '', '150.00', '0.00', 0.00, NULL, 0, '', 1),
-(11, 11, '', '', 'Black', '#000000', '', '150.00', '0.00', 0.00, NULL, 0, '', 1),
-(12, 12, '', '', '', '', '', '250.00', '0.00', 0.00, NULL, 0, '', 1),
-(13, 13, '', '', '', '', '', '500.00', '0.00', 0.00, NULL, 0, '', 1),
-(14, 14, '', '', '', '', '', '470.00', '0.00', 0.00, NULL, 0, '', 1),
-(15, 15, '', '', '', '', '', '503.00', '0.00', 0.00, NULL, 0, '', 1),
-(16, 16, '', '', '', '', '', '210.00', '0.00', 0.00, NULL, 16, '', 1),
-(17, 17, '', '', '', '', '', '165.00', '0.00', 0.00, NULL, 0, '', 1),
-(18, 18, '', '', '', '', '', '238.00', '0.00', 0.00, NULL, 0, '', 1),
-(19, 19, '', '', '', '', '', '1253.00', '0.00', 0.00, NULL, 0, '', 1),
-(20, 20, '', '', '', '', '', '599.00', '0.00', 0.00, NULL, 0, '', 1),
-(21, 21, '', '32 GB', '', '', '', '223.00', '0.00', 0.00, NULL, 0, '', 1),
-(22, 22, '', '', '', '', '', '254.00', '0.00', 0.00, NULL, 0, '', 1),
-(23, 23, '0001', '64 GB', 'Black', '#000000', '277,278', '400.00', '600.00', 0.00, NULL, 0, '', 1),
-(24, 23, '0003', '128 GB', 'Blue', '#0000ff', '277,279', '399.99', '449.99', 0.00, NULL, 2, '', 1),
-(25, 23, '0006', '256 GB', 'White', '#ffffff', '277,280', '499.99', '549.99', 0.00, NULL, 5, '', 1),
-(26, 23, '0005', '256 GB', 'Blue', '#0000ff', '277,279', '499.99', '549.99', 0.00, NULL, 3, '', 1),
-(27, 24, '', '', '', '', '', '300.00', '0.00', 0.00, NULL, 0, '', 1),
-(28, 25, '', '', '', '', '', '216.00', '0.00', 0.00, NULL, 0, '', 1),
-(29, 26, '', '', '', '', '', '800.00', '0.00', 0.00, NULL, 0, '', 1),
-(30, 27, '', '', '', '', '', '400.00', '0.00', 0.00, NULL, 0, '', 1),
-(31, 28, '', '', '', '', '', '160.00', '0.00', 0.00, NULL, 0, '', 1),
-(32, 29, '', '', '', '', '', '417.00', '0.00', 0.00, NULL, 0, '', 1),
-(33, 30, '', '', '', '', '', '400.00', '0.00', 0.00, NULL, 0, '', 1),
-(34, 31, '', '', '', '', '', '300.00', '0.00', 0.00, NULL, 0, '', 1),
-(35, 32, '', '', '', '', '', '298.00', '0.00', 0.00, NULL, 0, '', 1),
-(36, 33, '', '', '', '#ffffff', '', '447.98', '0.00', 100.00, NULL, 0, '', 1),
-(38, 23, '0004', '512 GB', 'Blue', '#0000ff', '277,279', '599.99', '649.99', 0.00, NULL, 4, '', 1),
-(39, 23, '0002', '512 GB', 'Black', '#000000', '277,278', '599.99', '649.99', 0.00, NULL, 1, '', 1),
-(40, 34, '', '', '', '', '', '242.00', '0.00', 0.00, NULL, 0, '', 1),
-(41, 35, '', '', '', '', '', '373.00', '0.00', 0.00, NULL, 0, '', 1),
-(64, 21, '', '64 GB', '', '', '', '300.00', '0.00', 0.00, NULL, 1, '', 1),
-(65, 39, '675370', '64 GB', 'Black', '#000000', '', '400.00', '450.00', 162.00, NULL, 0, '', 1),
-(66, 39, '675348', '128 GB', 'Black', '#000000', '', '500.00', '550.00', 162.00, NULL, 1, '', 1),
-(67, 39, '675360', '256 GB', 'Black', '#000000', '', '700.00', '800.00', 162.00, NULL, 2, '', 1),
-(81, 23, '0007', '512 GB', 'White', '#ffffff', '277,280', '599.99', '649.99', 0.00, NULL, 6, '', 1),
-(171, 45, '015', 'XXL', 'White', '#ffffff', '425', '49.00', '79.00', 0.00, NULL, 14, '', 1),
-(157, 45, '001', 'S', 'Green', '#008000', '423', '47.00', '77.00', 0.00, NULL, 0, '', 1),
-(158, 45, '002', 'M', 'Green', '#008000', '423', '48.00', '78.00', 0.00, NULL, 1, '', 1),
-(159, 45, '003', 'L', 'Green', '#008000', '423', '49.00', '79.00', 0.00, NULL, 2, '', 1),
-(160, 45, '004', 'XS', 'Red', '#ff0000', '424', '45.00', '75.00', 0.00, NULL, 3, '', 1),
-(161, 45, '005', 'S', 'Red', '#ff0000', '424', '47.00', '77.00', 0.00, NULL, 4, '', 1),
-(162, 45, '006', 'M', 'Red', '#ff0000', '424', '48.00', '78.00', 0.00, NULL, 5, '', 1),
-(163, 45, '007', 'L', 'Blue', '#0000ff', '422', '47.00', '77.00', 0.00, NULL, 6, '', 1),
-(164, 45, '008', 'M', 'Blue', '#0000ff', '422', '48.00', '78.00', 0.00, NULL, 7, '', 1),
-(165, 45, '009', 'XXL', 'Blue', '#0000ff', '422', '49.00', '79.00', 0.00, NULL, 8, '', 1),
-(166, 45, '010', 'XS', 'Black', '#000000', '421', '47.00', '77.00', 0.00, NULL, 9, '', 1),
-(167, 45, '011', 'M', 'Black', '#000000', '421', '48.00', '78.00', 0.00, NULL, 10, '', 1),
-(168, 45, '012', 'XXL', 'Black', '#000000', '421', '49.00', '79.00', 0.00, NULL, 11, '', 1),
-(169, 45, '013', 'L', 'White', '#ffffff', '425', '47.00', '77.00', 0.00, NULL, 12, '', 1),
-(170, 45, '014', 'XL', 'White', '#ffffff', '425', '48.00', '78.00', 0.00, NULL, 13, '', 1),
-(109, 41, '675374', '64 GB', 'White', '#ffffff', '', '400.00', '450.00', 162.00, NULL, 0, '', 1),
-(110, 41, '675354', '128 GB', 'White', '#ffffff', '', '500.00', '550.00', 162.00, NULL, 1, '', 1),
-(111, 41, '675368', '256 GB', 'White', '#ffffff', '', '700.00', '800.00', 162.00, NULL, 2, '', 1),
-(121, 42, '675371', '64 GB', 'Green', '#008000', '', '400.00', '450.00', 162.00, NULL, 0, '', 1),
-(122, 42, '675350', '128 GB', 'Green', '#008000', '', '500.00', '550.00', 162.00, NULL, 1, '', 1),
-(123, 42, '675363', '256 GB', 'Green', '#008000', '', '700.00', '800.00', 162.00, NULL, 2, '', 1),
-(133, 43, '675372', '64 GB', 'Red', '#ff0000', '', '400.00', '450.00', 162.00, NULL, 0, '', 1),
-(134, 43, '675351', '128 GB', 'Red', '#ff0000', '', '500.00', '550.00', 162.00, NULL, 1, '', 1),
-(135, 43, '675367', '256 GB', 'Red', '#ff0000', '', '700.00', '800.00', 162.00, NULL, 2, '', 1),
-(145, 44, '675375', '64 GB', 'Blue', '#0000ff', '', '400.00', '450.00', 162.00, NULL, 0, '', 1),
-(146, 44, '675357', '128 GB', 'Blue', '#0000ff', '', '500.00', '550.00', 162.00, NULL, 1, '', 1),
-(147, 44, '675369', '256 GB', 'Blue', '#0000ff', '', '700.00', '800.00', 162.00, NULL, 2, '', 1);
+INSERT INTO `t_variants` (`id`, `product_id`, `sku`, `name`, `color`, `color_code`, `images_ids`, `price`, `compare_price`, `weight`, `stock`, `position`, `attachment`, `attachment_url`, `external_id`, `currency_id`) VALUES
+(1, 1, '', '', '', '', '', '500.00', '0.00', 0.00, NULL, 0, '', '', '', 1),
+(2, 2, '', '64 GB', '', '', '', '274.99', '349.99', 0.00, NULL, 0, '', '', '', 1),
+(3, 3, '', '', '', '', '', '280.00', '400.00', 0.00, NULL, 0, '', '', '', 1),
+(4, 4, '', '', '', '', '', '989.00', '0.00', 0.00, NULL, 4, '', '', '', 1),
+(5, 5, '', '', '', '', '', '1692.00', '0.00', 0.00, NULL, 5, '', '', '', 1),
+(6, 6, '', '', '', '', '', '1953.00', '0.00', 0.00, NULL, 6, '', '', '', 1),
+(7, 7, '', '', '', '', '', '98.00', '0.00', 0.00, NULL, 7, '', '', '', 1),
+(8, 8, '', '', '', '', '', '130.00', '0.00', 0.00, NULL, 8, '', '', '', 1),
+(9, 9, '', '', 'Red', '#ff0000', '', '150.00', '0.00', 0.00, NULL, 0, '', '', '', 1),
+(10, 10, '', '', 'Blue', '#0000ff', '', '150.00', '0.00', 0.00, NULL, 0, '', '', '', 1),
+(11, 11, '', '', 'Black', '#000000', '', '150.00', '0.00', 0.00, NULL, 0, '', '', '', 1),
+(12, 12, '', '', '', '', '', '250.00', '0.00', 0.00, NULL, 0, '', '', '', 1),
+(13, 13, '', '', '', '', '', '500.00', '0.00', 0.00, NULL, 0, '', '', '', 1),
+(14, 14, '', '', '', '', '', '470.00', '0.00', 0.00, NULL, 0, '', '', '', 1),
+(15, 15, '', '', '', '', '', '503.00', '0.00', 0.00, NULL, 0, '', '', '', 1),
+(16, 16, '', '', '', '', '', '210.00', '0.00', 0.00, NULL, 16, '', '', '', 1),
+(17, 17, '', '', '', '', '', '165.00', '0.00', 0.00, NULL, 0, '', '', '', 1),
+(18, 18, '', '', '', '', '', '238.00', '0.00', 0.00, NULL, 0, '', '', '', 1),
+(19, 19, '', '', '', '', '', '1253.00', '0.00', 0.00, NULL, 0, '', '', '', 1),
+(20, 20, '', '', '', '', '', '599.00', '0.00', 0.00, NULL, 0, '', '', '', 1),
+(21, 21, '', '32 GB', '', '', '', '223.00', '0.00', 0.00, NULL, 0, '', '', '', 1),
+(22, 22, '', '', '', '', '', '254.00', '0.00', 0.00, NULL, 0, '', '', '', 1),
+(23, 23, '0001', '64 GB', 'Black', '#000000', '277,278', '400.00', '600.00', 0.00, NULL, 0, '', '', '', 1),
+(24, 23, '0003', '128 GB', 'Blue', '#0000ff', '277,279', '399.99', '449.99', 0.00, NULL, 2, '', '', '', 1),
+(25, 23, '0006', '256 GB', 'White', '#ffffff', '277,280', '499.99', '549.99', 0.00, NULL, 5, '', '', '', 1),
+(26, 23, '0005', '256 GB', 'Blue', '#0000ff', '277,279', '499.99', '549.99', 0.00, NULL, 3, '', '', '', 1),
+(27, 24, '', '', '', '', '', '300.00', '0.00', 0.00, NULL, 0, '', '', '', 1),
+(28, 25, '', '', '', '', '', '216.00', '0.00', 0.00, NULL, 0, '', '', '', 1),
+(29, 26, '', '', '', '', '', '800.00', '0.00', 0.00, NULL, 0, '', '', '', 1),
+(30, 27, '', '', '', '', '', '400.00', '0.00', 0.00, NULL, 0, '', '', '', 1),
+(31, 28, '', '', '', '', '', '160.00', '0.00', 0.00, NULL, 0, '', '', '', 1),
+(32, 29, '', '', '', '', '', '417.00', '0.00', 0.00, NULL, 0, '', '', '', 1),
+(33, 30, '', '', '', '', '', '400.00', '0.00', 0.00, NULL, 0, '', '', '', 1),
+(34, 31, '', '', '', '', '', '300.00', '0.00', 0.00, NULL, 0, '', '', '', 1),
+(35, 32, '', '', '', '', '', '298.00', '0.00', 0.00, NULL, 0, '', '', '', 1),
+(36, 33, '', '', '', '#ffffff', '', '447.98', '0.00', 100.00, NULL, 0, '', '', '', 1),
+(38, 23, '0004', '512 GB', 'Blue', '#0000ff', '277,279', '599.99', '649.99', 0.00, NULL, 4, '', '', '', 1),
+(39, 23, '0002', '512 GB', 'Black', '#000000', '277,278', '599.99', '649.99', 0.00, NULL, 1, '', '', '', 1),
+(40, 34, '', '', '', '', '', '242.00', '0.00', 0.00, NULL, 0, '', '', '', 1),
+(41, 35, '', '', '', '', '', '373.00', '0.00', 0.00, NULL, 0, '', '', '', 1),
+(64, 21, '', '64 GB', '', '', '', '300.00', '0.00', 0.00, NULL, 1, '', '', '', 1),
+(65, 39, '675370', '64 GB', 'Black', '#000000', '', '400.00', '450.00', 162.00, NULL, 0, '', '', '', 1),
+(66, 39, '675348', '128 GB', 'Black', '#000000', '', '500.00', '550.00', 162.00, NULL, 1, '', '', '', 1),
+(67, 39, '675360', '256 GB', 'Black', '#000000', '', '700.00', '800.00', 162.00, NULL, 2, '', '', '', 1),
+(81, 23, '0007', '512 GB', 'White', '#ffffff', '277,280', '599.99', '649.99', 0.00, NULL, 6, '', '', '', 1),
+(171, 45, '015', 'XXL', 'White', '#ffffff', '425', '49.00', '79.00', 0.00, NULL, 14, '', '', '', 1),
+(157, 45, '001', 'S', 'Green', '#008000', '423', '47.00', '77.00', 0.00, NULL, 0, '', '', '', 1),
+(158, 45, '002', 'M', 'Green', '#008000', '423', '48.00', '78.00', 0.00, NULL, 1, '', '', '', 1),
+(159, 45, '003', 'L', 'Green', '#008000', '423', '49.00', '79.00', 0.00, NULL, 2, '', '', '', 1),
+(160, 45, '004', 'XS', 'Red', '#ff0000', '424', '45.00', '75.00', 0.00, NULL, 3, '', '', '', 1),
+(161, 45, '005', 'S', 'Red', '#ff0000', '424', '47.00', '77.00', 0.00, NULL, 4, '', '', '', 1),
+(162, 45, '006', 'M', 'Red', '#ff0000', '424', '48.00', '78.00', 0.00, NULL, 5, '', '', '', 1),
+(163, 45, '007', 'L', 'Blue', '#0000ff', '422', '47.00', '77.00', 0.00, NULL, 6, '', '', '', 1),
+(164, 45, '008', 'M', 'Blue', '#0000ff', '422', '48.00', '78.00', 0.00, NULL, 7, '', '', '', 1),
+(165, 45, '009', 'XXL', 'Blue', '#0000ff', '422', '49.00', '79.00', 0.00, NULL, 8, '', '', '', 1),
+(166, 45, '010', 'XS', 'Black', '#000000', '421', '47.00', '77.00', 0.00, NULL, 9, '', '', '', 1),
+(167, 45, '011', 'M', 'Black', '#000000', '421', '48.00', '78.00', 0.00, NULL, 10, '', '', '', 1),
+(168, 45, '012', 'XXL', 'Black', '#000000', '421', '49.00', '79.00', 0.00, NULL, 11, '', '', '', 1),
+(169, 45, '013', 'L', 'White', '#ffffff', '425', '47.00', '77.00', 0.00, NULL, 12, '', '', '', 1),
+(170, 45, '014', 'XL', 'White', '#ffffff', '425', '48.00', '78.00', 0.00, NULL, 13, '', '', '', 1),
+(109, 41, '675374', '64 GB', 'White', '#ffffff', '', '400.00', '450.00', 162.00, NULL, 0, '', '', '', 1),
+(110, 41, '675354', '128 GB', 'White', '#ffffff', '', '500.00', '550.00', 162.00, NULL, 1, '', '', '', 1),
+(111, 41, '675368', '256 GB', 'White', '#ffffff', '', '700.00', '800.00', 162.00, NULL, 2, '', '', '', 1),
+(121, 42, '675371', '64 GB', 'Green', '#008000', '', '400.00', '450.00', 162.00, NULL, 0, '', '', '', 1),
+(122, 42, '675350', '128 GB', 'Green', '#008000', '', '500.00', '550.00', 162.00, NULL, 1, '', '', '', 1),
+(123, 42, '675363', '256 GB', 'Green', '#008000', '', '700.00', '800.00', 162.00, NULL, 2, '', '', '', 1),
+(133, 43, '675372', '64 GB', 'Red', '#ff0000', '', '400.00', '450.00', 162.00, NULL, 0, '', '', '', 1),
+(134, 43, '675351', '128 GB', 'Red', '#ff0000', '', '500.00', '550.00', 162.00, NULL, 1, '', '', '', 1),
+(135, 43, '675367', '256 GB', 'Red', '#ff0000', '', '700.00', '800.00', 162.00, NULL, 2, '', '', '', 1),
+(145, 44, '675375', '64 GB', 'Blue', '#0000ff', '', '400.00', '450.00', 162.00, NULL, 0, '', '', '', 1),
+(146, 44, '675357', '128 GB', 'Blue', '#0000ff', '', '500.00', '550.00', 162.00, NULL, 1, '', '', '', 1),
+(147, 44, '675369', '256 GB', 'Blue', '#0000ff', '', '700.00', '800.00', 162.00, NULL, 2, '', '', '', 1);
 
 --
 -- Indexes for dumped tables
@@ -4627,7 +4635,7 @@ ALTER TABLE `t_seo`
 -- AUTO_INCREMENT for table `t_settings`
 --
 ALTER TABLE `t_settings`
-  MODIFY `setting_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
+  MODIFY `setting_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
 
 --
 -- AUTO_INCREMENT for table `t_subscribes`
@@ -4645,7 +4653,7 @@ ALTER TABLE `t_theme_settings`
 -- AUTO_INCREMENT for table `t_translations`
 --
 ALTER TABLE `t_translations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=254;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=255;
 
 --
 -- AUTO_INCREMENT for table `t_users`
@@ -4659,3 +4667,4 @@ ALTER TABLE `t_users`
 ALTER TABLE `t_variants`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=172;
 COMMIT;
+

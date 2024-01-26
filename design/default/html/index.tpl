@@ -299,7 +299,7 @@
 									<img class="card-img-top" src="{$post->image|resize_posts:750:300}" alt="{$post->name|escape}">
 								{else}
 									<span class="text-center mt-4">
-										<img style="width: 210px; height: 210px;" src="design/{$settings->theme|escape}/images/no-photo.svg" alt="{$article->name|escape}">
+										<img style="width: 210px; height: 210px;" src="design/{$settings->theme|escape}/images/no-photo.svg" alt="{$post->name|escape}">
 									</span>
 								{/if}
 								<div class="card-body">

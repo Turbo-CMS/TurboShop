@@ -69,7 +69,7 @@ class Request extends Turbo
 		}
 
 		if ($type == 'string') {
-			return strval(preg_replace('/[^\p{L}\p{Nd}\d\s_\-\.\%\s]/ui', '', $val));
+			return preg_replace('/[^\p{L}\p{Nd}\d\s_\-\.\%\s]/ui', '', strval($val));
 		}
 
 		if ($type == 'integer') {

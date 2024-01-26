@@ -13,9 +13,13 @@ class OrderView extends View
 	/**
 	 * Main function
 	 */
-	public function fetch()
+	function fetch()
 	{
-		return $this->fetchOrder();
+		if ($this->request->get('file')) {
+			return $this->download();
+		} else {
+			return $this->fetchOrder();
+		}
 	}
 
 	/**
@@ -116,6 +120,43 @@ class OrderView extends View
 		$body = $this->design->fetch('order.tpl');
 
 		return $body;
+	}
+
+	/**
+	 * Download
+	 */
+	private function download()
+	{
+		$file = $this->request->get('file');
+
+		if (!$url = $this->request->get('url', 'string')) {
+			return false;
+		}
+
+		$order = $this->orders->getOrder((string)$url);
+
+		if (!$order) {
+			return false;
+		}
+
+		if (!$order->paid) {
+			return false;
+		}
+
+		$query = $this->db->placehold("SELECT p.id FROM __purchases p, __variants v WHERE p.variant_id=v.id AND p.order_id=? AND v.attachment=?", $order->id, $file);
+		$this->db->query($query);
+
+		if ($this->db->numRows() == 0) {
+			return false;
+		}
+
+		header("Content-type: application/force-download");
+		header("Content-Disposition: attachment; filename=\"$file\"");
+		header("Content-Length: " . filesize($this->config->root_dir . $this->config->downloads_dir . $file));
+
+		readfile($this->config->root_dir . $this->config->downloads_dir . $file);
+
+		exit();
 	}
 
 	/**

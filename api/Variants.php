@@ -49,6 +49,8 @@ class Variants extends Turbo
                 v.images_ids,
                 v.weight,
                 v.position,
+                v.attachment,
+                v.attachment_url,
                 $langSql->fields
             FROM __variants AS v
                 $langSql->join
@@ -105,6 +107,8 @@ class Variants extends Turbo
                 v.color_code,
                 v.images_ids,
                 v.weight,
+                v.attachment,
+                v.attachment_url,
                 $langSql->fields
             FROM __variants v 
                 $langSql->join 
@@ -187,12 +191,35 @@ class Variants extends Turbo
     public function deleteVariant($id)
     {
         if (!empty($id)) {
+            $this->deleteAttachment($id);
+
             $query = $this->db->placehold("DELETE FROM __variants WHERE id=? LIMIT 1", (int) $id);
             $this->db->query($query);
 
             $this->db->query("UPDATE __purchases SET variant_id=NULL WHERE variant_id=?", (int) $id);
 
             $this->db->query("DELETE FROM __lang_variants WHERE variant_id=?", (int) $id);
+        }
+    }
+
+    /**
+     * Delete Attachment
+     */
+    public function deleteAttachment($id)
+    {
+        $query = $this->db->placehold("SELECT attachment FROM __variants WHERE id=?", $id);
+        $this->db->query($query);
+
+        $filename = $this->db->result('attachment');
+
+        $query = $this->db->placehold("SELECT 1 FROM __variants WHERE attachment=? AND id!=?", $filename, $id);
+        $this->db->query($query);
+
+        $exists = $this->db->numRows();
+
+        if (!empty($filename) && $exists == 0) {
+            @unlink($this->config->root_dir . '/' . $this->config->downloads_dir . $filename);
+            $this->updateVariant($id, ['attachment' => null]);
         }
     }
 }

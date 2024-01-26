@@ -184,7 +184,7 @@ img {
 	vertical-align: middle;
 }
 
-.btn.clear-button:focus svg {
+.btn.rotate-icon:focus svg {
 	-webkit-transition: all 2s ease;
 	-ms-transition: all 2s ease;
 	transition: all 2s ease;
@@ -193,7 +193,9 @@ img {
 	transform: rotate(720deg);
 }
 
-.btn-delete {
+.btn-delete,
+.btn-restore,
+.btn-attachment {
 	background: none;
 	border: none;
 	outline: none;
@@ -202,16 +204,8 @@ img {
 	color: #495057;
 }
 
-.btn-restore {
-	background: none;
-	border: none;
-	outline: none;
-	cursor: pointer;
-	position: relative;
-	color: #495057;
-}
-
-.btn-delete svg {
+.btn-delete svg,
+.btn-attachment svg {
 	display: inline-block;
 	cursor: pointer;
 	transition: 0.1s all;
@@ -234,6 +228,13 @@ img {
 	border: none;
 	outline: none;
 	color: #dc3545;
+}
+
+.btn-attachment:hover svg {
+	background: none;
+	border: none;
+	outline: none;
+	color: #3b7ddd;
 }
 
 .btn-edit:hover svg {
@@ -792,7 +793,7 @@ textarea.form-control {
 }
 
 .turbo-list .variants-item-name {
-	width: calc(100% - 1042px);
+	width: calc(100% - 1067px);
 }
 
 .turbo-list .variants-item-height {
@@ -827,9 +828,21 @@ textarea.form-control {
 	width: 100px;
 }
 
+.turbo-list .variants-item-file {
+	width: 35px;
+}
+
+.turbo-list .attachment-url {
+	width: calc(100% - 870px);
+}
+
+.turbo-list .download-attachment {
+	width: calc(100% - 800px);
+}
+
 .turbo-list .variants-list-item {
 	position: relative;
-	height: 100px;
+	min-height: 100px;
 }
 
 .turbo-list .variants-list-item .turbo-list-row {

@@ -62,6 +62,8 @@
 						{$btr->global_not_underscore|escape}
 					{elseif $message_error == 'empty_categories'}
 						{$btr->product_no_category|escape}
+					{elseif $message_error == 'invalid_file'}
+						{$btr->global_invalid_file_type|escape}
 					{else}
 						{$message_error|escape}
 					{/if}
@@ -92,7 +94,7 @@
 										<div class="input-group">
 											<span class="input-group-text">URL</span>
 											<input name="url" class="js-meta-field form-control js-url" type="text" value="{if isset($product->url)}{$product->url|escape}{/if}" {if isset($product->id)}readonly{/if}>
-											<input type="checkbox" id="block-translit" class="d-none" value="1" {if isset($product->id)}checked=""{/if}>
+											<input type="checkbox" id="block-translit" class="d-none" value="1" {if isset($product->id)}checked="" {/if}>
 											<span class="input-group-text js-disable-url">
 												{if isset($product->id)}
 													<i class="url-lock"></i>
@@ -207,7 +209,7 @@
 						<div class="mb-3">
 							<div class="form-label">{$btr->global_brand|escape}</div>
 							<select name="brand_id" class="selectpicker mb-1 js-meta-brand" data-live-search="true">
-								<option value="0" {if !isset($product->brand_id)}selected="" {/if}>{$btr->global_not_set|escape}</option>
+								<option value="0" {if !isset($product->brand_id)}selected=""{/if}>{$btr->global_not_set|escape}</option>
 								{foreach $brands as $brand}
 									<option value="{$brand->id}" {if isset($product->brand_id) && $product->brand_id == $brand->id}selected=""{/if}>{$brand->name|escape}</option>
 								{/foreach}
@@ -216,7 +218,7 @@
 						<div class="mb-0">
 							<div class="form-label">{$btr->global_category|escape}</div>
 							<fieldset class="form-group">
-								<div id="product-categories" {if !$categories}style="display:none;" {/if}>
+								<div id="product-categories" {if !$categories}style="display:none;"{/if}>
 									<div class="product-cats" id="product-cats">
 										{foreach $product_categories as $product_category name=categories}
 											<div class="list">
@@ -266,7 +268,7 @@
 							<div class="turbo-list-body sortable variants-listadd">
 								{foreach $product_variants as $variant}
 									<div class="turbo-list-body-item variants-list-item">
-										<div class="turbo-list-row">
+										<div class="turbo-list-row {if $variant->attachment && $variant->attachment_url}mb-0{/if}">
 											<div class="turbo-list-boding variants-item-drag">
 												<div class="form-label"></div>
 												<div class="move-zone">
@@ -314,7 +316,7 @@
 												<div class="form-label">{$btr->global_currency|escape}</div>
 												<select name="variants[currency_id][]" class="selectpicker">
 													{foreach $currencies as $c}
-														<option value="{$c->id}" {if isset($variant->currency_id) && $c->id == $variant->currency_id}selected=""{/if}>{$c->code|escape}</option>
+														<option value="{$c->id}" {if isset($variant->currency_id) && $c->id == $variant->currency_id}selected="" {/if}>{$c->code|escape}</option>
 													{/foreach}
 												</select>
 											</div>
@@ -331,10 +333,37 @@
 													</span>
 												</div>
 											</div>
+											<div class="turbo-list-boding variants-item-file">
+												<div class="form-label"></div>
+												<button type="button" class="add-attachment btn-attachment" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_attachment|escape}">
+													<i class="align-middle" data-feather="download"></i>
+												</button>
+											</div>
 											{if !$variant@first}
 												<div class="turbo-list-boding turbo-list-delete remove-variant">
 													<div class="form-label"></div>
 													<button type="button" class="btn-delete js-remove-variant" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
+														<i class="align-middle" data-feather="trash-2"></i>
+													</button>
+												</div>
+											{/if}
+										</div>
+										<div class="turbo-list-row browse-attachment" {if !$variant->attachment && !$variant->attachment_url}style="display:none;"{/if}>
+											<div class="turbo-list-boding variants-item-drag"></div>
+											<div class="turbo-list-boding attachment-url">
+												<label for="attachment-url" class="form-label mb-1">{$btr->global_file_link|escape}</label>
+												<input class="form-control" type="text" name="variants[attachment_url][]" value="{$variant->attachment_url|escape}" id="attachment-url">
+											</div>
+											<div class="turbo-list-boding download-attachment" {if $variant->attachment}style="display:none;"{/if}>
+												<label for="download-attachment" class="form-label mb-1">{$btr->global_attachment|escape}</label>
+												<input class="form-control" type="file" name="attachment[]" id="download-attachment">
+											</div>
+											{if $variant->attachment}
+												<div class="turbo-list-boding">
+													<div class="form-label"></div>
+													<input type="hidden" name="delete_attachment[]">
+													<span class=js-attachment-name>{$variant->attachment|truncate:25:'...':false:true}</span>
+													<button type="button" class="btn-delete js-remove-attachment" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
 														<i class="align-middle" data-feather="trash-2"></i>
 													</button>
 												</div>
@@ -408,11 +437,28 @@
 												</span>
 											</div>
 										</div>
+										<div class="turbo-list-boding variants-item-file">
+											<div class="form-label"></div>
+											<button type="button" class="add-attachment btn-attachment" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_attachment|escape}">
+												<i class="align-middle" data-feather="download"></i>
+											</button>
+										</div>
 										<div class="turbo-list-boding turbo-list-delete remove-variant">
 											<div class="form-label"></div>
 											<button type="button" class="btn-delete js-remove-variant" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
 												<i class="align-middle" data-feather="trash-2"></i>
 											</button>
+										</div>
+									</div>
+									<div class="turbo-list-row browse-attachment" style="display:none;">
+										<div class="turbo-list-boding variants-item-drag"></div>
+										<div class="turbo-list-boding attachment-url">
+											<label for="attachment-url" class="form-label mb-1">{$btr->global_file_link|escape}</label>
+											<input class="form-control" type="text" name="variants[attachment_url][]" value="" id="attachment-url">
+										</div>
+										<div class="turbo-list-boding download-attachment">
+											<label for="download-attachment" class="form-label mb-1">{$btr->global_attachment|escape}</label>
+											<input class="form-control" type="file" name="attachment[]" id="download-attachment">
 										</div>
 									</div>
 								</div>
@@ -448,7 +494,7 @@
 							{foreach $features as $feature}
 								<div class="js-feature-block-{$feature->id}">
 									{assign var="feature_id" value=$feature->id}
-									{foreach $options.$feature_id as $option}
+									{foreach $options.$feature_id|default:[] as $option}
 										<div class="feature-row clearfix">
 											<div class="feature-name {if !$option@first}additional-values feature-value-mobile{/if}">
 												{if $option@first}
@@ -935,7 +981,7 @@
 							<li>
 								<label>
 									<img src="{$image->filename|resize:80:80}" alt="">
-									<input type="hidden" name='images[]' value='{$image->id}'>
+									<input type="hidden" name="images[]" value="{$image->id}">
 									<span class="start">
 										<i class="align-middle" data-feather="circle"></i>
 										<i class="align-middle" data-feather="check"></i>
@@ -1037,22 +1083,22 @@
 			if (window.File && window.FileReader && window.FileList) {
 				$(".js-dropzone").on('dragover', function(e) {
 					e.preventDefault();
-					{/literal}
-						{if $settings->admin_theme == "dark"}
-							$(this).css('background', '#28323f');
-						{else}
-							$(this).css('background', '#f8f8f8');
-						{/if}
-					{literal}
+				{/literal}
+				{if $settings->admin_theme == "dark"}
+					$(this).css('background', '#28323f');
+				{else}
+					$(this).css('background', '#f8f8f8');
+				{/if}
+				{literal}
 				});
 				$(".js-dropzone").on('dragleave', function() {
-					{/literal}
-						{if $settings->admin_theme == "dark"}
-							$(this).css('background', '#28323f');
-						{else}
-							$(this).css('background', '#f8f8f8');
-						{/if}
-					{literal}
+				{/literal}
+				{if $settings->admin_theme == "dark"}
+					$(this).css('background', '#28323f');
+				{else}
+					$(this).css('background', '#f8f8f8');
+				{/if}
+				{literal}
 				});
 
 				function handleFileSelect(evt) {
@@ -1094,6 +1140,32 @@
 			$(document).on("click", ".js-remove-variant", function() {
 				$(this).closest(".variants-list-item").fadeOut(200);
 				$(this).closest(".variants-list-item").remove();
+			});
+
+			$(document).on("click", ".add-attachment", function() {
+				var $attachmentBlock = $(this).closest('.turbo-list-body-item').find('.browse-attachment');
+				var $attachmentInput = $(this).closest('.turbo-list-body-item').find('input[name*=attachment]');
+				var $firstTurboListRow = $(this).closest('.turbo-list-body-item').find('.turbo-list-row:first');
+
+				$firstTurboListRow.toggleClass('mb-0', !$attachmentBlock.is(':visible'));
+
+				$attachmentBlock.slideToggle('fast', function() {
+					var isVisible = $attachmentBlock.is(':visible');
+					$attachmentInput.prop('disabled', !isVisible);
+
+					$firstTurboListRow.toggleClass('mb-0', isVisible);
+				});
+
+				return false;
+			});
+
+			$(document).on("click", ".js-remove-attachment", function() {
+				closest = $(this).closest(".turbo-list-boding");
+				closest.find(".js-attachment-name").hide("slow");
+				$(this).hide("slow");
+				closest.find("input[name*=delete_attachment]").val("1");
+				$(this).closest(".browse-attachment").find('.download-attachment').show('fast');
+				return false;
 			});
 
 			$('.color-picker').colorpicker(colorPickerOptions);
@@ -1138,13 +1210,13 @@
 				$('#imagesModal :checkbox:checked').each(function() { ids.push($(this).val()); });
 				$(color_variant).closest('div').find('input[type=hidden]').val(ids.join(','));
 				if (ids.length > 0) $(color_variant).closest('div').find('img').attr('src', 'design/images/picture.svg');
-				{/literal}
-					{if $settings->admin_theme == "dark"}
-						else $(color_variant).closest('div').find('img').attr('src', 'design/images/picture_empty_dark.svg');
-					{else}
-						else $(color_variant).closest('div').find('img').attr('src', 'design/images/picture_empty.svg');
-					{/if}
-				{literal}
+			{/literal}
+			{if $settings->admin_theme == "dark"}
+				else $(color_variant).closest('div').find('img').attr('src', 'design/images/picture_empty_dark.svg');
+			{else}
+				else $(color_variant).closest('div').find('img').attr('src', 'design/images/picture_empty.svg');
+			{/if}
+			{literal}
 				$('#imagesModal').modal('hide');
 				return false;
 			});

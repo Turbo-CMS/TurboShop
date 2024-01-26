@@ -23,8 +23,7 @@
 		{$lang->completed}
 	{/if}
 	{if $order->paid == 1}
-		, {$lang->paid}
-	{else}
+		(<span class="text-success">{$lang->paid}</span>)
 	{/if}
 </h1>
 
@@ -74,6 +73,12 @@
 					<td data-title="{$lang->general_name}">
 						<a class="text-decoration-none" href="{$lang_link}products/{$purchase->product->url}">{$purchase->product->name|escape}</a></br>
 						{if $purchase->variant->color}{$purchase->variant->color|escape} / {/if}{$purchase->variant->name|escape}
+						{if $order->paid && $purchase->variant->attachment}
+							<a class="btn btn-success btn-sm mt-3" href="{$lang_link}order/{$order->url}/{$purchase->variant->attachment}"><i class="fal fa-arrow-down-to-square me-1"></i>{$lang->download}</a>
+						{/if}
+						{if $order->paid && $purchase->variant->attachment_url}
+							<a class="btn btn-primary btn-sm mt-3" href="{$purchase->variant->attachment_url}" target="_blank"><i class="fal fa-arrow-up-right-from-square me-1"></i>{$lang->download}</a>
+						{/if}
 					</td>
 					<td data-title="{$lang->general_price}">{($purchase->price)|convert}&nbsp;{$currency->sign}</td>
 					<td data-title="{$lang->number}">&times; {$purchase->amount}&nbsp;{$settings->units}</td>
@@ -287,7 +292,7 @@
 					<input type="submit" class="btn btn-success btn-lg float-end" value="{$lang->finish_the_order}">
 				</div>
 			</form>
-			{* Selected Payment Method *}
+		{* Selected Payment Method *}
 		{elseif $payment_method}
 			<h2 class="mb-3">
 				{$lang->payment_method} &mdash;

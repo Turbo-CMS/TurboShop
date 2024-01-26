@@ -2,8 +2,55 @@
 
 require_once 'Turbo.php';
 
+use PHPMailer\PHPMailer\PHPMailer;
+
+require_once 'phpmailer/src/Exception.php';
+require_once 'phpmailer/src/PHPMailer.php';
+require_once 'phpmailer/src/SMTP.php';
+
 class Notify extends Turbo
 {
+	/**
+	 * Send Email SMTP
+	 */
+	public function SMTP($to, $subject, $message)
+	{
+		$mail = new PHPMailer();
+		$mail->IsSMTP();
+		$mail->Host = $this->settings->smtp_server;
+		$mail->SMTPDebug  = 0;
+		$mail->SMTPAuth = true;
+		$mail->CharSet = 'utf-8';
+		$mail->Port = $this->settings->smtp_port;
+
+		if ($mail->Port == 465) {
+			$mail->SMTPSecure = "ssl";
+			$mail->Host = (strpos($mail->Host, "ssl://") === false) ? "ssl://" . $mail->Host : $mail->Host;
+		}
+
+		$mail->Username = $this->settings->smtp_user;
+		$mail->Password = $this->settings->smtp_pass;
+		$mail->SetFrom($this->settings->smtp_user, $this->settings->notify_from_name);
+		$mail->AddReplyTo($this->settings->smtp_user, $this->settings->notify_from_name);
+		$mail->Subject = $subject;
+		$mail->MsgHTML($message);
+		$mail->addCustomHeader("MIME-Version: 1.0\n");
+
+		$recipients = explode(',', $to);
+
+		if (!empty($recipients)) {
+			foreach ($recipients as $i => $r) {
+				$mail->AddAddress($r);
+			}
+		} else {
+			$mail->AddAddress($to);
+		}
+
+		if (!$mail->Send()) {
+			file_put_contents('error_log.txt', $mail->ErrorInfo);
+		}
+	}
+
 	/**
 	 * Send Email
 	 */
@@ -22,7 +69,11 @@ class Notify extends Turbo
 
 		$subject = '=?utf-8?B?' . base64_encode($subject) . '?=';
 
-		return mail($to, $subject, $message, $headers);
+		if ($this->settings->use_smtp) {
+			$this->SMTP($to, $subject, $message);
+		} else {
+			mail($to, $subject, $message, $headers);
+		}
 	}
 
 	/**
@@ -30,34 +81,32 @@ class Notify extends Turbo
 	 */
 	public function emailOrderUser($orderId)
 	{
-		$order = $this->orders->getOrder($orderId);
-
-		if (!$order || empty($order->email)) {
+		if (!($order = $this->orders->getOrder((int) $orderId)) || empty($order->email)) {
 			return false;
 		}
 
 		$languages = $this->languages->languages();
 
 		if (!empty($order->lang_id) && isset($languages[$order->lang_id])) {
-			$currentLangId = $this->languages->langId();
+			$curLangId = $this->languages->langId();
 			$this->languages->setLangId($order->lang_id);
-
 			$langLink = '';
-			$firstLang = reset($languages);
+			$fLang = reset($languages);
 
-			if ($order->lang_id != $firstLang->id) {
+			if ($order->lang_id != $fLang->id) {
 				$langLink = $languages[$order->lang_id]->label . '/';
 			}
 
 			$this->design->assign('lang_link', $langLink);
+
 			$this->money->initCurrencies();
 			$this->design->assign("currency", $this->money->getCurrency());
+
 			$this->translations->initTranslations();
 			$this->design->assign('lang', $this->translations);
 		}
 
 		$purchases = $this->orders->getPurchases(['order_id' => $order->id]);
-
 		$this->design->assign('purchases', $purchases);
 
 		$productsIds = [];
@@ -70,26 +119,21 @@ class Notify extends Turbo
 
 		$products = [];
 
-		foreach ($this->products->getProducts(['id' => $productsIds]) as $product) {
-			$products[$product->id] = $product;
+		foreach ($this->products->getProducts(['id' => $productsIds]) as $p) {
+			$products[$p->id] = $p;
 		}
 
 		$images = $this->products->getImages(['product_id' => $productsIds]);
 
 		foreach ($images as $image) {
-			if (isset($products[$image->product_id])) {
-				$products[$image->product_id]->images[] = $image;
-			}
+			$products[$image->product_id]->images[] = $image;
 		}
 
 		$variants = [];
 
-		foreach ($this->variants->getVariants(['id' => $variantsIds]) as $variant) {
-			$variants[$variant->id] = $variant;
-
-			if (isset($products[$variant->product_id])) {
-				$products[$variant->product_id]->variants[] = $variant;
-			}
+		foreach ($this->variants->getVariants(['id' => $variantsIds]) as $v) {
+			$variants[$v->id] = $v;
+			$products[$v->product_id]->variants[] = $v;
 		}
 
 		foreach ($purchases as &$purchase) {
@@ -103,36 +147,36 @@ class Notify extends Turbo
 		}
 
 		$delivery = $this->delivery->getDelivery($order->delivery_id);
-
 		$this->design->assign('delivery', $delivery);
+
 		$this->design->assign('order', $order);
 		$this->design->assign('purchases', $purchases);
 
 		if ($this->design->smarty->getTemplateVars('currency') === null) {
-			$this->design->assign('currency', current($this->money->getCurrencies(['enabled' => true])));
+			$this->design->assign('currency', current($this->money->getCurrencies(['enabled' => 1])));
 		}
 
 		$emailTemplate = $this->design->fetch($this->config->root_dir . 'design/' . $this->settings->theme . '/html/email/email_order.tpl');
 
 		$subject = $this->design->getVar('subject');
-
-		$from = ($this->settings->notify_from_name ? $this->settings->notify_from_name . " <" . $this->settings->notify_from_email . ">" : $this->settings->notify_from_email);
+		$from = ($this->settings->notify_from_name ? $this->settings->notify_from_name . "<" . $this->settings->notify_from_email . ">" : $this->settings->notify_from_email);
 
 		$this->email($order->email, $subject, $emailTemplate, $from);
 
 		if (!empty($order->lang_id) && isset($languages[$order->lang_id])) {
-			$this->languages->setLangId($currentLangId);
-
+			$this->languages->setLangId($curLangId);
 			$langLink = '';
-			$firstLang = reset($languages);
+			$fLang = reset($languages);
 
-			if ($order->lang_id != $firstLang->id) {
+			if ($order->lang_id != $fLang->id) {
 				$langLink = $languages[$order->lang_id]->label . '/';
 			}
 
 			$this->design->assign('lang_link', $langLink);
+
 			$this->money->initCurrencies();
 			$this->design->assign("currency", $this->money->getCurrency());
+
 			$this->translations->initTranslations();
 			$this->design->assign('lang', $this->translations);
 		}
@@ -273,9 +317,7 @@ class Notify extends Turbo
 	 */
 	public function emailPasswordRemind($userId, $code)
 	{
-		$user = $this->users->getUser($userId);
-
-		if (!$user) {
+		if (!($user = $this->users->getUser((int) $userId))) {
 			return false;
 		}
 
@@ -283,17 +325,14 @@ class Notify extends Turbo
 		$this->design->assign('code', $code);
 
 		$emailTemplate = $this->design->fetch($this->config->root_dir . 'design/' . $this->settings->theme . '/html/email/email_password_remind.tpl');
-
 		$subject = $this->design->getVar('subject');
 
-		$from = ($this->settings->notify_from_name ? $this->settings->notify_from_name . " <" . $this->settings->notify_from_email . ">" : $this->settings->notify_from_email);
+		$from = ($this->settings->notify_from_name ? $this->settings->notify_from_name . "<" . $this->settings->notify_from_email . ">" : $this->settings->notify_from_email);
 
 		$this->email($user->email, $subject, $emailTemplate, $from);
 
 		$this->design->smarty->clearAssign('user');
 		$this->design->smarty->clearAssign('code');
-
-		return true;
 	}
 
 	/**

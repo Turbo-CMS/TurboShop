@@ -192,7 +192,11 @@
 	}
 
 	.turbo-list .variants-item-name {
-		width: calc(100% - 1072px);
+		width: calc(100% - 1107px);
+	}
+
+	.turbo-list .download-attachment {
+		width: calc(100% - 820px);
 	}
 
 	.mh-210px,
