@@ -268,7 +268,7 @@
 							<div class="turbo-list-body sortable variants-listadd">
 								{foreach $product_variants as $variant}
 									<div class="turbo-list-body-item variants-list-item">
-										<div class="turbo-list-row {if $variant->attachment && $variant->attachment_url}mb-0{/if}">
+										<div class="turbo-list-row {if $variant->attachment || $variant->attachment_url}mb-0{/if}">
 											<div class="turbo-list-boding variants-item-drag">
 												<div class="form-label"></div>
 												<div class="move-zone">
