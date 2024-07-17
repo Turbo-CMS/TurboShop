@@ -1,0 +1,168 @@
+/* DETAIL - base class styles for all news.detail templates */
+.detail {
+	position: relative;
+}
+
+.detail img {
+	display: inline-block;
+	max-width: 100%;
+	max-height: 100%;
+	margin: 0 auto;
+}
+
+#main .detail-maxwidth {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+html.tb-ie #main .detail-maxwidth {
+	flex-basis: auto;
+}
+
+.right_block.narrow_N .detail-maxwidth {
+	max-width: 1156px;
+}
+
+/* ordered blocks */
+body .ordered-block {
+	margin: 2.92rem 0px;
+	position: relative;
+}
+
+.ordered-block:first-of-type {
+	margin-top: 0;
+	clear: both;
+}
+
+.ordered-block:last-of-type {
+	margin-bottom: 0;
+}
+
+.ordered-block__title {
+	margin: 0 0 25px 0;
+	color: #333;
+	color: var(--white_text_black);
+}
+
+/* detail image */
+.detail-image {
+	text-align: center;
+	margin-bottom: 33px;
+	padding: 0;
+}
+
+.detail-image img {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.detail-image--left {
+	float: left;
+	margin-right: 40px;
+	max-width: 400px;
+}
+
+.detail-image--right {
+	float: right;
+	margin-left: 40px;
+	max-width: 400px;
+}
+
+.detail-image--top,
+.detail-image--top_content {
+	margin-bottom: 48px;
+}
+
+.detail-image--top img {
+	border-radius: 0px;
+}
+
+.detail-image--top_on_head {
+	margin: 0px;
+}
+
+.detail-image--top_on_head:before {
+	content: "";
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	z-index: 2;
+	background-color: rgba(0, 0, 0, 0.4);
+	position: absolute;
+}
+
+.detail-image--top_on_head .detail-image__fon {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+}
+
+@media (min-width: 601px) {
+	.has-long-banner .page-top-info {
+		padding-top: 42%;
+		margin-bottom: 48px;
+		position: relative;
+		min-height: 320px;
+	}
+
+	.has-long-banner .page-top-wrapper {
+		position: absolute;
+		left: 0px;
+		right: 0px;
+		z-index: 3;
+		bottom: 0px;
+	}
+
+	.has-long-banner .topic h1 {
+		color: #fff;
+		border-color: #fff;
+	}
+
+	.has-long-banner .breadcrumbs__item-name {
+		color: #fff;
+	}
+
+	.has-long-banner .breadcrumbs__link:hover .breadcrumbs__item-name {
+		opacity: 0.5;
+		color: #fff;
+	}
+
+	.has-long-banner .page-top .fill-theme-hover path {
+		fill: #fff;
+	}
+
+	.has-long-banner .page-top .stroke-theme-hover path {
+		stroke: #fff;
+	}
+
+	.has-long-banner .page-top .fill-theme-hover:hover path,
+	.has-long-banner .page-top .stroke-theme-hover:hover path {
+		opacity: 0.5;
+	}
+
+	.header_opacity .breadcrumbs__separator {
+		--fill_dark_light: #fff;
+	}
+}
+
+@media (max-width: 1024px) {
+	.detail-image--top_on_head {
+		display: none;
+	}
+
+	body .ordered-block {
+		margin: 40px 0px 40px;
+	}
+
+	.ordered-block>h3 {
+		font-size: 1.25rem;
+		margin-bottom: 12px;
+	}
+
+	.ordered-block__title {
+		margin-bottom: 16px;
+	}
+}

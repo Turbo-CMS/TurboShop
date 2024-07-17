@@ -138,7 +138,7 @@
 														</button>
 													{/if}
 													{if $level == 0}
-														<div class="answer-wrap js-answer_btn" {if !$comment->approved}style="display: none;"{/if}>
+														<div class="answer-wrap js-answer_btn" {if !$comment->approved}style="display: none;" {/if}>
 															<button type="button" data-parent-id="{$comment->id}" data-user-name="{$comment->name|escape}" data-bs-toggle="modal" data-bs-target="#answer-popup" class="btn btn-outline-primary js-answer">
 																{$btr->global_answer|escape}
 															</button>
@@ -147,11 +147,11 @@
 												</div>
 
 												<div class="turbo-list-boding turbo-list-delete">
-													<div data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
-														<button type="button" class="btn-delete js-remove" data-bs-toggle="modal" data-bs-target="#actionModal" onclick="success_action($(this));">
+													<button type="button" class="btn-delete js-remove" data-bs-toggle="modal" data-bs-target="#actionModal" onclick="success_action($(this));">
+														<span data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
 															<i class="align-middle" data-feather="trash-2"></i>
-														</button>
-													</div>
+														</span>
+													</button>
 												</div>
 											</div>
 										</div>
@@ -161,7 +161,7 @@
 									{/foreach}
 								{/function}
 								{comments_tree comments=$comments}
-								</div>
+							</div>
 							<div class="turbo-list-footer js-action-block">
 								<div class="turbo-list-foot-left">
 									<div class="turbo-list-heading turbo-list-check">

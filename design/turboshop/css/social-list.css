@@ -1,0 +1,31 @@
+.social-list {
+	display: flex;
+	flex-wrap: wrap;
+	margin: 0px -10px 0px;
+}
+
+.social-list--mt-15 {
+	margin-top: 15px;
+}
+
+.social-list--mt-30 {
+	margin-top: 30px;
+}
+
+.social-list__item {
+	display: flex;
+	align-items: center;
+	margin: 0 10px;
+}
+
+.social-list__item .svg {
+	width: 20px;
+	height: 20px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.social-list .social-list__item * {
+	fill: #B8B8B8;
+}

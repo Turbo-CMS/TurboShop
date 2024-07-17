@@ -61,7 +61,7 @@
 		div#purchases {
 			margin-left: 50px;
 			margin-bottom: 20px;
-			min-height: 600px;
+			min-height: 530px;
 			width: 100%;
 			float: left;
 		}
@@ -216,7 +216,7 @@
 					</td>
 				</tr>
 			{/foreach}
-			{if $order->delivery_price>0}
+			{if $order->delivery_price > 0}
 				<tr>
 					<td colspan=3>{$delivery->name|escape}{if $order->separate_delivery} ({$btr->global_paid_separately|escape}){/if}</td>
 					<td class="align_right">{$order->delivery_price|convert}&nbsp;{$currency->sign|escape}</td>
@@ -226,19 +226,19 @@
 	</div>
 	<div id="total">
 		<table>
-			{if $order->weight>0}
+			{if $order->weight > 0}
 				<tr>
 					<th>{$btr->global_weight|escape}:</th>
 					<td>{$order->weight} {$settings->weight_units}</td>
 				</tr>
 			{/if}
-			{if $order->discount>0}
+			{if $order->discount > 0}
 				<tr>
 					<th>{$btr->global_discount|escape}</th>
 					<td>{$order->discount} %</td>
 				</tr>
 			{/if}
-			{if $order->coupon_discount>0}
+			{if $order->coupon_discount > 0}
 				<tr>
 					<th>{$btr->global_coupon|escape} {if $order->coupon_code} ({$order->coupon_code}){/if}</th>
 					<td>{$order->coupon_discount}&nbsp;{$currency->sign|escape}</td>

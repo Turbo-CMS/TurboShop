@@ -25,7 +25,7 @@
 .cm-negative {color: #d44;}
 .cm-positive {color: #292;}
 .cm-header, .cm-strong {font-weight: bold;}
-.cm-em {font-light: italic;}
+.cm-em {font-style: italic;}
 .cm-link {text-decoration: underline;}
 
 .cm-s-light .cm-error {color: #f00;}
@@ -34,6 +34,7 @@
 div.CodeMirror span.CodeMirror-matchingbracket {color: #0f0;}
 div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #f22;}
 .CodeMirror-activeline-background {background: #e8f2ff;}
+.CodeMirror-linenumber {min-width: 25px;}
 
 .cm-s-light .cm-smarty.cm-tag{color: black;}
 .cm-s-light .cm-smarty.cm-operator{color: black;}

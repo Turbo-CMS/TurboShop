@@ -65,7 +65,7 @@
 					{/if}
 					<div class="my-1">{$comment->text|escape|nl2br}</div>
 					<div class="float-end btn-group vote">
-						<a class="btn vote-button-plus" href="ajax/comment.rate.php?id={$comment->id}&rate=up">
+						<a class="btn vote-button-plus" href="ajax/comment_rate.php?id={$comment->id}&rate=up">
 							<i class="fa fa-chevron-up" aria-hidden="true"></i>
 						</a>
 						{if $comment->rate>0}
@@ -75,7 +75,7 @@
 						{else}
 							<div class="btn vote-value neg">{$comment->rate}</div>
 						{/if}
-						<a class="btn vote-button-minus" href="ajax/comment.rate.php?id={$comment->id}&rate=down">
+						<a class="btn vote-button-minus" href="ajax/comment_rate.php?id={$comment->id}&rate=down">
 							<i class="fa fa-chevron-down" aria-hidden="true"></i>
 						</a>
 					</div>

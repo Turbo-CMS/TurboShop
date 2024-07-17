@@ -1,0 +1,299 @@
+.phones__dropdown-item.social-item {
+	padding: 9px 0 5px 0;
+}
+
+.phones__dropdown--top .phones__dropdown-item.social-item {
+	padding: 5px 0 9px 0;
+}
+
+.social {
+	position: relative;
+}
+
+.social__title {
+	font-weight: 400;
+	text-align: center;
+	padding: 33px 0 15px 0;
+}
+
+.popup .social__title {
+	padding-top: 0;
+}
+
+.social__items {
+	display: flex;
+	flex-wrap: wrap;
+	margin: -3px -8px;
+	padding: 0;
+}
+
+.social__items.social__items--grid {
+	grid-template-columns: repeat(auto-fit, minmax(48px, 1fr));
+	grid-gap: 8px;
+	display: grid;
+}
+
+.social__items.grid-list--items-4 {
+	grid-template-columns: repeat(4, 1fr);
+}
+
+.social__items.social__items--md.social__items--grid {
+	grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+	grid-gap: 4px;
+}
+
+.social__items .social__item:before,
+.main ul.social__items li:before {
+	display: none;
+}
+
+.social__items .social__item {
+	padding: 0;
+	margin: 0;
+	display: flex;
+	align-items: center;
+}
+
+.social__items .social__item span {
+	display: none;
+}
+
+.social__items .social__link {
+	width: 100%;
+	min-width: 48px;
+	height: 48px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border-radius: 8px;
+	border-radius: var(--border-radius);
+}
+
+.social__items.social__items--md .social__link {
+	height: 40px;
+	min-width: 40px;
+}
+
+.social__items .social__link:before {
+	content: "";
+	width: 20px;
+	height: 20px;
+	display: block !important;
+	position: relative;
+	background: url("../images/svg/social.svg") 24px 0 no-repeat;
+}
+
+.social__items .twitterx .social__link:before {
+	background-position-x: 2px;
+}
+
+.social__items .messenger .social__link:before {
+	background-position-x: -23px;
+}
+
+.social__items .facebook .social__link:before {
+	background-position-x: -48px;
+}
+
+.social__items .twitter .social__link:before {
+	background-position-x: -72px;
+}
+
+.social__items .github .social__link:before {
+	background-position-x: -96px;
+}
+
+.social__items .dribbble .social__link:before {
+	background-position-x: -120px;
+}
+
+.social__items .reddit .social__link:before {
+	background-position-x: -144px;
+}
+
+.social__items .telegram .social__link:before {
+	background-position-x: -168px;
+}
+
+.social__items .whatsapp .social__link:before {
+	background-position-x: -192px;
+}
+
+.social__items .viber .social__link:before {
+	background-position-x: -216px;
+}
+
+.social__items .snapchat .social__link:before {
+	background-position-x: -240px;
+}
+
+.social__items .flickr .social__link:before {
+	background-position-x: -264px;
+}
+
+.social__items .linkedin .social__link:before {
+	background-position-x: -288px;
+}
+
+.social__items .youtube .social__link:before {
+	background-position-x: -312px;
+}
+
+.social__items .behance .social__link:before {
+	background-position-x: -336px;
+}
+
+.social__items .tiktok .social__link:before {
+	background-position-x: -360px;
+}
+
+.social__items .instagram .social__link:before {
+	background-position-x: -384px;
+}
+
+.social__items .pinterest .social__link:before {
+	background-position-x: -408px;
+}
+
+.social__items .turbo-link .social__link:before {
+	background-position-x: -432px;
+}
+
+.social__items .medium .social__link:before {
+	background-position-x: -455px;
+}
+
+.social__items .tumblr .social__link:before {
+	background-position-x: -480px;
+}
+
+.social__items .line .social__link:before {
+	background-position-x: -504px;
+}
+
+.social__items .google .social__link:before {
+	background-position-x: -528px;
+}
+
+.social__items .zoom .social__link:before {
+	background-position-x: -552px;
+}
+
+.social__items .xing .social__link:before {
+	background-position-x: -576px;
+}
+
+.social__items .dropbox .social__link:before {
+	background-position-x: -601px;
+}
+
+.social__items .skype .social__link:before {
+	background-position-x: -624px;
+}
+
+/* social color */
+.social__items--type-color {
+	margin: 0px;
+	width: 100%;
+	background: none;
+}
+
+.social__items--type-color .social__link {
+	background-color: #f4f4f4;
+	background-color: var(--light, #f4f4f4) var(--dark, #343434);
+}
+
+.theme-dark .social__items--type-color .social__link,
+.footer--color-dark .footer__social .social__link {
+	background-color: #474747;
+}
+
+.social__items--type-color .social__item {
+	padding: 0px;
+}
+
+.social__items .twitterx .social__link:before,
+.social__items .medium .social__link:before,
+.social__items .tiktok .social__link:before {
+	background-position-y: var(--light, 0) var(--dark, -24px);
+}
+
+.footer--color-dark .footer__social .social__items .twitterx .social__link:before,
+.footer--color-dark .footer__social .social__items .medium .social__link:before,
+.footer--color-dark .footer__social .social__items .tiktok .social__link:before {
+	background-position-y: -24px;
+}
+
+.social__more {
+	margin: 0;
+}
+
+.social__more-dots {
+	display: flex;
+	margin: 0 15px;
+	padding-bottom: 7px;
+	letter-spacing: 1.8px;
+	cursor: pointer;
+}
+
+.social__more-dots:hover~.social__more,
+.social__more:hover {
+	opacity: 1;
+	visibility: visible;
+}
+
+.social__more {
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+	position: absolute;
+	right: -2px;
+	top: 100%;
+	background: #fff;
+	background: var(--card_bg_black);
+	-webkit-box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.15);
+	box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.15);
+	border-radius: 4px;
+	margin-top: 9px;
+}
+
+.social__more .social__item {
+	padding: 10px 15px;
+}
+
+html:not(.mobile) .social__item.hide_on_desktop {
+	display: none;
+}
+
+html.mobile .social__item.hide_on_mobile {
+	display: none;
+}
+
+/* soc-avt socials, soc-serv-accounts */
+.soc-avt .row a {
+	display: inline-block;
+	vertical-align: top;
+	/* display: inline; */
+	zoom: 1;
+	padding: 0px;
+	margin: 0px;
+}
+
+.soc-avt .row a i {
+	display: block;
+	width: 100%;
+	height: 100%;
+	background: url(../images/svg/social.svg) -2px -190px no-repeat;
+}
+
+.soc-avt .row a:hover {
+	opacity: 0.8;
+}
+
+.soc-avt .row a {
+	display: inline-block;
+}
+
+#tb_auth_servform .form-control {
+	margin: 10px 0px;
+}

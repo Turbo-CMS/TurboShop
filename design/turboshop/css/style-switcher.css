@@ -1,0 +1,343 @@
+/*vars*/
+.style-switcher {
+	--f0_dark_light: var(--light, #f0f0f0) var(--dark, #1b1b1b);
+	--e3_dark_light: var(--light, #e3e3e3) var(--dark, #3a3a3a);
+	--f3_dark_light: var(--light, #f3f3f3) var(--dark, #3a3a3a);
+	--fb_dark_light: var(--light, #fbfbfb) var(--dark, #232323);
+}
+
+/**/
+
+.style-switcher {
+	width: 800px;
+	left: -800px;
+	top: 0px;
+	background: #fff;
+	background-color: var(--black_bg_black);
+	height: 100%;
+	border-radius: 0px;
+	color: #333333;
+	color: var(--white_text_black);
+	position: fixed;
+	z-index: 997;
+	/*transition:left 0.3s ease;*/
+}
+
+.style-switcher * {
+	box-sizing: border-box;
+}
+
+.style-switcher.active {
+	left: 0px;
+	box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.4);
+	transition: left 0.2s ease;
+	z-index: 1101;
+}
+
+.style-switcher.active.closes {
+	left: -800px;
+	transition: left 0.1s ease;
+	box-shadow: none;
+}
+
+.style-switcher>.top_block_switch {
+	box-shadow: 0px 8px 13px 0px rgba(0, 0, 0, 0.1);
+	position: absolute;
+	right: -58px;
+	/* top: 50%; */
+	top: 233px;
+	transform: translateY(-47%);
+	background: #e2e2e2;
+	background-color: var(--stroke_black);
+	border-radius: 0px 4px 4px 0px;
+	transition: right ease 0.3s;
+}
+
+.style-switcher>.close_block {
+	position: absolute;
+	top: 20px;
+	right: 49px;
+	transition: right ease 0.2s;
+}
+
+.style-switcher.active>.close_block {
+	right: -49px;
+	transition: right ease 0.2s;
+}
+
+.style-switcher>.close_block .closes {
+	display: none;
+}
+
+.style-switcher.closes>.close_block {
+	right: 49px;
+	opacity: 0;
+}
+
+.style-switcher>.close_block .svg {
+	text-align: center;
+	line-height: 38px;
+	cursor: pointer;
+	width: 40px;
+	height: 40px;
+	border-radius: 100%;
+	top: -6px;
+	left: 5px;
+}
+
+.style-switcher>.close_block .svg:hover {
+	background: #000;
+}
+
+.style-switcher>.close_block .svg svg {
+	vertical-align: middle;
+	display: inline-block;
+}
+
+.style-switcher>.close_block .svg svg path,
+.style-switcher>.close_block .svg.inline:hover svg path {
+	fill: #fff;
+}
+
+.style-switcher.active>.top_block_switch {
+	right: 0px;
+	opacity: 0;
+}
+
+.style-switcher>.top_block_switch>.switch:first-of-type {
+	margin-top: 0px;
+	border-top-right-radius: 4px;
+}
+
+.style-switcher>.top_block_switch>.switch:last-of-type {
+	border-bottom-right-radius: 4px;
+}
+
+.style-switcher .right-block .inner-content .contents {
+	height: 100%;
+}
+
+.style-switcher .right-block .inner-content .contents:not(.active):not(.wizard) {
+	display: none;
+}
+
+.style-switcher .right-block .inner-content,
+.style-switcher .right-block .inner-content .contents.parametrs {
+	position: relative;
+	height: 100%;
+}
+
+.style-switcher .switch {
+	position: relative;
+	background: #fff;
+	background-color: var(--card_bg_black);
+	width: 58px;
+	height: 58px;
+	line-height: 54px;
+	text-align: center;
+	cursor: pointer;
+	margin-top: 1px;
+}
+
+.style-switcher .switch .svg,
+.style-switcher .switch_presets .svg {
+	min-width: auto;
+	min-height: auto;
+	position: static;
+}
+
+.style-switcher .switch:not(:hover) svg path {
+	fill: #222;
+	fill: var(--fill_dark_light);
+}
+
+.style-switcher .switch svg {
+	vertical-align: middle;
+	margin-right: 1px;
+}
+
+.style-switcher .switch:hover svg path,
+.style-switcher .switch:hover .svg:hover svg path {
+	fill: #fff;
+}
+
+.style-switcher .tooltip {
+	cursor: default;
+	left: 100%;
+	top: 0;
+	padding: 0 0 0 20px;
+	visibility: hidden;
+	transition: opacity 0.3s ease;
+	-moz-transition: opacity 0.3s ease;
+	-ms-transition: opacity 0.3s ease;
+	-o-transition: opacity 0.3s ease;
+	-webkit-transition: opacity 0.3s ease;
+	width: 311px;
+}
+
+body .style-switcher.active .switch .tooltip {
+	opacity: 0;
+	transition: none;
+}
+
+.style-switcher .switch:hover .tooltip,
+.style-switcher .switch_presets:hover .tooltip {
+	opacity: 1;
+	visibility: visible;
+}
+
+.style-switcher .tooltip>.wrap {
+	padding: 20px 25px 19px;
+	background: #fff;
+	background: var(--black_bg_black);
+	font-size: 13px;
+	line-height: 20px;
+	color: #333;
+	color: var(--white_text_black);
+	border-radius: 5px;
+	text-align: left;
+	-webkit-box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.25);
+	-moz-box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.25);
+	box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.25);
+}
+
+.style-switcher .tooltip>.wrap::before {
+	content: "";
+	position: absolute;
+	top: 23px;
+	left: 8px;
+	border: 6px solid transparent;
+	border-right: 6px solid #fff;
+	border-right-color: var(--black_bg_black);
+}
+
+.style-switcher .tooltip .title {
+	font-size: 16px;
+	font-weight: 700;
+}
+
+.style-switcher .tooltip .text {
+	color: #777;
+	color: var(--lite_basic_text_black);
+	margin: 10px 0 0;
+}
+
+.style-switcher .tooltip .text:empty {
+	display: none;
+}
+
+.style-switcher .left-block {
+	float: left;
+	width: 184px;
+	min-height: 100%;
+	background: #f0f0f0;
+	background: var(--f0_dark_light);
+	height: 100%;
+	overflow: hidden;
+	position: relative;
+}
+
+.style-switcher .presets .presets_subtabs .presets_subtab.active:after,
+.style-switcher .presets .presets_block .item.active .inner,
+.presets .presets_block .conf .preset-block .checked,
+.dynamic_left_side .cl:hover,
+.style-switcher>.close_block .svg:hover {
+	background: #9e9e9e;
+	background: var(--theme-base-color);
+}
+
+.style-switcher .switch:hover,
+.style-switcher .switch_presets:hover {
+	background: #9e9e9e;
+	background: var(--theme-base-color);
+}
+
+.style-switcher .tabs {
+	border-bottom: 0px;
+}
+
+.style-switcher--save-btn {
+	display: none;
+}
+
+.style-switcher-parametrs__action-block.can_save .style-switcher--save-btn {
+	display: block;
+}
+
+@media (min-width: 1050px) {
+	.style-switcher {
+		width: 947px;
+		left: -947px;
+	}
+
+	.style-switcher.active.closes {
+		left: -947px;
+	}
+
+	.dynamic_left_side,
+	.style-switcher .contents.wizard {
+		width: 763px;
+	}
+}
+
+@media (min-width: 992px) {
+	.style-switcher .switch:not(.hidden) {
+		display: block !important;
+	}
+}
+
+@media (min-width: 701px) and (max-width: 890px) {
+	.style-switcher {
+		width: 614px;
+		left: -614px;
+	}
+
+	.style-switcher.active.closes {
+		left: -614px;
+	}
+}
+
+@media (min-width: 501px) and (max-width: 700px) {
+	.style-switcher {
+		width: 464px;
+		left: -464px;
+	}
+
+	.style-switcher.active.closes {
+		left: -464px;
+	}
+
+	.style-switcher.active>.close_block {
+		right: 20px;
+		z-index: 4;
+	}
+}
+
+@media (max-width: 500px) {
+	.style-switcher {
+		width: 343px;
+		left: -343px;
+	}
+
+	.style-switcher.active.closes {
+		left: -343px;
+	}
+
+	.hint-theme {
+		left: 80px;
+		padding: 0px 20px 0px 0px;
+	}
+
+	.hint-theme:before {
+		left: 0px;
+	}
+}
+
+@media (max-width: 500px) {
+
+	.style-switcher,
+	.sp-container.custom_picker_container,
+	.jqmOverlay.waiting {
+		display: none;
+	}
+}

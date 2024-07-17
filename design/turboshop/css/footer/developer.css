@@ -1,0 +1,49 @@
+.developer {
+	display: flex;
+	align-items: center;
+	--developer_logo_hover_filter: var(--light, none) var(--dark, brightness(110%) contrast(150%));
+}
+
+a.developer:not(:hover) {
+	color: #999;
+}
+
+.footer--color-dark a.developer:hover {
+	color: #fff;
+}
+
+.footer--color-light a.developer:hover {
+	color: #555;
+	color: var(--fill_dark_lite_hover);
+}
+
+.developer__title {
+	margin: 0 8px 0 0;
+}
+
+.developer__logo {
+	max-height: 40px;
+	max-width: 100px;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+}
+
+.developer__logo svg {
+	max-height: 40px;
+	max-width: 100px;
+}
+
+.developer__logo img {
+	max-width: 100%;
+	max-height: 40px;
+}
+
+.footer--color-light a.developer:hover .developer__logo {
+	filter: none;
+	filter: var(--developer_logo_hover_filter);
+}
+
+.footer--color-dark a.developer:hover .developer__logo {
+	filter: brightness(110%) contrast(150%);
+}

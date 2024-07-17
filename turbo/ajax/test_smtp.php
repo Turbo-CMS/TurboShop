@@ -2,13 +2,11 @@
 
 chdir('../..');
 require_once 'api/Turbo.php';
-require 'phpmailer/src/PHPMailer.php';
-require 'phpmailer/src/SMTP.php';
 
 $turbo = new Turbo();
 
 if (!$turbo->managers->access('settings')) {
-    exit();
+	exit();
 }
 
 use PHPMailer\PHPMailer\SMTP;
@@ -19,13 +17,13 @@ $username = $turbo->settings->smtp_user = $turbo->request->post('user');
 $password = $turbo->settings->smtp_pass = $turbo->request->post('pass');
 
 $result = [
-    'status'  => false,
-    'message' => '',
-    'trace'   => ''
+	'status'  => false,
+	'message' => '',
+	'trace'   => ''
 ];
 
 if ($port == 465) {
-    $host = (strpos($host, "ssl://") === false) ? "ssl://" . $host : $host;
+	$host = (strpos($host, "ssl://") === false) ? "ssl://" . $host : $host;
 }
 
 ob_start();
@@ -35,36 +33,36 @@ $smtp = new SMTP;
 $smtp->do_debug = SMTP::DEBUG_CONNECTION;
 
 if (!$smtp->connect($host, $port)) {
-    $result['message'] = 'Connect failed';
+	$result['message'] = 'Connect failed';
 }
 
 if (!$smtp->hello(gethostname())) {
-    $result['message'] = 'EHLO failed: ' . $smtp->getError()['error'];
+	$result['message'] = 'EHLO failed: ' . $smtp->getError()['error'];
 }
 
 $e = $smtp->getServerExtList();
 
 if (is_array($e) && array_key_exists('STARTTLS', $e)) {
-    $tlsok = $smtp->startTLS();
+	$tlsok = $smtp->startTLS();
 
-    if (!$tlsok) {
-        $result['message'] = 'Failed to start encryption: ' . $smtp->getError()['error'];
-    }
+	if (!$tlsok) {
+		$result['message'] = 'Failed to start encryption: ' . $smtp->getError()['error'];
+	}
 
-    if (!$smtp->hello(gethostname())) {
-        $result['message'] = 'EHLO (2) failed: ' . $smtp->getError()['error'];
-    }
+	if (!$smtp->hello(gethostname())) {
+		$result['message'] = 'EHLO (2) failed: ' . $smtp->getError()['error'];
+	}
 
-    $e = $smtp->getServerExtList();
+	$e = $smtp->getServerExtList();
 }
 
 if (is_array($e) && array_key_exists('AUTH', $e)) {
-    if ($smtp->authenticate($username, $password)) {
-        $result['message'] = 'Connected ok!';
-        $result['status']  = true;
-    } else {
-        $result['message'] = 'Authentication failed: ' . $smtp->getError()['error'];
-    }
+	if ($smtp->authenticate($username, $password)) {
+		$result['message'] = 'Connected ok!';
+		$result['status']  = true;
+	} else {
+		$result['message'] = 'Authentication failed: ' . $smtp->getError()['error'];
+	}
 }
 
 $smtp->quit(true);

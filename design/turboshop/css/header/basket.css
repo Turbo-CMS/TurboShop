@@ -1,0 +1,117 @@
+/* BASKET TOP */
+.basket-dropdown .cart-total {
+	margin-bottom: 10px;
+}
+
+.basket-dropdown {
+	position: absolute;
+	top: 100%;
+	right: 0;
+	width: 400px;
+	visibility: hidden;
+	opacity: 0;
+	transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+	transition-delay: 0.2s;
+	z-index: 2;
+}
+
+
+/*dropdown-product top*/
+.dropdown-product__item {
+	padding: 16px 45px 16px 16px;
+	position: relative;
+	border-bottom: 1px solid #ededed;
+	border-color: var(--stroke_black);
+}
+
+.dropdown-product__item:last-of-type {
+	border-bottom: none;
+}
+
+.dropdown-product {
+	overflow: hidden;
+}
+
+.dropdown-product__items {
+	max-height: 340px;
+}
+
+.dropdown-product__item-image {
+	width: 72px;
+	max-height: 72px;
+	text-align: center;
+}
+
+.dropdown-product__item-remove {
+	position: absolute;
+	top: 16px;
+	right: 16px;
+	cursor: pointer;
+}
+
+.dropdown-product__item-remove .svg {
+	transition: opacity 0.1s ease;
+	opacity: 0.35;
+}
+
+.dropdown-product__item-remove:hover .svg {
+	opacity: 1;
+}
+
+.dropdown-product__item-prop-values {
+	display: inline-block;
+}
+
+.dropdown-product__item-prop-values ul {
+	padding: 0;
+	margin: 0;
+}
+
+.foot.dropdown-product-foot {
+	margin-top: 4px;
+	padding: 16px 16px 20px 16px;
+}
+
+.dropdown-product__item-discount .sticker__item {
+	margin-bottom: 0;
+}
+
+.dropdown-product__item-prices {
+	margin-bottom: 4px;
+}
+
+.dropdown-product-wrap {
+	padding-top: 12px;
+}
+
+.dropdown-product-empty {
+	text-align: center;
+	padding: 28px 38px 28px 38px;
+}
+
+.dropdown-product__item-discount .stickers-basket>div:first-child .sticker__item {
+	margin-left: 0;
+}
+
+/**/
+
+/* BASKET TOP */
+.header-cart:hover .basket-dropdown,
+.header-cart.opened .basket-dropdown {
+	opacity: 1;
+	visibility: visible;
+	z-index: 110;
+}
+
+.basket .basket-dropdown {
+	display: block;
+}
+
+.basket-dropdown .top_error_block {
+	padding: 16px;
+	margin-bottom: 16px;
+}
+
+.basket-dropdown .top_error_icon {
+	padding-left: 32px;
+}

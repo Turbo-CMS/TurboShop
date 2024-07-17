@@ -2,7 +2,7 @@
 	{* Rating *}
 	<div class="rating-wrap mb-2 ratings reviews">
 		<ul class="rating-stars rater-starsOff" style="width:132px;">
-			<li style="width:{$ratings*100/5|string_format:'%.0f'}%" class="stars-active rater-starsOn">
+			<li style="width:{$product->ratings*100/5|string_format:'%.0f'}%" class="stars-active rater-starsOn">
 				<i class="fa fa-star"></i>
 				<i class="fa fa-star"></i>
 				<i class="fa fa-star"></i>
@@ -17,10 +17,10 @@
 				<i class="far fa-star"></i>
 			</li>
 		</ul>
-		{if $ratings> 0}
+		{if $product->ratings > 0}
 			<div class="label-rating" itemprop="aggregateRating" itemtype="https://schema.org/AggregateRating" itemscope>
 				<meta itemprop="reviewCount" content="{$comments_count}" />
-				<span class="rater-rating h3" itemprop="ratingValue" content="{$ratings|string_format:'%.1f'}">{$ratings|string_format:'%.1f'}</span>
+				<span class="rater-rating h3" itemprop="ratingValue" content="{$product->ratings|string_format:'%.1f'}">{$product->ratings|string_format:'%.1f'}</span>
 			</div>
 		{/if}
 	</div>
@@ -101,7 +101,7 @@
 							<span itemprop="description">{$comment->text|escape|nl2br}</span>
 						</div>
 						<div class="float-end btn-group vote">
-							<a class="btn vote-button-plus" href="ajax/comment.rate.php?id={$comment->id}&rate=up">
+							<a class="btn vote-button-plus" href="ajax/comment_rate.php?id={$comment->id}&rate=up">
 								<i class="fa fa-chevron-up" aria-hidden="true"></i>
 							</a>
 							{if $comment->rate>0}
@@ -111,7 +111,7 @@
 							{else}
 								<div class="btn vote-value neg">{$comment->rate}</div>
 							{/if}
-							<a class="btn vote-button-minus" href="ajax/comment.rate.php?id={$comment->id}&rate=down">
+							<a class="btn vote-button-minus" href="ajax/comment_rate.php?id={$comment->id}&rate=down">
 								<i class="fa fa-chevron-down" aria-hidden="true"></i>
 							</a>
 						</div>

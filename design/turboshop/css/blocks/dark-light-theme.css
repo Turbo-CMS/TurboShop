@@ -1,0 +1,74 @@
+/* start logic dark-light*/
+:root {
+	--ON_toggle: initial;
+	--OFF_toggle: ;
+}
+
+/* Light theme is on by default */
+.theme-default,
+.theme-light {
+	--light: var(--ON_toggle);
+	--dark: var(--OFF_toggle);
+}
+
+/* Dark theme is off by default */
+.theme-dark {
+	--light: var(--OFF_toggle);
+	--dark: var(--ON_toggle);
+}
+
+body {
+	--white_text_black: var(--light, #222) var(--dark, white);
+	--white_text_black_reverse: var(--light, #fff) var(--dark, #222);
+	--basic_text_black: var(--light, #555) var(--dark, #ccc);
+	--lite_basic_text_black: var(--light, #666) var(--dark, #ccc);
+
+	--black_bg_black: var(--light, #fff) var(--dark, #1b1b1b);
+	--darkerblack_bg_black: var(--light, #f8f8f8) var(--dark, #121212);
+	--darkgrey_bg_black: var(--light, #f4f4f4) var(--dark, #343434);
+	--stroke_black: var(--light, #ededed) var(--dark, #3a3a3a);
+	--stroke_black_hover: var(--light, #fff) var(--dark, #3a3a3a);
+	--card_bg_black: var(--light, #fff) var(--dark, #232323);
+	--card_bg_hover_black: var(--light, #fff) var(--dark, #2b2b2b);
+	--arrows_bg_black: var(--light, #fff) var(--dark, #444);
+
+	--lite_bg_black: var(--light, #fafafa) var(--dark, #1b1b1b);
+	--light2_bg_black: var(--light, #fafafa) var(--dark, #232323);
+	--gray_bg_black: var(--light, #ccc) var(--dark, #3a3a3a);
+	--white_bg_ccc: var(--light, #fff) var(--dark, #ccc);
+
+	--fill_dark_light: var(--light, #222) var(--dark, #fff);
+	--fill_dark_lite_ccc: var(--light, #222) var(--dark, #ccc);
+	--fill_dark_lite_hover: var(--light, var(--theme-base-color)) var(--dark, #ccc);
+	--fill_dark_lite_white_hover: var(--light, var(--theme-base-color)) var(--dark, #fff);
+
+	--dark_light-wtheme-hue: var(--light, var(--theme-base-color-hue)) var(--dark, 0);
+	--dark_light-wtheme-saturation: var(--light, var(--theme-base-color-saturation)) var(--dark, 0%);
+	--dark_light-wtheme-lightness: var(--light, var(--theme-base-color-lightness)) var(--dark, 100%);
+	--dark_light-hue: var(--light, 0) var(--dark, 0);
+	--dark_light-saturation: var(--light, 0%) var(--dark, 0%);
+	--dark_light-lightness: var(--light, 97%) var(--dark, 7%);
+
+	--checkbox_dark_light: var(--light, #afafaf) var(--dark, #3a3a3a);
+	--opacity_dark_lite_hover: var(--light, var(--theme-base-opacity-color)) var(--dark, #3a3a3a);
+
+	--dff_dark_light: var(--light, #fff) var(--dark, #121212);
+
+	--input_color: var(--light, #222) var(--dark, var(--basic_text_black));
+	--input_bg_color: var(--black_bg_black);
+	--input_bg_color-hover: var(--black_bg_black);
+	--input_bg_color-focus: var(--card_bg_hover_black);
+	--input_border_color: var(--light, #dadada) var(--dark, var(--stroke_black));
+	--input_border_color-hover: var(--light, #dadada) var(--dark, var(--stroke_black_hover));
+	--input_border_color-focus: var(--light, #999) var(--dark, #999);
+}
+
+/* If user prefers dark, then that's what they'll get */
+@media (prefers-color-scheme: dark) {
+	.theme-default {
+		--light: var(--OFF_toggle);
+		--dark: var(--ON_toggle);
+	}
+}
+
+/* end logic*/

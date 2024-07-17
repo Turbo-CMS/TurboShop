@@ -16,7 +16,7 @@
 	{* CSS *}
 	{if $settings->admin_theme == "dark"}
 		{css id="main" include=[
-			"turbo/design/css/dark.css",
+			"turbo/design/css/dark-min.css",
 			"turbo/design/css/turbo-dark.css",
 			"turbo/design/css/media.css",
 			"turbo/design/css/bootstrap-select-dark.css",
@@ -26,8 +26,8 @@
 		{stylesheet minify=true}
 	{else}
 		{css id="main" include=[
-			"turbo/design/css/light.css",
-			"turbo/design/css/turbo.css",
+			"turbo/design/css/light-min.css",
+			"turbo/design/css/turbo-light.css",
 			"turbo/design/css/media.css",
 			"turbo/design/css/bootstrap-select.css",
 			"turbo/design/css/jquery.scrollbar.css",
@@ -38,9 +38,9 @@
 
 	{* JS *}
 	{js id="libs" priority=99 include=[
-		"turbo/design/js/jquery/jquery.js",
+		"turbo/design/js/jquery/jquery.min.js",
 		"turbo/design/js/jquery/jquery.form.min.js",
-		"turbo/design/js/jquery.scrollbar.min.js",
+		"turbo/design/js/jquery/jquery.scrollbar.min.js",
 		"turbo/design/js/bootstrap-select.js",
 		"turbo/design/js/sortable.min.js"
 	]}{/js}
@@ -321,12 +321,12 @@
 						</li>
 					{/if}
 					{if in_array('design', $manager->permissions)}
-						<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('ThemeAdmin', 'TemplatesAdmin', 'StylesAdmin', 'ImagesAdmin', 'TranslationsAdmin', 'TranslationAdmin'))}active{/if}">
-							<a data-bs-target="#design" data-bs-toggle="collapse" {if isset($smarty.get.module) && in_array($smarty.get.module, array('ThemeAdmin', 'TemplatesAdmin', 'StylesAdmin', 'ImagesAdmin', 'TranslationsAdmin', 'TranslationAdmin', 'ThemeSettingsAdmin'))}class="sidebar-link" aria-expanded="true" {else}class="sidebar-link collapsed" aria-expanded="false" {/if}>
+						<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('ThemeAdmin', 'TemplatesAdmin', 'StylesAdmin', 'ScriptsAdmin', 'ImagesAdmin', 'TranslationsAdmin', 'TranslationAdmin'))}active{/if}">
+							<a data-bs-target="#design" data-bs-toggle="collapse" {if isset($smarty.get.module) && in_array($smarty.get.module, array('ThemeAdmin', 'TemplatesAdmin', 'StylesAdmin', 'ScriptsAdmin', 'ImagesAdmin', 'TranslationsAdmin', 'TranslationAdmin', 'ThemeSettingsAdmin'))}class="sidebar-link" aria-expanded="true" {else}class="sidebar-link collapsed" aria-expanded="false"{/if}>
 								<i class="align-middle" data-feather="layout"></i>
 								<span class="align-middle">{$btr->global_design|escape}</span>
 							</a>
-							<ul id="design" class="sidebar-dropdown list-unstyled collapse {if isset($smarty.get.module) && in_array($smarty.get.module, array('ThemeAdmin', 'TemplatesAdmin', 'StylesAdmin', 'ImagesAdmin', 'TranslationsAdmin', 'TranslationAdmin', 'ThemeSettingsAdmin'))}show{/if}" data-bs-parent="#sidebar">
+							<ul id="design" class="sidebar-dropdown list-unstyled collapse {if isset($smarty.get.module) && in_array($smarty.get.module, array('ThemeAdmin', 'TemplatesAdmin', 'StylesAdmin', 'ScriptsAdmin', 'ImagesAdmin', 'TranslationsAdmin', 'TranslationAdmin', 'ThemeSettingsAdmin'))}show{/if}" data-bs-parent="#sidebar">
 								<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('ThemeAdmin'))}active{/if}">
 									<a class="sidebar-link" href="index.php?module=ThemeAdmin">{$btr->global_templates|escape}</a>
 								</li>
@@ -335,6 +335,9 @@
 								</li>
 								<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('StylesAdmin'))}active{/if}">
 									<a class="sidebar-link" href="index.php?module=StylesAdmin">{$btr->global_template_style|escape}</a>
+								</li>
+								<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('ScriptsAdmin'))}active{/if}">
+									<a class="sidebar-link" href="index.php?module=ScriptsAdmin">{$btr->global_template_script|escape}</a>
 								</li>
 								<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('ImagesAdmin'))}active{/if}">
 									<a class="sidebar-link" href="index.php?module=ImagesAdmin">{$btr->global_template_images|escape}</a>
@@ -412,6 +415,13 @@
 									</li>
 								{/if}
 							</ul>
+						</li>
+					{/if}
+					{if in_array('feeds', $manager->permissions)}
+						<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('FeedsAdmin'))}active{/if}">
+							<a class="sidebar-link" href="index.php?module=FeedsAdmin">
+								<i class="align-middle" data-feather="rss"></i> <span class="align-middle">{$btr->global_feeds|escape}</span>
+							</a>
 						</li>
 					{/if}
 				</ul>
@@ -586,9 +596,11 @@
 		</div>
 
 	</div>
+	
 	<div class="js-fast-save justify-content-center">
 		<button type="submit" class="btn btn-primary"><i class="align-middle" data-feather="check"></i> {$btr->global_apply|escape}</button>
 	</div>
+
 	<div class="modal fade" id="actionModal" tabindex="-1" style="display: none;" aria-hidden="true">
 		<div class="modal-dialog modal-sm" role="document">
 			<div class="modal-content">
@@ -605,13 +617,6 @@
 			</div>
 		</div>
 	</div>
-	{if isset($product_images)}
-		<div class="modal fade images-modal" id="imagesModal" tabindex="-1" style="display: none;" aria-hidden="true">
-			<div class="modal-dialog" role="document">
-				<div class="modal-content"></div>
-			</div>
-		</div>
-	{/if}
 
 	{* App *}
 	{js id="app" priority=99 include=["turbo/design/js/app.js"]}{/js}
@@ -624,7 +629,7 @@
 
 	<script>
 		$(function() {
-			if ($('form.js-fast-button').size() > 0) {
+			if ($('form.js-fast-button').length > 0) {
 				$('input,textarea,select, .dropdown-toggle').bind('keyup change dragover click', function() {
 					$('.js-fast-save').show();
 				});
@@ -633,7 +638,7 @@
 				});
 			}
 			
-			if ($('.js-check-all').size() > 0) {
+			if ($('.js-check-all').length > 0) {
 				$(document).on('change', '.js-check-all', function() {
 					if ($(this).is(":checked")) {
 						$('.js-check-all-single').each(function() {
@@ -651,7 +656,7 @@
 				});
 			}
 			
-			if ($('.input-file').size() > 0) {
+			if ($('.input-file').length > 0) {
 				document.querySelector("html").classList.add('js-input-file');
 
 				var fileInput = document.querySelector(".input-file"),
@@ -672,17 +677,17 @@
 				});
 			}
 			
-			if ($('.scrollbar-inner').size() > 0) {
+			if ($('.scrollbar-inner').length > 0) {
 				$('.scrollbar-inner').scrollbar();
 			}
 
 			if ($(window).width() < 1620) {
-				if ($('.scrollbar-variants').size() > 0) {
+				if ($('.scrollbar-variants').length > 0) {
 					$('.scrollbar-variants').scrollbar();
 				}
 			}
 			
-			if ($(".sortable").size() > 0) {
+			if ($(".sortable").length > 0) {
 				{literal}
 					var el = document.querySelectorAll(".sortable");
 					for (var i = 0; i < el.length; i++) {
@@ -696,7 +701,7 @@
 							scrollSensitivity: 30,
 							scrollSpeed: 10,
 							onUpdate: function(evt) {
-								if ($(".product-images-list").size() > 0) {
+								if ($(".product-images-list").length > 0) {
 									var itemEl = evt.item;
 									if ($(itemEl).closest(".js-droplist-wrap").data("image") == "product") {
 										$(".product-images-list").find("li.first-image").removeClass("first-image");
@@ -710,13 +715,13 @@
 				{/literal}
 			}
 			
-			if ($(".js-ajax-action").size() > 0) {
+			if ($(".js-ajax-action").length > 0) {
 				$(document).on("click", ".js-ajax-action", function() {
 					ajax_action($(this));
 				});
 			}
 			
-			if ($(".js-parent-image").size() > 0) {
+			if ($(".js-parent-image").length > 0) {
 				var image_wrapper = $(".js-new-image").clone(true);
 				$(".js-new-image").remove();
 				$(document).on("click", '.js-delete-item', function() {
@@ -767,7 +772,7 @@
 					$(document).on('change', '.dropzone-image', handleFileSelect);
 				}
 					}
-				if ($(".js-parent-image-two").size() > 0) {
+				if ($(".js-parent-image-two").length > 0) {
 					var image_wrapper_two = $(".js-new-image-two").clone(true);
 					$(".js-new-image-two").remove();
 					$(document).on("click", '.js-delete-item-two', function() {
@@ -821,7 +826,7 @@
 				}
 			});
 			
-			if ($('.js-remove').size() > 0) {
+			if ($('.js-remove').length > 0) {
 				function success_action($this) {
 					$(document).on('click', '.js-submit-delete', function() {
 						$('.js-form-list input[type="checkbox"][name*="check"]').attr('checked', false);
@@ -837,7 +842,7 @@
 				}
 			}
 			{literal}
-				if ($(".js-ajax-action").size() > 0) {
+				if ($(".js-ajax-action").length > 0) {
 					function ajax_action($this) {
 						var state, module, session_id, action, id;
 						state = $this.hasClass('js-active-class') ? 0 : 1;
@@ -902,12 +907,12 @@
 					$('input[name="meta_title"]').keyup(function() { $('#js-meta-title-counter').text('(' + $('input[name="meta_title"]').val().length + ')'); });
 					$('textarea[name="meta_description"]').keyup(function() { $('#js-meta-description-counter').text('(' + $('textarea[name="meta_description"]').val().length + ')'); });
 
-					if ($(".js-meta-brand").size() > 0) {
+					if ($(".js-meta-brand").length > 0) {
 						$("select[name=brand_id]").on("change", function() {
 							set_meta();
 						})
 					}
-					if ($(".js-meta-categories").size() > 0) {
+					if ($(".js-meta-categories").length > 0) {
 						$(".js-meta-categories").on("change", function() {
 							set_meta();
 						})
@@ -941,11 +946,11 @@
 				function generate_meta_keywords() {
 					name = $('input[name="name"]').val();
 					result = name;
-					if ($('input[name="author"]').size() > 0) {
+					if ($('input[name="author"]').length > 0) {
 						author = $('input[name="author"]').val();
 						result += ', ' + author;
 					}
-					if ($(".js-meta-brand").size() > 0) {
+					if ($(".js-meta-brand").length > 0) {
 						brand = $('select[name="brand_id"] option:selected').data('brand_name');
 						if (typeof(brand) == 'string' && brand != '')
 							result += ', ' + brand;
@@ -958,9 +963,23 @@
 					return result;
 				}
 
+				$(document).ready(function() {
+					if (typeof tinyMCE !== 'undefined') {
+						tinyMCE.init({
+							selector: '#js-editor',
+							setup: function(editor) {
+								editor.on('init', function() {
+									generate_meta_description();
+								});
+							}
+						});
+					}
+				});
+
 				function generate_meta_description() {
-					if (typeof(tinyMCE.get("js-editor")) == 'object') {
-						description = tinyMCE.get("js-editor").getContent().replace(/(<([^>]+)>)/ig, " ").replace(/(\&nbsp;)/ig, " ").replace(/^\s+|\s+$/g, '').substr(0, 512);
+					var editor = tinyMCE.get("js-editor");
+					if (editor) {
+						var description = editor.getContent().replace(/(<([^>]+)>)/ig, " ").replace(/(\&nbsp;)/ig, " ").replace(/^\s+|\s+$/g, '').substr(0, 512);
 						$('#js-meta-description-counter').text('(' + description.length + ')');
 						return description;
 					} else {

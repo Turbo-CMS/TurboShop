@@ -1,6 +1,6 @@
 <?php
 
-require_once('api/Turbo.php');
+require_once 'api/Turbo.php';
 
 class ProductsAdmin extends Turbo
 {
@@ -47,8 +47,8 @@ class ProductsAdmin extends Turbo
 				case 'discounted':
 					$filter['discounted'] = 1;
 					break;
-				case 'to_export':
-					$filter['to_export'] = 1;
+				case 'to_xml':
+					$filter['to_xml'] = 1;
 					break;
 				case 'visible':
 					$filter['visible'] = 1;
@@ -100,7 +100,7 @@ class ProductsAdmin extends Turbo
 
 				foreach ($prices as $id => $price) {
 					$stock = $stocks[$id];
-					
+
 					if ($stock == '∞' || $stock == '') {
 						$stock = null;
 					}
@@ -150,15 +150,15 @@ class ProductsAdmin extends Turbo
 								break;
 							}
 						case 'unset_is_hit': {
-								$this->products->updatupdateProducte_product($ids, ['is_hit' => 0]);
+								$this->products->updateProduct($ids, ['is_hit' => 0]);
 								break;
 							}
-						case 'set_export': {
-								$this->products->updateProduct($ids, ['to_export' => 1]);
+						case 'set_xml': {
+								$this->products->updateProduct($ids, ['to_xml' => 1]);
 								break;
 							}
-						case 'unset_export': {
-								$this->products->updateProduct($ids, ['to_export' => 0]);
+						case 'unset_xml': {
+								$this->products->updateProduct($ids, ['to_xml' => 0]);
 								break;
 							}
 						case 'delete': {
@@ -317,7 +317,7 @@ class ProductsAdmin extends Turbo
 			}
 
 			$images = $this->products->getImages(array('product_id' => $productIds));
-			
+
 			foreach ($images as $image) {
 				$products[$image->product_id]->images[$image->id] = $image;
 			}

@@ -126,7 +126,7 @@
 									<label class="form-check-label ms-2" for="hit">{$btr->global_hit|escape}</label>
 								</div>
 								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
-									<input class="form-check-input ms-2" type="checkbox" id="export" name="to_export" value="1" type="checkbox" {if isset($product->to_export) && $product->to_export}checked=""{/if}>
+									<input class="form-check-input ms-2" type="checkbox" id="export" name="to_xml" value="1" type="checkbox" {if isset($product->to_xml) && $product->to_xml}checked=""{/if}>
 									<label class="form-check-label ms-2" for="export">{$btr->feature_xml|escape}</label>
 								</div>
 							</div>
@@ -206,23 +206,22 @@
 							<div class="form-label">{$btr->product_sale_to|escape}</div>
 							<input id="sale-to" name="sale_to" class="form-control flatpickr-datetime" type="text" value="{if isset($product->sale_to)}{$product->sale_to}{/if}">
 						</div>
-						<div class="mb-3">
+						<div class="mb-3" {if !$brands}style="display:none;"{/if}>
 							<div class="form-label">{$btr->global_brand|escape}</div>
 							<select name="brand_id" class="selectpicker mb-1 js-meta-brand" data-live-search="true">
-								<option value="0" {if !isset($product->brand_id)}selected=""{/if}>{$btr->global_not_set|escape}</option>
+								<option value="0" {if !isset($product->brand_id)}selected="" {/if}>{$btr->global_not_set|escape}</option>
 								{foreach $brands as $brand}
-									<option value="{$brand->id}" {if isset($product->brand_id) && $product->brand_id == $brand->id}selected=""{/if}>{$brand->name|escape}</option>
+									<option value="{$brand->id}" {if isset($product->brand_id) && $product->brand_id == $brand->id}selected="" {/if}>{$brand->name|escape}</option>
 								{/foreach}
 							</select>
 						</div>
-						<div class="mb-0">
+						<div class="mb-0" {if !$categories}style="display:none;"{/if}>
 							<div class="form-label">{$btr->global_category|escape}</div>
 							<fieldset class="form-group">
-								<div id="product-categories" {if !$categories}style="display:none;"{/if}>
+								<div id="product-categories">
 									<div class="product-cats" id="product-cats">
 										{foreach $product_categories as $product_category name=categories}
 											<div class="list">
-												{assign var ='first_category' value=reset($product_categories)}
 												<div class="input-group mb-3">
 													<select name="categories[]" class="selectpicker select-control js-meta-categories" data-live-search="true">
 														{function name=category_select level=0}
@@ -268,7 +267,7 @@
 							<div class="turbo-list-body sortable variants-listadd">
 								{foreach $product_variants as $variant}
 									<div class="turbo-list-body-item variants-list-item">
-										<div class="turbo-list-row {if $variant->attachment || $variant->attachment_url}mb-0{/if}">
+										<div class="turbo-list-row {if isset($variant->attachment) && $variant->attachment || isset($variant->attachment_url) && $variant->attachment_url}mb-0{/if}">
 											<div class="turbo-list-boding variants-item-drag">
 												<div class="form-label"></div>
 												<div class="move-zone">
@@ -292,17 +291,6 @@
 											<div class="turbo-list-boding variants-item-color">
 												<div class="form-label">{$btr->global_color|escape}</div>
 												<input name="variants[color][]" class="form-control" type="text" value="{if isset($variant->color)}{$variant->color|escape}{/if}">
-											</div>
-											<div class="turbo-list-boding variants-item-image">
-												<div class="form-label"></div>
-												<a href="javascript:;" {if $product_images}class="add-images" {/if}>
-													{if $settings->admin_theme == "dark"}
-														<img src="design/images/picture{if !$product_images || isset($variant->images_ids) && !$variant->images_ids}_empty_dark{/if}.svg" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->select_color_image|escape}">
-													{else}
-														<img src="design/images/picture{if !$product_images || isset($variant->images_ids) && !$variant->images_ids}_empty{/if}.svg" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->select_color_image|escape}">
-													{/if}
-												</a>
-												<input name="variants[images_ids][]" type="hidden" value="{if isset($variant->images_ids)}{$variant->images_ids|escape}{/if}">
 											</div>
 											<div class="turbo-list-boding variants-item-price">
 												<div class="form-label">{$btr->global_price|escape}, {if isset($variant->currency_id) && isset($currencies[$variant->currency_id])}{$currencies[$variant->currency_id]->sign|escape}{else}{$currency->sign}{/if}</div>
@@ -335,36 +323,42 @@
 											</div>
 											<div class="turbo-list-boding variants-item-file">
 												<div class="form-label"></div>
-												<button type="button" class="add-attachment btn-attachment" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_attachment|escape}">
-													<i class="align-middle" data-feather="download"></i>
+												<button type="button" class="add-attachment btn-attachment">
+													<span data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_attachment|escape}">
+														<i class="align-middle" data-feather="download"></i>
+													</span>
 												</button>
 											</div>
 											{if !$variant@first}
 												<div class="turbo-list-boding turbo-list-delete remove-variant">
 													<div class="form-label"></div>
-													<button type="button" class="btn-delete js-remove-variant" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
-														<i class="align-middle" data-feather="trash-2"></i>
+													<button type="button" class="btn-delete js-remove-variant">
+														<span data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
+															<i class="align-middle" data-feather="trash-2"></i>
+														</span>
 													</button>
 												</div>
 											{/if}
 										</div>
-										<div class="turbo-list-row browse-attachment" {if !$variant->attachment && !$variant->attachment_url}style="display:none;"{/if}>
+										<div class="turbo-list-row browse-attachment" {if (!isset($variant->attachment) || !$variant->attachment) && (!isset($variant->attachment_url) || !$variant->attachment_url)}style="display:none;" {/if}>
 											<div class="turbo-list-boding variants-item-drag"></div>
 											<div class="turbo-list-boding attachment-url">
-												<label for="attachment-url" class="form-label mb-1">{$btr->global_file_link|escape}</label>
-												<input class="form-control" type="text" name="variants[attachment_url][]" value="{$variant->attachment_url|escape}" id="attachment-url">
+												<div class="form-label mb-1">{$btr->global_file_link|escape}</div>
+												<input class="form-control" type="text" name="variants[attachment_url][]" value="{if isset($variant->attachment_url)}{$variant->attachment_url|escape}{/if}">
 											</div>
-											<div class="turbo-list-boding download-attachment" {if $variant->attachment}style="display:none;"{/if}>
-												<label for="download-attachment" class="form-label mb-1">{$btr->global_attachment|escape}</label>
+											<div class="turbo-list-boding download-attachment" {if isset($variant->attachment) && $variant->attachment}style="display:none;" {/if}>
+												<div for="download-attachment" class="form-label mb-1">{$btr->global_attachment|escape}</div>
 												<input class="form-control" type="file" name="attachment[]" id="download-attachment">
 											</div>
-											{if $variant->attachment}
+											{if isset($variant->attachment) && $variant->attachment}
 												<div class="turbo-list-boding">
 													<div class="form-label"></div>
 													<input type="hidden" name="delete_attachment[]">
 													<span class=js-attachment-name>{$variant->attachment|truncate:25:'...':false:true}</span>
-													<button type="button" class="btn-delete js-remove-attachment" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
-														<i class="align-middle" data-feather="trash-2"></i>
+													<button type="button" class="btn-delete js-remove-attachment">
+														<span data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
+															<i class="align-middle" data-feather="trash-2"></i>
+														</span>
 													</button>
 												</div>
 											{/if}
@@ -397,17 +391,6 @@
 											<div class="form-label">{$btr->global_color|escape}</div>
 											<input name="variants[color][]" class="form-control" type="text" value="">
 										</div>
-										<div class="turbo-list-boding variants-item-image">
-											<div class="form-label"></div>
-											<a href="javascript:;" {if $product_images}class="add-images" {/if}>
-												{if $settings->admin_theme == "dark"}
-													<img src="design/images/picture_empty_dark.svg" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->select_color_image|escape}">
-												{else}
-													<img src="design/images/picture_empty.svg" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->select_color_image|escape}">
-												{/if}
-											</a>
-											<input name="variants[images_ids][]" type="hidden" value="">
-										</div>
 										<div class="turbo-list-boding variants-item-price">
 											<div class="form-label">{$btr->global_price|escape}, {$currency->sign}</div>
 											<input class="form-control" name="variants[price][]" type="text" value="">
@@ -439,26 +422,30 @@
 										</div>
 										<div class="turbo-list-boding variants-item-file">
 											<div class="form-label"></div>
-											<button type="button" class="add-attachment btn-attachment" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_attachment|escape}">
-												<i class="align-middle" data-feather="download"></i>
+											<button type="button" class="add-attachment btn-attachment">
+												<span data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_attachment|escape}">
+													<i class="align-middle" data-feather="download"></i>
+												</span>
 											</button>
 										</div>
 										<div class="turbo-list-boding turbo-list-delete remove-variant">
 											<div class="form-label"></div>
-											<button type="button" class="btn-delete js-remove-variant" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
-												<i class="align-middle" data-feather="trash-2"></i>
+											<button type="button" class="btn-delete js-remove-variant">
+												<span data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
+													<i class="align-middle" data-feather="trash-2"></i>
+												</span>
 											</button>
 										</div>
 									</div>
 									<div class="turbo-list-row browse-attachment" style="display:none;">
 										<div class="turbo-list-boding variants-item-drag"></div>
 										<div class="turbo-list-boding attachment-url">
-											<label for="attachment-url" class="form-label mb-1">{$btr->global_file_link|escape}</label>
-											<input class="form-control" type="text" name="variants[attachment_url][]" value="" id="attachment-url">
+											<div class="form-label mb-1">{$btr->global_file_link|escape}</div>
+											<input class="form-control" type="text" name="variants[attachment_url][]" value="">
 										</div>
 										<div class="turbo-list-boding download-attachment">
-											<label for="download-attachment" class="form-label mb-1">{$btr->global_attachment|escape}</label>
-											<input class="form-control" type="file" name="attachment[]" id="download-attachment">
+											<div class="form-label mb-1">{$btr->global_attachment|escape}</div>
+											<input class="form-control" type="file" name="attachment[]">
 										</div>
 									</div>
 								</div>
@@ -510,10 +497,10 @@
 												<input class="feature-input js-auto-option {if !$option@first}feature-input-single{/if}" data-id="{$feature_id}" data-color="{$feature->is_color}" type="text" name="options_values[{$feature_id}][]" value="{$option->value|escape}">
 												{if $feature->is_color}<div class="add-on colorPicker-picker"></div>{/if}
 												<button type="button" class="btn {if $option@first}btn-feature {if $feature->is_color}js-add-color{else}js-add{/if} {else}btn-minus-feature js-remove{/if} js-feature-multi-values feature-multi-values">
-													<span class="js-plus" {if !$option@first}style="display: none;"{/if}>
+													<span class="js-plus" {if !$option@first}style="display: none;" {/if}>
 														<i class="align-middle" data-feather="plus"></i>
 													</span>
-													<span class="js-minus" {if $option@first}style="display: none;"{/if}>
+													<span class="js-minus" {if $option@first}style="display: none;" {/if}>
 														<i class="align-middle" data-feather="minus"></i>
 													</span>
 												</button>
@@ -546,16 +533,12 @@
 								</div>
 							{/foreach}
 						{/if}
-						<div class="js-new-feature" style="display:none;">
-							<div class="new-feature-row clearfix">
-								<div class="wrap-inner-new-feature">
-									<input type="text" class="new-feature new-feature-name" name="new_features_names[]" placeholder="{$btr->product_features_enter|escape}">
-									<input type="text" class="new-feature new-feature-value" name="new_features_values[]" placeholder="{$btr->product_features_value_enter|escape}">
-								</div>
-								<div class="js-delete-feature btn-delete delete-feature">
-									<i class="align-middle" data-feather="trash-2"></i>
-								</div>
-							</div>
+						<div class="js-new-feature input-group new-feature-row" style="display:none;">
+							<input type="text" class="form-control new-feature-name" name="new_features_names[]" placeholder="{$btr->product_features_enter|escape}">
+							<input type="text" class="form-control new-feature-value" name="new_features_values[]" placeholder="{$btr->product_features_value_enter|escape}">
+							<button class="btn btn-delete-new-feature js-delete-feature" type="button">
+								<i class="align-middle" data-feather="minus"></i>
+							</button>
 						</div>
 						<div class="js-new-feature-category" style="display:none;">
 							<div class="feature-row clearfix">
@@ -645,8 +628,10 @@
 												<a href="{url module=ProductAdmin id=$related_product->id}" class="fw-bold text-body text-decoration-none">{$related_product->name|escape}</a>
 											</div>
 											<div class="turbo-list-boding turbo-list-delete">
-												<button type="button" class="btn-delete js-remove-item" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
-													<i class="align-middle" data-feather="trash-2"></i>
+												<button type="button" class="btn-delete js-remove-item">
+													<span data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
+														<i class="align-middle" data-feather="trash-2"></i>
+													</span>
 												</button>
 											</div>
 										</div>
@@ -665,8 +650,10 @@
 											<a href="" class="fw-bold text-body text-decoration-none related-product-name"></a>
 										</div>
 										<div class="turbo-list-boding turbo-list-delete">
-											<button type="button" class="btn-delete js-remove-item" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
-												<i class="align-middle" data-feather="trash-2"></i>
+											<button type="button" class="btn-delete js-remove-item">
+												<span data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
+													<i class="align-middle" data-feather="trash-2"></i>
+												</span>
 											</button>
 										</div>
 									</div>
@@ -715,8 +702,10 @@
 												<a href="{url module=ProductAdmin id=$recommended_product->id}" class="fw-bold text-body text-decoration-none">{$recommended_product->name|escape}</a>
 											</div>
 											<div class="turbo-list-boding turbo-list-delete">
-												<button type="button" class="btn-delete js-remove-item" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
-													<i class="align-middle" data-feather="trash-2"></i>
+												<button type="button" class="btn-delete js-remove-item">
+													<span data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
+														<i class="align-middle" data-feather="trash-2"></i>
+													</span>
 												</button>
 											</div>
 										</div>
@@ -735,8 +724,10 @@
 											<a href="" class="fw-bold text-body text-decoration-none recommended-product-name"></a>
 										</div>
 										<div class="turbo-list-boding turbo-list-delete">
-											<button type="button" class="btn-delete js-remove-item" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
-												<i class="align-middle" data-feather="trash-2"></i>
+											<button type="button" class="btn-delete js-remove-item">
+												<span data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
+													<i class="align-middle" data-feather="trash-2"></i>
+												</span>
 											</button>
 										</div>
 									</div>
@@ -815,8 +806,10 @@
 												<a class="fw-bold text-body text-decoration-none" href="../{$config->cms_files_dir}{$file->filename|escape}">{$file->filename|escape}</a>
 											</div>
 											<div class="turbo-list-boding turbo-list-delete">
-												<button type="button" class="btn-delete js-remove-item" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
-													<i class="align-middle" data-feather="trash-2"></i>
+												<button type="button" class="btn-delete js-remove-item">
+													<span data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
+														<i class="align-middle" data-feather="trash-2"></i>
+													</span>
 												</button>
 											</div>
 										</div>
@@ -868,8 +861,10 @@
 												<input name="videos[]" value="{$video->link}" class="form-control">
 											</div>
 											<div class="turbo-list-boding turbo-list-delete">
-												<button type="button" class="btn-delete js-remove-item" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
-													<i class="align-middle" data-feather="trash-2"></i>
+												<button type="button" class="btn-delete js-remove-item">
+													<span data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
+														<i class="align-middle" data-feather="trash-2"></i>
+													</span>
 												</button>
 											</div>
 										</div>
@@ -887,8 +882,10 @@
 									<input name="videos[]" class="form-control" value="" placeholder="https://www.youtube.com/watch?v=abc">
 								</div>
 								<div class="turbo-list-boding turbo-list-delete">
-									<button type="button" class="btn-delete js-remove-item delete" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
-										<i class="align-middle" data-feather="trash-2"></i>
+									<button type="button" class="btn-delete js-remove-item delete">
+										<span data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
+											<i class="align-middle" data-feather="trash-2"></i>
+										</span>
 									</button>
 								</div>
 							</div>
@@ -967,37 +964,6 @@
 		</div>
 	</div>
 </form>
-{if $product_images}
-	<div style="display: none;" class="images">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h5 class="modal-title">{$btr->product_images|escape}</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-				</div>
-				<div class="modal-body">
-					<ul>
-						{foreach $product_images as $image}
-							<li>
-								<label>
-									<img src="{$image->filename|resize:80:80}" alt="">
-									<input type="hidden" name="images[]" value="{$image->id}">
-									<span class="start">
-										<i class="align-middle" data-feather="circle"></i>
-										<i class="align-middle" data-feather="check"></i>
-									</span>
-								</label>
-							</li>
-						{/foreach}
-					</ul>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-primary apply"><i class="align-middle" data-feather="check"></i> {$btr->global_apply|escape}</button>
-				</div>
-			</div>
-		</div>
-	</div>
-{/if}
 
 {* TinyMCE *}
 {include file='tinymce_init.tpl'}
@@ -1051,6 +1017,7 @@
 			};
 
 			$(document).on("click", ".js-remove-item", function() {
+				$('[data-bs-toggle="tooltip"]').tooltip('hide');
 				$(this).closest(".js-row").fadeOut(200, function() { $(this).remove(); });
 				return false;
 			});
@@ -1138,6 +1105,7 @@
 			});
 
 			$(document).on("click", ".js-remove-variant", function() {
+				$('[data-bs-toggle="tooltip"]').tooltip('hide');
 				$(this).closest(".variants-list-item").fadeOut(200);
 				$(this).closest(".variants-list-item").remove();
 			});
@@ -1161,72 +1129,15 @@
 
 			$(document).on("click", ".js-remove-attachment", function() {
 				closest = $(this).closest(".turbo-list-boding");
-				closest.find(".js-attachment-name").hide("slow");
-				$(this).hide("slow");
+				closest.find(".js-attachment-name");
+				$(this).hide();
+				closest.hide();
 				closest.find("input[name*=delete_attachment]").val("1");
 				$(this).closest(".browse-attachment").find('.download-attachment').show('fast');
 				return false;
 			});
 
 			$('.color-picker').colorpicker(colorPickerOptions);
-
-			var color_variant, ids;
-
-			function changeVarName(obj) {
-				parent = $(obj).closest('ul');
-				color = parent.find('.variant-color input').val();
-				size = parent.find('.variant-size input').val();
-				parent.find('.variant-name input').val(color + ' ' + size);
-			}
-
-			$('.variants-wrapper a.add-images').on('click', function() {
-				offset = $(this).offset();
-				color_variant = $(this);
-				ids = $(color_variant).closest('div').find('input[type=hidden]').val().split(',');
-				$('#imagesModal').html('');
-				$('.images .modal-dialog').clone().appendTo('#imagesModal');
-				$('#imagesModal').modal('show');
-				$('#imagesModal input[type=hidden]').each(function() {
-					id = $(this).val() + '';
-					if ($.inArray(id, ids) >= 0) $('<input type="checkbox" value="' + $(this).val() + '" style="display:none" checked="checked">').insertAfter(this);
-					else $('<input type="checkbox" value="' + $(this).val() + '" style="display:none">').insertAfter(this);
-					$(this).remove();
-				});
-				$('#imagesModal :checkbox:checked').closest('li').addClass('active');
-				$('#imagesModal input:checkbox').click(function() {
-					if ($(this).is(':checked')) {
-						$(this).closest('li').addClass('active');
-					} else {
-						$(this).closest('li').removeClass('active');
-					}
-				});
-				$('#imagesModal li').each(function() { $(this).find('a').remove(); });
-
-				return false;
-			});
-
-			$(document).on('click', '#imagesModal button.apply', function() {
-				ids = [];
-				$('#imagesModal :checkbox:checked').each(function() { ids.push($(this).val()); });
-				$(color_variant).closest('div').find('input[type=hidden]').val(ids.join(','));
-				if (ids.length > 0) $(color_variant).closest('div').find('img').attr('src', 'design/images/picture.svg');
-			{/literal}
-			{if $settings->admin_theme == "dark"}
-				else $(color_variant).closest('div').find('img').attr('src', 'design/images/picture_empty_dark.svg');
-			{else}
-				else $(color_variant).closest('div').find('img').attr('src', 'design/images/picture_empty.svg');
-			{/if}
-			{literal}
-				$('#imagesModal').modal('hide');
-				return false;
-			});
-
-			function changeVarName(obj) {
-				parent = $(obj).closest('ul');
-				color = parent.find('.variant-color input').val();
-				size = parent.find('.variant-size input').val();
-				parent.find('.variant-name input').val(color + ' ' + size);
-			}
 
 			var variant = $('.js-new-row-variant').clone(true);
 			$('.js-new-row-variant').remove().removeAttr('id');
@@ -1236,6 +1147,7 @@
 					var new_line = $(variant).clone(true);
 					new_line.appendTo('.variants-listadd').fadeIn('slow').find("select").selectpicker();
 					new_line.find(".variants-item-height").addClass('.color-picker').colorpicker(colorPickerOptions);
+					new_line.find('[data-bs-toggle="tooltip"]').tooltip();
 				} else {
 					$('.variants-wrapper .variants-item-name').show('slow');
 					$('.variants-wrapper').removeClass('single-variant');
@@ -1286,10 +1198,10 @@
 									new_line.append(new_subline);
 									if (j > 0) {
 										new_subline.find(".js-feature-multi-values")
-											.removeClass("js-add")
-											.removeClass("btn-feature")
-											.addClass("js-remove")
-											.addClass("btn-minus-feature");
+										.removeClass("js-add")
+										.removeClass("btn-feature")
+										.addClass("js-remove")
+										.addClass("btn-minus-feature");
 										new_subline.find(".js-plus").hide();
 										new_subline.find(".js-minus").show();
 										new_subline.find(".feature-name").html("").addClass("additional-values");
@@ -1336,9 +1248,9 @@
 
 			$(document).on("click", ".js-feature-multi-values.js-add-color", function() {
 				var feature_id = $(this).closest(".feature-value").find(".js-auto-option").data("id"),
-					new_value = new_val.clone(true),
-					value_input = new_value.find(".js-auto-option"),
-					id_input = new_value.find(".js-id-option");
+				new_value = new_val.clone(true),
+				value_input = new_value.find(".js-auto-option"),
+				id_input = new_value.find(".js-id-option");
 				value_input.data("id", feature_id);
 				value_input.val("");
 				value_input.attr('name', "options_values[" + feature_id + "][]");
@@ -1348,10 +1260,10 @@
 				new_value.find('.feature-value').append('<div class="add-on colorPicker-picker"></div>');
 				new_value.find(".feature-value").addClass('.color-picker').colorpicker(colorPickerOptions);
 				new_value.find(".js-feature-multi-values")
-					.removeClass("js-add")
-					.removeClass("btn-feature")
-					.addClass("js-remove")
-					.addClass("btn-minus-feature");
+				.removeClass("js-add")
+				.removeClass("btn-feature")
+				.addClass("js-remove")
+				.addClass("btn-minus-feature");
 				new_value.find(".js-plus").hide();
 				new_value.find(".js-minus").show();
 				value_input.autocomplete({
@@ -1376,10 +1288,10 @@
 
 			$(document).on("click", ".js-feature-multi-values.js-add", function() {
 				var feature_id = $(this).closest(".feature-value").find(".js-auto-option").data("id"),
-					color = $(this).closest(".feature-value").find(".js-auto-option").data("color"),
-					new_value = new_val.clone(true),
-					value_input = new_value.find(".js-auto-option"),
-					id_input = new_value.find(".js-id-option");
+				color = $(this).closest(".feature-value").find(".js-auto-option").data("color"),
+				new_value = new_val.clone(true),
+				value_input = new_value.find(".js-auto-option"),
+				id_input = new_value.find(".js-id-option");
 				value_input.data("id", feature_id);
 				value_input.val("");
 				value_input.attr('name', "options_values[" + feature_id + "][]");
@@ -1391,10 +1303,10 @@
 					new_value.find(".feature-value").addClass('color-picker').colorpicker(colorPickerOptions);
 				}
 				new_value.find(".js-feature-multi-values")
-					.removeClass("js-add")
-					.removeClass("btn-feature")
-					.addClass("js-remove")
-					.addClass("btn-minus-feature");
+				.removeClass("js-add")
+				.removeClass("btn-feature")
+				.addClass("js-remove")
+				.addClass("btn-minus-feature");
 				new_value.find(".js-plus").hide();
 				new_value.find(".js-minus").show();
 				value_input.autocomplete({
@@ -1450,7 +1362,8 @@
 			$(".js-new-feature").remove();
 			new_feature.removeClass("js-new-feature");
 			$(document).on("click", ".js-add-feature", function() {
-				$(new_feature).clone(true).appendTo(".features-wrap").fadeIn('slow');
+				var cloned_feature = new_feature.clone(true);
+				cloned_feature.appendTo(".features-wrap").fadeIn('slow');
 				return false;
 			});
 
@@ -1472,11 +1385,12 @@
 					new_item.find('a.related-product-name').html(suggestion.data.name);
 					new_item.find('a.related-product-name').attr('href', 'index.php?module=ProductAdmin&id=' + suggestion.data.id);
 					new_item.find('input[name*="related_products"]').val(suggestion.data.id);
+					new_item.find('[data-bs-toggle="tooltip"]').tooltip();
 					if (suggestion.data.image)
 						new_item.find('img.product-icon').attr("src", suggestion.data.image);
 					else
 						new_item.find('img.product-icon').remove();
-					new_item.show();
+						new_item.show();
 				},
 				formatResult: function(suggestions, currentValue) {
 					var reEscape = new RegExp('(\\' + ['/', '.', '*', '+', '?', '|', '(', ')', '[', ']', '{', '}', '\\'].join('|\\') + ')', 'g');
@@ -1499,11 +1413,12 @@
 					new_item.find('a.recommended-product-name').html(suggestion.data.name);
 					new_item.find('a.recommended-product-name').attr('href', 'index.php?module=ProductAdmin&id=' + suggestion.data.id);
 					new_item.find('input[name*="recommended_products"]').val(suggestion.data.id);
+					new_item.find('[data-bs-toggle="tooltip"]').tooltip();
 					if (suggestion.data.image)
 						new_item.find('img.product-icon').attr("src", suggestion.data.image);
 					else
 						new_item.find('img.product-icon').remove();
-					new_item.show();
+						new_item.show();
 				},
 				formatResult: function(suggestions, currentValue) {
 					var reEscape = new RegExp('(\\' + ['/', '.', '*', '+', '?', '|', '(', ')', '[', ']', '{', '}', '\\'].join('|\\') + ')', 'g');
@@ -1512,9 +1427,10 @@
 				}
 			});
 
-			var new_video = $('#new-video').clone(true);
 			$('.videos .js-add-video').click(function() {
-				$(new_video).clone(true).appendTo('.videos .sortable').fadeIn('slow').find("input[name*=videos]").focus();
+				var new_video = $('#new-video').clone(true);
+				new_video.appendTo('.videos .sortable').fadeIn('slow').find("input[name*=videos]").focus();
+				new_video.find('[data-bs-toggle="tooltip"]').tooltip();
 				return false;
 			});
 

@@ -53,7 +53,7 @@ class Languages extends Turbo
 		$fields['currencies'] = ['name', 'sign'];
 		$fields['delivery'] = ['name', 'description'];
 		$fields['payment_methods'] = ['name', 'description'];
-		$fields['banners_images'] = ['name', 'alt', 'title', 'description', 'url', 'button'];
+		$fields['banners_images'] = ['name', 'alt', 'title', 'description', 'button'];
 		$fields['pages'] = ['name', 'meta_title', 'meta_keywords', 'meta_description', 'header', 'body'];
 		$fields['blog'] = ['name', 'meta_title', 'meta_keywords', 'meta_description', 'annotation', 'text'];
 		$fields['products'] = ['name', 'meta_title', 'meta_keywords', 'meta_description', 'annotation', 'body'];

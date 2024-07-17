@@ -31,7 +31,7 @@ class PageView extends View
 		$autoMeta->description = $this->seo->page_meta_description ?: '';
 
 		$autoMetaParts = [
-			'{page}' => $this->page ? $this->page->header : '',
+			'{page}' => $page ? $page->header : '',
 			'{site_url}' => $this->seo->am_url ?: '',
 			'{site_name}' => $this->seo->am_name ?: '',
 			'{site_phone}' => $this->seo->am_phone ?: '',

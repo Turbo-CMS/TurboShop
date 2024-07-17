@@ -6,37 +6,37 @@ require_once '../../api/Turbo.php';
 
 class ClearResizeAjax extends Turbo
 {
-    public function fetch()
-    {
-        $this->cleanResize($_SERVER['DOCUMENT_ROOT'] . '/files/articles/preview/');
-        $this->cleanResize($_SERVER['DOCUMENT_ROOT'] . '/files/brands/preview/');
-        $this->cleanResize($_SERVER['DOCUMENT_ROOT'] . '/files/categories/preview/');
-        $this->cleanResize($_SERVER['DOCUMENT_ROOT'] . '/files/posts/preview/');
-        $this->cleanResize($_SERVER['DOCUMENT_ROOT'] . '/files/products/');
-        $this->cleanResize($_SERVER['DOCUMENT_ROOT'] . '/files/slides/preview/');
-    }
+	public function fetch()
+	{
+		$this->cleanResize($_SERVER['DOCUMENT_ROOT'] . '/files/articles/preview/');
+		$this->cleanResize($_SERVER['DOCUMENT_ROOT'] . '/files/brands/preview/');
+		$this->cleanResize($_SERVER['DOCUMENT_ROOT'] . '/files/categories/preview/');
+		$this->cleanResize($_SERVER['DOCUMENT_ROOT'] . '/files/posts/preview/');
+		$this->cleanResize($_SERVER['DOCUMENT_ROOT'] . '/files/products/');
+		$this->cleanResize($_SERVER['DOCUMENT_ROOT'] . '/files/slides/preview/');
+	}
 
-    private function cleanResize($path)
-    {
-        $path = rtrim($path, '/') . '/';
+	private function cleanResize($path)
+	{
+		$path = rtrim($path, '/') . '/';
 
-        $handle = opendir($path);
+		$handle = opendir($path);
 
-        for (; false !== ($file = readdir($handle));) {
-            if ($file != "." && $file != "..") {
-                $fullpath = $path . $file;
+		for (; false !== ($file = readdir($handle));) {
+			if ($file != "." && $file != "..") {
+				$fullpath = $path . $file;
 
-                if (is_dir($fullpath)) {
-                    $this->cleanResize($fullpath);
-                    rmdir($fullpath);
-                } else {
-                    @unlink($fullpath);
-                }
-            }
-        }
+				if (is_dir($fullpath)) {
+					$this->cleanResize($fullpath);
+					rmdir($fullpath);
+				} else {
+					@unlink($fullpath);
+				}
+			}
+		}
 
-        closedir($handle);
-    }
+		closedir($handle);
+	}
 }
 
 $clearResizeAjax = new ClearResizeAjax();

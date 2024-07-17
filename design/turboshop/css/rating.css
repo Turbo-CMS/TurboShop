@@ -1,0 +1,25 @@
+.rating {
+	display: flex;
+	margin: 0 -2px;
+	line-height: 0;
+}
+
+.rating__star {
+	margin: 0 2px;
+}
+
+.rating__star-svg * {
+	fill: #CCC;
+}
+
+.rating__star-svg--filled * {
+	fill: #FFB45B;
+}
+
+.rating__count {
+	margin-left: 10px;
+}
+
+.rating__count a {
+	color: inherit;
+}

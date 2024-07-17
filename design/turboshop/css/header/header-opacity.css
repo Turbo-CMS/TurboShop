@@ -1,0 +1,81 @@
+@media screen and (min-width: 992px) {
+
+	.header_opacity .light .banner-light-icon-stroke *,
+	.header_opacity .light .banner-light-icon-stroke {
+		stroke: #fff;
+	}
+
+	.header_opacity .light .light-opacity-hover:hover {
+		opacity: 0.5;
+	}
+
+	.header_opacity .header__inner {
+		border-bottom: 1px solid rgba(34, 34, 34, 0.08);
+	}
+
+	.header_opacity .light .header__inner {
+		border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+	}
+
+	.header_opacity header {
+		--banner-light-text: #222;
+		--banner-light-text-hover: var(--theme-base-color);
+		--opacity-bg-color: 136;
+	}
+
+	.header_opacity header.light {
+		--banner-light-text: #fff;
+		--banner-light-text-hover: #fff;
+		--opacity-bg-color: 255;
+	}
+
+	.header_opacity header .banner-light-text {
+		color: var(--banner-light-text);
+	}
+
+	.header_opacity header .light-opacity-hover:hover,
+	.header_opacity header .light-opacity-hover:hover .banner-light-text {
+		color: var(--banner-light-text-hover);
+	}
+
+	.header_opacity header .banner-light-icon-fill * {
+		fill: var(--banner-light-text);
+	}
+
+	.header_opacity header .light-opacity-hover:hover .banner-light-icon-fill *,
+	.header_opacity header .light-opacity-hover.banner-light-icon-fill:hover * {
+		fill: var(--banner-light-text-hover);
+	}
+
+	.header_opacity .active>.header-menu__link:not(:hover)>.svg use {
+		fill: var(--banner-light-text);
+	}
+
+	/* SEARCH */
+	.header_opacity header .header__search .search-input {
+		--input_bg_color: transparent;
+		--input_bg_color-hover: transparent;
+		--input_bg_color-focus: transparent;
+		--input_border_color-focus: #222;
+		--input_border_color: #222;
+	}
+
+	.header_opacity header.light .header__search .search-input {
+		--input_border_color: #fff;
+		--input_border_color-focus: #fff;
+	}
+
+	.header_opacity header .header__search .search-input::placeholder {
+		color: #222;
+	}
+
+	.header_opacity header.light .header__search .search-input::placeholder {
+		color: #fff;
+	}
+
+	header:not(.light) .logo .fill-theme-svg {
+		fill: var(--theme-base-color);
+	}
+}
+
+/**/

@@ -15,7 +15,7 @@ $firstLang = $turbo->languages->languages();
 
 if (!empty($firstLang)) {
 	$firstLang = reset($firstLang);
-	
+
 	if ($firstLang->id !== $language->id) {
 		$langLink = $language->label . '/';
 	}

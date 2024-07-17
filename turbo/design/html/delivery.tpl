@@ -116,8 +116,7 @@
 											<div class="row js-module-settings" {if $delivery->id}{if $delivery_module@key != $delivery->module}style="display:none;" {/if}{else}style="display:none;" {/if} module="{$delivery_module@key}">
 												<h4>{$delivery_module->name|escape}</h4>
 												{foreach $delivery_module->settings as $setting}
-													{$variable_name = $setting->variable}
-													{if !empty($setting->options) && $setting->options|@count>1}
+													{if !empty($setting->options) && $setting->options|@count > 1}
 														<div class="col-lg-6">
 															<div class="mb-3">
 																<div class="form-label">{$setting->name|escape}</div>
@@ -128,13 +127,11 @@
 																</select>
 															</div>
 														</div>
-													{elseif !empty($setting->options) && $setting->options|@count==1}
+													{elseif !empty($setting->options) && $setting->options|@count == 1}
 														{$option = $setting->options|@first}
-														<div class="col-lg-6">
-															<div class="d-flex align-items-center mb-3">
-																<div class="form-check">
-																	<input class="form-check-input js-check-all-single me-2" type="checkbox" id="delivery-settings-{$option->value|escape}" name="delivery_settings[{$setting->variable}]" value="{$option->value|escape}" {if $option->value==$delivery_settings[$setting->variable]}checked{/if} id="{$setting->variable}">
-																</div>
+														<div class="col-lg-6 d-flex align-items-center">
+															<div class="form-check form-switch mb-3 mt-lg-3 mt-0">
+																<input class="form-check-input me-2" type="checkbox" id="delivery-settings-{$option->value|escape}" name="delivery_settings[{$setting->variable}]" value="{$option->value|escape}" {if $option->value==$delivery_settings[$setting->variable]}checked{/if}>
 																<label class="form-check-label" for="delivery-settings-{$option->value|escape}">{$setting->name|escape}</label>
 															</div>
 														</div>

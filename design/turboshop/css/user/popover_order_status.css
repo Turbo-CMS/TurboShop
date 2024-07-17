@@ -1,0 +1,167 @@
+/* order status */
+.order__status {
+	margin-right: auto;
+	position: relative;
+	z-index: 2;
+	width: 100%;
+}
+
+.order__status__icon {
+	display: flex;
+}
+
+.order__status__icon i {
+	vertical-align: top;
+}
+
+.order__status__value {
+	font-size: 0.8125rem;
+	line-height: calc(1em + 2px);
+	margin: 0 0 0 8px;
+	color: #222;
+	color: var(--white_text_black);
+}
+
+.order__status__steps {
+	display: flex;
+	gap: 4px;
+	margin: 10px 0 0 26px;
+}
+
+.order__status__step {
+	min-width: 12px;
+	max-width: 38px;
+	height: 4px;
+	border-radius: 6px;
+	background-color: #ededed;
+	background-color: var(--light, #ededed) var(--dark, #3a3a3a);
+	flex: 1;
+}
+
+.order__status--simple,
+.order__status--colored {
+	cursor: pointer;
+}
+
+.order__status:hover .order__status__value.dotted {
+	text-decoration: none;
+	color: #9e9e9e;
+	color: var(--fill_dark_lite_hover);
+}
+
+.order__status--simple .order__status__step.mark {
+	background-color: #555;
+	background-color: var(--basic_text_black);
+}
+
+.order__status--colored .order__status__step.mark {
+	background-color: #FF7081;
+	background-color: var(--personal-color--red);
+}
+
+.order__status.order__status--line {
+	display: flex;
+	align-items: center;
+	flex-grow: 1;
+	justify-content: flex-start;
+}
+
+.order__status--line .order__status__steps {
+	margin: 0 0 0 16px;
+	flex-grow: 1;
+}
+
+.order__status--line .order__status__text {
+	flex: 0 auto;
+}
+
+/* order status popover */
+@media (max-width: 380px) or ((max-width: 760px) and (min-resolution: 2dppx)) {
+	.xpopover--order-status {
+		margin: -20px -24px;
+	}
+}
+
+.xpopover--order-status__steps {
+	display: flex;
+	flex-direction: column;
+	gap: 2px 0;
+}
+
+.xpopover--order-status__steps>.xpopover--order-status__step:last-of-type .xpopover--order-status__step-progress__line {
+	display: none;
+}
+
+.xpopover--order-status__step {
+	display: flex;
+	justify-content: flex-start;
+	gap: 0 12px;
+}
+
+.xpopover--order-status__step-progress {
+	display: flex;
+	flex-direction: column;
+	width: 16px;
+}
+
+.xpopover--order-status__step-progress__dot {
+	display: flex;
+	align-items: flex-start;
+}
+
+.xpopover--order-status__step-progress__dot svg * {
+	fill: #ededed;
+	fill: var(--stroke_black);
+}
+
+.xpopover--order-status__step.mark .xpopover--order-status__step-progress__dot svg * {
+	fill: #555;
+	fill: var(--basic_text_black);
+}
+
+.xpopover--order-status--colored .xpopover--order-status__step.mark .xpopover--order-status__step-progress__dot svg * {
+	fill: #FF7081;
+	fill: var(--personal-color--red);
+}
+
+.xpopover--order-status__step-progress__line {
+	width: 2px;
+	height: 100%;
+	overflow: hidden;
+	margin: 2px 0 0 7px;
+	min-height: 0;
+	background-color: #ededed;
+	background-color: var(--stroke_black);
+}
+
+.xpopover--order-status__step.mark .xpopover--order-status__step-progress__line {
+	background-color: #555;
+	background-color: var(--basic_text_black);
+}
+
+.xpopover--order-status--colored .xpopover--order-status__step.mark .xpopover--order-status__step-progress__line {
+	background-color: #FF7081;
+	background-color: var(--personal-color--red);
+}
+
+.xpopover--order-status__step-info {
+	display: flex;
+	flex-direction: column;
+	gap: 8px 0;
+	padding: 0 0 22px 0;
+}
+
+.xpopover--order-status__step:last-of-type .xpopover--order-status__step-info {
+	padding-bottom: 0;
+}
+
+.xpopover--order-status__step-name {
+	color: #222;
+	color: var(--white_text_black);
+	font-size: 0.875rem;
+	line-height: calc(1em + 4px);
+}
+
+.xpopover--order-status__step-dsc {
+	color: #999;
+}

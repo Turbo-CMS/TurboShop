@@ -1,6 +1,6 @@
 <?php
 
-require_once('api/Turbo.php');
+require_once 'api/Turbo.php';
 
 class FeaturesAdmin extends Turbo
 {

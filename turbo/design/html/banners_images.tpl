@@ -93,7 +93,12 @@
 											<div class="turbo-list-boding turbo-list-banners-photo">
 												{if $banners_image->image}
 													<a href="{url module=BannersImageAdmin id=$banners_image->id return=$smarty.server.REQUEST_URI}">
-														<img src="{$banners_image->image|resize_banners:90:60}">
+														{assign var="image" value="{$banners_image->image}"}
+														{if $image|is_svg}
+															<img src="../{$config->banners_images_dir}{$image}">
+														{else}
+															<img src="{$image|resize_banners:90:60}">
+														{/if}
 													</a>
 												{else}
 													<a href="{url module=BannersImageAdmin id=$banners_image->id return=$smarty.server.REQUEST_URI}">
@@ -129,11 +134,11 @@
 												</div>
 											</div>
 											<div class="turbo-list-boding turbo-list-delete">
-												<div data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
-													<button type="button" class="btn-delete js-remove" data-bs-toggle="modal" data-bs-target="#actionModal" onclick="success_action($(this));">
+												<button type="button" class="btn-delete js-remove" data-bs-toggle="modal" data-bs-target="#actionModal" onclick="success_action($(this));">
+													<span data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
 														<i class="align-middle" data-feather="trash-2"></i>
-													</button>
-												</div>
+													</span>
+												</button>
 											</div>
 										</div>
 									</div>
@@ -193,7 +198,7 @@
 			$(document).on('change', '.js-action-block select.banners-action', function() {
 				var elem = $(this).find('option:selected').val();
 				$('.js-hide-block').addClass('d-none');
-				if ($('#' + elem).size() > 0) {
+				if ($('#' + elem).length > 0) {
 					$('#' + elem).removeClass('d-none');
 				}
 			});

@@ -45,19 +45,12 @@ class ProductView extends View
 		$product->image = &$product->images[0];
 
 		$variants = [];
-		$colors = [];
-		$imageIds = [];
 
 		foreach ($this->variants->getVariants(['product_id' => $product->id]) as $v) {
 			$variants[$v->id] = $v;
-			$colors[$v->color]['id'] = $v->id;
-			$colors[$v->color]['code'] = $v->color_code;
-			$imageIds[$v->color] = $v->images_ids;
 		}
 
 		$product->variants = $variants;
-		$product->colors = $colors;
-		$product->imageIds = $imageIds;
 
 		if (($variantId = $this->request->get('variant', 'integer')) > 0 && isset($variants[$variantId])) {
 			$product->variant = $variants[$variantId];
@@ -182,71 +175,77 @@ class ProductView extends View
 			$children[$c->parent_id][] = $c;
 		}
 
+		$product->comments_count = $commentsCount;
+
 		$this->design->assign('comments', $comments);
 		$this->design->assign('children', $children);
 		$this->design->assign('comments_count', $commentsCount);
 
 		$this->db->query("SELECT SUM(rating)/COUNT(id) AS ratings FROM __comments WHERE id IN (SELECT id FROM __comments WHERE type='product' AND object_id = $product->id AND approved=1 AND admin=0 AND rating > 0)");
-		$this->design->assign('ratings', floatval($this->db->result('ratings')));
+		$product->ratings = floatval($this->db->result('ratings'));
 
 		// Related Products
-		$relatedIds = [];
-		$relatedProducts = [];
+		$dataRelatedProducts = [];
+
+		$relatedIds = $this->products->getRelatedProductIds([$product->id]);
+
+		if (!empty($relatedIds)) {
+			$relatedProducts = $this->products->getProducts(['id' => $relatedIds, 'visible' => 1]);
+
+			if (!empty($relatedProducts)) {
+				$relatedProductsImages = $this->products->getImages(['product_id' => array_keys($relatedProducts)]);
+
+				foreach ($relatedProducts as $relatedProduct) {
+					$relatedProduct->images = [];
+					$relatedProduct->variants = [];
+
+					foreach ($relatedProductsImages as $relatedProductImage) {
+						if ($relatedProduct->id == $relatedProductImage->product_id) {
+							$relatedProduct->images[] = $relatedProductImage;
+						}
+					}
+
+					$relatedProductsVariants = $this->variants->getVariants(['product_id' => $relatedProduct->id]);
+
+					foreach ($relatedProductsVariants as $relatedProductVariant) {
+						$relatedProduct->variants[] = $relatedProductVariant;
+					}
+
+					if (!empty($relatedProduct->variants[0])) {
+						$relatedProduct->variant = $relatedProduct->variants[0];
+					}
+
+					if (!empty($relatedProduct->images[0])) {
+						$relatedProduct->image = $relatedProduct->images[0];
+					}
+
+					$dataRelatedProducts[] = $relatedProduct;
+				}
+			}
+		}
+
+		$product->related_products = $dataRelatedProducts;
+
+		// Recommended Products
 		$recommendedIds = [];
 		$recommendedProducts = [];
 
-		$productIds = ['id' => $product->id, 'visible' => 1];
-		$relatedProductsArray = $this->products->getRelatedProducts([$product->id]);
 		$recommendedProductsArray = $this->products->getRecommendedProducts([$product->id]);
-
-		foreach ($relatedProductsArray as $relatedProduct) {
-			$relatedIds[] = $relatedProduct->related_id;
-			$relatedProducts[$relatedProduct->related_id] = null;
-		}
 
 		foreach ($recommendedProductsArray as $recommendedProduct) {
 			$recommendedIds[] = $recommendedProduct->recommended_id;
 			$recommendedProducts[$recommendedProduct->recommended_id] = null;
 		}
 
-		if (!empty($relatedIds)) {
-			$relatedProductsArray = $this->products->getProducts(['id' => $relatedIds, 'visible' => 1]);
-
-			foreach ($relatedProductsArray as $relatedProduct) {
-				$relatedProducts[$relatedProduct->id] = $relatedProduct;
-			}
-
-			$relatedProductsImages = $this->products->getImages(['product_id' => array_keys($relatedProducts)]);
-			foreach ($relatedProductsImages as $relatedProductImage) {
-				if (isset($relatedProducts[$relatedProductImage->product_id])) {
-					$relatedProducts[$relatedProductImage->product_id]->images[] = $relatedProductImage;
-				}
-			}
-
-			$relatedProductsVariants = $this->variants->getVariants(['product_id' => array_keys($relatedProducts)]);
-			foreach ($relatedProductsVariants as $relatedProductVariant) {
-				if (isset($relatedProducts[$relatedProductVariant->product_id])) {
-					$relatedProducts[$relatedProductVariant->product_id]->variants[] = $relatedProductVariant;
-				}
-			}
-
-			foreach ($relatedProducts as $id => $relatedProduct) {
-				if (!is_object($relatedProduct)) {
-					unset($relatedProducts[$id]);
-				} else {
-					$relatedProduct->image = &$relatedProduct->images[0];
-					$relatedProduct->variant = &$relatedProduct->variants[0];
-				}
-			}
-		}
-
 		if (!empty($recommendedIds)) {
 			$recommendedProductsArray = $this->products->getProducts(['id' => $recommendedIds, 'visible' => 1]);
+
 			foreach ($recommendedProductsArray as $recommendedProduct) {
 				$recommendedProducts[$recommendedProduct->id] = $recommendedProduct;
 			}
 
 			$recommendedProductsImages = $this->products->getImages(['product_id' => array_keys($recommendedProducts)]);
+
 			foreach ($recommendedProductsImages as $recommendedProductImage) {
 				if (isset($recommendedProducts[$recommendedProductImage->product_id])) {
 					$recommendedProducts[$recommendedProductImage->product_id]->images[] = $recommendedProductImage;
@@ -254,6 +253,7 @@ class ProductView extends View
 			}
 
 			$recommendedProductsVariants = $this->variants->getVariants(['product_id' => array_keys($recommendedProducts)]);
+
 			foreach ($recommendedProductsVariants as $recommendedProductVariant) {
 				if (isset($recommendedProducts[$recommendedProductVariant->product_id])) {
 					$recommendedProducts[$recommendedProductVariant->product_id]->variants[] = $recommendedProductVariant;
@@ -266,12 +266,31 @@ class ProductView extends View
 				} else {
 					$recommendedProduct->image = &$recommendedProduct->images[0];
 					$recommendedProduct->variant = &$recommendedProduct->variants[0];
+
+					$recommendedProductRelatedIds = $this->products->getRelatedProductIds([$recommendedProduct->id]);
+					$recommendedProductRelatedProducts = [];
+
+					if (!empty($recommendedProductRelatedIds)) {
+						$recommendedProductRelatedProducts = $this->products->getProducts(['id' => $recommendedProductRelatedIds, 'visible' => 1]);
+						foreach ($recommendedProductRelatedProducts as $relatedProduct) {
+							$relatedProduct->variants = $this->variants->getVariants(['product_id' => $relatedProduct->id]);
+							if (!empty($relatedProduct->variants)) {
+								$relatedProduct->variant = &$relatedProduct->variants[0];
+							}
+						}
+					}
+
+					$recommendedProduct->comments_count = $this->comments->countComments(['has_parent' => false, 'object_id' => $product->id, 'type' => 'product', 'approved' => 1]);
+
+					$this->db->query("SELECT SUM(rating)/COUNT(id) AS ratings FROM __comments WHERE id IN (SELECT id FROM __comments WHERE type='product' AND object_id = $recommendedProduct->id AND approved=1 AND admin=0 AND rating > 0)");
+					$recommendedProduct->ratings = floatval($this->db->result('ratings'));
+
+					$recommendedProduct->related_products = $recommendedProductRelatedProducts;
 				}
 			}
-		}
 
-		$this->design->assign('related_products', $relatedProducts);
-		$this->design->assign('recommended_products', $recommendedProducts);
+			$this->design->assign('recommended_products', $recommendedProducts);
+		}
 
 		// Files
 		$files = $this->files->getFiles(['object_id' => $product->id, 'type' => 'product']);

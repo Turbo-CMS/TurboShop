@@ -16,16 +16,16 @@ if (!$turbo->request->checkSession()) {
 }
 
 $content = $turbo->request->post('content');
-$subdir = $turbo->request->post('dir') ? $turbo->request->post('dir') . '/' : '';
-$subdir = str_replace(['.', '..'], '', $subdir);
 $template = $turbo->request->post('template');
 $theme = $turbo->request->post('theme', 'string');
+$dir = $turbo->request->post('dir', 'string');
 
 if (pathinfo($template, PATHINFO_EXTENSION) != 'tpl') {
 	exit();
 }
 
-$file = $turbo->config->root_dir . 'design/' . $theme . '/html/' . $subdir . $template;
+$dir = trim($dir, '/');
+$file = $turbo->config->root_dir . 'design/' . $theme . '/html/' . $dir . '/' . $template;
 
 if (is_file($file) && is_writable($file) && !is_file($turbo->config->root_dir . 'design/' . $theme . '/locked')) {
 	file_put_contents($file, $content);

@@ -32,8 +32,6 @@
 	{$id = $language->id}
 {elseif isset($translation->id)}
 	{$id = $translation->id}
-{elseif isset($menu->id)}
-	{$id = $menu->id}
 {/if}
 
 {if $languages}

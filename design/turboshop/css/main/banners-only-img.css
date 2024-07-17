@@ -1,0 +1,32 @@
+.banners-img-list__item-image {
+	display: block;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.banners-img-list__item-link {
+	display: block;
+}
+
+@media (min-width: 992px) {
+	.banners-img-list__item-image {
+		height: 180px;
+	}
+}
+
+@media (max-width: 991px) {
+	.banners-img-list__item-image {
+		padding-bottom: 19%;
+		background-size: cover;
+	}
+}
+
+@media (max-width: 600px) {
+	.banners-img-list .maxwidth-theme {
+		--theme-page-width-padding: 0px;
+	}
+
+	.banners-img-list__item-image {
+		--border-radius: 0px;
+	}
+}

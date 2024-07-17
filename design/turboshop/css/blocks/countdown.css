@@ -1,0 +1,134 @@
+.countdown {
+	position: relative;
+	white-space: nowrap;
+	font-size: 0;
+	display: inline-block;
+	overflow: hidden;
+	color: #333333;
+	color: var(--white_text_black);
+
+	border-radius: calc(var(--border-radius) - 2px);
+}
+
+.countdown-block {
+	display: block;
+}
+
+.countdown__inner {
+	height: 23px;
+	padding-right: 2px;
+	background: #fff;
+	background: var(--darkgrey_bg_black);
+	overflow: hidden;
+}
+
+.countdown__items {
+	display: none;
+	/* padding-right: 2px; */
+	background: #fff;
+	background: var(--darkgrey_bg_black);
+	height: 23px;
+}
+
+.countdown__items.is-countdown {
+	display: inline-block;
+}
+
+.countdown__item {
+	padding: 4px 3px 0 7px;
+	font-size: 12px;
+	width: auto;
+	display: inline-block;
+	position: relative;
+	line-height: 16px;
+	height: 25px;
+	font-weight: bold;
+}
+
+.countdown__item:last-child {
+	display: none;
+}
+
+.countdown__item:before,
+.countdown__item:after {
+	content: "";
+	background: #333;
+	background: var(--white_text_black);
+	width: 2px;
+	height: 2px;
+	display: block;
+	position: absolute;
+	right: -3px;
+	border-radius: 6px;
+	z-index: 10;
+}
+
+.countdown__item:before {
+	top: 9px;
+}
+
+.countdown__item:after {
+	bottom: 9px;
+}
+
+.countdown__item:last-child:before,
+.countdown__item:last-child:after {
+	display: none;
+}
+
+.countdown__item.minutes:before,
+.countdown__item.minutes:after {
+	display: none;
+}
+
+.countdown__item.minutes {
+	padding-right: 5px;
+}
+
+.countdown__item .text {
+	display: inline-block;
+	padding: 0 0 0 1px;
+	opacity: 1;
+}
+
+.countdown__icon:before,
+.countdown__icon:after {
+	display: none;
+}
+
+.countdown__icon {
+	width: 7px;
+	height: 10px;
+	position: absolute;
+	left: 7px;
+	top: 6px;
+	background: url('../../images/svg/sale_fire.svg') no-repeat;
+}
+
+.countdown__icon .svg {
+	top: -1px;
+	left: 1px;
+}
+
+.countdown--icons .countdown__items {
+	margin-left: 15px;
+}
+
+.countdown--shadowed {
+	box-shadow: 0px 5px 12px 0px rgba(34, 34, 34, 0.08);
+}
+
+.countdown-list-image {
+	position: absolute;
+	z-index: 2;
+	bottom: 0px;
+	left: 0px;
+}
+
+.countdown-list-list-image {
+	margin-bottom: 4px;
+}
+
+.sticker .countdown {
+	margin: 0px 2px 4px;
+}

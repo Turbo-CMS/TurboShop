@@ -70,8 +70,8 @@ class Products extends Turbo
 			$isHitFilter = $this->db->placehold('AND p.is_hit=?', (int) $filter['is_hit']);
 		}
 
-		if (isset($filter['to_export'])) {
-			$isExportFilter = $this->db->placehold('AND p.to_export=?', (int) $filter['to_export']);
+		if (isset($filter['to_xml'])) {
+			$isExportFilter = $this->db->placehold('AND p.to_xml=?', (int) $filter['to_xml']);
 		}
 
 		if (isset($filter['discounted'])) {
@@ -119,6 +119,9 @@ class Products extends Turbo
 					break;
 				case 'rating':
 					$order = 'IF((SELECT COUNT(*) FROM __variants WHERE (stock>0 OR stock IS NULL) AND product_id=p.id LIMIT 1), 1, 0) DESC, p.rating DESC, p.position DESC';
+					break;
+				case 'rate':
+					$order = "IF((SELECT COUNT(*) FROM __variants WHERE (stock>0 OR stock IS NULL) AND product_id=p.id LIMIT 1), 1, 0) DESC, (SELECT SUM(rating)/COUNT(id) FROM __comments WHERE type='product' AND object_id = p.id AND approved=1 AND admin=0 AND rating > 0) DESC, p.position DESC";
 					break;
 			}
 		}
@@ -168,7 +171,7 @@ class Products extends Turbo
 				p.sale_to,
 				p.created AS created,
 				p.visible, 
-				p.to_export,
+				p.to_xml,
 				p.featured,
 				p.is_new, 
 				p.is_hit, 
@@ -290,8 +293,8 @@ class Products extends Turbo
 			$isHitFilter = $this->db->placehold('AND p.is_hit=?', (int) $filter['is_hit']);
 		}
 
-		if (!empty($filter['to_export'])) {
-			$isExportFilter = $this->db->placehold('AND p.to_export=?', (int) $filter['to_export']);
+		if (!empty($filter['to_xml'])) {
+			$isExportFilter = $this->db->placehold('AND p.to_xml=?', (int) $filter['to_xml']);
 		}
 
 		if (isset($filter['in_stock'])) {
@@ -390,7 +393,7 @@ class Products extends Turbo
 				p.sale_to,
 				p.created AS created,
 				p.visible,
-				p.to_export,
+				p.to_xml,
 				p.featured,
 				p.is_new,
 				p.is_hit,
@@ -409,7 +412,7 @@ class Products extends Turbo
 		);
 
 		$this->db->query($query);
-		
+
 		return $this->db->result();
 	}
 
@@ -420,19 +423,22 @@ class Products extends Turbo
 	{
 		$product = (object) $product;
 
-		$query = $this->db->placehold("UPDATE __products SET ?%, last_modified=NOW() WHERE id IN(?@) LIMIT ?", $product, (array) $id, count((array) $id));
+		$result = $this->languages->getDescription($product, 'product');
 
-		if ($this->db->query($query)) {
-			$result = $this->languages->getDescription($product, 'product');
-
-			if (!empty($result->description)) {
-				$this->languages->actionDescription($id, $result->description, 'product', $this->languages->langId());
-			}
-
-			return $id;
-		} else {
-			return false;
+		if (!empty($result->data)) {
+			$product = $result->data;
 		}
+
+		$product->last_modified = date('Y-m-d H:i:s');
+
+		$query = $this->db->placehold("UPDATE __products SET last_modified=NOW(), ?% WHERE id IN(?@) LIMIT ?", $product, (array) $id, count((array) $id));
+		$this->db->query($query);
+
+		if (!empty($result->description)) {
+			$this->languages->actionDescription($id, $result->description, 'product', $this->languages->langId());
+		}
+
+		return $id;
 	}
 
 	/**
@@ -617,7 +623,7 @@ class Products extends Turbo
 
 			unset($variant->oprice);
 			unset($variant->compare_oprice);
-			
+
 			$variant->external_id = '';
 
 			$this->variants->addVariant($variant);
@@ -1005,7 +1011,7 @@ class Products extends Turbo
 							$this->files->updateFile($files[$i]->id, $updFile);
 						}
 					}
-					
+
 					if (!empty($variantFields)) {
 						$variants = $this->variants->getVariants(['product_id' => $newId]);
 						$oldVariants = $this->variants->getVariants(['product_id' => $id]);

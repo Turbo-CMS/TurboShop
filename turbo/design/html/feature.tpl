@@ -76,7 +76,7 @@
 									<div class="mt-2 mb-3">
 										<div class="input-group">
 											<span class="input-group-text">URL</span>
-											<input name="url" class="form-control js-url {if isset($feature->id)}js-disabled{/if}" {if isset($feature->id)}readonly="" {/if} type="text" value="{if isset($feature->url)}{$feature->url|escape}{/if}">
+											<input name="url" class="form-control js-url {if isset($feature->id)}js-disabled{/if}" {if isset($feature->id)}readonly=""{/if} type="text" value="{if isset($feature->url)}{$feature->url|escape}{/if}">
 											<input type="checkbox" id="block-translit" class="d-none" value="1" {if isset($feature->id)}checked="" {/if}>
 											<span class="input-group-text js-disable-url">
 												{if isset($feature->id)}
@@ -91,7 +91,7 @@
 								<div class="col-lg-6 col-md-6 col-xs-12">
 									<div class="d-flex justify-content-center align-content-start flex-wrap flex-md-column h-100">
 										<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
-											<input class="form-check-input ms-2" type="checkbox" id="url-in-product" name="url_in_product" value="1" type="checkbox" {if isset($feature->url_in_product) && $feature->url_in_product}checked="" {/if}>
+											<input class="form-check-input ms-2" type="checkbox" id="url-in-product" name="url_in_product" value="1" type="checkbox" {if isset($feature->url_in_product) && $feature->url_in_product}checked=""{/if}>
 											<label class="form-check-label ms-2" for="url-in-product">{$btr->feature_url_in_product|escape}</label>
 										</div>
 									</div>
@@ -101,15 +101,15 @@
 						<div class="col-lg-2 col-md-3 col-sm-12">
 							<div class="d-flex justify-content-center align-content-center flex-wrap flex-md-column h-100">
 								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
-									<input class="form-check-input ms-2" type="checkbox" id="in-filter" name="in_filter" value="1" type="checkbox" {if isset($feature->in_filter) && $feature->in_filter}checked="" {/if}>
+									<input class="form-check-input ms-2" type="checkbox" id="in-filter" name="in_filter" value="1" type="checkbox" {if isset($feature->in_filter) && $feature->in_filter}checked=""{/if}>
 									<label class="form-check-label ms-2" for="in-filter">{$btr->feature_filter|escape}</label>
 								</div>
 								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
-									<input class="form-check-input ms-2" type="checkbox" id="is-color" name="is_color" value="1" type="checkbox" {if isset($feature->is_color) && $feature->is_color}checked="" {/if}>
+									<input class="form-check-input ms-2" type="checkbox" id="is-color" name="is_color" value="1" type="checkbox" {if isset($feature->is_color) && $feature->is_color}checked=""{/if}>
 									<label class="form-check-label ms-2" for="is-color">{$btr->color_filter|escape}</label>
 								</div>
 								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
-									<input class="form-check-input ms-2" type="checkbox" id="is-size" name="is_size" value="1" type="checkbox" {if isset($feature->is_size) && $feature->is_size}checked="" {/if}>
+									<input class="form-check-input ms-2" type="checkbox" id="is-size" name="is_size" value="1" type="checkbox" {if isset($feature->is_size) && $feature->is_size}checked=""{/if}>
 									<label class="form-check-label ms-2" for="is-size">{$btr->size_filter|escape}</label>
 								</div>
 							</div>
@@ -183,85 +183,87 @@
 					<div class="collapse-card">
 						<div class="card-body">
 							<div class="row">
-								<div class="col-lg-12 col-md-12 col-sm-12">
+								<div class="col-12">
 									<div class="turbo-list tb-related-list">
-										<div class="currencies-wrap clearfix">
-											<div class="turbo-list-head">
-												<div class="turbo-list-heading turbo-list-drag"></div>
-												<div class="turbo-list-heading feature-value-name">{$btr->global_value}</div>
-												<div class="turbo-list-heading feature-value-translit text-center">{$btr->feature_value_translit}</div>
-												<div class="turbo-list-heading feature-value-products-num text-center">{$btr->feature_value_products_num}</div>
-												<div class="turbo-list-heading turbo-list-delete"></div>
-											</div>
-											<div class="turbo-list-body sortable js-values-list">
-												{foreach $options as $option}
-													<div class="js-row turbo-list-body-item js-sort-item">
-														<div class="turbo-list-row mb-3 mb-md-0">
-															<input type="hidden" name="options[id][]" value="{$option->id|escape}">
-															<input type="hidden" class="js-options-delete" name="options_delete[]" disabled="" value="{$option->id|escape}">
-															<div class="turbo-list-boding turbo-list-drag move-zone">
-																<i class="align-middle" transform="rotate(-45)" data-feather="maximize-2"></i>
-															</div>
-															<div class="turbo-list-boding feature-value-name">
-																<div class="form-label d-block d-md-none">{$btr->global_value}</div>
-																{if isset($feature->is_color) && $feature->is_color}
-																	<div class="input-group color-picker">
-																		<input type="text" class="form-control" name="options[value][]" value="{$option->value|escape}">
-																		<span class="input-group-text add-on"><i></i></span>
-																	</div>
-																{else}
-																	<input type="text" class="form-control" name="options[value][]" value="{$option->value|escape}">
-																{/if}
-															</div>
-															<div class="turbo-list-boding feature-value-translit">
-																<div class="form-label d-block d-md-none">{$btr->feature_value_translit}</div>
-																<input type="text" class="form-control" name="options[translit][]" value="{$option->translit|escape}">
-															</div>
-															<div class="turbo-list-boding feature-value-products-num">
-																<div class="form-label d-block d-md-none">{$btr->feature_value_products_num}</div>
-																<a href="index.php?module=ProductsAdmin&features[{$feature->id}]={$option->translit|escape}" class="form-control text-body text-decoration-none" target="_blank" disabled>{$option->count|escape}</a>
-															</div>
-															<div class="turbo-list-setting feature-save">
-																<div class="form-label d-block d-md-none">&nbsp;</div>
-																<button type="button" class="btn-delete js-remove-option" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
-																	<i class="align-middle" data-feather="trash-2"></i>
-																</button>
-															</div>
-														</div>
-													</div>
-												{/foreach}
-												<div class="js-row turbo-list-body-item js-sort-item js-new-value" style="display: none;">
+										<div class="turbo-list-head">
+											<div class="turbo-list-heading turbo-list-drag"></div>
+											<div class="turbo-list-heading feature-value-name">{$btr->global_value}</div>
+											<div class="turbo-list-heading feature-value-translit text-center">{$btr->feature_value_translit}</div>
+											<div class="turbo-list-heading feature-value-products-num text-center">{$btr->feature_value_products_num}</div>
+											<div class="turbo-list-heading turbo-list-delete"></div>
+										</div>
+										<div class="turbo-list-body sortable js-values-list">
+											{foreach $options as $option}
+												<div class="js-row turbo-list-body-item js-sort-item">
 													<div class="turbo-list-row mb-3 mb-md-0">
-														<input type="hidden" name="options[id][]" value="">
-														<input type="hidden" class="js-options-delete" name="options_delete[]" disabled="" value="">
+														<input type="hidden" name="options[id][]" value="{$option->id|escape}">
+														<input type="hidden" class="js-options-delete" name="options_delete[]" disabled="" value="{$option->id|escape}">
 														<div class="turbo-list-boding turbo-list-drag move-zone">
 															<i class="align-middle" transform="rotate(-45)" data-feather="maximize-2"></i>
 														</div>
 														<div class="turbo-list-boding feature-value-name">
 															<div class="form-label d-block d-md-none">{$btr->global_value}</div>
 															{if isset($feature->is_color) && $feature->is_color}
-																<div class="input-group">
-																	<input type="text" class="form-control" name="options[value][]" value="#ffffff">
+																<div class="input-group color-picker">
+																	<input type="text" class="form-control" name="options[value][]" value="{$option->value|escape}">
 																	<span class="input-group-text add-on"><i></i></span>
 																</div>
 															{else}
-																<input type="text" class="form-control" name="options[value][]" value="">
+																<input type="text" class="form-control" name="options[value][]" value="{$option->value|escape}">
 															{/if}
 														</div>
 														<div class="turbo-list-boding feature-value-translit">
 															<div class="form-label d-block d-md-none">{$btr->feature_value_translit}</div>
-															<input type="text" class="form-control" name="options[translit][]" value="">
+															<input type="text" class="form-control" name="options[translit][]" value="{$option->translit|escape}">
 														</div>
 														<div class="turbo-list-boding feature-value-products-num">
 															<div class="form-label d-block d-md-none">{$btr->feature_value_products_num}</div>
-															<a href="#" class="form-control text-body text-decoration-none" disabled>0</a>
+															<a href="index.php?module=ProductsAdmin&features[{$feature->id}]={$option->translit|escape}" class="form-control text-body text-decoration-none" target="_blank" disabled>{$option->count|escape}</a>
 														</div>
 														<div class="turbo-list-setting feature-save">
 															<div class="form-label d-block d-md-none">&nbsp;</div>
-															<button type="button" class="btn-delete js-remove-option" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
-																<i class="align-middle" data-feather="trash-2"></i>
+															<button type="button" class="btn-delete js-remove-option">
+																<span data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
+																	<i class="align-middle" data-feather="trash-2"></i>
+																</span>
 															</button>
 														</div>
+													</div>
+												</div>
+											{/foreach}
+											<div class="js-row turbo-list-body-item js-sort-item js-new-value" style="display: none;">
+												<div class="turbo-list-row mb-3 mb-md-0">
+													<input type="hidden" name="options[id][]" value="">
+													<input type="hidden" class="js-options-delete" name="options_delete[]" disabled="" value="">
+													<div class="turbo-list-boding turbo-list-drag move-zone">
+														<i class="align-middle" transform="rotate(-45)" data-feather="maximize-2"></i>
+													</div>
+													<div class="turbo-list-boding feature-value-name">
+														<div class="form-label d-block d-md-none">{$btr->global_value}</div>
+														{if isset($feature->is_color) && $feature->is_color}
+															<div class="input-group">
+																<input type="text" class="form-control" name="options[value][]" value="">
+																<span class="input-group-text add-on"><i></i></span>
+															</div>
+														{else}
+															<input type="text" class="form-control" name="options[value][]" value="">
+														{/if}
+													</div>
+													<div class="turbo-list-boding feature-value-translit">
+														<div class="form-label d-block d-md-none">{$btr->feature_value_translit}</div>
+														<input type="text" class="form-control" name="options[translit][]" value="">
+													</div>
+													<div class="turbo-list-boding feature-value-products-num">
+														<div class="form-label d-block d-md-none">{$btr->feature_value_products_num}</div>
+														<a href="#" class="form-control text-body text-decoration-none" disabled>0</a>
+													</div>
+													<div class="turbo-list-setting feature-save">
+														<div class="form-label d-block d-md-none">&nbsp;</div>
+														<button type="button" class="btn-delete js-remove-option">
+															<span data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
+																<i class="align-middle" data-feather="trash-2"></i>
+															</span>
+														</button>
 													</div>
 												</div>
 											</div>
@@ -350,6 +352,7 @@
 				var new_line = $(new_value).clone(true);
 				new_line.appendTo('.turbo-list-body').fadeIn('slow');
 				new_line.find('.input-group').addClass('color-picker').colorpicker(colorPickerOptions);
+				new_line.find('[data-bs-toggle="tooltip"]').tooltip();
 				return false;
 			});
 
@@ -383,6 +386,7 @@
 
 			$(document).on('click', '.js-remove-option', function() {
 				$(this).closest('.js-row').fadeOut(200, function() {
+					$('[data-bs-toggle="tooltip"]').tooltip('hide');
 					$(this).closest('.js-row').find('.js-options-delete').attr('disabled', false);
 				});
 			});
@@ -390,4 +394,22 @@
 			$('.js-select-all-categories').removeClass('d-none');
 		});
 	</script>
+	<style>
+		.colorpicker-element .add-on i:before {
+			content: "";
+			position: absolute;
+			width: 16px;
+			height: 16px;
+			display: inline-block;
+			vertical-align: text-top;
+			margin-left: -8px;
+			background: linear-gradient(45deg, rgba(0, 0, 0, 0.1) 25%, transparent 25%, transparent 75%, rgba(0, 0, 0, 0.1) 75%, rgba(0, 0, 0, 0.1) 0), linear-gradient(45deg, rgba(0, 0, 0, 0.1) 25%, transparent 25%, transparent 75%, rgba(0, 0, 0, 0.1) 75%, rgba(0, 0, 0, 0.1) 0), white;
+			background-size: 10px 10px;
+			background-position: 0 0, 5px 5px;
+		}
+
+		.colorpicker-element .add-on i[style*="background-color"]::before {
+			content: none;
+		}
+	</style>
 {/literal}

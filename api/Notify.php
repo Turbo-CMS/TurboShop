@@ -4,10 +4,6 @@ require_once 'Turbo.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 
-require_once 'phpmailer/src/Exception.php';
-require_once 'phpmailer/src/PHPMailer.php';
-require_once 'phpmailer/src/SMTP.php';
-
 class Notify extends Turbo
 {
 	/**
@@ -249,11 +245,11 @@ class Notify extends Turbo
 		$this->design->assign('main_currency', $this->money->getCurrency());
 
 		$backendTranslations = $this->backendTranslations;
-		$file = "turbo/lang/" . $this->settings->email_lang . ".php";
+		$file = __DIR__ . "/../turbo/lang/" . $this->settings->email_lang . ".php";
 
 		if (!file_exists($file)) {
-			foreach (glob("turbo/lang/??.php") as $f) {
-				$file = "turbo/lang/" . pathinfo($f, PATHINFO_FILENAME) . ".php";
+			foreach (glob(__DIR__ . "/../turbo/lang/??.php") as $f) {
+				$file = __DIR__ . "/../turbo/lang/" . pathinfo($f, PATHINFO_FILENAME) . ".php";
 				break;
 			}
 		}
@@ -262,7 +258,7 @@ class Notify extends Turbo
 
 		$this->design->assign('btr', $backendTranslations);
 
-		$emailTemplate = $this->design->fetch($this->config->root_dir . 'turbo/design/html/email_order_admin.tpl');
+		$emailTemplate = $this->design->fetch($this->config->root_dir . 'turbo/design/html/email/email_order_admin.tpl');
 
 		$subject = $this->design->getVar('subject');
 
@@ -292,11 +288,11 @@ class Notify extends Turbo
 
 		$backendTranslations = $this->backendTranslations;
 
-		$file = "turbo/lang/" . $this->settings->email_lang . ".php";
+		$file = __DIR__ . "/../turbo/lang/" . $this->settings->email_lang . ".php";
 
 		if (!file_exists($file)) {
-			foreach (glob("turbo/lang/??.php") as $f) {
-				$file = "turbo/lang/" . pathinfo($f, PATHINFO_FILENAME) . ".php";
+			foreach (glob(__DIR__ . "/../turbo/lang/??.php") as $f) {
+				$file = __DIR__ . "/../turbo/lang/" . pathinfo($f, PATHINFO_FILENAME) . ".php";
 				break;
 			}
 		}
@@ -305,7 +301,7 @@ class Notify extends Turbo
 
 		$this->design->assign('btr', $backendTranslations);
 
-		$emailTemplate = $this->design->fetch($this->config->root_dir . 'turbo/design/html/email_comment_admin.tpl');
+		$emailTemplate = $this->design->fetch($this->config->root_dir . 'turbo/design/html/email/email_comment_admin.tpl');
 
 		$subject = $this->design->getVar('subject');
 
@@ -348,11 +344,11 @@ class Notify extends Turbo
 
 		$backendTranslations = $this->backendTranslations;
 
-		$file = "turbo/lang/" . $this->settings->email_lang . ".php";
+		$file = __DIR__ . "/../turbo/lang/" . $this->settings->email_lang . ".php";
 
 		if (!file_exists($file)) {
-			foreach (glob("turbo/lang/??.php") as $f) {
-				$file = "turbo/lang/" . pathinfo($f, PATHINFO_FILENAME) . ".php";
+			foreach (glob(__DIR__ . "/../turbo/lang/??.php") as $f) {
+				$file = __DIR__ . "/../turbo/lang/" . pathinfo($f, PATHINFO_FILENAME) . ".php";
 				break;
 			}
 		}
@@ -361,7 +357,7 @@ class Notify extends Turbo
 
 		$this->design->assign('btr', $backendTranslations);
 
-		$emailTemplate = $this->design->fetch($this->config->root_dir . 'turbo/design/html/email_feedback_admin.tpl');
+		$emailTemplate = $this->design->fetch($this->config->root_dir . 'turbo/design/html/email/email_feedback_admin.tpl');
 
 		$subject = $this->design->getVar('subject');
 
@@ -383,11 +379,11 @@ class Notify extends Turbo
 
 		$backendTranslations = $this->backendTranslations;
 
-		$file = "turbo/lang/" . $this->settings->email_lang . ".php";
+		$file = __DIR__ . "/../turbo/lang/" . $this->settings->email_lang . ".php";
 
 		if (!file_exists($file)) {
-			foreach (glob("turbo/lang/??.php") as $f) {
-				$file = "turbo/lang/" . pathinfo($f, PATHINFO_FILENAME) . ".php";
+			foreach (glob(__DIR__ . "/../turbo/lang/??.php") as $f) {
+				$file = __DIR__ . "/../turbo/lang/" . pathinfo($f, PATHINFO_FILENAME) . ".php";
 				break;
 			}
 		}
@@ -396,7 +392,7 @@ class Notify extends Turbo
 
 		$this->design->assign('btr', $backendTranslations);
 
-		$emailTemplate = $this->design->fetch($this->config->root_dir . 'turbo/design/html/email_callback_admin.tpl');
+		$emailTemplate = $this->design->fetch($this->config->root_dir . 'turbo/design/html/email/email_callback_admin.tpl');
 
 		$subject = $this->design->getVar('subject');
 

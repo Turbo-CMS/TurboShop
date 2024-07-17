@@ -62,7 +62,6 @@ class fondy extends Turbo
 		}
 
 		$button .= '<input type="submit" class="btn btn-success btn-checkout" value="' . $buttonText . '"></form>';
-		$button .= ' <script>document.getElementById("fondy_to_checkout").submit();</script>';
 
 		echo $button;
 	}

@@ -20,7 +20,7 @@
 				<h5>{$lang->information}</h5>
 				<ul class="nav flex-column">
 					{foreach $pages as $p}
-						{if $p->menu_id == 3}
+						{if $p->menu_id == 4}
 							<li class="nav-item mb-2">
 								<a class="nav-link p-0 text-body-secondary {if $page && $page->id == $p->id}active{/if}" href="{$lang_link}{$p->url}">
 									<span data-page="{$p->id}">{$p->header|escape}</span>
@@ -103,6 +103,11 @@
 				<li class="me-3">
 					<a class="link-body-emphasis" href="#">
 						<i class="fab fa-linkedin-in bs-linkedin"></i>
+					</a>
+				</li>
+				<li class="me-3">
+					<a class="link-body-emphasis" href="{$config->root_url}/{$lang_link}feeds/rss.xml" target="_blank">
+						<i class="fa fa-rss"></i>
 					</a>
 				</li>
 				<li class="me-0">

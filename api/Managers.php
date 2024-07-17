@@ -5,7 +5,7 @@ require_once 'Turbo.php';
 class Managers extends Turbo
 {
 	public $permissionsList = [
-		'dashboard', 'products', 'categories', 'brands', 'features', 'orders', 'labels', 'callbacks',
+		'dashboard', 'products', 'categories', 'brands', 'features', 'orders', 'labels', 'callbacks', 'feeds',
 		'users', 'groups', 'coupons', 'pages', 'menus', 'blog', 'comments', 'feedbacks', 'import', 'export', 'clear', 'articles',
 		'backup', 'stats', 'subscribes', 'faq', 'design', 'banners', 'settings', 'seo', 'scripts', 'currency', 'delivery', 'payment', 'managers', 'languages'
 	];
@@ -187,7 +187,7 @@ class Managers extends Turbo
 
 		foreach ($lines as $i => $line) {
 			$m = explode(":", $line);
-			
+
 			if ($m[0] == $login) {
 				unset($lines[$i]);
 			}

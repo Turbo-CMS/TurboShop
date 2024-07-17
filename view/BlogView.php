@@ -263,6 +263,26 @@ class BlogView extends View
 		// Design
 		$this->design->assign('posts', $posts);
 
+		// Get All Posts
+		$allPosts = $this->blog->getPosts();
+
+		$allTags = [];
+
+		foreach ($allPosts as $post) {
+			// Get Tags
+			$tags = explode(',', $post->meta_keywords);
+			$tags = array_map("trim", $tags);
+
+			// Merge Tags
+			$allTags = array_merge($allTags, $tags);
+		}
+
+		// Remove duplicates
+		$allTags = array_unique($allTags);
+
+		// Assign
+		$this->design->assign('all_tags', $allTags);
+
 		// Meta Tags
 		if ($this->page) {
 			$this->design->assign('meta_title', $this->page->meta_title);

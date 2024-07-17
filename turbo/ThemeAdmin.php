@@ -37,6 +37,7 @@ class ThemeAdmin extends Turbo
 				case 'set_main_theme': {
 						$this->settings->theme = $actionTheme;
 						$this->languages->setTranslation();
+						$this->themeSettings->setSettings();
 						break;
 					}
 				case 'clone_theme': {

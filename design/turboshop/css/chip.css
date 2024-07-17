@@ -1,0 +1,69 @@
+.chip {
+	--item-pl: 12px;
+	--item-pr: 12px;
+	--item-height: 34px;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	background-color: rgba(136, 136, 136, 0.1);
+	background-color: var(--darkgrey_bg_black);
+	border-radius: 8px;
+	border-radius: var(--border-radius);
+	height: 34px;
+	height: var(--item-height);
+	color: var(--white_text_black);
+}
+
+.chip__label {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	padding-left: var(--item-pl);
+	padding-right: var(--item-pr);
+	white-space: nowrap;
+}
+
+.chip.active {
+	color: #fff;
+}
+
+.chip.active:not(.chip--toggle) {
+	cursor: default;
+}
+
+.chip--transparent {
+	background-color: transparent;
+}
+
+.chip:hover {
+	background-color: var(--light, rgba(136, 136, 136, 0.05)) var(--dark, #343434);
+}
+
+.chip.selected {
+	background-color: var(--light, rgba(136, 136, 136, 0.05)) var(--dark, #343434);
+}
+
+.chip__icon {
+	padding-left: var(--item-pl);
+	padding-right: var(--item-pr);
+	border-left: 1px solid rgba(255, 255, 255, 0.2);
+	height: 18px;
+	display: flex;
+	align-items: center;
+	stroke: #fff;
+}
+
+.chip--sm {
+	--item-pl: 10px;
+	--item-pr: 10px;
+	--item-height: 29px;
+}
+
+@media (max-width: 600px) {
+	.chip--sm-to-600 {
+		--item-pl: 10px;
+		--item-pr: 10px;
+		--item-height: 30px;
+	}
+}

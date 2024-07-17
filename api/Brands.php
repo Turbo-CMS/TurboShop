@@ -5,15 +5,79 @@ require_once 'Turbo.php';
 class Brands extends Turbo
 {
 	/**
+	 * Get Brand
+	 */
+	public function getBrand($id)
+	{
+		if (is_int($id)) {
+			$filter = $this->db->placehold('b.id=?', $id);
+		} else {
+			$filter = $this->db->placehold('b.url=?', $id);
+		}
+
+		$langSql = $this->languages->getQuery(['object' => 'brand']);
+
+		$query = $this->db->placehold(
+			"SELECT
+				b.id,
+				b.name,
+				b.name_h1,
+				b.url,
+				b.visible,
+				b.meta_title,
+				b.meta_keywords,
+				b.meta_description,
+				b.description,
+				b.image,
+				b.last_modified,
+				$langSql->fields
+			FROM __brands b
+				$langSql->join
+			WHERE
+				$filter
+			LIMIT 1"
+		);
+
+		$this->db->query($query);
+
+		return $this->db->result();
+	}
+
+	/**
 	 * Get Brands
 	 */
 	public function getBrands($filter = [])
 	{
+		$page = 1;
+		$limit = 100;
 		$visibleBrandFilter = '';
 		$categoryIdFilter = '';
 		$visibleFilter = '';
 		$inStockFilter = '';
 		$visibleFilter = '';
+		$sqlLimit = '';
+		$keywordFilter = '';
+		$order = 'b.name';
+
+		$langId = $this->languages->langId();
+		$px = ($langId ? 'l' : 'b');
+
+		if (isset($filter['limit'])) {
+			$limit = max(1, (int) $filter['limit']);
+		}
+
+		if (isset($filter['page'])) {
+			$page = max(1, (int) $filter['page']);
+		}
+
+		if (isset($filter['keyword'])) {
+			$keywords = explode(' ', $filter['keyword']);
+			foreach ($keywords as $keyword) {
+				$keywordFilter .= $this->db->placehold('WHERE 1 AND (' . $px . '.name LIKE "%' . $this->db->escape(trim($keyword)) . '%") ');
+			}
+		}
+
+		$sqlLimit = $this->db->placehold('LIMIT ?, ?', ($page - 1) * $limit, $limit);
 
 		if (isset($filter['in_stock'])) {
 			$inStockFilter = $this->db->placehold('AND (SELECT COUNT(*)>0 FROM __variants pv WHERE pv.product_id=p.id AND pv.price>0 AND (pv.stock IS NULL OR pv.stock>0) LIMIT 1) = ?', (int) $filter['in_stock']);
@@ -71,9 +135,11 @@ class Brands extends Turbo
 			FROM __brands b 
 				$langSql->join
 				$visibleBrandFilter 
-				$categoryIdFilter 
+				$categoryIdFilter
+				$keywordFilter 
 			ORDER BY 
-				b.name"
+				$order
+				$sqlLimit"
 		);
 
 		if ($this->settings->cached == 1 && empty($_SESSION['admin'])) {
@@ -92,42 +158,49 @@ class Brands extends Turbo
 	}
 
 	/**
-	 * Get Brand
+	 * Count Brands
 	 */
-	public function getBrand($id)
+	public function countBrands($filter = [])
 	{
-		if (is_int($id)) {
-			$filter = $this->db->placehold('b.id=?', $id);
-		} else {
-			$filter = $this->db->placehold('b.url=?', $id);
+		$keywordFilter = '';
+
+		$langId = $this->languages->langId();
+		$px = ($langId ? 'l' : 'b');
+
+		if (isset($filter['keyword'])) {
+			$keywords = explode(' ', $filter['keyword']);
+			foreach ($keywords as $keyword) {
+				$keywordFilter .= $this->db->placehold('AND (' . $px . '.name LIKE "%' . $this->db->escape(trim($keyword)) . '%") ');
+			}
 		}
 
 		$langSql = $this->languages->getQuery(['object' => 'brand']);
 
 		$query = $this->db->placehold(
-			"SELECT
-				b.id,
-				b.name,
-				b.name_h1,
-				b.url,
-				b.visible,
-				b.meta_title,
-				b.meta_keywords,
-				b.meta_description,
-				b.description,
-				b.image,
-				b.last_modified,
-				$langSql->fields
+			"SELECT COUNT(DISTINCT id) AS count 
 			FROM __brands b
-				$langSql->join
-			WHERE
-				$filter
-			LIMIT 1"
+			$langSql->join 
+			WHERE 1 $keywordFilter"
 		);
 
-		$this->db->query($query);
-		
-		return $this->db->result();
+		if ($this->settings->cached == 1 && empty($_SESSION['admin'])) {
+			if ($result = $this->cache->get($query)) {
+				return $result;
+			} else {
+				if ($this->db->query($query)) {
+					$result = $this->db->result('count');
+					$this->cache->set($query, $result);
+					return $result;
+				} else
+					return false;
+			}
+		} else {
+			if ($this->db->query($query)) {
+				return $this->db->result('count');
+			} else {
+				return false;
+			}
+		}
 	}
 
 	/**
@@ -160,6 +233,8 @@ class Brands extends Turbo
 			$brand = $result->data;
 		}
 
+		$this->settings->lastModifyBrands = date("Y-m-d H:i:s");
+
 		$this->db->query("INSERT INTO __brands SET ?%", $brand);
 
 		$id = $this->db->insertId();
@@ -183,6 +258,8 @@ class Brands extends Turbo
 		if (!empty($result->data)) {
 			$brand = $result->data;
 		}
+
+		$this->settings->lastModifyBrands = date("Y-m-d H:i:s");
 
 		$query = $this->db->placehold("UPDATE __brands SET last_modified=NOW(), ?% WHERE id=? LIMIT 1", $brand, (int) $id);
 		$this->db->query($query);

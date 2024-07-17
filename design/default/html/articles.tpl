@@ -155,7 +155,7 @@
 
 						{* Rating *}
 						<div class="float-end btn-group vote">
-							<a class="btn vote-button-plus" href="ajax/articles.rate.php?id={$post->id}&rate=up">
+							<a class="btn vote-button-plus" href="ajax/articles_rate.php?id={$post->id}&rate=up">
 								<i class="fa fa-chevron-up" aria-hidden="true"></i>
 							</a>
 							{if $post->rate>0}
@@ -165,7 +165,7 @@
 							{else}
 								<div class="btn vote-value neg">{$post->rate}</div>
 							{/if}
-							<a class="btn vote-button-minus" href="ajax/articles.rate.php?id={$post->id}&rate=down">
+							<a class="btn vote-button-minus" href="ajax/articles_rate.php?id={$post->id}&rate=down">
 								<i class="fa fa-chevron-down" aria-hidden="true"></i>
 							</a>
 						</div>
@@ -184,9 +184,9 @@
 	{/if}
 
 	{* Category description *}
-	{if $current_page_num == 1}
+	{if isset($articles_category) && $current_page_num == 1}
 		{$articles_category->description}
-	{/if}
+	{/if}	
 {else}
 	<div class="mb-3">
 		{$lang->no_articles_found}

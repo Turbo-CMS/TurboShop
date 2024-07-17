@@ -16,9 +16,9 @@ $turbo->design->assign('cart', $cart);
 $currencies = $turbo->money->getCurrencies(['enabled' => 1]);
 
 if (isset($_SESSION['currency_id'])) {
-    $currency = $turbo->money->getCurrency($_SESSION['currency_id']);
+	$currency = $turbo->money->getCurrency($_SESSION['currency_id']);
 } else {
-    $currency = reset($currencies);
+	$currency = reset($currencies);
 }
 
 $turbo->design->assign('currency', $currency);

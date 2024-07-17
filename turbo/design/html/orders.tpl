@@ -158,6 +158,8 @@
 											</div>
 											<div class="turbo-list-boding turbo-list-orders-name">
 												<a href="{url module=OrderAdmin id=$order->id return=$smarty.server.REQUEST_URI}" class="fw-bold text-body text-decoration-none">{$order->name|escape}</a>
+												{if $order->discount > 0}<span class="badge badge-danger-light">{$order->discount|number_format}%</span>{/if}
+												{if $order->coupon_discount > 0}<span class="badge badge-danger-light">{$order->coupon_discount} {$currency->sign|escape}</span>{/if}
 												{if $order->note}
 													<div class="text-muted fw-light">{$order->note|escape}</div>
 												{/if}
@@ -220,7 +222,7 @@
 											</div>
 											<div class="turbo-list-boding turbo-list-orders-price">
 												<div class="input-group">
-													<span class="form-control">
+													<span class="form-control {if $order->discount > 0 || $order->coupon_discount > 0}text-danger{/if}">
 														{$order->total_price|escape}
 													</span>
 													<span class="input-group-text">
@@ -247,11 +249,11 @@
 												</span>
 											</div>
 											<div class="turbo-list-boding turbo-list-delete">
-												<div data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
-													<button type="button" class="btn-delete js-remove" data-bs-toggle="modal" data-bs-target="#actionModal" onclick="success_action($(this));">
+												<button type="button" class="btn-delete js-remove" data-bs-toggle="modal" data-bs-target="#actionModal" onclick="success_action($(this));">
+													<span data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">	
 														<i class="align-middle" data-feather="trash-2"></i>
-													</button>
-												</div>
+													</span>
+												</button>
 											</div>
 										</div>
 										<div class="turbo-list-row purchases-block">

@@ -17,13 +17,13 @@ $featureId = $turbo->request->get('feature_id', 'string');
 $sk = $turbo->db->escape($keyword);
 
 $turbo->db->query(
-    "SELECT DISTINCT o.id, $px.value 
+	"SELECT DISTINCT o.id, $px.value 
     FROM __options o 
         $langSql->join
     WHERE $px.value LIKE '%$sk%' AND $px.feature_id=? 
     ORDER BY o.value LIMIT ?",
-    $featureId,
-    $limit
+	$featureId,
+	$limit
 );
 
 $options = $turbo->db->results();
@@ -31,11 +31,11 @@ $options = $turbo->db->results();
 $suggestions = [];
 
 foreach ($options as $option) {
-    $suggestion = new StdClass();
-    $suggestion->value = $option->value;
-    $suggestion->id = $option->id;
-    $suggestion->data = $option;
-    $suggestions[] = $suggestion;
+	$suggestion = new StdClass();
+	$suggestion->value = $option->value;
+	$suggestion->id = $option->id;
+	$suggestion->data = $option;
+	$suggestions[] = $suggestion;
 }
 
 $res = new StdClass();

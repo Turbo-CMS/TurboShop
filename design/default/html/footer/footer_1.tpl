@@ -53,7 +53,7 @@
 			<div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
 				<h6 class="text-uppercase mb-4 font-weight-bold">{$lang->information}</h6>
 				{foreach $pages as $p}
-					{if $p->menu_id == 3}
+					{if $p->menu_id == 4}
 						<div class="mb-3 {if $page && $page->id == $p->id}selected{/if}">
 							<a data-page="{$p->id}" class="text-decoration-none" href="{$lang_link}{$p->url}">{$p->header|escape}</a>
 						</div>
@@ -111,6 +111,11 @@
 						<li class="list-inline-item">
 							<a href="#" class="btn-floating btn-sm rgba-white-slight mx-1">
 								<i class="fab fa-linkedin-in bs-linkedin"></i>
+							</a>
+						</li>
+						<li class="list-inline-item">
+							<a class="btn-floating btn-sm rgba-white-slight mx-1" href="{$config->root_url}/{$lang_link}feeds/rss.xml" target="_blank">
+								<i class="fa fa-rss"></i>
 							</a>
 						</li>
 						<li class="list-inline-item">

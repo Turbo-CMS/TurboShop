@@ -43,7 +43,7 @@ class ProductsView extends View
 			if (!$key && $brand = $this->brands->getBrand((string) $value)) {
 				$_GET['brand'] = $brand->url;
 			} else {
-				list($paramName, $paramValues) = explode('-', $value);
+				list($paramName, $paramValues) = explode('-', $value) + [null, null];
 
 				if (!empty($this->page->url) && in_array($this->page->url, ['all-products', 'featured', 'hit', 'new', 'sale'], true) && !in_array($paramName, ['page', 'sort'], true)) {
 					$this->isWrongParams = 1;
@@ -72,7 +72,7 @@ class ProductsView extends View
 						}
 					case 'sort': {
 							$_GET['sort'] = strval($paramValues);
-							if (!in_array($_GET['sort'], ['position', 'price', 'price_desc', 'name', 'name_desc', 'rating'])) {
+							if (!in_array($_GET['sort'], ['position', 'price', 'price_desc', 'name', 'name_desc', 'rating', 'rate'])) {
 								$this->isWrongParams = 1;
 							}
 							break;
@@ -458,6 +458,9 @@ class ProductsView extends View
 				$product->variants = [];
 				$product->images = [];
 				$product->comments_count = $this->comments->countComments(['has_parent' => false, 'object_id' => $product->id, 'type' => 'product', 'approved' => 1,]);
+
+				$this->db->query("SELECT SUM(rating)/COUNT(id) AS ratings FROM __comments WHERE id IN (SELECT id FROM __comments WHERE type='product' AND object_id = $product->id AND approved=1 AND admin=0 AND rating > 0)");
+				$product->ratings = floatval($this->db->result('ratings'));
 			}
 
 			$variants = $this->variants->getVariants(['product_id' => $productsIds]);

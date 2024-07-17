@@ -1,0 +1,120 @@
+.catalog-viewed {
+	position: relative;
+}
+
+.catalog-viewed__inner {
+	background: none;
+}
+
+.catalog-viewed.catalog-viewed--fon .catalog-viewed__inner {
+	background: #f8f8f8;
+	background: var(--darkerblack_bg_black);
+}
+
+.catalog-viewed-list {
+	padding: 0 0 5.3125rem;
+}
+
+.front_page .catalog-viewed-list {
+	padding-top: 4.5rem;
+}
+
+.catalog-viewed-list__slider-wrap {
+	position: relative;
+}
+
+.catalog-viewed__item.swiper-slide {
+	height: auto;
+}
+
+.catalog-viewed__item-wrap {
+	background: #fff;
+	background: var(--card_bg_black);
+	overflow: hidden;
+	height: 100%;
+	padding: 23px 23px 19px;
+}
+
+.catalog-viewed__item__title {
+	word-break: break-word;
+	line-height: calc(1em + 5px);
+}
+
+.catalog-viewed__item__image__wrap {
+	position: relative;
+	margin: 0 0 15px 0;
+}
+
+.catalog-viewed__item__image {
+	width: 80px;
+	height: 80px;
+	position: relative;
+}
+
+.catalog-viewed__item__image a {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.catalog-viewed__item__image img {
+	display: block;
+	max-width: 100%;
+	max-height: 100%;
+	border-radius: 8px;
+	border-radius: var(--border-radius);
+}
+
+.catalog-viewed .price {
+	margin: 0 0 1px 0;
+}
+
+.catalog-viewed__item-sticker {
+	position: absolute;
+	z-index: 2;
+	bottom: -2px;
+	left: 0;
+	margin: -2px;
+}
+
+.catalog-viewed__item-sticker-value.sticker__item {
+	margin: 2px;
+	font-size: 12px;
+	line-height: 15px;
+	display: inline-flex;
+	align-items: center;
+	padding: 0 4px;
+	height: 21px;
+}
+
+@media (max-width: 600px) {
+	.catalog-viewed__inner .index-block__title {
+		font-size: 20px;
+		margin: 0px;
+	}
+
+	.catalog-viewed-list {
+		padding-bottom: 40px;
+	}
+
+	.catalog-viewed-list .index-block__title-wrapper.index-block__title-wrapper--mb-35 {
+		margin-bottom: 16px;
+	}
+
+	.front_page .catalog-viewed-list {
+		padding-top: 40px;
+	}
+
+	.catalog-viewed__item {
+		width: 160px !important;
+	}
+
+	.catalog-viewed__item-wrap {
+		padding: 16px 16px 10px;
+	}
+}

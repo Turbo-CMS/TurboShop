@@ -17,12 +17,12 @@ $keywords = explode(' ', $keyword);
 $keywordSql = '';
 
 foreach ($keywords as $kw) {
-    $kw = $turbo->db->escape(trim($kw));
-    $keywordSql .= $turbo->db->placehold("AND ($px.name LIKE '%$kw%' OR $px.meta_keywords LIKE '%$kw%' OR p.id IN (SELECT product_id FROM __variants WHERE sku LIKE '%$kw%')) ");
+	$kw = $turbo->db->escape(trim($kw));
+	$keywordSql .= $turbo->db->placehold("AND ($px.name LIKE '%$kw%' OR $px.meta_keywords LIKE '%$kw%' OR p.id IN (SELECT product_id FROM __variants WHERE sku LIKE '%$kw%')) ");
 }
 
 $query =
-    "SELECT 
+	"SELECT 
         p.id, 
         $px.name, 
         i.filename AS image 
@@ -47,14 +47,14 @@ $products = $turbo->db->results();
 $suggestions = [];
 
 foreach ($products as $product) {
-    if (!empty($product->image)) {
-        $product->image = $turbo->design->resizeModifier($product->image, 35, 35);
-    }
+	if (!empty($product->image)) {
+		$product->image = $turbo->design->resizeModifier($product->image, 35, 35);
+	}
 
-    $suggestion = new stdClass();
-    $suggestion->value = $product->name;
-    $suggestion->data = $product;
-    $suggestions[] = $suggestion;
+	$suggestion = new stdClass();
+	$suggestion->value = $product->name;
+	$suggestion->data = $product;
+	$suggestions[] = $suggestion;
 }
 
 $res = new stdClass();

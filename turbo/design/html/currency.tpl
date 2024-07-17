@@ -64,6 +64,7 @@
 												{if $c@first}
 													<span class="text-success position-absolute bottom-0 end-0 me-3 mb-3" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->currency_base|escape}"><i class="align-middle" data-feather="check"></i></span>
 												{/if}
+
 												<div class="d-block d-md-none">
 													{if !$c@first}
 														<div class="row gx-0 mt-2">
@@ -131,7 +132,7 @@
 											</div>
 											<div class="turbo-list-boding turbo-list-status">
 												<div class="form-check form-switch">
-													<input class="form-check-input js-ajax-action {if $c->enabled}js-active-class{/if}" id="id-{$c->id}" data-module="currency" data-action="enabled" data-id="{$c->id}" name="enabled" value="1" type="checkbox" {if $c->enabled}checked="" {/if}>
+													<input class="form-check-input js-ajax-action {if $c->enabled}js-active-class{/if}" id="id-{$c->id}" data-module="currency" data-action="enabled" data-id="{$c->id}" name="enabled" value="1" type="checkbox" {if $c->enabled}checked=""{/if}>
 													<label class="form-check-label" for="id-{$c->id}"></label>
 												</div>
 											</div>
@@ -142,11 +143,11 @@
 											</div>
 											<div class="turbo-list-boding turbo-list-delete">
 												{if !$c@first}
-													<div data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
-														<button type="button" class="btn-delete js-remove-currency" data-bs-toggle="modal" data-id="{$c->id}" data-bs-target="#js-currency-delete" onclick="success_action($(this));">
+													<button type="button" class="btn-delete js-remove-currency" data-bs-toggle="modal" data-id="{$c->id}" data-bs-target="#js-currency-delete">
+														<span data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
 															<i class="align-middle" data-feather="trash-2"></i>
-														</button>
-													</div>
+														</span>
+													</button>
 												{/if}
 											</div>
 										</div>
@@ -196,11 +197,11 @@
 										<div class="turbo-list-boding turbo-list-status"></div>
 										<div class="turbo-list-boding cur-settings"></div>
 										<div class="turbo-list-boding turbo-list-delete">
-											<div data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
-												<button type="button" class="btn-delete js-remove-new-currency">
+											<button type="button" class="btn-delete js-remove-new-currency">
+												<span data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
 													<i class="align-middle" data-feather="trash-2"></i>
-												</button>
-											</div>
+												</span>
+											</button>
 										</div>
 									</div>
 								</div>
@@ -266,19 +267,25 @@
 	<script>
 		$(window).on("load", function() {
 			var confirm = true;
-			var curr = $('#new-currency').clone(true);
+			var new_curr = $('#new-currency').clone(true);
+
 			$('#new-currency').remove().removeAttr('id');
+
 			$('#add-currency').click(function() {
-				$(curr).clone(true).appendTo('.turbo-list-body').fadeIn('slow').find("input[name*=currency][name*=name]").focus();
+				var cloned_curr = new_curr.clone(true);
+				cloned_curr.appendTo('.turbo-list-body').fadeIn('slow').find("input[name*=currency][name*=name]").focus();
+				cloned_curr.find('[data-bs-toggle="tooltip"]').tooltip();
 				return false;
 			});
 
 			$(document).on("click", ".js-remove-new-currency", function() {
+				$('[data-bs-toggle="tooltip"]').tooltip('hide');
 				$(this).closest(".turbo-list-body-item").fadeOut(200);
 				$(this).closest(".turbo-list-body-item").remove();
 			});
 
 			var currency_to_delete;
+
 			$(document).on("click", ".js-remove-currency", function() {
 				currency_to_delete = $(this).data("id");
 			});

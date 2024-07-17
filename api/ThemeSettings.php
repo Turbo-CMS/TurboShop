@@ -22,7 +22,7 @@ class ThemeSettings extends Turbo
 	/**
 	 * Magic Method Get
 	 */
-	public function __get($name)
+	public function __get($name) 
 	{
 		if ($res = parent::__get($name)) {
 			return $res;
@@ -71,7 +71,6 @@ class ThemeSettings extends Turbo
 	public function getThemeSettingsXML()
 	{
 		$themeDir = 'design/' . $this->settings->theme;
-
 		$themes = [];
 		$handler = opendir($themeDir);
 
@@ -84,28 +83,44 @@ class ThemeSettings extends Turbo
 
 					$theme = new stdClass();
 					$theme->name = (string) $xml->name;
-					$theme->settings = [];
+					$theme->groups = [];
 
-					foreach ($xml->settings as $setting) {
-						$settingName = (string) $setting->name;
-						$translationName = preg_replace('~{\$lang->(.+)?}~', '$1', $settingName);
-						$settingName = isset($settingsTranslations[$translationName]) ? $settingsTranslations[$translationName] : $settingName;
-						$themeSettings = new stdClass();
-						$themeSettings->name = $settingName;
-						$themeSettings->variable = (string) $setting->variable;
-						$themeSettings->options = [];
+					foreach ($xml->group as $group) {
+						$groupName = (string) $group->name;
+						$translationName = preg_replace('~{\$lang->(.+)?}~', '$1', $groupName);
+						$groupName = isset($settingsTranslations[$translationName]) ? $settingsTranslations[$translationName] : $groupName;
 
-						foreach ($setting->options as $option) {
-							$optionName = (string) $option->name;
-							$translationName = preg_replace('~{\$lang->(.+)?}~', '$1', $optionName);
-							$optionName = isset($settingsTranslations[$translationName]) ? $settingsTranslations[$translationName] : $optionName;
-							$optionDetails = new stdClass();
-							$optionDetails->name = $optionName;
-							$optionDetails->value = (string) $option->value;
-							$themeSettings->options[(string) $option->value] = $optionDetails;
+						$themeGroup = new stdClass();
+						$themeGroup->name = $groupName;
+						$themeGroup->type = (string) $group['type'];
+						$themeGroup->settings = [];
+
+						foreach ($group->settings as $setting) {
+							$settingName = (string) $setting->name;
+							$translationName = preg_replace('~{\$lang->(.+)?}~', '$1', $settingName);
+							$settingName = isset($settingsTranslations[$translationName]) ? $settingsTranslations[$translationName] : $settingName;
+
+							$themeSettings = new stdClass();
+							$themeSettings->name = $settingName;
+							$themeSettings->variable = (string) $setting->variable;
+							$themeSettings->visible = (string) $setting->visible;
+							$themeSettings->options = [];
+
+							foreach ($setting->options as $option) {
+								$optionName = (string) $option->name;
+								$translationName = preg_replace('~{\$lang->(.+)?}~', '$1', $optionName);
+								$optionName = isset($settingsTranslations[$translationName]) ? $settingsTranslations[$translationName] : $optionName;
+
+								$optionDetails = new stdClass();
+								$optionDetails->name = $optionName;
+								$optionDetails->value = (string) $option->value;
+								$themeSettings->options[] = $optionDetails;
+							}
+
+							$themeGroup->settings[] = $themeSettings;
 						}
 
-						$theme->settings[(string) $setting->variable] = $themeSettings;
+						$theme->groups[] = $themeGroup;
 					}
 
 					$themes[$theme->name] = $theme;
@@ -133,5 +148,33 @@ class ThemeSettings extends Turbo
 		}
 
 		return $lang;
+	}
+
+	/**
+	 * Set Settings
+	 */
+	public function setSettings()
+	{
+		$this->db->query("TRUNCATE TABLE __theme_settings");
+
+		$themeDir = 'design/' . $this->settings->theme;
+		$filename = $themeDir . '/settings.sql';
+
+		if (file_exists($filename)) {
+			$this->db->restore($filename);
+		}
+	}
+
+	/**
+	 * Dump Settings
+	 */
+	public function dumpSettings()
+	{
+		$themeDir = 'design/' . $this->settings->theme;
+
+		$filename = $themeDir . '/settings.sql';
+		$filename = fopen($filename, 'w');
+
+		$this->db->dumpTable('t_theme_settings', $filename);
 	}
 }

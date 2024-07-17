@@ -1,9 +1,24 @@
 {$meta_title=$btr->global_brands scope=global}
 
-<div class="d-md-flex mb-3">
-	<h1 class="d-inline align-middle me-3">{$btr->global_brands|escape}</h1>
-	<div class="d-grid gap-2 d-sm-block mt-2 mt-md-0">
-		<a class="btn btn-primary" href="{url module=BrandAdmin return=$smarty.server.REQUEST_URI}"><i data-feather="plus"></i> {$btr->brands_add_brand|escape}</a>
+<div class="row">
+	<div class="col-lg-8 col-md-8">
+		<div class="d-md-flex mb-3">
+			<h1 class="d-inline align-middle me-3">
+				{$btr->global_brands|escape} - {$brands_count}
+			</h1>
+			<div class="d-grid d-sm-block mt-2 mt-md-0">
+				<a class="btn btn-primary" href="{url module=BrandAdmin return=$smarty.server.REQUEST_URI}"><i data-feather="plus"></i> {$btr->brands_add_brand|escape}</a>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-4 col-md-4 col-xs-12 float-sm-end">
+		<form class="search mb-3" method="get">
+			<input type="hidden" name="module" value="BrandsAdmin">
+			<div class="input-group">
+				<input name="keyword" class="form-control" placeholder="{$btr->global_search|escape}" type="text" value="{if isset($keyword)}{$keyword|escape}{/if}">
+				<button class="btn btn-primary" type="submit"><i class="align-middle mt-n1" data-feather="search"></i></button>
+			</div>
+		</form>
 	</div>
 </div>
 
@@ -62,11 +77,11 @@
 										</a>
 									</div>
 									<div class="turbo-list-boding turbo-list-delete">
-										<div data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
-											<button type="button" class="btn-delete js-remove" data-bs-toggle="modal" data-bs-target="#actionModal" onclick="success_action($(this));">
+										<button type="button" class="btn-delete js-remove" data-bs-toggle="modal" data-bs-target="#actionModal" onclick="success_action($(this));">
+											<span data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
 												<i class="align-middle" data-feather="trash-2"></i>
-											</button>
-										</div>
+											</span>
+										</button>
 									</div>
 								</div>
 							</div>
@@ -81,6 +96,8 @@
 							</div>
 							<div class="turbo-list-option">
 								<select name="action" class="selectpicker">
+									<option value="enable">{$btr->global_do_enable|escape}</option>
+									<option value="disable">{$btr->global_do_disable|escape}</option>
 									<option value="delete">{$btr->global_delete|escape}</option>
 								</select>
 							</div>
@@ -92,6 +109,11 @@
 					</div>
 				</div>
 			</form>
+			<div class="row">
+				<div class="col-12">
+					{include file='pagination.tpl'}
+				</div>
+			</div>
 		{else}
 			<h5 class="card-title ms-1 my-3">{$btr->brands_no|escape}</h5>
 		{/if}

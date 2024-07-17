@@ -43,36 +43,18 @@
 			{foreach $purchases as $purchase}
 				<tr>
 					<td class="text-center">
-						{if isset($purchase->product->images)}
-							{$img_flag=0}
-							{$image_array=","|explode:$purchase->variant->images_ids}
-							{foreach $purchase->product->images as $image}
-								{if $image->id|in_array:$image_array}
-									{if $img_flag==0}{$image_toshow=$image}{/if}
-									{$img_flag=1}
-								{/if}
-							{/foreach}
-							{if $img_flag ne 0}
-								<a href="{$lang_link}products/{$purchase->product->url}">
-									<img src="{$image_toshow->filename|resize:116:116}" alt="{$purchase->product->name|escape}">
-								</a>
-							{else}
+						<a href="{$lang_link}products/{$purchase->product->url}">
+							{if isset($purchase->product->images)}
 								{$image = $purchase->product->images|first}
-								{if $image}
-									<a href="{$lang_link}products/{$purchase->product->url}">
-										<img src="{$image->filename|resize:116:116}" alt="{$purchase->product->name|escape}">
-									</a>
-								{else}
-									<a href="{$lang_link}products/{$purchase->product->url}">
-										<img style="width: 116px; height: 116px;" src="design/{$settings->theme|escape}/images/no-photo.svg" alt="{$purchase->product->name|escape}">
-									</a>
-								{/if}
+								<img src="{$image->filename|resize:116:116}" alt="{$purchase->product->name|escape}">
+							{else}
+								<img style="width: 116px; height: 116px;" src="design/{$settings->theme|escape}/images/no-photo.svg" alt="{$purchase->product->name|escape}">
 							{/if}
-						{/if}
+						</a>
 					</td>
 					<td data-title="{$lang->general_name}">
 						<a class="text-decoration-none" href="{$lang_link}products/{$purchase->product->url}">{$purchase->product->name|escape}</a></br>
-						{if $purchase->variant->color}{$purchase->variant->color|escape} / {/if}{$purchase->variant->name|escape}
+						{$purchase->variant->color|escape} {if $purchase->variant->color && $purchase->variant->name}/{/if} {$purchase->variant->name|escape}
 						{if $order->paid && $purchase->variant->attachment}
 							<a class="btn btn-success btn-sm mt-3" href="{$lang_link}order/{$order->url}/{$purchase->variant->attachment}"><i class="fal fa-arrow-down-to-square me-1"></i>{$lang->download}</a>
 						{/if}
@@ -292,7 +274,7 @@
 					<input type="submit" class="btn btn-success btn-lg float-end" value="{$lang->finish_the_order}">
 				</div>
 			</form>
-		{* Selected Payment Method *}
+			{* Selected Payment Method *}
 		{elseif $payment_method}
 			<h2 class="mb-3">
 				{$lang->payment_method} &mdash;
@@ -304,7 +286,7 @@
 				{$payment_method->name}
 			</h2>
 			<form method="post">
-				<input type="submit" class="btn btn-primary" name="reset_payment_method" value="{$lang->choose_payment}">
+				<input type="submit" class="btn btn-primary mb-3" name="reset_payment_method" value="{$lang->choose_payment}">
 			</form>
 			<div class="mb-3">{$payment_method->description}</div>
 			<h2 class="mb-3">

@@ -1,0 +1,29 @@
+.grid-list__item--rounded:first-of-type:not(:only-child)>div {
+	border-top-left-radius: var(--theme-outer-border-radius);
+	border-top-right-radius: var(--theme-outer-border-radius);
+}
+
+.grid-list__item--rounded:last-of-type:not(:only-child)>div {
+	border-bottom-left-radius: var(--theme-outer-border-radius);
+	border-bottom-right-radius: var(--theme-outer-border-radius);
+}
+
+.grid-list__item--rounded:only-of-type>div {
+	border-radius: var(--theme-outer-border-radius);
+}
+
+@media screen and (min-width: 768px) {
+	.grid-list--rounded.grid-list--items-2-768 .grid-list__item--rounded:nth-child(-n+2)>div {
+		border-top-left-radius: var(--theme-outer-border-radius);
+		border-top-right-radius: var(--theme-outer-border-radius);
+	}
+
+	.grid-list--rounded.grid-list--items-2-768 .grid-list__item--rounded:nth-last-child(-n+2)>div {
+		border-bottom-left-radius: var(--theme-outer-border-radius);
+		border-bottom-right-radius: var(--theme-outer-border-radius);
+	}
+
+	.grid-list--rounded.grid-list--items-2-768 .grid-list__item--rounded:not(:nth-last-child(-n+2)):not(:nth-child(-n+2))>div {
+		border-radius: 0;
+	}
+}

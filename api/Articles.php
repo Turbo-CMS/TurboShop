@@ -209,9 +209,13 @@ class Articles extends Turbo
 			}
 		}
 
+		$langSql = $this->languages->getQuery(['object' => 'article']);
+
 		$query = $this->db->placehold(
 			"SELECT COUNT(DISTINCT a.id) AS count
-            FROM __articles a WHERE 1 $postIdFilter $categoryIdFilter $visibleFilter $keywordFilter $authorFilter"
+            FROM __articles a
+			$langSql->join 
+			WHERE 1 $postIdFilter $categoryIdFilter $visibleFilter $keywordFilter $authorFilter"
 		);
 
 		if ($this->settings->cached == 1 && empty($_SESSION['admin'])) {
@@ -261,7 +265,7 @@ class Articles extends Turbo
 
 		if ($this->db->query("INSERT INTO __articles SET ?%", $article)) {
 			$id = $this->db->insertId();
-			
+
 			$this->db->query("UPDATE __articles SET last_modified=NOW(), position=id WHERE id=?", $id);
 
 			if (!empty($result->description)) {
@@ -293,7 +297,7 @@ class Articles extends Turbo
 			if (!empty($result->description)) {
 				$this->languages->actionDescription($id, $result->description, 'article', $this->languages->langId());
 			}
-			
+
 			return $id;
 		} else {
 			return false;

@@ -12,7 +12,7 @@
 					{$btr->users_no|escape}
 				{/if}
 			</h1>
-			{if $users_count>0}
+			{if $users_count > 0}
 				<div class="d-inline-block heading-block text-dark me-3 mb-3 mt-1" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->users_export|escape}">
 					<i class="align-middle cursor-pointer" data-feather="file-text"></i>
 				</div>
@@ -29,7 +29,13 @@
 		</form>
 	</div>
 </div>
-
+{if $users_count > 0}
+	<div class="position-relative mb-4 mt-n3">
+		<div class="progress position-absolute w-100" style="display: none;">
+			<div id="progressbar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+		</div>
+	</div>
+{/if}
 <div class="card">
 	<div class="card-header d-block d-lg-none">
 		<div class="card-actions float-end">
@@ -43,13 +49,6 @@
 	</div>
 	<div class="card-body">
 		<div class="row">
-			{if $users_count>0}
-				<div class="col-12">
-					<div class="progress mb-1" style="display: none;">
-						<div id="progressbar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
-					</div>
-				</div>
-			{/if}
 			<div class="col-12">
 				<div class="collapse-card boxed-sorting">
 					<div class="row">
@@ -130,16 +129,16 @@
 											</div>
 											<div class="turbo-list-boding turbo-list-status">
 												<div class="form-check form-switch">
-													<input class="form-check-input js-ajax-action {if $user->enabled}js-active-class{/if}" id="id-{$user->id}" data-module="user" data-action="enabled" data-id="{$user->id}" name="enabled" value="1" type="checkbox" {if $user->enabled}checked="" {/if}>
+													<input class="form-check-input js-ajax-action {if $user->enabled}js-active-class{/if}" id="id-{$user->id}" data-module="user" data-action="enabled" data-id="{$user->id}" name="enabled" value="1" type="checkbox" {if $user->enabled}checked=""{/if}>
 													<label class="form-check-label" for="id-{$user->id}"></label>
 												</div>
 											</div>
 											<div class="turbo-list-boding turbo-list-delete">
-												<div data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
-													<button type="button" class="btn-delete js-remove" data-bs-toggle="modal" data-bs-target="#actionModal" onclick="success_action($(this));">
+												<button type="button" class="btn-delete js-remove" data-bs-toggle="modal" data-bs-target="#actionModal" onclick="success_action($(this));">
+													<span data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
 														<i class="align-middle" data-feather="trash-2"></i>
-													</button>
-												</div>
+													</span>
+												</button>
 											</div>
 										</div>
 									</div>
@@ -205,7 +204,7 @@
 			$(document).on('change', 'select.js-user-select', function() {
 				var elem = $(this).find('option:selected').val();
 				$('.js-hide-block').addClass('hidden');
-				if ($('#' + elem).size() > 0) {
+				if ($('#' + elem).length > 0) {
 					$('#' + elem).removeClass('hidden');
 				}
 			});

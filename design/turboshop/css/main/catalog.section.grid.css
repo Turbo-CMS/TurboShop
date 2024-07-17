@@ -1,0 +1,118 @@
+.sections-block__item-link {
+	--item-pl: 20px;
+	--item-pr: 20px;
+	--item-pt: 32px;
+	--item-pb: 27px;
+
+	padding: var(--item-pt) var(--item-pr) var(--item-pb) var(--item-pl);
+	text-align: center;
+	display: block;
+}
+
+.items-6 .sections-block__item-link {
+	--item-pt: 36px;
+	--item-pb: 31px;
+}
+
+.items-5 .sections-block__item-link {
+	--item-pt: 40px;
+	--item-pb: 35px;
+}
+
+.items-4 .sections-block__item-link {
+	--item-pt: 44px;
+	--item-pb: 39px;
+}
+
+.sections-block__item-image-wrapper {
+	--section-image-width: 80px;
+	--section-image-height: 80px;
+	width: var(--section-image-width);
+	height: var(--section-image-height);
+	margin: auto auto 14px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+}
+
+.sections-block__item-image {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+.sections-block__item-image-wrapper--ICONS {
+	--section-image-width: 40px;
+	--section-image-height: 40px;
+}
+
+.sections-block__item-image-wrapper--ICONS svg {
+	width: var(--section-image-width);
+	height: var(--section-image-height);
+}
+
+.sections-block__item-text {
+	display: block;
+}
+
+@media (min-width: 1200px) {
+	.items-6 .sections-block__item-image-wrapper--PICTURES {
+		--section-image-width: 104px;
+		--section-image-height: 104px;
+	}
+
+	.items-5 .sections-block__item-image-wrapper--PICTURES,
+	.items-4 .sections-block__item-image-wrapper--PICTURES {
+		--section-image-width: 120px;
+		--section-image-height: 120px;
+	}
+}
+
+@media (max-width: 600px) {
+	.sections-block__item-image-wrapper--PICTURES {
+		--section-image-width: 70px;
+		--section-image-height: 70px;
+	}
+
+	.sections-block__item-link {
+		--item-pl: 16px;
+		--item-pr: 16px;
+		--item-pt: 16px;
+		--item-pb: 16px;
+	}
+
+	.normal .sections-block__item-image-wrapper {
+		--section-image-width: auto;
+		--section-image-height: auto;
+	}
+
+	.sections-block--mobile-compact.grid-list {
+		grid-gap: 12px;
+	}
+
+	.sections-block--mobile-compact.mobile-scrolled {
+		grid-gap: 0;
+	}
+
+	.sections-block--mobile-compact .sections-block__item-image-wrapper {
+		--section-image-width: 32px;
+		--section-image-height: 32px;
+		margin: 0 18px 0 0;
+	}
+
+	.sections-block--mobile-compact .sections-block__item-inner {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		text-align: left;
+	}
+
+	.sections-block--mobile-compact .sections-block__item-link {
+		--item-pt: 16px;
+		--item-pb: 16px;
+	}
+
+	/* .sections-block--mobile-compact .sections-block__item-text {
+		font-size: 1rem;
+	} */
+}

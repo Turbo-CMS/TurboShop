@@ -1,0 +1,234 @@
+/*fancy*/
+.fancybox-active {
+	height: auto;
+}
+
+.fancybox-container .fancybox-bg,
+.fancybox-container .fancybox-button {
+	background: #fff;
+	background: var(--card_bg_black);
+	opacity: 1;
+}
+
+/* .fancybox-button.fancybox-button--play,
+.fancybox-button.fancybox-button--thumbs {
+	display: none;
+} */
+
+.fancybox-container svg path {
+	fill: #999;
+}
+
+.fancybox-inner .fancy {
+	display: flex !important;
+	align-items: center;
+	justify-content: center;
+	padding: 0px;
+	height: 100%;
+}
+
+.fancybox-slide:before {
+	display: none;
+}
+
+.fancybox-lock .fancybox-overlay {
+	overflow: hidden;
+}
+
+.fancybox-overlay {
+	background: #fff;
+	opacity: 0;
+}
+
+.fancybox-inner video {
+	display: block;
+	max-height: 100%;
+	max-width: 100%;
+	margin: auto;
+}
+
+.fancybox-inner .fancybox-content {
+	/*height: 100%;*/
+	padding: 0px;
+}
+
+.fancybox-container .fancybox-infobar {
+	color: #999;
+	mix-blend-mode: normal;
+}
+
+.fancybox-slide--iframe {
+	padding: 0px;
+}
+
+.fancybox-slide iframe {
+	padding: 0px;
+	height: 100%;
+	width: 100%;
+}
+
+.fancybox-caption {
+	background: transparent;
+	color: #222;
+}
+
+.fancy-js {
+	cursor: pointer;
+	display: block;
+}
+
+/** buttons **/
+.fancybox-toolbar .fancybox-button:not(.fancybox-button--close) {
+	display: none !important;
+}
+
+.fancybox-button[disabled] {
+	pointer-events: none;
+}
+
+.fancybox-inner {
+	--button-size-large: 100px;
+	--arrow-size-large: 72px;
+}
+
+.fancybox-navigation .fancybox-button {
+	align-items: center;
+	background-color: transparent;
+	display: flex;
+	height: var(--arrow-size-large);
+	top: calc(50% - 19px);
+	width: var(--arrow-size-large);
+}
+
+.fancybox-navigation .fancybox-button--arrow_left {
+	padding: 0px 0px 0px 6px;
+	justify-content: flex-start;
+}
+
+.fancybox-navigation .fancybox-button--arrow_right {
+	padding: 0px 6px 0px 0px;
+	justify-content: flex-end;
+}
+
+@media screen and (min-width: 992px) {
+	.fancybox-navigation .fancybox-button {
+		height: calc(100% - var(--button-size-large));
+		top: var(--button-size-large);
+		width: 33%;
+	}
+
+	.fancybox-button div {
+		height: var(--arrow-size-large);
+		width: var(--arrow-size-large);
+	}
+}
+
+/** close **/
+@media screen and (min-width: 768px) {
+	.fancybox-button--close {
+		height: var(--button-size-large);
+		padding: calc(var(--button-size-large)/4);
+		width: var(--button-size-large);
+	}
+}
+
+/****/
+
+/** fancybox with slider **/
+.fancybox-container.with-slider {
+	--thumbs-width: 64px;
+}
+
+.fancybox-thumbs.with-slider {
+	background: transparent;
+	display: flex;
+	justify-content: center;
+	left: 0;
+	padding: calc(var(--thumbs-width) / 2);
+	position: absolute;
+	right: auto;
+	width: auto;
+}
+
+.fancybox-thumbs.with-slider img {
+	display: inline-block;
+	margin: 0 auto;
+	max-height: 100%;
+	max-width: 100%;
+}
+
+.fancybox-show-thumbs .fancybox-inner.with-slider {
+	left: calc(var(--thumbs-width) * 2);
+	right: var(--thumbs-width);
+}
+
+.fancybox-thumbs__wrapper.gallery-slider-thumb__container {
+	flex-direction: column;
+	max-width: var(--thumbs-width);
+	width: 100%;
+}
+
+.fancybox-thumbs.with-slider .slider-solution {
+	max-height: calc((var(--thumbs-width) + 16px) * 5 - 16px);
+	width: 100%;
+}
+
+.fancybox-thumbs.with-slider .fancybox-thumbs-active {
+	border-color: var(--theme-base-color);
+}
+
+.fancybox-thumb__list--slider-wrapper {
+	overflow: initial;
+}
+
+.fancybox-thumb__list--slider-wrapper a.gallery__item {
+	background-color: unset;
+	/* height: auto; */
+	margin: 0;
+	max-height: unset;
+	max-width: var(--thumbs-width);
+	padding: 4px;
+}
+
+.fancybox-thumb__list--slider-wrapper .gallery__item::before {
+	display: none;
+}
+
+@media screen and (min-width: 601px) {
+	.fancybox-inner.with-slider .fancybox-infobar {
+		left: calc(var(--thumbs-width) * -2);
+	}
+
+	.fancybox-container.with-slider .fancybox-toolbar {
+		right: calc(var(--thumbs-width) * -1);
+	}
+}
+
+@media screen and (max-width: 600px) {
+	.fancybox-thumbs.with-slider {
+		bottom: 0;
+		height: auto;
+		padding: calc(var(--thumbs-width) / 2) calc(var(--thumbs-width) / 8);
+		right: 0;
+		top: auto;
+	}
+
+	.fancybox-thumbs.with-slider .slider-solution {
+		max-height: none;
+		width: calc(100% - 72px);
+	}
+
+	.fancybox-show-thumbs .fancybox-inner.with-slider {
+		bottom: calc(var(--thumbs-width) * 2);
+		left: 0;
+		right: 0;
+	}
+
+	.detail-gallery-big--vertical .gallery-slider-thumb__container.fancybox-thumbs__wrapper {
+		flex-direction: row;
+		height: var(--thumbs-width);
+		max-width: none;
+	}
+}
+
+/****/

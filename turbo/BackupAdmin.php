@@ -3,7 +3,6 @@
 define('PCLZIP_TEMPORARY_DIR', 'turbo/files/backup/');
 
 require_once 'api/Turbo.php';
-require_once 'turbo/pclzip/pclzip.lib.php';
 
 class BackupAdmin extends Turbo
 {

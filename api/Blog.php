@@ -170,9 +170,12 @@ class Blog extends Turbo
 			}
 		}
 
+		$langSql = $this->languages->getQuery(['object' => 'blog']);
+
 		$query = $this->db->placehold(
 			"SELECT COUNT(DISTINCT b.id) AS count
 			FROM __blog b
+			$langSql->join
 			WHERE 1 $postIdFilter $visibleFilter $keywordFilter"
 		);
 

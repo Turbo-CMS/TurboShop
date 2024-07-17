@@ -1,0 +1,190 @@
+/*common*/
+.swiper-lazy {
+	transition: opacity ease 0.3s;
+}
+
+/* #main .swiper-lazy:not(.swiper-lazy-loaded) {
+	background-size: auto;
+} */
+
+.swiper-lazy:not(.swiper-lazy-loaded)>div {
+	opacity: 0;
+}
+
+.swiper-pagination-horizontal.swiper-pagination-bullets .swiper-pagination-bullet {
+	--swiper-pagination-bullet-horizontal-gap: 6px;
+}
+
+.swiper-slide.swiper-slide--height-auto {
+	height: auto;
+}
+
+.slider-solution--hide-before-loaded:not(.swiper-initialized) {
+	opacity: 0;
+	visibility: hidden;
+	max-height: 0;
+}
+
+.slider-solution--hide-before-loaded:not(.swiper-initialized)~.slider-nav {
+	display: none;
+}
+
+/*pagination*/
+.swiper-pagination-bullet {
+	width: 12px;
+	height: 12px;
+	background: rgba(0, 0, 0, 0.1);
+	opacity: 1;
+	position: relative;
+}
+
+.swiper-pagination-bullet:before {
+	content: "";
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -4px 0 0 -4px;
+	width: 8px;
+	height: 8px;
+	background: #fff;
+	border-radius: 100%;
+	transition: all 0.3s ease;
+	-moz-transition: all 0.3s ease;
+	-ms-transition: all 0.3s ease;
+	-o-transition: all 0.3s ease;
+	-webkit-transition: all 0.3s ease;
+}
+
+.swiper-pagination-bullet:hover:before,
+.swiper-pagination-bullet.swiper-pagination-bullet-active:before {
+	transform: scale(1.5);
+	background-color: #9e9e9e;
+	background-color: var(--theme-base-color);
+}
+
+.swiper-container-horizontal>.swiper-pagination-bullets {
+	bottom: 21px;
+}
+
+.swiper-container-horizontal>.swiper-pagination-bullets .swiper-pagination-bullet {
+	margin: 0px 7px;
+}
+
+@media screen and (max-width: 600px) {
+	.swiper-pagionation-bullet--line-to-600.swiper-pagination-horizontal .swiper-pagination-bullet {
+		--swiper-pagination-bullet-horizontal-gap: 2px;
+	}
+
+	.swiper-pagionation-bullet--line-to-600 .swiper-pagination-bullet {
+		border-radius: 5px;
+		height: 2px;
+		background: rgba(136, 136, 136, 0.5);
+	}
+
+	.swiper-pagionation-bullet--line-to-600 .swiper-pagination-bullet.swiper-pagination-bullet-active {
+		background-color: var(--light, #222) var(--dark, white);
+	}
+
+	.swiper-pagionation-bullet--line-to-600 .swiper-pagination-bullet:before {
+		display: none;
+	}
+}
+
+.swiper-pagionation--line-to-600.swiper-pagination-horizontal .swiper-pagination-bullet {
+	--swiper-pagination-bullet-horizontal-gap: 2px;
+}
+
+.swiper-pagionation--line-to-600 .swiper-pagination-bullet {
+	border-radius: 5px;
+	height: 2px;
+	background: rgba(136, 136, 136, 0.5);
+}
+
+.swiper-pagionation--line-to-600 .swiper-pagination-bullet.swiper-pagination-bullet-active {
+	background-color: var(--light, #222) var(--dark, white);
+}
+
+.swiper-pagionation--line-to-600 .swiper-pagination-bullet:before {
+	display: none;
+}
+
+/*navigation*/
+.swiper-button-next,
+.swiper-button-prev {
+	width: 40px;
+	height: 40px;
+	background: #fff;
+	background: var(--arrows_bg_black);
+	border-radius: 3px;
+	border-radius: var(--theme-border-radius);
+	-webkit-transition: all 0.3s ease-in-out;
+	-moz-transition: all 0.3s ease-in-out;
+	-ms-transition: all 0.3s ease-in-out;
+	-o-transition: all 0.3s ease-in-out;
+	transition: all 0.3s ease-in-out;
+	border-radius: 50px;
+}
+
+.swiper-button-prev .svg {
+	transform: translateX(-1px);
+}
+
+.swiper-button-next .svg {
+	transform: translateX(1px);
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+	background-color: #9e9e9e;
+	background-color: var(--theme-base-color);
+}
+
+.swiper-button-next:hover use,
+.swiper-button-prev:hover use {
+	stroke: #fff;
+}
+
+.swiper-button-next:after,
+.swiper-button-prev:after {
+	display: none;
+}
+
+.navigation_on_hover:not(:hover) .swiper-button-next,
+.navigation_on_hover:not(:hover) .swiper-button-prev {
+	opacity: 0;
+	visibility: hidden;
+}
+
+.swiper-nav-offset .swiper-button-prev {
+	left: -20px;
+}
+
+.swiper-nav-offset .swiper-button-next {
+	right: -20px;
+}
+
+.swiper-button-next.swiper-button-disabled,
+.swiper-button-prev.swiper-button-disabled {
+	display: none;
+}
+
+.swiper-pagination--flex {
+	display: flex;
+	align-items: center;
+}
+
+.swiper-pagination-bullets-dynamic {
+	flex-wrap: nowrap;
+}
+
+.swiper-pagination-bullets-dynamic .swiper-pagination-bullet {
+	flex-shrink: 0;
+}
+
+.swiper-pagination--bottom {
+	top: 100%;
+}
+
+.slider-nav {
+	box-shadow: 0px 5px 20px rgba(34, 34, 34, 0.07);
+}

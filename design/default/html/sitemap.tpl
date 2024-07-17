@@ -89,7 +89,7 @@
 	<ul>
 		{foreach $posts as $p}
 			<li>
-				<a class="text-decoration-none" href="{$lang_link}blog/{$p->url}">
+				<a class="text-decoration-none" href="{$lang_link}blog/{$p->url}"> 
 					{$p->name}
 				</a>
 			</li>
@@ -124,7 +124,7 @@
 							<a class="text-decoration-none" href="{$lang_link}articles/{$c->url}">
 								<strong>{$c->name}</strong>
 							</a>
-							{if property_exists($c, 'subcategories')}
+							{if isset($c->subcategories)}
 								{articles_cat_tree articles_cats=$c->subcategories}
 							{/if}
 							{cat_art articles=$c->articles}
@@ -164,7 +164,7 @@
 							<a class="text-decoration-none" href="{$lang_link}catalog/{$c->url}">
 								<strong>{$c->name}</strong>
 							</a>
-							{if property_exists($c, 'subcategories')}
+							{if isset($c->subcategories)}
 								{cat_tree cats=$c->subcategories}
 							{/if}
 							{cat_prod prod=$c->products}

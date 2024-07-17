@@ -1,0 +1,30 @@
+.toggle-panel {
+	--toggle-bg: var(--light, #f4f4f4) var(--dark, #343434);
+	--item-height: 30px;
+	--item-pl: 10px;
+	--item-pr: 10px;
+
+	background-color: var(--toggle-bg);
+	border: 2px solid var(--toggle-bg);
+	border-radius: var(--border-radius);
+
+	display: flex;
+}
+
+.toggle-panel--sm {
+	--item-height: 24px;
+	--item-pl: 9px;
+	--item-pr: 9px;
+}
+
+.toggle-panel__item {
+	display: flex;
+	align-items: center;
+	padding: 2px var(--item-pr) 2px var(--item-pl);
+	height: var(--item-height);
+}
+
+.toggle-panel__item--current {
+	background-color: #fff;
+	border-radius: calc(var(--border-radius) - 2px);
+}

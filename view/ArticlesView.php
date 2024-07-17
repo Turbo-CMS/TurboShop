@@ -18,7 +18,7 @@ class ArticlesView extends View
 	/**
 	 * Fetch Article
 	 */
-	private function fetchArticle($url) 
+	private function fetchArticle($url)
 	{
 		// Get Article
 		$post = $this->articles->getArticle($url);
@@ -95,7 +95,7 @@ class ArticlesView extends View
 				$this->notify->emailCommentAdmin($commentId);
 
 				unset($_SESSION['captcha_code']);
-				
+
 				header('Location: ' . $_SERVER['REQUEST_URI'] . '#comment_' . $commentId);
 			}
 		}
@@ -124,18 +124,21 @@ class ArticlesView extends View
 
 		// Pagination Comments
 		$itemsPerPage = $this->settings->comments_num;
-		$currentPage = max(1, $this->request->get('page', 'integer'));
+
+		$currentPage = $this->request->get('page', 'integer');
+		$currentPage = max(1, $currentPage);
 
 		$this->design->assign('current_page_num', $currentPage);
 
 		$commentsCount = $this->comments->countComments($filter);
-		$pagesNum = ceil($commentsCount / $itemsPerPage);
-
-		$this->design->assign('total_pages_num', $pagesNum);
 
 		if ($this->request->get('page') == 'all') {
 			$itemsPerPage = $commentsCount;
 		}
+
+		$pagesNum = ceil($commentsCount / $itemsPerPage);
+
+		$this->design->assign('total_pages_num', $pagesNum);
 
 		$filter['page'] = $currentPage;
 		$filter['limit'] = $itemsPerPage;
@@ -285,6 +288,26 @@ class ArticlesView extends View
 
 		// Design
 		$this->design->assign('posts', $posts);
+
+		// Get All Posts 
+		$allPosts = $this->articles->getArticles();
+
+		$allTags = [];
+
+		foreach ($allPosts as $post) {
+			// Get Tags
+			$tags = explode(',', $post->meta_keywords);
+			$tags = array_map("trim", $tags);
+
+			// Merge Tags
+			$allTags = array_merge($allTags, $tags);
+		}
+
+		// Remove duplicates
+		$allTags = array_unique($allTags);
+
+		// Assign
+		$this->design->assign('all_tags', $allTags);
 
 		// Meta Tags
 		$autoMeta = new stdClass();

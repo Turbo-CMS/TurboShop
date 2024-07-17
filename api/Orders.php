@@ -83,7 +83,7 @@ class Orders extends Turbo
 		}
 
 		if (isset($filter['id'])) {
-			$idFilter = $this->db->placehold('AND o.id ШТ(?@)', (array) $filter['id']);
+			$idFilter = $this->db->placehold('AND o.id IN(?@)', (array) $filter['id']);
 		}
 
 		if (isset($filter['user_id'])) {

@@ -1,0 +1,349 @@
+@media screen and (max-width: 991px) {
+	#mobileheader {
+		margin: 0;
+		padding: 0;
+		position: relative;
+		z-index: 993;
+	}
+
+	#mobileheader.filter-none {
+		z-index: 998;
+	}
+}
+
+.mobileheader {
+	height: 62px;
+	padding: 0 27px 0 20px;
+}
+
+.mobileheader__inner {
+	height: 100%;
+	flex: 1;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin: 0 -16px;
+}
+
+.mobileheader--color-white {
+	background-color: #fff;
+	background-color: var(--darkerblack_bg_black);
+}
+
+.mobileheader--color-dark {
+	background-color: #333;
+}
+
+.mobileheader--color-colored {
+	background-color: #9e9e9e;
+	background-color: var(--theme-base-color);
+}
+
+.mobileheader--color-grey {
+	background-color: #fafafa;
+	background-color: var(--lite_bg_black);
+}
+
+.mobileheader--color-white,
+.mobileheader--color-grey {
+	box-shadow: 0px 1px 0px #e5e5e5;
+	box-shadow: 0px 1px 0px var(--stroke_black);
+}
+
+/* fixed */
+@media screen and (max-width: 991px) {
+	body.mfixed_y .headers-container {
+		position: sticky;
+		top: 0;
+	}
+
+	body.mfixed_y.mfixed_view_scroll_top .headers-container {
+		top: -63px;
+		transition: top 0.3s ease;
+	}
+
+	body.mfixed_y.mfixed_view_scroll_top .headers-container.fixed {
+		top: 0;
+	}
+
+	.tb-ie body.mfixed_y .headers-container {
+		position: relative;
+		top: 0 !important;
+	}
+}
+
+/* item */
+.mobileheader__item {
+	margin: 0 16px;
+}
+
+/* icon */
+#main .mobileheader--color-dark .menu-light-icon-fill svg *,
+#main .mobileheader--color-colored .menu-light-icon-fill svg * {
+	fill: #fff;
+}
+
+#main .mobileheader--color-dark .fill-theme-hover:hover svg *,
+#main .mobileheader--color-colored .fill-theme-hover:hover svg * {
+	opacity: 0.5;
+}
+
+#main .header-cabinet__fill-white-link svg .fill-more-theme {
+	fill: #fff !important;
+}
+
+/* burger */
+.mobileheader__item--right-icons .burger {
+	margin-right: -27px;
+}
+
+.mobileheader .burger {
+	align-items: center;
+	cursor: pointer;
+	display: flex;
+	padding: 20px;
+	margin: -20px;
+}
+
+/* logo */
+.mobileheader .logo {
+	max-width: 160px;
+}
+
+.mobileheader .line-block__item:not(.hidden)+.logo {
+	padding-left: 4px;
+	/* max-width: 123px; */
+}
+
+/*
+@media (max-width: 400px) {
+  .mobileheader .line-block__item:not(.hidden) + .logo {
+    padding-left: 4px;
+    max-width: 100px;
+  }
+}
+*/
+
+/* right icons */
+/*.mobileheader__item--right-icons .line-block{margin-right:-6px;}*/
+@media (max-width: 991px) {
+	.mobileheader__item--right-icons .line-block {
+		height: 50px;
+		overflow: hidden;
+	}
+
+	.mobileheader__item--right-icons .line-block>.line-block__item {
+		align-items: center;
+		display: flex;
+		height: 50px;
+	}
+}
+
+@media screen and (max-width: 600px) {
+	.mobileheader__item--right-icons .line-block {
+		justify-content: flex-end;
+		margin-right: -16px;
+	}
+
+	.mobileheader__item--right-icons .line-block>.line-block__item {
+		/* padding-left: 10px; */
+		padding: 0px 10px;
+	}
+
+	.mobileheader__item--right-icons .line-block>.line-block__item.hide-600 {
+		display: none;
+	}
+}
+
+/* phones */
+.mobileheader .phones {
+	cursor: pointer;
+}
+
+.mobileheader .phones,
+.mobileheader .phones__inner {
+	position: inherit;
+}
+
+#mobilephones {
+	position: absolute;
+	left: 0;
+	right: 0;
+	z-index: 3000;
+	background: #fff;
+	background: var(--black_bg_black);
+	display: none;
+	opacity: 1;
+	visibility: visible;
+	padding: 0;
+	cursor: default;
+}
+
+.mobileheader--color-white #mobilephones,
+.mobileheader--color-grey #mobilephones {
+	top: calc(100% + 1px);
+}
+
+.mobileheader .phones__dropdown .dropdown {
+	left: 0 !important;
+	box-shadow: none;
+	display: block;
+	padding: 17px 0 23px;
+}
+
+.mobilephones__menu-item.mobilephones__menu-item--title {
+	padding: 18px 23px 18px;
+}
+
+.mobilephones__menu-item a {
+	padding: 10px 23px;
+	display: block;
+}
+
+.mobilephones__menu-item--callback {
+	padding: 9px 23px;
+	margin: 8px 0 0 0;
+}
+
+.mobilephones__close {
+	width: 46px;
+	height: 46px;
+	position: absolute;
+	top: 24px;
+	right: 8px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 1;
+	cursor: pointer;
+}
+
+.icon-block--only_icon .icon-block__only-icon {
+	display: flex;
+}
+
+/* cabinet */
+.mobileheader .header-cabinet__link.avt .header-cabinet__icon {
+	margin-right: 0;
+}
+
+/* cart */
+.mobileheader .header-cart .header-cart__name {
+	display: none;
+}
+
+.mobileheader .basket-dropdown {
+	display: none;
+}
+
+/* mobile search */
+form.search .btn-close {
+	display: none;
+	pointer-events: none;
+}
+
+@media screen and (max-width: 991px) {
+	/* hide extra header parts */
+	/* .header__top-part, 
+  .header__bottom-part, 
+  .header__main-item:not(.header__search) {
+    display: none;
+  } */
+
+	.header__inner> :not(.part-with-search),
+	.part-with-search__inner> :not(.header__search) {
+		display: none;
+	}
+
+	/* .header__main-part--long { */
+	/* .part-with-search{
+    height: 61px;
+  } */
+
+	.header--mobile-search-active .searche-result {
+		max-height: calc(50vh - 85px);
+	}
+
+	.headers-container {
+		position: relative;
+		z-index: 993;
+	}
+
+	.header--mobile-search-active div.title-search-result {
+		z-index: 993;
+		/* left: 0 !important; */
+		left: -8px !important;
+		margin-left: 0;
+		width: 100vw !important;
+	}
+
+	.header--mobile-search-active .headers-container {
+		position: sticky !important;
+		top: 0 !important;
+	}
+
+	.header__search form.search {
+		display: flex;
+		align-items: center;
+	}
+
+	.part-with-search .header__search {
+		margin: 0;
+		width: 100%
+	}
+
+	.header-search__mobile {
+		cursor: pointer;
+	}
+
+	[data-ajax-block="HEADER"] {
+		left: 0;
+		position: absolute;
+		right: 0;
+		top: 0;
+		transform: translateY(-100%);
+		transition: transform 0.3s ease, visibility 0.3s ease-out;
+		visibility: hidden;
+		z-index: 999;
+	}
+
+	.header--mobile-search-active [data-ajax-block="HEADER"] {
+		transform: translateY(0);
+		visibility: visible;
+	}
+
+	body .header__inner {
+		padding-bottom: 0;
+		padding-top: 0;
+	}
+
+	/* .header__main-part--long { */
+	.part-with-search {
+		height: 63px;
+	}
+
+	.search-input,
+	.search-input::placeholder {
+		color: var(--white_text_black) !important;
+	}
+
+	.header_opacity header .banner-light-icon-fill * {
+		fill: var(--white_text_black) !important;
+	}
+
+	form.search .btn-close {
+		background-color: transparent;
+		border: none;
+		cursor: pointer;
+		display: block;
+		height: 100%;
+		margin-right: 7px;
+		pointer-events: all;
+		width: 40px;
+		z-index: 1;
+	}
+
+	body.jqm-initied .style-switcher {
+		z-index: 992;
+	}
+}

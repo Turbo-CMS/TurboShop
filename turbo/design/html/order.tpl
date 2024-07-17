@@ -25,6 +25,11 @@
 		</select>
 	</div>
 	{if isset($order->id)}
+		<div class="d-none d-lg-inline-block d-inline-block me-3 mb-3" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_view|escape|escape}">
+			<a href="../{$lang_link}order/{$order->url}" target="_blank" class="heading-block text-dark">
+				<i class="align-middle" data-feather="external-link"></i>
+			</a>
+		</div>
 		<div class="d-none d-lg-inline-block d-inline-block me-3 mb-3" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->order_print|escape}">
 			<a href="{url view=print id=$order->id}" target="_blank" class="heading-block text-dark">
 				<i class="align-middle" data-feather="printer"></i>
@@ -120,25 +125,11 @@
 										<div class="turbo-list-row">
 											<input type="hidden" name="purchases[id][{$purchase->id}]" value="{$purchase->id}">
 											<div class="turbo-list-boding turbo-list-photo">
-												{if isset($purchase->variant) && isset($purchase->product->images)}
-													{$img_flag=0}
-													{$image_array=","|explode:$purchase->variant->images_ids}
-													{foreach $purchase->product->images as $image}
-														{if $image->id|in_array:$image_array}
-															{if $img_flag==0}{$image_toshow=$image}{/if}
-															{$img_flag=1}
-														{/if}
-													{/foreach}
-													{if $img_flag ne 0}
-														<img src="{$image_toshow->filename|resize:50:50}" alt="{$purchase->product->name|escape}">
-													{else}
-														{$image = $purchase->product->images|first}
-														{if $image}
-															<img class="product-icon" src="{$image->filename|resize:50:50}" alt="{$purchase->product->name|escape}">
-														{else}
-															<i class="align-middle" data-feather="camera"></i>
-														{/if}
-													{/if}
+												{if isset($purchase->product->images)}
+													{$image = $purchase->product->images|first}
+													<img class="product-icon" src="{$image->filename|resize:50:50}" alt="{$purchase->product->name|escape}">
+												{else}
+													<i class="align-middle" data-feather="camera"></i>
 												{/if}
 											</div>
 											<div class="turbo-list-boding turbo-list-order-name">
@@ -154,8 +145,8 @@
 																<span class="text-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->in_stock_left|escape} {$purchase->variant->stock}"><i class="align-middle mt-n1" data-feather="alert-circle"></i></span>
 															{/if}
 														{/if}
-														{if $purchase->variant_name}
-															<span class="text-secondary">{$btr->order_option|escape} {$purchase->variant_name|escape} {if isset($purchase->variant->color)}/ {$purchase->variant->color|escape}{/if}</span>
+														{if $purchase->variant->color || $purchase->variant_name}
+															<span class="text-secondary">{$btr->order_option|escape} {$purchase->variant->color|escape} {if $purchase->variant->color && $purchase->variant_name}/{/if} {$purchase->variant_name|escape}</span>
 														{/if}
 														{if $purchase->sku}
 															<span class="text-secondary">/ {$btr->global_sku|escape} {$purchase->sku|default:"&mdash;"}</span>
@@ -182,7 +173,7 @@
 															{foreach $purchase->product->variants as $v}
 																<option data-price="{$v->price}" data-amount="{$v->stock}" value="{$v->id}" {if $v->id == $purchase->variant_id}selected{/if}>
 																	{if $v->name}
-																		{$v->name|escape} {if $v->color}/ {$v->color|escape}{/if}
+																		{$v->color|escape} {if $v->color && $v->name}/{/if} {$v->name|escape}
 																	{else}
 																		#{$v@iteration}
 																	{/if}
@@ -213,8 +204,10 @@
 												</div>
 											</div>
 											<div class="turbo-list-boding turbo-list-delete">
-												<button type="button" class="btn-delete js-remove-item" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
-													<i class="align-middle" data-feather="trash-2"></i>
+												<button type="button" class="btn-delete js-remove-item">
+													<span data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
+														<i class="align-middle" data-feather="trash-2"></i>
+													</span>
 												</button>
 											</div>
 										</div>
@@ -259,8 +252,10 @@
 										</div>
 									</div>
 									<div class="turbo-list-boding turbo-list-delete">
-										<button type="button" class="btn-delete js-remove-item" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
-											<i class="align-middle" data-feather="trash-2"></i>
+										<button type="button" class="btn-delete js-remove-item">
+											<span data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
+												<i class="align-middle" data-feather="trash-2"></i>
+											</span>
 										</button>
 									</div>
 								</div>
@@ -305,14 +300,16 @@
 										</div>
 										<div class="turbo-list-boding turbo-list-order-content-val">
 											<div class="input-group">
-												<input type="text" class="form-control" name="discount" value="{if isset($order->discount)}{$order->discount}{/if}">
+												<input type="text" class="form-control {if isset($order->discount) && $order->discount > 0}text-danger{/if}" name="discount" value="{if isset($order->discount)}{$order->discount}{/if}">
 												<span class="input-group-text">%</span>
 											</div>
 										</div>
-										<div class="turbo-list-boding turbo-list-order-content-price">
-											<span>{if isset($order->discount)}{($subtotal-$subtotal*$order->discount/100)|number_format:2:".":""}{/if}</span>
-											<span>{$currency->sign|escape}</span>
-										</div>
+										{if isset($order->discount)}
+											<div class="turbo-list-boding turbo-list-order-content-price">
+												<span>{($subtotal-$subtotal*$order->discount/100)|number_format:2:".":""}</span>
+												<span>{$currency->sign|escape}</span>
+											</div>
+										{/if}
 									</div>
 								</div>
 								<div class="turbo-list-body-item">
@@ -322,14 +319,16 @@
 										</div>
 										<div class="turbo-list-boding turbo-list-order-content-val">
 											<div class="input-group">
-												<input type="text" class="form-control" name="coupon_discount" value="{if isset($order->coupon_discount)}&minus;{$order->coupon_discount}{/if}">
+												<input type="text" class="form-control {if isset($order->coupon_discount) && $order->coupon_discount > 0}text-danger{/if}" name="coupon_discount" value="{if isset($order->coupon_discount)}{$order->coupon_discount}{/if}">
 												<span class="input-group-text">{$currency->sign|escape}</span>
 											</div>
 										</div>
-										<div class="turbo-list-boding turbo-list-order-content-price">
-											<span>{if isset($order->discount)}{($subtotal-$subtotal*$order->discount/100-$order->coupon_discount)|number_format:2:".":""}{/if}</span>
-											<span>{$currency->sign|escape}</span>
-										</div>
+										{if isset($order->discount)}
+											<div class="turbo-list-boding turbo-list-order-content-price">
+												<span>{($subtotal-$subtotal*$order->discount/100-$order->coupon_discount)|number_format:2:".":""}</span>
+												<span>{$currency->sign|escape}</span>
+											</div>
+										{/if}
 									</div>
 								</div>
 								<div class="turbo-list-body-item">
@@ -365,8 +364,8 @@
 											</div>
 										</div>
 										<div class="turbo-list-boding turbo-list-order-content-price">
-											<div class="form-check d-inline-block align-top mt-1" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_paid_separately|escape}">
-												<input class="form-check-input" type="checkbox" id="separate-delivery" name="separate_delivery" value="1" {if isset($order->separate_delivery) && $order->separate_delivery}checked{/if}>
+											<div class="form-check d-inline-block align-top mt-1">
+												<input class="form-check-input" type="checkbox" id="separate-delivery" name="separate_delivery" value="1" {if isset($order->separate_delivery) && $order->separate_delivery}checked{/if} data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_paid_separately|escape}">
 												<label class="form-check-label" for="separate-delivery"></label>
 											</div>
 										</div>
@@ -387,9 +386,11 @@
 								</div>
 							</div>
 							<div class="col-lg-8 col-md-12">
-								<div class="text-dark fw-bold text-end mt-3">
-									<div class="h3">{$btr->global_total|escape}: {if isset($order->total_price)}{$order->total_price}{/if} {$currency->sign|escape}</div>
-								</div>
+								{if isset($order->total_price)}
+									<div class="text-dark fw-bold text-end mt-3">
+										<div class="h3">{$btr->global_total|escape}: {$order->total_price} {$currency->sign|escape}</div>
+									</div>
+								{/if}
 								<div class="fw-bold text-end me-1 mt-1">
 									{if isset($payment_method)}
 										<div class="h3 text-secondary">{$btr->order_to_pay|escape} {$order->total_price|convert:$payment_currency->id} {$payment_currency->sign}</div>
@@ -400,7 +401,7 @@
 						<div class="row">
 							<div class="col-12">
 								<div class="form-check form-switch form-check-reverse float-start mt-3">
-									<input class="paid form-check-input" type="checkbox" id="paid" name="paid" value="1" {if isset($order->paid) && $order->paid}checked=""{/if}>
+									<input class="paid form-check-input" type="checkbox" id="paid" name="paid" value="1" {if isset($order->paid) && $order->paid}checked="" {/if}>
 									<label class="form-check-label me-2" for="paid">{$btr->order_paid|escape}</label>
 								</div>
 							</div>
@@ -540,11 +541,12 @@
 	<script>
 		$(window).on("load", function() {
 			$(document).on("click", "#js-purchase .js-remove-item", function() {
+				$('[data-bs-toggle="tooltip"]').tooltip('hide');
 				$(this).closest(".js-row").fadeOut(200, function() { $(this).remove(); });
 				return false;
 			});
 
-			$(document).on("change", ".js-ajax-labels input", function () {
+			$(document).on("change", ".js-ajax-labels input", function() {
 				elem = $(this);
 				var order_id = parseInt($(this).closest(".js-ajax-labels").data("order-id"));
 				var state = "";
@@ -565,7 +567,7 @@
 						label_id: label_id,
 						session_id: session_id
 					},
-					success: function (data) {
+					success: function(data) {
 						var msg = "";
 						if (data) {
 							$(".js-ajax-label").html(data.data);
@@ -589,9 +591,10 @@
 					new_item.removeAttr('id');
 					new_item.find('.js-new-product').html(suggestion.data.name);
 					new_item.find('.js-new-product').attr('href', 'index.php?module=ProductAdmin&id=' + suggestion.data.id);
+					new_item.find('[data-bs-toggle="tooltip"]').tooltip();
 					var variants_select = new_item.find("select.js-new-variant");
 					for (var i in suggestion.data.variants) {
-						variants_select.append("<option value='" + suggestion.data.variants[i].id + "' data-price='" + suggestion.data.variants[i].price + "' data-amount='" + suggestion.data.variants[i].stock + "'>" + suggestion.data.variants[i].name + "  " + suggestion.data.variants[i].color + "</option>");
+						variants_select.append("<option value='" + suggestion.data.variants[i].id + "' data-price='" + suggestion.data.variants[i].price + "' data-amount='" + suggestion.data.variants[i].stock + "'>" + suggestion.data.variants[i].color + (suggestion.data.variants[i].color && suggestion.data.variants[i].name ? " / " : "") + suggestion.data.variants[i].name + "</option>");
 					}
 					if (suggestion.data.variants.length > 1 || suggestion.data.variants[0].name != '') {
 						variants_select.show();

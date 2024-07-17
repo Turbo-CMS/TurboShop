@@ -117,8 +117,8 @@ class ImportAjax extends Import
 			$product['is_hit'] = intval($item['is_hit']);
 		}
 
-		if (isset($item['to_export'])) {
-			$product['to_export'] = intval($item['to_export']);
+		if (isset($item['to_xml'])) {
+			$product['to_xml'] = intval($item['to_xml']);
 		}
 
 		if (!empty($item['url'])) {

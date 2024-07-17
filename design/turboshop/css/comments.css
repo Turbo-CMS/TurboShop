@@ -1,0 +1,381 @@
+/** wrapper **/
+.comments-block__wrapper.line-block {
+	align-items: normal;
+}
+
+.comments-block__reviews-info {
+	max-width: 355px;
+	width: 100%;
+}
+
+.comments-block__reviews-info-inner {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.comments-block__inner-wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: 36px;
+}
+
+.blog-comment-form .form-group {
+	position: relative;
+}
+
+@media screen and (max-width: 1199px) {
+	.comments-block__reviews-info-inner.catalog-detail__cell-block {
+		flex-direction: row;
+		padding: 0;
+	}
+
+	.comments-block__reviews-info-inner.catalog-detail__cell-block.shadow {
+		box-shadow: none;
+	}
+
+	.comments-block__reviews-info {
+		max-width: none;
+	}
+
+	.comments-block__wrapper.line-block {
+		--gap: 20px;
+		flex-direction: column;
+	}
+
+	.comments-block {
+		order: 1;
+	}
+}
+
+/** blog-comment **/
+.blog-comments {
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+}
+
+.reviews_sort .filter-panel {
+	margin-bottom: 0px;
+}
+
+.blog-comment {
+	padding: 24px;
+}
+
+.blog-comment-info .left_info {
+	display: flex;
+	gap: 12px;
+	flex-wrap: wrap;
+}
+
+.blog-comment__container {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+/** blog-comment__content **/
+.blog-comment__content {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.blog-comment-cont-white {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.comment-text__text[data-label]::before {
+	color: var(--white_text_black);
+	content: attr(data-label) ": ";
+	display: inline;
+	font-size: 1em;
+	font-weight: 500;
+	line-height: 1.625em;
+}
+
+.blog-comment-post {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.blog-comment-approve-text {
+	color: #25a70f;
+}
+
+/** rating **/
+.blog-info__rating {
+	align-items: center;
+	display: flex;
+	gap: 12px;
+}
+
+.votes_block.nstar .inner_rating {
+	display: flex;
+	gap: 1px;
+}
+
+.rating-wrapper {
+	gap: 8px;
+}
+
+/** bottom panel **/
+.blog-comment-meta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+}
+
+/** comment child **/
+.blog-comment--child .blog-info__rating {
+	display: none;
+}
+
+.blog-comment--child {
+	padding: 21px 0 0 calc(31px * var(--blog_comment_padding));
+}
+
+.blog-comment--child .blog-comment-cont-white {
+	gap: 7px;
+}
+
+/** blog form **/
+.js-form-comment:not(#form_comment_0) [data-hide] {
+	display: none;
+}
+
+.blog-comment__form-container .blog-comment__form {
+	margin-top: 36px;
+}
+
+.blog-comment__form .votes_block {
+	display: flex;
+	gap: 12px;
+}
+
+/* like buttons */
+.rating-vote {
+	display: inline-flex;
+	gap: 12px;
+	margin-right: 14px;
+}
+
+.rating-vote__item {
+	opacity: 0.35;
+}
+
+.rating-vote__item:hover,
+.rating-vote__item.active {
+	opacity: 1;
+}
+
+.rating-vote__item:hover *,
+.rating-vote__item.active * {
+	stroke: var(--theme-base-color);
+}
+
+.rating-vote__result {
+	opacity: 0.35;
+}
+
+.rating-vote__result.active {
+	opacity: 1;
+	color: var(--theme-base-color);
+}
+
+/** filter-panel **/
+.filter-panel__sort-form__inner {
+	gap: 12px 24px;
+}
+
+.filter-panel__sort-form__item input[type="checkbox"]+label {
+	margin-bottom: 0;
+}
+
+.filter-panel__sort-form__item .radio {
+	margin: 0;
+	padding: 0;
+}
+
+.dropdown-select__list-item.radio input {
+	display: none;
+}
+
+.dropdown-select__list-item.radio label {
+	display: block;
+	padding: 11px 15px 10px;
+}
+
+@media (max-width: 600px) {
+	.blog-comment {
+		padding: 17px;
+	}
+
+	.blog-comment--child {
+		padding: 13px 0 0 calc(31px * var(--blog_comment_padding));
+	}
+
+	.blog-comment-cont-white {
+		gap: 13px;
+	}
+
+	.blog-comment__content {
+		flex-direction: row;
+	}
+
+	.blog-comment--child .blog-comment-cont-white {
+		padding-top: 5px;
+	}
+
+	.blog-comment-info .left_info {
+		font-size: 0px;
+		gap: 5px;
+		align-items: center;
+	}
+
+	.blog-comment-info .left_info * {
+		display: none;
+	}
+
+	.blog-comment-info .left_info .blog-comment__author,
+	.blog-comment-info .left_info .blog-comment__date {
+		display: block;
+	}
+}
+
+/** alerts **/
+.alert-empty {
+	padding: 27px 35px 30px;
+}
+
+/** reviews gallery **/
+.reviews-gallery-block {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+@media screen and (min-width: 1200px) {
+	.reviews-gallery-block--top {
+		max-width: 908px;
+	}
+}
+
+.gallery-review {
+	display: grid;
+	grid-template-columns: repeat(10, 1fr);
+	gap: var(--gap);
+}
+
+.gallery-review .item {
+	padding-bottom: 100%;
+	position: relative;
+}
+
+.gallery-review img {
+	height: 100%;
+	object-fit: cover;
+	position: absolute;
+	width: 100%;
+}
+
+.gallery-review::after {
+	align-items: center;
+	background-color: rgba(0, 0, 0, 0.5);
+	border-radius: var(--theme-outer-border-radius);
+	color: #fff;
+	display: flex;
+	font-size: 1em;
+	grid-column-start: 10;
+	height: 100%;
+	justify-content: center;
+	line-height: 1.417em;
+	pointer-events: none;
+	position: absolute;
+	width: 100%;
+}
+
+@media screen and (max-width: 991px) {
+	.gallery-review {
+		grid-template-columns: repeat(8, 1fr);
+	}
+
+	.gallery-review[data-lg]::after {
+		content: "+" attr(data-lg);
+		grid-column-start: 8;
+	}
+
+	.gallery-review[data-lg] .item:nth-child(n + 9) {
+		display: none;
+	}
+}
+
+@media screen and (max-width: 767px) {
+	.gallery-review {
+		grid-template-columns: repeat(6, 1fr);
+	}
+
+	.gallery-review[data-md]::after {
+		content: "+" attr(data-md);
+		grid-column-start: 6;
+	}
+
+	.gallery-review[data-md] .item:nth-child(n + 7) {
+		display: none;
+	}
+}
+
+@media screen and (max-width: 599px) {
+	.gallery-review {
+		grid-template-columns: repeat(5, 1fr);
+	}
+
+	.gallery-review[data-sm]::after {
+		content: "+" attr(data-sm);
+		grid-column-start: 5;
+	}
+
+	.gallery-review[data-sm] .item:nth-child(n + 6) {
+		display: none;
+	}
+}
+
+@media screen and (max-width: 420px) {
+	.gallery-review {
+		grid-template-columns: repeat(4, 1fr);
+	}
+
+	.gallery-review[data-xsm]::after {
+		content: "+" attr(data-xsm);
+		grid-column-start: 4;
+	}
+
+	.gallery-review[data-xsm] .item:nth-child(n + 5) {
+		display: none;
+	}
+}
+
+@media screen and (max-width: 374px) {
+	.gallery-review {
+		grid-template-columns: repeat(3, 1fr);
+	}
+
+	.gallery-review[data-xs]::after {
+		content: "+" attr(data-xs);
+		grid-column-start: 3;
+	}
+
+	.gallery-review[data-xs] .item:nth-child(n + 4) {
+		display: none;
+	}
+}
+
+@media screen and (min-width: 768px) {
+	.gallery-review[data-xl]::after {
+		content: "+" attr(data-xl);
+	}
+}

@@ -1,0 +1,52 @@
+.page_not_found {
+	padding-top: 70px;
+	text-align: center;
+}
+
+.page_not_found .image {
+	text-align: center;
+	margin-bottom: 33px;
+}
+
+.page_not_found .image svg {
+	max-width: 100%;
+}
+
+/* .page_not_found .image svg * {
+  fill: #ccc;
+} */
+
+.page_not_found .description {
+	text-align: center;
+}
+
+.page_not_found .description .subtitle404 {
+	font-size: 42px;
+	line-height: 52px;
+	color: #333;
+	color: var(--white_text_black);
+}
+
+.page_not_found .description .back404,
+.page_not_found .description .back404 a {
+	font-size: 1em;
+}
+
+.page_not_found .description .back404 a {
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.page_not_found .description .descr_text404 {
+	font-size: 1em;
+	line-height: 1.6em;
+	margin-top: 24px;
+}
+
+.page_not_found .description .btn-mainpage {
+	margin: 33px 5px 0;
+}
+
+.page_not_found .description .back404 {
+	margin-top: 15px;
+}

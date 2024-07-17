@@ -50,12 +50,14 @@
 				</div>
 			</div>
 			<h5 class="card-title mb-0">{$btr->global_export|escape}</h5>
+			<div class="position-relative">
+				<div class="progress position-absolute w-100 mt-2" style="display: none;">
+					<div id="progressbar" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%"></div>
+				</div>
+			</div>
 		</div>
 		<div class="collapse-card">
 			<div id="js-start" class="card-body">
-				<div class="progress mb-3" style="display: none;">
-					<div id="progressbar" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%"></div>
-				</div>
 				<div class="row mb-3">
 					<div class="col-md-6 col-lg-4 col-sm-12 mb-3 mb-md-0">
 						<div class="form-label">{$btr->global_export|escape}</div>

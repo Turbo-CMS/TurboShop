@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="5" height="16" viewBox="0 0 5 16">
+  <defs>
+	<style>
+	  .nspcls-1 {
+		fill: #333;
+		fill-rule: evenodd;
+	  }
+	</style>
+  </defs>
+  <path data-name="Rectangle 53 copy 28" class="nspcls-1" d="M660,447v1l-2,3h-1l-2-3v-1h2v-8h-2v-1l2-3h1l2,3v1h-2v8h2Z" transform="translate(-655 -435)"/>
+</svg>

@@ -44,16 +44,17 @@
 										({if $backup->size>1024*1024}{($backup->size/1024/1024)|round:2} {$btr->global_mb|escape}{else}{($backup->size/1024)|round:2} {$btr->global_kb|escape}{/if})
 									</div>
 									<div class="turbo-list-boding d-flex">
-										<div data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->restore_backup|escape}">
-											<button type="button" class="btn-restore restore">
+										<button type="button" class="btn-restore restore">
+											<span data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->restore_backup|escape}">
 												<i class="align-middle" data-feather="rotate-cw"></i>
-											</button>
-										</div>
-										<div data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
-											<button type="button" class="btn-delete js-remove" data-bs-toggle="modal" data-bs-target="#actionModal" onclick="success_action($(this));">
+											</span>
+										</button>
+
+										<button type="button" class="btn-delete js-remove" data-bs-toggle="modal" data-bs-target="#actionModal" onclick="success_action($(this));">
+											<span data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
 												<i class="align-middle" data-feather="trash-2"></i>
-											</button>
-										</div>
+											</span>
+										</button>
 									</div>
 								</div>
 							</div>

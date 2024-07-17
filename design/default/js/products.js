@@ -100,13 +100,21 @@
 	$(function () {
 		$(document).on('click', 'a.product-remove', function (e) {
 			e.preventDefault();
+			
 			var href = $(this).attr('href');
+
 			$('#cart-informer-2').load(href + ' #cart-informer-2', function () {
 				$('#offcanvasCart').offcanvas('show');
 			});
+
 			$('#cart-informer-footer').load(href + ' #cart-informer-footer');
 			$('#cart-informer-mobile').load(href + ' #cart-informer-mobile');
 			$('#offcanvasCart').offcanvas('hide');
+
+			if ($('#js-ajax-content').length > 0) {
+				$('#js-ajax-content').load(href + ' #js-ajax-content');
+			}
+
 			return false;
 		});
 	});

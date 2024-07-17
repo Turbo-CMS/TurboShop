@@ -103,4 +103,22 @@
 			});
 		});
 	</script>
+	<style>
+		.colorpicker-element .add-on i:before {
+			content: "";
+			position: absolute;
+			width: 16px;
+			height: 16px;
+			display: inline-block;
+			vertical-align: text-top;
+			margin-left: -8px;
+			background: linear-gradient(45deg, rgba(0, 0, 0, 0.1) 25%, transparent 25%, transparent 75%, rgba(0, 0, 0, 0.1) 75%, rgba(0, 0, 0, 0.1) 0), linear-gradient(45deg, rgba(0, 0, 0, 0.1) 25%, transparent 25%, transparent 75%, rgba(0, 0, 0, 0.1) 75%, rgba(0, 0, 0, 0.1) 0), white;
+			background-size: 10px 10px;
+			background-position: 0 0, 5px 5px;
+		}
+
+		.colorpicker-element .add-on i[style*="background-color"]::before {
+			content: none;
+		}
+	</style>
 {/literal}

@@ -81,7 +81,7 @@
 			</div>
 			{* Gallery Thumblist *}
 			{if $product->images|count>1}
-				<div id="product-slider-pagination" class="product-gallery-thumblist {if $product->colors|count> 1}loader-container{/if}" {if $product->colors|count > 1}style="display: none;" {/if}>
+				<div id="product-slider-pagination" class="product-gallery-thumblist">
 					{foreach $product->images as $i => $image name=images}
 						<div id="image{$image->id}">
 							<a id="carousel-selector-{$image->id}" class="product-gallery-thumblist-item d-flex justify-content-center align-items-center {if $smarty.foreach.images.first}selected{/if}" href="#" data-bs-target="#productImages" data-bs-slide-to="{$smarty.foreach.images.index}">
@@ -152,69 +152,34 @@
 							<h3 class="offers-price"><span itemprop="price" content="{$product->variant->price|convert:'':false}" class="price-value">{$product->variant->price|convert}</span> <span itemprop="priceCurrency" content="{$currency->code|escape}" class="currency">{$currency->sign|escape}</span></h3>
 							{if $product->variant->compare_price > 0}<h5 class="text-muted offers-price-old"><del><span class="price-value">{$product->variant->compare_price|convert}</span> <span class="currency">{$currency->sign|escape}</span></del></h5>{/if}
 						</div>
-						{if $product->colors|count > 1}
-							<div class="loader-container" style="display: none;">
+						{if isset($product->related_products) && $product->related_products}
+							<div class="mb-0">
+								<label class="form-label"><strong>{$lang->color}</strong>: <span class="text-secondary">{$product->variant->color}</span></label>
+							</div>
+							<div class="color-product mb-3">
+								{foreach $product->related_products as $related_product}
+									<a href="{$lang_link}products/{$related_product->url}" style="background-color:{$related_product->variant->color_code}" class="btn btn-sm rounded-circle mb-1 me-1 {if $related_product->variant->color_code == '#ffffff'}white{/if} {if $product->id == $related_product->id}active{/if}" {if $related_product->variant->color}data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="{$related_product->variant->color}" {/if}>
+										<span class="fa fa-check"></span>
+									</a>
+								{/foreach}
+							</div>
+							<div class="{if $product->variants|count < 2}d-none{/if}">
 								<div class="mb-0">
-									<label class="form-label">{$lang->color}:</label>
+									<label class="form-label">{$lang->option}:</label>
 								</div>
-								<div id="colors" class="mb-3 color-product {if $product->colors|count < 2}d-none{/if}">
-									{foreach $product->colors as $k=>$v}
-										<label class="btn btn-sm rounded-circle mb-1 me-1 {if $v@first}active{/if} {if $v['code'] == '#ffffff'}white{/if}" style="background: {$v['code']}" {if $k}data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="{$k}" {/if}>
-											<input type="radio" name="color" value="{$k}" class="btn-check" {if $v@first}checked{/if} autocomplete="off">
-											<span class="fa fa-check"></span>
-										</label>
-									{/foreach}
-								</div>
-								<div class="mb-0">
-									{if $category->id == '8'}
-										<label class="form-label">{$lang->size}:</label>
-									{else}
-										<label class="form-label">{$lang->option}:</label>
-									{/if}
-								</div>
-								<div id="variants" class="variants-size mb-3">
+								<div class="variants-size mb-3">
 									{foreach $product->variants as $v}
-										<label class="btn btn-sm btn-outline-secondary mb-1 me-1"><input type="radio" name="variant" value="{$v->id}" class="btn-check" {if $v@first}checked{/if} autocomplete="off">{$v->name}</label>
+										<input type="radio" name="variant" value="{$v->id}" class="btn-check" id="btn-{$v->id}" data-price="{$v->price|convert}" data-stock="{$v->stock}" {if $v->compare_price}data-compare="{$v->compare_price|convert}" {/if} {if $v->name}data-name="{$v->name}" {/if} {if $v->sku}data-sku="{$v->sku}" {/if} {if $product->variant->id==$v->id}checked{/if} autocomplete="off">
+										<label class="btn btn-sm btn-outline-secondary mb-1 me-1" for="btn-{$v->id}">{$v->name}</label>
 									{/foreach}
 								</div>
 							</div>
-							<script>
-								var variants = {
-									{foreach $product->variants as $v} 
-										'{$v->id}': {literal}{{/literal}'color':'{$v->color}', 'images_ids':[{$v->images_ids}], 'name':'{$v->name}', 'stock':'{$v->stock}', 'price':'{$v->price|convert}', 'sku':'{$v->sku}', 'compare_price':'{$v->compare_price|convert}'{literal}}{/literal},
-									{/foreach}   
-								};
-							</script>
 						{else}
-							{if $related_products}
-								<div class="mb-0">
-									<label class="form-label"><strong>{$lang->color}</strong>: <span class="text-secondary">{$product->variant->color}</span></label>
-								</div>
-								<div class="color-product mb-3">
-									{foreach $related_products as $related_product}
-										<a href="{$lang_link}products/{$related_product->url}" style="background-color:{$related_product->variant->color_code}" class="btn btn-sm rounded-circle mb-1 me-1 {if $related_product->variant->color_code == '#ffffff'}white{/if} {if $product->id == $related_product->id}active{/if}" {if $related_product->variant->color}data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="{$related_product->variant->color}" {/if}>
-											<span class="fa fa-check"></span>
-										</a>
-									{/foreach}
-								</div>
-								<div class="{if $product->variants|count < 2}d-none{/if}">
-									<div class="mb-0">
-										<label class="form-label">{$lang->option}:</label>
-									</div>
-									<div class="variants-size mb-3">
-										{foreach $product->variants as $v}
-											<input type="radio" name="variant" value="{$v->id}" class="btn-check" id="btn-{$v->id}" data-price="{$v->price|convert}" data-stock="{$v->stock}" {if $v->compare_price}data-compare="{$v->compare_price|convert}" {/if} {if $v->name}data-name="{$v->name}" {/if} {if $v->sku}data-sku="{$v->sku}" {/if} {if $product->variant->id==$v->id}checked{/if} autocomplete="off">
-											<label class="btn btn-sm btn-outline-secondary mb-1 me-1" for="btn-{$v->id}">{$v->name}</label>
-										{/foreach}
-									</div>
-								</div>
-							{else}
-								<select name="variant" id="{if isset($prefix)}{$prefix}variant-{/if}{$product->id}" class="orderby form-select mb-4" data-productid="{$product->id}" {if $product->variants|count == 1}hidden{/if}>
-									{foreach $product->variants as $v}
-										<option value="{$v->id}" data-price="{$v->price|convert}" data-stock="{$v->stock}" {if $v->compare_price}data-compare="{$v->compare_price|convert}" {/if} {if $v->name}data-name="{$v->name}" {/if} {if $v->sku}data-sku="{$v->sku}" {/if} {if $product->variant->id==$v->id}selected{/if}>{$v->name}</option>
-									{/foreach}
-								</select>
-							{/if}
+							<select name="variant" id="{if isset($prefix)}{$prefix}variant-{/if}{$product->id}" class="orderby form-select mb-4" data-productid="{$product->id}" {if $product->variants|count == 1}hidden{/if}>
+								{foreach $product->variants as $v}
+									<option value="{$v->id}" data-price="{$v->price|convert}" data-stock="{$v->stock}" {if $v->compare_price}data-compare="{$v->compare_price|convert}" {/if} {if $v->name}data-name="{$v->name}" {/if} {if $v->sku}data-sku="{$v->sku}" {/if} {if $product->variant->id==$v->id}selected{/if}>{$v->name}</option>
+								{/foreach}
+							</select>
 						{/if}
 						<button type="submit" data-result-text="<i class='fal fa-shopping-bag me-2'></i>{$lang->added_cart}" id="add-to-cart" class="btn btn-primary btn-lg mb-3" value="{$lang->add_cart}" title="{$lang->add_cart}" {if !$product->variant->stock}disabled{/if}><i class="fal fa-shopping-bag me-2"></i>{$lang->add_cart}</button>
 						<div class="btn-group mb-3" role="group" aria-label="Product button">
@@ -235,7 +200,9 @@
 					</form>
 					{* Schema.org *}
 					<span style="display:none;">
-						<time itemprop="priceValidUntil" datetime="{$product->created|date:'Ymd'}"></time>
+						{if !empty($product->sale_to)}
+							<meta itemprop="priceValidUntil" content="{$product->sale_to|date:'Y-m-d'}">
+						{/if}
 						{if $product->variant->stock > 0}
 							<link itemprop="availability" href="https://schema.org/InStock">
 						{else}

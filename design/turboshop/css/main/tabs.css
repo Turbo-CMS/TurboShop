@@ -1,0 +1,7 @@
+.tab-content-block {
+	display: none
+}
+
+.tab-content-block.active {
+	display: block
+}

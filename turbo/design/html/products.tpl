@@ -59,7 +59,7 @@
 								<option value="{url keyword=null brand_id=null category_id=null page=null limit=null filter='new'}" {if isset($filter) && $filter == 'new'}selected{/if}>{$btr->global_new|escape}</option>
 								<option value="{url keyword=null brand_id=null category_id=null page=null limit=null filter='hit'}" {if isset($filter) && $filter == 'hit'}selected{/if}>{$btr->global_hit|escape}</option>
 								<option value="{url keyword=null brand_id=null category_id=null page=null limit=null filter='discounted'}" {if isset($filter) && $filter == 'discounted'}selected{/if}>{$btr->products_discount|escape}</option>
-								<option value="{url keyword=null brand_id=null category_id=null page=null limit=null filter='to_export'}" {if isset($filter) && $filter == 'to_export'}selected{/if}>{$btr->global_add_xml_short|escape}</option>
+								<option value="{url keyword=null brand_id=null category_id=null page=null limit=null filter='to_xml'}" {if isset($filter) && $filter == 'to_xml'}selected{/if}>{$btr->global_xml|escape}</option>
 								<option value="{url keyword=null brand_id=null category_id=null page=null limit=null filter='visible'}" {if isset($filter) && $filter == 'visible'}selected{/if}>{$btr->products_enable|escape}</option>
 								<option value="{url keyword=null brand_id=null category_id=null page=null limit=null filter='hidden'}" {if isset($filter) && $filter == 'hidden'}selected{/if}>{$btr->products_disable|escape}</option>
 								<option value="{url keyword=null brand_id=null category_id=null page=null limit=null filter='outofstock'}" {if isset($filter) && $filter == 'outofstock'}selected{/if}>{$btr->products_out_of_stock|escape}</option>
@@ -142,7 +142,7 @@
 												<a class="fw-bold text-body text-decoration-none" href="{url module=ProductAdmin id=$product->id return=$smarty.server.REQUEST_URI}">
 													{$product->name|escape}
 													{if $product->variants[0]->name || $product->variants[0]->color}
-														<span class="text-secondary">({$product->variants[0]->name|escape}{if $product->variants[0]->color} {$product->variants[0]->color|escape}{/if})</span>
+														<span class="text-secondary">({$product->variants[0]->color|escape}{if $product->variants[0]->color && $product->variants[0]->name}/{/if}{$product->variants[0]->name|escape})</span>
 													{/if}
 												</a>
 												<div class="d-block d-lg-none mt-1">
@@ -198,8 +198,8 @@
 												<button type="button" class="setting-icon setting-icon-new js-ajax-action {if $product->is_new}js-active-class{/if}" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_new|escape}" data-module="product" data-action="is_new" data-id="{$product->id}">
 													<i class="align-middle" data-feather="calendar"></i>
 												</button>
-												<button type="button" class="setting-icon setting-icon-export js-ajax-action {if $product->to_export}js-active-class{/if}" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_add_xml|escape}" data-module="product" data-action="to_export" data-id="{$product->id}">
-													<i class="align-middle" data-feather="file"></i>
+												<button type="button" class="setting-icon setting-icon-xml js-ajax-action {if $product->to_xml}js-active-class{/if}" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_add_xml|escape}" data-module="product" data-action="to_xml" data-id="{$product->id}">
+													<i class="align-middle" data-feather="rss"></i>
 												</button>
 												<button type="button" class="setting-icon setting-icon-hit js-ajax-action {if $product->is_hit}js-active-class{/if}" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_hit|escape}" data-module="product" data-action="is_hit" data-id="{$product->id}">
 													<i class="align-middle" data-feather="award"></i>
@@ -209,11 +209,11 @@
 												</button>
 											</div>
 											<div class="turbo-list-boding turbo-list-delete">
-												<div data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
-													<button type="button" class="btn-delete js-remove" data-bs-toggle="modal" data-bs-target="#actionModal" onclick="success_action($(this));">
+												<button type="button" class="btn-delete js-remove" data-bs-toggle="modal" data-bs-target="#actionModal" onclick="success_action($(this));">
+													<span data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
 														<i class="align-middle" data-feather="trash-2"></i>
-													</button>
-												</div>
+													</span>
+												</button>
 											</div>
 										</div>
 										{if $product->variants|count > 1}
@@ -225,7 +225,7 @@
 															<div class="turbo-list-boding turbo-list-check"></div>
 															<div class="turbo-list-boding turbo-list-photo"></div>
 															<div class="turbo-list-boding turbo-list-variant-name">
-																<span class="text-secondary fw-bold">{$variant->name|escape}{if $variant->color} / {$variant->color|escape}{/if}</span>
+																<span class="text-secondary fw-bold">{$variant->color|escape}{if $variant->color && $variant->name}/{/if}{$variant->name|escape}</span>
 															</div>
 															<div class="turbo-list-boding turbo-list-price">
 																<div class="input-group">
@@ -275,8 +275,8 @@
 											<option value="unset_is_new">{$btr->products_unmark_new|escape}</option>
 											<option value="set_is_hit">{$btr->products_mark_hit|escape}</option>
 											<option value="unset_is_hit">{$btr->products_unmark_hit|escape}</option>
-											<option value="set_export">{$btr->global_add_xml_short|escape}</option>
-											<option value="unset_export">{$btr->global_from_xml_short|escape}</option>
+											<option value="set_xml">{$btr->global_add_xml_short|escape}</option>
+											<option value="unset_xml">{$btr->global_from_xml_short|escape}</option>
 											<option value="duplicate">{$btr->products_create_dublicate|escape}</option>
 											{if $pages_count>1}
 												<option value="move_to_page">{$btr->products_move_to_page|escape}</option>
@@ -336,8 +336,8 @@
 											<input type="text" name="value" class="form-control" placeholder="{$btr->enter_numeric_value|escape}">
 										</div>
 										<div class="col-md-2 col-lg-2 ps-0 ps-xl-2">
-											<div class="form-check mb-1 mt-1 me-sm-2" data-bs-toggle="tooltip" data-bs-placement="right" title="{$btr->save_old_price|escape}">
-												<input class="form-check-input js-check-all-single" type="checkbox" checked="checked" name="save_old" value="1">
+											<div class="form-check mb-1 mt-1 me-sm-2">
+												<input class="form-check-input js-check-all-single" type="checkbox" checked="checked" name="save_old" value="1" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->save_old_price|escape}">
 												<label class="form-check-label"></label>
 											</div>
 										</div>
@@ -374,7 +374,7 @@
 			$(document).on('change', '.js-action-block select.products-action', function() {
 				var elem = $(this).find('option:selected').val();
 				$('.js-hide-block').addClass('d-none');
-				if ($('#' + elem).size() > 0) {
+				if ($('#' + elem).length > 0) {
 					$('#' + elem).removeClass('d-none');
 				}
 			});

@@ -80,6 +80,6 @@ if ($data) {
 	header("Expires: -1");
 
 	$json = json_encode($data);
-	
+
 	print $json;
 }

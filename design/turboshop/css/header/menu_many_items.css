@@ -1,0 +1,129 @@
+/*Menu many sections*/
+
+.header-menu__many-items {
+	width: 100%;
+}
+
+.long-menu-items .parent-items:not(.parent-items--active) {
+	display: none;
+}
+
+.header-menu__wide-right-part+.header-menu__many-items {
+	width: calc(100% - 280px);
+}
+
+.long-menu-items .header-menu__wide-limiter {
+	max-height: 630px;
+	height: 630px;
+	padding: 33px 40px 40px 40px;
+}
+
+.menu-navigation__scroll {
+	max-height: 630px;
+}
+
+.parent-items__info {
+	display: flex;
+	flex-direction: row-reverse;
+	justify-content: space-between;
+	align-items: flex-start;
+}
+
+.parent-items__item-arrow {
+	height: 28px;
+	width: 28px;
+	margin-left: 14px;
+	background-color: rgba(136, 136, 136, 0.1);
+	padding: 0px 7px 0px 8px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.parent-items__item-arrow svg * {
+	stroke: #333;
+	stroke: var(--white_text_black);
+}
+
+.parent-items__item-title {
+	margin-bottom: 28px;
+}
+
+.menu-navigation {
+	display: flex;
+	height: 630px;
+}
+
+body .menu-navigation__sections-wrapper {
+	overflow: hidden;
+	flex-direction: column;
+	width: 312px;
+	height: 100%;
+	flex-shrink: 0;
+	border-right: 1px solid var(--stroke_black);
+}
+
+.menu-navigation__sections {
+	padding: 20px 16px 20px 16px;
+	width: 100%;
+}
+
+body .menu-navigation__sections .menu-navigation__sections-item-link {
+	white-space: normal;
+}
+
+.menu-navigation__sections-item-link {
+	padding: 9px 33px 10px 16px;
+	position: relative;
+	display: block;
+}
+
+.menu-navigation__sections-item-link .svg-inline-right {
+	position: absolute;
+	right: 20px;
+	top: 17px;
+}
+
+.menu-navigation__sections-item-link .image {
+	display: table-cell;
+}
+
+.menu-navigation__sections-item-link .image img {
+	width: 30px;
+}
+
+.menu-navigation__sections-item-link .image .svg svg {
+	width: 30px;
+	height: 30px;
+}
+
+.menu-navigation__sections-item-link .image+.name {
+	padding-left: 13px;
+	display: table-cell;
+	vertical-align: middle;
+	padding-bottom: 1px;
+}
+
+.menu-navigation__sections-item-link--image.menu-navigation__sections-item-link {
+	padding-top: 6px;
+	padding-bottom: 12px;
+}
+
+.menu-navigation__content {
+	flex-grow: 1;
+	padding: 0px;
+}
+
+.menu-navigation__sections-item-link--active {
+	background: var(--darkgrey_bg_black);
+}
+
+.menu-navigation__content .header-menu__dropdown-menu-inner {
+	width: 100%;
+}
+
+.header-menu__item--more-items .long-menu-items {
+	display: none;
+}
+
+/**/

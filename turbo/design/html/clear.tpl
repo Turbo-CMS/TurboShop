@@ -16,15 +16,15 @@
 					</div>
 				</div>
 				<h5 class="card-title mb-0">{$btr->global_parameters|escape}</h5>
+				<div class="position-relative">
+					<div class="progress position-absolute w-100 mt-2" style="display: none;">
+						<div id="progressbar" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%"></div>
+					</div>
+				</div>
 			</div>
 			<div class="collapse-card">
 				<div class="card-body">
 					<div class="row">
-						<div class="col-12">
-							<div class="progress mb-1" style="display: none;">
-								<div id="progressbar" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%"></div>
-							</div>
-						</div>
 						<div class="col-xl-2 col-lg-3 col-md-4">
 							<div class="mb-3 d-grid d-sm-block">
 								<div class="form-label">{$btr->site_cache|escape}</div>

@@ -1,3 +1,8 @@
+/**
+ * Copyright (c) 2018-2024 TurboCMS.
+ * https://github.com/Turbo-CMS
+ */
+
 (function ($) {
 	"use strict";
 

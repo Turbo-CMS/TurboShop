@@ -161,25 +161,21 @@ class View extends Turbo
 			// Plugins
 			$this->design->smarty->registerPlugin('block', 'js', [$this, 'addJavascriptBlock']);
 			$this->design->smarty->registerPlugin('block', 'css', [$this, 'addStylesheetBlock']);
-			$this->design->smarty->registerPlugin("function", "get_faqs", [$this, 'getFaqsPlugin']);
-			$this->design->smarty->registerPlugin("function", "get_posts", [$this, 'getPostsPlugin']);
-			$this->design->smarty->registerPlugin("function", "get_banner", [$this, 'getBannerPlugin']);
-			$this->design->smarty->registerPlugin("function", "get_brands", [$this, 'getBrandsPlugin']);
+			$this->design->smarty->registerPlugin('function', 'get_faqs', [$this, 'getFaqsPlugin']);
+			$this->design->smarty->registerPlugin('function', 'get_posts', [$this, 'getPostsPlugin']);
+			$this->design->smarty->registerPlugin('function', 'get_banner', [$this, 'getBannerPlugin']);
+			$this->design->smarty->registerPlugin('function', 'get_brands', [$this, 'getBrandsPlugin']);
 			$this->design->smarty->registerPlugin('function', 'javascript', [$this, 'printJavascript']);
 			$this->design->smarty->registerPlugin('function', 'stylesheet', [$this, 'printStylesheet']);
-			$this->design->smarty->registerPlugin("function", "get_captcha", [$this, 'getCaptchaPlugin']);
-			$this->design->smarty->registerPlugin("function", "get_articles", [$this, 'getArticlesPlugin']);
-			$this->design->smarty->registerPlugin("function", "get_products", [$this, 'getProductsPlugin']);
-			$this->design->smarty->registerPlugin("function", "get_comments", [$this, 'getCommentsPlugin']);
+			$this->design->smarty->registerPlugin('function', 'get_captcha', [$this, 'getCaptchaPlugin']);
+			$this->design->smarty->registerPlugin('function', 'get_articles', [$this, 'getArticlesPlugin']);
+			$this->design->smarty->registerPlugin('function', 'get_products', [$this, 'getProductsPlugin']);
+			$this->design->smarty->registerPlugin('function', 'get_comments', [$this, 'getCommentsPlugin']);
 			$this->design->smarty->registerPlugin('function', 'unset_js', [$this, 'unsetJavascriptFunction']);
 			$this->design->smarty->registerPlugin('function', 'unset_css', [$this, 'unsetStylesheetFunction']);
-			$this->design->smarty->registerPlugin("function", "get_browsed_products", [$this, 'getBrowsedProducts']);
-			$this->design->smarty->registerPlugin("function", "get_new_products", [$this, 'getNewProductsPlugin']);
-			$this->design->smarty->registerPlugin("function", "get_is_new_products", [$this, 'getIsNewProductsPlugin']);
-			$this->design->smarty->registerPlugin("function", "get_is_hit_products", [$this, 'getIsHitProductsPlugin']);
-			$this->design->smarty->registerPlugin("function", "get_featured_products", [$this, 'getFeaturedProductsPlugin']);
-			$this->design->smarty->registerPlugin("function", "get_discounted_products", [$this, 'getDiscountedProductsPlugin']);
-			$this->design->smarty->registerPlugin("function", "get_featured_categories", [$this, 'getFeaturedCategoriesPlugin']);
+			$this->design->smarty->registerPlugin('function', 'get_categories', [$this, 'getCategoriesPlugin']);
+			$this->design->smarty->registerPlugin('function', 'get_browsed_products', [$this, 'getBrowsedProductsPlugin']);
+			$this->design->smarty->registerPlugin('function', 'get_featured_categories', [$this, 'getFeaturedCategoriesPlugin']);
 		}
 	}
 
@@ -192,7 +188,7 @@ class View extends Turbo
 	}
 
 	/**
-	 * Get Featured Categories plugin
+	 * Get Featured Categories Plugin
 	 */
 	public function getFeaturedCategoriesPlugin($params, $smarty)
 	{
@@ -210,7 +206,24 @@ class View extends Turbo
 	}
 
 	/**
-	 * Get Captcha plugin
+	 * Get Categories Plugin
+	 */
+	function getCategoriesPlugin($params, $smarty)
+	{
+		$categories = [];
+
+		if (!empty($params['category']) && is_numeric($params['category'])) {
+			$categoryId = intval($params['category']);
+			$categories = $this->categories->getCategory($categoryId);
+		}
+
+		if (!empty($params['var'])) {
+			$smarty->assign($params['var'], $categories);
+		}
+	}
+
+	/**
+	 * Get Captcha Plugin
 	 */
 	public function getCaptchaPlugin($params, $smarty)
 	{
@@ -233,7 +246,7 @@ class View extends Turbo
 	}
 
 	/**
-	 * Get Banner plugin
+	 * Get Banner Plugin
 	 */
 	public function getBannerPlugin($params, $smarty)
 	{
@@ -264,7 +277,7 @@ class View extends Turbo
 	}
 
 	/**
-	 * Get Post plugin
+	 * Get Post Plugin
 	 */
 	public function getPostsPlugin($params, $smarty)
 	{
@@ -288,7 +301,7 @@ class View extends Turbo
 	}
 
 	/**
-	 * Get FAQ plugin
+	 * Get FAQ Plugin
 	 */
 	public function getFaqsPlugin($params, $smarty)
 	{
@@ -297,7 +310,7 @@ class View extends Turbo
 		}
 
 		if (!empty($params['var'])) {
-			$faqs = $this->faq->get_faqs($params);
+			$faqs = $this->faq->getFaqs($params);
 		}
 
 		if (empty($faqs)) {
@@ -308,7 +321,7 @@ class View extends Turbo
 	}
 
 	/**
-	 * Get Articles plugin
+	 * Get Articles Plugin
 	 */
 	public function getArticlesPlugin($params, $smarty)
 	{
@@ -333,7 +346,7 @@ class View extends Turbo
 	}
 
 	/**
-	 * Get Comments plugin
+	 * Get Comments Plugin
 	 */
 	public function getCommentsPlugin($params, $smarty)
 	{
@@ -394,12 +407,12 @@ class View extends Turbo
 	}
 
 	/**
-	 * Get Brands plugin
+	 * Get Brands Plugin
 	 */
 	public function getBrandsPlugin($params, $smarty)
 	{
-		if (!isset($params['visible'])) {
-			$params['visible'] = 1;
+		if (!isset($params['visible_brand'])) {
+			$params['visible_brand'] = 1;
 		}
 
 		if (!empty($params['var'])) {
@@ -408,13 +421,18 @@ class View extends Turbo
 	}
 
 	/**
-	 * Gets Products plugin
+	 * Get Products Plugin
 	 */
 	public function getProductsPlugin($params, $smarty)
 	{
 		$products = [];
 
 		if (!empty($params['var'])) {
+			if (isset($params['category_id']) && $params['category_id']) {
+				$category = $this->categories->getCategory((int) $params['category_id']);
+				$params['category_id'] = $category->children;
+			}
+
 			foreach ($this->products->getProducts($params) as $p) {
 				$products[$p->id] = $p;
 				$products[$p->id]->variants = [];
@@ -453,11 +471,14 @@ class View extends Turbo
 							$v = new stdClass();
 							$v->price = $product->variant->price;
 							$v->compare_price = 0;
-							$this->variants->update_variant($product->variant->id, $v);
+							$this->variants->updateVariant($product->variant->id, $v);
 						}
 					}
 
 					$product->comments_count = $this->comments->countComments(['has_parent' => false, 'object_id' => $product->id, 'type' => 'product', 'approved' => 1]);
+
+					$this->db->query("SELECT SUM(rating)/COUNT(id) AS ratings FROM __comments WHERE id IN (SELECT id FROM __comments WHERE type='product' AND object_id = $product->id AND approved=1 AND admin=0 AND rating > 0)");
+					$product->ratings = floatval($this->db->result('ratings'));
 
 					$dataRelatedProducts = [];
 					$relatedIds = $this->products->getRelatedProductIds([$product->id]);
@@ -506,9 +527,9 @@ class View extends Turbo
 	}
 
 	/**
-	 * Get Browsed Products plugin
+	 * Get Browsed Products Plugin
 	 */
-	public function getBrowsedProducts($params, $smarty)
+	public function getBrowsedProductsPlugin($params, $smarty)
 	{
 		$result = [];
 
@@ -555,6 +576,9 @@ class View extends Turbo
 					$result[] = $products[$id];
 
 					$products[$id]->comments_count = $this->comments->countComments(['has_parent' => false, 'object_id' => $id, 'type' => 'product', 'approved' => 1]);
+
+					$this->db->query("SELECT SUM(rating)/COUNT(id) AS ratings FROM __comments WHERE id IN (SELECT id FROM __comments WHERE type='product' AND object_id = $product->id AND approved=1 AND admin=0 AND rating > 0)");
+					$products[$id]->ratings = floatval($this->db->result('ratings'));
 
 					$dataRelatedProducts = [];
 					$relatedIds = $this->products->getRelatedProductIds([$id]);
@@ -603,542 +627,7 @@ class View extends Turbo
 	}
 
 	/**
-	 * Get Featured Products plugin
-	 */
-	public function getFeaturedProductsPlugin($params, $smarty)
-	{
-		if (!isset($params['visible'])) {
-			$params['visible'] = 1;
-		}
-
-		if (!isset($params['featured'])) {
-			$params['featured'] = 1;
-		}
-
-		if (!empty($params['var'])) {
-			$products = [];
-
-			foreach ($this->products->getProducts($params) as $p) {
-				$products[$p->id] = $p;
-				$products[$p->id]->variants = [];
-				$products[$p->id]->images = [];
-			}
-
-			if (!empty($products)) {
-				$productIds = array_keys($products);
-
-				$variants = $this->variants->getVariants(['has_parent' => false, 'product_id' => $productIds]);
-
-				foreach ($variants as &$variant) {
-					$products[$variant->product_id]->variants[] = $variant;
-				}
-
-				$images = $this->products->getImages(['product_id' => $productIds]);
-
-				foreach ($images as $image) {
-					$products[$image->product_id]->images[] = $image;
-				}
-
-				foreach ($products as &$product) {
-					if (isset($product->variants[0])) {
-						$product->variant = $product->variants[0];
-					}
-
-					if (isset($product->images[0])) {
-						$product->image = $product->images[0];
-					}
-
-					if (!empty($product->sale_to) && strtotime($product->sale_to) <= time()) {
-						$product->sale_to = null;
-
-						if (isset($product->variant) && $product->variant->compare_price) {
-							$product->variant->price = $product->variant->compare_price;
-							$product->variant->compare_price = 0;
-							$v = new stdClass();
-							$v->price = $product->variant->price;
-							$v->compare_price = 0;
-							$this->variants->update_variant($product->variant->id, $v);
-						}
-					}
-
-					$product->comments_count = $this->comments->countComments(['has_parent' => false, 'object_id' => $product->id, 'type' => 'product', 'approved' => 1,]);
-
-					$dataRelatedProducts = [];
-					$relatedIds = $this->products->getRelatedProductIds([$product->id]);
-
-					if (!empty($relatedIds)) {
-						$relatedProducts = $this->products->getProducts(['id' => $relatedIds, 'visible' => 1]);
-
-						if (!empty($relatedProducts)) {
-							$relatedProductsImages = $this->products->getImages(['product_id' => array_keys($relatedProducts)]);
-
-							foreach ($relatedProducts as $relatedProduct) {
-								$relatedProduct->images = [];
-								$relatedProduct->variants = [];
-
-								foreach ($relatedProductsImages as $relatedProductImage) {
-									if ($relatedProduct->id == $relatedProductImage->product_id) {
-										$relatedProduct->images[] = $relatedProductImage;
-									}
-								}
-
-								$relatedProductsVariants = $this->variants->getVariants(['product_id' => $relatedProduct->id]);
-
-								foreach ($relatedProductsVariants as $relatedProductVariant) {
-									$relatedProduct->variants[] = $relatedProductVariant;
-								}
-
-								if (isset($relatedProduct->variants[0])) {
-									$relatedProduct->variant = $relatedProduct->variants[0];
-								}
-
-								if (isset($relatedProduct->images[0])) {
-									$relatedProduct->image = $relatedProduct->images[0];
-								}
-
-								$dataRelatedProducts[] = $relatedProduct;
-							}
-						}
-					}
-
-					$product->related_products = $dataRelatedProducts;
-				}
-			}
-
-			$smarty->assign($params['var'], $products);
-		}
-	}
-
-	/**
-	 * Get New Products plugin
-	 */
-	public function getIsNewProductsPlugin($params, $smarty)
-	{
-		if (!isset($params['visible'])) {
-			$params['visible'] = 1;
-		}
-
-		if (!isset($params['is_new'])) {
-			$params['is_new'] = 1;
-		}
-
-		if (!empty($params['var'])) {
-			$products = [];
-
-			foreach ($this->products->getProducts($params) as $p) {
-				$products[$p->id] = $p;
-				$products[$p->id]->variants = [];
-				$products[$p->id]->images = [];
-			}
-
-			if (!empty($products)) {
-				$productIds = array_keys($products);
-
-				$variants = $this->variants->getVariants(['has_parent' => false, 'product_id' => $productIds]);
-
-				foreach ($variants as &$variant) {
-					$products[$variant->product_id]->variants[] = $variant;
-				}
-
-				$images = $this->products->getImages(['product_id' => $productIds]);
-
-				foreach ($images as $image) {
-					$products[$image->product_id]->images[] = $image;
-				}
-
-				foreach ($products as &$product) {
-					if (isset($product->variants[0])) {
-						$product->variant = $product->variants[0];
-					}
-
-					if (isset($product->images[0])) {
-						$product->image = $product->images[0];
-					}
-
-					if (!empty($product->sale_to) && strtotime($product->sale_to) <= time()) {
-						$product->sale_to = null;
-
-						if (isset($product->variant) && $product->variant->compare_price) {
-							$product->variant->price = $product->variant->compare_price;
-							$product->variant->compare_price = 0;
-
-							$v = new stdClass();
-							$v->price = $product->variant->price;
-							$v->compare_price = 0;
-
-							$this->variants->update_variant($product->variant->id, $v);
-						}
-					}
-
-					$product->comments_count = $this->comments->countComments(['has_parent' => false, 'object_id' => $product->id, 'type' => 'product', 'approved' => 1,]);
-
-					$dataRelatedProducts = [];
-					$relatedIds = $this->products->getRelatedProductIds([$product->id]);
-
-					if (!empty($relatedIds)) {
-						$relatedProducts = $this->products->getProducts(['id' => $relatedIds, 'visible' => 1]);
-						if (!empty($relatedProducts)) {
-							$relatedProductsImages = $this->products->getImages(['product_id' => array_keys($relatedProducts)]);
-
-							foreach ($relatedProducts as $relatedProduct) {
-								$relatedProduct->images = [];
-								$relatedProduct->variants = [];
-
-								foreach ($relatedProductsImages as $relatedProductImage) {
-									if ($relatedProduct->id == $relatedProductImage->product_id) {
-										$relatedProduct->images[] = $relatedProductImage;
-									}
-								}
-
-								$relatedProductsVariants = $this->variants->getVariants(['product_id' => $relatedProduct->id]);
-
-								foreach ($relatedProductsVariants as $relatedProductVariant) {
-									$relatedProduct->variants[] = $relatedProductVariant;
-								}
-
-								if (isset($relatedProduct->variants[0])) {
-									$relatedProduct->variant = $relatedProduct->variants[0];
-								}
-
-								if (isset($relatedProduct->images[0])) {
-									$relatedProduct->image = $relatedProduct->images[0];
-								}
-
-								$dataRelatedProducts[] = $relatedProduct;
-							}
-						}
-					}
-
-					$product->related_products = $dataRelatedProducts;
-				}
-			}
-
-			$smarty->assign($params['var'], $products);
-		}
-	}
-
-	/**
-	 * Get Hit Products plugin
-	 */
-	public function getIsHitProductsPlugin($params, $smarty)
-	{
-		if (!isset($params['visible'])) {
-			$params['visible'] = 1;
-		}
-
-		if (!isset($params['is_hit'])) {
-			$params['is_hit'] = 1;
-		}
-
-		if (!empty($params['var'])) {
-			$products = [];
-
-			foreach ($this->products->getProducts($params) as $p) {
-				$products[$p->id] = $p;
-				$products[$p->id]->variants = [];
-				$products[$p->id]->images = [];
-			}
-
-			if (!empty($products)) {
-				$productIds = array_keys($products);
-
-				$variants = $this->variants->getVariants(['has_parent' => false, 'product_id' => $productIds]);
-
-				foreach ($variants as &$variant) {
-					$products[$variant->product_id]->variants[] = $variant;
-				}
-
-				$images = $this->products->getImages(['product_id' => $productIds]);
-
-				foreach ($images as $image) {
-					$products[$image->product_id]->images[] = $image;
-				}
-
-				foreach ($products as &$product) {
-					if (isset($product->variants[0])) {
-						$product->variant = $product->variants[0];
-					}
-
-					if (isset($product->images[0])) {
-						$product->image = $product->images[0];
-					}
-
-					if (!empty($product->sale_to) && strtotime($product->sale_to) <= time()) {
-						$product->sale_to = null;
-
-						if (isset($product->variant) && $product->variant->compare_price) {
-							$product->variant->price = $product->variant->compare_price;
-							$product->variant->compare_price = 0;
-							$v = new stdClass();
-							$v->price = $product->variant->price;
-							$v->compare_price = 0;
-							$this->variants->update_variant($product->variant->id, $v);
-						}
-					}
-
-					$product->comments_count = $this->comments->countComments(['has_parent' => false, 'object_id' => $product->id, 'type' => 'product', 'approved' => 1,]);
-
-					$dataRelatedProducts = [];
-					$relatedIds = $this->products->getRelatedProductIds([$product->id]);
-
-					if (!empty($relatedIds)) {
-						$relatedProducts = $this->products->getProducts(['id' => $relatedIds, 'visible' => 1]);
-
-						if (!empty($relatedProducts)) {
-							$relatedProductsImages = $this->products->getImages(['product_id' => array_keys($relatedProducts)]);
-
-							foreach ($relatedProducts as $relatedProduct) {
-								$relatedProduct->images = [];
-								$relatedProduct->variants = [];
-
-								foreach ($relatedProductsImages as $relatedProductImage) {
-									if ($relatedProduct->id == $relatedProductImage->product_id) {
-										$relatedProduct->images[] = $relatedProductImage;
-									}
-								}
-
-								$relatedProductsVariants = $this->variants->getVariants(['product_id' => $relatedProduct->id]);
-
-								foreach ($relatedProductsVariants as $relatedProductVariant) {
-									$relatedProduct->variants[] = $relatedProductVariant;
-								}
-
-								if (isset($relatedProduct->variants[0])) {
-									$relatedProduct->variant = $relatedProduct->variants[0];
-								}
-
-								if (isset($relatedProduct->images[0])) {
-									$relatedProduct->image = $relatedProduct->images[0];
-								}
-
-								$dataRelatedProducts[] = $relatedProduct;
-							}
-						}
-					}
-
-					$product->related_products = $dataRelatedProducts;
-				}
-			}
-
-			$smarty->assign($params['var'], $products);
-		}
-	}
-
-	/**
-	 * Get Last Products plugin
-	 */
-	public function getNewProductsPlugin($params, $smarty)
-	{
-		if (!isset($params['visible'])) {
-			$params['visible'] = 1;
-		}
-
-		if (!isset($params['sort'])) {
-			$params['sort'] = 'created';
-		}
-
-		if (!empty($params['var'])) {
-			$products = [];
-
-			foreach ($this->products->getProducts($params) as $p) {
-				$products[$p->id] = $p;
-				$products[$p->id]->variants = [];
-				$products[$p->id]->images = [];
-			}
-
-			if (!empty($products)) {
-				$productIds = array_keys($products);
-
-				$variants = $this->variants->getVariants(['has_parent' => false, 'product_id' => $productIds]);
-
-				foreach ($variants as &$variant) {
-					$products[$variant->product_id]->variants[] = $variant;
-				}
-
-				$images = $this->products->getImages(['product_id' => $productIds]);
-
-				foreach ($images as $image) {
-					$products[$image->product_id]->images[] = $image;
-				}
-
-				foreach ($products as &$product) {
-					if (isset($product->variants[0])) {
-						$product->variant = $product->variants[0];
-					}
-
-					if (isset($product->images[0])) {
-						$product->image = $product->images[0];
-					}
-
-					if (!empty($product->sale_to) && strtotime($product->sale_to) <= time()) {
-						$product->sale_to = null;
-
-						if (isset($product->variant) && $product->variant->compare_price) {
-							$product->variant->price = $product->variant->compare_price;
-							$product->variant->compare_price = 0;
-							$v = new stdClass();
-							$v->price = $product->variant->price;
-							$v->compare_price = 0;
-							$this->variants->update_variant($product->variant->id, $v);
-						}
-					}
-
-					$product->comments_count = $this->comments->countComments(['has_parent' => false, 'object_id' => $product->id, 'type' => 'product', 'approved' => 1,]);
-
-					$dataRelatedProducts = [];
-					$relatedIds = $this->products->getRelatedProductIds([$product->id]);
-
-					if (!empty($relatedIds)) {
-						$relatedProducts = $this->products->getProducts(['id' => $relatedIds, 'visible' => 1]);
-						if (!empty($relatedProducts)) {
-							$relatedProductsImages = $this->products->getImages(['product_id' => array_keys($relatedProducts)]);
-
-							foreach ($relatedProducts as $relatedProduct) {
-								$relatedProduct->images = [];
-								$relatedProduct->variants = [];
-
-								foreach ($relatedProductsImages as $relatedProductImage) {
-									if ($relatedProduct->id == $relatedProductImage->product_id) {
-										$relatedProduct->images[] = $relatedProductImage;
-									}
-								}
-
-								$relatedProductsVariants = $this->variants->getVariants(['product_id' => $relatedProduct->id]);
-
-								foreach ($relatedProductsVariants as $relatedProductVariant) {
-									$relatedProduct->variants[] = $relatedProductVariant;
-								}
-
-								if (isset($relatedProduct->variants[0])) {
-									$relatedProduct->variant = $relatedProduct->variants[0];
-								}
-
-								if (isset($relatedProduct->images[0])) {
-									$relatedProduct->image = $relatedProduct->images[0];
-								}
-
-								$dataRelatedProducts[] = $relatedProduct;
-							}
-						}
-					}
-
-					$product->related_products = $dataRelatedProducts;
-				}
-			}
-
-			$smarty->assign($params['var'], $products);
-		}
-	}
-
-	/**
-	 * Get Discounted Products plugin
-	 */
-	public function getDiscountedProductsPlugin($params, $smarty)
-	{
-		if (!isset($params['visible'])) {
-			$params['visible'] = 1;
-		}
-
-		if (!isset($params['discounted'])) {
-			$params['discounted'] = 1;
-		}
-
-		if (!empty($params['var'])) {
-			$products = [];
-
-			foreach ($this->products->getProducts($params) as $p) {
-				$products[$p->id] = $p;
-				$products[$p->id]->variants = [];
-				$products[$p->id]->images = [];
-			}
-
-			if (!empty($products)) {
-				$productIds = array_keys($products);
-
-				$variants = $this->variants->getVariants(['has_parent' => false, 'product_id' => $productIds]);
-
-				foreach ($variants as &$variant) {
-					$products[$variant->product_id]->variants[] = $variant;
-				}
-
-				$images = $this->products->getImages(['product_id' => $productIds]);
-
-				foreach ($images as $image) {
-					$products[$image->product_id]->images[] = $image;
-				}
-
-				foreach ($products as &$product) {
-					if (isset($product->variants[0])) {
-						$product->variant = $product->variants[0];
-					}
-
-					if (isset($product->images[0])) {
-						$product->image = $product->images[0];
-					}
-
-					if (!empty($product->sale_to) && strtotime($product->sale_to) <= time()) {
-						$product->sale_to = null;
-
-						if (isset($product->variant) && $product->variant->compare_price) {
-							$product->variant->price = $product->variant->compare_price;
-							$product->variant->compare_price = 0;
-							$v = new stdClass();
-							$v->price = $product->variant->price;
-							$v->compare_price = 0;
-							$this->variants->update_variant($product->variant->id, $v);
-						}
-					}
-
-					$product->comments_count = $this->comments->countComments(['has_parent' => false, 'object_id' => $product->id, 'type' => 'product', 'approved' => 1,]);
-
-					$dataRelatedProducts = [];
-					$relatedIds = $this->products->getRelatedProductIds([$product->id]);
-
-					if (!empty($relatedIds)) {
-						$relatedProducts = $this->products->getProducts(['id' => $relatedIds, 'visible' => 1]);
-
-						if (!empty($relatedProducts)) {
-							$relatedProductsImages = $this->products->getImages(['product_id' => array_keys($relatedProducts)]);
-
-							foreach ($relatedProducts as $relatedProduct) {
-								$relatedProduct->images = [];
-								$relatedProduct->variants = [];
-
-								foreach ($relatedProductsImages as $relatedProductImage) {
-									if ($relatedProduct->id == $relatedProductImage->product_id) {
-										$relatedProduct->images[] = $relatedProductImage;
-									}
-								}
-
-								$relatedProductsVariants = $this->variants->getVariants(['product_id' => $relatedProduct->id]);
-
-								foreach ($relatedProductsVariants as $relatedProductVariant) {
-									$relatedProduct->variants[] = $relatedProductVariant;
-								}
-
-								if (isset($relatedProduct->variants[0])) {
-									$relatedProduct->variant = $relatedProduct->variants[0];
-								}
-
-								if (isset($relatedProduct->images[0])) {
-									$relatedProduct->image = $relatedProduct->images[0];
-								}
-
-								$dataRelatedProducts[] = $relatedProduct;
-							}
-						}
-					}
-
-					$product->related_products = $dataRelatedProducts;
-				}
-			}
-
-			$smarty->assign($params['var'], $products);
-		}
-	}
-
-	/**
-	 * Add JavaScript file
+	 * Add JavaScript File
 	 */
 	public function addJavascriptBlock($params, $content, $smarty, &$repeat)
 	{
@@ -1172,7 +661,7 @@ class View extends Turbo
 	}
 
 	/**
-	 * Unregister JavaScript file
+	 * Unregister JavaScript File
 	 */
 	public function unsetJavascriptFunction($params, $smarty)
 	{
@@ -1184,7 +673,7 @@ class View extends Turbo
 	}
 
 	/**
-	 * Render packed JavaScript file
+	 * Render packed JavaScript File
 	 */
 	public function printJavascript($params)
 	{
@@ -1204,7 +693,7 @@ class View extends Turbo
 	}
 
 	/**
-	 * Register CSS file
+	 * Register CSS File
 	 */
 	public function addStylesheetBlock($params, $content, $smarty, &$repeat)
 	{
@@ -1242,7 +731,7 @@ class View extends Turbo
 	}
 
 	/**
-	 * Unregisters CSS file
+	 * Unregisters CSS File
 	 */
 	public function unsetStylesheetFunction($params, $smarty)
 	{
@@ -1256,7 +745,7 @@ class View extends Turbo
 	}
 
 	/**
-	 * Print packed CSS file
+	 * Print packed CSS File
 	 */
 	public function printStylesheet($params)
 	{

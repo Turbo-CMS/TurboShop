@@ -49,16 +49,16 @@ $(document).ready(function () {
     }
 
     $('input[name="delivery_id"]').change(function () {
-        var parentCard = $(this).closest('.card');
-        var otherCards = $('.card').not(parentCard);
+        var parentCard = $(this).closest('#delivery');
+        var otherCards = $('#delivery').not(parentCard);
 
         if ($(this).is(':checked')) {
-            parentCard.find('.card-body input').removeAttr('disabled');
+            parentCard.find('#expressDelivery input').removeAttr('disabled');
         } else {
-            parentCard.find('.card-body input').attr('disabled', 'disabled');
+            parentCard.find('#expressDelivery input').attr('disabled', 'disabled');
         }
 
-        otherCards.find('.card-body input').attr('disabled', 'disabled');
+        otherCards.find('#expressDelivery input').attr('disabled', 'disabled');
     });
 
 });

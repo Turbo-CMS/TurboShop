@@ -58,36 +58,18 @@
 					{foreach $cart->purchases as $purchase}
 						<tr>
 							<td class="text-center">
-								{if isset($purchase->product->images)}
-									{$img_flag=0}
-									{$image_array=","|explode:$purchase->variant->images_ids}
-									{foreach $purchase->product->images as $image}
-										{if $image->id|in_array:$image_array}
-											{if $img_flag==0}{$image_toshow=$image}{/if}
-											{$img_flag=1}
-										{/if}
-									{/foreach}
-									{if $img_flag ne 0}
-										<a href="{$lang_link}products/{$purchase->product->url}">
-											<img src="{$image_toshow->filename|resize:116:116}" alt="{$purchase->product->name|escape}">
-										</a>
-									{else}
+								<a href="{$lang_link}products/{$purchase->product->url}">
+									{if isset($purchase->product->images)}
 										{$image = $purchase->product->images|first}
-										{if $image}
-											<a href="{$lang_link}products/{$purchase->product->url}">
-												<img src="{$image->filename|resize:116:116}" alt="{$purchase->product->name|escape}">
-											</a>
-										{else}
-											<a href="{$lang_link}products/{$purchase->product->url}">
-												<img style="width: 116px; height: 116px;" src="design/{$settings->theme|escape}/images/no-photo.svg" alt="{$purchase->product->name|escape}">
-											</a>
-										{/if}
+										<img src="{$image->filename|resize:116:116}" alt="{$purchase->product->name|escape}">
+									{else}
+										<img style="width: 116px; height: 116px;" src="design/{$settings->theme|escape}/images/no-photo.svg" alt="{$purchase->product->name|escape}">
 									{/if}
-								{/if}
+								</a>
 							</td>
 							<td data-title="{$lang->general_name}">
 								<a href="{$lang_link}products/{$purchase->product->url}" class="text-decoration-none">{$purchase->product->name|escape}</a></br>
-								{if $purchase->variant->color}{$purchase->variant->color|escape} / {/if}{$purchase->variant->name|escape}
+								{$purchase->variant->color|escape} {if $purchase->variant->color && $purchase->variant->name}/{/if} {$purchase->variant->name|escape}
 							</td>
 							<td data-title="{$lang->general_price}">{($purchase->variant->price)|convert} {$currency->sign}</td>
 							<td data-title="{$lang->number}">
@@ -201,7 +183,7 @@
 				<h3 class="my-4">{$lang->select_delivery_method}:</h3>
 				<div id="accordionDelivery">
 					{foreach $deliveries as $delivery}
-						<div class="card my-2">
+						<div id="delivery" class="card my-2">
 							<div class="card-header">
 								<h5 class="mb-0">
 									<div class="form-check">

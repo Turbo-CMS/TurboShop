@@ -1,0 +1,131 @@
+.bottom-menu .wrap .title {
+	font-weight: normal;
+	font-size: 0.9375rem;
+}
+
+.footer__title {
+	color: #333;
+	color: var(--white_text_black);
+	margin: -3px 0 25px 0;
+}
+
+.footer--color-dark .footer__title {
+	color: #fff;
+}
+
+.footer__main-part-inner {
+	padding: 80px 0 80px;
+}
+
+.bottom-menu .item-link .item-link-arrow {
+	display: none;
+}
+
+.bottom-menu .item-link-arrow * {
+	fill: var(--fill_dark_light);
+}
+
+.footer--color-dark .item-link-arrow * {
+	fill: #fff;
+}
+
+.bottom-menu .wrap .title a:not(:hover) {
+	color: #dadada;
+}
+
+.bottom-menu .items>.wrap .item-link {
+	margin: 10px 0;
+}
+
+.bottom-menu .wrap .item-link:first-of-type {
+	margin-top: 0;
+}
+
+.bottom-menu .wrap .item-link:last-of-type {
+	margin-bottom: 0;
+}
+
+.footer--color-light .bottom-menu .wrap .item a:not(:hover) {
+	color: #666;
+	color: var(--d6t9_dark_light);
+}
+
+.footer--color-dark .wrap_menu_compact_mobile .item:hover .title a,
+.footer--color-dark .wrap_menu_compact_mobile .item.active .title a {
+	color: #fff !important;
+}
+
+@media (max-width: 1200px) {
+
+	.footer__subscribe,
+	.footer__social {
+		margin-bottom: 20px;
+	}
+}
+
+@media (min-width: 768px) {
+	.bottom-menu .items>.wrap {
+		margin: 19px 0 0px 0;
+		height: auto !important;
+	}
+
+	.wrap_menu_compact_mobile {
+		display: block !important;
+	}
+}
+
+@media (max-width: 991px) {
+	.footer__main-part-inner {
+		padding: 24px 0 16px;
+		flex-direction: column;
+		border: none;
+	}
+
+	.footer__title {
+		margin: 20px 0 12px 0;
+	}
+}
+
+@media (max-width: 767px) {
+	.bottom-menu .items {
+		padding: 0px;
+	}
+
+	.footer__title {
+		margin: 0px 0 17px 0;
+	}
+
+	.bottom-menu .item-link.items-child .item-link-arrow {
+		display: block;
+	}
+
+	.footer .footer__main-part-menu {
+		flex-direction: column;
+	}
+
+	.bottom-menu .item-link-arrow {
+		margin-left: 8px;
+	}
+
+	.bottom-menu .item-link svg {
+		transition: transform 0.3s ease;
+	}
+
+	.bottom-menu .item-link.opened svg {
+		transform: rotate(180deg);
+		transition: transform 0.3s ease;
+	}
+
+	.footer--color-dark .bottom-menu .items-child:hover .item-link-arrow * {
+		fill: #999 !important;
+	}
+
+	.footer--color-light .bottom-menu .items-child:hover .item-link-arrow * {
+		fill: #000 !important;
+		fill: var(--fill_dark_lite_hover) !important;
+	}
+
+	.bottom-menu .wrap .item-link:last-of-type {
+		margin-bottom: 16px;
+	}
+}

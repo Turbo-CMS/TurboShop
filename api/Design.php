@@ -1,8 +1,9 @@
 <?php
 
 require_once __DIR__ . '/Turbo.php';
-require_once dirname(__DIR__) . '/smarty/libs/Smarty.class.php';
-require_once 'MobileDetect.php';
+
+use Smarty\Smarty;
+use Detection\MobileDetect;
 
 class Design extends Turbo
 {
@@ -25,36 +26,49 @@ class Design extends Turbo
 
 		$theme = $this->settings->theme;
 
-		$this->smarty->compile_dir = $this->config->root_dir . '/compiled/' . $theme;
-		$this->smarty->template_dir = $this->config->root_dir . '/design/' . $theme . '/html';
+		$this->smarty->setCompileDir($this->config->root_dir . '/compiled/' . $theme);
+		$this->smarty->setTemplateDir($this->config->root_dir . '/design/' . $theme . '/html');
 
-		if (!is_dir($this->smarty->compile_dir)) {
-			mkdir($this->smarty->compile_dir, 0777);
+		if (!is_dir($this->smarty->getCompileDir())) {
+			mkdir($this->smarty->getCompileDir(), 0777, true);
 		}
 
-		$this->smarty->cache_dir = 'cache';
+		$this->smarty->setCacheDir('cache');
 
-		$this->smarty->registerPlugin('modifier', 'resize_articles', [$this, 'resizeArticlesModifier']);
-		$this->smarty->registerPlugin('modifier', 'resize_catalog', [$this, 'resizeCatalogModifier']);
-		$this->smarty->registerPlugin('modifier', 'resize_brands', [$this, 'resizeBrandsModifier']);
-		$this->smarty->registerPlugin('modifier', 'resize_banners', [$this, 'resizeBannersModifier']);
-		$this->smarty->registerPlugin('modifier', 'resize_posts', [$this, 'resizePostsModifier']);
-		$this->smarty->registerPlugin('modifier', 'resize', [$this, 'resizeModifier']);
-		$this->smarty->registerPlugin('modifier', 'token', [$this, 'tokenModifier']);
-		$this->smarty->registerPlugin('modifier', 'plural', [$this, 'pluralModifier']);
-		$this->smarty->registerPlugin('function', 'url', [$this, 'urlModifier']);
-		$this->smarty->registerPlugin('modifier', 'first', [$this, 'firstModifier']);
-		$this->smarty->registerPlugin('modifier', 'cut', [$this, 'cutModifier']);
-		$this->smarty->registerPlugin('modifier', 'date', [$this, 'dateModifier']);
-		$this->smarty->registerPlugin('modifier', 'time', [$this, 'timeModifier']);
 		$this->smarty->registerPlugin('function', 'api', [$this, 'apiPlugin']);
-		$this->smarty->registerPlugin('modifier', 'floor', [$this, 'floorModifier']);
+		$this->smarty->registerPlugin('function', 'url', [$this, 'urlModifier']);
+		$this->smarty->registerPlugin('modifier', 'cut', [$this, 'cutModifier']);
+		$this->smarty->registerPlugin('modifier', 'hsl', [$this, 'hslModifier']);
+		$this->smarty->registerPlugin('modifier', 'max', [$this, 'maxModifier']);
+		$this->smarty->registerPlugin('modifier', 'min', [$this, 'minModifier']);
+		$this->smarty->registerPlugin('modifier', 'svg', [$this, 'svgModifier']);
+		$this->smarty->registerPlugin('modifier', 'date', [$this, 'dateModifier']);
+		$this->smarty->registerPlugin('modifier', 'sort', [$this, 'sortModifier']);
+		$this->smarty->registerPlugin('modifier', 'time', [$this, 'timeModifier']);
 		$this->smarty->registerPlugin('modifier', 'ceil', [$this, 'ceilModifier']);
+		$this->smarty->registerPlugin('modifier', 'token', [$this, 'tokenModifier']);
+		$this->smarty->registerPlugin('modifier', 'first', [$this, 'firstModifier']);
+		$this->smarty->registerPlugin('modifier', 'floor', [$this, 'floorModifier']);
+		$this->smarty->registerPlugin('modifier', 'is_svg', [$this, 'isSvgModifier']);
+		$this->smarty->registerPlugin('modifier', 'resize', [$this, 'resizeModifier']);
+		$this->smarty->registerPlugin('modifier', 'plural', [$this, 'pluralModifier']);
+		$this->smarty->registerPlugin('modifier', 'intval', [$this, 'intvalModifier']);
 		$this->smarty->registerPlugin('modifier', 'stristr', [$this, 'stristrModifier']);
 		$this->smarty->registerPlugin('modifier', 'in_array', [$this, 'inArrayModifier']);
-		$this->smarty->registerPlugin('modifier', 'array_slice', [$this, 'arraySliceModifier']);
-		$this->smarty->registerPlugin('modifier', 'getimagesize', [$this, 'getimagesizeModifier']);
+		$this->smarty->registerPlugin('modifier', 'filesize', [$this, 'filesizeModifier']);
+		$this->smarty->registerPlugin('modifier', 'floatval', [$this, 'floatvalModifier']);
+		$this->smarty->registerPlugin('modifier', 'mb_substr', [$this, 'mbSubstrModifier']);
+		$this->smarty->registerPlugin('modifier', 'array_pop', [$this, 'arrayPopModifier']);
 		$this->smarty->registerPlugin('modifier', 'urlencode', [$this, 'urlencodeModifier']);
+		$this->smarty->registerPlugin('modifier', 'strtotime', [$this, 'strtotimeModifier']);
+		$this->smarty->registerPlugin('modifier', 'array_slice', [$this, 'arraySliceModifier']);
+		$this->smarty->registerPlugin('modifier', 'resize_posts', [$this, 'resizePostsModifier']);
+		$this->smarty->registerPlugin('modifier', 'getimagesize', [$this, 'getimagesizeModifier']);
+		$this->smarty->registerPlugin('modifier', 'resize_brands', [$this, 'resizeBrandsModifier']);
+		$this->smarty->registerPlugin('modifier', 'resize_catalog', [$this, 'resizeCatalogModifier']);
+		$this->smarty->registerPlugin('modifier', 'resize_banners', [$this, 'resizeBannersModifier']);
+		$this->smarty->registerPlugin('modifier', 'resize_articles', [$this, 'resizeArticlesModifier']);
+		$this->smarty->registerPlugin('modifier', 'format_filesize', [$this, 'formatFilesizeModifier']);
 
 		if ($this->config->smarty_html_minify) {
 			$this->smarty->loadFilter('output', 'trimwhitespace');
@@ -85,7 +99,7 @@ class Design extends Turbo
 	 */
 	public function setTemplatesDir($dir)
 	{
-		$this->smarty->template_dir = $dir;
+		$this->smarty->setTemplateDir($dir);
 	}
 
 	/**
@@ -93,7 +107,7 @@ class Design extends Turbo
 	 */
 	public function setCompiledDir($dir)
 	{
-		$this->smarty->compile_dir = $dir;
+		$this->smarty->setCompileDir($dir);
 	}
 
 	/**
@@ -388,5 +402,177 @@ class Design extends Turbo
 	function urlencodeModifier($value)
 	{
 		return urlencode($value);
+	}
+
+	/**
+	 * Max Modifier
+	 */
+	public function maxModifier($a, $b)
+	{
+		return max($a, $b);
+	}
+
+	/**
+	 * Min Modifier
+	 */
+	public function minModifier($a, $b)
+	{
+		return min($a, $b);
+	}
+
+	/**
+	 * Strtotime Modifier
+	 */
+	function strtotimeModifier($string)
+	{
+		return strtotime($string);
+	}
+
+	/**
+	 * Array Pop Modifier
+	 */
+	public function arrayPopModifier($array)
+	{
+		if (is_array($array)) {
+			return array_pop($array);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Floatval Modifier
+	 */
+	function floatvalModifier($string)
+	{
+		return floatval($string);
+	}
+
+	/**
+	 * Intval Modifier
+	 */
+	function intvalModifier($text)
+	{
+		return intval($text);
+	}
+
+	/**
+	 * Filesize Modifier
+	 */
+	public function filesizeModifier($file)
+	{
+		return filesize($file);
+	}
+
+	/**
+	 * Format Filesize Modifier
+	 */
+	public function formatFilesizeModifier($size)
+	{
+		$size = max(0, (int) $size);
+		$units = array(' b', ' Kb', ' Mb', ' Gb', ' Tb', ' Pb', ' Eb', ' Zb', ' Yb');
+		$power = $size > 0 ? floor(log($size, 1024)) : 0;
+		return number_format($size / pow(1024, $power), 2, '.', ',') . $units[$power];
+	}
+
+	/**
+	 * HSL Modifier
+	 */
+	function hslModifier($hex)
+	{
+		$hex = str_replace('#', '', $hex);
+
+		$r = hexdec(substr($hex, 0, 2)) / 255;
+		$g = hexdec(substr($hex, 2, 2)) / 255;
+		$b = hexdec(substr($hex, 4, 2)) / 255;
+
+		$max = max($r, $g, $b);
+		$min = min($r, $g, $b);
+		$h = ($max + $min) / 2;
+		$s = ($max + $min) / 2;
+		$l = ($max + $min) / 2;
+
+		if ($max == $min) {
+			$h = $s = 0;
+		} else {
+			$d = $max - $min;
+			$s = $l > 0.5 ? $d / (2 - $max - $min) : $d / ($max + $min);
+			switch ($max) {
+				case $r:
+					$h = ($g - $b) / $d + ($g < $b ? 6 : 0);
+					break;
+				case $g:
+					$h = ($b - $r) / $d + 2;
+					break;
+				case $b:
+					$h = ($r - $g) / $d + 4;
+					break;
+			}
+			$h /= 6;
+		}
+
+		$h = round($h * 360, 2);
+		$s = round($s * 100, 2);
+		$l = round($l * 100, 2);
+
+		return array('hue' => $h, 'saturation' => $s, 'lightness' => $l);
+	}
+
+	/**
+	 * Sort Modifier
+	 */
+	function sortModifier($settings, $themeSettings)
+	{
+		usort($settings, function ($a, $b) use ($themeSettings) {
+			$valueA = isset($themeSettings[$a->variable]) ? $themeSettings[$a->variable] : null;
+			$valueB = isset($themeSettings[$b->variable]) ? $themeSettings[$b->variable] : null;
+
+			if ($valueA == $valueB) {
+				return 0;
+			}
+
+			if ($valueA === null) {
+				return -1;
+			}
+
+			if ($valueB === null) {
+				return 1;
+			}
+
+			return $valueA <=> $valueB;
+		});
+		return $settings;
+	}
+
+	/**
+	 * Is SVG Modifier
+	 */
+	function isSvgModifier($filePath)
+	{
+		return strtolower(pathinfo($filePath, PATHINFO_EXTENSION)) === 'svg';
+	}
+
+	/**
+	 * SVG Modifier
+	 */
+	function svgModifier($filePath)
+	{
+		if (file_exists($filePath) && is_readable($filePath)) {
+			return file_get_contents($filePath);
+		} else {
+			return '';
+		}
+	}
+
+	/**
+	 * Mb Substr Modifier
+	 */
+	function mbSubstrModifier($string, $start, $length = null, $encoding = 'UTF-8')
+	{
+		if ($length === null) {
+			return mb_substr($string, $start, null, $encoding);
+		} else {
+			return mb_substr($string, $start, $length, $encoding);
+		}
 	}
 }

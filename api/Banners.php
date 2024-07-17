@@ -201,7 +201,7 @@ class Banners extends Turbo
 
 		if ($this->db->query("INSERT INTO __banners_images SET ?%", $bannersImage)) {
 			$id = $this->db->insertId();
-			
+
 			$this->db->query("UPDATE __banners_images SET position=id WHERE id=?", $id);
 
 			if (!empty($result->description)) {
@@ -413,7 +413,7 @@ class Banners extends Turbo
 					continue;
 				}
 
-				$showFilterArray[$k] = $this->db->placehold($k . " regexp '[[:<:]](?)[[:>:]]'", (int) $showFilterArray[$k]);
+				$showFilterArray[$k] = $this->db->placehold("`$k` LIKE ?", '%' . $showFilterArray[$k] . '%');
 			}
 
 			$showFilterArray[] = "show_all_pages=1";
@@ -424,7 +424,7 @@ class Banners extends Turbo
 		$this->db->query($query);
 
 		$banner = $this->db->result();
-		
+
 		return $banner;
 	}
 
@@ -475,7 +475,7 @@ class Banners extends Turbo
 			}
 
 			$query = $this->db->placehold("DELETE FROM __banners WHERE id=? LIMIT 1", (int) $id);
-			
+
 			if ($this->db->query($query)) {
 				return true;
 			}

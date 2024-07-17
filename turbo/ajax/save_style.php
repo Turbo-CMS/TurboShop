@@ -18,12 +18,14 @@ if (!$turbo->request->checkSession()) {
 $content = $turbo->request->post('content');
 $style = $turbo->request->post('style');
 $theme = $turbo->request->post('theme', 'string');
+$dir = $turbo->request->post('dir', 'string');
 
 if (pathinfo($style, PATHINFO_EXTENSION) !== 'css') {
 	exit();
 }
 
-$file = $turbo->config->root_dir . 'design/' . $theme . '/css/' . $style;
+$dir = trim($dir, '/');
+$file = $turbo->config->root_dir . 'design/' . $theme . '/css/' . $dir . '/' . $style;
 
 if (is_file($file) && is_writable($file) && !is_file($turbo->config->root_dir . 'design/' . $theme . '/locked')) {
 	file_put_contents($file, $content);

@@ -1,0 +1,113 @@
+/* Capcha */
+.secret-number {
+	color: var(--input_color);
+	box-shadow: none;
+	border: 1px solid #dadada;
+	border-color: var(--input_border_color);
+	height: 47px;
+	display: inline-block;
+	padding: 12px 14px;
+	background: #fff;
+	background-color: var(--input_bg_color);
+	font-size: 16px;
+	line-height: calc(1em + 4px);
+	border-radius: 8px;
+	border-radius: var(--border-radius);
+	position: relative;
+}
+
+/* Autocomplete */
+.autocomplete-suggestions {
+	background-color: #ffffff;
+	overflow: hidden;
+	border: 1px solid #e0e0e0;
+	overflow-y: auto;
+}
+
+.autocomplete-suggestions .search-img {
+	display: inline-block;
+	text-align: center;
+	width: 50px;
+	height: 50px;
+	line-height: 43px;
+}
+
+.autocomplete-suggestions img {
+	max-width: 100%;
+	max-height: 60px;
+}
+
+.autocomplete-suggestions a {
+	text-decoration: none !important;
+	display: inline-block;
+}
+
+.autocomplete-suggestions .autocomplete-suggestion {
+	cursor: default;
+}
+
+.autocomplete-suggestions .selected {
+	background: #F0F0F0;
+}
+
+.autocomplete-suggestions div {
+	white-space: nowrap;
+}
+
+.autocomplete-suggestions strong {
+	font-weight: bold;
+	color: #0d6efd;
+}
+
+/* Catalog */
+.catalog-table__outer-wrapper.bordered {
+	border-top: none;
+}
+
+.text-danger {
+	color: #b94a48;
+}
+
+body {
+	--border_white_color: var(--light, #ededed) var(--dark, #fff);
+}
+
+.line-block__item .sku-props__value--pict.white::after {
+	content: "";
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	border: 1px solid var(--border_white_color);
+	border-radius: calc(var(--border-radius) - 5px);
+}
+
+.blog-comments .bottom_nav_wrapper {
+	margin-top: -12px;
+}
+
+.theme-dark .admin-bookmark {
+	border: 1px solid #3a3a3a !important;
+	background-color: #232323 !important
+}
+
+[data-theme=dark] {
+	color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+	[data-theme=default] {
+		color-scheme: dark;
+	}
+
+	.theme-default .admin-bookmark {
+		border: 1px solid #3a3a3a !important;
+		background-color: #232323 !important
+	}
+}
+
+.img-fluid {
+	max-width: 100%;
+	height: auto;
+}

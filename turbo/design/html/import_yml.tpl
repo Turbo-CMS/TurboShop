@@ -262,7 +262,7 @@
 		{literal}
 			var in_process = false;
 			var count = 1;
-			
+
 			$(function() {
 				Piecon.setOptions({fallback: 'force'});
 				Piecon.setProgress(0);
@@ -332,7 +332,13 @@
 		}
 
 		#progressbar {
+		{/literal}
+		{if $settings->admin_theme == "dark"}
+			background-color: #4e5863;
+		{else}
 			background-color: #e9ecef;
+		{/if}
+		{literal}		
 			border-radius: 0.2rem;
 			font-size: 0.61875rem;
 			height: 1rem;
@@ -352,6 +358,7 @@
 			text-align: center;
 			transition: width 0.6s ease;
 			white-space: nowrap;
+			border: 0;
 		}
 
 		@media (prefers-reduced-motion: reduce) {

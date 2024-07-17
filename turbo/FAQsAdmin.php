@@ -35,7 +35,7 @@ class FAQsAdmin extends Turbo
 			}
 		}
 
-		$filter = ['page' => max(1, $this->request->get('page', 'integer')), 'limit' => $this->settings->blog_num_admin,];
+		$filter = ['page' => max(1, $this->request->get('page', 'integer')), 'limit' => $this->settings->faq_num_admin,];
 
 		$keyword = $this->request->get('keyword', 'string');
 

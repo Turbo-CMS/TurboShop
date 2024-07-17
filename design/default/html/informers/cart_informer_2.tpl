@@ -8,9 +8,7 @@
 {else}
 	<a class="text-muted position-relative" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCart" href="#offcanvasCart" role="button" aria-controls="offcanvasCart">
 		<i class="fal fa-shopping-bag fs-5"></i>
-		<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">
-			0
-		</span>
+		<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">0</span>
 	</a>
 {/if}
 

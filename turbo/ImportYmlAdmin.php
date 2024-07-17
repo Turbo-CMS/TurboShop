@@ -145,7 +145,7 @@ class ImportYmlAdmin extends Turbo
 			$langId = $this->languages->langId();
 			$px = ($langId ? 'l' : 'f');
 			$langSql = $this->languages->getQuery(['object' => 'feature', 'px' => 'f']);
-			
+
 			$this->db->query("SELECT $px.name FROM __features f $langSql->join ORDER BY f.position");
 			$features = $this->db->results('name');
 

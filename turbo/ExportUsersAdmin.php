@@ -1,6 +1,6 @@
 <?php
 
-require_once('api/Turbo.php');
+require_once 'api/Turbo.php';
 
 class ExportUsersAdmin extends Turbo
 {

@@ -1,0 +1,167 @@
+/* LEFT MENU */
+.sidebar,
+.sidearea {
+	margin-bottom: 24px;
+}
+
+ul.side-menu,
+.side-menu ul {
+	margin-bottom: 0;
+}
+
+.sidearea .nav-list {
+	margin-bottom: 24px;
+}
+
+.sidearea .subscribe-edit {
+	margin-bottom: 24px;
+}
+
+.sidearea div.banner {
+	margin-bottom: 24px;
+}
+
+/* heading-top */
+.slide-block__head.closed+.slide-block__body {
+	display: none;
+}
+
+.slide-block__head+.slide-block__body {
+	padding-top: 13px;
+}
+
+.slide-block__head {
+	cursor: pointer;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	position: relative;
+}
+
+/**/
+.slide-block__head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.side-menu {
+	overflow: hidden;
+}
+
+.side-menu a {
+	padding: 4px 8px;
+}
+
+.side-menu li {
+	padding: 0px;
+	margin-bottom: 0px;
+}
+
+/*
+.side-menu.blog > li:not(:first-child){
+  padding-left: 12px;
+}
+*/
+.side-menu .link-wrapper {
+	display: flex;
+	position: relative;
+	align-items: center;
+	padding-bottom: 3px;
+}
+
+.side-menu li .dropdown-select__icon-down {
+	margin: 0px;
+	transform: rotate(90deg);
+	margin-right: 7px;
+}
+
+.side-menu li a {
+	position: relative;
+	display: block;
+}
+
+#main .side-menu li:before {
+	display: none;
+}
+
+.side-menu__link-text {
+	margin-right: 5px;
+}
+
+.bg-theme-parent-hover:hover .svg-inline-down path {
+	fill: #fff;
+}
+
+.side-menu li.active .link--active {
+	background-color: var(--darkgrey_bg_black);
+	font-weight: 500;
+}
+
+.toggle_block {
+	position: absolute;
+	top: 0;
+	right: 0;
+	z-index: 2;
+	width: 50px;
+	height: 100%;
+	bottom: 0;
+	cursor: pointer;
+}
+
+.side-menu .submenu-wrapper {
+	display: none;
+	user-select: none;
+	padding-left: 12px;
+}
+
+.arrow-left-icon~.submenu-wrapper.submenu-wrapper--filtred {
+	padding-left: 0;
+}
+
+.side-menu .submenu {
+	padding: 0px 0px 0px 0px;
+	list-style: none;
+}
+
+.side-menu .submenu .submenu {
+	margin: 0;
+	border: none;
+}
+
+.side-menu .submenu>li {
+	margin-bottom: 0px;
+}
+
+.side-menu .submenu>li:last-child {
+	margin: 0;
+}
+
+.side-menu .submenu>li:last-child .submenu {
+	padding-bottom: 0px;
+}
+
+.sidebar.dropdown-menu {
+	border-radius: 0;
+	border: none;
+	margin: -1px 0 0;
+	top: auto;
+	padding: 0;
+	text-align: left;
+	opacity: 0;
+	display: none;
+	right: auto;
+	left: auto;
+	width: 200px;
+	background: #fff !important;
+}
+
+.sidebar.dropdown-menu .side-menu>li>a {
+	padding: 15px 17px 15px 17px;
+}
+
+/*opened*/
+.side-menu li.opened.child>.submenu-wrapper {
+	display: block;
+}
+
+/**/

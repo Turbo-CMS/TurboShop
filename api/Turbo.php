@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * @author Turbo CMS
+ * @link https://github.com/Turbo-CMS
+ */
+
+require_once(dirname(__DIR__) . '/vendor/autoload.php');
+
 class Turbo
 {
 	private $classes = [

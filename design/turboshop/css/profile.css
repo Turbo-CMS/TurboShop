@@ -1,0 +1,104 @@
+/* register */
+.pk-page .top-text {
+	padding: 0 0 26px 0;
+}
+
+.pk-page .form {
+	max-width: 484px;
+	padding: 0;
+	margin: auto;
+}
+
+/* forgot password */
+.forgotpasswd-page .phone_or_login .text_block {
+	display: none;
+}
+
+.forgotpasswd-page .phone_or_login.phone_or_login-login .text_block:nth-of-type(odd),
+.forgotpasswd-page .phone_or_login.phone_or_login-email .text_block:nth-of-type(odd) {
+	display: block;
+}
+
+.forgotpasswd-page .phone_or_login.phone_or_login-phone .text_block:nth-of-type(even) {
+	display: block;
+}
+
+.forgotpasswd-page .phone_or_login .svg {
+	display: none;
+}
+
+.forgotpasswd-page .phone_or_login.phone_or_login-login .svg:nth-of-type(odd),
+.forgotpasswd-page .phone_or_login.phone_or_login-email .svg:nth-of-type(odd) {
+	display: block;
+}
+
+.forgotpasswd-page .phone_or_login.phone_or_login-phone .svg:nth-of-type(even) {
+	display: block;
+}
+
+.forgotpasswd-page .phone_or_login label {
+	display: none;
+}
+
+.forgotpasswd-page .phone_or_login:not(.phone_or_login-login):not(.phone_or_login-email):not(.phone_or_login-phone) label:nth-of-type(1) {
+	display: block;
+}
+
+.forgotpasswd-page .phone_or_login.phone_or_login-login label:nth-of-type(2),
+.forgotpasswd-page .phone_or_login.phone_or_login-email label:nth-of-type(2) {
+	display: block;
+}
+
+.forgotpasswd-page .phone_or_login.phone_or_login-phone label:nth-of-type(3) {
+	display: block;
+}
+
+/* auth */
+.auth__bottom-action {
+	margin: -8px 0 24px;
+}
+
+.auth__bottom-action .forgot {
+	margin: -4px 0 0 0;
+	display: block;
+}
+
+.auth-page.pk-page {
+	max-width: 560px;
+	padding: 0;
+	margin: auto;
+}
+
+.auth-page .phone_or_login+.form-group {
+	display: none;
+}
+
+.auth-page .phone_or_login .svg {
+	display: none;
+}
+
+.auth-page .phone_or_login.phone_or_login-login .svg:nth-of-type(odd),
+.auth-page .phone_or_login.phone_or_login-email .svg:nth-of-type(odd) {
+	display: block;
+}
+
+.auth-page .phone_or_login.phone_or_login-phone .svg:nth-of-type(even) {
+	display: block;
+}
+
+.auth-page .phone_or_login label {
+	display: none;
+}
+
+.auth-page .phone_or_login:not(.phone_or_login-login):not(.phone_or_login-email):not(.phone_or_login-phone) label:nth-of-type(1) {
+	display: block;
+}
+
+.auth-page .phone_or_login.phone_or_login-login label:nth-of-type(2),
+.auth-page .phone_or_login.phone_or_login-email label:nth-of-type(2) {
+	display: block;
+}
+
+.auth-page .phone_or_login.phone_or_login-phone label:nth-of-type(3) {
+	display: block;
+}

@@ -100,7 +100,7 @@
 								<div class="mb-3">
 									<div class="form-label">{$btr->global_background_color}</div>
 									<div id="cp" class="input-group colorpicker-component">
-										<input type="text" name="color" value="{if isset($banners_image->color) && $banners_image->color}{$banners_image->color|escape}{else}fffff{/if}" class="form-control">
+										<input type="text" name="color" value="{if isset($banners_image->color) && $banners_image->color}{$banners_image->color|escape}{/if}" class="form-control">
 										<span class="input-group-text add-on"><i></i></span>
 									</div>
 								</div>
@@ -163,7 +163,12 @@
 									<div class="js-parent-image">
 										<div class="banner-image image-wrapper js-image-wrapper text-xs-center">
 											<a href="javascript:;" class="js-delete-item remove-image"></a>
-											<img src="{$banners_image->image|resize_banners:800:400}" alt="">
+											{assign var="image" value="{$banners_image->image}"}
+											{if $image|is_svg}
+												<img src="../{$config->banners_images_dir}{$image}" alt="">
+											{else} 
+												<img src="{$image|resize_banners:800:400}" alt="">
+											{/if} 
 										</div>
 									</div>
 								{else}
@@ -263,4 +268,22 @@
 			});
 		});
 	</script>
+	<style>
+		.colorpicker-element .add-on i:before {
+			content: "";
+			position: absolute;
+			width: 16px;
+			height: 16px;
+			display: inline-block;
+			vertical-align: text-top;
+			margin-left: -8px;
+			background: linear-gradient(45deg, rgba(0, 0, 0, 0.1) 25%, transparent 25%, transparent 75%, rgba(0, 0, 0, 0.1) 75%, rgba(0, 0, 0, 0.1) 0), linear-gradient(45deg, rgba(0, 0, 0, 0.1) 25%, transparent 25%, transparent 75%, rgba(0, 0, 0, 0.1) 75%, rgba(0, 0, 0, 0.1) 0), white;
+			background-size: 10px 10px;
+			background-position: 0 0, 5px 5px;
+		}
+
+		.colorpicker-element .add-on i[style*="background-color"]::before {
+			content: none;
+		}
+	</style>
 {/literal}

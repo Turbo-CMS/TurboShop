@@ -14,11 +14,11 @@ $langLink = '';
 $firstLang = $turbo->languages->languages();
 
 if (!empty($firstLang)) {
-    $firstLang = reset($firstLang);
+	$firstLang = reset($firstLang);
 
-    if ($firstLang->id !== $language->id) {
-        $langLink = $language->label . '/';
-    }
+	if ($firstLang->id !== $language->id) {
+		$langLink = $language->label . '/';
+	}
 }
 
 $px = ($langId ? 'l' : 'p');
@@ -28,7 +28,7 @@ $keyword = $turbo->request->get('query', 'string');
 $sk = $turbo->db->escape($keyword);
 
 $turbo->db->query(
-    "SELECT 
+	"SELECT 
         p.id,
         p.url,
         $px.name, 
@@ -39,7 +39,7 @@ $turbo->db->query(
      AND visible=1 
      ORDER BY p.name 
      LIMIT ?",
-    $limit
+	$limit
 );
 
 $pages = $turbo->db->results();
@@ -47,11 +47,11 @@ $pages = $turbo->db->results();
 $suggestions = [];
 
 foreach ($pages as $page) {
-    $suggestion = new stdClass();
-    $suggestion->value = $page->name;
-    $suggestion->data = $page;
-    $suggestion->lang = $langLink;
-    $suggestions[] = $suggestion;
+	$suggestion = new stdClass();
+	$suggestion->value = $page->name;
+	$suggestion->data = $page;
+	$suggestion->lang = $langLink;
+	$suggestions[] = $suggestion;
 }
 
 $res = new stdClass();

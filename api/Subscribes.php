@@ -10,7 +10,7 @@ class Subscribes extends Turbo
 	 */
 	public function getSubscribe($id)
 	{
-		$query = $this->db->placehold("SELECT c.id, c.email, c.processed, c.date FROM __subscribes c WHERE id=? LIMIT 1", $id);
+		$query = $this->db->placehold("SELECT c.id, c.email, c.processed, c.date FROM __subscribes c WHERE email=? LIMIT 1", $id);
 
 		if ($this->db->query($query)) {
 			return $this->db->result();

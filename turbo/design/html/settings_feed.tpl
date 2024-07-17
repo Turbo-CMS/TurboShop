@@ -1,7 +1,7 @@
-{$meta_title = $btr->settings_feed_yml scope=global}
+{$meta_title = $btr->settings_feed_xml scope=global}
 
 <h1 class="mb-3">
-	{$btr->settings_feed_yml|escape}
+	{$btr->settings_feed_xml|escape}
 </h1>
 
 {if isset($message_success)}

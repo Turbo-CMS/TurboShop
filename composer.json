@@ -1,0 +1,21 @@
+{
+	"name": "turbo-cms/turboshop",
+	"description": "TurboCMS",
+	"homepage": "https://github.com/Turbo-CMS",
+	"license": "LGPL-3.0-or-later",
+	"type": "project",
+	"authors": [
+		{
+			"name": "TurboCMS",
+			"email": "mailturbocms@gmail.com"
+		}
+	],
+	"require": {
+		"smarty/smarty": "^5",
+		"chamilo/pclzip": "^2.8",
+		"mobiledetect/mobiledetectlib": "^4.8",
+		"phpmailer/phpmailer": "^6.9",
+		"matthiasmullie/minify": "*",
+		"ca-dsgn/lessphp": "*"
+	}
+}

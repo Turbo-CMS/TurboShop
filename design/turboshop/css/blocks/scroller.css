@@ -1,0 +1,92 @@
+.tb-touch .table-scroller-wrapper__ear {
+	display: none;
+}
+
+@media (min-width: 992px) {
+	#table-scroller-wrapper.scroller {
+		overflow-x: auto;
+		overflow-y: hidden;
+	}
+
+	.table-scroller-wrapper__ear {
+		position: absolute;
+		z-index: 6;
+		margin-bottom: -80px;
+		width: 36px;
+		height: 160px;
+		opacity: 0;
+		-webkit-transition: opacity 300ms ease, margin 300ms ease, height 300ms ease;
+		-o-transition: opacity 300ms ease, margin 300ms ease, height 300ms ease;
+		transition: opacity 300ms ease, margin 300ms ease, height 300ms ease;
+		-webkit-transform: translate3d(0px, 48px, 0);
+		-ms-transform: translate3d(0px, 48px, 0);
+		transform: translate3d(0px, 48px, 0);
+		will-change: transform;
+	}
+
+	.table-scroller-wrapper__ear:before,
+	.table-scroller-wrapper__ear:after {
+		content: "";
+		width: 36px;
+		height: 48px;
+		display: block;
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+	}
+
+	.table-scroller-wrapper__ear:before {
+		background-color: #333;
+		opacity: 0.4;
+	}
+
+	.table-scroller-wrapper__ear:hover:before {
+		background-color: var(--theme-base-color);
+		opacity: 1;
+	}
+
+	.table-scroller-wrapper__ear--right {
+		right: 0;
+		left: auto;
+		margin-right: -36px;
+	}
+
+	.table-scroller-wrapper__ear--right:after {
+		background: url("../../images/svg/arrows/arrow-right-light.svg") center no-repeat;
+	}
+
+	.table-scroller-wrapper__ear--right:before {
+		border-radius: 4px 0px 0px 4px;
+	}
+
+	.table-scroller-wrapper__ear--left {
+		left: 0;
+		margin-left: -36px;
+	}
+
+	.table-scroller-wrapper__ear--left:after {
+		background: url("../../images/svg/arrows/arrow-left-light.svg") center no-repeat;
+	}
+
+	.table-scroller-wrapper__ear--left:before {
+		border-radius: 0px 4px 4px 0px;
+	}
+
+	#table-scroller-wrapper:hover .table-scroller-wrapper__ear.showing {
+		opacity: 1;
+	}
+
+	#table-scroller-wrapper:hover .table-scroller-wrapper__ear--left.showing {
+		margin-left: 0;
+	}
+
+	#table-scroller-wrapper:hover .table-scroller-wrapper__ear--right.showing {
+		margin-right: 0;
+	}
+}
+
+@media (max-width: 991px) {
+	.table-scroller-wrapper__ear {
+		display: none;
+	}
+}

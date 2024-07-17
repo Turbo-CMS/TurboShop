@@ -136,7 +136,7 @@
 
 			{* View Button *}
 			<div class="btn-group" role="group" aria-label="viewButton">
-				<button onclick="document.cookie='view=grid;path=/';document.location.reload();" type="button" class="btn btn-outline-secondary {if isset($smarty.cookies.view) && $smarty.cookies.view == 'grid'}active{/if}"><i class="fal fa-th"></i></button>
+				<button onclick="document.cookie='view=grid;path=/';document.location.reload();" type="button" class="btn btn-outline-secondary {if !isset($smarty.cookies.view) || isset($smarty.cookies.view) && $smarty.cookies.view == 'grid'}active{/if}"><i class="fal fa-th"></i></button>
 				<button onclick="document.cookie='view=list;path=/';document.location.reload();" type="button" class="btn btn-outline-secondary {if isset($smarty.cookies.view) && $smarty.cookies.view == 'list'}active{/if}"><i class="fal fa-th-list"></i></button>
 			</div>
 		</div>

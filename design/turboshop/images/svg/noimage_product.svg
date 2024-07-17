@@ -1,0 +1,18 @@
+<svg id="noimage_product.svg" xmlns="http://www.w3.org/2000/svg" width="450" height="450" viewBox="0 0 450 450">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+        fill-opacity: 1;
+      }
+
+      .cls-2 {
+        fill: #2b303e;
+        fill-rule: evenodd;
+        opacity: 0.07;
+      }
+    </style>
+  </defs>
+  <rect id="Rectangle_658_copy_20" data-name="Rectangle 658 copy 20" class="cls-1" width="450" height="450"/>
+  <path id="Rounded_Rectangle_942_copy_2" data-name="Rounded Rectangle 942 copy 2" class="cls-2" d="M503,712H261c-9.941,0-16-6.059-16-16V454c0-9.941,6.059-16,16-16H503c9.941,0,16,6.059,16,16V696C519,705.941,512.941,712,503,712Zm-4-20V612.947l-55.016-54.886-44.9,44.791L488.446,692H499Zm-38.849,0-97.167-96.939L265.817,692H460.151ZM265,458V664.587l90.911-90.7a10.019,10.019,0,0,1,14.147,0l14.883,14.848,51.97-51.848a10.019,10.019,0,0,1,14.147,0L499,584.719V458H265Zm58,95a37,37,0,1,1,37-37A37,37,0,0,1,323,553Zm0-54a17,17,0,1,0,17,17A17,17,0,0,0,323,499Z" transform="translate(-157 -350)"/>
+</svg>

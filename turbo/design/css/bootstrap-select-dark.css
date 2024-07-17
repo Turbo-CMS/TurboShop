@@ -8,7 +8,7 @@
 	background-position: right 0.85rem center;
 	background-repeat: no-repeat;
 	background-size: 18px 18px;
-	border: 1px solid #7a828a;
+	border: 1px solid #4e5863;
 	border-radius: 0.2rem;
 	color: #bdc0c5;
 	display: block;
@@ -35,7 +35,7 @@
 	background-position: right 0.85rem center;
 	background-repeat: no-repeat;
 	background-size: 18px 18px;
-	border: 1px solid #7a828a;
+	border: 1px solid #4e5863;
 	border-radius: 0.2rem;
 	color: #bdc0c5;
 	display: block;
@@ -87,7 +87,7 @@
 
 .bootstrap-select.btn-group .no-results {
 	padding: 3px;
-	background: #f5f5f5;
+	background: #222e3c;
 	margin: 0 5px;
 	white-space: nowrap;
 }

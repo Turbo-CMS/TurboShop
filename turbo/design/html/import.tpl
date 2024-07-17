@@ -136,8 +136,10 @@
 									</optgroup>
 								</select>
 							{elseif $import}
-								<div class="progress mt-1" style="display: none;">
-									<div id="progressbar" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%"></div>
+								<div class="position-relative">
+									<div class="progress position-absolute w-100 mt-n4 mb-1" style="display: none;">
+										<div id="progressbar" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%"></div>
+									</div>
 								</div>
 								<ul class="import-result list-unstyled" id="js-import-result"></ul>
 							{/if}
@@ -259,7 +261,7 @@
 				});
 				return false;
 			});
-			
+
 			$(document).on("click", ".js-new-all", function() {
 				$('.js-edit-column').each(function() {
 					var edit = $(this),

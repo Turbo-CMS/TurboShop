@@ -6,33 +6,33 @@ require_once '../../api/Turbo.php';
 
 class ClearSiteAjax extends Turbo
 {
-    public function fetch()
-    {
-        $this->cleanSite($_SERVER['DOCUMENT_ROOT'] . '/cache/');
-        $this->cleanSite($_SERVER['DOCUMENT_ROOT'] . '/compiled/');
-    }
+	public function fetch()
+	{
+		$this->cleanSite($_SERVER['DOCUMENT_ROOT'] . '/cache/');
+		$this->cleanSite($_SERVER['DOCUMENT_ROOT'] . '/compiled/');
+	}
 
-    private function cleanSite($path)
-    {
-        $path = rtrim($path, '/') . '/';
+	private function cleanSite($path)
+	{
+		$path = rtrim($path, '/') . '/';
 
-        $handle = opendir($path);
+		$handle = opendir($path);
 
-        while (false !== ($file = readdir($handle))) {
-            if ($file != "." && $file != "..") {
-                $fullpath = $path . $file;
+		while (false !== ($file = readdir($handle))) {
+			if ($file != "." && $file != "..") {
+				$fullpath = $path . $file;
 
-                if (is_dir($fullpath)) {
-                    $this->cleanSite($fullpath);
-                    rmdir($fullpath);
-                } else {
-                    @unlink($fullpath);
-                }
-            }
-        }
+				if (is_dir($fullpath)) {
+					$this->cleanSite($fullpath);
+					rmdir($fullpath);
+				} else {
+					@unlink($fullpath);
+				}
+			}
+		}
 
-        closedir($handle);
-    }
+		closedir($handle);
+	}
 }
 
 $clearSiteAjax = new ClearSiteAjax();

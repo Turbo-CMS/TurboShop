@@ -1,5 +1,5 @@
 {* Featured Products *}
-{get_featured_products var=featured_products limit=4}
+{get_products featured=1 var=featured_products limit=4}
 {if $featured_products}
 	<div class="section-heading">
 		<a href="{$lang_link}featured" class="btn btn-outline-primary float-end">
@@ -19,7 +19,7 @@
 {/if}
 
 {* New Products *}
-{get_is_new_products var=new_products limit=4}
+{get_products is_new=1 var=new_products limit=4}
 {if $new_products}
 	<div class="section-heading">
 		<a href="{$lang_link}new" class="btn btn-outline-primary float-end">
@@ -39,7 +39,7 @@
 {/if}
 
 {* Discounted Products *}
-{get_discounted_products var=discounted_products limit=4}
+{get_products discounted=1 var=discounted_products limit=4}
 {if $discounted_products}
 	<div class="section-heading">
 		<a href="{$lang_link}sale" class="btn btn-outline-primary float-end">
@@ -59,7 +59,7 @@
 {/if}
 
 {* Hit *}
-{get_is_hit_products var=hit_products limit=4}
+{get_products is_hit=1 var=hit_products limit=4}
 {if $hit_products}
 	<div class="section-heading">
 		<a href="{$lang_link}hit" class="btn btn-outline-primary float-end">
@@ -84,10 +84,10 @@
 	<h2 class="my-2">{$lang->popular_categories}</h2>
 	<hr class="text-black-50">
 	<div class="row">
-		{foreach $categories as $c}
+		{foreach $categories|@array_slice:0:4 as $c}
 			{if $c->featured}
 				{if $c->visible}
-					<div class="col-lg-3 col-md-6 mb-4">
+					<div class="col-lg-3 col-md-6 mb-4"> 
 						<div class="card">
 							<div class="img-wrap">
 								{if $c->image}

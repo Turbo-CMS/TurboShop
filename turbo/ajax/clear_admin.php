@@ -6,33 +6,33 @@ require_once '../../api/Turbo.php';
 
 class ClearAdminAjax extends Turbo
 {
-    public function fetch()
-    {
-        $this->cleanAdmin($_SERVER['DOCUMENT_ROOT'] . '/turbo/design/compiled');
-        $this->cleanAdmin($_SERVER['DOCUMENT_ROOT'] . '/cache/');
-    }
+	public function fetch()
+	{
+		$this->cleanAdmin($_SERVER['DOCUMENT_ROOT'] . '/turbo/design/compiled');
+		$this->cleanAdmin($_SERVER['DOCUMENT_ROOT'] . '/cache/');
+	}
 
-    private function cleanAdmin($path)
-    {
-        $path = rtrim($path, '/') . '/';
+	private function cleanAdmin($path)
+	{
+		$path = rtrim($path, '/') . '/';
 
-        $handle = opendir($path);
+		$handle = opendir($path);
 
-        for (; false !== ($file = readdir($handle));) {
-            if ($file != "." && $file != "..") {
-                $fullpath = $path . $file;
+		for (; false !== ($file = readdir($handle));) {
+			if ($file != "." && $file != "..") {
+				$fullpath = $path . $file;
 
-                if (is_dir($fullpath)) {
-                    $this->cleanAdmin($fullpath);
-                    rmdir($fullpath);
-                } else {
-                    @unlink($fullpath);
-                }
-            }
-        }
+				if (is_dir($fullpath)) {
+					$this->cleanAdmin($fullpath);
+					rmdir($fullpath);
+				} else {
+					@unlink($fullpath);
+				}
+			}
+		}
 
-        closedir($handle);
-    }
+		closedir($handle);
+	}
 }
 
 $clearAdminAjax = new ClearAdminAjax();

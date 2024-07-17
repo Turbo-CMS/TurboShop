@@ -1,0 +1,49 @@
+.instagramm-list__item {
+	overflow: hidden;
+	position: relative;
+}
+
+/*image*/
+.instagramm-list__item-image {
+	position: relative;
+	padding: 100% 0 0;
+}
+
+/*text*/
+.instagramm-list__item-info {
+	opacity: 0;
+	transition: opacity 0.3s ease;
+}
+
+.instagramm-list__item-info:hover {
+	opacity: 1;
+}
+
+.instagramm-list__item-inner {
+	width: 100%;
+	height: 100%;
+	padding: 0px;
+	overflow: hidden;
+}
+
+.instagramm-list__item-wrapper {
+	padding: 26px 32px;
+}
+
+.instagramm-list__item-date {
+	margin-bottom: 21px;
+}
+
+.instagramm-list__item-wrapper .arrow-all {
+	right: 31px;
+	top: 32px;
+}
+
+@media (min-width: 992px) {
+
+	/*type_2*/
+	.type-WITH_BIG_BLOCK .instagramm-list__wrapper:first-of-type {
+		grid-row: 2 span;
+		grid-column: 2 span;
+	}
+}

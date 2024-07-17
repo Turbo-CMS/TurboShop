@@ -90,7 +90,7 @@
 									<div class="mt-2 mb-3 mb-h">
 										<div class="input-group">
 											<span class="input-group-text">URL</span>
-											<input name="url" class="js-meta-field form-control js-url {if isset($category->id)}js-disabled{/if}" {if isset($category->id)}readonly="" {/if} type="text" value="{if isset($category->url)}{$category->url|escape}{/if}">
+											<input name="url" class="js-meta-field form-control js-url {if isset($category->id)}js-disabled{/if}" {if isset($category->id)}readonly=""{/if} type="text" value="{if isset($category->url)}{$category->url|escape}{/if}">
 											<input type="checkbox" id="block-translit" class="d-none" value="1" {if isset($category->id)}checked="" {/if}>
 											<span class="input-group-text js-disable-url">
 												{if isset($category->id)}
@@ -109,7 +109,7 @@
 												<option value='0'>{$btr->category_root|escape}</option>
 												{function name=category_select level=0}
 													{foreach $articles_categories as $cat}
-														{if isset($category->id) && $category->id != $cat->id}
+														{if isset($category) || isset($cat) && $category->id != $cat->id}
 															<option value='{$cat->id}' {if isset($category->parent_id) && $category->parent_id == $cat->id}selected{/if}>{section name=sp loop=$level}--{/section} {$cat->name}</option>
 															{if isset($cat->subcategories)}
 																{category_select articles_categories=$cat->subcategories level=$level+1}
@@ -127,7 +127,7 @@
 						<div class="col-lg-2 col-md-3 col-sm-12">
 							<div class="d-flex justify-content-center align-content-center flex-wrap flex-md-column h-100">
 								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
-									<input class="form-check-input ms-2" type="checkbox" id="visible" name="visible" value="1" type="checkbox" {if isset($category->visible) && $category->visible}checked="" {/if}>
+									<input class="form-check-input ms-2" type="checkbox" id="visible" name="visible" value="1" type="checkbox" {if isset($category->visible) && $category->visible}checked=""{/if}>
 									<label class="form-check-label ms-2" for="visible">{$btr->global_enable|escape}</label>
 								</div>
 							</div>

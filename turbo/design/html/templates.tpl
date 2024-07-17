@@ -37,14 +37,21 @@
 
 <nav aria-label="breadcrumb">
 	<ol class="breadcrumb mb-3">
-		<li class="breadcrumb-item"><a href="{url module=TemplatesAdmin file=null dir=null}" class="text-decoration-none text-muted"><i class="align-middle text-warning mt-n1" data-feather="folder"></i> html</a></li>
+		<li class="breadcrumb-item"><a href="{url module=TemplatesAdmin file=null dir=null}" class="text-decoration-none text-muted">
+				<i class="align-middle text-warning mt-n1" data-feather="folder"></i>
+				html
+			</a>
+		</li>
 		{if isset($smarty.get.dir) && !$template_file}
 			<li class="breadcrumb-item active">
 				{$smarty.get.dir}
 			</li>
 		{elseif isset($smarty.get.dir) && $template_file}
 			<li class="breadcrumb-item active">
-				<a href="/turbo/index.php?module=TemplatesAdmin&dir={$smarty.get.dir}" class="text-decoration-none text-muted"><i class="align-middle text-warning mt-n1" data-feather="folder"></i> {$smarty.get.dir}</a>
+				<a href="/turbo/index.php?module=TemplatesAdmin&dir={$smarty.get.dir}" class="text-decoration-none text-muted">
+					<i class="align-middle text-warning mt-n1" data-feather="folder"></i>
+					{$smarty.get.dir}
+				</a>
 			</li>
 			<li class="breadcrumb-item active">
 				<i class="align-middle mt-n1" data-feather="file-text"></i> {$template_file}
@@ -76,7 +83,10 @@
 						<ul class="nav nav-pills">
 							{foreach $folders as $f}
 								<li class="nav-item">
-									<a class="nav-link text-decoration-none text-muted" aria-current="page" href="{url module=TemplatesAdmin file=null dir=$f}"><i class="align-middle text-warning mt-n1" data-feather="folder"></i> {$f|escape}</a>
+									<a class="nav-link text-decoration-none {if $f == $dir}active text-white{else}text-muted{/if}" aria-current="page" href="{url module=TemplatesAdmin file=null dir=$f}">
+										<i class="align-middle {if $f != $dir}text-warning{/if} mt-n1" data-feather="folder"></i>
+										{$f|escape}
+									</a>
 								</li>
 							{/foreach}
 						</ul>
@@ -105,7 +115,10 @@
 					<ul class="nav nav-pills">
 						{foreach $templates as $t}
 							<li class="nav-item">
-								<a class="nav-link text-decoration-none {if $template_file == $t}active text-white{else}text-muted{/if}" aria-current="page" href="{url module=TemplatesAdmin file=$t}"><i class="align-middle mt-n1" data-feather="file-text"></i> {$t|escape}</a>
+								<a class="nav-link text-decoration-none {if $template_file == $t}active text-white{else}text-muted{/if}" aria-current="page" href="{url module=TemplatesAdmin file=$t}">
+									<i class="align-middle mt-n1" data-feather="file-text"></i>
+									{$t|escape}
+								</a>
 							</li>
 						{/foreach}
 					</ul>
@@ -183,6 +196,7 @@
 			min-height: 300px;
 			width: 100%;
 		}
+
 		.CodeMirror-scroll {
 			overflow-y: hidden;
 			overflow-x: auto;
@@ -192,29 +206,29 @@
 	<script>
 		$(function() {
 			function save() {
-				{/literal}
-					{if $settings->admin_theme == "dark"}
-						$('.CodeMirror').css('background-color', '#0e5e46');
-					{else}
-						$('.CodeMirror').css('background-color', '#d2f1e8');
-					{/if}
-				{literal}
+			{/literal}
+			{if $settings->admin_theme == "dark"}
+				$('.CodeMirror').css('background-color', '#223b3c');
+			{else}
+				$('.CodeMirror').css('background-color', '#d2f1e8');
+			{/if}
+			{literal}
 				content = editor.getValue();
 				$.ajax({
 					type: 'POST',
 					url: 'ajax/save_template.php',
-					data: {'content': content, 'theme':'{/literal}{$theme}{literal}', 'template': '{/literal}{$template_file}{literal}', 'dir': '{/literal}{if isset($smarty.get.dir)}{$smarty.get.dir}{/if}{literal}', 'session_id': '{/literal}{$smarty.session.id}{literal}'},
+					data: {'content': content, 'theme':'{/literal}{$theme}{literal}', 'template': '{/literal}{$template_file}{literal}', 'dir': '{/literal}{$dir}{literal}', 'session_id': '{/literal}{$smarty.session.id}{literal}'},
 					success: function(data) {
 						$('.CodeMirror').animate({'background-color': '#eef2f4'},500);
 					},
 					dataType: 'json'
 				});
 			}
-			
+
 			$('.js-save').on('click', function() {
 				save();
 			});
-			
+
 			var isCtrl = false;
 			var isCmd = false;
 			$(document).keyup(function(e) {
@@ -243,6 +257,6 @@
 			indentUnit: 2,
 			tabMode: 'classic',
 			{/literal}{if $settings->admin_theme == "dark"}theme: 'dark'{else}theme: 'light'{/if}{literal}
-		});
+			});
 	</script>
 {/literal}

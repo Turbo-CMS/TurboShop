@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @author Turbo CMS
+ * @link https://github.com/Turbo-CMS
+ */
+
 require_once 'api/Turbo.php';
 
 class IndexAdmin extends Turbo
@@ -52,11 +57,13 @@ class IndexAdmin extends Turbo
 		'StatsAdmin'                => 'stats',
 		'ThemeAdmin'                => 'design',
 		'StylesAdmin'               => 'design',
+		'ScriptsAdmin'              => 'design',
 		'TemplatesAdmin'            => 'design',
 		'ImagesAdmin'               => 'design',
 		'ThemeSettingsAdmin'        => 'design',
 		'SeoAdmin'                  => 'seo',
 		'SettingsCounterAdmin'      => 'scripts',
+		'FeedsAdmin'                => 'feeds',
 		'SettingsAdmin'             => 'settings',
 		'SettingsFeedAdmin'         => 'settings',
 		'SystemAdmin'               => 'settings',

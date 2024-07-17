@@ -1,7 +1,13 @@
 $(document).ready(function () {
     $('[name=delivery_id]').on('change', function () {
         if ($(this).is('.NovaPoshta')) {
-            $('.npcity').selectpicker();
+
+            $('.npcity').select2({
+                theme: "bootstrap-5",
+                width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+                placeholder: $(this).data('placeholder'),
+            });
+
             $('[name=address]').val('');
 
             $.ajax({
@@ -26,7 +32,7 @@ $(document).ready(function () {
                     }
 
                     $('[name="recipient_city"]').html(option_list);
-                    $('.npcity').attr('disabled', false).selectpicker('destroy').selectpicker();
+                    $('.npcity').attr('disabled', false);
                 }
             });
 
@@ -41,7 +47,11 @@ $(document).ready(function () {
 
         $('npstreet').show();
         $('[name=recipient_warehouse]').html(option_load);
-        $('.npstreet').attr('disabled', true).selectpicker('destroy').selectpicker();
+        $('.npstreet').attr('disabled', true).select2({
+            theme: "bootstrap-5",
+            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+            placeholder: $(this).data('placeholder'),
+        });;
 
         $.ajax({
             url: "delivery/NovaPoshta/ajax/get_warehouse.php",
@@ -67,7 +77,7 @@ $(document).ready(function () {
                 }
 
                 $('[name=recipient_warehouse]').html(option_list);
-                $('.npstreet').attr('disabled', false).selectpicker('destroy').selectpicker();
+                $('.npstreet').attr('disabled', false);
             }
         });
 

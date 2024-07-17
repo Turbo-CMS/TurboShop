@@ -53,6 +53,19 @@
 	{$page->body}
 {/if}
 
+{* Address *}
+<p><i class="fal fa-location-dot"></i> <span class="fw-bold">{$lang->address}:</span> {$lang->contact_details}</class=>
+
+{* Phone *}
+<p><i class="fal fa-mobile"></i> <span class="fw-bold">{$lang->phone}:</span>: {$lang->phone_number}</p>
+
+{* Map *}
+{if $theme_settings->map}
+	<div class="mb-3">
+		<iframe style="border: 0;" tabindex="0" src="{$theme_settings->map|escape}" width="100%" height="450" frameborder="0" allowfullscreen="allowfullscreen" aria-hidden="false"></iframe>
+	</div>
+{/if}
+
 <h2>{$lang->global_feedback}</h2>
 
 {if isset($message_sent)}

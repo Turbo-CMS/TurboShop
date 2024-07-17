@@ -1,11 +1,12 @@
 ﻿<?php
 
 chdir('../../');
+
 require_once 'api/Turbo.php';
 require_once 'payment/Fondy/fondy.cls.php';
-require_once dirname(__FILE__) . '/FondyView.php';
-$fonView = new FondyView();
+
 $turbo = new Turbo();
+
 $err = '';
 
 /**
@@ -56,36 +57,13 @@ if (empty($_POST)) {
                     // Write products
                     $turbo->orders->close((int) $order->id);
 
-                    $invoice['status'] = $_POST['order_status'];
-                    $invoice['transaction'] = $_POST['order_id'];
-                    $invoice['system'] = 'fondy';
-                    $invoice['amount'] = $_POST['amount'] / 100 . " " . $_POST['actual_currency'];
-
-                    $fonView->design->assign('invoice', $invoice);
-
-                    print $fonView->fetch();
+                    header('Location: ' . $turbo->config->root_url . '/order/' . $order->url);
                 } else {
                     $turbo->orders->updateOrder((int) $order->id, ['paid' => 0]);
-
-                    $invoice['status'] = $_POST['order_status'];
-                    $invoice['error_message'] = $_POST['response_description'];
-                    $invoice['error_code'] = $_POST['response_code'];
-                    $fonView->design->assign('invoice', $invoice);
-
-                    print $fonView->fetch();
                 }
             } else
                 $err = $paymentInfo;
         } else
             $err = "Amount check failed";
-    } else {
-        $invoice['transaction'] = $_POST['order_id'];
-        $invoice['system'] = 'fondy';
-        $invoice['amount'] = $_POST['amount'] / 100 . " " . $_POST['actual_currency'];
     }
-
-    $invoice['error_code'] = 'unknown code';
-    $invoice['status'] = $_POST['order_status'];
-    $invoice['error_message'] = $err;
-    $fonView->design->assign('invoice', $invoice);
 }

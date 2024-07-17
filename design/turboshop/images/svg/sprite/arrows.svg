@@ -1,0 +1,20 @@
+<svg width="0" height="0" class="hidden">
+    <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 7 12" fill="none" id="left-7-12">
+        <path d="M6 1L1 6L6 11" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 7 12" fill="none" id="right-7-12">
+        <path d="M1 1L6 6L1 11" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 7 5" id="right-7-5">
+        <path d="M-2.18874e-08 4.49927L-1.9667e-07 0.500725C-2.14687e-07 0.0885367 0.513827 -0.14647 0.873321 0.101273L3.78241 2.10621C4.07302 2.3065 4.07243 2.70635 3.78123 2.90592L0.872131 4.89953C0.512454 5.14603 -3.89741e-09 4.91084 -2.18874e-08 4.49927Z" />
+    </symbol>
+    <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 7 5" width="7" height="5" id="down-7-5">
+        <path d="M5.55157 0.0181274H1.45448C1.05285 0.0181274 0.815132 0.46773 1.04127 0.799648L3.08402 3.79799C3.28217 4.08883 3.71079 4.08939 3.90971 3.79907L5.96405 0.800736C6.19139 0.468921 5.9538 0.0181274 5.55157 0.0181274Z" />
+    </symbol>
+    <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 12" width="18" height="12" id="left-18-12">
+        <path d="M6.15157 11L1.00002 6M1.00002 6L6.15157 1M1.00002 6H17" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 12" width="18" height="12" id="right-18-12">
+        <path d="M6.15157 11L1.00002 6M1.00002 6L6.15157 1M1.00002 6H17" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" transform="scale(-1, 1) translate(-18, 0)"/>
+    </symbol>
+</svg>

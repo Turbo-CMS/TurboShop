@@ -94,12 +94,12 @@
 								<div class="col-lg-4 col-md-4 col-sm-6 col-12">
 									<div class="mb-3">
 										<div class="form-label">
-											<div class="translation-icon mb-2">
+											<div onclick="translateText('{if $lang->label == 'ua'}uk{else}{$lang->label}{/if}')" class="translation-icon mb-2 cursor-pointer" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">
 												<img src="design/flags/4x3/{$lang->label}.svg">
 											</div>
 											{$lang->name|escape}
 										</div>
-										<textarea name="lang_{$lang->label}" class="form-control" rows="5" {if $locked_theme}readonly="" {/if}>{if $translation->id}{$translation->lang_{$lang->label}}{/if}</textarea>
+										<textarea id="lang_{if $lang->label == 'ua'}uk{else}{$lang->label}{/if}" name="lang_{$lang->label}" class="form-control" rows="5" {if $locked_theme}readonly=""{/if}>{if isset($translation->lang_{$lang->label})}{$translation->lang_{$lang->label}}{/if}</textarea>
 									</div>
 								</div>
 							{/foreach}
@@ -147,6 +147,28 @@
 				if (n >= 0) { res += lat[n]; } else { res += s; }
 			}
 			return res;
+		}
+
+		var sourceLang = '';
+
+		$('textarea[id^="lang_"]').on('input', function() {
+			if (sourceLang === '') {
+				sourceLang = $(this).attr('id').replace('lang_', '');
+			}
+		});
+
+		function translateText(targetLang) {
+			var text = $('#lang_' + sourceLang).val();
+
+			if (text.trim() !== '') {
+				$.post('ajax/translate.php', {
+					'source_lang': sourceLang,
+					'target_lang': targetLang,
+					'text': text
+				}, function(data) {
+					$('#lang_' + targetLang).val(data);
+				});
+			}
 		}
 	</script>
 {/literal}

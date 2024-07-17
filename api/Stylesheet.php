@@ -282,12 +282,11 @@ class Stylesheet extends Turbo
 			}
 
 			if (!$valid) {
-				include_once $this->config->root_dir . '/minify/less/lessc.inc.php';
 				$cache = lessc::cexecute($resource);
 
 				if ($data->type == 'file') {
 					$minifier = $this->getMinifier($cache['compiled'], false);
-					$minifier->setRootSource($data->original);
+					$minifier->setMaxImportSize($data->original);
 					$cache['compiled'] = $minifier->minify($outputPath);
 				} else {
 					file_put_contents($outputPath, $cache['compiled']);
@@ -312,14 +311,12 @@ class Stylesheet extends Turbo
 	 */
 	protected function getMinifier($data, $minify)
 	{
-		require_once $this->config->root_dir . '/minify/MatthiasMullie/autoload.php';
-
 		if ($minify) {
 			$minifier = new MatthiasMullie\Minify\CSS($data);
 			$minifier->setMaxImportSize(0);
 			$minifier->setImportExtensions(array());
 		} else {
-			$minifier = new MatthiasMullie\Minify\CSSPacker($data);
+			$minifier = new MatthiasMullie\Minify\CSS($data);
 		}
 
 		return $minifier;

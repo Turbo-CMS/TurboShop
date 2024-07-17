@@ -1,0 +1,61 @@
+.file-type {
+	width: 40px;
+	height: 40px;
+	display: block;
+}
+
+.file-type--inline {
+	display: inline-block;
+}
+
+.file-type__icon {
+	width: 40px;
+	height: 40px;
+	display: inline-block;
+	background: url("../../images/svg/docs.svg") 0px -84px no-repeat;
+	float: left;
+}
+
+.file-type__icon--jpg {
+	background-position: -42px -42px;
+}
+
+.file-type__icon--rtf {
+	background-position: 0px -42px;
+}
+
+.file-type__icon--tiff {
+	background-position: -84px -42px;
+}
+
+.file-type__icon--ppt {
+	background-position: -84px -126px;
+}
+
+.file-type__icon--pdf {
+	background-position: 0px -0px;
+}
+
+.file-type__icon--word {
+	background-position: -42px 0px;
+}
+
+.file-type__icon--png {
+	background-position: -84px -84px;
+}
+
+.file-type__icon--txt {
+	background-position: -42px -84px;
+}
+
+.file-type__icon--excel {
+	background-position: -84px 0px;
+}
+
+.file-type__icon--gif {
+	background-position: 0px -126px;
+}
+
+.file-type__icon--bmp {
+	background-position: -42px -126px;
+}

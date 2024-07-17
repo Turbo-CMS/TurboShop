@@ -26,7 +26,7 @@ class ProductAdmin extends Turbo
 			$product->brand_id = $this->request->post('brand_id', 'integer');
 			$product->is_new = $this->request->post('is_new', 'boolean');
 			$product->is_hit = $this->request->post('is_hit', 'boolean');
-			$product->to_export = $this->request->post('to_export', 'boolean');
+			$product->to_xml = $this->request->post('to_xml', 'boolean');
 			$product->url = trim($this->request->post('url', 'string'));
 			$product->meta_title = $this->request->post('meta_title');
 			$product->meta_keywords = $this->request->post('meta_keywords');
@@ -297,8 +297,10 @@ class ProductAdmin extends Turbo
 
 					$categoryFeatures = [];
 
-					foreach ($this->features->getFeatures(['category_id' => $productCategories[0]]) as $f) {
-						$categoryFeatures[] = $f->id;
+					if (!empty($productCategories)) {
+						foreach ($this->features->getFeatures(['category_id' => $productCategories[0]]) as $f) {
+							$categoryFeatures[] = $f->id;
+						}
 					}
 
 					$this->features->deleteProductOption($product->id);

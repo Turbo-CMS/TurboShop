@@ -9,7 +9,7 @@ $turbo = new Turbo();
 $limit = 30;
 
 if (!$turbo->managers->access('orders')) {
-    return false;
+	return false;
 }
 
 $langId = $turbo->languages->langId();
@@ -21,19 +21,19 @@ $keywords = explode(' ', $keyword);
 $keywordSql = '';
 
 foreach ($keywords as $keyword) {
-    $kw = $turbo->db->escape(trim($keyword));
+	$kw = $turbo->db->escape(trim($keyword));
 
-    $keywordSql .= $turbo->db->placehold(
-        "AND (
+	$keywordSql .= $turbo->db->placehold(
+		"AND (
             $px.name LIKE '%$kw%'
             OR $px.meta_keywords LIKE '%$kw%'
             OR p.id in (SELECT product_id FROM __variants WHERE sku LIKE '%$kw%')
         )"
-    );
+	);
 }
 
 $turbo->db->query(
-    "SELECT 
+	"SELECT 
         p.id, 
         $px.name,
         i.filename AS image
@@ -45,11 +45,11 @@ $turbo->db->query(
         $keywordSql 
     ORDER BY $px.name 
     LIMIT ?",
-    $limit
+	$limit
 );
 
 foreach ($turbo->db->results() as $product) {
-    $products[$product->id] = $product;
+	$products[$product->id] = $product;
 }
 
 $langSql = $turbo->languages->getQuery(['object' => 'variant', 'px' => 'pv']);
@@ -57,8 +57,8 @@ $langSql = $turbo->languages->getQuery(['object' => 'variant', 'px' => 'pv']);
 $variants = [];
 
 if (!empty($products)) {
-    $turbo->db->query(
-        "SELECT 
+	$turbo->db->query(
+		"SELECT 
             pv.id,
             pv.name,
             pv.color,
@@ -75,33 +75,35 @@ if (!empty($products)) {
             AND (pv.stock IS NULL OR pv.stock>0)
             AND pv.price>0 
         ORDER BY pv.position",
-        $turbo->settings->max_order_amount,
-        array_keys($products)
-    );
+		$turbo->settings->max_order_amount,
+		array_keys($products)
+	);
 
-    $variants = $turbo->db->results();
+	$variants = $turbo->db->results();
 }
 
 foreach ($variants as $variant) {
-    if (isset($products[$variant->product_id])) {
-        $products[$variant->product_id]->variants[] = $variant;
-    }
+	if (isset($products[$variant->product_id])) {
+		$products[$variant->product_id]->variants[] = $variant;
+	}
 }
 
 $suggestions = [];
 
-foreach ($products as $product) {
-    if (!empty($product->variants)) {
-        $suggestion = new stdClass();
+if (!empty($products)) {
+	foreach ($products as $product) {
+		if (!empty($product->variants)) {
+			$suggestion = new stdClass();
 
-        if (!empty($product->image)) {
-            $product->image = $turbo->design->resizeModifier($product->image, 35, 35);
-        }
+			if (!empty($product->image)) {
+				$product->image = $turbo->design->resizeModifier($product->image, 35, 35);
+			}
 
-        $suggestion->value = $product->name;
-        $suggestion->data = $product;
-        $suggestions[] = $suggestion;
-    }
+			$suggestion->value = $product->name;
+			$suggestion->data = $product;
+			$suggestions[] = $suggestion;
+		}
+	}
 }
 
 $res = new stdClass();

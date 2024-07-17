@@ -14,11 +14,11 @@ $langLink = '';
 $firstLang = $turbo->languages->languages();
 
 if (!empty($firstLang)) {
-    $firstLang = reset($firstLang);
-    
-    if ($firstLang->id !== $language->id) {
-        $langLink = $language->label . '/';
-    }
+	$firstLang = reset($firstLang);
+
+	if ($firstLang->id !== $language->id) {
+		$langLink = $language->label . '/';
+	}
 }
 
 $px = ($langId ? 'l' : 'b');
@@ -28,7 +28,7 @@ $keyword = $turbo->request->get('query', 'string');
 $sk = $turbo->db->escape($keyword);
 
 $turbo->db->query(
-    "SELECT
+	"SELECT
         b.id,
         b.url,
         b.image,
@@ -40,23 +40,23 @@ $turbo->db->query(
     AND visible = 1
     ORDER BY b.name
     LIMIT ?",
-    $limit
+	$limit
 );
 
 $posts = $turbo->db->results();
 
 $suggestions = [];
 foreach ($posts as $post) {
-    $suggestion = new stdClass();
-    
-    if (!empty($post->image)) {
-        $post->image = $turbo->design->resizePostsModifier($post->image, 35, 35);
-    }
+	$suggestion = new stdClass();
 
-    $suggestion->value = $post->name;
-    $suggestion->data = $post;
-    $suggestion->lang = $langLink;
-    $suggestions[] = $suggestion;
+	if (!empty($post->image)) {
+		$post->image = $turbo->design->resizePostsModifier($post->image, 35, 35);
+	}
+
+	$suggestion->value = $post->name;
+	$suggestion->data = $post;
+	$suggestion->lang = $langLink;
+	$suggestions[] = $suggestion;
 }
 
 $res = new stdClass();

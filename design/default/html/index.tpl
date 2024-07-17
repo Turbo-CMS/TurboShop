@@ -27,7 +27,7 @@
 	<meta name="generator" content="Turbo CMS">
 
 	{if $module=='ProductView'}
-		<meta property="og:url" content="{$config->root_url}{if $lang_link}/{str_replace('/', '', $lang_link)}{/if}{$canonical}">
+		<meta property="og:url" content="{$config->root_url}{if $lang_link}/{$lang_link|replace:'/':''}{/if}{$canonical}"> 
 		<meta property="og:type" content="website">
 		<meta property="og:title" content="{$product->name|escape}">
 		<meta property="og:description" content='{$product->annotation|strip_tags|escape}'>
@@ -42,7 +42,7 @@
 		<meta name="twitter:label1" content="{$product->variant->price|convert:null:false} {$currency->code|escape}">
 		<meta name="twitter:label2" content="{$settings->site_name|escape}">
 	{elseif $module == 'BlogView' && isset($post)}
-		<meta property="og:url" content="{$config->root_url}{if $lang_link}/{str_replace('/', '', $lang_link)}{/if}{$canonical}">
+		<meta property="og:url" content="{$config->root_url}{if $lang_link}/{$lang_link|replace:'/':''}{/if}{$canonical}">
 		<meta property="og:type" content="article">
 		<meta property="og:title" content="{$post->name|escape}">
 		{if $post->image}
@@ -58,7 +58,7 @@
 		<meta name="twitter:description" content="{$post->annotation|strip_tags|escape}">
 		<meta name="twitter:image" content="{if isset($post->image)}{$post->image|resize_posts:400:300}{{/if}}">
 	{elseif $module=='ArticlesView' && isset($post)}
-		<meta property="og:url" content="{$config->root_url}{if $lang_link}/{str_replace('/', '', $lang_link)}{/if}{$canonical}">
+		<meta property="og:url" content="{$config->root_url}{if $lang_link}/{$lang_link|replace:'/':''}{/if}{$canonical}">
 		<meta property="og:type" content="article">
 		<meta property="og:title" content="{$post->name|escape}">
 		{if $post->image}
@@ -119,15 +119,18 @@
 
 	{* Canonical *}
 	{if isset($canonical)}
-		<link rel="canonical" href="{$config->root_url}{if $lang_link}/{str_replace('/', '', $lang_link)}{/if}{$canonical}">
+		<link rel="canonical" href="{$config->root_url}{if $lang_link}/{$lang_link|replace:'/':''}{/if}{$canonical}">
 	{/if}
 
 	{* Language Attribute *}
 	{foreach $languages as $lang}
 		{if $lang->enabled}
-			<link rel="alternate" hreflang="{if $lang@first}x-default{else}{$lang->label}{/if}" href="{$config->root_url}{if !$lang@first}/{/if}{preg_replace('/^(.+)\/$/', '$1', $lang->url)}">
+			<link rel="alternate" hreflang="{if $lang@first}x-default{else}{$lang->label}{/if}" href="{$config->root_url}{if !$lang@first}/{/if}{$lang->url|replace:'/':''}">
 		{/if}
 	{/foreach}
+
+	{* RSS *}
+	<link rel="alternate" type="application/rss+xml" title="{$settings->site_name|escape}" href="{$config->root_url}/{$lang_link}feeds/rss.xml">
 
 	{* CSS *}
 	{css id="main" include=[
@@ -207,10 +210,10 @@
 
 	{* Header *}
 	<header>
-		{if $theme_settings->header_type == "1"}
-			{include file='headers/header_1.tpl'}
+		{if $theme_settings->header_type == '1'}
+			{include file='header/header_1.tpl'}
 		{elseif $theme_settings->header_type == "2"}
-			{include file='headers/header_2.tpl'}
+			{include file='header/header_2.tpl'}
 		{/if}
 	</header>
 
@@ -219,14 +222,16 @@
 		<div class="container">
 			<div class="row">
 				{* Sidebar *}
-				{if $theme_settings->main_type != "2" || $module!='MainView'}
-					{include file='sidebars/sidebar.tpl'}
+				{if $theme_settings->main_type != '2' || $module!='MainView'}
+					{include file='sidebar/sidebar.tpl'}
 				{/if}
-				<div class="{if $theme_settings->main_type == "2" && $module == 'MainView'}col-lg-12{else}col-lg-9{/if} order-lg-2 order-1">
+				<div class="{if $theme_settings->main_type == '2' && $module == 'MainView'}col-lg-12{else}col-lg-9{/if} order-lg-2 order-1">
 					{* Slider *}
 					{include file='banners/slider.tpl'}
 					{* Content *}
-					{$content}
+					<div {if $module == 'CartView'}id="js-ajax-content"{/if}>
+						{$content}
+					</div> 
 				</div>
 			</div>
 		</div>
@@ -369,10 +374,10 @@
 	<div class="my-3"></div>
 
 	{* Footer *}
-	{if $theme_settings->footer_type == "1"}
-		{include file="footer/footer_1.tpl"}
-	{elseif $theme_settings->footer_type == "2"}
-		{include file="footer/footer_2.tpl"}
+	{if $theme_settings->footer_type == '1'}
+		{include file='footer/footer_1.tpl'}
+	{elseif $theme_settings->footer_type == '2'}
+		{include file='footer/footer_2.tpl'}
 	{/if}
 
 	{* Toolbar mobile *}
@@ -380,7 +385,7 @@
 		<div class="container-fluid text-center">
 			<div class="row align-items-start py-2">
 				<div class="col border-end">
-					{if $theme_settings->main_type == "2" && $module == 'MainView'}
+					{if $theme_settings->main_type == '2' && $module == 'MainView'}
 						<button type="button" class="btn btn-link" data-bs-toggle="offcanvas" data-bs-target="#navbar-default" role="button" aria-controls="navbar-default">
 							<i class="fal fa-bars text-muted fs-4"></i>
 						</button>
@@ -413,16 +418,16 @@
 	<a href="#" id="back-to-top" title="Back to top"><i class="fal fa-angle-double-up"></i></a>
 
 	{* Callback Modal *}
-	{include file="modals/callback.tpl"}
+	{include file='modals/callback.tpl'}
 
 	{* Toast Callback *}
-	{include file="modals/toast_callback.tpl"}
+	{include file='modals/toast_callback.tpl'}
 
 	{* Subscribe Modal *}
-	{include file="modals/subscribe.tpl"}
+	{include file='modals/subscribe.tpl'}
 
 	{* Toast Rate *}
-	{include file="modals/toast_rate.tpl"}
+	{include file='modals/toast_rate.tpl'}
 
 	{* JS *}
 	{js id="main" priority=99 include=[
@@ -608,7 +613,7 @@
 		{js id="chat" priority=99 include=["design/{$settings->theme|escape}/js/online-chat.js"]}{/js}
 		{javascript minify=true}
 
-		{include file="service/online_chat.tpl"}
+		{include file='service/online_chat.tpl'}
 	{/if}
 
 	{* Admintooltip *}

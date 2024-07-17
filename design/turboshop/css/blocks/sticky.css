@@ -1,0 +1,18 @@
+#main .sticky-block {
+	position: -webkit-sticky;
+	position: sticky;
+	z-index: 5;
+	top: 32px;
+}
+
+#main.fixed_y .sticky-block {
+	top: 112px;
+}
+
+#main .sticky-block--top-0 {
+	top: 0px;
+}
+
+#main .sticky-block--show-N {
+	position: static;
+}

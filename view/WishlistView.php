@@ -129,7 +129,7 @@ class WishlistView extends View
 					}
 				}
 
-				$product->relatedProducts = $dataRelatedProducts;
+				$product->related_products = $dataRelatedProducts;
 			}
 
 			// Design

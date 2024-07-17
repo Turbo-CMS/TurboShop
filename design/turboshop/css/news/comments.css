@@ -1,0 +1,51 @@
+.tb_soc_comments_div {
+	padding: 15px 0px 0px;
+	margin: 20px 0px 0px;
+}
+
+.tb_soc_comments_div .tb-catalog-tab-body-container {
+	padding: 24px 0px 0px;
+}
+
+/* tabs */
+.tabs .bordered {
+	border: 1px solid #ededed;
+	border-color: var(--stroke_black);
+}
+
+.tb_soc_comments_div .tabs.arrow_scroll {
+	max-height: none;
+	margin-bottom: 0;
+	border-bottom: none;
+}
+
+.tb_soc_comments_div .arrow_scroll_init .arrows_wrapper {
+	height: 50px;
+	bottom: initial;
+}
+
+.tb_soc_comments_div .arrow_scroll_init .arrows_wrapper .arrow {
+	height: 50px;
+}
+
+.tb_soc_comments_div .tabs .nav-tabs li .svg {
+	margin: -2px 11px 0 0px;
+}
+
+.tb_soc_comments_div .tabs .nav-tabs li .svg path {
+	fill: #999;
+}
+
+.tb_soc_comments_div .tabs .nav-tabs li.active a {
+	color: #333;
+	color: var(--white_text_black);
+}
+
+.tb_soc_comments_div .tabs .nav-tabs li.active .svg path {
+	fill: #333;
+	fill: var(--white_text_black);
+}
+
+.tb_soc_comments_div .alert {
+	margin-bottom: 0px;
+}

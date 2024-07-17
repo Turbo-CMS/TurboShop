@@ -1,0 +1,29 @@
+.text_before_items {
+	margin-bottom: 41px;
+	color: #666;
+	color: var(--lite_basic_text_black);
+}
+
+.text_after_items {
+	margin: 77px 0px 0px;
+	color: #666;
+	color: var(--lite_basic_text_black);
+}
+
+.item-views {
+	margin-bottom: 0;
+	position: relative;
+}
+
+.text_before_items h1:first-child,
+.text_before_items h2:first-child,
+.text_before_items h3:first-child,
+.text_before_items h4:first-child,
+.text_before_items h5:first-child,
+.text_before_items h6:first-child {
+	margin-top: 0;
+}
+
+.text_after_items *:last-child {
+	margin-bottom: 0;
+}

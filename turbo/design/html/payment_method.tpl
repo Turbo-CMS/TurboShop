@@ -127,8 +127,7 @@
 											<div class="row js-module-settings" {if $payment_method->id}{if $payment_module@key != $payment_method->module}style="display:none;" {/if}{else}style="display:none;" {/if} module="{$payment_module@key}">
 												<h4>{$payment_module->name|escape}</h4>
 												{foreach $payment_module->settings as $setting}
-													{$variable_name = $setting->variable}
-													{if !empty($setting->options) && $setting->options|@count>1}
+													{if !empty($setting->options) && $setting->options|@count > 1}
 														<div class="col-lg-6">
 															<div class="mb-3">
 																<div class="form-label">{$setting->name|escape}</div>
@@ -139,13 +138,11 @@
 																</select>
 															</div>
 														</div>
-													{elseif !empty($setting->options) && $setting->options|@count==1}
+													{elseif !empty($setting->options) && $setting->options|@count == 1}
 														{$option = $setting->options|@first}
-														<div class="col-lg-6">
-															<div class="d-flex align-items-center mb-3">
-																<div class="form-check">
-																	<input class="form-check-input js-check-all-single me-2" type="checkbox" id="payment-settings-{$option->value|escape}" name="payment_settings[{$setting->variable}]" value="{$option->value|escape}" {if $option->value==$payment_settings[$setting->variable]}checked{/if} id="{$setting->variable}">
-																</div>
+														<div class="col-lg-6 d-flex align-items-center">
+															<div class="form-check form-switch mb-3 mt-lg-3 mt-0">
+																<input class="form-check-input me-2" type="checkbox" id="payment-settings-{$option->value|escape}" name="payment_settings[{$setting->variable}]" value="{$option->value|escape}" {if $option->value==$payment_settings[$setting->variable]}checked{/if}>
 																<label class="form-check-label" for="payment-settings-{$option->value|escape}">{$setting->name|escape}</label>
 															</div>
 														</div>

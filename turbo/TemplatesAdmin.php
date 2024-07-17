@@ -4,71 +4,88 @@ require_once 'api/Turbo.php';
 
 class TemplatesAdmin extends Turbo
 {
-    public function fetch()
-    {
-        $mainDir = 'design/' . $this->settings->theme . '/';
+	public function fetch(): string
+	{
+		$dir = $this->request->get('dir');
+		if ($dir !== null) {
+			$dir = trim($dir, '/');
+		} else {
+			$dir = '';
+		}
 
-        if ($this->request->get("dir")) {
-            $subdir = $this->request->get('dir') . "/";
-            $templatesDir = 'design/' . $this->settings->theme . '/html/' . $subdir . '/';
-        } else {
-            $templatesDir = 'design/' . $this->settings->theme . '/html/';
-        }
+		$templatesDir = 'design/' . $this->settings->theme . '/html/' . $dir . '/';
+		$mainDir = 'design/' . $this->settings->theme . '/html/';
+		$templates = [];
+		$folders = [];
+		$sort = ['index.tpl'];
 
-        $templates = [];
-        $folders = [];
+		if (!is_dir($templatesDir)) {
+			mkdir($templatesDir, 0777, true);
+		}
 
-        if ($handle = opendir($templatesDir)) {
-            while (false !== ($file = readdir($handle))) {
-                if (is_file($templatesDir . $file) && $file[0] != '.'  && pathinfo($file, PATHINFO_EXTENSION) == 'tpl') {
-                    $templates[] = $file;
-                }
-            }
+		if ($handle = opendir($templatesDir)) {
+			$i = count($sort);
 
-            closedir($handle);
-            asort($templates);
-        }
+			while (false !== ($file = readdir($handle))) {
+				if (is_file($templatesDir . $file) && $file[0] != '.' && pathinfo($file, PATHINFO_EXTENSION) == 'tpl') {
+					if (($key = array_search($file, $sort, true)) !== false) {
+						$templates[$key] = $file;
+					} else {
+						$templates[$i++] = $file;
+					}
+				}
+			}
+			closedir($handle);
+		}
 
-        if ($handle = opendir($templatesDir)) {
-            while (false !== ($dir = readdir($handle))) {
-                if (is_dir($templatesDir . $dir) && $dir[0] != '.') {
-                    $folders[] = $dir;
-                }
-            }
+		ksort($templates);
 
-            closedir($handle);
-            asort($folders);
-        }
+		if ($handle = opendir($mainDir)) {
+			while (false !== ($subdir = readdir($handle))) {
+				if ($subdir[0] != '.' && is_dir($mainDir . $subdir)) {
+					$folders[] = $subdir;
+				}
+			}
+			closedir($handle);
+			asort($folders);
+		}
 
-        $templateFile = $this->request->get('file');
+		$templateFile = $this->request->get('file');
 
-        if (!empty($templateFile) && pathinfo($templateFile, PATHINFO_EXTENSION) != 'tpl') {
-            exit();
-        }
+		if (!empty($templateFile) && pathinfo($templateFile, PATHINFO_EXTENSION) != 'tpl') {
+			exit();
+		}
 
-        if (!isset($templateFile)) {
-            $templateFile = reset($templates);
-        }
+		if (!isset($templateFile)) {
+			$templateFile = reset($templates);
+		}
 
-        $this->design->assign('template_file', $templateFile);
+		if (empty($templateFile) && isset($_SESSION['last_edited_template'])) {
+			$templateFile = $_SESSION['last_edited_template'];
+		} elseif (empty($templateFile)) {
+			$templateFile = reset($templates);
+		}
 
-        if (is_readable($templatesDir . $templateFile)) {
-            $templateContent = file_get_contents($templatesDir . $templateFile);
-            $this->design->assign('template_content', $templateContent);
-        }
+		$this->design->assign('template_file', $templateFile);
 
-        if (!empty($templateFile) && !is_writable($templatesDir . $templateFile) && !is_file($mainDir . '/locked')) {
-            $this->design->assign('message_error', 'permissions');
-        } elseif (is_file($mainDir . '/locked')) {
-            $this->design->assign('message_error', 'theme_locked');
-        } else {
-            $_SESSION['last_edited_template'] = $templateFile;
-        }
+		if (is_readable($templatesDir . $templateFile)) {
+			$templateContent = file_get_contents($templatesDir . $templateFile);
+			$this->design->assign('template_content', $templateContent);
+		}
 
-        $this->design->assign('theme', $this->settings->theme);
-        $this->design->assign('folders', $folders);
-        $this->design->assign('templates', $templates);
+		if (!empty($templateFile) && !is_writable($templatesDir . $templateFile) && !is_file($mainDir . '../locked')) {
+			$this->design->assign('message_error', 'permissions');
+		} elseif (is_file($mainDir . '../locked')) {
+			$this->design->assign('message_error', 'theme_locked');
+		} else {
+			$_SESSION['last_edited_template'] = $templateFile;
+		}
 
-        return $this->design->fetch('templates.tpl');
-    }
+		$this->design->assign('theme', $this->settings->theme);
+		$this->design->assign('templates', $templates);
+		$this->design->assign('folders', $folders);
+		$this->design->assign('dir', $dir);
+
+		return $this->design->fetch('templates.tpl');
+	}
 }

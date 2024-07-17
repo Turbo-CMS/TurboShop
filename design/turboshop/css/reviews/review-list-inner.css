@@ -1,0 +1,209 @@
+.review-list-inner__item {
+	position: relative;
+	overflow: hidden;
+}
+
+.review-list-inner__row {
+	padding: 30px 30px 28px 27px;
+}
+
+.review-list-inner__row--answer {
+	border-top: 1px solid #e5e5e5;
+	border-color: var(--stroke_black);
+	background: var(--lite_bg_black);
+	padding-bottom: 33px;
+}
+
+.review-list-inner__image-wrapper {
+	position: relative;
+	margin-right: 20px;
+}
+
+.review-list-inner__image-answer-wrapper {
+	margin-top: 5px;
+	margin-right: 24px;
+}
+
+.review-list-inner__image {
+	width: 64px;
+	height: 64px;
+	position: relative;
+	vertical-align: top;
+	display: inline-block;
+}
+
+.review-list-inner__image-answer {
+	width: 40px;
+	height: 40px;
+	position: relative;
+	vertical-align: top;
+	display: inline-block;
+}
+
+.review-list-inner__image-bg {
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	display: block;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+
+.license-list-inner__noimage {
+	background-position: center;
+	background-repeat: no-repeat;
+	display: block;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+
+.review-list-inner__text {
+	position: relative;
+	width: 100%;
+}
+
+.review-list-inner__text p:last-child {
+	margin-bottom: 0;
+}
+
+.review-list-inner__top {
+	position: relative;
+}
+
+.review-list-inner__middle {
+	position: relative;
+	margin-top: 25px;
+}
+
+.review-list-inner__bottom {
+	margin-top: 29px;
+}
+
+.review-list-inner__line {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+}
+
+.review-list-inner__line--between {
+	justify-content: space-between;
+}
+
+.review-list-inner__label-answer {
+	margin-bottom: 5px;
+}
+
+.review-list-inner__separator {
+	display: inline-block;
+	padding: 0 6px;
+}
+
+.review-list-inner__name-wrapper {
+	padding-top: 4px;
+}
+
+.review-list-inner__rating-wrapper {
+	padding-top: 21px;
+}
+
+.review-list-inner__rating {
+	margin-top: 6px;
+}
+
+.review-list-inner__name {
+	font-size: 1.2em;
+	line-height: calc(1em + 7px);
+	color: #333333;
+	color: var(--white_text_black);
+	font-weight: bold;
+}
+
+.review-list-inner__date-active {
+	display: inline-block;
+}
+
+/* docs */
+.review-list-inner__docs {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	margin-top: -14px;
+}
+
+.review-list-inner__doc-item {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	align-items: center;
+	margin-top: 14px;
+}
+
+.review-list-inner__doc-icon {
+	margin-right: 21px;
+	margin-top: 4px;
+}
+
+.review-list-inner__doc-name {
+	color: var(--white_text_black);
+}
+
+.review-list-inner__doc-label {
+	font-size: 0.86667em;
+	line-height: calc(1em + 7px);
+}
+
+/* video */
+.review-list-inner__videos-wrapper {
+	margin-top: 29px;
+}
+
+.review-list-inner__videos {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	margin-top: -14px;
+	margin-right: -16px;
+	margin-left: -16px;
+}
+
+.review-list-inner__video-item {
+	flex: 1;
+	margin-top: 14px;
+	padding: 0 16px;
+}
+
+@media (max-width: 600px) {
+	.review-list-inner__line--between {
+		flex-direction: column;
+	}
+
+	.review-list-inner__line--answer {
+		flex-direction: column;
+	}
+
+	.review-list-inner__row {
+		padding: 26px;
+	}
+
+	.review-list-inner__image-answer-wrapper {
+		text-align: center;
+		margin-right: 0;
+		margin-bottom: 24px;
+	}
+
+	.review-list-inner__video-item {
+		flex: none;
+		width: 100%;
+		height: auto;
+	}
+}

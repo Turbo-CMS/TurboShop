@@ -20,6 +20,7 @@ class SettingsAdmin extends Turbo
 				$this->settings->update('company_name', $this->request->post('company_name'));
 				$this->settings->date_format = $this->request->post('date_format');
 				$this->settings->admin_email = $this->request->post('admin_email');
+				$this->settings->admintooltip = $this->request->post('admintooltip');
 				$this->settings->site_work = $this->request->post('site_work');
 				$this->settings->admin_theme = $this->request->post('admin_theme');
 				$this->settings->sidebar = $this->request->post('sidebar');
@@ -48,11 +49,19 @@ class SettingsAdmin extends Turbo
 				$this->settings->tg_token = $this->request->post('tg_token');
 				$this->settings->tg_apiurl = $this->request->post('tg_apiurl');
 				$this->settings->tg_channel = $this->request->post('tg_channel');
+				$this->settings->gpt_key = $this->request->post('gpt_key');
+				$this->settings->model = $this->request->post('model');
+				$this->settings->max_tokens = $this->request->post('max_tokens');
+				$this->settings->temperature = $this->request->post('temperature');
 				$this->settings->decimals_point = $this->request->post('decimals_point');
 				$this->settings->thousands_separator = $this->request->post('thousands_separator');
 				$this->settings->products_num = $this->request->post('products_num');
 				$this->settings->products_num_admin = $this->request->post('products_num_admin');
 				$this->settings->features_num_admin = $this->request->post('features_num_admin');
+				$this->settings->brands_num = $this->request->post('brands_num');
+				$this->settings->brands_num_admin = $this->request->post('brands_num_admin');
+				$this->settings->faq_num = $this->request->post('faq_num');
+				$this->settings->faq_num_admin = $this->request->post('faq_num_admin');
 				$this->settings->max_order_amount = $this->request->post('max_order_amount');
 				$this->settings->update('weight_units', $this->request->post('weight_units'));
 				$this->settings->update('units', $this->request->post('units'));
@@ -131,6 +140,18 @@ class SettingsAdmin extends Turbo
 			}
 		}
 
+		$backendTranslations = $this->backendTranslations;
+		$file = "turbo/lang/" . $this->settings->lang . ".php";
+
+		if (!file_exists($file)) {
+			foreach (glob("turbo/lang/??.php") as $f) {
+				$file = "turbo/lang/" . pathinfo($f, PATHINFO_FILENAME) . ".php";
+				break;
+			}
+		}
+
+		require_once($file);
+
 		$btrLanguages = [];
 
 		foreach ($this->languages->langList() as $label => $l) {
@@ -140,6 +161,7 @@ class SettingsAdmin extends Turbo
 		}
 
 		$this->design->assign('btr_languages', $btrLanguages);
+		$this->design->assign('btr', $backendTranslations);
 
 		return $this->design->fetch('settings.tpl');
 	}

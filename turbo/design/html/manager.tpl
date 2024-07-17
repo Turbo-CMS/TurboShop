@@ -111,9 +111,7 @@
 								<label class="form-check-label" for="all-perms">{$btr->manager_all_access|escape}</label>
 							</div>
 						</div>
-						{$dashboard = [
-							'dashboard' => $btr->global_dashboard
-						]}
+						{$dashboard = ['dashboard' => $btr->global_dashboard]}
 						<div class="bg-light rounded mb-3">
 							<div class="p-3">
 								<h5 class="fw-bold text-black-50 mb-3">{$btr->global_dashboard|escape}</h5>
@@ -132,10 +130,10 @@
 							</div>
 						</div>
 						{$catalog = [
-							'products'   => $btr->global_products,
+							'products' => $btr->global_products,
 							'categories' => $btr->global_categories,
-							'brands'     => $btr->global_brands,
-							'features'   => $btr->global_features
+							'brands' => $btr->global_brands,
+							'features' => $btr->global_features
 						]}
 						<div class="bg-light rounded mb-3">
 							<div class="p-3">
@@ -176,8 +174,8 @@
 							</div>
 						</div>
 						{$users = [
-							'users'   => $btr->global_users,
-							'groups'  => $btr->global_groups,
+							'users' => $btr->global_users,
+							'groups' => $btr->global_groups,
 							'coupons' => $btr->global_coupons
 						]}
 						<div class="bg-light rounded mb-3">
@@ -219,7 +217,7 @@
 							</div>
 						</div>
 						{$blog = [
-							'blog'     => $btr->global_blog,
+							'blog' => $btr->global_blog,
 							'articles' => $btr->global_articles
 						]}
 						<div class="bg-light rounded mb-3">
@@ -240,9 +238,9 @@
 							</div>
 						</div>
 						{$feedbacks = [
-							'comments'   => $btr->global_comments,
-							'feedbacks'  => $btr->global_feedback,
-							'callbacks'  => $btr->global_callbacks,
+							'comments' => $btr->global_comments,
+							'feedbacks' => $btr->global_feedback,
+							'callbacks' => $btr->global_callbacks,
 							'subscribes' => $btr->global_subscribes
 						]}
 						<div class="bg-light rounded mb-3">
@@ -262,9 +260,7 @@
 								</div>
 							</div>
 						</div>
-						{$faq = [
-							'faq' => $btr->global_faq
-						]}
+						{$faq = ['faq' => $btr->global_faq]}
 						<div class="bg-light rounded mb-3">
 							<div class="p-3">
 								<h5 class="fw-bold text-black-50 mb-3">{$btr->global_faq|escape}</h5>
@@ -286,7 +282,7 @@
 							'import' => $btr->global_import,
 							'export' => $btr->global_export,
 							'backup' => $btr->global_backup,
-							'clear'  => $btr->global_clear
+							'clear' => $btr->global_clear
 						]}
 						<div class="bg-light rounded mb-3">
 							<div class="p-3">
@@ -305,9 +301,7 @@
 								</div>
 							</div>
 						</div>
-						{$stats = [
-							'stats' => $btr->global_stats
-						]}
+						{$stats = ['stats' => $btr->global_stats]}
 						<div class="bg-light rounded mb-3">
 							<div class="p-3">
 								<h5 class="fw-bold text-black-50 mb-3">{$btr->global_stats|escape}</h5>
@@ -325,9 +319,7 @@
 								</div>
 							</div>
 						</div>
-						{$design = [
-							'design' => $btr->global_design
-						]}
+						{$design = ['design' => $btr->global_design]}
 						<div class="bg-light rounded mb-3">
 							<div class="p-3">
 								<h5 class="fw-bold text-black-50 mb-3">{$btr->global_design|escape}</h5>
@@ -345,9 +337,7 @@
 								</div>
 							</div>
 						</div>
-						{$banners = [
-							'banners' => $btr->global_banners
-						]}
+						{$banners = ['banners' => $btr->global_banners]}
 						<div class="bg-light rounded mb-3">
 							<div class="p-3">
 								<h5 class="fw-bold text-black-50 mb-3">{$btr->global_banners|escape}</h5>
@@ -387,18 +377,36 @@
 							</div>
 						</div>
 						{$settings = [
-							'settings'   => $btr->global_settings,
-							'currency'   => $btr->global_currency,
-							'delivery'   => $btr->global_shipping,
-							'payment'    => $btr->global_payment,
-							'managers'   => $btr->global_managers,
-							'languages'  => $btr->global_languages
+							'settings' => $btr->global_settings,
+							'currency' => $btr->global_currency,
+							'delivery' => $btr->global_shipping,
+							'payment' => $btr->global_payment,
+							'managers' => $btr->global_managers,
+							'languages' => $btr->global_languages
 						]}
 						<div class="bg-light rounded mb-3">
 							<div class="p-3">
 								<h5 class="fw-bold text-black-50 mb-3">{$btr->global_settings|escape}</h5>
 								<div class="row">
 									{foreach $settings as $title=>$items}
+										<div class="col-xl-3 col-lg-4 col-md-6 mb-3">
+											{foreach $items as $key=>$item}
+												<div class="form-check form-switch form-check-reverse form-check-inline {if isset($m->login) && $m->login==$manager->login}text-muted{/if}">
+													<input class="form-check-input ms-2 js-item-perm" id="{$title}" name="permissions[]" value="{$title}" type="checkbox" {if isset($m->permissions) && in_array($title, $m->permissions)}checked{/if} {if isset($m->login) && $m->login==$manager->login}disabled{/if}>
+													<label class="form-check-label" for="{$title}">{$item|escape}</label>
+												</div>
+											{/foreach}
+										</div>
+									{/foreach}
+								</div>
+							</div>
+						</div>
+						{$feeds = ['feeds' => $btr->global_feeds]}
+						<div class="bg-light rounded mb-3">
+							<div class="p-3">
+								<h5 class="fw-bold text-black-50 mb-3">{$btr->global_feeds|escape}</h5>
+								<div class="row">
+									{foreach $feeds as $title=>$items}
 										<div class="col-xl-3 col-lg-4 col-md-6 mb-3">
 											{foreach $items as $key=>$item}
 												<div class="form-check form-switch form-check-reverse form-check-inline {if isset($m->login) && $m->login==$manager->login}text-muted{/if}">

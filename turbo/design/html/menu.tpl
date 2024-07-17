@@ -51,11 +51,11 @@
 												<input name="menu[name][{$m->id}]" class="form-control" type="text" value="{$m->name|escape}">
 											</div>
 											<div class="turbo-list-boding turbo-list-delete turbo-list-menus-close">
-												<div data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
-													<button type="button" class="btn-delete js-remove-menu" data-bs-toggle="modal" data-id="{$m->id}" data-bs-target="#js-menu-delete" onclick="success_action($(this));">
+												<span data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
+													<button type="button" class="btn-delete js-remove-menu" data-bs-toggle="modal" data-id="{$m->id}" data-bs-target="#js-menu-delete">
 														<i class="align-middle" data-feather="trash-2"></i>
 													</button>
-												</div>
+												</span>
 											</div>
 										</div>
 									</div>
@@ -71,11 +71,11 @@
 											<input name="menu[name][]" class="form-control" type="text" value="">
 										</div>
 										<div class="turbo-list-boding turbo-list-delete turbo-list-menus-close">
-											<div data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
-												<button type="button" class="btn-delete js-remove-new-menu">
+											<button type="button" class="btn-delete js-remove-new-menu">
+												<span data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_delete|escape}">
 													<i class="align-middle" data-feather="trash-2"></i>
-												</button>
-											</div>
+												</span>
+											</button>
 										</div>
 									</div>
 								</div>
@@ -122,11 +122,14 @@
 			$('#new-menu').remove().removeAttr('id');
 
 			$('#add-menu').click(function() {
-				$(new_menu).clone(true).appendTo('.turbo-list-body').fadeIn('slow');
+				var cloned_menu = new_menu.clone(true);
+				cloned_menu.appendTo('.turbo-list-body').fadeIn('slow');
+				cloned_menu.find('[data-bs-toggle="tooltip"]').tooltip();
 				return false;
 			});
 
 			$(document).on("click", ".js-remove-new-menu", function() {
+				$('[data-bs-toggle="tooltip"]').tooltip('hide');
 				$(this).closest(".turbo-list-body-item").fadeOut(200);
 				$(this).closest(".turbo-list-body-item").remove();
 			});

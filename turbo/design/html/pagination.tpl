@@ -10,7 +10,7 @@
 				{$page_from = max(1, $current_page-floor($visible_pages/2)-1)}
 			{/if}
 
-			{if $current_page > $pages_count-ceil($visible_pages/2)} 
+			{if $current_page > $pages_count-ceil($visible_pages/2)}
 				{$page_from = max(1, $pages_count-$visible_pages-1)}
 			{/if}
 
@@ -23,9 +23,9 @@
 			{/if}
 
 			<li class="page-item {if $current_page==1}active{/if}">
-				<a class="page-link" href="{url page=1}">1</a>
+				<a class="page-link" href="{url page=null}">1</a>
 			</li>
-			
+
 			{section name=pages loop=$page_to start=$page_from}
 				{$p = $smarty.section.pages.index+1}
 				<li class="page-item {if $p==$current_page}active{/if}">
@@ -46,7 +46,7 @@
 					<a id="NextLink" class="page-link" href="{url page=$current_page+1}"><i class="align-middle" data-feather="chevron-right"></i></a>
 				</li>
 			{/if}
-			
+
 			<li class="page-item">
 				<a class="page-link" href="{url page=all}">{$btr->pagination_show_all|escape}</a>
 			</li>

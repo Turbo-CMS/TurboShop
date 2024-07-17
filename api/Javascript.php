@@ -233,7 +233,6 @@ class Javascript extends Turbo
 	protected function minify($data, $cache, $minify)
 	{
 		if ($minify) {
-			require_once $this->config->root_dir . '/minify/MatthiasMullie/autoload.php';
 			$minifier = new MatthiasMullie\Minify\JS(array_keys($data));
 			$content = $minifier->minify($cache);
 		} else {

@@ -7,7 +7,7 @@
 {$canonical="" scope=global}
 
 {* Main Content *}
-{if $theme_settings->main_type == "1"}
+{if $theme_settings->main_type == '1'}
 	{include file='main/main_content_1.tpl'}
 {elseif $theme_settings->main_type == "2"}
 	{include file='main/main_content_2.tpl'}

@@ -86,11 +86,9 @@ class FAQ extends Turbo
 				f.position,
 				f.last_modified,
 				$langSql->fields
-			FROM 
-				__faq f
+			FROM __faq f
 				$langSql->join
-			WHERE 
-				1 
+			WHERE 1 
 				$faqIdFilter 
 				$visibleFilter
 				$keywordFilter

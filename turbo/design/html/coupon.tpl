@@ -78,7 +78,7 @@
 							</div>
 							<div class="turbo-list-boding turbo-list-coupon-sale">
 								<div class="input-group">
-									<input class="form-control" name="value" type="text" value="{if isset($coupon->value) && isset($coupon->type) && $coupon->type == 'percentage'}{$coupon->value*1}{else}{$coupon->value|escape}{/if}">
+									<input class="form-control" name="value" type="text" value="{if isset($coupon->value) && isset($coupon->type) && $coupon->type == 'percentage'}{$coupon->value*1}{elseif isset($coupon->value)}{$coupon->value|escape}{/if}">
 									<select class="js-coupon-sale selectpicker d-none" name="type">
 										<option value="percentage" {if isset($coupon->type) && $coupon->type=='percentage'}selected{/if}>%</option>
 										<option value="absolute" {if isset($coupon->type) && $coupon->type=='absolute'}selected{/if}>{$currency->sign}</option>

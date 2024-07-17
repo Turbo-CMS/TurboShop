@@ -1,0 +1,87 @@
+.drag-scroll {
+	/* overflow: hidden; */
+	position: relative;
+	z-index: 0;
+}
+
+.drag-scroll__content-wrap {
+	overflow: hidden;
+}
+
+.drag-scroll__content {
+	position: relative;
+	width: 100%;
+	overflow: visible;
+	white-space: nowrap;
+	transition: transform 0ms;
+	will-change: transform;
+	user-select: none;
+	z-index: 1;
+}
+
+.drag-scroll--scrollable .drag-scroll__content {
+	cursor: pointer;
+}
+
+.drag-scroll--scrollable.drag-scroll--active,
+.drag-scroll--scrollable.drag-scroll--active * {
+	cursor: grabbing;
+	cursor: -webkit-grabbing;
+}
+
+/*arrows*/
+.drag-scroll__arrows {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.drag-scroll__arrow {
+	/* position: absolute; */
+	width: 32px;
+	height: 32px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: #fff;
+	background: var(--arrows_bg_black);
+	border-radius: 50px;
+	z-index: 1;
+	cursor: pointer;
+	box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.07);
+}
+
+.drag-scroll__arrow:hover {
+	background: var(--theme-base-color);
+}
+
+.drag-scroll__arrow:hover path {
+	stroke: #fff;
+}
+
+.drag-scroll__arrow--left svg {
+	transform: rotate(180deg);
+}
+
+.drag-scroll__arrow--right svg {
+	transform: translateX(1px);
+}
+
+.drag-scroll__arrow--left {
+	transform: translateX(-16px);
+}
+
+.drag-scroll__arrow--right {
+	transform: translateX(16px);
+}
+
+.drag-scroll__arrow--disabled {
+	opacity: 0;
+	visibility: hidden;
+}
+
+/**/

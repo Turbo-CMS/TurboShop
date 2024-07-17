@@ -1,0 +1,122 @@
+.breadcrumbs .breadcrumbs {
+	padding: 0px;
+}
+
+.breadcrumbs__item {
+	display: inline-block;
+	position: relative;
+	padding-right: 16px;
+	margin-right: -16px;
+}
+
+.mobile .breadcrumbs__item:hover .breadcrumbs__dropdown-wrapper {
+	display: none;
+}
+
+.mobile .breadcrumbs__item.hover .breadcrumbs__dropdown-wrapper {
+	display: block;
+}
+
+.breadcrumbs__separator {
+	position: relative;
+	zoom: 1;
+	bottom: 0px;
+	display: inline-block;
+	line-height: 18px;
+	margin: 0 8px 0px 12px;
+	border: none;
+	color: #dddddd;
+	/* color: var(--stroke_black); */
+}
+
+.breadcrumbs__item--with-dropdown:hover .breadcrumbs__arrow-down {
+	opacity: 1;
+}
+
+.breadcrumbs__arrow-down {
+	opacity: 0.5;
+	border: none;
+	top: 13px;
+	right: 3px;
+	display: none;
+	height: 3px;
+	line-height: 18px;
+	margin: 0 4px;
+	position: absolute;
+	width: 5px;
+	z-index: 1;
+	font-size: 0;
+}
+
+.breadcrumbs__arrow-down .svg {
+	top: -8px;
+	font-size: 10px;
+}
+
+.breadcrumbs__item--with-dropdown .breadcrumbs__arrow-down {
+	display: inline-block;
+}
+
+.breadcrumbs__item-name {
+	color: #999;
+}
+
+.breadcrumbs__link:hover .breadcrumbs__item-name {
+	color: #555;
+	color: var(--fill_dark_lite_white_hover);
+}
+
+.breadcrumbs__item--with-dropdown .breadcrumbs__item--dropdown {
+	-webkit-transition: none;
+	-moz-transition: none;
+	-o-transition: none;
+	transition: none;
+}
+
+.breadcrumbs__dropdown-wrapper {
+	display: none;
+	padding-top: 8px;
+	top: 18px;
+	z-index: 2;
+	position: absolute;
+	left: -18px;
+}
+
+.breadcrumbs__dropdown {
+	background: #fff;
+	padding: 11px 20px;
+	text-align: left;
+	box-shadow: 0 1px 5px 1px rgba(0, 0, 0, 0.12);
+}
+
+.breadcrumbs__dropdown .breadcrumbs__dropdown-item {
+	display: block;
+	line-height: 14px;
+	padding: 5px 0px;
+	text-decoration: none;
+	text-transform: none;
+	white-space: nowrap;
+}
+
+@media (min-width: 768px) {
+	.breadcrumbs__item--with-dropdown+.breadcrumbs__separator {
+		margin-left: 18px;
+	}
+}
+
+@media (max-width: 767px) {
+	.breadcrumbs__item--with-dropdown .breadcrumbs__arrow-down {
+		display: none;
+	}
+}
+
+@media (max-width: 600px) {
+	.breadcrumbs {
+		white-space: nowrap;
+		overflow-x: auto;
+		margin-right: calc(var(--theme-page-width-padding) * -1);
+		margin-left: calc(var(--theme-page-width-padding) * -1);
+		padding-left: var(--theme-page-width-padding);
+		padding-bottom: 5px;
+	}
+}

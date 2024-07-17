@@ -1,0 +1,59 @@
+.cross {
+	position: relative;
+	height: 18px;
+	width: 18px;
+}
+
+.cross:before,
+.cross:after {
+	content: '';
+	background: #fff;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	border-radius: 1px;
+}
+
+.cross:before {
+	top: 50%;
+	transform: translate(-50%, -50%);
+	width: 18px;
+	height: 2px;
+	transition: width 0.5s ease-in-out;
+}
+
+.cross:after {
+	transform: translate(-50%, -50%);
+	left: 50%;
+	height: 18px;
+	width: 2px;
+	transition: height 0.5s ease-in-out;
+}
+
+.animate-cross-hover:hover .cross:before {
+	width: 26px;
+}
+
+.animate-cross-hover:hover .cross:after {
+	height: 26px;
+}
+
+@media (min-width: 992px) {
+	.animate-cross-hover:hover .cross--wide34:before {
+		width: 34px;
+	}
+
+	.animate-cross-hover:hover .cross--wide34:after {
+		height: 34px;
+	}
+}
+
+@media (min-width: 601px) {
+	.animate-cross-hover:hover .cross--wide42:before {
+		width: 42px;
+	}
+
+	.animate-cross-hover:hover .cross--wide42:after {
+		height: 42px;
+	}
+}
