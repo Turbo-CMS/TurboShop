@@ -413,11 +413,18 @@
 																					</div>
 																				</div>
 																			{/if}
+																			{if isset($product->features)}
+																				{foreach $product->features as $f}
+																					{if $f->is_size}
+																						{$sizes = $f->is_size}
+																					{/if}
+																				{/foreach}
+																			{/if}
 																			{if $product->variants|count > 1}
 																				<div class="line-block__item sku-props__inner">
 																					<div class="sku-props__item">
 																						<div class="sku-props__title color_666">
-																							{$lang->size} : <span class="sku-props__js-size">{$product->variant->name}</span>
+																							{if $sizes}{$lang->size}{else}{$lang->option}{/if} : <span class="sku-props__js-size">{$product->variant->name}</span>
 																						</div>
 																						<div class="line-block line-block--flex-wrap line-block--4 sku-props__values">
 																							{foreach $product->variants as $v}
@@ -431,12 +438,9 @@
 																						</div>
 																					</div>
 																				</div>
-																			{/if}
-																			{if isset($product->features)}
-																				{foreach $product->features as $f}
-																					{if $f->is_size}
-																						{$sizes = $f->is_size}
-																					{/if}
+																			{else}
+																				{foreach $product->variants as $v}
+																					<input name="variant" value="{$v->id}" type="radio" {if $v@first}checked{/if} style="display:none;">
 																				{/foreach}
 																			{/if}
 																			{if $sizes}

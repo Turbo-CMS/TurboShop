@@ -2140,8 +2140,22 @@ textarea.form-control {
 	--bs-btn-disabled-border-color: #ced4da;
 }
 
-.btn-delete-new-feature:focus {
-	box-shadow: 0 0 0 .2rem rgba(59, 125, 221, .25);
+.btn-delete-new-feature:hover {
+	background-color: #dde0e3;
+	border-color: #ced4da;
+}
+
+.btn-delete-new-feature:focus,
+.btn-delete-new-feature:active {
+	box-shadow: 0 0 0 0.2rem rgba(59, 125, 221, 0.25);
+	background-color: #dde0e3;
+	border-color: #9dbeee;
+}
+
+.btn-delete-new-feature:active:focus {
+	box-shadow: 0 0 0 0.2rem rgba(59, 125, 221, 0.25);
+	background-color: #dde0e3;
+	border-color: #9dbeee;
 }
 
 .btn-delete-new-feature {
