@@ -86,7 +86,7 @@
 				</div>
 			</div>
 		{/foreach}
-		<div class="col-12">
+		<div class="col-12 mt-3">
 			<button type="submit" name="save" class="btn btn-primary js-chek-all float-end">
 				<i class="align-middle" data-feather="check"></i>
 				{$btr->global_apply|escape}

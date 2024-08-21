@@ -63,16 +63,16 @@
 				<div class="card-body">
 					<div class="row d-flex">
 						<div class="col-lg-10 col-md-9 col-sm-12">
-							<div class="mb-3">
-								<div class="form-label">{$btr->global_title|escape}</div>
-								<input class="form-control mb-h" name="name" type="text" value="{if isset($payment_method->name)}{$payment_method->name|escape}{/if}">
+							<div class="translate-container mb-3">
+								<div class="form-label">{$btr->global_title|escape} <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
+								<input class="form-control mb-h translate-input" name="name" type="text" value="{if isset($payment_method->name)}{$payment_method->name|escape}{/if}">
 								<input name="id" type="hidden" value="{$payment_method->id|escape}">
 							</div>
 						</div>
 						<div class="col-lg-2 col-md-3 col-sm-12">
 							<div class="d-flex justify-content-center align-content-center flex-wrap flex-md-column h-100">
 								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
-									<input class="form-check-input ms-2" type="checkbox" id="enabled" name="enabled" value="1" type="checkbox" {if isset($payment_method->enabled) && $payment_method->enabled}checked="" {/if}>
+									<input class="form-check-input ms-2" type="checkbox" id="enabled" name="enabled" value="1" type="checkbox" {if isset($payment_method->enabled) && $payment_method->enabled}checked=""{/if}>
 									<label class="form-check-label ms-2" for="enabled">{$btr->global_enable|escape}</label>
 								</div>
 							</div>

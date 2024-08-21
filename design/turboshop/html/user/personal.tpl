@@ -1,9 +1,9 @@
-{get_banner var=banner_6 group='6'}
-{if isset($banner_6->items)}
+{get_banner var=personal_banners group=$theme_settings->id_banner_account}
+{if isset($personal_banners->items)}
 	<div class="personal__main-block personal__main-block--banners">
 		<div class="swiper slider-solution banners-slider outer-rounded-x hidden" data-plugin-options='{literal}{"preloadImages":false,"lazy":{"loadPrevNext":true},"init":false,"keyboard":{"enabled":true},"loop":false,"rewind":true,"pagination":{"enabled":true,"el":".swiper-pagination"},"slidesPerView":1}{/literal}'>
 			<div class="swiper-wrapper">
-				{foreach $banner_6->items as $b}
+				{foreach $personal_banners->items as $b}
 					<div class="swiper-slide banners-slider__item">
 						<a href="{$lang_link}catalog" target="_blank">
 							<span class="banners-slider__image swiper-lazy" title="{$b->name}" data-background="{$b->image|resize_banners:1919:180}"></span>

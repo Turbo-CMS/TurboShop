@@ -145,7 +145,7 @@
 				<div class="collapse-card">
 					<div class="card-body">
 						<form>
-							<textarea id="template-content" name="template-content">{$template_content|escape}</textarea>
+							<textarea id="content" class="d-none" name="content">{$template_content|escape}</textarea>
 						</form>
 						<div class="row">
 							<div class="col-12">
@@ -247,7 +247,7 @@
 {/literal}
 {literal}
 	<script>
-		var editor = CodeMirror.fromTextArea(document.getElementById("template-content"), {
+		var editor = CodeMirror.fromTextArea(document.getElementById("content"), {
 			mode: "smartymixed",
 			lineNumbers: true,
 			styleActiveLine: true,

@@ -36,7 +36,7 @@
 											<select class="form-select form-select-sm" onchange="location.href=this.value">
 												{foreach $currencies as $c}
 													{if $c->enabled}
-														<option value="{url currency_id=$c->id}" {if $c->id==$currency->id}selected="selected"{/if}>{$c->sign|escape} {$c->code|escape}</option>
+														<option value="{url currency_id=$c->id}" {if $c->id==$currency->id}selected="selected" {/if}>{$c->sign|escape} {$c->code|escape}</option>
 													{/if}
 												{/foreach}
 											</select>
@@ -66,15 +66,15 @@
 					{if $module=='MainView'}
 						<div class="navbar-brand d-none d-lg-block">
 							<div class="h2">
-								<i class="fal fa-shopping-bag text-success"></i>
-								<span class="logo-main">TurboShop</span>
+								{$theme_settings->logo_icon}
+								<span class="logo-main">{$theme_settings->logo|escape}</span>
 							</div>
 						</div>
 					{else}
 						<a class="{if isset($smarty.cookies.mode) && $smarty.cookies.mode == 'mode'}text-white{else}text-dark{/if} card-link text-decoration-none navbar-brand d-none d-lg-block" href="{if $lang_link}{$lang_link}{else}/{/if}">
 							<span class="h2">
-								<i class="fal fa-shopping-bag text-success"></i>
-								TurboShop
+								{$theme_settings->logo_icon}
+								<span class="logo-main">{$theme_settings->logo|escape}</span>
 							</span>
 						</a>
 					{/if}
@@ -83,15 +83,15 @@
 						{if $module=='MainView'}
 							<div class="navbar-brand">
 								<div class="h2">
-									<i class="fal fa-shopping-bag text-success"></i>
-									<span class="logo-main">TurboShop</span>
+									{$theme_settings->logo_icon}
+									<span class="logo-main">{$theme_settings->logo|escape}</span>
 								</div>
 							</div>
 						{else}
 							<a class="{if isset($smarty.cookies.mode) && $smarty.cookies.mode == 'mode'}text-white{else}text-dark{/if} card-link text-decoration-none navbar-brand" href="{if $lang_link}{$lang_link}{else}/{/if}">
 								<span class="h2">
-									<i class="fal fa-shopping-bag text-success"></i>
-									TurboShop
+									{$theme_settings->logo_icon}
+									<span class="logo-main">{$theme_settings->logo|escape}</span>
 								</span>
 							</a>
 						{/if}
@@ -177,14 +177,14 @@
 					{* Logo Offcanvas *}
 					{if $module=='MainView'}
 						<div class="h2">
-							<i class="fal fa-shopping-bag text-success"></i>
-							<span class="logo-main">TurboShop</span>
+							{$theme_settings->logo_icon}
+							<span class="logo-main">{$theme_settings->logo|escape}</span>
 						</div>
 					{else}
 						<a class="{if isset($smarty.cookies.mode) && $smarty.cookies.mode == 'mode'}text-white{else}text-dark{/if} text-decoration-none" href="{if $lang_link}{$lang_link}{else}/{/if}">
 							<span class="h2">
-								<i class="fal fa-shopping-bag text-success"></i>
-								TurboShop
+								{$theme_settings->logo_icon}
+								<span class="logo-main">{$theme_settings->logo|escape}</span>
 							</span>
 						</a>
 					{/if}
@@ -245,10 +245,10 @@
 					<div class="mb-0">
 						<ul class="navbar-nav align-items-center">
 							{foreach $pages as $p}
-								{if $p->menu_id == 1}
+								{if $p->menu_id == $theme_settings->menu_header_id}
 									{if $p->visible}
 										<li class="nav-item dropdown w-100 w-lg-auto {if $page && $page->id == $p->id}active{/if}">
-											<a class="nav-link {if isset($p->subpages)}dropdown-toggle{/if}" href="{$lang_link}{$p->url}" id="dropdown-{$p->id}" {if isset($p->subpages)}data-bs-toggle="dropdown" aria-expanded="false"{/if} aria-haspopup="true"><span data-page="{$p->id}">{$p->header}</span></a>
+											<a class="nav-link {if isset($p->subpages)}dropdown-toggle{/if}" href="{$lang_link}{$p->url}" id="dropdown-{$p->id}" {if isset($p->subpages)}data-bs-toggle="dropdown" aria-expanded="false" {/if} aria-haspopup="true"><span data-page="{$p->id}">{$p->header}</span></a>
 											{if isset($p->subpages)}
 												<ul class="dropdown-menu" aria-labelledby="dropdown-{$p->id}">
 													{foreach $p->subpages as $p2}

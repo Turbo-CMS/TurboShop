@@ -1,10 +1,10 @@
 $(document).ready(function () {
-	let inputSelectors = ['#title-search-input_fixed', '#title-search-input'];
+	let inputSelector = '.search-input';
 
 	function toggleClearButton() {
-		inputSelectors.forEach(function (selector) {
-			let searchForm = $(selector).closest('.search');
-			if ($(selector).val() !== '') {
+		$(inputSelector).each(function () {
+			let searchForm = $(this).closest('.search');
+			if ($(this).val() !== '') {
 				searchForm.find('.btn-clear-search').show();
 			} else {
 				searchForm.find('.btn-clear-search').hide();
@@ -12,19 +12,18 @@ $(document).ready(function () {
 		});
 	}
 
-	inputSelectors.forEach(function (selector) {
-		$(selector).on('input', function () {
-			toggleClearButton();
-		});
-
-		$(selector).closest('.search').find('.btn-clear-search').on('click', function () {
-			inputSelectors.forEach(function (selector) {
-				$(selector).val('');
-			});
-			$('.btn-clear-search').hide();
-			$(inputSelectors[0]).focus();
-		});
-
+	$(inputSelector).on('input', function () {
 		toggleClearButton();
 	});
+
+	$(document).on('click', '.btn-clear-search', function () {
+		$(inputSelector).each(function () {
+			this.setAttribute('value', '');
+			$(this).val('');
+		});
+		$('.btn-clear-search').hide();
+		$(this).closest('.search').find(inputSelector).focus();
+	});
+
+	toggleClearButton();
 });

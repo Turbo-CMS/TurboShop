@@ -4,14 +4,6 @@ body {
 	opacity: 0;
 }
 
-body[data-sidebar-layout=compact] .sidebar-brand-text {
-	display: none;
-}
-
-body[data-sidebar-layout=default] .sidebar-brand-text {
-	display: inline-block;
-}
-
 img {
 	max-width: 100%;
 	vertical-align: middle;
@@ -76,11 +68,78 @@ img {
 	padding-right: .5315rem !important;
 }
 
+.form-label .translate {
+	margin-top: -.1rem !important;
+	height: 18px;
+	width: 18px;
+}
+
+textarea.editor {
+	display: none;
+}
+
+.nav-flag img {
+	border: 1px solid #ced4da;
+	width: 22px;
+	height: 22px;
+}
+
+.dropdown-item .nav-flag-icon {
+	border: 1px solid rgb(0 0 0 / 0.05);
+}
+
 /************************************************************************* Sidebar  */
-.sidebar-brand-text img {
-	width: 160px;
-	height: 30px;
+
+.sidebar-brand-text {
 	margin-top: -5px;
+}
+
+.sidebar-brand-logo {
+	fill: #f8f9fa;
+	fill-rule: evenodd;
+	margin-left: 3px;
+}
+
+.sidebar-brand-logo:hover path:last-child {
+	-webkit-transform: translate3d(3px, 0, 0);
+	transform: translate3d(3px, 0, 0)
+}
+
+.sidebar-brand-arrow {
+	fill: #3b7ddd;
+}
+
+.sidebar-brand-icon {
+	fill: #f8f9fa;
+	fill-rule: evenodd;
+	margin-left: 5px;
+	margin-top: 2px;
+}
+
+.sidebar-brand-icon:hover {
+	fill: #3b7ddd;
+}
+
+body[data-theme=light] .sidebar-brand-logo,
+body[data-theme=light] .sidebar-brand-icon,
+body[data-theme=light] .sidebar-brand-arrow {
+	fill: #495057;
+}
+
+body[data-theme=light] .sidebar-brand-icon:hover {
+	fill: #3b7ddd;
+}
+
+body[data-theme=colored] .sidebar-brand-arrow {
+	fill: #f8f9fa;
+}
+
+body[data-theme=colored] .sidebar-brand-icon:hover {
+	fill: #a8c5f0;
+}
+
+body[data-sidebar-layout=compact] .sidebar-brand-text {
+	display: none;
 }
 
 .sidebar-dropdown .sidebar-badge {
@@ -1486,7 +1545,7 @@ textarea.form-control {
 }
 
 .turbo-list .turbo-list-order-amount-price {
-	width: 150px;
+	width: 130px;
 }
 
 .turbo-list .turbo-list-order-marker {
@@ -2348,6 +2407,11 @@ textarea.form-control {
 	vertical-align: middle;
 	width: 20px;
 	height: 20px;
+}
+
+.variants-list-item .translate {
+	height: 18px;
+	width: 18px;
 }
 
 /************************************************************************* Orders  */

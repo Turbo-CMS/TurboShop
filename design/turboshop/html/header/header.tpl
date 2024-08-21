@@ -28,10 +28,12 @@
 								{* Phones *}
 								{include file='header/phones.tpl'}
 							</div>
-							<div class="header__top-item">
-								{* Theme Selector *}
-								{include file='header/theme_selector.tpl'}
-							</div>
+							{if $theme_settings->theme_color == 'theme_default'}
+								<div class="header__top-item">
+									{* Theme Selector *}
+									{include file='header/theme_selector.tpl'}
+								</div>
+							{/if}
 						</div>
 					{if $theme_settings->content_width}</div>{/if}
 				</div>
@@ -75,6 +77,31 @@
 						</div>
 					{if $theme_settings->content_width}</div>{/if}
 				</div>
+				{if $theme_settings->landing_pages_header}
+					<div class="header__bottom-part">
+						{if $theme_settings->content_width}<div class="maxwidth-theme">{/if}
+							<div class="header__bottom-inner relative">
+								<div class="header__bottom-item header__top-sections flex-1">
+									<div class="drag-scroll header__top-sections-inner scroll-header-tags">
+										<div class="drag-scroll__content-wrap">
+											<div class="drag-scroll__content line-block line-block--gap line-block--gap-32">
+												{foreach $pages as $p}
+													{if $p->menu_id == $theme_settings->landing_pages_header_id}
+														{if $p->visible}
+															<a class="line-block__item banner-light-text light-opacity-hover dark_link no-shrinked" href="{$lang_link}{$p->url}" draggable="false">
+																<span class="font_15" data-page="{$p->id}">{$p->header}</span>
+															</a>
+														{/if}
+													{/if}
+												{/foreach}
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						{if $theme_settings->content_width}</div>{/if}
+					</div>
+				{/if}
 			</div>
 		</header>
 		<script data-skip-moving="true">
@@ -86,7 +113,7 @@
 {* Header Type 2 *}
 {if $theme_settings->header_type == '2'}
 	<div class="title-v1 index" data-ajax-block="HEADER">
-		<header class="header_3 header--narrow">
+		<header class="header_2 header_2 header header--narrow">
 			<div class="header__inner {if !$theme_settings->header_padding_top}header__inner--no-pt{/if} {if !$theme_settings->content_width}header__inner--paddings{/if}">
 				<div class="header__top-part">
 					{if $theme_settings->content_width}<div class="maxwidth-theme">{/if}
@@ -103,10 +130,12 @@
 								{* Phones *}
 								{include file='header/phones.tpl'}
 							</div>
-							<div class="header__top-item">
-								{* Theme Selector *}
-								{include file='header/theme_selector.tpl'}
-							</div>
+							{if $theme_settings->theme_color == 'theme_default'}
+								<div class="header__top-item">
+									{* Theme Selector *}
+									{include file='header/theme_selector.tpl'}
+								</div>
+							{/if}
 						</div>
 					{if $theme_settings->content_width}</div>{/if}
 				</div>
@@ -169,7 +198,7 @@
 										<div class="drag-scroll__content-wrap">
 											<div class="drag-scroll__content line-block line-block--gap line-block--gap-32">
 												{foreach $pages as $p}
-													{if $p->menu_id == 4}
+													{if $p->menu_id == $theme_settings->landing_pages_header_id}
 														{if $p->visible}
 															<a class="line-block__item banner-light-text light-opacity-hover dark_link no-shrinked" href="{$lang_link}{$p->url}" draggable="false">
 																<span class="font_15" data-page="{$p->id}">{$p->header}</span>

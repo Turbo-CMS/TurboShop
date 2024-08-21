@@ -225,6 +225,14 @@ class Comments extends Turbo
 	 */
 	public function updateComment($id, $comment)
 	{
+		$comment = (array) $comment;
+
+		switch ($comment['type']) {
+			case 'review':
+				$this->settings->lastModifyReviews = date('Y-m-d H:i:s');
+				break;
+		}
+
 		$query = $this->db->placehold("UPDATE __comments SET ?% WHERE id IN(?@) LIMIT 1", $comment, (array) $id);
 		$this->db->query($query);
 

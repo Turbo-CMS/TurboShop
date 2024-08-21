@@ -269,18 +269,30 @@
     });
 
     /*
-    // Comment Rate
+    // Comment & Post Rate
     */
 
     $(document).on('click', '.rating-vote a', function (e) {
         e.preventDefault();
-        var counter = $(this).siblings('.rating-vote__result');
+
+        var $this = $(this);
+        var $container = $this.closest('.rating-vote');
+        var $counter = $container.find('.rating-vote__result');
+        var url = $this.attr('href');
+
         $.ajax({
-            url: $(this).attr('href')
+            url: url
         }).done(function (response) {
             if (response.success) {
-                counter.html(response.value);
-                counter.text(response.value).toggleClass('active', response.value < 0).toggleClass('active', response.value > 0);
+                $container.find('.rating-vote__item').removeClass('active');
+                $counter.html(response.value);
+
+                if (response.value !== 0) {
+                    $this.addClass('active');
+                    $counter.addClass('active');
+                } else {
+                    $counter.removeClass('active');
+                }
             } else {
                 if (typeof JNoticeSurface === 'function') {
                     let surface = JNoticeSurface.get();

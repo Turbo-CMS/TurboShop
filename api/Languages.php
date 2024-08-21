@@ -47,10 +47,10 @@ class Languages extends Turbo
 	{
 		$fields['files'] = ['name'];
 		$fields['features'] = ['name'];
-		$fields['options'] = ['value'];
 		$fields['faq'] = ['name', 'answer'];
 		$fields['variants'] = ['name', 'color'];
 		$fields['currencies'] = ['name', 'sign'];
+		$fields['options'] = ['value', 'feature_id'];
 		$fields['delivery'] = ['name', 'description'];
 		$fields['payment_methods'] = ['name', 'description'];
 		$fields['banners_images'] = ['name', 'alt', 'title', 'description', 'button'];
@@ -326,8 +326,6 @@ class Languages extends Turbo
 	public function deleteLanguage($id)
 	{
 		if (!empty($id)) {
-			$lang = $this->getLanguage($id);
-
 			$query = $this->db->placehold("DELETE FROM __languages WHERE id=? LIMIT 1", (int) $id);
 			$this->db->query($query);
 
@@ -337,10 +335,6 @@ class Languages extends Turbo
 
 			$this->db->query("DELETE FROM __settings_lang WHERE lang_id=?", (int)  $id);
 			$this->db->query("DELETE FROM __seo_lang WHERE lang_id=?", (int)  $id);
-
-			if (isset($lang->label) && $this->db->query("SHOW COLUMNS FROM __translations LIKE 'lang_$lang->label'")->num_rows > 0) {
-				$this->db->query("ALTER TABLE __translations DROP COLUMN lang_$lang->label");
-			}
 
 			$this->dumpTranslation();
 		}

@@ -16,7 +16,7 @@
 					{/if}
 				</li>
 				{foreach $pages as $p}
-					{if $p->menu_id == 1}
+					{if $p->menu_id == $theme_settings->menu_header_id}
 						{if $p->visible}
 							<li itemprop="name" class="nav-item dropdown {if $page && $page->id == $p->id}active{/if}">
 								<a itemprop="url" class="nav-link {if isset($p->subpages)}dropdown-toggle{/if}" href="{$lang_link}{$p->url}" id="dropdown{$p->id}" data-page="{$p->id}" {if isset($p->subpages)}data-bs-toggle="dropdown" aria-expanded="false" {/if} aria-haspopup="true">{$p->header}</a>
@@ -103,12 +103,12 @@
 		<div class="col-lg-6 d-flex align-items-center justify-content-start">
 			<h1>
 				{if $module=='MainView'}
-					<i class="fal fa-shopping-bag text-success"></i>
-					<span class="logo-main">TurboShop</span>
+					{$theme_settings->logo_icon}
+					<span class="logo-main">{$theme_settings->logo|escape}</span>
 				{else}
 					<a class="{if isset($smarty.cookies.mode) && $smarty.cookies.mode == 'mode'}text-white{else}text-dark{/if} card-link text-decoration-none" href="{if $lang_link}{$lang_link}{else}/{/if}">
-						<i class="fal fa-shopping-bag text-success"></i>
-						TurboShop
+						{$theme_settings->logo_icon}
+						<span class="logo-main">{$theme_settings->logo|escape}</span>
 					</a>
 				{/if}
 			</h1>

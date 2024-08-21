@@ -45,9 +45,9 @@
 				<div class="card-body">
 					<div class="row d-flex">
 						<div class="col-lg-10 col-md-9 col-sm-12">
-							<div class="mb-3">
-								<div class="form-label">{$btr->global_title|escape}</div>
-								<input class="form-control" name="name" type="text" value="{if isset($banners_image->name)}{$banners_image->name|escape}{/if}">
+							<div class="translate-container-banner mb-3">
+								<div class="form-label">{$btr->global_title|escape} <span class="translate-button-banner" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
+								<input class="form-control translate-input-banner" name="name" type="text" value="{if isset($banners_image->name)}{$banners_image->name|escape}{/if}">
 								<input name="id" type="hidden" value="{if isset($banners_image->id)}{$banners_image->id|escape}{/if}">
 							</div>
 							<div class="row">
@@ -115,25 +115,24 @@
 									<div class="form-label">{$btr->global_code|escape}</div>
 									<input name="code" class="form-control" type="text" value="{if isset($banners_image->code)}{$banners_image->code|escape}{/if}">
 								</div>
-								<div class="mb-3">
-									<div class="form-label">{$btr->banners_image_button|escape}</div>
-									<input name="button" class="form-control" type="text" value="{if isset($banners_image->button)}{$banners_image->button|escape}{/if}">
+								<div class="translate-container-banner mb-3">
+									<div class="form-label">{$btr->banners_image_button|escape} <span class="translate-button-banner" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
+									<input name="button" class="form-control translate-input-banner" type="text" value="{if isset($banners_image->button)}{$banners_image->button|escape}{/if}">
 								</div>
 							</div>
 							<div class="col-md-6">
-								<div class="mb-3">
-									<div class="form-label">{$btr->banners_image_alt|escape}</div>
-									<input name="alt" class="form-control" type="text" value="{if isset($banners_image->alt)}{$banners_image->alt|escape}{/if}">
+								<div class="translate-container-banner mb-3">
+									<div class="form-label">{$btr->banners_image_alt|escape} <span class="translate-button-banner" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
+									<input name="alt" class="form-control translate-input-banner" type="text" value="{if isset($banners_image->alt)}{$banners_image->alt|escape}{/if}">
 								</div>
-								<div class="mb-3">
-									<div class="form-label">{$btr->banners_image_title|escape}</div>
-									<input name="title" class="form-control" type="text" value="{if isset($banners_image->title)}{$banners_image->title|escape}{/if}">
+								<div class="translate-container-banner mb-3">
+									<div class="form-label">{$btr->banners_image_title|escape} <span class="translate-button-banner" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
+									<input name="title" class="form-control translate-input-banner" type="text" value="{if isset($banners_image->title)}{$banners_image->title|escape}{/if}">
 								</div>
-								<div class="mb-3">
-									<div class="form-label">{$btr->global_description|escape}</div>
-									<textarea name="description" class="form-control banner-textarea turbo-textarea">{if isset($banners_image->description)}{$banners_image->description|escape}{/if}</textarea>
+								<div class="translate-container-banner mb-3">
+									<div class="form-label translate-button-banner">{$btr->global_description|escape} <span role="button" class="translate-button-banner" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
+									<textarea name="description" class="form-control banner-textarea turbo-textarea translate-input-banner">{if isset($banners_image->description)}{$banners_image->description|escape}{/if}</textarea>
 								</div>
-
 							</div>
 						</div>
 					</div>
@@ -267,6 +266,77 @@
 				format: "hex"
 			});
 		});
+
+		$(document).ready(function() {
+			var targetLang = '{/literal}{if $lang_label == 'ua'}uk{else}{$lang_label}{/if}{literal}';
+
+			$('.translate-button-banner').on('click', function() {
+				var inputElement = $(this).closest('.translate-container-banner').find('.translate-input-banner');
+				var text = inputElement.val();
+
+				if (text.trim() !== '') {
+					$.post('ajax/translate.php', {
+						'source_lang': 'auto',
+						'target_lang': targetLang,
+						'text': text
+					}, function(data) {
+						inputElement.val(data);
+						set_banner(); 
+					});
+				}
+			});
+
+			$('input[name="name"]').on('keyup change', function() {
+				name_touched = true;
+				set_banner(); 
+			});
+
+			$(window).on("load", function() {
+				init_touch_flags();
+				set_touch_events();
+				set_banner(); 
+			});
+		});
+
+		var name_touched = true;
+		var title_touched = true;
+		var alt_touched = true;
+
+		function init_touch_flags() {
+			if ($('input[name="name"]').val() == generate_name() || $('input[name="name"]').val() == '')
+				name_touched = false;
+			if ($('input[name="title"]').val() == generate_title() || $('input[name="title"]').val() == '')
+				title_touched = false;
+			if ($('input[name="alt"]').val() == generate_alt() || $('input[name="alt"]').val() == '')
+				alt_touched = false;
+		}
+
+		function set_touch_events() {
+			$('input[name="name"]').change(function() { name_touched = true; });
+			$('input[name="title"]').change(function() { title_touched = true; });
+			$('input[name="alt"]').change(function() { alt_touched = true; });
+		}
+
+		function set_banner() {
+			if (!name_touched)
+				$('input[name="name"]').val(generate_name());
+			if (!title_touched)
+				$('input[name="title"]').val(generate_title());
+			if (!alt_touched)
+				$('input[name="alt"]').val(generate_alt());
+		}
+
+		function generate_name() {
+			return $('input[name="name"]').val();
+		}
+
+		function generate_title() {
+			return $('input[name="name"]').val();
+		}
+
+		function generate_alt() {
+			return $('input[name="name"]').val();
+		}
 	</script>
 	<style>
 		.colorpicker-element .add-on i:before {

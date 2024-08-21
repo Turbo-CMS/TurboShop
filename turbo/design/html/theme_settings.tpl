@@ -31,7 +31,7 @@
 {/if}
 
 {if $theme_settings_xml}
-	<form method="post" enctype="multipart/form-data" {if !$locked_theme}class="js-fast-button"{/if}>
+	<form method="post" enctype="multipart/form-data" {if !$locked_theme}class="js-fast-button js-form-list"{/if}>
 		<input type=hidden name="session_id" value="{$smarty.session.id}">
 		{foreach $theme_settings_xml as $theme_setting_xml}
 			{foreach $theme_setting_xml->groups as $group}
@@ -186,43 +186,50 @@
 			});
 		});
 
-		if ($(".sort").length > 0) {
-			var el = document.querySelectorAll(".sort");
-			for (var i = 0; i < el.length; i++) {
-				var sortable = Sortable.create(el[i], {
-					handle: ".move-zone",
-					sort: true,
-					animation: 150,
-					ghostClass: "sortable-ghost",
-					chosenClass: "sortable-chosen",
-					dragClass: "sortable-drag",
-					scrollSensitivity: 30,
-					scrollSpeed: 10,
-					filter: '.no-drag',
-					preventOnFilter: true,
-					onStart: function(evt) {
-						if (evt.item.classList.contains('no-drag')) {
-							evt.preventDefault();
-						}
-					},
-					onMove: function(evt) {
-						if (evt.related.classList.contains('no-drag')) {
-							return false;
-						}
-					},
-					onUpdate: function(evt) {
-						var sortedItems = evt.to.querySelectorAll(".js-sort-item");
-						sortedItems.forEach(function(item, index) {
-							var hiddenInput = item.querySelector(".js-sort-hidden-input");
-							if (hiddenInput) {
-								hiddenInput.value = index + 1;
+		{/literal}
+			{if !$locked_theme}
+				if ($(".sort").length > 0) {
+					var el = document.querySelectorAll(".sort");
+					for (var i = 0; i < el.length; i++) {
+						var sortable = Sortable.create(el[i], {
+							handle: ".move-zone",
+							sort: true,
+							animation: 150,
+							ghostClass: "sortable-ghost",
+							chosenClass: "sortable-chosen",
+							dragClass: "sortable-drag",
+							scrollSensitivity: 30,
+							scrollSpeed: 10,
+							filter: '.no-drag',
+							preventOnFilter: true,
+							onStart: function(evt) {
+								if (evt.item.classList.contains('no-drag')) {
+									evt.preventDefault();
+								}
+							},
+							onMove: function(evt) {
+								if (evt.related.classList.contains('no-drag')) {
+									return false;
+								}
+							},
+							onUpdate: function(evt) {
+								var sortedItems = evt.to.querySelectorAll(".js-sort-item");
+								sortedItems.forEach(function(item, index) {
+									var hiddenInput = item.querySelector(".js-sort-hidden-input");
+									if (hiddenInput) {
+										hiddenInput.value = index + 1;
+									}
+								});
+								$(".js-form-list").ajaxSubmit();
+								{literal}
+									notyf.success({message: '{/literal}{$btr->global_success|escape}{literal}', dismissible: true});
+								{/literal}
 							}
 						});
-						{/literal}{if !$locked_theme}$(".js-form-list").ajaxSubmit();{/if}{literal}
 					}
-				});
-			}
-		}
+				}
+			{/if}
+		{literal}	
 	</script>
 	<style>
 		.colorpicker-element .add-on i:before {

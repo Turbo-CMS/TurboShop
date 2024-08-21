@@ -76,21 +76,21 @@
 				<div class="card-body">
 					<div class="row d-flex">
 						<div class="col-lg-10 col-md-9 col-sm-12">
-							<div class="mb-3">
-								<div class="form-label">{$btr->global_title|escape}</div>
-								<input class="form-control" name="name" type="text" value="{if isset($category->name)}{$category->name|escape}{/if}">
+							<div class="translate-container mb-3">
+								<div class="form-label">{$btr->global_title|escape} <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
+								<input class="form-control translate-input" name="name" type="text" value="{if isset($category->name)}{$category->name|escape}{/if}">
 								<input name="id" type="hidden" value="{if isset($category->id)}{$category->id|escape}{/if}">
 							</div>
-							<div class="mb-3">
-								<div class="form-label">{$btr->global_h1|escape}</div>
-								<input class="form-control" name="name_h1" type="text" value="{if isset($category->name_h1)}{$category->name_h1|escape}{/if}">
+							<div class="translate-container mb-3">
+								<div class="form-label">{$btr->global_h1|escape} <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
+								<input class="form-control translate-input" name="name_h1" type="text" value="{if isset($category->name_h1)}{$category->name_h1|escape}{/if}">
 							</div>
 							<div class="row">
 								<div class="col-12 col-lg-6 col-md-12">
 									<div class="mt-2 mb-3 mb-h">
 										<div class="input-group">
 											<span class="input-group-text">URL</span>
-											<input name="url" class="js-meta-field form-control js-url" type="text" value="{if isset($category->url)}{$category->url|escape}{/if}" {if isset($category->id)}readonly="" {/if}>
+											<input name="url" class="js-meta-field form-control js-url" type="text" value="{if isset($category->url)}{$category->url|escape}{/if}" {if isset($category->id)}readonly=""{/if}>
 											<input type="checkbox" id="block-translit" class="d-none" value="1" {if isset($category->id)}checked="" {/if}>
 											<span class="input-group-text js-disable-url">
 												{if isset($category->id)}
@@ -243,18 +243,18 @@
 					<div class="card-body">
 						<div class="row">
 							<div class="col-lg-6 col-md-6">
-								<div class="mb-3">
-									<div class="form-label">Meta-title <span id="js-meta-title-counter"></span></div>
-									<input name="meta_title" class="form-control js-meta-field mb-h" type="text" value="{if isset($category->meta_title)}{$category->meta_title|escape}{/if}">
+								<div class="translate-container mb-3">
+									<div class="form-label">Meta-title <span id="js-meta-title-counter"></span> <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
+									<input name="meta_title" class="form-control js-meta-field mb-h translate-input" type="text" value="{if isset($category->meta_title)}{$category->meta_title|escape}{/if}">
 								</div>
-								<div class="mb-3">
-									<div class="form-label">Meta-keywords</div>
-									<input name="meta_keywords" class="form-control js-meta-field mb-h" type="text" value="{if isset($category->meta_keywords)}{$category->meta_keywords|escape}{/if}">
+								<div class="translate-container mb-3">
+									<div class="form-label">Meta-keywords <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
+									<input name="meta_keywords" class="form-control js-meta-field mb-h translate-input" type="text" value="{if isset($category->meta_keywords)}{$category->meta_keywords|escape}{/if}">
 								</div>
 							</div>
-							<div class="col-lg-6 col-md-6">
-								<div class="form-label">Meta-description <span id="js-meta-description-counter"></span></div>
-								<textarea name="meta_description" class="form-control turbo-textarea js-meta-field">{if isset($category->meta_description)}{$category->meta_description|escape}{/if}</textarea>
+							<div class="translate-container col-lg-6 col-md-6">
+								<div class="form-label">Meta-description <span id="js-meta-description-counter"></span> <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
+								<textarea name="meta_description" class="form-control turbo-textarea js-meta-field translate-input">{if isset($category->meta_description)}{$category->meta_description|escape}{/if}</textarea>
 							</div>
 						</div>
 					</div>

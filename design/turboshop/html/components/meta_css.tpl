@@ -134,12 +134,19 @@
 	{stylesheet minify=true}
 {/if}
 
+{* Bootstrap *}
+{if $module == 'BlogView' && isset($post) || $module=='ArticlesView' && isset($post) || $module=='ProductView' || $module == 'PageView'}
+	{css id="bootstrap" include=["design/{$settings->theme|escape}/css/bootstrap/bootstrap.css"]}{/css}
+{else}
+	{css id="bootstrap" include=["design/{$settings->theme|escape}/css/bootstrap/lite.bootstrap.css"]}{/css}
+{/if}
+{stylesheet minify=true}
+
 {* CSS *}
 {css id="global" include=[
 	"design/{$settings->theme|escape}/css/chip.css",
 	"design/{$settings->theme|escape}/css/dropdown-select.css",
 	"design/{$settings->theme|escape}/css/footer/bottom-icons-panel.css",
-	"design/{$settings->theme|escape}/css/bootstrap/lite.bootstrap.css",
 	"design/{$settings->theme|escape}/css/vendor/ripple.css",
 	"design/{$settings->theme|escape}/css/buttons.css",
 	"design/{$settings->theme|escape}/css/svg.css",
@@ -203,6 +210,7 @@
 	"design/{$settings->theme|escape}/css/custom.css",
 	"design/{$settings->theme|escape}/css/fast-view.css",
 	"design/{$settings->theme|escape}/css/header/basket.css",
+	"design/{$settings->theme|escape}/css/footer/lang.css",
 	"design/{$settings->theme|escape}/css/footer/developer.css",
 	"design/{$settings->theme|escape}/css/profile.css",
 	"design/{$settings->theme|escape}/css/header/cabinet-dropdown.css",
@@ -235,19 +243,19 @@
 	{stylesheet minify=true}
 {/if}
 
-{* Footer Type 2 *}
-{if $theme_settings->footer_type == '2'}
-	{css id="footer" include=["design/{$settings->theme|escape}/css/footer/footer-2.css"]}{/css}
+{* Tizers *}
+{if $theme_settings->teasers_type == '2'}
+	{css id="tizers" include=["design/{$settings->theme|escape}/css/main/tizers-list.css"]}{/css}
 	{stylesheet minify=true}
 {/if}
 
 {* Catalog Sections *}
-{if $theme_settings->catalog_sections_type == '2' && $module=='MainView'}
+{if $theme_settings->catalog_main_sections_type == '2' && $module=='MainView'}
 	{css id="blocks" include=["design/{$settings->theme|escape}/css/main/catalog.section.grid.css"]}{/css}
 	{stylesheet minify=true}
 {/if}
 
-{if $theme_settings->catalog_sections_type == '3' && $module=='MainView'}
+{if $theme_settings->catalog_main_sections_type == '3' && $module=='MainView'}
 	{css id="blocks" include=["design/{$settings->theme|escape}/css/main/catalog.section.slider.css"]}{/css}
 	{stylesheet minify=true}
 {/if}
@@ -263,6 +271,12 @@
 {* Blog List *}
 {if $module == 'BlogView' || $module=='ArticlesView' || $module=='MainView'}
 	{css id="share" include=["design/{$settings->theme|escape}/css/news/blog-list.css"]}{/css}
+	{stylesheet minify=true}
+{/if}
+
+{* Footer Type 2 *}
+{if $theme_settings->footer_type == '2'}
+	{css id="footer" include=["design/{$settings->theme|escape}/css/footer/footer-2.css"]}{/css}
 	{stylesheet minify=true}
 {/if}
 

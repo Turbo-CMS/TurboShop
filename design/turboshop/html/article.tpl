@@ -149,7 +149,7 @@
 						<link itemprop="url" href="{$lang_link}article/{$post->url}">
 						{if $post->image}
 							<div class="detail-image detail-image--wide">
-								<a href="{$post->image|resize_articles:700:700}" class="fancybox" title="{$post->name|escape}">
+								<a href="{$post->image|resize_articles:1500:738}" class="fancybox" title="{$post->name|escape}">
 									<img src="{$post->image|resize_articles:1500:738}" data-src="{$post->image|resize_articles:1500:738}" class="img-responsive outer-rounded-x" title="{$post->name|escape}" alt="{$post->name|escape}">
 								</a>
 							</div>
@@ -194,6 +194,17 @@
 								</span>
 							</div>
 							<div class="detail-block ordered-block comments">
+								{if $tags}
+									<div class="line-block line-block--6 line-block--6-vertical line-block--flex-wrap">
+										{foreach $tags as $tag}
+											<div class="line-block__item">
+												<a href="{$lang_link}articles/?keyword={$tag}" class="bordered chip chip--transparent" rel="nofollow">
+													<span class="chip__label font_14">{$tag}</span>
+												</a>
+											</div>
+										{/foreach}
+									</div>
+								{/if}
 								<div class="tb_soc_comments_div tb_important tb_blue">
 									<div class="tb-catalog-tab-section-container tabs arrow_scroll swipeignore">
 										<div class="tabs_wrap">
@@ -551,12 +562,12 @@
 										</li>
 									</ul>
 								{/if}
-								{if $tags}
+								{if $all_tags}
 									<noindex>
 										<div class="search-tags-cloud">
 											<div class="tags">
 												<div class="line-block line-block--6 line-block--6-vertical line-block--flex-wrap">
-													{foreach $tags as $tag}
+													{foreach $all_tags as $tag}
 														<div class="line-block__item">
 															<a href="{$lang_link}articles/?keyword={$tag}" rel="nofollow" class="bordered chip chip--transparent">
 																<span class="chip__label font_14">{$tag}</span>

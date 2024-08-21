@@ -214,7 +214,7 @@
 									</div>
 								{/foreach}
 							</div>
-							<div class="js-row turbo-list-body-item js-new_purchase" style="display: none">
+							<div class="js-row turbo-list-body-item js-new-purchase" style="display: none">
 								<div class="turbo-list-row">
 									<div class="turbo-list-boding turbo-list-photo">
 										<input type="hidden" name="purchases[id][]" value="">
@@ -245,10 +245,8 @@
 									</div>
 									<div class="turbo-list-boding turbo-list-order-amount-price">
 										<div class="text-dark">
-											{if isset($purchase->price)}
-												<span>{$purchase->price}</span>
-												<span>{$currency->sign|escape}</span>
-											{/if}
+											<span class="js-purchase-amount-price"></span>
+											<span>{$currency->sign|escape}</span>
 										</div>
 									</div>
 									<div class="turbo-list-boding turbo-list-delete">
@@ -579,8 +577,8 @@
 				});
 			});
 
-			var new_purchase = $('#js-purchase .js-new_purchase').clone(true);
-			$('#js-purchase .js-new_purchase').remove().removeAttr('class');
+			var new_purchase = $('#js-purchase .js-new-purchase').clone(true);
+			$('#js-purchase .js-new-purchase').remove().removeAttr('class');
 			$("#js-add-purchase").autocomplete({
 				serviceUrl: 'ajax/add_order_product.php',
 				minChars: 0,
@@ -626,6 +624,7 @@
 				var price = element.find('option:selected').data('price');
 				var amount = element.find('option:selected').data('amount');
 				element.closest('.js-row').find('input.js-purchase-price').val(price);
+				element.closest('.js-row').find('.js-purchase-amount-price').text(price);
 				var amount_input = element.closest('.js-row').find('input.js-purchase-amount');
 				amount_input.val('1');
 				amount_input.data('max', amount);

@@ -1,5 +1,5 @@
 {* Blog *}
-{get_posts var=last_posts limit=5}
+{get_posts var=last_posts sort=$theme_settings->blog_main_sort limit=$theme_settings->blog_main_limit}
 {if isset($last_posts)}
 	<div class="drag-block container BLOG" data-class="blog_drag" data-order="{$theme_settings->block_10}">
 		<div class="index-block index-block--padding-top-{$theme_settings->blog_main_padding_top} index-block--padding-bottom-{$theme_settings->blog_main_padding_bottom} {if $theme_settings->blog_main_delimiter}index-block--delimiter{/if} {if $theme_settings->blog_main_background}index-block--fon{/if}">

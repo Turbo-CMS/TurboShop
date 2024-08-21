@@ -1,5 +1,5 @@
 AddType application/octet-stream csv
 AuthName "Turbo CMS"
 AuthType Basic
-AuthUserFile \turboshop/turbo/.passwd
+AuthUserFile turboshop/turbo/.passwd
 require valid-user

@@ -74,14 +74,14 @@
 				<div class="card-body">
 					<div class="row d-flex">
 						<div class="col-lg-10 col-md-9 col-sm-12">
-							<div class="mb-3">
-								<div class="form-label">{$btr->global_title|escape}</div>
-								<input class="form-control" name="name" type="text" value="{if isset($post->name)}{$post->name|escape}{/if}">
+							<div class="translate-container mb-3">
+								<div class="form-label">{$btr->global_title|escape} <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
+								<input class="form-control translate-input" name="name" type="text" value="{if isset($post->name)}{$post->name|escape}{/if}">
 								<input name="id" type="hidden" value="{if isset($post->id)}{$post->id|escape}{/if}">
 							</div>
-							<div class="mb-3">
-								<div class="form-label">{$btr->global_author|escape}</div>
-								<input class="js-author-complite form-control" name="author" type="text" value="{if isset($post->author)}{$post->author|escape}{/if}">
+							<div class="translate-container mb-3">
+								<div class="form-label">{$btr->global_author|escape} <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
+								<input class="js-author-complite form-control translate-input" name="author" type="text" value="{if isset($post->author)}{$post->author|escape}{/if}">
 							</div>
 							<div class="row">
 								<div class="col-12 col-lg-6 col-md-10">
@@ -173,10 +173,10 @@
 					<div class="card-body">
 						<div class="mb-3">
 							<div class="form-label">{$btr->global_category|escape}:</div>
-							<select name="category_id" class="selectpicker mb-1">
+							<select name="category_id" class="selectpicker mb-1 js-meta-categories">
 								{function name=articles_category_select level=0}
 									{foreach from=$articles_categories item=category}
-										<option value='{$category->id}' {if isset($post->category_id) && $category->id == $post->category_id}selected{/if} category_name='{$category->name|escape}'>{section name=sp loop=$level}--{/section} {$category->name|escape}</option>
+										<option value="{$category->id}" {if isset($post->category_id) && $category->id == $post->category_id}selected{/if} category-name="{$category->name|escape}">{section name=sp loop=$level}--{/section} {$category->name|escape}</option>
 										{if isset($category->subcategories)}
 											{articles_category_select articles_categories=$category->subcategories level=$level+1}
 										{/if}
@@ -209,18 +209,18 @@
 					<div class="card-body">
 						<div class="row">
 							<div class="col-lg-6 col-md-6">
-								<div class="mb-3">
-									<div class="form-label">Meta-title <span id="js-meta-title-counter"></span></div>
-									<input name="meta_title" class="form-control js-meta-field mb-h" type="text" value="{if isset($post->meta_title)}{$post->meta_title|escape}{/if}">
+								<div class="translate-container mb-3">
+									<div class="form-label">Meta-title <span id="js-meta-title-counter"></span> <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
+									<input name="meta_title" class="form-control js-meta-field mb-h translate-input" type="text" value="{if isset($post->meta_title)}{$post->meta_title|escape}{/if}">
 								</div>
-								<div class="mb-3">
-									<div class="form-label">Meta-keywords</div>
-									<input name="meta_keywords" class="form-control js-meta-field mb-h" type="text" value="{if isset($post->meta_keywords)}{$post->meta_keywords|escape}{/if}">
+								<div class="translate-container mb-3">
+									<div class="form-label">Meta-keywords <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
+									<input name="meta_keywords" class="form-control js-meta-field mb-h translate-input" type="text" value="{if isset($post->meta_keywords)}{$post->meta_keywords|escape}{/if}">
 								</div>
 							</div>
-							<div class="col-lg-6 col-md-6">
-								<div class="form-label">Meta-description <span id="js-meta-description-counter"></span></div>
-								<textarea name="meta_description" class="form-control turbo-textarea js-meta-field">{if isset($post->meta_description)}{$post->meta_description|escape}{/if}</textarea>
+							<div class="translate-container col-lg-6 col-md-6">
+								<div class="form-label">Meta-description <span id="js-meta-description-counter"></span> <span role="button" class="translate-button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
+								<textarea name="meta_description" class="form-control turbo-textarea js-meta-field translate-input">{if isset($post->meta_description)}{$post->meta_description|escape}{/if}</textarea>
 							</div>
 						</div>
 					</div>
@@ -278,6 +278,7 @@
 			noCache: false,
 			onSelect: function(suggestion) {
 				$('input[name="author"]').val(suggestion.data.author);
+				set_meta();
 			},
 			formatResult: function(suggestions, currentValue) {
 				var reEscape = new RegExp('(\\' + ['/', '.', '*', '+', '?', '|', '(', ')', '[', ']', '{', '}', '\\'].join('|\\') + ')', 'g');

@@ -3,6 +3,22 @@
 	<group>
 		<name>{$lang->general_settings}</name>
 		<settings>
+			<variable>theme_color</variable>
+			<name>{$lang->theme_color}</name>
+			<options>
+				<name>{$lang->default}</name>
+				<value>theme_default</value>
+			</options>
+			<options>
+				<name>{$lang->theme_light}</name>
+				<value>theme_light</value>
+			</options>
+			<options>
+				<name>{$lang->theme_dark}</name>
+				<value>theme_dark</value>
+			</options>
+		</settings>
+		<settings>
 			<variable>colors</variable>
 			<name>{$lang->colors}</name>
 			<options>
@@ -286,6 +302,42 @@
 			<variable>map</variable>
 			<name>{$lang->map}</name>
 		</settings>
+		<settings>
+			<variable>twitterx</variable>
+			<name>Twitter (X)</name>
+		</settings>
+		<settings>
+			<variable>telegram</variable>
+			<name>Telegram</name>
+		</settings>
+		<settings>
+			<variable>youtube</variable>
+			<name>YouTube</name>
+		</settings>
+		<settings>
+			<variable>tiktok</variable>
+			<name>TikTok</name>
+		</settings>
+		<settings>
+			<variable>whatsapp</variable>
+			<name>Whats App</name>
+		</settings>
+		<settings>
+			<variable>viber</variable>
+			<name>Viber</name>
+		</settings>
+		<settings>
+			<variable>instagram</variable>
+			<name>Instagram</name>
+		</settings>
+		<settings>
+			<variable>facebook</variable>
+			<name>Facebook</name>
+		</settings>
+		<settings>
+			<variable>linkedin</variable>
+			<name>LinkedIn</name>
+		</settings>
 	</group>
 	<group>
 		<name>{$lang->header}</name>
@@ -371,6 +423,10 @@
 		<settings>
 			<variable>menu_header_id</variable>
 			<name>{$lang->menu_header_id}</name>
+		</settings>
+		<settings>
+			<variable>landing_pages_header_id</variable>
+			<name>{$lang->landing_pages_id}</name>
 		</settings>
 	</group>
 	<group type="sort">
@@ -465,6 +521,15 @@
                 <value>10</value>
             </options>
         </settings>
+		<settings>
+            <variable>block_11</variable>
+			<visible>visible_11</visible>
+            <name>{$lang->articles}</name>
+            <options>
+                <name>{$lang->articles}</name>
+                <value>11</value>
+            </options>
+        </settings>
     </group>
 	<group>
 		<name>{$lang->big_banners}</name>
@@ -523,6 +588,10 @@
 		<settings>
 			<variable>banners_animation_speed</variable>
 			<name>{$lang->banners_animation_speed}</name>
+		</settings>
+		<settings>
+			<variable>big_banners_id</variable>
+			<name>{$lang->grup_id}</name>
 		</settings>
 	</group>
 	<group>
@@ -940,9 +1009,25 @@
 				<value>130</value>
 			</options>
 		</settings>
+		<settings>
+			<variable>banners_text_id</variable>
+			<name>{$lang->grup_id}</name>
+		</settings>
 	</group>
 	<group>
 		<name>{$lang->teasers}</name>
+		<settings>
+			<variable>teasers_type</variable>
+			<name>{$lang->teasers_type}</name>
+			<options>
+				<name>{$lang->teasers_type_1}</name>
+				<value>1</value>
+			</options>
+			<options>
+				<name>{$lang->teasers_type_2}</name>
+				<value>2</value>
+			</options>
+		</settings>
 		<settings>
 			<variable>teasers_grid_type</variable>
 			<name>{$lang->grid_column}</name>
@@ -956,6 +1041,10 @@
 			</options>
 		</settings>
 		<settings>
+			<variable>teasers_banners_id</variable>
+			<name>{$lang->grup_id}</name>
+		</settings>
+		<settings>
 			<variable>teasers_position</variable>
 			<name>{$lang->teasers_position}</name>
 			<options>
@@ -965,6 +1054,22 @@
 			<options>
 				<name>{$lang->position_type_2}</name>
 				<value>2</value>
+			</options>
+		</settings>
+		<settings>
+			<variable>teasers_wide</variable>
+			<name>{$lang->wide}</name>
+			<options>
+				<name>{$lang->wide}</name>
+				<value>1</value>
+			</options>
+		</settings>
+		<settings>
+			<variable>teasers_indented</variable>
+			<name>{$lang->indented}</name>
+			<options>
+				<name>{$lang->indented}</name>
+				<value>1</value>
 			</options>
 		</settings>
 		<settings>
@@ -1097,6 +1202,10 @@
 				<name>130</name>
 				<value>130</value>
 			</options>
+		</settings>
+		<settings>
+			<variable>bottom_banners_id</variable>
+			<name>{$lang->grup_id}</name>
 		</settings>
 	</group>
 	<group>
@@ -1316,6 +1425,22 @@
 			</options>
 		</settings>
 		<settings>
+			<variable>blog_main_sort</variable>
+			<name>{$lang->sort}</name>
+			<options>
+				<name>{$lang->date}</name>
+				<value>date</value>
+			</options>
+			<options>
+				<name>{$lang->rate}</name>
+				<value>rate</value>
+			</options>
+		</settings>
+		<settings>
+			<variable>blog_main_limit</variable>
+			<name>{$lang->blog_main_limit}</name>
+		</settings>
+		<settings>
 			<variable>blog_main_title</variable>
 			<name>{$lang->title}</name>
 			<options>
@@ -1361,6 +1486,109 @@
 		</settings>
 		<settings>
 			<variable>blog_main_padding_bottom</variable>
+			<name>{$lang->padding_bottom}</name>
+			<options>
+				<name>0</name>
+				<value>0</value>
+			</options>
+			<options>
+				<name>40</name>
+				<value>40</value>
+			</options>
+			<options>
+				<name>80</name>
+				<value>80</value>
+			</options>
+			<options>
+				<name>130</name>
+				<value>130</value>
+			</options>
+		</settings>
+	</group>
+	<group>
+		<name>{$lang->articles_main}</name>
+		<settings>
+			<variable>articles_main_grid_type</variable>
+			<name>{$lang->grid_column}</name>
+			<options>
+				<name>4</name>
+				<value>4</value>
+			</options>
+			<options>
+				<name>5</name>
+				<value>5</value>
+			</options>
+		</settings>
+		<settings>
+			<variable>articles_main_sort</variable>
+			<name>{$lang->sort}</name>
+			<options>
+				<name>{$lang->position}</name>
+				<value>position</value>
+			</options>
+			<options>
+				<name>{$lang->name}</name>
+				<value>name</value>
+			</options>
+			<options>
+				<name>{$lang->date}</name>
+				<value>date</value>
+			</options>
+			<options>
+				<name>{$lang->rate}</name>
+				<value>rate</value>
+			</options>
+		</settings>
+		<settings>
+			<variable>articles_main_limit</variable>
+			<name>{$lang->articles_main_limit}</name>
+		</settings>
+		<settings>
+			<variable>articles_main_title</variable>
+			<name>{$lang->title}</name>
+			<options>
+				<name>{$lang->title}</name>
+				<value>1</value>
+			</options>
+		</settings>
+		<settings>
+			<variable>articles_main_delimiter</variable>
+			<name>{$lang->delimiter}</name>
+			<options>
+				<name>{$lang->delimiter}</name>
+				<value>1</value>
+			</options>
+		</settings>
+		<settings>
+			<variable>articles_main_background</variable>
+			<name>{$lang->background}</name>
+			<options>
+				<name>{$lang->background}</name>
+				<value>1</value>
+			</options>
+		</settings>
+		<settings>
+			<variable>articles_main_padding_top</variable>
+			<name>{$lang->padding_top}</name>
+			<options>
+				<name>0</name>
+				<value>0</value>
+			</options>
+			<options>
+				<name>40</name>
+				<value>40</value>
+			</options>
+			<options>
+				<name>80</name>
+				<value>80</value>
+			</options>
+			<options>
+				<name>130</name>
+				<value>130</value>
+			</options>
+		</settings>
+		<settings>
+			<variable>articles_main_padding_bottom</variable>
 			<name>{$lang->padding_bottom}</name>
 			<options>
 				<name>0</name>
@@ -1595,6 +1823,14 @@
 				<value>5</value>
 			</options>
 		</settings>
+		<settings>
+			<variable>watermark</variable>
+			<name>{$lang->watermark}</name>
+			<options>
+				<name>{$lang->watermark}</name>
+				<value>1</value>
+			</options>
+		</settings>
 	</group>
 	<group>
 		<name>{$lang->brands}</name>
@@ -1652,6 +1888,32 @@
 				<name>4</name>
 				<value>4</value>
 			</options>
+		</settings>
+	</group>
+	<group>
+		<name>{$lang->personal_account}</name>
+		<settings>
+			<variable>id_banner_account</variable>
+			<name>{$lang->id_banner_account}</name>
+		</settings>
+	</group>
+	<group>
+		<name>{$lang->sitemap}</name>
+		<settings>
+			<variable>id_menu_sitemap_1</variable>
+			<name>{$lang->id_menu_sitemap_1}</name>
+		</settings>
+		<settings>
+			<variable>id_menu_sitemap_2</variable>
+			<name>{$lang->id_menu_sitemap_2}</name>
+		</settings>
+		<settings>
+			<variable>id_menu_sitemap_3</variable>
+			<name>{$lang->id_menu_sitemap_3}</name>
+		</settings>
+		<settings>
+			<variable>id_menu_sitemap_4</variable>
+			<name>{$lang->id_menu_sitemap_4}</name>
 		</settings>
 	</group>
 </module>

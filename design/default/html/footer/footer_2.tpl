@@ -5,7 +5,7 @@
 				<h5>{$lang->about_shop}</h5>
 				<ul class="nav flex-column">
 					{foreach $pages as $p}
-						{if $p->menu_id == 1}
+						{if $p->menu_id == $theme_settings->id_menu_footer_1}
 							<li class="nav-item mb-2">
 								<a class="nav-link p-0 text-body-secondary {if $page && $page->id == $p->id}active{/if}" href="{$lang_link}{$p->url}">
 									<span data-page="{$p->id}">{$p->header|escape}</span>
@@ -20,7 +20,7 @@
 				<h5>{$lang->information}</h5>
 				<ul class="nav flex-column">
 					{foreach $pages as $p}
-						{if $p->menu_id == 4}
+						{if $p->menu_id == $theme_settings->id_menu_footer_2}
 							<li class="nav-item mb-2">
 								<a class="nav-link p-0 text-body-secondary {if $page && $page->id == $p->id}active{/if}" href="{$lang_link}{$p->url}">
 									<span data-page="{$p->id}">{$p->header|escape}</span>
@@ -35,9 +35,9 @@
 				<h5>{$lang->contacts}</h5>
 				{* Footer Contacts *}
 				<div class="mb-2"><i class="fal fa-map-marker-alt text-body-secondary me-2"></i>{$lang->contact_details}</div>
-				<div class="mb-2"><i class="fal fa-envelope text-body-secondary me-2"></i>info@gmail.com</div>
-				<div class="mb-2"><i class="fal fa-phone text-body-secondary me-2"></i>(123) 456-78-90</div>
-				<div class="mb-2"><i class="fal fa-print text-body-secondary me-2"></i>(987) 654-32-10</div>
+				<div class="mb-2"><i class="fal fa-envelope text-body-secondary me-2"></i>{$theme_settings->email|escape}</div>
+				<div class="mb-2"><i class="fal fa-phone text-body-secondary me-2"></i>{$theme_settings->phone_1|escape}</div>
+				<div class="mb-2"><i class="fal fa-print text-body-secondary me-2"></i>{$theme_settings->phone_2|escape}</div>
 				{* Footer Payment *}
 				<div class="my-2">
 					<i class="fab fa-xl fa-cc-visa me-1"></i>
@@ -81,27 +81,27 @@
 			<p>© <span itemprop="copyrightYear">{$smarty.now|date_format:"Y"}</span><strong class="ms-1">TurboCMS</strong></p>
 			<ul class="list-unstyled d-flex">
 				<li class="me-3">
-					<a class="link-body-emphasis" href="#">
+					<a class="link-body-emphasis" href="{$theme_settings->facebook|escape}">
 						<i class="fab fa-facebook-f bs-facebook"></i>
 					</a>
 				</li>
 				<li class="me-3">
-					<a class="link-body-emphasis" href="#">
+					<a class="link-body-emphasis" href="{$theme_settings->instagram|escape}">
 						<i class="fab fa-instagram bs-instagram"></i>
 					</a>
 				</li>
 				<li class="me-3">
-					<a class="link-body-emphasis" href="#">
+					<a class="link-body-emphasis" href="{$theme_settings->twitterx|escape}">
 						<i class="fab fa-x-twitter"></i>
 					</a>
 				</li>
 				<li class="me-3">
-					<a class="link-body-emphasis" href="#">
+					<a class="link-body-emphasis" href="{$theme_settings->youtube|escape}">
 						<i class="fab fa-youtube bs-youtube"></i>
 					</a>
 				</li>
 				<li class="me-3">
-					<a class="link-body-emphasis" href="#">
+					<a class="link-body-emphasis" href="{$theme_settings->linkedin|escape}">
 						<i class="fab fa-linkedin-in bs-linkedin"></i>
 					</a>
 				</li>

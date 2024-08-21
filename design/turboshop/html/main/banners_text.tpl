@@ -1,5 +1,5 @@
-{get_banner var=banner_3 group='3'} 
-{if isset($banner_3->items)}
+{get_banner var=banners_text group=$theme_settings->banners_text_id} 
+{if isset($banners_text->items)}
 	<div class="drag-block container MIDDLE_ADV" data-class="middle_adv_drag" data-order="{$theme_settings->block_5}">
 		<div class="index-block index-block--padding-top-{$theme_settings->banners_text_padding_top} index-block--padding-bottom-{$theme_settings->banners_text_padding_bottom} {if $theme_settings->banners_text_delimiter}index-block--delimiter{/if} {if $theme_settings->banners_text_background}index-block--fon{/if}">
 			<div class="banners-img-with-text-list banners-with-text-template">
@@ -27,7 +27,7 @@
 				{/if}
 				<div class="maxwidth-theme {if $theme_settings->banners_text_wide}maxwidth-theme--no-maxwidth{/if}">
 					<div class="grid-list grid-items-3 grid-list--items-{$theme_settings->banners_text_grid_type}-1200 grid-list--items-2-992 grid-list--items-2-601 mobile-scrolled mobile-scrolled--items-2 mobile-offset">
-						{foreach $banner_3->items as $b}
+						{foreach $banners_text->items as $b}
 							<div class="banners-img-with-text-list__wrapper grid-list__item">
 								<div class="banners-img-with-text-list__item hover_zoom shadow-hovered shadow-no-border-hovered outer-rounded-x">
 									<span class="lazyload banners-img-with-text-list__item-image shine" style="background-image:url(data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==)" data-bg="{$b->image|resize_banners:694:463}"></span>

@@ -24,7 +24,7 @@
 			THEME_VIEW_COLOR: "LIGHT",
 			PAGE_WIDTH: "1500px",
 			PHONE_MASK: "{$theme_settings->phone_mask}",
-			VALIDATE_PHONE_MASK: "{literal}^[+][0-9]{2} [(][0-9]{3}[)] [0-9]{3}[-][0-9]{2}[-][0-9]{2}${/literal}",
+			VALIDATE_PHONE_MASK: "{$theme_settings->phone_mask|mask}",
 			SCROLLTOTOP_TYPE: "ROUND_COLOR",
 			SCROLLTOTOP_POSITION: "PADDING",
 			SCROLLTOTOP_POSITION_RIGHT: "",

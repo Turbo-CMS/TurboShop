@@ -21,7 +21,17 @@
 			</button>
 			<div class="dropdown-select dropdown-select--with-dropdown searchtype">
 				<div class="dropdown-select__title font_14 font_large fill-dark-light banner-light-text">
-					<span>{$lang->catalog}</span>
+					<span>
+						{if isset($smarty.cookies.searchtitle_type) && $smarty.cookies.searchtitle_type == 'all'}
+							{$lang->all_search}
+						{elseif isset($smarty.cookies.searchtitle_type) && $smarty.cookies.searchtitle_type == 'blog'}
+							{$lang->global_blog}
+						{elseif isset($smarty.cookies.searchtitle_type) && $smarty.cookies.searchtitle_type == 'article'}
+							{$lang->global_articles}
+						{else}
+							{$lang->catalog}
+						{/if}
+					</span>
 					<i class="svg inline dropdown-select__icon-down banner-light-icon-fill" aria-hidden="true">
 						<svg width="7" height="5">
 							<use xlink:href="design/{$settings->theme|escape}/images/svg/sprite/arrows.svg#down-7-5"></use>

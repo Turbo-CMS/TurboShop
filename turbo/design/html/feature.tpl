@@ -66,9 +66,9 @@
 				<div class="card-body">
 					<div class="row d-flex">
 						<div class="col-lg-10 col-md-9 col-sm-12">
-							<div class="mb-3">
-								<div class="form-label">{$btr->global_title|escape}</div>
-								<input class="form-control" name="name" type="text" value="{if isset($feature->name)}{$feature->name|escape}{/if}">
+							<div class="translate-container mb-3">
+								<div class="form-label">{$btr->global_title|escape} <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
+								<input class="form-control translate-input" name="name" type="text" value="{if isset($feature->name)}{$feature->name|escape}{/if}">
 								<input name="id" type="hidden" value="{if isset($feature->id)}{$feature->id|escape}{/if}">
 							</div>
 							<div class="row">
@@ -178,7 +178,7 @@
 								</a>
 							</div>
 						</div>
-						<h5 class="card-title mb-0">{$btr->feature_feature_values|escape} ({$options_count})</h5>
+						<h5 class="card-title mb-0 translate-button-card">{$btr->feature_feature_values|escape} ({$options_count}) <span role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></h5>
 					</div>
 					<div class="collapse-card">
 						<div class="card-body">
@@ -209,7 +209,10 @@
 																	<span class="input-group-text add-on"><i></i></span>
 																</div>
 															{else}
-																<input type="text" class="form-control" name="options[value][]" value="{$option->value|escape}">
+																<div class="translate-container input-group">
+																	<input type="text" class="form-control translate-input translate-input-card" name="options[value][]" value="{$option->value|escape}">
+																	<span class="input-group-text translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span>
+																</div>
 															{/if}
 														</div>
 														<div class="turbo-list-boding feature-value-translit">
@@ -241,12 +244,15 @@
 													<div class="turbo-list-boding feature-value-name">
 														<div class="form-label d-block d-md-none">{$btr->global_value}</div>
 														{if isset($feature->is_color) && $feature->is_color}
-															<div class="input-group">
+															<div class="input-group input-color">
 																<input type="text" class="form-control" name="options[value][]" value="">
 																<span class="input-group-text add-on"><i></i></span>
 															</div>
 														{else}
-															<input type="text" class="form-control" name="options[value][]" value="">
+															<div class="translate-container input-group">
+																<input type="text" class="form-control translate-input translate-input-card" name="options[value][]" value="">
+																<span class="input-group-text translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span>
+															</div>
 														{/if}
 													</div>
 													<div class="turbo-list-boding feature-value-translit">
@@ -323,6 +329,29 @@
 {literal}
 	<script>
 		$(window).on('load', function() {
+			$(document).ready(function() {
+				var targetLang = '{/literal}{if $lang_label == 'ua'}uk{else}{$lang_label}{/if}{literal}';
+
+				$('.translate-button-card').on('click', function() {
+					var cardElement = $(this).closest('.card');
+					var inputElements = cardElement.find('.translate-input-card');
+
+					inputElements.each(function() {
+						var inputElement = $(this);
+						var text = inputElement.val();
+
+						if (text.trim() !== '') {
+							$.post('ajax/translate.php', {
+								'source_lang': 'auto',
+								'target_lang': targetLang,
+								'text': text
+							}, function(data) {
+								inputElement.val(data);
+							});
+						}
+					});
+				});
+			});
 
 			var colorPickerOptions = {
 				colorSelectors: {
@@ -351,7 +380,7 @@
 			$('.js-add-value').click(function() {
 				var new_line = $(new_value).clone(true);
 				new_line.appendTo('.turbo-list-body').fadeIn('slow');
-				new_line.find('.input-group').addClass('color-picker').colorpicker(colorPickerOptions);
+				new_line.find('.input-color').addClass('color-picker').colorpicker(colorPickerOptions);
 				new_line.find('[data-bs-toggle="tooltip"]').tooltip();
 				return false;
 			});

@@ -43,6 +43,7 @@ class Design extends Turbo
 		$this->smarty->registerPlugin('modifier', 'min', [$this, 'minModifier']);
 		$this->smarty->registerPlugin('modifier', 'svg', [$this, 'svgModifier']);
 		$this->smarty->registerPlugin('modifier', 'date', [$this, 'dateModifier']);
+		$this->smarty->registerPlugin('modifier', 'mask', [$this, 'maskModifier']);
 		$this->smarty->registerPlugin('modifier', 'sort', [$this, 'sortModifier']);
 		$this->smarty->registerPlugin('modifier', 'time', [$this, 'timeModifier']);
 		$this->smarty->registerPlugin('modifier', 'ceil', [$this, 'ceilModifier']);
@@ -574,5 +575,41 @@ class Design extends Turbo
 		} else {
 			return mb_substr($string, $start, $length, $encoding);
 		}
+	}
+
+	/**
+	 * Mask Modifier
+	 */
+	function maskModifier($mask)
+	{
+		$regex = '^';
+
+		$replace = [
+			'+' => '[+]',
+			'(' => '\(',
+			')' => '\)',
+			' ' => ' ',
+			'-' => '-',
+		];
+
+		$regex .= strtr($mask, $replace);
+
+		$regex = preg_replace_callback('/\+\d+/', function ($matches) {
+			$numDigits = strlen($matches[0]) - 1;
+			return '[+][0-9]{' . $numDigits . '}';
+		}, $regex);
+
+		$regex = preg_replace_callback('/\d+/', function ($matches) {
+			if (strpos($matches[0], '+') === false) {
+				return '[0-9]{' . strlen($matches[0]) . '}';
+			}
+			return $matches[0];
+		}, $regex);
+
+		$regex = str_replace(['\(', '\)'], ['[(]', '[)]'], $regex);
+
+		$regex .= '$';
+
+		return $regex;
 	}
 }

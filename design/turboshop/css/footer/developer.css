@@ -18,7 +18,7 @@ a.developer:not(:hover) {
 }
 
 .developer__title {
-	margin: 0 8px 0 0;
+	margin: 2px 8px 0 0;
 }
 
 .developer__logo {

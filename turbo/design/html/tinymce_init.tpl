@@ -21,7 +21,7 @@
 			editimage_cors_hosts: ['picsum.photos'],
 			toolbar_items_size: 'small',
 			menubar: 'file edit insert view format table tools',
-			toolbar: 'undo redo | blocks | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist | forecolor backcolor emoticons | link unlink  media image | removeformat preview fullscreen code | aidialog aishortcuts',
+			toolbar: 'undo redo | blocks | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist | forecolor backcolor emoticons | link unlink  media image | removeformat preview fullscreen code translate | aidialog aishortcuts',
 			quickbars_insert_toolbar: false,
 			quickbars_selection_toolbar: 'bold italic | quicklink h2 h3 blockquote image quicktable',
 			{literal}
@@ -59,15 +59,34 @@
 			save_enablewhendirty: true,
 			save_onsavecallback: function() {literal}{{/literal}
 			$("[type='submit']").trigger("click");
-		{literal}}{/literal},
-		language : "{if $settings->lang =='ua'}uk{else}{$settings->lang}{/if}",
-		{if !in_array($smarty.get.module, array('FAQAdmin','DeliveryAdmin','PaymentMethodAdmin'))}
-			setup: function(ed) {
-					ed.on('keyup change', (function() {
-						set_meta();
-					}));
-				},
-			{/if}  
+			{literal}}{/literal},
+			language : "{if $settings->lang =='ua'}uk{else}{$settings->lang}{/if}",
+				setup: function(editor) {
+					{if !in_array($smarty.get.module, array('FAQAdmin','DeliveryAdmin','PaymentMethodAdmin'))}	
+						editor.on('keyup change', (function() {
+							set_meta();
+						}));
+					{/if}
+					editor.ui.registry.addButton('translate', {
+						icon: 'translate',
+						tooltip: '{$btr->global_translation|escape}',
+						onAction: function() {
+							var targetLang = '{if $lang_label =='ua'}uk{else}{$lang_label}{/if}';
+							var content = editor.getContent();
+		
+							if (content.trim() !== '') {
+								$.post('ajax/translate.php', {
+									'source_lang': 'auto',
+									'target_lang': targetLang,
+									'text': content
+								}, function(data) {
+									editor.setContent(data);
+									set_meta();
+								});
+							}
+						}
+					});
+			},
 			{literal}
 				ai_request: (request, respondWith) => {
 					respondWith.stream((signal, streamMessage) => {

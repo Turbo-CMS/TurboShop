@@ -3,7 +3,6 @@ Disallow: /404
 Disallow: /turbo/
 Disallow: */order/
 Disallow: */user/
-Disallow: /smarty/
 Disallow: /api/
 Disallow: /compiled/
 Disallow: /cart/
@@ -22,7 +21,6 @@ Disallow: /404
 Disallow: /turbo/
 Disallow: */order/
 Disallow: */user/
-Disallow: /smarty/
 Disallow: /api/
 Disallow: /compiled/
 Disallow: /resize/

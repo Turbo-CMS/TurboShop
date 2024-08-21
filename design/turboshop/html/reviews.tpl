@@ -305,7 +305,7 @@
 								{/foreach}
 							{else}
 								<div class="rounded-x bordered alert-empty">
-									{$lang->no_comments}
+									{$lang->no_reviews}
 								</div>
 							{/if}
 						</div>

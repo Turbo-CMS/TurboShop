@@ -147,7 +147,7 @@
 				<div class="collapse-card">
 					<div class="card-body">
 						<form>
-							<textarea id="content" name="content">{$script_content|escape}</textarea>
+							<textarea id="content" class="d-none" name="content">{$script_content|escape}</textarea>
 						</form>
 						<div class="row">
 							<div class="col-12">

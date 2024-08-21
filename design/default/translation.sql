@@ -228,5 +228,7 @@ INSERT INTO `t_translations` (`id`, `label`, `lang_ru`, `lang_en`, `lang_ua`) VA
 ('249','subscribe_text','Ежемесячный дайджест всего нового от нас.','Monthly digest of what\'s new and exciting from us.','Щомісячний дайджест нового та цікавого від нас.'),
 ('250','message_success','Успешно сохранено','Saved successfully','Успішно збережено'),
 ('252','author','Автор','Author','Автор'),
-('253','wishlist','Избранное','Wishlist','Обране');
+('253','wishlist','Избранное','Wishlist','Обране'),
+('254','confidentiality','Конфиденциальность','Confidentiality','Конфіденційність'),
+('255','help','Помощь','Help','Довідка');
 

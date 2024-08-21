@@ -83,9 +83,9 @@
 				<div class="card-body">
 					<div class="row d-flex">
 						<div class="col-lg-9 col-md-8 col-sm-12">
-							<div class="mb-3">
-								<div class="form-label">{$btr->global_title|escape}</div>
-								<input class="form-control" name="name" type="text" value="{if isset($product->name)}{$product->name|escape}{/if}">
+							<div class="translate-container mb-3">
+								<div class="form-label">{$btr->global_title|escape} <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
+								<input class="form-control translate-input" name="name" type="text" value="{if isset($product->name)}{$product->name|escape}{/if}">
 								<input name="id" type="hidden" value="{if isset($product->id)}{$product->id|escape}{/if}">
 							</div>
 							<div class="row">
@@ -211,7 +211,7 @@
 							<select name="brand_id" class="selectpicker mb-1 js-meta-brand" data-live-search="true">
 								<option value="0" {if !isset($product->brand_id)}selected="" {/if}>{$btr->global_not_set|escape}</option>
 								{foreach $brands as $brand}
-									<option value="{$brand->id}" {if isset($product->brand_id) && $product->brand_id == $brand->id}selected="" {/if}>{$brand->name|escape}</option>
+									<option value="{$brand->id}" {if isset($product->brand_id) && $product->brand_id == $brand->id}selected=""{/if} data-brand-name="{$brand->name|escape}">{$brand->name|escape}</option>
 								{/foreach}
 							</select>
 						</div>
@@ -226,7 +226,7 @@
 													<select name="categories[]" class="selectpicker select-control js-meta-categories" data-live-search="true">
 														{function name=category_select level=0}
 															{foreach $categories as $category}
-																<option value="{$category->id}" {if isset($selected->id) && $category->id == $selected->id}selected{/if}>{section name=sp loop=$level}--{/section} {$category->name|escape}</option>
+																<option value="{$category->id}" {if isset($selected->id) && $category->id == $selected->id}selected{/if} category-name="{$category->name|escape}">{section name=sp loop=$level}--{/section} {$category->name|escape}</option>
 																{if isset($category->subcategories)}
 																	{category_select categories=$category->subcategories selected=$selected level=$level+1}
 																{/if}
@@ -259,7 +259,7 @@
 							</a>
 						</div>
 					</div>
-					<h5 class="card-title mb-0">{$btr->global_options|escape}</h5>
+					<h5 class="card-title mb-0 translate-button-card">{$btr->global_options|escape} <span role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></h5>
 				</div>
 				<div class="collapse-card variants-wrapper">
 					<div class="card-body">
@@ -278,19 +278,19 @@
 												<div class="form-label">{$btr->global_sku|escape}</div>
 												<input class="form-control" name="variants[sku][]" type="text" value="{if isset($variant->sku)}{$variant->sku|escape}{/if}">
 											</div>
-											<div class="turbo-list-boding variants-item-name">
-												<div class="form-label">{$btr->global_title|escape}</div>
+											<div class="turbo-list-boding variants-item-name translate-container">
+												<div class="form-label">{$btr->global_title|escape} <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
 												<input name="variants[id][]" type="hidden" value="{if isset($variant->id)}{$variant->id|escape}{/if}">
-												<input class="form-control" name="variants[name][]" type="text" value="{if isset($variant->name)}{$variant->name|escape}{/if}">
+												<input class="form-control translate-input-card translate-input" name="variants[name][]" type="text" value="{if isset($variant->name)}{$variant->name|escape}{/if}">
 											</div>
 											<div class="turbo-list-boding variants-item-height color-picker">
 												<div class="form-label"></div>
 												<input name="variants[color_code][]" type="hidden" value="{if isset($variant->color_code)}{$variant->color_code|escape}{/if}">
 												<div class="add-on colorPicker-picker" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->select_color|escape}"></div>
 											</div>
-											<div class="turbo-list-boding variants-item-color">
-												<div class="form-label">{$btr->global_color|escape}</div>
-												<input name="variants[color][]" class="form-control" type="text" value="{if isset($variant->color)}{$variant->color|escape}{/if}">
+											<div class="turbo-list-boding variants-item-color translate-container">
+												<div class="form-label">{$btr->global_color|escape} <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
+												<input name="variants[color][]" class="form-control translate-input-card translate-input" type="text" value="{if isset($variant->color)}{$variant->color|escape}{/if}">
 											</div>
 											<div class="turbo-list-boding variants-item-price">
 												<div class="form-label">{$btr->global_price|escape}, {if isset($variant->currency_id) && isset($currencies[$variant->currency_id])}{$currencies[$variant->currency_id]->sign|escape}{else}{$currency->sign}{/if}</div>
@@ -377,19 +377,19 @@
 											<div class="form-label">{$btr->global_sku|escape}</div>
 											<input class="form-control" name="variants[sku][]" type="text" value="">
 										</div>
-										<div class="turbo-list-boding variants-item-name">
-											<div class="form-label">{$btr->global_title|escape}</div>
+										<div class="turbo-list-boding variants-item-name translate-container">
+											<div class="form-label">{$btr->global_title|escape} <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
 											<input name="variants[id][]" type="hidden" value="">
-											<input class="form-control" name="variants[name][]" type="text" value="">
+											<input class="form-control translate-input-card translate-input" name="variants[name][]" type="text" value="">
 										</div>
 										<div class="turbo-list-boding variants-item-height">
 											<div class="form-label"></div>
 											<input name="variants[color_code][]" type="hidden" value="">
 											<div class="add-on colorPicker-picker" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->select_color|escape}"></div>
 										</div>
-										<div class="turbo-list-boding variants-item-color">
-											<div class="form-label">{$btr->global_color|escape}</div>
-											<input name="variants[color][]" class="form-control" type="text" value="">
+										<div class="turbo-list-boding variants-item-color translate-container">
+											<div class="form-label">{$btr->global_color|escape} <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
+											<input name="variants[color][]" class="form-control translate-input-card translate-input" type="text" value="">
 										</div>
 										<div class="turbo-list-boding variants-item-price">
 											<div class="form-label">{$btr->global_price|escape}, {$currency->sign}</div>
@@ -473,7 +473,7 @@
 							</a>
 						</div>
 					</div>
-					<h5 class="card-title mb-0">{$btr->product_features|escape}</h5>
+					<h5 class="card-title mb-0 translate-button-card">{$btr->product_features|escape} <span role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></h5>
 				</div>
 				<div class="collapse-card">
 					<div class="card-body features-wrap js-features-wrap">
@@ -494,7 +494,7 @@
 											</div>
 											<input {if $lang_id == $first_lang && $option->id}class="js-id-option" {/if} type="hidden" name="options_id[{$feature_id}][]" value="{$option->id}">
 											<div class="feature-value {if $feature->is_color}color-picker{/if}">
-												<input class="feature-input js-auto-option {if !$option@first}feature-input-single{/if}" data-id="{$feature_id}" data-color="{$feature->is_color}" type="text" name="options_values[{$feature_id}][]" value="{$option->value|escape}">
+												<input class="feature-input js-auto-option {if !$option@first}feature-input-single{/if} translate-input-card" data-id="{$feature_id}" data-color="{$feature->is_color}" type="text" name="options_values[{$feature_id}][]" value="{$option->value|escape}">
 												{if $feature->is_color}<div class="add-on colorPicker-picker"></div>{/if}
 												<button type="button" class="btn {if $option@first}btn-feature {if $feature->is_color}js-add-color{else}js-add{/if} {else}btn-minus-feature js-remove{/if} js-feature-multi-values feature-multi-values">
 													<span class="js-plus" {if !$option@first}style="display: none;" {/if}>
@@ -517,7 +517,7 @@
 											</div>
 											<input class="js-id-option" type="hidden" name="options_id[{$feature_id}][]" value="">
 											<div class="feature-value {if $feature->is_color}color-picker{/if}">
-												<input class="feature-input js-auto-option" data-id="{$feature_id}" data-color="{$feature->is_color}" type="text" name="options_values[{$feature_id}][]" value="">
+												<input class="feature-input js-auto-option translate-input-card" data-id="{$feature_id}" data-color="{$feature->is_color}" type="text" name="options_values[{$feature_id}][]" value="">
 												{if $feature->is_color}<div class="add-on colorPicker-picker"></div>{/if}
 												<button type="button" class="btn btn-feature {if $feature->is_color}js-add-color{else}js-add{/if} js-feature-multi-values feature-multi-values">
 													<span class="js-plus">
@@ -549,7 +549,7 @@
 								</div>
 								<input class="js-id-option" type="hidden" name="" value="">
 								<div class="feature-value">
-									<input class="feature-input js-auto-option" data-id="" data-color="" type="text" name="" value="">
+									<input class="feature-input js-auto-option translate-input-card" data-id="" data-color="" type="text" name="" value="">
 									<button type="button" class="btn btn-feature js-add js-feature-multi-values feature-multi-values">
 										<span class="js-plus">
 											<i class="align-middle" data-feather="plus"></i>
@@ -570,7 +570,7 @@
 								</div>
 								<input class="js-id-option" type="hidden" name="" value="">
 								<div class="feature-value">
-									<input class="feature-input js-auto-option" data-id="" data-color="" type="text" name="" value="">
+									<input class="feature-input js-auto-option translate-input-card" data-id="" data-color="" type="text" name="" value="">
 									<button type="button" class="btn btn-feature js-add js-feature-multi-values feature-multi-values">
 										<span class="js-plus">
 											<i class="align-middle" data-feather="plus"></i>
@@ -918,18 +918,18 @@
 					<div class="card-body">
 						<div class="row">
 							<div class="col-lg-6 col-md-6">
-								<div class="mb-3">
-									<div class="form-label">Meta-title <span id="js-meta-title-counter"></span></div>
-									<input name="meta_title" class="form-control js-meta-field mb-h" type="text" value="{if isset($product->meta_title)}{$product->meta_title|escape}{/if}">
+								<div class="translate-container mb-3">
+									<div class="form-label translate-button">Meta-title <span id="js-meta-title-counter"></span> <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
+									<input name="meta_title" class="form-control js-meta-field mb-h translate-input" type="text" value="{if isset($product->meta_title)}{$product->meta_title|escape}{/if}">
 								</div>
-								<div class="mb-3">
-									<div class="form-label">Meta-keywords</div>
-									<input name="meta_keywords" class="form-control js-meta-field mb-h" type="text" value="{if isset($product->meta_keywords)}{$product->meta_keywords|escape}{/if}">
+								<div class="translate-container mb-3">
+									<div class="form-label translate-button">Meta-keywords <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
+									<input name="meta_keywords" class="form-control js-meta-field mb-h translate-input" type="text" value="{if isset($product->meta_keywords)}{$product->meta_keywords|escape}{/if}">
 								</div>
 							</div>
-							<div class="col-lg-6 col-md-6">
-								<div class="form-label">Meta-description <span id="js-meta-description-counter"></span></div>
-								<textarea name="meta_description" class="form-control turbo-textarea js-meta-field">{if isset($product->meta_description)}{$product->meta_description|escape}{/if}</textarea>
+							<div class="translate-container col-lg-6 col-md-6">
+								<div class="form-label">Meta-description <span id="js-meta-description-counter"></span> <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
+								<textarea name="meta_description" class="form-control turbo-textarea js-meta-field translate-input">{if isset($product->meta_description)}{$product->meta_description|escape}{/if}</textarea>
 							</div>
 						</div>
 					</div>
@@ -989,6 +989,30 @@
 {literal}
 	<script>
 		$(window).on("load", function() {
+			$(document).ready(function() {
+				var targetLang = '{/literal}{if $lang_label == 'ua'}uk{else}{$lang_label}{/if}{literal}';
+
+				$('.translate-button-card').on('click', function() {
+					var cardElement = $(this).closest('.card');
+					var inputElements = cardElement.find('.translate-input-card');
+
+					inputElements.each(function() {
+						var inputElement = $(this);
+						var text = inputElement.val();
+
+						if (text.trim() !== '') {
+							$.post('ajax/translate.php', {
+								'source_lang': 'auto',
+								'target_lang': targetLang,
+								'text': text
+							}, function(data) {
+								inputElement.val(data);
+							});
+						}
+					});
+				});
+			});
+
 			$(document).on("click", ".js-show-images", function() {
 				$(".js-toggle-hidden").toggleClass("d-none");
 				$('.js-icon-arrow').toggleClass('rotate-180');

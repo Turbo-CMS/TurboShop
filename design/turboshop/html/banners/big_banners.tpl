@@ -1,5 +1,5 @@
-{get_banner var=banner_2 group='2'}
-{if $banner_2->items}
+{get_banner var=big_banners group=$theme_settings->big_banners_id}
+{if $big_banners->items}
 	{* Big Banner Type 1 *}
 	{if $theme_settings->big_banners_type == '1'}
 		<div class="drag-block container BIG_BANNER_INDEX" data-class="big_banner_index_drag" data-order="{$theme_settings->block_1}">
@@ -7,9 +7,9 @@
 				<div class="banners-big front swipeignore {if $theme_settings->banners_height == '1'}banners-big--high{/if} {if $theme_settings->banners_height == '2'}banners-big--nothigh banners-big--normal{/if} {if $theme_settings->banners_height == '3'}banners-big--nothigh banners-big--low{/if} banners-big--adaptive-{$theme_settings->banners_adaptive_type|escape}">
 					<div class="maxwidth-banner">
 						<div class="banners-big__wrapper">
-							<div class="swiper slider-solution main-slider banners-big__depend-height banners-big__depend-padding owl-carousel--button-bottom-right owl-carousel--light" data-plugin-options='{literal}{"preloadImages":false,"lazy":{"loadPrevNext":true},"keyboard":true,"init":false,"countSlides":{/literal}{$banner_2->items|count}{literal},"type":"main_banner","loop":true,"spaceBetween":24,"slidesPerView":"auto","pagination":{"el":".swiper-pagination","type":"bullets"}}{/literal}'>
+							<div class="swiper slider-solution main-slider banners-big__depend-height banners-big__depend-padding owl-carousel--button-bottom-right owl-carousel--light" data-plugin-options='{literal}{"preloadImages":false,"lazy":{"loadPrevNext":true},"keyboard":true,"init":false,"countSlides":{/literal}{$big_banners->items|count}{literal},"type":"main_banner","loop":true,"spaceBetween":24,"slidesPerView":"auto","pagination":{"el":".swiper-pagination","type":"bullets"}}{/literal}'>
 								<div class="swiper-wrapper main-slider__wrapper">
-									{foreach $banner_2->items as $s name=banner}
+									{foreach $big_banners->items as $s name=banner}
 										<div class="lazyload swiper-slide main-slider__item box" style="background-image: url(data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==) !important;" data-slide_index="{$smarty.foreach.banner.index}" data-color="{$s->style}" data-background="{$s->background|resize_banners:1920:660}" data-bg="{$s->background|resize_banners:1920:660}">
 											<div class="wurl banners-big__item banners-big__depend-height banners-big__depend-padding {if $s->style == "light"}banners-big__item--light{/if}">
 												<a class="target" href="{$lang_link}{$s->url|escape}"></a>
@@ -97,9 +97,9 @@
 				<div class="banners-big front swipeignore banners-big--nothigh banners-big--narrow banners-big--paddings banners-no-header-opacity {if $theme_settings->banners_height == '1'}banners-big--high{/if} {if $theme_settings->banners_height == '2'}banners-big--normal{/if} {if $theme_settings->banners_height == '3'}banners-big--low{/if} banners-big--adaptive-{$theme_settings->banners_adaptive_type|escape}">
 					<div class="maxwidth-banner maxwidth-theme">
 						<div class="banners-big__wrapper">
-							<div class="swiper slider-solution main-slider banners-big__depend-height owl-carousel--button-bottom-right owl-carousel--light" data-plugin-options='{literal}{"preloadImages":false,"lazy":{"loadPrevNext":true},"keyboard":true,"init":false,"countSlides":{/literal}{$banner_2->items|count}{literal},"type":"main_banner","loop":true,"spaceBetween":24,"slidesPerView":"auto","pagination":{"el":".swiper-pagination","type":"bullets"}}{/literal}'>
+							<div class="swiper slider-solution main-slider banners-big__depend-height owl-carousel--button-bottom-right owl-carousel--light" data-plugin-options='{literal}{"preloadImages":false,"lazy":{"loadPrevNext":true},"keyboard":true,"init":false,"countSlides":{/literal}{$big_banners->items|count}{literal},"type":"main_banner","loop":true,"spaceBetween":24,"slidesPerView":"auto","pagination":{"el":".swiper-pagination","type":"bullets"}}{/literal}'>
 								<div class="swiper-wrapper main-slider__wrapper">
-									{foreach $banner_2->items as $s name=banner}
+									{foreach $big_banners->items as $s name=banner}
 										<div class="lazyload swiper-slide main-slider__item box rounded-x" style="background-image: url(data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==) !important;" data-slide_index="{$smarty.foreach.banner.index}" data-color="{$s->style}" data-background="{$s->background|resize_banners:1920:660}" data-bg="{$s->background|resize_banners:1920:660}">
 											<div class="wurl banners-big__item banners-big__depend-height {if $s->style == "light"}banners-big__item--light{/if}">
 												<a class="target" href="{$lang_link}{$s->url|escape}"></a>

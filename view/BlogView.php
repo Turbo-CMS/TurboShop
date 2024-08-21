@@ -161,6 +161,26 @@ class BlogView extends View
 		$tags = explode(',', $post->meta_keywords);
 		$this->design->assign('tags', array_map("trim", $tags));
 
+		// Get All Posts
+		$allPosts = $this->blog->getPosts();
+
+		$allTags = [];
+
+		foreach ($allPosts as $post) {
+			// Get Tags
+			$tags = explode(',', $post->meta_keywords);
+			$tags = array_map("trim", $tags);
+
+			// Merge Tags
+			$allTags = array_merge($allTags, $tags);
+		}
+
+		// Remove Duplicates
+		$allTags = array_unique($allTags);
+
+		// Design
+		$this->design->assign('all_tags', $allTags);
+
 		// Next Prev
 		$this->design->assign('next_post', $this->blog->getNextPost($post->id));
 		$this->design->assign('prev_post', $this->blog->getPrevPost($post->id));
@@ -277,10 +297,10 @@ class BlogView extends View
 			$allTags = array_merge($allTags, $tags);
 		}
 
-		// Remove duplicates
+		// Remove Duplicates
 		$allTags = array_unique($allTags);
 
-		// Assign
+		// Design
 		$this->design->assign('all_tags', $allTags);
 
 		// Meta Tags

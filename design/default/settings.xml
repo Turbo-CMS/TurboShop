@@ -3,6 +3,57 @@
 	<group>
 		<name>{$lang->general_settings}</name>
 		<settings>
+			<variable>logo</variable>
+			<name>{$lang->logo}</name>
+		</settings>	
+		<settings>
+			<variable>logo_icon</variable>
+			<name>{$lang->logo_icon}</name>
+		</settings>	
+		<settings>
+			<variable>phone_1</variable>
+			<name>{$lang->phone_1}</name>
+		</settings>
+		<settings>
+			<variable>phone_2</variable>
+			<name>{$lang->phone_2}</name>
+		</settings>
+			<settings>
+			<variable>phone_mask</variable>
+			<name>{$lang->phone_mask}</name>
+		</settings>
+		<settings>
+			<variable>email</variable>
+			<name>{$lang->email}</name>
+		</settings>
+		<settings>
+			<variable>map</variable>
+			<name>{$lang->map}</name>
+		</settings>
+		<settings>
+			<variable>facebook</variable>
+			<name>Facebook</name>
+		</settings>
+		<settings>
+			<variable>instagram</variable>
+			<name>Instagram</name>
+		</settings>
+		<settings>
+			<variable>twitterx</variable>
+			<name>Twitter (X)</name>
+		</settings>
+		<settings>
+			<variable>youtube</variable>
+			<name>YouTube</name>
+		</settings>
+		<settings>
+			<variable>linkedin</variable>
+			<name>LinkedIn</name>
+		</settings>
+	</group>
+	<group>
+		<name>{$lang->header}</name>
+		<settings>
 			<variable>header_type</variable>
 			<name>{$lang->header_type}</name>
 			<options>
@@ -15,6 +66,13 @@
 			</options>
 		</settings>
 		<settings>
+			<variable>menu_header_id</variable>
+			<name>{$lang->menu_header_id}</name>
+		</settings>
+	</group>
+	<group>
+		<name>{$lang->main}</name>
+		<settings>
 			<variable>main_type</variable>
 			<name>{$lang->main_type}</name>
 			<options>
@@ -26,6 +84,9 @@
 				<value>2</value>
 			</options>
 		</settings>
+	</group>
+	<group>
+		<name>{$lang->footer}</name>
 		<settings>
 			<variable>footer_type</variable>
 			<name>{$lang->footer_type}</name>
@@ -39,8 +100,35 @@
 			</options>
 		</settings>
 		<settings>
-			<variable>map</variable>
-			<name>{$lang->map}</name>
+			<variable>id_menu_footer_1</variable>
+			<name>{$lang->id_menu_footer_1}</name>
+		</settings>
+		<settings>
+			<variable>id_menu_footer_2</variable>
+			<name>{$lang->id_menu_footer_2}</name>
+		</settings>
+	</group>
+	<group>
+		<name>{$lang->sitemap}</name>
+		<settings>
+			<variable>id_menu_sitemap_1</variable>
+			<name>{$lang->id_menu_sitemap_1}</name>
+		</settings>
+		<settings>
+			<variable>id_menu_sitemap_2</variable>
+			<name>{$lang->id_menu_sitemap_2}</name>
+		</settings>
+		<settings>
+			<variable>id_menu_sitemap_3</variable>
+			<name>{$lang->id_menu_sitemap_3}</name>
+		</settings>
+		<settings>
+			<variable>id_menu_sitemap_4</variable>
+			<name>{$lang->id_menu_sitemap_4}</name>
+		</settings>
+		<settings>
+			<variable>id_menu_sitemap_5</variable>
+			<name>{$lang->id_menu_sitemap_5}</name>
 		</settings>
 	</group>
 </module>

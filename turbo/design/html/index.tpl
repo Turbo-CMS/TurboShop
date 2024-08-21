@@ -52,17 +52,17 @@
 		<nav id="sidebar" class="sidebar js-sidebar">
 			<div class="sidebar-content js-simplebar">
 				<a class="sidebar-brand" href="index.php?module=DashboardAdmin">
-					{if $settings->admin_theme == "light"}
-						<img src="design/images/logo_dark.svg" class="align-middle" alt="TurboCMS">
-						<span class="sidebar-brand-text align-middle me-3">
-							<img src="design/images/logo_title_dark.svg" alt="TurboCMS">
-						</span>
-					{else}
-						<img src="design/images/logo.svg" class="align-middle" alt="TurboCMS">
-						<span class="sidebar-brand-text align-middle me-3">
-							<img src="design/images/logo_title.svg" alt="TurboCMS">
-						</span>
-					{/if}
+					<span class="sidebar-brand-text align-middle">
+						<svg class="sidebar-brand-logo align-middle" xmlns="http://www.w3.org/2000/svg" width="172px" height="25.75px" viewBox="0 0 166 25.75">
+							<g>
+								<path d="M10,24.68a6.22,6.22,0,0,1-4.22-1.43,5.25,5.25,0,0,1-1.63-4.14V11H0V7.72H4.16V2.85h3.7V7.72H13V11H7.86v7.5c0,1.91.87,2.86,2.62,2.86a4.52,4.52,0,0,0,2.38-.61L14,23.84A9,9,0,0,1,10,24.68Zm21.22-17V24.51H27.54V22.77a5.55,5.55,0,0,1-4.64,2.08,6.12,6.12,0,0,1-4.73-1.93,7.28,7.28,0,0,1-1.78-5.16v-10h3.69V17.2a4.82,4.82,0,0,0,1,3.17,3.29,3.29,0,0,0,2.67,1.16A3.81,3.81,0,0,0,26,20.77a4.64,4.64,0,0,0,1.55-1.93V7.72Zm5,16.79V7.72h3.69V10a4.32,4.32,0,0,1,1.68-1.71,4.88,4.88,0,0,1,2.55-.71,7.1,7.1,0,0,1,1.72.21l-.54,3.59a4,4,0,0,0-1.45-.2,4.46,4.46,0,0,0-2.3.67,4.07,4.07,0,0,0-1.66,1.91V24.51Zm21.09.34a6.44,6.44,0,0,1-4.91-1.92v1.58H48.69V0h3.69V9.27a6.47,6.47,0,0,1,4.91-1.88,7.85,7.85,0,0,1,6,2.55,8.74,8.74,0,0,1,2.37,6.18,8.74,8.74,0,0,1-2.37,6.18,7.85,7.85,0,0,1-6,2.55Zm-.41-3.36a4.62,4.62,0,0,0,3.6-1.56,5.47,5.47,0,0,0,1.41-3.81,5.47,5.47,0,0,0-1.41-3.81,4.67,4.67,0,0,0-3.6-1.57A5.2,5.2,0,0,0,52.4,13V19.1a5.13,5.13,0,0,0,4.48,2.39Zm26.45.82a9,9,0,0,1-12.53,0,8.41,8.41,0,0,1-2.53-6.19,8.8,8.8,0,0,1,17.59-.59,5.8,5.8,0,0,1,0,.59,8.43,8.43,0,0,1-2.55,6.23Zm-6.27-.89a4.71,4.71,0,0,0,3.61-1.52,5.29,5.29,0,0,0,1.43-3.78,5.29,5.29,0,0,0-1.43-3.78,4.7,4.7,0,0,0-3.61-1.53,4.76,4.76,0,0,0-3.64,1.53A5.35,5.35,0,0,0,72,16.12a5.33,5.33,0,0,0,1.43,3.78,4.75,4.75,0,0,0,3.63,1.52Zm20.19,3.43a8.69,8.69,0,0,1-6.33-2.5,8.38,8.38,0,0,1-2.54-6.23,8.38,8.38,0,0,1,2.54-6.23,8.65,8.65,0,0,1,6.33-2.5,8.86,8.86,0,0,1,4.65,1.24A8.42,8.42,0,0,1,105.07,12l-3.22,1.75A5.29,5.29,0,0,0,100,11.62a5.11,5.11,0,0,0-6.41.72,5.27,5.27,0,0,0-1.45,3.78,5.27,5.27,0,0,0,1.45,3.78,4.81,4.81,0,0,0,3.66,1.52,5,5,0,0,0,2.75-.8,5.35,5.35,0,0,0,1.85-2.15l3.22,1.74a8.31,8.31,0,0,1-3.17,3.4,9,9,0,0,1-4.65,1.24Zm32.6-.34V15.14a5.39,5.39,0,0,0-.84-3.2,2.89,2.89,0,0,0-2.52-1.16,3.71,3.71,0,0,0-2.25.72,4.44,4.44,0,0,0-1.47,1.93,6.56,6.56,0,0,1,.09,1.08v10h-3.69V15.14a5.26,5.26,0,0,0-.85-3.2,3,3,0,0,0-2.54-1.16,3.89,3.89,0,0,0-3.63,2.38V24.51h-3.69V7.72h3.69V9.3a5.33,5.33,0,0,1,4.47-1.91,5.56,5.56,0,0,1,4.83,2.48A6.42,6.42,0,0,1,127,7.39a6.05,6.05,0,0,1,4.83,2,7.56,7.56,0,0,1,1.71,5.16v10Zm13.77.34a9.08,9.08,0,0,1-4.1-.89,5.76,5.76,0,0,1-2.65-2.67l2.72-1.95A3.69,3.69,0,0,0,141.2,21a4.87,4.87,0,0,0,2.42.62,3,3,0,0,0,1.73-.47,1.47,1.47,0,0,0,.69-1.31,1.53,1.53,0,0,0-.56-1.21,6.22,6.22,0,0,0-2-.94l-1.48-.4c-3-.81-4.44-2.52-4.4-5.14a4.15,4.15,0,0,1,1.72-3.49,6.8,6.8,0,0,1,4.29-1.31,6.2,6.2,0,0,1,5.68,2.85l-2.55,2a3.88,3.88,0,0,0-3.19-1.71,2.93,2.93,0,0,0-1.58.42A1.28,1.28,0,0,0,141.3,12a1.63,1.63,0,0,0,.43,1.15,3.78,3.78,0,0,0,1.58.84l1.71.5a8.11,8.11,0,0,1,3.53,1.9,4.35,4.35,0,0,1,1.17,3.2A4.69,4.69,0,0,1,148,23.4a6.64,6.64,0,0,1-4.39,1.45Z" />
+								<path class="sidebar-brand-arrow" d="M154.15,23.63l7.52-7.31L154.15,9l2.15-2.18,9.7,9.47-9.7,9.46Z" />
+							</g>
+						</svg>
+					</span>
+					<svg class="sidebar-brand-icon align-middle" xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" viewBox="0 0 62.59 100">
+						<path d="M0,88.65,39.72,50,0,11.52,11.35,0,62.59,50,11.35,100Z"/>
+					</svg>
 				</a>
 				<ul class="sidebar-nav">
 					{if in_array('dashboard', $manager->permissions)}
@@ -629,8 +629,35 @@
 
 	<script>
 		$(function() {
+			if ($('.translate-button').length > 0) {
+				$(document).ready(function() {
+					var targetLang = '{if $lang_label == 'ua'}uk{else}{$lang_label}{/if}';
+
+					$('.translate-button').on('click', function() {
+						var inputElement = $(this).closest('.translate-container').find('.translate-input');
+						var text = inputElement.val();
+
+						if (text.trim() !== '') {
+							$.post('ajax/translate.php', {
+								'source_lang': 'auto',
+								'target_lang': targetLang,
+								'text': text
+							}, function(data) {
+								inputElement.val(data);
+								{if isset($smarty.get.module) && !in_array($smarty.get.module, array('FeatureAdmin','FAQAdmin','DeliveryAdmin','PaymentMethodAdmin'))}
+									set_meta();
+								{/if}
+							});
+						}
+					});
+				});
+			}
+
 			if ($('form.js-fast-button').length > 0) {
 				$('input,textarea,select, .dropdown-toggle').bind('keyup change dragover click', function() {
+					$('.js-fast-save').show();
+				});
+				$(document).on('click', '.translate-button', function() {
 					$('.js-fast-save').show();
 				});
 				$('.js-fast-save').on('click', function() {
@@ -708,7 +735,10 @@
 										$(".product-images-list").find("li:nth-child(2)").addClass("first-image");
 									}
 								}
-							{/literal}{if isset($smarty.get.module) && !in_array($smarty.get.module, array("CurrencyAdmin"))}$(".js-form-list").ajaxSubmit();{/if}{literal}
+								if ($(".js-form-list").length > 0) {
+									$(".js-form-list").ajaxSubmit();
+									notyf.success({message: "{/literal}{$btr->global_success|escape}{literal}", dismissible: true});
+								}
 							},
 						});
 					}
@@ -912,6 +942,7 @@
 							set_meta();
 						})
 					}
+					
 					if ($(".js-meta-categories").length > 0) {
 						$(".js-meta-categories").on("change", function() {
 							set_meta();
@@ -948,15 +979,21 @@
 					result = name;
 					if ($('input[name="author"]').length > 0) {
 						author = $('input[name="author"]').val();
-						result += ', ' + author;
+						if (typeof(author) == 'string' && author != '')
+							result += ', ' + author;
 					}
 					if ($(".js-meta-brand").length > 0) {
-						brand = $('select[name="brand_id"] option:selected').data('brand_name');
+						brand = $('select[name="brand_id"] option:selected').data('brand-name');
 						if (typeof(brand) == 'string' && brand != '')
 							result += ', ' + brand;
 					}
 					$('select[name="categories[]"]').each(function(index) {
-						c = $(this).find('option:selected').attr('category_name');
+						c = $(this).find('option:selected').attr('category-name');
+						if (typeof(c) == 'string' && c != '')
+							result += ', ' + c;
+					});
+					$('select[name="category_id"]').each(function(index) {
+						c = $(this).find('option:selected').attr('category-name');
 						if (typeof(c) == 'string' && c != '')
 							result += ', ' + c;
 					});
@@ -1029,6 +1066,18 @@
 					$('.selectpicker').selectpicker('mobile');
 				}
 			});
+
+			(function toggleFullscreen() {
+				document.querySelectorAll(".js-fullscreen").forEach((e) => {
+					e.addEventListener("click", () => {
+						if (document.fullscreenElement) {
+							document.exitFullscreen();
+						} else {
+							document.body.requestFullscreen();
+						}
+					});
+				});
+			})();
 		</script>
 	</body>
 </html>

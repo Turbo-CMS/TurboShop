@@ -74,14 +74,14 @@
 				<div class="card-body">
 					<div class="row d-flex">
 						<div class="col-lg-10 col-md-9 col-sm-12">
-							<div class="mb-3">
-								<div class="form-label">{$btr->global_title|escape}</div>
-								<input class="form-control" name="name" type="text" value="{if isset($page->name)}{$page->name|escape}{/if}">
+							<div class="translate-container mb-3">
+								<div class="form-label">{$btr->global_title|escape} <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
+								<input class="form-control translate-input" name="name" type="text" value="{if isset($page->name)}{$page->name|escape}{/if}">
 								<input name="id" type="hidden" value="{if isset($page->id)}{$page->id|escape}{/if}">
 							</div>
-							<div class="mb-3">
-								<div class="form-label">{$btr->page_menu_name|escape}</div>
-								<input class="form-control" name="header" type="text" value="{if isset($page->header)}{$page->header|escape}{/if}">
+							<div class="translate-container mb-3">
+								<div class="form-label">{$btr->page_menu_name|escape} <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
+								<input class="form-control translate-input" name="header" type="text" value="{if isset($page->header)}{$page->header|escape}{/if}">
 							</div>
 							<div class="row">
 								<div class="col-xs-12 col-lg-6 col-md-10">
@@ -162,18 +162,18 @@
 					<div class="card-body">
 						<div class="row">
 							<div class="col-lg-6 col-md-6">
-								<div class="mb-3">
-									<div class="form-label">Meta-title <span id="js-meta-title-counter"></span></div>
-									<input name="meta_title" class="form-control js-meta-field mb-h" type="text" value="{if isset($page->meta_title)}{$page->meta_title|escape}{/if}">
+								<div class="translate-container mb-3">
+									<div class="form-label">Meta-title <span id="js-meta-title-counter"></span> <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
+									<input name="meta_title" class="form-control js-meta-field mb-h translate-input" type="text" value="{if isset($page->meta_title)}{$page->meta_title|escape}{/if}">
 								</div>
-								<div class="mb-3">
-									<div class="form-label">Meta-keywords</div>
-									<input name="meta_keywords" class="form-control js-meta-field mb-h" type="text" value="{if isset($page->meta_keywords)}{$page->meta_keywords|escape}{/if}">
+								<div class="translate-container mb-3">
+									<div class="form-label">Meta-keywords <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
+									<input name="meta_keywords" class="form-control js-meta-field mb-h translate-input" type="text" value="{if isset($page->meta_keywords)}{$page->meta_keywords|escape}{/if}">
 								</div>
 							</div>
-							<div class="col-lg-6 col-md-6 pl-0">
-								<div class="form-label">Meta-description <span id="js-meta-description-counter"></span></div>
-								<textarea name="meta_description" class="form-control turbo-textarea js-meta-field">{if isset($page->meta_description)}{$page->meta_description|escape}{/if}</textarea>
+							<div class="translate-container col-lg-6 col-md-6 pl-0">
+								<div class="form-label">Meta-description <span id="js-meta-description-counter"></span> <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
+								<textarea name="meta_description" class="form-control turbo-textarea js-meta-field translate-input">{if isset($page->meta_description)}{$page->meta_description|escape}{/if}</textarea>
 							</div>
 						</div>
 					</div>

@@ -85,21 +85,21 @@
 							<div class="col-12">
 								<div class="mb-3">
 									<div class="form-label">{$btr->translation_name|escape}</div>
-									<input name="label" class="form-control" type="text" value="{if isset($translation->label)}{$translation->label}{/if}" {if $locked_theme}readonly="" {/if} />
+									<input name="label" class="form-control" type="text" value="{if isset($translation->label)}{$translation->label}{/if}" {if $locked_theme}readonly=""{/if}>
 								</div>
 							</div>
 						</div>
 						<div class="row">
-							{foreach $languages as $lang}
+							{foreach $languages as $lang name=lg}
 								<div class="col-lg-4 col-md-4 col-sm-6 col-12">
-									<div class="mb-3">
+									<div class="translate-container mb-3">
 										<div class="form-label">
-											<div onclick="translateText('{if $lang->label == 'ua'}uk{else}{$lang->label}{/if}')" class="translation-icon mb-2 cursor-pointer" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">
+											<div {if !$translation->id}onclick="translateText('{if $lang->label == 'ua'}uk{else}{$lang->label}{/if}')"{/if} class="translation-icon mb-2 cursor-pointer" data-target-lang="{if $lang->label == 'ua'}uk{else}{$lang->label}{/if}" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">
 												<img src="design/flags/4x3/{$lang->label}.svg">
 											</div>
 											{$lang->name|escape}
 										</div>
-										<textarea id="lang_{if $lang->label == 'ua'}uk{else}{$lang->label}{/if}" name="lang_{$lang->label}" class="form-control" rows="5" {if $locked_theme}readonly=""{/if}>{if isset($translation->lang_{$lang->label})}{$translation->lang_{$lang->label}}{/if}</textarea>
+										<textarea id="lang_{if $lang->label == 'ua'}uk{else}{$lang->label}{/if}" name="lang_{$lang->label}" class="form-control {if $smarty.foreach.lg.first}first-lang{/if}" rows="5" {if $locked_theme}readonly=""{/if}>{if isset($translation->lang_{$lang->label})}{$translation->lang_{$lang->label}}{/if}</textarea>
 									</div>
 								</div>
 							{/foreach}
@@ -148,27 +148,52 @@
 			}
 			return res;
 		}
-
-		var sourceLang = '';
-
-		$('textarea[id^="lang_"]').on('input', function() {
-			if (sourceLang === '') {
-				sourceLang = $(this).attr('id').replace('lang_', '');
-			}
-		});
-
-		function translateText(targetLang) {
-			var text = $('#lang_' + sourceLang).val();
-
-			if (text.trim() !== '') {
-				$.post('ajax/translate.php', {
-					'source_lang': sourceLang,
-					'target_lang': targetLang,
-					'text': text
-				}, function(data) {
-					$('#lang_' + targetLang).val(data);
-				});
-			}
-		}
 	</script>
 {/literal}
+{if !$locked_theme}
+	<script>
+		{if $translation->id}
+			$(document).ready(function() {
+				$('.translation-icon').on('click', function() {
+					var targetLang = $(this).data('target-lang');
+
+					var inputElement = $(this).closest('.translate-container').find('textarea');
+					var text = $('.first-lang').val();
+
+					if (text.trim() !== '') {
+						$.post('ajax/translate.php', {
+							'source_lang': 'auto',
+							'target_lang': targetLang,
+							'text': text
+						}, function(data) {
+							inputElement.val(data);
+						});
+					}
+				});
+			});
+
+		{else}
+			var sourceLang = '';
+
+			$('textarea[id^="lang_"]').on('input', function() {
+				if (sourceLang === '') {
+					sourceLang = $(this).attr('id').replace('lang_', '');
+				}
+			});
+
+			function translateText(targetLang) {
+				var text = $('#lang_' + sourceLang).val();
+
+				if (text.trim() !== '') {
+					$.post('ajax/translate.php', {
+						'source_lang': sourceLang,
+						'target_lang': targetLang,
+						'text': text
+					}, function(data) {
+						$('#lang_' + targetLang).val(data);
+					});
+				}
+			}
+		{/if}
+	</script>
+{/if}

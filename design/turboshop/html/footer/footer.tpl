@@ -46,8 +46,8 @@
 									<div class="items">
 										<div class="item-link accordion-close items-child item-link" data-parent="#bottom1" data-target="#bottom1">
 											<div class="item">
-												<div class="font_weight--600 font_short">
-													<span>{$lang->online_store}</span>
+												<div class="title font_weight--600 font_short">
+													<a class="dark_link" href="{$lang_link}shop">{$lang->online_store}</a>
 												</div>
 											</div>
 											<span class="item-link-arrow">
@@ -113,7 +113,7 @@
 										<div class="item-link accordion-close  items-child item-link" data-parent="#bottom3" data-target="#bottom3">
 											<div class="item">
 												<div class="title font_weight--600 font_short">
-													<span>{$lang->information}</span>
+													<a class="dark_link" href="{$lang_link}info">{$lang->information}</a>
 												</div>
 											</div>
 											<span class="item-link-arrow">
@@ -146,7 +146,7 @@
 										<div class="item-link accordion-close items-child item-link" data-parent="#bottom4" data-target="#bottom4">
 											<div class="item">
 												<div class="title font_weight--600 font_short">
-													<span>{$lang->help}</span>
+													<a class="dark_link" href="{$lang_link}help">{$lang->help}</a>
 												</div>
 											</div>
 											<span class="item-link-arrow">
@@ -209,6 +209,8 @@
 						{include file='footer/payment.tpl'}
 						{* Confidentiality *}
 						{include file='footer/confidentiality.tpl'}
+						{* Langs *}
+						{include file='footer/lang.tpl'}
 						{* Developer *}
 						{include file='footer/developer.tpl'}
 					</div>
@@ -317,6 +319,8 @@
 						{include file='footer/payment.tpl'}
 						{* Confidentiality *}
 						{include file='footer/confidentiality.tpl'}
+						{* Langs *}
+						{include file='footer/lang.tpl'}
 						{* Developer *}
 						{include file='footer/developer.tpl'}
 					</div>

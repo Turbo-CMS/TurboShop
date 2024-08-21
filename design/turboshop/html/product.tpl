@@ -173,8 +173,8 @@
 																		{if isset($product->image)}
 																			{foreach $product->images as $i=>$image name=img}
 																				<div id="big-photo-{$smarty.foreach.img.index}" class="detail-gallery-big__item detail-gallery-big__item--big swiper-slide">
-																					<a href="{$image->filename|resize:700:700}" data-fancybox="gallery" class="detail-gallery-big__link popup_link fancy fancy-thumbs" title="{$product->name|escape}">
-																						<img class="detail-gallery-big__picture swiper-lazy" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{$image->filename|resize:700:700}" alt="{$product->name|escape}" title="{$product->name|escape}" />
+																					<a href="{$image->filename|resize:700:700:$theme_settings->watermark}" data-fancybox="gallery" class="detail-gallery-big__link popup_link fancy fancy-thumbs" title="{$product->name|escape}">
+																						<img class="detail-gallery-big__picture swiper-lazy" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{$image->filename|resize:700:700:$theme_settings->watermark}" alt="{$product->name|escape}" title="{$product->name|escape}" />
 																					</a>
 																				</div>
 																			{/foreach}

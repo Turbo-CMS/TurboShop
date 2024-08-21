@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" {if $language->label}xml:lang="{$language->label|escape}" lang="{$language->label|escape}"{/if} {if isset($smarty.cookies.mode) && $smarty.cookies.mode == 'dark'}data-theme="dark"{elseif isset($smarty.cookies.mode) && $smarty.cookies.mode == 'light'}data-theme="light"{else}data-theme="default"{/if}>
+<html xmlns="http://www.w3.org/1999/xhtml" {if $language->label}xml:lang="{$language->label|escape}" lang="{$language->label|escape}"{/if} {if $theme_settings->theme_color == 'theme_light'}data-theme="light"{elseif $theme_settings->theme_color == 'theme_dark'}data-theme="dark"{else}{if isset($smarty.cookies.mode) && $smarty.cookies.mode == 'dark'}data-theme="dark"{elseif isset($smarty.cookies.mode) && $smarty.cookies.mode == 'light'}data-theme="light"{else}data-theme="default"{/if}{/if}>
 
 <head>
 	{* Head *}
-	{include file='components/head.tpl'}
+	{include file='components/meta_css.tpl'}
 </head>
 
-<body class="{if $module == 'MainView' && $theme_settings->big_banners_type == '1' && $theme_settings->visible_1}header_opacity{/if} side_left hide_menu_page {if $module == 'MainView'}front_page{/if} {if $module == 'BlogView' || $module == 'ArticlesView'}side_right{/if} {if $module == 'CartView' || $module == 'OrderView'}simple_basket_mode{/if} header_fill_ fixed_y mfixed_y mfixed_view_always title_position_left mmenu_leftside mheader-v1 footer-v1 fill_bg_ header-v3 title-v1 bottom-icons-panel_y with_order with_cabinet with_phones {if isset($smarty.cookies.mode) && $smarty.cookies.mode == 'dark'}theme-dark{elseif isset($smarty.cookies.mode) && $smarty.cookies.mode == 'light'}theme-light{else}theme-default{/if}" id="main">
+<body class="{if $module == 'MainView' && $theme_settings->big_banners_type == '1' && $theme_settings->visible_1}header_opacity{/if} side_left hide_menu_page {if $module == 'MainView'}front_page{/if} {if $module == 'BlogView' || $module == 'ArticlesView'}side_right{/if} {if $module == 'CartView' || $module == 'OrderView'}simple_basket_mode{/if} header_fill_ fixed_y mfixed_y mfixed_view_always title_position_left mmenu_leftside mheader-v1 footer-v1 fill_bg_ header-v3 title-v1 bottom-icons-panel_y with_order with_cabinet with_phones {if $theme_settings->theme_color == 'theme_light'}theme-light{elseif $theme_settings->theme_color == 'theme_dark'}theme-dark{else}{if isset($smarty.cookies.mode) && $smarty.cookies.mode == 'dark'}theme-dark{elseif isset($smarty.cookies.mode) && $smarty.cookies.mode == 'light'}theme-light{else}theme-default{/if}{/if}" id="main">
 	{* Custom Scripts *}
 	{if isset($counters['body_top'])}
 		{foreach $counters['body_top'] as $counter}

@@ -258,7 +258,7 @@
 									<div class="col-md-12">
 										<div class="mb-3">
 											<div class="form-label">{$btr->global_blogs|escape}</div>
-											<input name="post_meta_title_keywords" class="form-control mb-h" type="text" value="{$seo->post_meta__keywords|escape}">
+											<input name="post_meta_title_keywords" class="form-control mb-h" type="text" value="{$seo->post_meta_keywords|escape}">
 										</div>
 									</div>
 									<div class="col-md-12">

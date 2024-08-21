@@ -57,8 +57,8 @@
 										{if isset($product->image)}
 											{foreach $product->images as $i=>$image name=img}
 												<div id="big-photo-{$smarty.foreach.img.index}" class="detail-gallery-big__item detail-gallery-big__item--big swiper-slide">
-													<a href="{$image->filename|resize:700:700}" data-fancybox="gallery_fast_view" class="detail-gallery-big__link popup_link fancy fancy-thumbs" title="{$product->name|escape}">
-														<img class="detail-gallery-big__picture ls-is-cached lazyload" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{$image->filename|resize:700:700}" alt="{$product->name|escape}" title="{$product->name|escape}">
+													<a href="{$image->filename|resize:700:700:$theme_settings->watermark}" data-fancybox="gallery_fast_view" class="detail-gallery-big__link popup_link fancy fancy-thumbs" title="{$product->name|escape}">
+														<img class="detail-gallery-big__picture ls-is-cached lazyload" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{$image->filename|resize:700:700:$theme_settings->watermark}" alt="{$product->name|escape}" title="{$product->name|escape}">
 													</a>
 												</div>
 											{/foreach}
@@ -256,11 +256,18 @@
 															</div>
 														</div>
 													{/if}
+													{if isset($product->features)}
+														{foreach $product->features as $f}
+															{if $f->is_size}
+																{$sizes = $f->is_size}
+															{/if}
+														{/foreach}
+													{/if}
 													{if $product->variants|count > 1}
 														<div class="line-block__item sku-props__inner">
 															<div class="sku-props__item">
 																<div class="sku-props__title color_666">
-																	{$lang->size} : <span class="sku-props__js-size">{$product->variant->name}</span>
+																	{if $sizes}{$lang->size}{else}{$lang->option}{/if} : <span class="sku-props__js-size">{$product->variant->name}</span>
 																</div>
 																<div id="variants-quickview" class="line-block line-block--flex-wrap line-block--4 sku-props__values">
 																	{foreach $product->variants as $v}
@@ -274,12 +281,9 @@
 																</div>
 															</div>
 														</div>
-													{/if}
-													{if isset($product->features)}
-														{foreach $product->features as $f}
-															{if $f->is_size}
-																{$sizes = $f->is_size}
-															{/if}
+													{else}
+														{foreach $product->variants as $v}
+															<input name="variant" value="{$v->id}" type="radio" {if $v@first}checked{/if} style="display:none;">
 														{/foreach}
 													{/if}
 													{if $sizes}

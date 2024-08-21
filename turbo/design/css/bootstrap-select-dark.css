@@ -73,6 +73,11 @@
 	cursor: pointer;
 }
 
+.bootstrap-select.disabled.btn-group:not(.input-group-btn),
+.bootstrap-select.disabled.btn-group[class*="col-"] {
+	cursor: not-allowed;
+}
+
 .bootstrap-select>select {
 	position: absolute !important;
 	bottom: 0;

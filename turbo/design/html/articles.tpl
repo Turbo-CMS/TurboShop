@@ -157,7 +157,7 @@
 										</label>
 									</div>
 									<div class="turbo-list-option">
-										<select name="action" class="selectpicker products-action">
+										<select name="action" class="selectpicker articles-action">
 											<option value="enable">{$btr->global_do_enable|escape}</option>
 											<option value="disable">{$btr->global_do_disable|escape}</option>
 											<option value="delete">{$btr->global_delete|escape}</option>

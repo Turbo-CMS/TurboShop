@@ -55,4 +55,9 @@
 	{if $theme_settings->visible_10}
 		{include file='main/blog.tpl'}
 	{/if}
+
+	{* Articles *}
+	{if $theme_settings->visible_11}
+		{include file='main/articles.tpl'}
+	{/if}
 </div>

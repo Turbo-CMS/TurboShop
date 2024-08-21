@@ -88,7 +88,7 @@
 												</div>
 												<ul class="map-columns__dropdown map-level-1">
 													{foreach $pages as $p1}
-														{if $p1->menu_id == 1}
+														{if $p1->menu_id == $theme_settings->id_menu_sitemap_1}
 															{if $p1->visible}
 																<li class="item item-level-1">
 																	<div class="map-columns__link-wrapper">
@@ -146,7 +146,7 @@
 												</div>
 												<ul class="map-columns__dropdown map-level-1">
 													{foreach $pages as $p2}
-														{if $p2->menu_id == 2}
+														{if $p2->menu_id == $theme_settings->id_menu_sitemap_2}
 															{if $p2->visible}
 																<li class="item item-level-1">
 																	<div class="map-columns__link-wrapper">
@@ -204,7 +204,7 @@
 												</div>
 												<ul class="map-columns__dropdown map-level-1">
 													{foreach $pages as $p3}
-														{if $p3->menu_id == 3}
+														{if $p3->menu_id == $theme_settings->id_menu_sitemap_3}
 															{if $p3->visible}
 																<li class="item item-level-1">
 																	<div class="map-columns__link-wrapper">
@@ -262,7 +262,7 @@
 												</div>
 												<ul class="map-columns__dropdown map-level-1">
 													{foreach $pages as $p4}
-														{if $p4->menu_id == 4}
+														{if $p4->menu_id == $theme_settings->id_menu_sitemap_4}
 															{if $p4->visible}
 																<li class="item item-level-1">
 																	<div class="map-columns__link-wrapper">
@@ -315,11 +315,11 @@
 												</ul>
 											</li>
 											{* Blog *}
-											<li class="item item-level-0">
-												<div class="map-columns__link-wrapper">
-													<a class="dark_link title-block font_18" href="{$lang_link}blog">{$lang->global_blog}</a>
-												</div>
-												{if $posts}
+											{if $posts}
+												<li class="item item-level-0">
+													<div class="map-columns__link-wrapper">
+														<a class="dark_link title-block font_18" href="{$lang_link}blog">{$lang->global_blog}</a>
+													</div>
 													<ul class="map-columns__dropdown map-level-1">
 														<li class="item item-level-1">
 															<div class="map-columns__link-wrapper">
@@ -343,8 +343,8 @@
 															</ul>
 														</li>
 													</ul>
-												{/if}
-											</li>
+												</li>
+											{/if}
 										</ul>
 									</td>
 									<td class="col-md-6 col-sm-4 col-xs-6 mobile-column">
@@ -456,7 +456,7 @@
 											{if $cats}
 												<li class="item item-level-0">
 													<div class="map-columns__link-wrapper">
-														<a class="dark_link title-block font_18" href="{$lang_link}catalog">{$lang->global_products}</a>
+														<a class="dark_link title-block font_18" href="{$lang_link}all-products">{$lang->global_products}</a>
 													</div>
 													<ul class="map-columns__dropdown map-level-1">
 														{foreach $cats as $cat}
