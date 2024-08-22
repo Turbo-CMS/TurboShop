@@ -138,7 +138,7 @@
 					{/if}
 					{if in_array('users', $manager->permissions) || in_array('groups', $manager->permissions) || in_array('coupons', $manager->permissions)}
 						<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('UsersAdmin', 'UserAdmin', 'GroupsAdmin', 'GroupAdmin', 'CouponsAdmin', 'CouponAdmin'))}active{/if}">
-							<a data-bs-target="#users" data-bs-toggle="collapse" {if isset($smarty.get.module) && in_array($smarty.get.module, array('UsersAdmin', 'UserAdmin', 'GroupsAdmin', 'GroupAdmin', 'CouponsAdmin', 'CouponAdmin'))}class="sidebar-link" aria-expanded="true" {else}class="sidebar-link collapsed" aria-expanded="false" {/if}>
+							<a data-bs-target="#users" data-bs-toggle="collapse" {if isset($smarty.get.module) && in_array($smarty.get.module, array('UsersAdmin', 'UserAdmin', 'GroupsAdmin', 'GroupAdmin', 'CouponsAdmin', 'CouponAdmin'))}class="sidebar-link" aria-expanded="true" {else}class="sidebar-link collapsed" aria-expanded="false"{/if}>
 								<i class="align-middle" data-feather="users"></i> <span class="align-middle">{$btr->global_users|escape}</span>
 							</a>
 							<ul id="users" class="sidebar-dropdown list-unstyled collapse {if isset($smarty.get.module) && in_array($smarty.get.module, array('UsersAdmin', 'UserAdmin', 'GroupsAdmin', 'GroupAdmin', 'CouponsAdmin', 'CouponAdmin'))}show{/if}" data-bs-parent="#sidebar">
@@ -162,7 +162,7 @@
 					{/if}
 					{if in_array('pages', $manager->permissions) || in_array('menus', $manager->permissions)}
 						<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('PagesAdmin', 'PageAdmin', 'MenuAdmin', 'indexAdmin'))}active{/if}">
-							<a data-bs-target="#pages" data-bs-toggle="collapse" {if isset($smarty.get.module) && in_array($smarty.get.module, array('PagesAdmin', 'PageAdmin', 'MenuAdmin', 'indexAdmin'))}class="sidebar-link" aria-expanded="true" {else}class="sidebar-link collapsed" aria-expanded="false" {/if}>
+							<a data-bs-target="#pages" data-bs-toggle="collapse" {if isset($smarty.get.module) && in_array($smarty.get.module, array('PagesAdmin', 'PageAdmin', 'MenuAdmin', 'indexAdmin'))}class="sidebar-link" aria-expanded="true" {else}class="sidebar-link collapsed" aria-expanded="false"{/if}>
 								<i class="align-middle" data-feather="layers"></i> <span class="align-middle">{$btr->global_pages|escape}</span>
 							</a>
 							<ul id="pages" class="sidebar-dropdown list-unstyled collapse {if isset($smarty.get.module) && in_array($smarty.get.module, array('PagesAdmin', 'PageAdmin', 'MenuAdmin', 'indexAdmin'))}show{/if}" data-bs-parent="#sidebar">
@@ -183,7 +183,7 @@
 					{/if}
 					{if in_array('blog', $manager->permissions) || in_array('articles', $manager->permissions)}
 						<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('BlogAdmin', 'ArticlesCategoriesAdmin', 'ArticlesAdmin', 'ArticleAdmin', 'PostAdmin', 'ArticlesCategoryAdmin'))}active{/if}">
-							<a data-bs-target="#blog" data-bs-toggle="collapse" {if isset($smarty.get.module) && in_array($smarty.get.module, array('BlogAdmin', 'ArticlesCategoriesAdmin', 'ArticlesAdmin', 'ArticleAdmin', 'PostAdmin', 'ArticlesCategoryAdmin'))}class="sidebar-link" aria-expanded="true" {else}class="sidebar-link collapsed" aria-expanded="false" {/if}>
+							<a data-bs-target="#blog" data-bs-toggle="collapse" {if isset($smarty.get.module) && in_array($smarty.get.module, array('BlogAdmin', 'ArticlesCategoriesAdmin', 'ArticlesAdmin', 'ArticleAdmin', 'PostAdmin', 'ArticlesCategoryAdmin'))}class="sidebar-link" aria-expanded="true" {else}class="sidebar-link collapsed" aria-expanded="false"{/if}>
 								<i class="align-middle" data-feather="edit-2"></i> <span class="align-middle">{$btr->global_blog|escape}</span>
 							</a>
 							<ul id="blog" class="sidebar-dropdown list-unstyled collapse {if isset($smarty.get.module) && in_array($smarty.get.module, array('BlogAdmin', 'ArticlesCategoriesAdmin', 'ArticlesAdmin', 'ArticleAdmin', 'PostAdmin', 'ArticlesCategoryAdmin'))}show{/if}" data-bs-parent="#sidebar">
@@ -205,7 +205,7 @@
 					{/if}
 					{if in_array('comments', $manager->permissions) || in_array('feedbacks', $manager->permissions) || in_array('callbacks', $manager->permissions) || in_array('subscribes', $manager->permissions)}
 						<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('CommentsAdmin', 'CommentAdmin', 'FeedbacksAdmin', 'SubscribesAdmin', 'CallbacksAdmin'))}active{/if}">
-							<a data-bs-target="#feedbacks" data-bs-toggle="collapse" {if isset($smarty.get.module) && in_array($smarty.get.module, array('CommentsAdmin', 'CommentAdmin', 'FeedbacksAdmin', 'SubscribesAdmin', 'CallbacksAdmin'))}class="sidebar-link" aria-expanded="true" {else}class="sidebar-link collapsed" aria-expanded="false" {/if}>
+							<a data-bs-target="#feedbacks" data-bs-toggle="collapse" {if isset($smarty.get.module) && in_array($smarty.get.module, array('CommentsAdmin', 'CommentAdmin', 'FeedbacksAdmin', 'SubscribesAdmin', 'CallbacksAdmin'))}class="sidebar-link" aria-expanded="true" {else}class="sidebar-link collapsed" aria-expanded="false"{/if}>
 								<i class="align-middle" data-feather="message-square"></i>
 								<span class="align-middle">{$btr->global_feedback|escape}</span>
 								{if $all_counter}<span class="sidebar-badge badge bg-secondary">{$all_counter}</span>{/if}
@@ -236,7 +236,7 @@
 					{/if}
 					{if in_array('faq', $manager->permissions)}
 						<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('FAQsAdmin', 'FAQAdmin'))}active{/if}">
-							<a data-bs-target="#faq" data-bs-toggle="collapse" {if isset($smarty.get.module) && in_array($smarty.get.module, array('FAQsAdmin', 'FAQAdmin'))}class="sidebar-link" aria-expanded="true" {else}class="sidebar-link collapsed" aria-expanded="false" {/if}>
+							<a data-bs-target="#faq" data-bs-toggle="collapse" {if isset($smarty.get.module) && in_array($smarty.get.module, array('FAQsAdmin', 'FAQAdmin'))}class="sidebar-link" aria-expanded="true" {else}class="sidebar-link collapsed" aria-expanded="false"{/if}>
 								<i class="align-middle" data-feather="help-circle"></i> <span class="align-middle">{$btr->global_faq|escape}</span>
 							</a>
 							<ul id="faq" class="sidebar-dropdown list-unstyled collapse {if isset($smarty.get.module) && in_array($smarty.get.module, array('FAQsAdmin', 'FAQAdmin'))}show{/if}" data-bs-parent="#sidebar">
@@ -248,7 +248,7 @@
 					{/if}
 					{if in_array('import', $manager->permissions) || in_array('export', $manager->permissions) || in_array('backup', $manager->permissions)}
 						<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('ImportAdmin', 'ImportYmlAdmin', 'ExportAdmin', 'BackupAdmin', 'ClearAdmin'))}active{/if}">
-							<a data-bs-target="#auto" data-bs-toggle="collapse" {if isset($smarty.get.module) && in_array($smarty.get.module, array('ImportAdmin', 'ImportYmlAdmin', 'ExportAdmin', 'BackupAdmin', 'ClearAdmin'))}class="sidebar-link" aria-expanded="true" {else}class="sidebar-link collapsed" aria-expanded="false" {/if}>
+							<a data-bs-target="#auto" data-bs-toggle="collapse" {if isset($smarty.get.module) && in_array($smarty.get.module, array('ImportAdmin', 'ImportYmlAdmin', 'ExportAdmin', 'BackupAdmin', 'ClearAdmin'))}class="sidebar-link" aria-expanded="true" {else}class="sidebar-link collapsed" aria-expanded="false"{/if}>
 								<i class="align-middle" data-feather="repeat"></i>
 								<span class="align-middle">{$btr->global_automation|escape}</span>
 							</a>
@@ -283,7 +283,7 @@
 					{/if}
 					{if in_array('stats', $manager->permissions)}
 						<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('StatsAdmin', 'ReportStatsAdmin', 'ReportStatsProdAdmin', 'CategoryStatsAdmin'))}active{/if}">
-							<a data-bs-target="#stats" data-bs-toggle="collapse" {if isset($smarty.get.module) && in_array($smarty.get.module, array('StatsAdmin', 'ReportStatsAdmin', 'ReportStatsProdAdmin', 'CategoryStatsAdmin'))}class="sidebar-link" aria-expanded="true" {else}class="sidebar-link collapsed" aria-expanded="false" {/if}>
+							<a data-bs-target="#stats" data-bs-toggle="collapse" {if isset($smarty.get.module) && in_array($smarty.get.module, array('StatsAdmin', 'ReportStatsAdmin', 'ReportStatsProdAdmin', 'CategoryStatsAdmin'))}class="sidebar-link" aria-expanded="true" {else}class="sidebar-link collapsed" aria-expanded="false"{/if}>
 								<i class="align-middle" data-feather="pie-chart"></i>
 								<span class="align-middle">{$btr->global_stats|escape}</span>
 							</a>
@@ -300,13 +300,13 @@
 							</ul>
 						</li>
 					{/if}
-					{if in_array('seo', $manager->permissions) || in_array('scripts', $manager->permissions)}
-						<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('SeoAdmin', 'SettingsCounterAdmin'))}active{/if}">
-							<a data-bs-target="#seo" data-bs-toggle="collapse" {if isset($smarty.get.module) && in_array($smarty.get.module, array('SeoAdmin', 'SettingsCounterAdmin'))}class="sidebar-link" aria-expanded="true" {else}class="sidebar-link collapsed" aria-expanded="false" {/if}>
+					{if in_array('seo', $manager->permissions) || in_array('scripts', $manager->permissions) || in_array('robots', $manager->permissions)}
+						<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('SeoAdmin', 'SettingsCounterAdmin', 'RobotsAdmin'))}active{/if}">
+							<a data-bs-target="#seo" data-bs-toggle="collapse" {if isset($smarty.get.module) && in_array($smarty.get.module, array('SeoAdmin', 'SettingsCounterAdmin', 'RobotsAdmin'))}class="sidebar-link" aria-expanded="true" {else}class="sidebar-link collapsed" aria-expanded="false"{/if}>
 								<i class="align-middle" data-feather="target"></i>
 								<span class="align-middle">{$btr->global_seo|escape}</span>
 							</a>
-							<ul id="seo" class="sidebar-dropdown list-unstyled collapse {if isset($smarty.get.module) && in_array($smarty.get.module, array('SeoAdmin', 'SettingsCounterAdmin'))}show{/if}" data-bs-parent="#sidebar">
+							<ul id="seo" class="sidebar-dropdown list-unstyled collapse {if isset($smarty.get.module) && in_array($smarty.get.module, array('SeoAdmin', 'SettingsCounterAdmin', 'RobotsAdmin'))}show{/if}" data-bs-parent="#sidebar">
 								{if in_array('seo', $manager->permissions)}
 									<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('SeoAdmin'))}active{/if}">
 										<a class="sidebar-link" href="index.php?module=SeoAdmin">{$btr->seo_automation|escape}</a>
@@ -315,6 +315,11 @@
 								{if in_array('scripts', $manager->permissions)}
 									<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('SettingsCounterAdmin'))}active{/if}">
 										<a class="sidebar-link" href="index.php?module=SettingsCounterAdmin">{$btr->global_scripts|escape}</a>
+									</li>
+								{/if}
+								{if in_array('robots', $manager->permissions)}
+									<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('RobotsAdmin'))}active{/if}">
+										<a class="sidebar-link" href="index.php?module=RobotsAdmin">Robots.txt</a>
 									</li>
 								{/if}
 							</ul>
@@ -353,7 +358,7 @@
 					{/if}
 					{if in_array('banners', $manager->permissions)}
 						<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('BannersAdmin', 'BannerAdmin', 'BannersImagesAdmin', 'BannersImageAdmin'))}active{/if}">
-							<a data-bs-target="#banners" data-bs-toggle="collapse" {if isset($smarty.get.module) && in_array($smarty.get.module, array('BannersAdmin', 'BannerAdmin', 'BannersImagesAdmin', 'BannersImageAdmin'))}class="sidebar-link" aria-expanded="true" {else}class="sidebar-link collapsed" aria-expanded="false" {/if}>
+							<a data-bs-target="#banners" data-bs-toggle="collapse" {if isset($smarty.get.module) && in_array($smarty.get.module, array('BannersAdmin', 'BannerAdmin', 'BannersImagesAdmin', 'BannersImageAdmin'))}class="sidebar-link" aria-expanded="true" {else}class="sidebar-link collapsed" aria-expanded="false"{/if}>
 								<i class="align-middle" data-feather="image"></i>
 								<span class="align-middle">{$btr->global_banners|escape}</span>
 							</a>
@@ -369,7 +374,7 @@
 					{/if}
 					{if in_array('settings', $manager->permissions) || in_array('currency', $manager->permissions) || in_array('delivery', $manager->permissions) || in_array('payment', $manager->permissions) || in_array('managers', $manager->permissions) || in_array('languages', $manager->permissions)}
 						<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('SettingsAdmin', 'CurrencyAdmin', 'DeliveriesAdmin', 'DeliveryAdmin', 'PaymentMethodsAdmin', 'PaymentMethodAdmin', 'ManagersAdmin', 'ManagerAdmin', 'SettingsFeedAdmin', 'LanguagesAdmin', 'LanguageAdmin', 'SystemAdmin'))}active{/if}">
-							<a data-bs-target="#settings" data-bs-toggle="collapse" {if isset($smarty.get.module) && in_array($smarty.get.module, array('SettingsAdmin', 'CurrencyAdmin', 'DeliveriesAdmin', 'DeliveryAdmin', 'PaymentMethodsAdmin', 'PaymentMethodAdmin', 'ManagersAdmin', 'ManagerAdmin', 'SettingsFeedAdmin', 'LanguagesAdmin', 'LanguageAdmin', 'SystemAdmin'))}class="sidebar-link" aria-expanded="true" {else}class="sidebar-link collapsed" aria-expanded="false" {/if}>
+							<a data-bs-target="#settings" data-bs-toggle="collapse" {if isset($smarty.get.module) && in_array($smarty.get.module, array('SettingsAdmin', 'CurrencyAdmin', 'DeliveriesAdmin', 'DeliveryAdmin', 'PaymentMethodsAdmin', 'PaymentMethodAdmin', 'ManagersAdmin', 'ManagerAdmin', 'SettingsFeedAdmin', 'LanguagesAdmin', 'LanguageAdmin', 'SystemAdmin'))}class="sidebar-link" aria-expanded="true" {else}class="sidebar-link collapsed" aria-expanded="false"{/if}>
 								<i class="align-middle" data-feather="settings"></i>
 								<span class="align-middle">{$btr->global_settings|escape}</span>
 							</a>

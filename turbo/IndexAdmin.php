@@ -63,6 +63,7 @@ class IndexAdmin extends Turbo
 		'ThemeSettingsAdmin'        => 'design',
 		'SeoAdmin'                  => 'seo',
 		'SettingsCounterAdmin'      => 'scripts',
+		'RobotsAdmin'               => 'robots',
 		'FeedsAdmin'                => 'feeds',
 		'SettingsAdmin'             => 'settings',
 		'SettingsFeedAdmin'         => 'settings',

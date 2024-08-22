@@ -7,7 +7,7 @@ class Managers extends Turbo
 	public $permissionsList = [
 		'dashboard', 'products', 'categories', 'brands', 'features', 'orders', 'labels', 'callbacks', 'feeds',
 		'users', 'groups', 'coupons', 'pages', 'menus', 'blog', 'comments', 'feedbacks', 'import', 'export', 'clear', 'articles',
-		'backup', 'stats', 'subscribes', 'faq', 'design', 'banners', 'settings', 'seo', 'scripts', 'currency', 'delivery', 'payment', 'managers', 'languages'
+		'backup', 'stats', 'subscribes', 'faq', 'design', 'banners', 'settings', 'seo', 'scripts', 'robots', 'currency', 'delivery', 'payment', 'managers', 'languages'
 	];
 
 	public $passwdFile = "turbo/.passwd";

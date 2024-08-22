@@ -37,7 +37,7 @@ $turbo->db->query(
          $langSql->join
      WHERE ($px.name LIKE '%$sk%' OR $px.meta_keywords LIKE '%$sk%') 
      AND visible=1 
-     ORDER BY p.name 
+     ORDER BY $px.name 
      LIMIT ?",
 	$limit
 );

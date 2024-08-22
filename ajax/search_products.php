@@ -39,7 +39,7 @@ $turbo->db->query(
     WHERE 
         ($px.name LIKE '%$sk%' OR $px.meta_keywords LIKE '%$sk%' OR p.id IN (SELECT product_id FROM __variants WHERE sku LIKE '%$sk%')) 
         AND visible=1 
-    ORDER BY p.name 
+    ORDER BY $px.name 
     LIMIT ?",
 	$limit
 );

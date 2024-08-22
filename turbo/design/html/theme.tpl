@@ -74,7 +74,11 @@
 					</div>
 					<div class="card-body px-4 pt-2">
 						<div class="text-center">
-							<img class="{if $theme->name != $t->name}gray-filter{/if}" src="../design/{$t->name}/preview.png" alt="{$t->name|escape}">
+							{if $settings->admin_theme == "dark"}
+								<img class="{if $theme->name != $t->name}gray-filter{/if}" src="../design/{$t->name}/preview_dark.png" alt="{$t->name|escape}">
+							{else}
+								<img class="{if $theme->name != $t->name}gray-filter{/if}" src="../design/{$t->name}/preview.png" alt="{$t->name|escape}">
+							{/if}
 						</div>
 						{if $theme->name != $t->name}
 							<button type="button" class="js-set-theme btn btn-secondary position-absolute bottom-0 end-0 me-3 mb-3" data-set-name="{$t->name|escape}">

@@ -357,7 +357,8 @@
 						</div>
 						{$seo = [
 							'seo' => $btr->seo_automation,
-							'scripts' => $btr->global_scripts
+							'scripts' => $btr->global_scripts,
+							'robots' => 'Robots.txt'
 						]}
 						<div class="bg-light rounded mb-3">
 							<div class="p-3">
