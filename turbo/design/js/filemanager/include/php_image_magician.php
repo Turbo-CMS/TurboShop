@@ -160,7 +160,8 @@
 # ========================================================================#
 
 
-class imageLib {
+class imageLib
+{
 
     private   $fileName;
     private   $image;
@@ -173,52 +174,48 @@ class imageLib {
     private   $fileExtension;
 
     private $debug      = true;
-    private $errorArray = array();
+    private $errorArray = [];
 
     private $forceStretch        = true;
     private $aggresiveSharpening = false;
 
-    private $transparentArray = array( '.png', '.gif' );
+    private $transparentArray = ['.png', '.gif'];
     private $keepTransparency = true;
-    private $fillColorArray   = array( 'r' => 255, 'g' => 255, 'b' => 255 );
+    private $fillColorArray   = ['r' => 255, 'g' => 255, 'b' => 255];
 
-    private $sharpenArray = array( 'jpg' );
+    private $sharpenArray = ['jpg'];
 
     private $psdReaderPath;
     private $filterOverlayPath;
 
     private $isInterlace;
 
-    private $captionBoxPositionArray = array();
+    private $captionBoxPositionArray = [];
 
     private $fontDir = 'fonts';
 
     private $cropFromTopPercent = 10;
 
 
-## --------------------------------------------------------
+    ## --------------------------------------------------------
 
     function __construct($fileName)
-        # Author:     Jarrod Oberto
-        # Date:     27-02-08
-        # Purpose:    Constructor
-        # Param in:   $fileName: File name and path.
-        # Param out:  n/a
-        # Reference:
-        # Notes:
-        #
+    # Author:     Jarrod Oberto
+    # Date:     27-02-08
+    # Purpose:    Constructor
+    # Param in:   $fileName: File name and path.
+    # Param out:  n/a
+    # Reference:
+    # Notes:
+    #
     {
-        if ( ! $this->testGDInstalled())
-        {
-            if ($this->debug)
-            {
+        if (! $this->testGDInstalled()) {
+            if ($this->debug) {
                 throw new Exception('The GD Library is not installed.');
-            }
-            else
-            {
+            } else {
                 throw new Exception();
             }
-        };
+        }
 
         $this->initialise();
 
@@ -233,8 +230,7 @@ class imageLib {
         $this->imageResized = $this->image;
 
         // *** If file is an image
-        if ($this->testIsImage($this->image))
-        {
+        if ($this->testIsImage($this->image)) {
             // *** Get width and height
             $this->width = imagesx($this->image);
             $this->widthOriginal = imagesx($this->image);
@@ -252,15 +248,12 @@ class imageLib {
          *
          */
             $this->imageSize = getimagesize($this->fileName);
-
-        }
-        else
-        {
+        } else {
             $this->errorArray[] = 'File is not an image';
         }
     }
 
-## --------------------------------------------------------
+    ## --------------------------------------------------------
 
     private function initialise()
     {
@@ -279,55 +272,51 @@ class imageLib {
 
 
     public function resizeImage($newWidth, $newHeight, $option = 0, $sharpen = false, $autoRotate = false)
-        # Author:     Jarrod Oberto
-        # Date:       27-02-08
-        # Purpose:    Resizes the image
-        # Param in:   $newWidth:
-        #             $newHeight:
-        #             $option:     0 / exact = defined size;
-        #                          1 / portrait = keep aspect set height;
-        #                          2 / landscape = keep aspect set width;
-        #                          3 / auto = auto;
-        #                          4 / crop= resize and crop;
-        #
-        #         $option can also be an array containing options for
-        #         cropping. E.G., array('crop', 'r')
-        #
-        #         This array only applies to 'crop' and the 'r' refers to
-        #         "crop right". Other value include; tl, t, tr, l, m (default),
-        #         r, bl, b, br, or you can specify your own co-ords (which
-        #         isn't recommended.
-        #
-        #       $sharpen:    true: sharpen (jpg only);
-        #                false: don't sharpen
-        # Param out:  n/a
-        # Reference:
-        # Notes:      To clarify the $option input:
-        #               0 = The exact height and width dimensions you set.
-        #               1 = Whatever height is passed in will be the height that
-        #                   is set. The width will be calculated and set automatically
-        #                   to a the value that keeps the original aspect ratio.
-        #               2 = The same but based on the width. We try make the image the
-        #                  biggest size we can while stil fitting inside the box size
-        #               3 = Depending whether the image is landscape or portrait, this
-        #                   will automatically determine whether to resize via
-        #                   dimension 1,2 or 0
-        #               4 = Will resize and then crop the image for best fit
-        #
-        #       forceStretch can be applied to options 1,2,3 and 4
-        #
+    # Author:     Jarrod Oberto
+    # Date:       27-02-08
+    # Purpose:    Resizes the image
+    # Param in:   $newWidth:
+    #             $newHeight:
+    #             $option:     0 / exact = defined size;
+    #                          1 / portrait = keep aspect set height;
+    #                          2 / landscape = keep aspect set width;
+    #                          3 / auto = auto;
+    #                          4 / crop= resize and crop;
+    #
+    #         $option can also be an array containing options for
+    #         cropping. E.G., array('crop', 'r')
+    #
+    #         This array only applies to 'crop' and the 'r' refers to
+    #         "crop right". Other value include; tl, t, tr, l, m (default),
+    #         r, bl, b, br, or you can specify your own co-ords (which
+    #         isn't recommended.
+    #
+    #       $sharpen:    true: sharpen (jpg only);
+    #                false: don't sharpen
+    # Param out:  n/a
+    # Reference:
+    # Notes:      To clarify the $option input:
+    #               0 = The exact height and width dimensions you set.
+    #               1 = Whatever height is passed in will be the height that
+    #                   is set. The width will be calculated and set automatically
+    #                   to a the value that keeps the original aspect ratio.
+    #               2 = The same but based on the width. We try make the image the
+    #                  biggest size we can while stil fitting inside the box size
+    #               3 = Depending whether the image is landscape or portrait, this
+    #                   will automatically determine whether to resize via
+    #                   dimension 1,2 or 0
+    #               4 = Will resize and then crop the image for best fit
+    #
+    #       forceStretch can be applied to options 1,2,3 and 4
+    #
     {
 
         // *** We can pass in an array of options to change the crop position
         $cropPos = 'm';
-        if (is_array($option) && fix_strtolower($option[0]) == 'crop')
-        {
+        if (is_array($option) && fix_strtolower($option[0]) == 'crop') {
             $cropPos = $option[1];         # get the crop option
-        }
-        else
-        {
-            if (strpos($option, '-') !== false)
-            {
+        } else {
+            if (strpos($option, '-') !== false) {
                 // *** Or pass in a hyphen seperated option
                 $optionPiecesArray = explode('-', $option);
                 $cropPos = end($optionPiecesArray);
@@ -338,17 +327,13 @@ class imageLib {
         $option = $this->prepOption($option);
 
         // *** Make sure the file passed in is valid
-        if ( ! $this->image)
-        {
-            if ($this->debug)
-            {
+        if (! $this->image) {
+            if ($this->debug) {
                 throw new Exception('file ' . $this->getFileName() . ' is missing or invalid');
-            }
-            else
-            {
+            } else {
                 throw new Exception();
             }
-        };
+        }
 
         // *** Get optimal width and height - based on $option
         $dimensionsArray = $this->getDimensions($newWidth, $newHeight, $option);
@@ -363,25 +348,20 @@ class imageLib {
 
 
         // *** If '4', then crop too
-        if ($option == 4 || $option == 'crop')
-        {
+        if ($option == 4 || $option == 'crop') {
 
-            if (($optimalWidth >= $newWidth && $optimalHeight >= $newHeight))
-            {
+            if (($optimalWidth >= $newWidth && $optimalHeight >= $newHeight)) {
                 $this->crop($optimalWidth, $optimalHeight, $newWidth, $newHeight, $cropPos);
             }
         }
 
         // *** If Rotate.
-        if ($autoRotate)
-        {
+        if ($autoRotate) {
 
             $exifData = $this->getExif(false);
-            if (count($exifData) > 0)
-            {
+            if (count($exifData) > 0) {
 
-                switch ($exifData['orientation'])
-                {
+                switch ($exifData['orientation']) {
                     case 8:
                         $this->imageResized = imagerotate($this->imageResized, 90, 0);
                         break;
@@ -396,89 +376,80 @@ class imageLib {
         }
 
         // *** Sharpen image (if jpg and the user wishes to do so)
-        if ($sharpen && in_array($this->fileExtension, $this->sharpenArray))
-        {
+        if ($sharpen && in_array($this->fileExtension, $this->sharpenArray)) {
 
             // *** Sharpen
             $this->sharpen();
         }
     }
 
-## --------------------------------------------------------
+    ## --------------------------------------------------------
 
     public function cropImage($newWidth, $newHeight, $cropPos = 'm')
-        # Author:     Jarrod Oberto
-        # Date:       08-09-11
-        # Purpose:    Crops the image
-        # Param in:   $newWidth: crop with
-        #             $newHeight: crop height
-        #       $cropPos: Can be any of the following:
-        #             tl, t, tr, l, m, r, bl, b, br, auto
-        #           Or:
-        #             a custom position such as '30x50'
-        # Param out:  n/a
-        # Reference:
-        # Notes:
-        #
+    # Author:     Jarrod Oberto
+    # Date:       08-09-11
+    # Purpose:    Crops the image
+    # Param in:   $newWidth: crop with
+    #             $newHeight: crop height
+    #       $cropPos: Can be any of the following:
+    #             tl, t, tr, l, m, r, bl, b, br, auto
+    #           Or:
+    #             a custom position such as '30x50'
+    # Param out:  n/a
+    # Reference:
+    # Notes:
+    #
     {
 
         // *** Make sure the file passed in is valid
-        if ( ! $this->image)
-        {
-            if ($this->debug)
-            {
+        if (! $this->image) {
+            if ($this->debug) {
                 throw new Exception('file ' . $this->getFileName() . ' is missing or invalid');
-            }
-            else
-            {
+            } else {
                 throw new Exception();
             }
-        };
+        }
 
         $this->imageResized = $this->image;
         $this->crop($this->width, $this->height, $newWidth, $newHeight, $cropPos);
-
     }
 
-## --------------------------------------------------------
+    ## --------------------------------------------------------
 
     private function keepTransparancy($width, $height, $im)
-        # Author:     Jarrod Oberto
-        # Date:       08-04-11
-        # Purpose:    Keep transparency for png and gif image
-        # Param in:
-        # Param out:  n/a
-        # Reference:
-        # Notes:
-        #
+    # Author:     Jarrod Oberto
+    # Date:       08-04-11
+    # Purpose:    Keep transparency for png and gif image
+    # Param in:
+    # Param out:  n/a
+    # Reference:
+    # Notes:
+    #
     {
         // *** If PNG, perform some transparency retention actions (gif untested)
-        if (in_array($this->fileExtension, $this->transparentArray) && $this->keepTransparency)
-        {
+        if (in_array($this->fileExtension, $this->transparentArray) && $this->keepTransparency) {
             imagealphablending($im, false);
             imagesavealpha($im, true);
             $transparent = imagecolorallocatealpha($im, 255, 255, 255, 127);
             imagefilledrectangle($im, 0, 0, $width, $height, $transparent);
-        }
-        else
-        {
+        } else {
             $color = imagecolorallocate($im, $this->fillColorArray['r'], $this->fillColorArray['g'], $this->fillColorArray['b']);
             imagefilledrectangle($im, 0, 0, $width, $height, $color);
         }
     }
 
-## --------------------------------------------------------
+    ## --------------------------------------------------------
 
     private function crop($optimalWidth, $optimalHeight, $newWidth, $newHeight, $cropPos)
-        # Author:     Jarrod Oberto
-        # Date:       15-09-08
-        # Purpose:    Crops the image
-        # Param in:   $newWidth:
-        #             $newHeight:
-        # Param out:  n/a
-        # Reference:
-        # Notes:
-        #
+    # Author:     Jarrod Oberto
+    # Date:       15-09-08
+    # Purpose:    Crops the image
+    # Param in:   $newWidth:
+    #             $newHeight:
+    # Param out:  n/a
+    # Reference:
+    # Notes:
+    #
     {
 
         // *** Get cropping co-ordinates
@@ -489,46 +460,40 @@ class imageLib {
         // *** Crop this bad boy
         $crop = imagecreatetruecolor($newWidth, $newHeight);
         $this->keepTransparancy($optimalWidth, $optimalHeight, $crop);
-		imagecopyresampled($crop, $this->imageResized, 0, 0, (int) $cropStartX, (int) $cropStartY, $newWidth, $newHeight, (int) $newWidth, (int) $newHeight);
+        imagecopyresampled($crop, $this->imageResized, 0, 0, (int) $cropStartX, (int) $cropStartY, $newWidth, $newHeight, (int) $newWidth, (int) $newHeight);
 
         $this->imageResized = $crop;
 
         // *** Set new width and height to our variables
         $this->width = $newWidth;
         $this->height = $newHeight;
-
     }
 
-## --------------------------------------------------------
+    ## --------------------------------------------------------
 
     private function getCropPlacing($optimalWidth, $optimalHeight, $newWidth, $newHeight, $pos = 'm')
-        #
-        # Author:   Jarrod Oberto
-        # Date:   July 11
-        # Purpose:  Set the cropping area.
-        # Params in:
-        # Params out: (array) the crop x and y co-ordinates.
-        # Notes:    When specifying the exact pixel crop position (eg 10x15), be
-        #       very careful as it's easy to crop out of the image leaving
-        #       black borders.
-        #
+    #
+    # Author:   Jarrod Oberto
+    # Date:   July 11
+    # Purpose:  Set the cropping area.
+    # Params in:
+    # Params out: (array) the crop x and y co-ordinates.
+    # Notes:    When specifying the exact pixel crop position (eg 10x15), be
+    #       very careful as it's easy to crop out of the image leaving
+    #       black borders.
+    #
     {
         $pos = fix_strtolower($pos);
 
         // *** If co-ords have been entered
-        if (strstr($pos, 'x'))
-        {
+        if (strstr($pos, 'x')) {
             $pos = str_replace(' ', '', $pos);
 
             $xyArray = explode('x', $pos);
             list($cropStartX, $cropStartY) = $xyArray;
+        } else {
 
-        }
-        else
-        {
-
-            switch ($pos)
-            {
+            switch ($pos) {
                 case 'tl':
                     $cropStartX = 0;
                     $cropStartY = 0;
@@ -576,13 +541,10 @@ class imageLib {
 
                 case 'auto':
                     // *** If image is a portrait crop from top, not center. v1.5
-                    if ($optimalHeight > $optimalWidth)
-                    {
+                    if ($optimalHeight > $optimalWidth) {
                         $cropStartX = ($optimalWidth / 2) - ($newWidth / 2);
                         $cropStartY = ($this->cropFromTopPercent / 100) * $optimalHeight;
-                    }
-                    else
-                    {
+                    } else {
 
                         // *** Else crop from the center
                         $cropStartX = ($optimalWidth / 2) - ($newWidth / 2);
@@ -598,36 +560,35 @@ class imageLib {
             }
         }
 
-        return array( 'x' => $cropStartX, 'y' => $cropStartY );
+        return ['x' => $cropStartX, 'y' => $cropStartY];
     }
 
-## --------------------------------------------------------
+    ## --------------------------------------------------------
 
     private function getDimensions($newWidth, $newHeight, $option)
-        # Author:     Jarrod Oberto
-        # Date:       17-11-09
-        # Purpose:    Get new image dimensions based on user specificaions
-        # Param in:   $newWidth:
-        #             $newHeight:
-        # Param out:  Array of new width and height values
-        # Reference:
-        # Notes:    If $option = 3 then this function is call recursivly
-        #
-        #       To clarify the $option input:
-        #               0 = The exact height and width dimensions you set.
-        #               1 = Whatever height is passed in will be the height that
-        #                   is set. The width will be calculated and set automatically
-        #                   to a the value that keeps the original aspect ratio.
-        #               2 = The same but based on the width.
-        #               3 = Depending whether the image is landscape or portrait, this
-        #                   will automatically determine whether to resize via
-        #                   dimension 1,2 or 0.
-        #               4 = Resize the image as much as possible, then crop the
-        #         remainder.
+    # Author:     Jarrod Oberto
+    # Date:       17-11-09
+    # Purpose:    Get new image dimensions based on user specificaions
+    # Param in:   $newWidth:
+    #             $newHeight:
+    # Param out:  Array of new width and height values
+    # Reference:
+    # Notes:    If $option = 3 then this function is call recursivly
+    #
+    #       To clarify the $option input:
+    #               0 = The exact height and width dimensions you set.
+    #               1 = Whatever height is passed in will be the height that
+    #                   is set. The width will be calculated and set automatically
+    #                   to a the value that keeps the original aspect ratio.
+    #               2 = The same but based on the width.
+    #               3 = Depending whether the image is landscape or portrait, this
+    #                   will automatically determine whether to resize via
+    #                   dimension 1,2 or 0.
+    #               4 = Resize the image as much as possible, then crop the
+    #         remainder.
     {
 
-        switch (strval($option))
-        {
+        switch (strval($option)) {
             case '0':
             case 'exact':
                 $optimalWidth = $newWidth;
@@ -659,21 +620,19 @@ class imageLib {
                 break;
         }
 
-        return array( 'optimalWidth' => $optimalWidth, 'optimalHeight' => $optimalHeight );
+        return ['optimalWidth' => $optimalWidth, 'optimalHeight' => $optimalHeight];
     }
 
-## --------------------------------------------------------
+    ## --------------------------------------------------------
 
     private function getSizeByFixedHeight($newWidth, $newHeight)
     {
         // *** If forcing is off...
-        if ( ! $this->forceStretch)
-        {
+        if (! $this->forceStretch) {
 
             // *** ...check if actual height is less than target height
-            if ($this->height < $newHeight)
-            {
-                return array( 'optimalWidth' => $this->width, 'optimalHeight' => $this->height );
+            if ($this->height < $newHeight) {
+                return ['optimalWidth' => $this->width, 'optimalHeight' => $this->height];
             }
         }
 
@@ -682,21 +641,19 @@ class imageLib {
         $newWidth = $newHeight * $ratio;
 
         //return $newWidth;
-        return array( 'optimalWidth' => $newWidth, 'optimalHeight' => $newHeight );
+        return ['optimalWidth' => $newWidth, 'optimalHeight' => $newHeight];
     }
 
-## --------------------------------------------------------
+    ## --------------------------------------------------------
 
     private function getSizeByFixedWidth($newWidth, $newHeight)
     {
         // *** If forcing is off...
-        if ( ! $this->forceStretch)
-        {
+        if (! $this->forceStretch) {
 
             // *** ...check if actual width is less than target width
-            if ($this->width < $newWidth)
-            {
-                return array( 'optimalWidth' => $this->width, 'optimalHeight' => $this->height );
+            if ($this->width < $newWidth) {
+                return ['optimalWidth' => $this->width, 'optimalHeight' => $this->height];
             }
         }
 
@@ -705,32 +662,30 @@ class imageLib {
         $newHeight = $newWidth * $ratio;
 
         //return $newHeight;
-        return array( 'optimalWidth' => $newWidth, 'optimalHeight' => $newHeight );
+        return ['optimalWidth' => $newWidth, 'optimalHeight' => $newHeight];
     }
 
-## --------------------------------------------------------
+    ## --------------------------------------------------------
 
     private function getSizeByAuto($newWidth, $newHeight)
-        # Author:     Jarrod Oberto
-        # Date:       19-08-08
-        # Purpose:    Depending on the height, choose to resize by 0, 1, or 2
-        # Param in:   The new height and new width
-        # Notes:
-        #
+    # Author:     Jarrod Oberto
+    # Date:       19-08-08
+    # Purpose:    Depending on the height, choose to resize by 0, 1, or 2
+    # Param in:   The new height and new width
+    # Notes:
+    #
     {
         // *** If forcing is off...
-        if ( ! $this->forceStretch)
-        {
+        if (! $this->forceStretch) {
 
             // *** ...check if actual size is less than target size
-            if ($this->width < $newWidth && $this->height < $newHeight)
-            {
-                return array( 'optimalWidth' => $this->width, 'optimalHeight' => $this->height );
+            if ($this->width < $newWidth && $this->height < $newHeight) {
+                return ['optimalWidth' => $this->width, 'optimalHeight' => $this->height];
             }
         }
 
         if ($this->height < $this->width)
-            // *** Image to be resized is wider (landscape)
+        // *** Image to be resized is wider (landscape)
         {
             //$optimalWidth = $newWidth;
             //$optimalHeight= $this->getSizeByFixedWidth($newWidth);
@@ -738,9 +693,8 @@ class imageLib {
             $dimensionsArray = $this->getSizeByFixedWidth($newWidth, $newHeight);
             $optimalWidth = $dimensionsArray['optimalWidth'];
             $optimalHeight = $dimensionsArray['optimalHeight'];
-        }
-        elseif ($this->height > $this->width)
-            // *** Image to be resized is taller (portrait)
+        } elseif ($this->height > $this->width)
+        // *** Image to be resized is taller (portrait)
         {
             //$optimalWidth = $this->getSizeByFixedHeight($newHeight);
             //$optimalHeight= $newHeight;
@@ -748,31 +702,24 @@ class imageLib {
             $dimensionsArray = $this->getSizeByFixedHeight($newWidth, $newHeight);
             $optimalWidth = $dimensionsArray['optimalWidth'];
             $optimalHeight = $dimensionsArray['optimalHeight'];
-        }
-        else
-            // *** Image to be resizerd is a square
+        } else
+        // *** Image to be resizerd is a square
         {
 
-            if ($newHeight < $newWidth)
-            {
+            if ($newHeight < $newWidth) {
                 //$optimalWidth = $newWidth;
                 //$optimalHeight= $this->getSizeByFixedWidth($newWidth);
                 $dimensionsArray = $this->getSizeByFixedWidth($newWidth, $newHeight);
                 $optimalWidth = $dimensionsArray['optimalWidth'];
                 $optimalHeight = $dimensionsArray['optimalHeight'];
-            }
-            else
-            {
-                if ($newHeight > $newWidth)
-                {
+            } else {
+                if ($newHeight > $newWidth) {
                     //$optimalWidth = $this->getSizeByFixedHeight($newHeight);
                     //$optimalHeight= $newHeight;
                     $dimensionsArray = $this->getSizeByFixedHeight($newWidth, $newHeight);
                     $optimalWidth = $dimensionsArray['optimalWidth'];
                     $optimalHeight = $dimensionsArray['optimalHeight'];
-                }
-                else
-                {
+                } else {
                     // *** Sqaure being resized to a square
                     $optimalWidth = $newWidth;
                     $optimalHeight = $newHeight;
@@ -780,118 +727,109 @@ class imageLib {
             }
         }
 
-        return array( 'optimalWidth' => $optimalWidth, 'optimalHeight' => $optimalHeight );
+        return ['optimalWidth' => $optimalWidth, 'optimalHeight' => $optimalHeight];
     }
 
-## --------------------------------------------------------
+    ## --------------------------------------------------------
 
     private function getOptimalCrop($newWidth, $newHeight)
-        # Author:     Jarrod Oberto
-        # Date:       17-11-09
-        # Purpose:    Get optimal crop dimensions
-        # Param in:   width and height as requested by user (fig 3)
-        # Param out:  Array of optimal width and height (fig 2)
-        # Reference:
-        # Notes:      The optimal width and height return are not the same as the
-        #       same as the width and height passed in. For example:
-        #
-        #
-        #   |-----------------|     |------------|       |-------|
-        #   |             |   =>  |**|      |**|   =>  |       |
-        #   |             |     |**|      |**|       |       |
-        #   |           |       |------------|       |-------|
-        #   |-----------------|
-        #        original                optimal             crop
-        #              size                   size               size
-        #  Fig          1                      2                  3
-        #
-        #       300 x 250           150 x 125          150 x 100
-        #
-        #    The optimal size is the smallest size (that is closest to the crop size)
-        #    while retaining proportion/ratio.
-        #
-        #  The crop size is the optimal size that has been cropped on one axis to
-        #  make the image the exact size specified by the user.
-        #
-        #               * represent cropped area
-        #
+    # Author:     Jarrod Oberto
+    # Date:       17-11-09
+    # Purpose:    Get optimal crop dimensions
+    # Param in:   width and height as requested by user (fig 3)
+    # Param out:  Array of optimal width and height (fig 2)
+    # Reference:
+    # Notes:      The optimal width and height return are not the same as the
+    #       same as the width and height passed in. For example:
+    #
+    #
+    #   |-----------------|     |------------|       |-------|
+    #   |             |   =>  |**|      |**|   =>  |       |
+    #   |             |     |**|      |**|       |       |
+    #   |           |       |------------|       |-------|
+    #   |-----------------|
+    #        original                optimal             crop
+    #              size                   size               size
+    #  Fig          1                      2                  3
+    #
+    #       300 x 250           150 x 125          150 x 100
+    #
+    #    The optimal size is the smallest size (that is closest to the crop size)
+    #    while retaining proportion/ratio.
+    #
+    #  The crop size is the optimal size that has been cropped on one axis to
+    #  make the image the exact size specified by the user.
+    #
+    #               * represent cropped area
+    #
     {
 
         // *** If forcing is off...
-        if ( ! $this->forceStretch)
-        {
+        if (! $this->forceStretch) {
 
             // *** ...check if actual size is less than target size
-            if ($this->width < $newWidth && $this->height < $newHeight)
-            {
-                return array( 'optimalWidth' => $this->width, 'optimalHeight' => $this->height );
+            if ($this->width < $newWidth && $this->height < $newHeight) {
+                return ['optimalWidth' => $this->width, 'optimalHeight' => $this->height];
             }
         }
 
         $heightRatio = $this->height / $newHeight;
         $widthRatio = $this->width / $newWidth;
 
-        if ($heightRatio < $widthRatio)
-        {
+        if ($heightRatio < $widthRatio) {
             $optimalRatio = $heightRatio;
-        }
-        else
-        {
+        } else {
             $optimalRatio = $widthRatio;
         }
 
         $optimalHeight = round($this->height / $optimalRatio);
         $optimalWidth = round($this->width / $optimalRatio);
 
-        return array( 'optimalWidth' => $optimalWidth, 'optimalHeight' => $optimalHeight );
+        return ['optimalWidth' => $optimalWidth, 'optimalHeight' => $optimalHeight];
     }
 
-## --------------------------------------------------------
+    ## --------------------------------------------------------
 
     private function sharpen()
-        # Author:     Jarrod Oberto
-        # Date:       08 04 2011
-        # Purpose:    Sharpen image
-        # Param in:   n/a
-        # Param out:  n/a
-        # Reference:
-        # Notes:
-        # Credit:   Incorporates Joe Lencioni (August 6, 2008) code
+    # Author:     Jarrod Oberto
+    # Date:       08 04 2011
+    # Purpose:    Sharpen image
+    # Param in:   n/a
+    # Param out:  n/a
+    # Reference:
+    # Notes:
+    # Credit:   Incorporates Joe Lencioni (August 6, 2008) code
     {
 
-        if (version_compare(PHP_VERSION, '5.1.0') >= 0)
-        {
+        if (version_compare(PHP_VERSION, '5.1.0') >= 0) {
 
             // ***
-            if ($this->aggresiveSharpening)
-            { # A more aggressive sharpening solution
+            if ($this->aggresiveSharpening) { # A more aggressive sharpening solution
 
-                $sharpenMatrix = array( array( -1, -1, -1 ),
-                    array( -1, 16, -1 ),
-                    array( -1, -1, -1 ) );
+                $sharpenMatrix = [
+                    [-1, -1, -1],
+                    [-1, 16, -1],
+                    [-1, -1, -1]
+                ];
                 $divisor = 8;
                 $offset = 0;
 
                 imageconvolution($this->imageResized, $sharpenMatrix, $divisor, $offset);
-            }
-            else # More subtle and personally more desirable
+            } else # More subtle and personally more desirable
             {
                 $sharpness = $this->findSharp($this->widthOriginal, $this->width);
 
-                $sharpenMatrix = array(
-                    array( -1, -2, -1 ),
-                    array( -2, $sharpness + 12, -2 ), //Lessen the effect of a filter by increasing the value in the center cell
-                    array( -1, -2, -1 )
-                );
+                $sharpenMatrix = [
+                    [-1, -2, -1],
+                    [-2, $sharpness + 12, -2], //Lessen the effect of a filter by increasing the value in the center cell
+                    [-1, -2, -1]
+                ];
                 $divisor = $sharpness; // adjusts brightness
                 $offset = 0;
                 imageconvolution($this->imageResized, $sharpenMatrix, $divisor, $offset);
             }
-        }
-        else
-        {
-            if ($this->debug)
-            {
+        } else {
+            if ($this->debug) {
                 throw new Exception('Sharpening required PHP 5.1.0 or greater.');
             }
         }
@@ -901,24 +839,23 @@ class imageLib {
 
     private function sharpen2($level)
     {
-        $sharpenMatrix = array(
-            array( $level, $level, $level ),
-            array( $level, (8 * $level) + 1, $level ), //Lessen the effect of a filter by increasing the value in the center cell
-            array( $level, $level, $level )
-        );
-
+        $sharpenMatrix = [
+            [$level, $level, $level],
+            [$level, (8 * $level) + 1, $level], //Lessen the effect of a filter by increasing the value in the center cell
+            [$level, $level, $level]
+        ];
     }
 
-## --------------------------------------------------------
+    ## --------------------------------------------------------
 
     private function findSharp($orig, $final)
-        # Author:     Ryan Rud (http://adryrun.com)
-        # Purpose:    Find optimal sharpness
-        # Param in:   n/a
-        # Param out:  n/a
-        # Reference:
-        # Notes:
-        #
+    # Author:     Ryan Rud (http://adryrun.com)
+    # Purpose:    Find optimal sharpness
+    # Param in:   n/a
+    # Param out:  n/a
+    # Reference:
+    # Notes:
+    #
     {
         $final = $final * (750.0 / $orig);
         $a = 52;
@@ -930,38 +867,30 @@ class imageLib {
         return max(round($result), 0);
     }
 
-## --------------------------------------------------------
+    ## --------------------------------------------------------
 
     private function prepOption($option)
-        # Author:     Jarrod Oberto
-        # Purpose:    Prep option like change the passed in option to lowercase
-        # Param in:   (str/int) $option: eg. 'exact', 'crop'. 0, 4
-        # Param out:  lowercase string
-        # Reference:
-        # Notes:
-        #
+    # Author:     Jarrod Oberto
+    # Purpose:    Prep option like change the passed in option to lowercase
+    # Param in:   (str/int) $option: eg. 'exact', 'crop'. 0, 4
+    # Param out:  lowercase string
+    # Reference:
+    # Notes:
+    #
     {
-        if (is_array($option))
-        {
-            if (fix_strtolower($option[0]) == 'crop' && count($option) == 2)
-            {
+        if (is_array($option)) {
+            if (fix_strtolower($option[0]) == 'crop' && count($option) == 2) {
                 return 'crop';
-            }
-            else
-            {
+            } else {
                 throw new Exception('Crop resize option array is badly formatted.');
             }
-        }
-        else
-        {
-            if (strpos($option, 'crop') !== false)
-            {
+        } else {
+            if (strpos($option, 'crop') !== false) {
                 return 'crop';
             }
         }
 
-        if (is_string($option))
-        {
+        if (is_string($option)) {
             return fix_strtolower($option);
         }
 
@@ -973,17 +902,16 @@ class imageLib {
   Presets
 *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*/
 
-#
-# Preset are pre-defined templates you can apply to your image.
-#
-# These are inteded to be applied to thumbnail images.
-#
+    #
+    # Preset are pre-defined templates you can apply to your image.
+    #
+    # These are inteded to be applied to thumbnail images.
+    #
 
 
     public function borderPreset($preset)
     {
-        switch ($preset)
-        {
+        switch ($preset) {
 
             case 'simple':
                 $this->addBorder(7, '#fff');
@@ -994,7 +922,6 @@ class imageLib {
             default:
                 break;
         }
-
     }
 
 
@@ -1002,18 +929,17 @@ class imageLib {
   Draw border
 *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*/
 
-    public function addBorder($thickness = 1, $rgbArray = array( 255, 255, 255 ))
-        # Author:     Jarrod Oberto
-        # Date:       05-05-11
-        # Purpose:    Add a border to the image
-        # Param in:
-        # Param out:
-        # Reference:
-        # Notes:    This border is added to the INSIDE of the image
-        #
+    public function addBorder($thickness = 1, $rgbArray = [255, 255, 255])
+    # Author:     Jarrod Oberto
+    # Date:       05-05-11
+    # Purpose:    Add a border to the image
+    # Param in:
+    # Param out:
+    # Reference:
+    # Notes:    This border is added to the INSIDE of the image
+    #
     {
-        if ($this->imageResized)
-        {
+        if ($this->imageResized) {
 
             $rgbArray = $this->formatColor($rgbArray);
             $r = $rgbArray['r'];
@@ -1029,8 +955,7 @@ class imageLib {
             $rgbArray = ImageColorAllocate($this->imageResized, $r, $g, $b);
 
 
-            for ($i = 0; $i < $thickness; $i++)
-            {
+            for ($i = 0; $i < $thickness; $i++) {
                 ImageRectangle($this->imageResized, $x1++, $y1++, $x2--, $y2--, $rgbArray);
             }
         }
@@ -1042,36 +967,33 @@ class imageLib {
 *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*/
 
     public function greyScale()
-        # Author:     Jarrod Oberto
-        # Date:       07-05-2011
-        # Purpose:    Make image greyscale
-        # Param in:   n/a
-        # Param out:
-        # Reference:
-        # Notes:
-        #
+    # Author:     Jarrod Oberto
+    # Date:       07-05-2011
+    # Purpose:    Make image greyscale
+    # Param in:   n/a
+    # Param out:
+    # Reference:
+    # Notes:
+    #
     {
-        if ($this->imageResized)
-        {
+        if ($this->imageResized) {
             imagefilter($this->imageResized, IMG_FILTER_GRAYSCALE);
         }
-
     }
 
     ## --------------------------------------------------------
 
     public function greyScaleEnhanced()
-        # Author:     Jarrod Oberto
-        # Date:       07-05-2011
-        # Purpose:    Make image greyscale
-        # Param in:   n/a
-        # Param out:
-        # Reference:
-        # Notes:
-        #
+    # Author:     Jarrod Oberto
+    # Date:       07-05-2011
+    # Purpose:    Make image greyscale
+    # Param in:   n/a
+    # Param out:
+    # Reference:
+    # Notes:
+    #
     {
-        if ($this->imageResized)
-        {
+        if ($this->imageResized) {
             imagefilter($this->imageResized, IMG_FILTER_GRAYSCALE);
             imagefilter($this->imageResized, IMG_FILTER_CONTRAST, -15);
             imagefilter($this->imageResized, IMG_FILTER_BRIGHTNESS, 2);
@@ -1082,7 +1004,7 @@ class imageLib {
     ## --------------------------------------------------------
 
     public function greyScaleDramatic()
-        # Alias of gd_filter_monopin
+    # Alias of gd_filter_monopin
     {
         $this->gd_filter_monopin();
     }
@@ -1093,22 +1015,20 @@ class imageLib {
 *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*/
 
     public function blackAndWhite()
-        # Author:     Jarrod Oberto
-        # Date:       07-05-2011
-        # Purpose:    Make image black and white
-        # Param in:   n/a
-        # Param out:
-        # Reference:
-        # Notes:
-        #
+    # Author:     Jarrod Oberto
+    # Date:       07-05-2011
+    # Purpose:    Make image black and white
+    # Param in:   n/a
+    # Param out:
+    # Reference:
+    # Notes:
+    #
     {
-        if ($this->imageResized)
-        {
+        if ($this->imageResized) {
 
             imagefilter($this->imageResized, IMG_FILTER_GRAYSCALE);
             imagefilter($this->imageResized, IMG_FILTER_CONTRAST, -1000);
         }
-
     }
 
 
@@ -1117,21 +1037,19 @@ class imageLib {
 *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*/
 
     public function negative()
-        # Author:     Jarrod Oberto
-        # Date:       07-05-2011
-        # Purpose:    Make image negative
-        # Param in:   n/a
-        # Param out:
-        # Reference:
-        # Notes:
-        #
+    # Author:     Jarrod Oberto
+    # Date:       07-05-2011
+    # Purpose:    Make image negative
+    # Param in:   n/a
+    # Param out:
+    # Reference:
+    # Notes:
+    #
     {
-        if ($this->imageResized)
-        {
+        if ($this->imageResized) {
 
             imagefilter($this->imageResized, IMG_FILTER_NEGATE);
         }
-
     }
 
 
@@ -1140,17 +1058,16 @@ class imageLib {
 *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*/
 
     public function sepia()
-        # Author:     Jarrod Oberto
-        # Date:       07-05-2011
-        # Purpose:    Make image sepia
-        # Param in:   n/a
-        # Param out:
-        # Reference:
-        # Notes:
-        #
+    # Author:     Jarrod Oberto
+    # Date:       07-05-2011
+    # Purpose:    Make image sepia
+    # Param in:   n/a
+    # Param out:
+    # Reference:
+    # Notes:
+    #
     {
-        if ($this->imageResized)
-        {
+        if ($this->imageResized) {
             imagefilter($this->imageResized, IMG_FILTER_GRAYSCALE);
             imagefilter($this->imageResized, IMG_FILTER_BRIGHTNESS, -10);
             imagefilter($this->imageResized, IMG_FILTER_CONTRAST, -20);
@@ -1163,20 +1080,16 @@ class imageLib {
     public function sepia2()
 
     {
-        if ($this->imageResized)
-        {
+        if ($this->imageResized) {
 
             $total = imagecolorstotal($this->imageResized);
-            for ($i = 0; $i < $total; $i++)
-            {
+            for ($i = 0; $i < $total; $i++) {
                 $index = imagecolorsforindex($this->imageResized, $i);
                 $red = ($index["red"] * 0.393 + $index["green"] * 0.769 + $index["blue"] * 0.189) / 1.351;
                 $green = ($index["red"] * 0.349 + $index["green"] * 0.686 + $index["blue"] * 0.168) / 1.203;
                 $blue = ($index["red"] * 0.272 + $index["green"] * 0.534 + $index["blue"] * 0.131) / 2.140;
                 imagecolorset($this->imageResized, $i, $red, $green, $blue);
             }
-
-
         }
     }
 
@@ -1186,7 +1099,7 @@ class imageLib {
 *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*/
 
     public function vintage()
-        # Alias of gd_filter_monopin
+    # Alias of gd_filter_monopin
     {
         $this->gd_filter_vintage();
     }
@@ -1200,8 +1113,7 @@ class imageLib {
     public function gd_filter_monopin()
     {
 
-        if ($this->imageResized)
-        {
+        if ($this->imageResized) {
             imagefilter($this->imageResized, IMG_FILTER_GRAYSCALE);
             imagefilter($this->imageResized, IMG_FILTER_BRIGHTNESS, -15);
             imagefilter($this->imageResized, IMG_FILTER_CONTRAST, -15);
@@ -1213,8 +1125,7 @@ class imageLib {
 
     public function gd_filter_vintage()
     {
-        if ($this->imageResized)
-        {
+        if ($this->imageResized) {
             $this->imageResized = $this->gd_apply_overlay($this->imageResized, 'vignette', 45);
             imagefilter($this->imageResized, IMG_FILTER_BRIGHTNESS, 20);
             imagefilter($this->imageResized, IMG_FILTER_CONTRAST, -35);
@@ -1228,14 +1139,14 @@ class imageLib {
 
     /** Apply a PNG overlay */
     private function gd_apply_overlay($im, $type, $amount)
-        #
-        # Original Author:    Marc Hibbins
-        # License:  Attribution-ShareAlike 3.0
-        # Purpose:
-        # Params in:
-        # Params out:
-        # Notes:
-        #
+    #
+    # Original Author:    Marc Hibbins
+    # License:  Attribution-ShareAlike 3.0
+    # Purpose:
+    # Params in:
+    # Params out:
+    # Notes:
+    #
     {
         $width = imagesx($im);
         $height = imagesy($im);
@@ -1272,19 +1183,19 @@ class imageLib {
         imageTrueColorToPalette($this->imageResized, true, 256);
         $numColors = imageColorsTotal($this->imageResized);
 
-        for ($x = 0; $x < $numColors; $x++)
-        {
+        for ($x = 0; $x < $numColors; $x++) {
             list($r, $g, $b) = array_values(imageColorsForIndex($this->imageResized, $x));
 
             // calculate grayscale in percent
             $grayscale = ($r + $g + $b) / 3 / 0xff;
 
-            imageColorSet($this->imageResized, $x,
-                          $grayscale * $rgb[0],
-                          $grayscale * $rgb[1],
-                          $grayscale * $rgb[2]
+            imageColorSet(
+                $this->imageResized,
+                $x,
+                $grayscale * $rgb[0],
+                $grayscale * $rgb[1],
+                $grayscale * $rgb[2]
             );
-
         }
 
         return true;
@@ -1320,8 +1231,7 @@ class imageLib {
 
         $bg = imagecreatetruecolor($this->width, $reflectionHeight);
 
-        for ($x = 0; $x < $this->width; $x++)
-        {
+        for ($x = 0; $x < $this->width; $x++) {
             imagecopy($bg, $im, $x, 0, $this->width - $x - 1, 0, 1, $reflectionHeight);
         }
         $im = $bg;
@@ -1330,23 +1240,17 @@ class imageLib {
 
 
         // *** Fade
-        if ($stretch)
-        {
+        if ($stretch) {
             $step = 100 / ($reflectionHeight + $startingTransparency);
-        }
-        else
-        {
+        } else {
             $step = 100 / $reflectionHeight;
         }
-        for ($i = 0; $i <= $reflectionHeight; $i++)
-        {
+        for ($i = 0; $i <= $reflectionHeight; $i++) {
 
-            if ($startingTransparency > 100)
-            {
+            if ($startingTransparency > 100) {
                 $startingTransparency = 100;
             }
-            if ($startingTransparency < 1)
-            {
+            if ($startingTransparency < 1) {
                 $startingTransparency = 1;
             }
             imagecopymerge($bg, $li, 0, $i, 0, 0, $this->width, 1, $startingTransparency);
@@ -1363,18 +1267,14 @@ class imageLib {
 
 
         // *** Determines if the reflection should be displayed inside or outside the image
-        if ($inside)
-        {
+        if ($inside) {
 
             // Create new blank image with sizes.
             $final = imagecreatetruecolor($this->width, $this->height);
 
             imagecopymerge($final, $this->imageResized, 0, 0, 0, $reflectionHeight, $this->width, $this->height - $reflectionHeight, 100);
             imagecopymerge($final, $im, 0, $this->height - $reflectionHeight, 0, 0, $x, $y, 100);
-
-        }
-        else
-        {
+        } else {
 
             // Create new blank image with sizes.
             $final = imagecreatetruecolor($this->width, $this->height + $y);
@@ -1395,23 +1295,21 @@ class imageLib {
 *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*/
 
     public function rotate($value = 90, $bgColor = 'transparent')
-        # Author:     Jarrod Oberto
-        # Date:       07-05-2011
-        # Purpose:    Rotate image
-        # Param in:   (mixed) $degrees: (int) number of degress to rotate image
-        #               (str) param "left": rotate left
-        #               (str) param "right": rotate right
-        #               (str) param "upside": upside-down image
-        # Param out:
-        # Reference:
-        # Notes:    The default direction of imageRotate() is counter clockwise.
-        #
+    # Author:     Jarrod Oberto
+    # Date:       07-05-2011
+    # Purpose:    Rotate image
+    # Param in:   (mixed) $degrees: (int) number of degress to rotate image
+    #               (str) param "left": rotate left
+    #               (str) param "right": rotate right
+    #               (str) param "upside": upside-down image
+    # Param out:
+    # Reference:
+    # Notes:    The default direction of imageRotate() is counter clockwise.
+    #
     {
-        if ($this->imageResized)
-        {
+        if ($this->imageResized) {
 
-            if (is_integer($value))
-            {
+            if (is_integer($value)) {
                 $degrees = $value;
             }
 
@@ -1420,18 +1318,15 @@ class imageLib {
             $r = $rgbArray['r'];
             $g = $rgbArray['g'];
             $b = $rgbArray['b'];
-            if (isset($rgbArray['a']))
-            {
+            if (isset($rgbArray['a'])) {
                 $a = $rgbArray['a'];
             }
 
-            if (is_string($value))
-            {
+            if (is_string($value)) {
 
                 $value = fix_strtolower($value);
 
-                switch ($value)
-                {
+                switch ($value) {
                     case 'left':
                         $degrees = 90;
                         break;
@@ -1444,7 +1339,6 @@ class imageLib {
                     default:
                         break;
                 }
-
             }
 
             // *** The default direction of imageRotate() is counter clockwise
@@ -1462,7 +1356,6 @@ class imageLib {
 
             // Ensure alpha transparency
             ImageSaveAlpha($this->imageResized, true);
-
         }
     }
 
@@ -1472,31 +1365,28 @@ class imageLib {
 *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*/
 
     public function roundCorners($radius = 5, $bgColor = 'transparent')
-        # Author:     Jarrod Oberto
-        # Date:       19-05-2011
-        # Purpose:    Create rounded corners on your image
-        # Param in:   (int) radius = the amount of curvature
-        #       (mixed) $bgColor = the corner background color
-        # Param out:  n/a
-        # Reference:
-        # Notes:
-        #
+    # Author:     Jarrod Oberto
+    # Date:       19-05-2011
+    # Purpose:    Create rounded corners on your image
+    # Param in:   (int) radius = the amount of curvature
+    #       (mixed) $bgColor = the corner background color
+    # Param out:  n/a
+    # Reference:
+    # Notes:
+    #
     {
 
         // *** Check if the user wants transparency
         $isTransparent = false;
-        if ( ! is_array($bgColor))
-        {
-            if (fix_strtolower($bgColor) == 'transparent')
-            {
+        if (! is_array($bgColor)) {
+            if (fix_strtolower($bgColor) == 'transparent') {
                 $isTransparent = true;
             }
         }
 
 
         // *** If we use transparency, we need to color our curved mask with a unique color
-        if ($isTransparent)
-        {
+        if ($isTransparent) {
             $bgColor = $this->findUnusedGreen();
         }
 
@@ -1505,8 +1395,7 @@ class imageLib {
         $r = $rgbArray['r'];
         $g = $rgbArray['g'];
         $b = $rgbArray['b'];
-        if (isset($rgbArray['a']))
-        {
+        if (isset($rgbArray['a'])) {
             $a = $rgbArray['a'];
         }
 
@@ -1555,13 +1444,11 @@ class imageLib {
 
 
         // *** If corners are to be transparent, we fill our chromakey color as transparent.
-        if ($isTransparent)
-        {
+        if ($isTransparent) {
             //imagecolortransparent($this->imageResized, $imagebgColor);
             $this->imageResized = $this->transparentImage($this->imageResized);
             imagesavealpha($this->imageResized, true);
         }
-
     }
 
 
@@ -1570,16 +1457,16 @@ class imageLib {
 *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*/
 
     public function addShadow($shadowAngle = 45, $blur = 15, $bgColor = 'transparent')
-        #
-        # Author:   Jarrod Oberto (Adapted from Pascal Naidon)
-        # Ref:    http://www.les-stooges.org/pascal/webdesign/vignettes/index.php?la=en
-        # Purpose:  Add a drop shadow to your image
-        # Params in:  (int) $angle: the angle of the shadow
-        #       (int) $blur: the blur distance
-        #       (mixed) $bgColor: the color of the background
-        # Params out:
-        # Notes:
-        #
+    #
+    # Author:   Jarrod Oberto (Adapted from Pascal Naidon)
+    # Ref:    http://www.les-stooges.org/pascal/webdesign/vignettes/index.php?la=en
+    # Purpose:  Add a drop shadow to your image
+    # Params in:  (int) $angle: the angle of the shadow
+    #       (int) $blur: the blur distance
+    #       (mixed) $bgColor: the color of the background
+    # Params out:
+    # Notes:
+    #
     {
         // *** A higher number results in a smoother shadow
         define('STEPS', $blur * 2);
@@ -1591,21 +1478,17 @@ class imageLib {
         $blurWidth = $blurHeight = $blur;
 
 
-        if ($shadowAngle == 0)
-        {
+        if ($shadowAngle == 0) {
             $distWidth = 0;
             $distHeight = 0;
-        }
-        else
-        {
+        } else {
             $distWidth = $shadowDistance * cos(deg2rad($shadowAngle));
             $distHeight = $shadowDistance * sin(deg2rad($shadowAngle));
         }
 
 
         // *** Convert color
-        if (fix_strtolower($bgColor) != 'transparent')
-        {
+        if (fix_strtolower($bgColor) != 'transparent') {
             $rgbArray = $this->formatColor($bgColor);
             $r0 = $rgbArray['r'];
             $g0 = $rgbArray['g'];
@@ -1640,28 +1523,34 @@ class imageLib {
         imagefilledrectangle($shadow, 0, 0, $width + $blurWidth, $height + $blurHeight, $colour);
 
 
-        for ($i = 0; $i <= STEPS; $i++)
-        {
+        for ($i = 0; $i <= STEPS; $i++) {
 
             $t = ((1.0 * $i) / STEPS);
             $intensity = 255 * $t * $t;
 
             $colour = imagecolorallocate($shadow, $intensity, $intensity, $intensity);
-            $points = array(
-                $blurWidth * $t, $blurHeight,     // Point 1 (x, y)
-                $blurWidth, $blurHeight * $t,  // Point 2 (x, y)
-                $width, $blurHeight * $t,  // Point 3 (x, y)
-                $width + $blurWidth * (1 - $t), $blurHeight,     // Point 4 (x, y)
-                $width + $blurWidth * (1 - $t), $height,     // Point 5 (x, y)
-                $width, $height + $blurHeight * (1 - $t),  // Point 6 (x, y)
-                $blurWidth, $height + $blurHeight * (1 - $t),  // Point 7 (x, y)
-                $blurWidth * $t, $height      // Point 8 (x, y)
-            );
+            $points = [
+                $blurWidth * $t,
+                $blurHeight,     // Point 1 (x, y)
+                $blurWidth,
+                $blurHeight * $t,  // Point 2 (x, y)
+                $width,
+                $blurHeight * $t,  // Point 3 (x, y)
+                $width + $blurWidth * (1 - $t),
+                $blurHeight,     // Point 4 (x, y)
+                $width + $blurWidth * (1 - $t),
+                $height,     // Point 5 (x, y)
+                $width,
+                $height + $blurHeight * (1 - $t),  // Point 6 (x, y)
+                $blurWidth,
+                $height + $blurHeight * (1 - $t),  // Point 7 (x, y)
+                $blurWidth * $t,
+                $height      // Point 8 (x, y)
+            ];
             imagepolygon($shadow, $points, 8, $colour);
         }
 
-        for ($i = 0; $i <= STEPS; $i++)
-        {
+        for ($i = 0; $i <= STEPS; $i++) {
 
             $t = ((1.0 * $i) / STEPS);
             $intensity = 255 * $t * $t;
@@ -1682,10 +1571,8 @@ class imageLib {
         // *** The magic
         imagealphablending($rgb, false);
 
-        for ($theX = 0; $theX < imagesx($rgb); $theX++)
-        {
-            for ($theY = 0; $theY < imagesy($rgb); $theY++)
-            {
+        for ($theX = 0; $theX < imagesx($rgb); $theX++) {
+            for ($theY = 0; $theY < imagesy($rgb); $theY++) {
 
                 // *** Get the RGB values for every pixel of the RGB image
                 $colArray = imagecolorat($rgb, $theX, $theY);
@@ -1700,12 +1587,9 @@ class imageLib {
                 $t = $a / 128.0;
 
                 // *** Create color
-                if (fix_strtolower($bgColor) == 'transparent')
-                {
+                if (fix_strtolower($bgColor) == 'transparent') {
                     $myColour = imagecolorallocatealpha($rgb, $r, $g, $b, $a);
-                }
-                else
-                {
+                } else {
                     $myColour = imagecolorallocate($rgb, $r * (1.0 - $t) + $r0 * $t, $g * (1.0 - $t) + $g0 * $t, $b * (1.0 - $t) + $b0 * $t);
                 }
 
@@ -1730,18 +1614,18 @@ class imageLib {
 *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*/
 
     public function addCaptionBox($side = 'b', $thickness = 50, $padding = 0, $bgColor = '#000', $transaprencyAmount = 30)
-        #
-        # Author:   Jarrod Oberto
-        # Date:   26 May 2011
-        # Purpose:  Add a caption box
-        # Params in:  (str) $side: the side to add the caption box (t, r, b, or l).
-        #       (int) $thickness: how thick you want the caption box to be.
-        #       (mixed) $bgColor: The color of the caption box.
-        #       (int) $transaprencyAmount: The amount of transparency to be
-        #       applied.
-        # Params out: n/a
-        # Notes:
-        #
+    #
+    # Author:   Jarrod Oberto
+    # Date:   26 May 2011
+    # Purpose:  Add a caption box
+    # Params in:  (str) $side: the side to add the caption box (t, r, b, or l).
+    #       (int) $thickness: how thick you want the caption box to be.
+    #       (mixed) $bgColor: The color of the caption box.
+    #       (int) $transaprencyAmount: The amount of transparency to be
+    #       applied.
+    # Params out: n/a
+    # Notes:
+    #
     {
         $side = fix_strtolower($side);
 
@@ -1765,33 +1649,27 @@ class imageLib {
     ## --------------------------------------------------------
 
     public function addTextToCaptionBox($text, $fontColor = '#fff', $fontSize = 12, $angle = 0, $font = null)
-        #
-        # Author:   Jarrod Oberto
-        # Date:   03 Aug 11
-        # Purpose:  Simplify adding text to a caption box by automatically
-        #       locating the center of the caption box
-        # Params in:  The usually text paams (less a couple)
-        # Params out: n/a
-        # Notes:
-        #
+    #
+    # Author:   Jarrod Oberto
+    # Date:   03 Aug 11
+    # Purpose:  Simplify adding text to a caption box by automatically
+    #       locating the center of the caption box
+    # Params in:  The usually text paams (less a couple)
+    # Params out: n/a
+    # Notes:
+    #
     {
 
         // *** Get the caption box measurements
-        if (count($this->captionBoxPositionArray) == 4)
-        {
+        if (count($this->captionBoxPositionArray) == 4) {
             $x1 = $this->captionBoxPositionArray['x1'];
             $x2 = $this->captionBoxPositionArray['x2'];
             $y1 = $this->captionBoxPositionArray['y1'];
             $y2 = $this->captionBoxPositionArray['y2'];
-        }
-        else
-        {
-            if ($this->debug)
-            {
+        } else {
+            if ($this->debug) {
                 throw new Exception('No caption box found.');
-            }
-            else
-            {
+            } else {
                 return false;
             }
         }
@@ -1816,17 +1694,15 @@ class imageLib {
         $pos = $xPos . 'x' . $yPos;
 
         $this->addText($text, $pos, $padding = 0, $fontColor, $fontSize, $angle, $font);
-
     }
 
     ## --------------------------------------------------------
 
     private function calculateCaptionBoxPosition($side, $thickness, $padding)
     {
-        $positionArray = array();
+        $positionArray = [];
 
-        switch ($side)
-        {
+        switch ($side) {
             case 't':
                 $positionArray['x1'] = 0;
                 $positionArray['y1'] = $padding;
@@ -1857,7 +1733,6 @@ class imageLib {
         }
 
         return $positionArray;
-
     }
 
     /*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*-
@@ -1865,101 +1740,77 @@ class imageLib {
 *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*/
 
     public function getExif($debug = false)
-        # Author:     Jarrod Oberto
-        # Date:       07-05-2011
-        # Purpose:    Get image EXIF data
-        # Param in:   n/a
-        # Param out:  An associate array of EXIF data
-        # Reference:
-        # Notes:
-        # 23 May 13 : added orientation flag -jco
-        #
+    # Author:     Jarrod Oberto
+    # Date:       07-05-2011
+    # Purpose:    Get image EXIF data
+    # Param in:   n/a
+    # Param out:  An associate array of EXIF data
+    # Reference:
+    # Notes:
+    # 23 May 13 : added orientation flag -jco
+    #
     {
 
-        if ( ! $this->debug || ! $debug)
-        {
+        if (! $this->debug || ! $debug) {
             $debug = false;
         }
 
         // *** Check all is good - check the EXIF library exists and the file exists, too.
-        if ( ! $this->testEXIFInstalled())
-        {
-            if ($debug)
-            {
+        if (! $this->testEXIFInstalled()) {
+            if ($debug) {
                 throw new Exception('The EXIF Library is not installed.');
+            } else {
+                return [];
             }
-            else
-            {
-                return array();
-            }
-        };
-        if ( ! file_exists($this->fileName))
-        {
-            if ($debug)
-            {
+        }
+        if (! file_exists($this->fileName)) {
+            if ($debug) {
                 throw new Exception('Image not found.');
+            } else {
+                return [];
             }
-            else
-            {
-                return array();
-            }
-        };
-        if ($this->fileExtension != '.jpg')
-        {
-            if ($debug)
-            {
+        }
+        if ($this->fileExtension != '.jpg') {
+            if ($debug) {
                 throw new Exception('Metadata not supported for this image type.');
+            } else {
+                return [];
             }
-            else
-            {
-                return array();
-            }
-        };
+        }
         $exifData = exif_read_data($this->fileName, 'IFD0');
 
         // *** Format the apperture value
         $ev = $exifData['ApertureValue'];
         $apPeicesArray = explode('/', $ev);
-        if (count($apPeicesArray) == 2)
-        {
+        if (count($apPeicesArray) == 2) {
             $apertureValue = round($apPeicesArray[0] / $apPeicesArray[1], 2, PHP_ROUND_HALF_DOWN) . ' EV';
-        }
-        else
-        {
+        } else {
             $apertureValue = '';
         }
 
         // *** Format the focal length
         $focalLength = $exifData['FocalLength'];
         $flPeicesArray = explode('/', $focalLength);
-        if (count($flPeicesArray) == 2)
-        {
+        if (count($flPeicesArray) == 2) {
             $focalLength = $flPeicesArray[0] / $flPeicesArray[1] . '.0 mm';
-        }
-        else
-        {
+        } else {
             $focalLength = '';
         }
 
         // *** Format fNumber
         $fNumber = $exifData['FNumber'];
         $fnPeicesArray = explode('/', $fNumber);
-        if (count($fnPeicesArray) == 2)
-        {
+        if (count($fnPeicesArray) == 2) {
             $fNumber = $fnPeicesArray[0] / $fnPeicesArray[1];
-        }
-        else
-        {
+        } else {
             $fNumber = '';
         }
 
         // *** Resolve ExposureProgram
-        if (isset($exifData['ExposureProgram']))
-        {
+        if (isset($exifData['ExposureProgram'])) {
             $ep = $exifData['ExposureProgram'];
         }
-        if (isset($ep))
-        {
+        if (isset($ep)) {
             $ep = $this->resolveExposureProgram($ep);
         }
 
@@ -1973,148 +1824,100 @@ class imageLib {
         $flash = $this->resolveFlash($flash);
 
 
-        if (isset($exifData['Make']))
-        {
+        if (isset($exifData['Make'])) {
             $exifDataArray['make'] = $exifData['Make'];
-        }
-        else
-        {
+        } else {
             $exifDataArray['make'] = '';
         }
 
-        if (isset($exifData['Model']))
-        {
+        if (isset($exifData['Model'])) {
             $exifDataArray['model'] = $exifData['Model'];
-        }
-        else
-        {
+        } else {
             $exifDataArray['model'] = '';
         }
 
-        if (isset($exifData['DateTime']))
-        {
+        if (isset($exifData['DateTime'])) {
             $exifDataArray['date'] = $exifData['DateTime'];
-        }
-        else
-        {
+        } else {
             $exifDataArray['date'] = '';
         }
 
-        if (isset($exifData['ExposureTime']))
-        {
+        if (isset($exifData['ExposureTime'])) {
             $exifDataArray['exposure time'] = $exifData['ExposureTime'] . ' sec.';
-        }
-        else
-        {
+        } else {
             $exifDataArray['exposure time'] = '';
         }
 
-        if ($apertureValue != '')
-        {
+        if ($apertureValue != '') {
             $exifDataArray['aperture value'] = $apertureValue;
-        }
-        else
-        {
+        } else {
             $exifDataArray['aperture value'] = '';
         }
 
-        if (isset($exifData['COMPUTED']['ApertureFNumber']))
-        {
+        if (isset($exifData['COMPUTED']['ApertureFNumber'])) {
             $exifDataArray['f-stop'] = $exifData['COMPUTED']['ApertureFNumber'];
-        }
-        else
-        {
+        } else {
             $exifDataArray['f-stop'] = '';
         }
 
-        if (isset($exifData['FNumber']))
-        {
+        if (isset($exifData['FNumber'])) {
             $exifDataArray['fnumber'] = $exifData['FNumber'];
-        }
-        else
-        {
+        } else {
             $exifDataArray['fnumber'] = '';
         }
 
-        if ($fNumber != '')
-        {
+        if ($fNumber != '') {
             $exifDataArray['fnumber value'] = $fNumber;
-        }
-        else
-        {
+        } else {
             $exifDataArray['fnumber value'] = '';
         }
 
-        if (isset($exifData['ISOSpeedRatings']))
-        {
+        if (isset($exifData['ISOSpeedRatings'])) {
             $exifDataArray['iso'] = $exifData['ISOSpeedRatings'];
-        }
-        else
-        {
+        } else {
             $exifDataArray['iso'] = '';
         }
 
-        if ($focalLength != '')
-        {
+        if ($focalLength != '') {
             $exifDataArray['focal length'] = $focalLength;
-        }
-        else
-        {
+        } else {
             $exifDataArray['focal length'] = '';
         }
 
-        if (isset($ep))
-        {
+        if (isset($ep)) {
             $exifDataArray['exposure program'] = $ep;
-        }
-        else
-        {
+        } else {
             $exifDataArray['exposure program'] = '';
         }
 
-        if ($mm != '')
-        {
+        if ($mm != '') {
             $exifDataArray['metering mode'] = $mm;
-        }
-        else
-        {
+        } else {
             $exifDataArray['metering mode'] = '';
         }
 
-        if ($flash != '')
-        {
+        if ($flash != '') {
             $exifDataArray['flash status'] = $flash;
-        }
-        else
-        {
+        } else {
             $exifDataArray['flash status'] = '';
         }
 
-        if (isset($exifData['Artist']))
-        {
+        if (isset($exifData['Artist'])) {
             $exifDataArray['creator'] = $exifData['Artist'];
-        }
-        else
-        {
+        } else {
             $exifDataArray['creator'] = '';
         }
 
-        if (isset($exifData['Copyright']))
-        {
+        if (isset($exifData['Copyright'])) {
             $exifDataArray['copyright'] = $exifData['Copyright'];
-        }
-        else
-        {
+        } else {
             $exifDataArray['copyright'] = '';
         }
 
         // *** Orientation
-        if (isset($exifData['Orientation']))
-        {
+        if (isset($exifData['Orientation'])) {
             $exifDataArray['orientation'] = $exifData['Orientation'];
-        }
-        else
-        {
+        } else {
             $exifDataArray['orientation'] = '';
         }
 
@@ -2125,8 +1928,7 @@ class imageLib {
 
     private function resolveExposureProgram($ep)
     {
-        switch ($ep)
-        {
+        switch ($ep) {
             case 0:
                 $ep = '';
                 break;
@@ -2166,8 +1968,7 @@ class imageLib {
 
     private function resolveMeteringMode($mm)
     {
-        switch ($mm)
-        {
+        switch ($mm) {
             case 0:
                 $mm = 'unknown';
                 break;
@@ -2204,8 +2005,7 @@ class imageLib {
 
     private function resolveFlash($flash)
     {
-        switch ($flash)
-        {
+        switch ($flash) {
             case 0:
                 $flash = 'flash did not fire';
                 break;
@@ -2278,7 +2078,6 @@ class imageLib {
         }
 
         return $flash;
-
     }
 
 
@@ -2292,7 +2091,7 @@ class imageLib {
 *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*/
 
     public function writeIPTCcaption($value)
-        # Caption
+    # Caption
     {
         $this->writeIPTC(120, $value);
     }
@@ -2316,31 +2115,28 @@ class imageLib {
         file_put_contents('iptc.jpg', $image_string);
     }
 
-## --------------------------------------------------------
+    ## --------------------------------------------------------
 
     private function iptc_maketag($rec, $dat, $val)
-        # Author:   Thies C. Arntzen
-        # Purpose:    Function to format the new IPTC text
-        # Param in:   $rec: Application record. (We’re working with #2)
-        #       $dat: Index. (120 for caption, 118 for contact. See the IPTC IIM
-        #         specification:
-        #         http://www.iptc.org/std/IIM/4.1/specification/IIMV4.1.pdf
-        #       $val: Value/data/text. Make sure this is within the length
-        #         constraints of the IPTC IIM specification
-        # Ref:      http://blog.peterhaza.no/working-with-image-meta-data-in-exif-and-iptc-headers-from-php/
-        #       http://php.net/manual/en/function.iptcembed.php
-        #
+    # Author:   Thies C. Arntzen
+    # Purpose:    Function to format the new IPTC text
+    # Param in:   $rec: Application record. (We’re working with #2)
+    #       $dat: Index. (120 for caption, 118 for contact. See the IPTC IIM
+    #         specification:
+    #         http://www.iptc.org/std/IIM/4.1/specification/IIMV4.1.pdf
+    #       $val: Value/data/text. Make sure this is within the length
+    #         constraints of the IPTC IIM specification
+    # Ref:      http://blog.peterhaza.no/working-with-image-meta-data-in-exif-and-iptc-headers-from-php/
+    #       http://php.net/manual/en/function.iptcembed.php
+    #
     {
         $len = strlen($val);
-        if ($len < 0x8000)
-        {
+        if ($len < 0x8000) {
             return chr(0x1c) . chr($rec) . chr($dat) .
                 chr($len >> 8) .
                 chr($len & 0xff) .
                 $val;
-        }
-        else
-        {
+        } else {
             return chr(0x1c) . chr($rec) . chr($dat) .
                 chr(0x80) . chr(0x04) .
                 chr(($len >> 24) & 0xff) .
@@ -2365,14 +2161,14 @@ class imageLib {
 *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*/
 
     public function addText($text, $pos = '20x20', $padding = 0, $fontColor = '#fff', $fontSize = 12, $angle = 0, $font = null)
-        # Author:     Jarrod Oberto
-        # Date:       18-11-09
-        # Purpose:    Add text to an image
-        # Param in:
-        # Param out:
-        # Reference:  http://php.net/manual/en/function.imagettftext.php
-        # Notes:      Make sure you supply the font.
-        #
+    # Author:     Jarrod Oberto
+    # Date:       18-11-09
+    # Purpose:    Add text to an image
+    # Param in:
+    # Param out:
+    # Reference:  http://php.net/manual/en/function.imagettftext.php
+    # Notes:      Make sure you supply the font.
+    #
     {
 
         // *** Convert color
@@ -2412,30 +2208,24 @@ class imageLib {
         putenv('GDFONTPATH=' . realpath('.'));
 
         // *** Check if the passed in font exsits...
-        if ($font == null || ! file_exists($font))
-        {
+        if ($font == null || ! file_exists($font)) {
 
             // *** ...If not, default to this font.
             $font = $fontPath . '/arimo.ttf';
 
             // *** Check our default font exists...
-            if ( ! file_exists($font))
-            {
+            if (! file_exists($font)) {
 
                 // *** If not, return false
-                if ($this->debug)
-                {
+                if ($this->debug) {
                     throw new Exception('Font not found');
-                }
-                else
-                {
+                } else {
                     return false;
                 }
             }
         }
 
         return $font;
-
     }
 
     ## --------------------------------------------------------
@@ -2452,7 +2242,7 @@ class imageLib {
         // ***  Get height of text from dimensions (should also be same as $fontSize)
         $textHeight = abs($box[5] - $box[1]);
 
-        return array( 'height' => $textHeight, 'width' => $textWidth );
+        return ['height' => $textHeight, 'width' => $textWidth];
     }
 
 
@@ -2461,30 +2251,30 @@ class imageLib {
 *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*/
 
     public function addWatermark($watermarkImage, $pos, $padding = 0, $opacity = 0)
-        # Author:     Jarrod Oberto
-        # Date:       18-11-09
-        # Purpose:    Add watermark image
-        # Param in:   (str) $watermark: The watermark image
-        #       (str) $pos: Could be a pre-determined position such as:
-        #           tl = top left,
-        #           t  = top (middle),
-        #           tr = top right,
-        #           l  = left,
-        #           m  = middle,
-        #           r  = right,
-        #           bl = bottom left,
-        #           b  = bottom (middle),
-        #           br = bottom right
-        #         Or, it could be a co-ordinate position such as: 50x100
-        #
-        #       (int) $padding: If using a pre-determined position you can
-        #         adjust the padding from the edges by passing an amount
-        #         in pixels. If using co-ordinates, this value is ignored.
-        # Param out:
-        # Reference:  http://www.php.net/manual/en/image.examples-watermark.php
-        # Notes:      Based on example in reference.
-        #
-        #
+    # Author:     Jarrod Oberto
+    # Date:       18-11-09
+    # Purpose:    Add watermark image
+    # Param in:   (str) $watermark: The watermark image
+    #       (str) $pos: Could be a pre-determined position such as:
+    #           tl = top left,
+    #           t  = top (middle),
+    #           tr = top right,
+    #           l  = left,
+    #           m  = middle,
+    #           r  = right,
+    #           bl = bottom left,
+    #           b  = bottom (middle),
+    #           br = bottom right
+    #         Or, it could be a co-ordinate position such as: 50x100
+    #
+    #       (int) $padding: If using a pre-determined position you can
+    #         adjust the padding from the edges by passing an amount
+    #         in pixels. If using co-ordinates, this value is ignored.
+    # Param out:
+    # Reference:  http://www.php.net/manual/en/image.examples-watermark.php
+    # Notes:      Based on example in reference.
+    #
+    #
     {
 
         // Load the stamp and the photo to apply the watermark to
@@ -2501,8 +2291,7 @@ class imageLib {
         $y = $posArray['height'];
 
         // *** Set watermark opacity
-        if (fix_strtolower(strrchr($watermarkImage, '.')) == '.png')
-        {
+        if (fix_strtolower(strrchr($watermarkImage, '.')) == '.png') {
 
             $opacity = $this->invertTransparency($opacity, 100);
             $this->filterOpacity($stamp, $opacity);
@@ -2510,48 +2299,42 @@ class imageLib {
 
         // Copy the watermark image onto our photo
         imagecopy($im, $stamp, $x, $y, 0, 0, imagesx($stamp), imagesy($stamp));
-
     }
 
     ## --------------------------------------------------------
 
     private function calculatePosition($pos, $padding, $assetWidth, $assetHeight, $upperLeft = true)
-        #
-        # Author:   Jarrod Oberto
-        # Date:   08-05-11
-        # Purpose:  Calculate the x, y pixel cordinates of the asset to place
-        # Params in:  (str) $pos: Either something like: "tl", "l", "br" or an
-        #         exact position like: "100x50"
-        #       (int) $padding: The amount of padding from the edge. Only
-        #         used for the predefined $pos.
-        #       (int) $assetWidth: The width of the asset to add to the image
-        #       (int) $assetHeight: The height of the asset to add to the image
-        #       (bol) $upperLeft: if true, the asset will be positioned based
-        #         on the upper left x, y coords. If false, it means you're
-        #         using the lower left as the basepoint and this will
-        #         convert it to the upper left position
-        # Params out:
-        # NOTE: this is done from the UPPER left corner!! But will convert lower
-        #   left basepoints to upper left if $upperleft is set to false
-        #
-        #
+    #
+    # Author:   Jarrod Oberto
+    # Date:   08-05-11
+    # Purpose:  Calculate the x, y pixel cordinates of the asset to place
+    # Params in:  (str) $pos: Either something like: "tl", "l", "br" or an
+    #         exact position like: "100x50"
+    #       (int) $padding: The amount of padding from the edge. Only
+    #         used for the predefined $pos.
+    #       (int) $assetWidth: The width of the asset to add to the image
+    #       (int) $assetHeight: The height of the asset to add to the image
+    #       (bol) $upperLeft: if true, the asset will be positioned based
+    #         on the upper left x, y coords. If false, it means you're
+    #         using the lower left as the basepoint and this will
+    #         convert it to the upper left position
+    # Params out:
+    # NOTE: this is done from the UPPER left corner!! But will convert lower
+    #   left basepoints to upper left if $upperleft is set to false
+    #
+    #
     {
         $pos = fix_strtolower($pos);
 
         // *** If co-ords have been entered
-        if (strstr($pos, 'x'))
-        {
+        if (strstr($pos, 'x')) {
             $pos = str_replace(' ', '', $pos);
 
             $xyArray = explode('x', $pos);
             list($width, $height) = $xyArray;
+        } else {
 
-        }
-        else
-        {
-
-            switch ($pos)
-            {
+            switch ($pos) {
                 case 'tl':
                     $width = 0 + $padding;
                     $height = 0 + $padding;
@@ -2564,7 +2347,7 @@ class imageLib {
 
                 case 'tr':
                     $width = $this->width - $assetWidth - $padding;
-                    $height = 0 + $padding;;
+                    $height = 0 + $padding;
                     break;
 
                 case 'l':
@@ -2604,38 +2387,35 @@ class imageLib {
             }
         }
 
-        if ( ! $upperLeft)
-        {
+        if (! $upperLeft) {
             $height = $height + $assetHeight;
         }
 
-        return array( 'width' => $width, 'height' => $height );
+        return ['width' => $width, 'height' => $height];
     }
 
 
     ## --------------------------------------------------------
 
     private function filterOpacity(&$img, $opacity = 75)
-        #
-        # Author:     aiden dot mail at freemail dot hu
-        # Author date:  29-03-08 08:16
-        # Date added:   08-05-11
-        # Purpose:    Change opacity of image
-        # Params in:    $img: Image resource id
-        #         (int) $opacity: the opacity amount: 0-100, 100 being not opaque.
-        # Params out:   (bool) true on success, else false
-        # Ref:      http://www.php.net/manual/en/function.imagefilter.php#82162
-        # Notes:      png only
-        #
+    #
+    # Author:     aiden dot mail at freemail dot hu
+    # Author date:  29-03-08 08:16
+    # Date added:   08-05-11
+    # Purpose:    Change opacity of image
+    # Params in:    $img: Image resource id
+    #         (int) $opacity: the opacity amount: 0-100, 100 being not opaque.
+    # Params out:   (bool) true on success, else false
+    # Ref:      http://www.php.net/manual/en/function.imagefilter.php#82162
+    # Notes:      png only
+    #
     {
 
-        if ( ! isset($opacity))
-        {
+        if (! isset($opacity)) {
             return false;
         }
 
-        if ($opacity == 100)
-        {
+        if ($opacity == 100) {
             return true;
         }
 
@@ -2650,40 +2430,31 @@ class imageLib {
 
         //find the most opaque pixel in the image (the one with the smallest alpha value)
         $minalpha = 127;
-        for ($x = 0; $x < $w; $x++)
-        {
-            for ($y = 0; $y < $h; $y++)
-            {
+        for ($x = 0; $x < $w; $x++) {
+            for ($y = 0; $y < $h; $y++) {
                 $alpha = (imagecolorat($img, $x, $y) >> 24) & 0xFF;
-                if ($alpha < $minalpha)
-                {
+                if ($alpha < $minalpha) {
                     $minalpha = $alpha;
                 }
             }
         }
 
         //loop through image pixels and modify alpha for each
-        for ($x = 0; $x < $w; $x++)
-        {
-            for ($y = 0; $y < $h; $y++)
-            {
+        for ($x = 0; $x < $w; $x++) {
+            for ($y = 0; $y < $h; $y++) {
                 //get current alpha value (represents the TANSPARENCY!)
                 $colorxy = imagecolorat($img, $x, $y);
                 $alpha = ($colorxy >> 24) & 0xFF;
                 //calculate new alpha
-                if ($minalpha !== 127)
-                {
+                if ($minalpha !== 127) {
                     $alpha = 127 + 127 * $opacity * ($alpha - 127) / (127 - $minalpha);
-                }
-                else
-                {
+                } else {
                     $alpha += 127 * $opacity;
                 }
                 //get the color index with new alpha
                 $alphacolorxy = imagecolorallocatealpha($img, ($colorxy >> 16) & 0xFF, ($colorxy >> 8) & 0xFF, $colorxy & 0xFF, $alpha);
                 //set pixel with the new color + opacity
-                if ( ! imagesetpixel($img, $x, $y, $alphacolorxy))
-                {
+                if (! imagesetpixel($img, $x, $y, $alphacolorxy)) {
 
                     return false;
                 }
@@ -2693,37 +2464,32 @@ class imageLib {
         return true;
     }
 
-## --------------------------------------------------------
+    ## --------------------------------------------------------
 
     private function openImage($file)
-        # Author:     Jarrod Oberto
-        # Date:       27-02-08
-        # Purpose:
-        # Param in:
-        # Param out:  n/a
-        # Reference:
-        # Notes:
-        #
+    # Author:     Jarrod Oberto
+    # Date:       27-02-08
+    # Purpose:
+    # Param in:
+    # Param out:  n/a
+    # Reference:
+    # Notes:
+    #
     {
 
-        if ( ! file_exists($file) && ! $this->checkStringStartsWith('http://', $file) && ! $this->checkStringStartsWith('https://', $file) )
-        {
-            if ($this->debug)
-            {
+        if (! file_exists($file) && ! $this->checkStringStartsWith('http://', $file) && ! $this->checkStringStartsWith('https://', $file)) {
+            if ($this->debug) {
                 throw new Exception('Image not found.');
-            }
-            else
-            {
+            } else {
                 throw new Exception();
             }
-        };
+        }
 
         // *** Get extension / image type
         $extension = mime_content_type($file);
         $extension = fix_strtolower($extension);
         $extension = str_replace('image/', '', $extension);
-        switch ($extension)
-        {
+        switch ($extension) {
             case 'jpg':
             case 'jpeg':
                 $img = @imagecreatefromjpeg($file);
@@ -2747,7 +2513,7 @@ class imageLib {
                 break;
 
 
-            // ... etc
+                // ... etc
 
             default:
                 $img = false;
@@ -2757,62 +2523,54 @@ class imageLib {
         return $img;
     }
 
-## --------------------------------------------------------
+    ## --------------------------------------------------------
 
     public function reset()
-        #
-        # Author:   Jarrod Oberto
-        # Date:   30-08-11
-        # Purpose:  Reset the resource (allow further editing)
-        # Params in:
-        # Params out:
-        # Notes:
-        #
+    #
+    # Author:   Jarrod Oberto
+    # Date:   30-08-11
+    # Purpose:  Reset the resource (allow further editing)
+    # Params in:
+    # Params out:
+    # Notes:
+    #
     {
         $this->__construct($this->fileName);
     }
 
-## --------------------------------------------------------
+    ## --------------------------------------------------------
 
     public function saveImage($savePath, $imageQuality = "100")
-        # Author:     Jarrod Oberto
-        # Date:       27-02-08
-        # Purpose:    Saves the image
-        # Param in:   $savePath: Where to save the image including filename:
-        #             $imageQuality: image quality you want the image saved at 0-100
-        # Param out:  n/a
-        # Reference:
-        # Notes:    * gif doesn't have a quality parameter
-        #       * jpg has a quality setting 0-100 (100 being the best)
-        #       * webp has a quality setting 0-100 (100 being the best)
-        #       * png has a quality setting 0-9 (0 being the best)
-        #
-        #             * bmp files have no native support for bmp files. We use a
-        #       third party class to save as bmp.
+    # Author:     Jarrod Oberto
+    # Date:       27-02-08
+    # Purpose:    Saves the image
+    # Param in:   $savePath: Where to save the image including filename:
+    #             $imageQuality: image quality you want the image saved at 0-100
+    # Param out:  n/a
+    # Reference:
+    # Notes:    * gif doesn't have a quality parameter
+    #       * jpg has a quality setting 0-100 (100 being the best)
+    #       * webp has a quality setting 0-100 (100 being the best)
+    #       * png has a quality setting 0-9 (0 being the best)
+    #
+    #             * bmp files have no native support for bmp files. We use a
+    #       third party class to save as bmp.
     {
 
         // *** Perform a check or two.
-        if (! is_resource($this->imageResized) && ! $this->imageResized instanceof \GdImage)
-        {
-            if ($this->debug)
-            {
+        if (! is_resource($this->imageResized) && ! $this->imageResized instanceof \GdImage) {
+            if ($this->debug) {
                 throw new Exception('saveImage: This is not a resource.');
-            }
-            else
-            {
+            } else {
                 throw new Exception();
             }
         }
         $fileInfoArray = pathInfo($savePath);
         clearstatcache();
-        if ( ! is_writable($fileInfoArray['dirname']))
-        {
-            if ($this->debug)
-            {
+        if (! is_writable($fileInfoArray['dirname'])) {
+            if ($this->debug) {
                 throw new Exception('The path is not writable. Please check your permissions.');
-            }
-            else
-            {
+            } else {
                 throw new Exception();
             }
         }
@@ -2823,40 +2581,30 @@ class imageLib {
 
         $error = '';
 
-        switch ($extension)
-        {
+        switch ($extension) {
             case '.jpg':
             case '.jpeg':
                 $this->checkInterlaceImage($this->isInterlace);
-                if (imagetypes() & IMG_JPG)
-                {
+                if (imagetypes() & IMG_JPG) {
                     imagejpeg($this->imageResized, $savePath, $imageQuality);
-                }
-                else
-                {
+                } else {
                     $error = 'jpg';
                 }
                 break;
 
             case '.webp':
-                if (imagetypes() & IMG_WEBP)
-                {
+                if (imagetypes() & IMG_WEBP) {
                     imagewebp($this->imageResized, $savePath, $imageQuality);
-                }
-                else
-                {
+                } else {
                     $error = 'webp';
                 }
                 break;
 
             case '.gif':
                 $this->checkInterlaceImage($this->isInterlace);
-                if (imagetypes() & IMG_GIF)
-                {
+                if (imagetypes() & IMG_GIF) {
                     imagegif($this->imageResized, $savePath);
-                }
-                else
-                {
+                } else {
                     $error = 'gif';
                 }
                 break;
@@ -2869,12 +2617,9 @@ class imageLib {
                 $invertScaleQuality = 9 - $scaleQuality;
 
                 $this->checkInterlaceImage($this->isInterlace);
-                if (imagetypes() & IMG_PNG)
-                {
+                if (imagetypes() & IMG_PNG) {
                     imagepng($this->imageResized, $savePath, $invertScaleQuality);
-                }
-                else
-                {
+                } else {
                     $error = 'png';
                 }
                 break;
@@ -2884,7 +2629,7 @@ class imageLib {
                 break;
 
 
-            // ... etc
+                // ... etc
 
             default:
                 // *** No extension - No save.
@@ -2895,39 +2640,33 @@ class imageLib {
         //imagedestroy($this->imageResized);
 
         // *** Display error if a file type is not supported.
-        if ($error != '')
-        {
+        if ($error != '') {
             $this->errorArray[] = $error . ' support is NOT enabled. File not saved.';
         }
     }
 
-## --------------------------------------------------------
+    ## --------------------------------------------------------
 
     public function displayImage($fileType = 'jpg', $imageQuality = "100")
-        # Author:     Jarrod Oberto
-        # Date:       18-11-09
-        # Purpose:    Display images directly to the browser
-        # Param in:   The image type you want to display
-        # Param out:
-        # Reference:
-        # Notes:
-        #
+    # Author:     Jarrod Oberto
+    # Date:       18-11-09
+    # Purpose:    Display images directly to the browser
+    # Param in:   The image type you want to display
+    # Param out:
+    # Reference:
+    # Notes:
+    #
     {
 
-        if (! is_resource($this->imageResized) && ! $this->imageResized instanceof \GdImage)
-        {
-            if ($this->debug)
-            {
+        if (! is_resource($this->imageResized) && ! $this->imageResized instanceof \GdImage) {
+            if ($this->debug) {
                 throw new Exception('saveImage: This is not a resource.');
-            }
-            else
-            {
+            } else {
                 throw new Exception();
             }
         }
 
-        switch ($fileType)
-        {
+        switch ($fileType) {
             case 'jpg':
             case 'jpeg':
                 header('Content-type: image/jpeg');
@@ -2956,7 +2695,7 @@ class imageLib {
                 echo 'bmp file format is not supported.';
                 break;
 
-            // ... etc
+                // ... etc
 
             default:
                 // *** No extension - No save.
@@ -2967,273 +2706,252 @@ class imageLib {
         //imagedestroy($this->imageResized);
     }
 
-## --------------------------------------------------------
+    ## --------------------------------------------------------
 
     public function setTransparency($bool)
-        # Sep 2011
+    # Sep 2011
     {
         $this->keepTransparency = $bool;
     }
 
-## --------------------------------------------------------
+    ## --------------------------------------------------------
 
     public function setFillColor($value)
-        # Sep 2011
-        # Param in:   (mixed) $value: (array) Could be an array of RGB
-        #               (str) Could be hex #ffffff or #fff, fff, ffffff
-        #
-        # If the keepTransparency is set to false, then no transparency is to be used.
-        # This is ideal when you want to save as jpg.
-        #
-        # this method allows you to set the background color to use instead of
-        # transparency.
-        #
+    # Sep 2011
+    # Param in:   (mixed) $value: (array) Could be an array of RGB
+    #               (str) Could be hex #ffffff or #fff, fff, ffffff
+    #
+    # If the keepTransparency is set to false, then no transparency is to be used.
+    # This is ideal when you want to save as jpg.
+    #
+    # this method allows you to set the background color to use instead of
+    # transparency.
+    #
     {
         $colorArray = $this->formatColor($value);
         $this->fillColorArray = $colorArray;
     }
 
-## --------------------------------------------------------
+    ## --------------------------------------------------------
 
     public function setCropFromTop($value)
-        # Sep 2011
+    # Sep 2011
     {
         $this->cropFromTopPercent = $value;
     }
 
-## --------------------------------------------------------
+    ## --------------------------------------------------------
 
     public function testGDInstalled()
-        # Author:     Jarrod Oberto
-        # Date:       27-02-08
-        # Purpose:    Test to see if GD is installed
-        # Param in:   n/a
-        # Param out:  (bool) True is gd extension loaded otherwise false
-        # Reference:
-        # Notes:
-        #
+    # Author:     Jarrod Oberto
+    # Date:       27-02-08
+    # Purpose:    Test to see if GD is installed
+    # Param in:   n/a
+    # Param out:  (bool) True is gd extension loaded otherwise false
+    # Reference:
+    # Notes:
+    #
     {
-        if (extension_loaded('gd') && function_exists('gd_info'))
-        {
+        if (extension_loaded('gd') && function_exists('gd_info')) {
             $gdInstalled = true;
-        }
-        else
-        {
+        } else {
             $gdInstalled = false;
         }
 
         return $gdInstalled;
     }
 
-## --------------------------------------------------------
+    ## --------------------------------------------------------
 
     public function testEXIFInstalled()
-        # Author:     Jarrod Oberto
-        # Date:       08-05-11
-        # Purpose:    Test to see if EXIF is installed
-        # Param in:   n/a
-        # Param out:  (bool) True is exif extension loaded otherwise false
-        # Reference:
-        # Notes:
-        #
+    # Author:     Jarrod Oberto
+    # Date:       08-05-11
+    # Purpose:    Test to see if EXIF is installed
+    # Param in:   n/a
+    # Param out:  (bool) True is exif extension loaded otherwise false
+    # Reference:
+    # Notes:
+    #
     {
-        if (extension_loaded('exif'))
-        {
+        if (extension_loaded('exif')) {
             $exifInstalled = true;
-        }
-        else
-        {
+        } else {
             $exifInstalled = false;
         }
 
         return $exifInstalled;
     }
 
-## --------------------------------------------------------
+    ## --------------------------------------------------------
 
     public function testIsImage($image)
-        # Author:     Jarrod Oberto
-        # Date:       27-02-08
-        # Purpose:    Test if file is an image
-        # Param in:   n/a
-        # Param out:  n/a
-        # Reference:
-        # Notes:
-        #
+    # Author:     Jarrod Oberto
+    # Date:       27-02-08
+    # Purpose:    Test if file is an image
+    # Param in:   n/a
+    # Param out:  n/a
+    # Reference:
+    # Notes:
+    #
     {
-        if ($image)
-        {
+        if ($image) {
             $fileIsImage = true;
-        }
-        else
-        {
+        } else {
             $fileIsImage = false;
         }
 
         return $fileIsImage;
     }
 
-## --------------------------------------------------------
+    ## --------------------------------------------------------
 
     public function testFunct()
-        # Author:     Jarrod Oberto
-        # Date:       27-02-08
-        # Purpose:    Test Function
-        # Param in:   n/a
-        # Param out:  n/a
-        # Reference:
-        # Notes:
-        #
+    # Author:     Jarrod Oberto
+    # Date:       27-02-08
+    # Purpose:    Test Function
+    # Param in:   n/a
+    # Param out:  n/a
+    # Reference:
+    # Notes:
+    #
     {
         echo $this->height;
     }
 
-## --------------------------------------------------------
+    ## --------------------------------------------------------
 
     public function setForceStretch($value)
-        # Author:     Jarrod Oberto
-        # Date:       23-12-10
-        # Purpose:
-        # Param in:   (bool) $value
-        # Param out:  n/a
-        # Reference:
-        # Notes:
-        #
+    # Author:     Jarrod Oberto
+    # Date:       23-12-10
+    # Purpose:
+    # Param in:   (bool) $value
+    # Param out:  n/a
+    # Reference:
+    # Notes:
+    #
     {
         $this->forceStretch = $value;
     }
 
-## --------------------------------------------------------
+    ## --------------------------------------------------------
 
     public function setFile($fileName)
-        # Author:     Jarrod Oberto
-        # Date:       28-02-08
-        # Purpose:
-        # Param in:   n/a
-        # Param out:  n/a
-        # Reference:
-        # Notes:
-        #
+    # Author:     Jarrod Oberto
+    # Date:       28-02-08
+    # Purpose:
+    # Param in:   n/a
+    # Param out:  n/a
+    # Reference:
+    # Notes:
+    #
     {
         self::__construct($fileName);
     }
 
-## --------------------------------------------------------
+    ## --------------------------------------------------------
 
     public function getFileName()
-        # Author:     Jarrod Oberto
-        # Date:       10-09-08
-        # Purpose:
-        # Param in:   n/a
-        # Param out:  n/a
-        # Reference:
-        # Notes:
-        #
+    # Author:     Jarrod Oberto
+    # Date:       10-09-08
+    # Purpose:
+    # Param in:   n/a
+    # Param out:  n/a
+    # Reference:
+    # Notes:
+    #
     {
         return $this->fileName;
     }
 
-## --------------------------------------------------------
+    ## --------------------------------------------------------
 
     public function getHeight()
     {
         return $this->height;
     }
 
-## --------------------------------------------------------
+    ## --------------------------------------------------------
 
     public function getWidth()
     {
         return $this->width;
     }
 
-## --------------------------------------------------------
+    ## --------------------------------------------------------
 
     public function getOriginalHeight()
     {
         return $this->heightOriginal;
     }
 
-## --------------------------------------------------------
+    ## --------------------------------------------------------
 
     public function getOriginalWidth()
     {
         return $this->widthOriginal;
     }
 
-## --------------------------------------------------------
+    ## --------------------------------------------------------
 
     public function getErrors()
-        # Author:     Jarrod Oberto
-        # Date:       19-11-09
-        # Purpose:    Returns the error array
-        # Param in:   n/a
-        # Param out:  Array of errors
-        # Reference:
-        # Notes:
-        #
+    # Author:     Jarrod Oberto
+    # Date:       19-11-09
+    # Purpose:    Returns the error array
+    # Param in:   n/a
+    # Param out:  Array of errors
+    # Reference:
+    # Notes:
+    #
     {
         return $this->errorArray;
     }
 
-## --------------------------------------------------------
+    ## --------------------------------------------------------
 
     private function checkInterlaceImage($isEnabled)
-        # jpg will use progressive (they don't use interace)
+    # jpg will use progressive (they don't use interace)
     {
-        if ($isEnabled)
-        {
+        if ($isEnabled) {
             imageinterlace($this->imageResized, $isEnabled);
         }
     }
 
-## --------------------------------------------------------
+    ## --------------------------------------------------------
 
     protected function formatColor($value)
-        # Author:     Jarrod Oberto
-        # Date:       09-05-11
-        # Purpose:    Determine color method passed in and return color as RGB
-        # Param in:   (mixed) $value: (array) Could be an array of RGB
-        #               (str) Could be hex #ffffff or #fff, fff, ffffff
-        # Param out:
-        # Reference:
-        # Notes:
-        #
+    # Author:     Jarrod Oberto
+    # Date:       09-05-11
+    # Purpose:    Determine color method passed in and return color as RGB
+    # Param in:   (mixed) $value: (array) Could be an array of RGB
+    #               (str) Could be hex #ffffff or #fff, fff, ffffff
+    # Param out:
+    # Reference:
+    # Notes:
+    #
     {
-        $rgbArray = array();
+        $rgbArray = [];
 
         // *** If it's an array it should be R, G, B
-        if (is_array($value))
-        {
+        if (is_array($value)) {
 
-            if (key($value) == 0 && count($value) == 3)
-            {
+            if (key($value) == 0 && count($value) == 3) {
 
                 $rgbArray['r'] = $value[0];
                 $rgbArray['g'] = $value[1];
                 $rgbArray['b'] = $value[2];
-
-            }
-            else
-            {
+            } else {
                 $rgbArray = $value;
             }
-        }
-        else
-        {
-            if (fix_strtolower($value) == 'transparent')
-            {
+        } else {
+            if (fix_strtolower($value) == 'transparent') {
 
-                $rgbArray = array(
+                $rgbArray = [
                     'r' => 255,
                     'g' => 255,
                     'b' => 255,
                     'a' => 127
-                );
-
-            }
-            else
-            {
+                ];
+            } else {
 
                 // *** ...Else it should be hex. Let's make it RGB
                 $rgbArray = $this->hex2dec($value);
@@ -3246,21 +2964,20 @@ class imageLib {
     ## --------------------------------------------------------
 
     function hex2dec($hex)
-        # Purpose:  Convert #hex color to RGB
+    # Purpose:  Convert #hex color to RGB
     {
         $color = str_replace('#', '', $hex);
 
-        if (strlen($color) == 3)
-        {
+        if (strlen($color) == 3) {
             $color = $color . $color;
         }
 
-        $rgb = array(
+        $rgb = [
             'r' => hexdec(substr($color, 0, 2)),
             'g' => hexdec(substr($color, 2, 2)),
             'b' => hexdec(substr($color, 4, 2)),
             'a' => 0
-        );
+        ];
 
         return $rgb;
     }
@@ -3284,12 +3001,9 @@ class imageLib {
         $g = $colorArray['g'];
         $b = $colorArray['b'];
 
-        if (imagecolorexact($this->imageResized, $r, $g, $b) == -1)
-        {
+        if (imagecolorexact($this->imageResized, $r, $g, $b) == -1) {
             return false;
-        }
-        else
-        {
+        } else {
             return true;
         }
     }
@@ -3297,25 +3011,22 @@ class imageLib {
     ## --------------------------------------------------------
 
     private function findUnusedGreen()
-        # Purpose:  We find a green color suitable to use like green-screen effect.
-        #     Therefore, the color must not exist in the image.
+    # Purpose:  We find a green color suitable to use like green-screen effect.
+    #     Therefore, the color must not exist in the image.
     {
         $green = 255;
 
-        do
-        {
+        do {
 
-            $greenChroma = array( 0, $green, 0 );
+            $greenChroma = [0, $green, 0];
             $colorArray = $this->formatColor($greenChroma);
             $match = $this->testColorExists($colorArray);
             $green--;
-
         } while ($match == false && $green > 0);
 
         // *** If no match, just bite the bullet and use green value of 255
-        if ( ! $match)
-        {
-            $greenChroma = array( 0, $green, 0 );
+        if (! $match) {
+            $greenChroma = [0, $green, 0];
         }
 
         return $greenChroma;
@@ -3324,25 +3035,22 @@ class imageLib {
     ## --------------------------------------------------------
 
     private function findUnusedBlue()
-        # Purpose:  We find a green color suitable to use like green-screen effect.
-        #     Therefore, the color must not exist in the image.
+    # Purpose:  We find a green color suitable to use like green-screen effect.
+    #     Therefore, the color must not exist in the image.
     {
         $blue = 255;
 
-        do
-        {
+        do {
 
-            $blueChroma = array( 0, 0, $blue );
+            $blueChroma = [0, 0, $blue];
             $colorArray = $this->formatColor($blueChroma);
             $match = $this->testColorExists($colorArray);
             $blue--;
-
         } while ($match == false && $blue > 0);
 
         // *** If no match, just bite the bullet and use blue value of 255
-        if ( ! $match)
-        {
-            $blueChroma = array( 0, 0, $blue );
+        if (! $match) {
+            $blueChroma = [0, 0, $blue];
         }
 
         return $blueChroma;
@@ -3351,29 +3059,24 @@ class imageLib {
     ## --------------------------------------------------------
 
     private function invertTransparency($value, $originalMax, $invert = true)
-        # Purpose:  This does two things:
-        #       1) Convert the range from 0-127 to 0-100
-        #       2) Inverts value to 100 is not transparent while 0 is fully
-        #          transparent (like Photoshop)
+    # Purpose:  This does two things:
+    #       1) Convert the range from 0-127 to 0-100
+    #       2) Inverts value to 100 is not transparent while 0 is fully
+    #          transparent (like Photoshop)
     {
         // *** Test max range
-        if ($value > $originalMax)
-        {
+        if ($value > $originalMax) {
             $value = $originalMax;
         }
 
         // *** Test min range
-        if ($value < 0)
-        {
+        if ($value < 0) {
             $value = 0;
         }
 
-        if ($invert)
-        {
+        if ($invert) {
             return $originalMax - (($value / 100) * $originalMax);
-        }
-        else
-        {
+        } else {
             return ($value / 100) * $originalMax;
         }
     }
@@ -3386,19 +3089,15 @@ class imageLib {
         $r1 = 0;
         $g1 = 255;
         $b1 = 0;
-        for ($x = 0; $x < imagesx($src); ++$x)
-        {
-            for ($y = 0; $y < imagesy($src); ++$y)
-            {
+        for ($x = 0; $x < imagesx($src); ++$x) {
+            for ($y = 0; $y < imagesy($src); ++$y) {
                 $color = imagecolorat($src, $x, $y);
                 $r = ($color >> 16) & 0xFF;
                 $g = ($color >> 8) & 0xFF;
                 $b = $color & 0xFF;
-                for ($i = 0; $i < 270; $i++)
-                {
+                for ($i = 0; $i < 270; $i++) {
                     //if ($r . $g . $b == ($r1 + $i) . ($g1 + $i) . ($b1 + $i)) {
-                    if ($r == 0 && $g == 255 && $b == 0)
-                    {
+                    if ($r == 0 && $g == 255 && $b == 0) {
                         //if ($g == 255) {
                         $trans_colour = imagecolorallocatealpha($src, 0, 0, 0, 127);
                         imagefill($src, $x, $y, $trans_colour);
@@ -3413,7 +3112,7 @@ class imageLib {
     ## --------------------------------------------------------
 
     function checkStringStartsWith($needle, $haystack)
-        # Check if a string starts with a specific pattern
+    # Check if a string starts with a specific pattern
     {
         return (substr($haystack, 0, strlen($needle)) == $needle);
     }
@@ -3424,30 +3123,27 @@ class imageLib {
 *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*/
 
     private function GD2BMPstring(&$gd_image)
-        # Author:     James Heinrich
-        # Purpose:    Save file as type bmp
-        # Param in:   The image canvas (passed as ref)
-        # Param out:
-        # Reference:
-        # Notes:    This code was stripped out of two external files
-        #       (phpthumb.bmp.php,phpthumb.functions.php) and added below to
-        #       avoid dependancies.
-        #
+    # Author:     James Heinrich
+    # Purpose:    Save file as type bmp
+    # Param in:   The image canvas (passed as ref)
+    # Param out:
+    # Reference:
+    # Notes:    This code was stripped out of two external files
+    #       (phpthumb.bmp.php,phpthumb.functions.php) and added below to
+    #       avoid dependancies.
+    #
     {
         $imageX = ImageSX($gd_image);
         $imageY = ImageSY($gd_image);
 
         $BMP = '';
-        for ($y = ($imageY - 1); $y >= 0; $y--)
-        {
+        for ($y = ($imageY - 1); $y >= 0; $y--) {
             $thisline = '';
-            for ($x = 0; $x < $imageX; $x++)
-            {
+            for ($x = 0; $x < $imageX; $x++) {
                 $argb = $this->GetPixelColor($gd_image, $x, $y);
                 $thisline .= chr($argb['blue']) . chr($argb['green']) . chr($argb['red']);
             }
-            while (strlen($thisline) % 4)
-            {
+            while (strlen($thisline) % 4) {
                 $thisline .= "\x00";
             }
             $BMP .= $thisline;
@@ -3477,39 +3173,37 @@ class imageLib {
         return $BITMAPFILEHEADER . $BITMAPINFOHEADER . $BMP;
     }
 
-## --------------------------------------------------------
+    ## --------------------------------------------------------
 
     private function GetPixelColor(&$img, $x, $y)
-        # Author:     James Heinrich
-        # Purpose:
-        # Param in:
-        # Param out:
-        # Reference:
-        # Notes:
-        #
+    # Author:     James Heinrich
+    # Purpose:
+    # Param in:
+    # Param out:
+    # Reference:
+    # Notes:
+    #
     {
-        if (! is_resource($img) && ! $img instanceof \GdImage)
-        {
+        if (! is_resource($img) && ! $img instanceof \GdImage) {
             return false;
         }
 
         return @ImageColorsForIndex($img, @ImageColorAt($img, $x, $y));
     }
 
-## --------------------------------------------------------
+    ## --------------------------------------------------------
 
     private function LittleEndian2String($number, $minbytes = 1)
-        # Author:     James Heinrich
-        # Purpose:    BMP SUPPORT (SAVING)
-        # Param in:
-        # Param out:
-        # Reference:
-        # Notes:
-        #
+    # Author:     James Heinrich
+    # Purpose:    BMP SUPPORT (SAVING)
+    # Param in:
+    # Param out:
+    # Reference:
+    # Notes:
+    #
     {
         $intstring = '';
-        while ($number > 0)
-        {
+        while ($number > 0) {
             $intstring = $intstring . chr($number & 255);
             $number >>= 8;
         }
@@ -3523,41 +3217,38 @@ class imageLib {
 *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*/
 
     private function ImageCreateFromBMP($filename)
-        # Author:     DHKold
-        # Date:     The 15th of June 2005
-        # Version:    2.0B
-        # Purpose:    To create an image from a BMP file.
-        # Param in:   BMP file to open.
-        # Param out:  Return a resource like the other ImageCreateFrom functions
-        # Reference:  http://us3.php.net/manual/en/function.imagecreate.php#53879
-        # Bug fix:    Author:   domelca at terra dot es
-        #       Date:   06 March 2008
-        #       Fix:    Correct 16bit BMP support
-        # Notes:
-        #
+    # Author:     DHKold
+    # Date:     The 15th of June 2005
+    # Version:    2.0B
+    # Purpose:    To create an image from a BMP file.
+    # Param in:   BMP file to open.
+    # Param out:  Return a resource like the other ImageCreateFrom functions
+    # Reference:  http://us3.php.net/manual/en/function.imagecreate.php#53879
+    # Bug fix:    Author:   domelca at terra dot es
+    #       Date:   06 March 2008
+    #       Fix:    Correct 16bit BMP support
+    # Notes:
+    #
     {
 
         //Ouverture du fichier en mode binaire
-        if ( ! $f1 = fopen($filename, "rb"))
-        {
+        if (! $f1 = fopen($filename, "rb")) {
             return false;
         }
 
         //1 : Chargement des ent�tes FICHIER
         $FILE = unpack("vfile_type/Vfile_size/Vreserved/Vbitmap_offset", fread($f1, 14));
-        if ($FILE['file_type'] != 19778)
-        {
+        if ($FILE['file_type'] != 19778) {
             return false;
         }
 
         //2 : Chargement des ent�tes BMP
         $BMP = unpack('Vheader_size/Vwidth/Vheight/vplanes/vbits_per_pixel' .
-                      '/Vcompression/Vsize_bitmap/Vhoriz_resolution' .
-                      '/Vvert_resolution/Vcolors_used/Vcolors_important', fread($f1, 40));
+            '/Vcompression/Vsize_bitmap/Vhoriz_resolution' .
+            '/Vvert_resolution/Vcolors_used/Vcolors_important', fread($f1, 40));
         $BMP['colors'] = pow(2, $BMP['bits_per_pixel']);
 
-        if ($BMP['size_bitmap'] == 0)
-        {
+        if ($BMP['size_bitmap'] == 0) {
             $BMP['size_bitmap'] = $FILE['file_size'] - $FILE['bitmap_offset'];
         }
 
@@ -3567,15 +3258,13 @@ class imageLib {
         $BMP['decal'] -= floor($BMP['width'] * $BMP['bytes_per_pixel'] / 4);
         $BMP['decal'] = 4 - (4 * $BMP['decal']);
 
-        if ($BMP['decal'] == 4)
-        {
+        if ($BMP['decal'] == 4) {
             $BMP['decal'] = 0;
         }
 
         //3 : Chargement des couleurs de la palette
-        $PALETTE = array();
-        if ($BMP['colors'] < 16777216)
-        {
+        $PALETTE = [];
+        if ($BMP['colors'] < 16777216) {
             $PALETTE = unpack('V' . $BMP['colors'], fread($f1, $BMP['colors'] * 4));
         }
 
@@ -3586,17 +3275,12 @@ class imageLib {
         $res = imagecreatetruecolor($BMP['width'], $BMP['height']);
         $P = 0;
         $Y = $BMP['height'] - 1;
-        while ($Y >= 0)
-        {
+        while ($Y >= 0) {
             $X = 0;
-            while ($X < $BMP['width'])
-            {
-                if ($BMP['bits_per_pixel'] == 24)
-                {
+            while ($X < $BMP['width']) {
+                if ($BMP['bits_per_pixel'] == 24) {
                     $COLOR = unpack("V", substr($IMG, $P, 3) . $VIDE);
-                }
-                elseif ($BMP['bits_per_pixel'] == 16)
-                {
+                } elseif ($BMP['bits_per_pixel'] == 16) {
 
                     /*
            * BMP 16bit fix
@@ -3619,65 +3303,38 @@ class imageLib {
                     $green = ($COLOR[1] & 0x07e0) >> 3;
                     $red = ($COLOR[1] & 0xf800) >> 8;
                     $COLOR[1] = $red * 65536 + $green * 256 + $blue;
-
-                }
-                elseif ($BMP['bits_per_pixel'] == 8)
-                {
+                } elseif ($BMP['bits_per_pixel'] == 8) {
                     $COLOR = unpack("n", $VIDE . substr($IMG, $P, 1));
-                    $COLOR[1] = $PALETTE[ $COLOR[1] + 1 ];
-                }
-                elseif ($BMP['bits_per_pixel'] == 4)
-                {
+                    $COLOR[1] = $PALETTE[$COLOR[1] + 1];
+                } elseif ($BMP['bits_per_pixel'] == 4) {
                     $COLOR = unpack("n", $VIDE . substr($IMG, floor($P), 1));
-                    if (($P * 2) % 2 == 0)
-                    {
+                    if (($P * 2) % 2 == 0) {
                         $COLOR[1] = ($COLOR[1] >> 4);
-                    }
-                    else
-                    {
+                    } else {
                         $COLOR[1] = ($COLOR[1] & 0x0F);
                     }
-                    $COLOR[1] = $PALETTE[ $COLOR[1] + 1 ];
-                }
-                elseif ($BMP['bits_per_pixel'] == 1)
-                {
+                    $COLOR[1] = $PALETTE[$COLOR[1] + 1];
+                } elseif ($BMP['bits_per_pixel'] == 1) {
                     $COLOR = unpack("n", $VIDE . substr($IMG, floor($P), 1));
-                    if (($P * 8) % 8 == 0)
-                    {
+                    if (($P * 8) % 8 == 0) {
                         $COLOR[1] = $COLOR[1] >> 7;
-                    }
-                    elseif (($P * 8) % 8 == 1)
-                    {
+                    } elseif (($P * 8) % 8 == 1) {
                         $COLOR[1] = ($COLOR[1] & 0x40) >> 6;
-                    }
-                    elseif (($P * 8) % 8 == 2)
-                    {
+                    } elseif (($P * 8) % 8 == 2) {
                         $COLOR[1] = ($COLOR[1] & 0x20) >> 5;
-                    }
-                    elseif (($P * 8) % 8 == 3)
-                    {
+                    } elseif (($P * 8) % 8 == 3) {
                         $COLOR[1] = ($COLOR[1] & 0x10) >> 4;
-                    }
-                    elseif (($P * 8) % 8 == 4)
-                    {
+                    } elseif (($P * 8) % 8 == 4) {
                         $COLOR[1] = ($COLOR[1] & 0x8) >> 3;
-                    }
-                    elseif (($P * 8) % 8 == 5)
-                    {
+                    } elseif (($P * 8) % 8 == 5) {
                         $COLOR[1] = ($COLOR[1] & 0x4) >> 2;
-                    }
-                    elseif (($P * 8) % 8 == 6)
-                    {
+                    } elseif (($P * 8) % 8 == 6) {
                         $COLOR[1] = ($COLOR[1] & 0x2) >> 1;
-                    }
-                    elseif (($P * 8) % 8 == 7)
-                    {
+                    } elseif (($P * 8) % 8 == 7) {
                         $COLOR[1] = ($COLOR[1] & 0x1);
                     }
-                    $COLOR[1] = $PALETTE[ $COLOR[1] + 1 ];
-                }
-                else
-                {
+                    $COLOR[1] = $PALETTE[$COLOR[1] + 1];
+                } else {
                     return false;
                 }
 
@@ -3701,49 +3358,42 @@ class imageLib {
 *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-**-*-*-*-*-*-*-*-*-*-*-*-*-*/
 
     private function imagecreatefrompsd($fileName)
-        # Author:     Tim de Koning
-        # Version:    1.3
-        # Purpose:    To create an image from a PSD file.
-        # Param in:   PSD file to open.
-        # Param out:  Return a resource like the other ImageCreateFrom functions
-        # Reference:  http://www.kingsquare.nl/phppsdreader
-        # Notes:
-        #
+    # Author:     Tim de Koning
+    # Version:    1.3
+    # Purpose:    To create an image from a PSD file.
+    # Param in:   PSD file to open.
+    # Param out:  Return a resource like the other ImageCreateFrom functions
+    # Reference:  http://www.kingsquare.nl/phppsdreader
+    # Notes:
+    #
     {
-        if (file_exists($this->psdReaderPath))
-        {
+        if (file_exists($this->psdReaderPath)) {
 
 
             include_once($this->psdReaderPath);
 
             $psdReader = new PhpPsdReader($fileName);
 
-            if (isset($psdReader->infoArray['error']))
-            {
+            if (isset($psdReader->infoArray['error'])) {
                 return '';
-            }
-            else
-            {
+            } else {
                 return $psdReader->getImage();
             }
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
 
-## --------------------------------------------------------
+    ## --------------------------------------------------------
 
     public function __destruct()
     {
-        if (is_resource($this->imageResized) || $this->imageResized instanceof \GdImage)
-        {
+        if (is_resource($this->imageResized) || $this->imageResized instanceof \GdImage) {
             imagedestroy($this->imageResized);
         }
     }
 
-## --------------------------------------------------------
+    ## --------------------------------------------------------
 
 }
 

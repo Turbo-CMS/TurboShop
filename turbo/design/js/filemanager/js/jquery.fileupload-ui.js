@@ -521,6 +521,7 @@
             var button = $(e.currentTarget),
                 template = button.closest('.template-upload'),
                 data = template.data('data');
+                template.addClass('visible');
             button.prop('disabled', true);
             if (data && data.submit) {
                 data.submit();

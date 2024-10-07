@@ -45,7 +45,7 @@ class ExportAjax extends Turbo
 		$filter['sort'] = $this->request->get('sort');
 		$filter['keyword'] = $this->request->get('keyword');
 
-		$subscribes = $this->subscribes->get_subscribes($filter);
+		$subscribes = $this->subscribes->getSubscribes($filter);
 
 		foreach ($subscribes as $subscribe) {
 			$str = [];
@@ -57,7 +57,7 @@ class ExportAjax extends Turbo
 			fputcsv($file, $str, $this->columnDelimiter);
 		}
 
-		$totalSubscribes = $this->subscribes->count_subscribes();
+		$totalSubscribes = $this->subscribes->countSubscribes();
 
 		if ($this->countSubscribes * $page < $totalSubscribes) {
 			return ['end' => false, 'page' => $page, 'totalPages' => $totalSubscribes / $this->countSubscribes];

@@ -1,27 +1,32 @@
 {$meta_title=$btr->global_subscribes_email scope=global}
 
-<div class="d-md-flex mb-3">
-	<h1 class="d-inline align-middle me-3">
-		{$btr->global_subscribes_email|escape} - {$subscribes_count}
-	</h1>
-	{if $subscribes_count > 0}
-		<div class="d-inline-block heading-block text-dark mb-3 mt-1" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_export|escape}">
-			<i class="align-middle cursor-pointer" data-feather="file-text"></i>
+<div class="row">
+	<div class="col-12">
+		<div class="d-md-flex mb-3">
+			<h1 class="d-inline align-middle me-3">
+				{$btr->global_subscribes_email|escape} - {$subscribes_count}
+			</h1>
+			{if $subscribes_count > 0}
+				<div class="d-inline-block heading-block text-dark mb-3 mt-1" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_export|escape}">
+					<i class="align-middle cursor-pointer" data-feather="file-text"></i>
+				</div>
+			{/if}
 		</div>
-	{/if}
+	</div>
 </div>
+
+{if $subscribes_count > 0}
+	<div class="position-relative mb-4 mt-n4">
+		<div class="progress position-absolute w-100" style="display: none;">
+			<div id="progressbar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+		</div>
+	</div>
+{/if}
 
 <div class="card">
 	<div class="card-body">
 		{if $subscribes}
 			<div class="row">
-				{if $subscribes_count > 0}
-					<div class="col-12">
-						<div class="progress mb-1" style="display: none;">
-							<div id="progressbar" class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%"></div>
-						</div>
-					</div>
-				{/if}
 				<div class="col-12">
 					<form class="js-form-list" method="post">
 						<input type="hidden" name="session_id" value="{$smarty.session.id}">

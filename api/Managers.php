@@ -126,7 +126,7 @@ class Managers extends Turbo
 	}
 
 	/**
-	 * Add Manager
+	 * Update Manager
 	 */
 	public function updateManager($login, $manager)
 	{

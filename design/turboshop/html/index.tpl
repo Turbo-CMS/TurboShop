@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" {if $language->label}xml:lang="{$language->label|escape}" lang="{$language->label|escape}"{/if} {if $theme_settings->theme_color == 'theme_light'}data-theme="light"{elseif $theme_settings->theme_color == 'theme_dark'}data-theme="dark"{else}{if isset($smarty.cookies.mode) && $smarty.cookies.mode == 'dark'}data-theme="dark"{elseif isset($smarty.cookies.mode) && $smarty.cookies.mode == 'light'}data-theme="light"{else}data-theme="default"{/if}{/if}>
+<html xmlns="http://www.w3.org/1999/xhtml" {if isset($language->label)}xml:lang="{if $language->label == "ua"}uk{else}{$language->label|escape}{/if}" lang="{if $language->label == "ua"}uk{else}{$language->label|escape}{/if}"{/if} {if $theme_settings->theme_color == 'theme_light'}data-theme="light"{elseif $theme_settings->theme_color == 'theme_dark'}data-theme="dark"{else}{if isset($smarty.cookies.mode) && $smarty.cookies.mode == 'dark'}data-theme="dark"{elseif isset($smarty.cookies.mode) && $smarty.cookies.mode == 'light'}data-theme="light"{else}data-theme="default"{/if}{/if}>
 
 <head>
 	{* Head *}

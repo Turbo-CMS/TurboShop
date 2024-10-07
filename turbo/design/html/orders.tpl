@@ -50,6 +50,14 @@
 	</div>
 {/if}
 
+{if $orders_count > 0}
+	<div class="position-relative pt-1 mb-4 mt-n4">
+		<div class="progress position-absolute w-100" style="display: none;">
+			<div id="progressbar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+		</div>
+	</div>
+{/if}
+
 <div class="card">
 	<div class="card-body">
 		<div class="row">
@@ -405,13 +413,13 @@
 					to_date = '{if isset($to_date)}{$to_date}{/if}';
 				{literal}
 
-				$(document).on('click', '.feather-file-text', function() {
-					Piecon.setOptions({fallback: 'force'});
-					Piecon.setProgress(0);
-					var progress_item = $("#progressbar");
-					progress_item.show();
-					do_export('', progress_item);
-				});
+					$(document).on('click', '.feather-file-text', function() {
+						Piecon.setOptions({fallback: 'force'});
+						Piecon.setProgress(0);
+						var progress_item = $("#progressbar");
+						$(".progress").show();
+						do_export('', progress_item);
+					});
 
 				function do_export(page, progress) {
 					page = typeof(page) != 'undefined' ? page : 1;
@@ -432,13 +440,13 @@
 						success: function(data) {
 							if (data && !data.end) {
 								Piecon.setProgress(Math.round(100 * data.page / data.totalpages));
-								progress.attr('value', 100 * data.page / data.totalpages);
+								progress.css('width', 100 * data.page / data.totalpages + '%');
 								do_export(data.page * 1 + 1, progress);
 							} else {
 								Piecon.setProgress(100);
-								progress.attr('value', '100');
+								progress.css('width', '100%');
 								window.location.href = 'files/export/export_orders.csv';
-								progress.fadeOut(500);
+								$(".progress").fadeOut(500);
 							}
 						},
 						error: function(xhr, status, errorThrown) {

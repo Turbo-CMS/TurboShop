@@ -1,9 +1,9 @@
 <?php
 
-return array(
+return [
 
     'az_AZ' => 'Azərbaycan dili',
-    'bg_BG' => 'български език',
+    'bg_BG' => 'Български език',
     'ca' => 'Català, valencià',
     'cs' => 'čeština, český jazyk',
     'da' => 'Dansk',
@@ -35,10 +35,10 @@ return array(
     'sv_SE' => 'Svenska',
     'th_TH' => 'ไทย',
     'tr_TR' => 'Türkçe',
-    'ua' => 'Українська мова',
+    'uk' => 'Українська мова',
     'vi' => 'Tiếng Việt',
     'zh_CN' => '中文 (Zhōngwén), 汉语, 漢語',
     'ka'=>'ქართული',
 
     // source: http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
-);
+];
