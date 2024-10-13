@@ -30,6 +30,7 @@
 	border-right-color: transparent;
 	vertical-align: -0.125em;
 	color: #222f3e;
+	margin-left: 33px;
 }
 
 @keyframes spinner-border {

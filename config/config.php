@@ -21,7 +21,7 @@ db_prefix = "t_";
 db_charset = "UTF8MB4";
 
 ;SQL Mode
-db_sql_mode = "NO_ZERO_DATE,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION";
+db_sql_mode = "NO_ZERO_DATE,NO_ENGINE_SUBSTITUTION";
 
 ;Time zone offset
 ;db_timezone = "+02:00";

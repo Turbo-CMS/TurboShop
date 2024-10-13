@@ -230,6 +230,18 @@
 					</div>
 					<div class="review-list-inner review-list-inner--view-list">
 						<div class="js_append review-list-inner__list grid-list grid-list--items-1">
+							{* Error *}
+							{if isset($error)}
+								<div class="alert alert-danger" role="alert">
+									{if $error=='captcha'}
+										{$lang->captcha_incorrect}
+									{elseif $error=='empty_name'}
+										{$lang->enter_your_name}
+									{elseif $error=='empty_comment'}
+										{$lang->enter_a_comment}
+									{/if}
+								</div>
+							{/if}
 							<div class="js-form-comment" id="form_comment_0" style="display: none;"></div>
 							{if $comments}
 								{foreach $comments as $comment}

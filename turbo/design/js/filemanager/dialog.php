@@ -490,8 +490,8 @@ $get_params = http_build_query($get_params);
 	<!-- Uploader -->
 	<div class="modal fade uploader" id="uploader" tabindex="-1" aria-labelledby="uploader" aria-hidden="true">
 		<div class="modal-dialog modal-fullscreen">
-			<div class="modal-content">
-				<div class="modal-body">
+			<div class="modal-content d-flex flex-column h-100">
+				<div class="modal-body d-flex flex-column flex-grow-1">
 					<section class="text-center container">
 						<div class="row py-1">
 							<div class="col-lg-6 col-md-8 mx-auto">
@@ -505,18 +505,16 @@ $get_params = http_build_query($get_params);
 							</div>
 						</div>
 					</section>
-					<div class="px-2 pt-5 pb-2 mb-4 border-dashed border-2 rounded-3" id="baseUpload">
-						<!-- The file upload form used as target for the file upload widget -->
-						<form id="fileupload" action="" method="POST" enctype="multipart/form-data">
-							<div class="fileupload-progress px-3">
+					<div class="px-2 pb-2 border-dashed border-2 rounded-3 flex-grow-1" id="baseUpload">
+						<form id="fileupload" action="" method="POST" enctype="multipart/form-data" class="h-100 d-flex flex-column">
+							<div class="fileupload-progress mt-2 mx-2">
 								<div class="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
 									<div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 0%"></div>
 								</div>
-								<!-- The extended global progress state -->
 								<div class="progress-extended"></div>
 							</div>
-							<div class="container-fluid py-5">
-								<div class="d-grid gap-2 d-sm-flex justify-content-sm-center mb-5 fileupload-buttonbar">
+							<div class="container-fluid flex-grow-1 d-flex flex-column">
+								<div class="d-grid gap-2 d-sm-flex justify-content-sm-center fileupload-buttonbar my-2">
 									<button type="button" class="btn btn-secondary px-4 me-sm-3 fileinput-button">
 										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus btn-icon">
 											<line x1="12" y1="5" x2="12" y2="19"></line>
@@ -533,88 +531,86 @@ $get_params = http_build_query($get_params);
 										</svg>
 										<?= trans('Upload_start'); ?>
 									</button>
-									<!-- The global file processing state -->
 									<span class="fileupload-process"></span>
 								</div>
-								<!-- The table listing the files available for upload/download -->
-								<div id="filesTable" class="table-responsive">
+								<div id="filesTable" class="table-responsive flex-grow-1 overflow-auto">
 									<table role="presentation" class="table table-striped table-hover border-top-table table-sm">
 										<tbody class="files"></tbody>
 									</table>
 								</div>
 							</div>
 						</form>
-						<div class="text-center text-body-secondary">
-							<small><?= trans('Upload_base_help'); ?></small>
-						</div>
-						<!-- The template to display files available for upload -->
-						<script id="template-upload" type="text/x-tmpl">
-							{% for (var i=0, file; file=o.files[i]; i++) { %}
-								<tr class="template-upload">
-									<td>
-										<span class="preview"></span>
-									</td>
-									<td class="name">
-										<p>{%=file.relativePath%}{%=file.name%}</p>
-										<strong class="error text-danger"></strong>
-									</td>
-									<td>
-										<p class="size">Processing...</p>
-										<div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-bar progress-bar-striped progress-bar-animated" style="width:0%;"></div></div>
-									</td>
-									<td>
-										{% if (!i && !o.options.autoUpload) { %}
-											<button class="btn btn-uploader start">
-												<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-											</button>
-										{% } %}
-										{% if (!i) { %}
-											<button class="btn btn-uploader cancel">
-												<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-											</button>
-										{% } %}
-									</td>
-								</tr>
-							{% } %}
-						</script>
-						<!-- The template to display files available for download -->
-						<script id="template-download" type="text/x-tmpl">
-							{% for (var i=0, file; file=o.files[i]; i++) { %}
-								{% if (file.error) { %}
-									<tr class="template-download table-danger">
-								{% } else { %}
-									<tr class="template-download table-success">
-								{% } %}
-									<td>
-										<span class="preview">
-											{% if (file.error) { %}
-												<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-											{% } else { %}
-												<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-											{% } %}
-										</span>
-									</td>
-									<td>
-										<p class="name">
-											{% if (file.url) { %}
-												<a href="{%=file.url%}" class="text-reset text-decoration-none" title="{%=file.name%}" download="{%=file.name%}" {%=file.thumbnailUrl?'data-gallery':''%}>{%=file.name%}</a>
-											{% } else { %}
-												<span>{%=file.name%}</span>
-											{% } %}
-										</p>
-										{% if (file.error) { %}
-											<div><span class="text-error">Error</span> {%=file.error%}</div>
-										{% } %}
-									</td>
-									<td>
-										<span class="size">{%=o.formatFileSize(file.size)%}</span>
-									</td>
-									<td></td>
-								</tr>
-							{% } %}
-						</script>
 					</div>
 				</div>
+				<div class="text-center text-body-secondary mt-auto mb-3 px-3">
+					<small><?= trans('Upload_base_help'); ?></small>
+				</div>
+				<!-- The template to display files available for upload -->
+				<script id="template-upload" type="text/x-tmpl">
+					{% for (var i=0, file; file=o.files[i]; i++) { %}
+						<tr class="template-upload">
+							<td>
+								<span class="preview"></span>
+							</td>
+							<td class="name">
+								<p>{%=file.relativePath%}{%=file.name%}</p>
+								<strong class="error text-danger"></strong>
+							</td>
+							<td class="size-td">
+								<p class="size">Processing...</p>
+								<div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-bar progress-bar-striped progress-bar-animated" style="width:0%;"></div></div>
+							</td>
+							<td>
+								{% if (!i && !o.options.autoUpload) { %}
+									<button class="btn btn-uploader start">
+										<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+									</button>
+								{% } %}
+								{% if (!i) { %}
+									<button class="btn btn-uploader cancel">
+										<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+									</button>
+								{% } %}
+							</td>
+						</tr>
+					{% } %}
+				</script>
+				<!-- The template to display files available for download -->
+				<script id="template-download" type="text/x-tmpl">
+					{% for (var i=0, file; file=o.files[i]; i++) { %}
+						{% if (file.error) { %}
+							<tr class="template-download table-danger">
+						{% } else { %}
+							<tr class="template-download table-success">
+						{% } %}
+							<td>
+								<span class="preview">
+									{% if (file.error) { %}
+										<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+									{% } else { %}
+										<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+									{% } %}
+								</span>
+							</td>
+							<td class="name">
+								<p>
+									{% if (file.url) { %}
+										<a href="{%=file.url%}" class="text-reset text-decoration-none" title="{%=file.name%}" download="{%=file.name%}" {%=file.thumbnailUrl?'data-gallery':''%}>{%=file.name%}</a>
+									{% } else { %}
+										<span>{%=file.name%}</span>
+									{% } %}
+								</p>
+								{% if (file.error) { %}
+									<div><span class="text-error">Error</span> {%=file.error%}</div>
+								{% } %}
+							</td>
+							<td class="size-td">
+								<p class="size">{%=o.formatFileSize(file.size)%}</p>
+							</td>
+							<td></td>
+						</tr>
+					{% } %}
+				</script>
 			</div>
 		</div>
 	</div>

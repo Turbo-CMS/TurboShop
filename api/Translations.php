@@ -46,4 +46,12 @@ class Translations extends Turbo
 			return null;
 		}
 	}
+
+	/**
+	 * Set Translation 
+	 */
+	public function __set($name, $value)
+	{
+		$this->vars[$name] = $value;
+	}
 }

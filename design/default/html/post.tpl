@@ -70,7 +70,7 @@
 	{if $post->image}
 		{* Image *}
 		<div class="card mb-4">
-			<img itemprop="image" class="img-fluid rounded" src="{$post->image|resize_posts:700:700}" alt="{$post->name|escape}">
+			<img itemprop="image" class="img-fluid rounded" src="{$post->image|resize_posts:964:964}" alt="{$post->name|escape}">
 		</div>
 		<hr class="text-black-50">
 	{/if}

@@ -3,7 +3,7 @@
 		<div class="card-body product">
 			<div class="row">
 				<div class="col-md-3">
-					<div class="img-wrap">
+					<div class="img-wrap p-1">
 						<div class="badges">
 							{if $product->variant->compare_price> 0}<span class="notify-badge badge bg-danger"><i class="fal fa-badge-percent me-1"></i>{$lang->badge_sale}</span>{/if}
 							{if $product->featured}<span class="notify-badge badge bg-primary"><i class="fal fa-thumbs-up me-1"></i>{$lang->badge_featured}</span>{/if}
@@ -11,9 +11,9 @@
 							{if $product->is_new}<span class="notify-badge badge bg-warning"><i class="fal fa-badge-check me-1"></i>{$lang->badge_new}</span>{/if}
 						</div>
 						{if isset($product->image) && $product->image}
-							<a class="image" href="{$lang_link}products/{$product->url}"><img src="{$product->image->filename|resize:170:170}" alt="{$product->name|escape}"></a>
+							<a class="image" href="{$lang_link}products/{$product->url}"><img src="{$product->image->filename|resize:240:240}" alt="{$product->name|escape}"></a>
 						{else}
-							<a href="{$lang_link}products/{$product->url}"><img style="width: 170px; height: 170px;" src="design/{$settings->theme|escape}/images/no-photo.svg" alt="{$product->name|escape}"></a>
+							<a href="{$lang_link}products/{$product->url}"><img style="width: 140px; height: 140px;" src="design/{$settings->theme|escape}/images/no-photo.svg" alt="{$product->name|escape}"></a>
 						{/if}
 						<div class="my-1">
 							{if isset($product->related_products)}

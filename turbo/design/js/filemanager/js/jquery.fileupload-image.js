@@ -141,13 +141,13 @@
             previewMaxHeight: 80,
             // Defines the preview orientation (1-8) or takes the orientation
             // value from Exif data if set to true:
-            previewOrientation: true,
+            previewOrientation: false,
             // Create the preview using the Exif data thumbnail:
             previewThumbnail: true,
             // Define if preview images should be cropped or only scaled:
             previewCrop: false,
             // Define if preview images should be resized as canvas elements:
-            previewCanvas: true
+            previewCanvas: false
         },
 
         processActions: {
