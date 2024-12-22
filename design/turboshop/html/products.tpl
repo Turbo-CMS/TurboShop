@@ -1,15 +1,15 @@
 {* List Products *}
 
 {* Canonical *}
-{if isset($page)}
+{if $page}
 	{$canonical="/{$page->url}" scope=global}
-{elseif isset($category) && isset($brand)}
+{elseif $category && $brand}
 	{$canonical="/catalog/{$category->url}/{$brand->url}" scope=global}
-{elseif isset($category)}
+{elseif $category}
 	{$canonical="/catalog/{$category->url}" scope=global}
-{elseif isset($brand)}
+{elseif $brand}
 	{$canonical="/brands/{$brand->url}" scope=global}
-{elseif isset($keyword)}
+{elseif $keyword}
 	{$canonical="/all-products?keyword={$keyword|escape}" scope=global}
 {else}
 	{$canonical="/all-products" scope=global}
@@ -37,8 +37,8 @@
 					{$level = 1}
 					<div class="breadcrumbs swipeignore" itemscope="" itemtype="http://schema.org/BreadcrumbList">
 						<div class="breadcrumbs__item" id="tb_breadcrumb_0" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-							<a class="breadcrumbs__link" href="{if $lang_link}{$lang_link}{else}/{/if}" title="{$lang->home}" itemprop="item">
-								<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->home}</span>
+							<a class="breadcrumbs__link" href="{if $lang_link}{$lang_link}{else}/{/if}" title="{$lang->home|escape}" itemprop="item">
+								<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->home|escape}</span>
 								<meta itemprop="position" content="{$level++}">
 							</a>
 						</div>
@@ -49,18 +49,28 @@
 								</svg>
 							</i>
 						</span>
-						{if isset($page) && !isset($category)}
-							<span class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-								<link href="{$lang_link}{$page->url}" itemprop="item"><span>
-									<span itemprop="name" class="breadcrumbs__item-name font_13">{$page->header|escape}</span>
-									<meta itemprop="position" content="{$level++}">
+						{if $page && !$category}
+							{if $keyword}
+								<div class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+									<a class="breadcrumbs__link" href="{$lang_link}{$page->url}" title="{$page->header|escape}" itemprop="item">
+										<span itemprop="name" class="breadcrumbs__item-name font_13">{$page->header|escape}</span>
+										<meta itemprop="position" content="{$level++}">
+									</a>
+								</div>
+							{else}
+								<span class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+									<link href="{$lang_link}{$page->url}" itemprop="item">
+									<span>
+										<span itemprop="name" class="breadcrumbs__item-name font_13">{$page->header|escape}</span>
+										<meta itemprop="position" content="{$level++}">
+									</span>
 								</span>
-							</span>
+							{/if}	
 						{/if}
-						{if isset($category)}
+						{if $category}
 							<div class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-								<a class="breadcrumbs__link" href="{$lang_link}catalog" title="{$lang->catalog}" itemprop="item">
-									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->catalog}</span>
+								<a class="breadcrumbs__link" href="{$lang_link}catalog" title="{$lang->catalog|escape}" itemprop="item">
+									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->catalog|escape}</span>
 									<meta itemprop="position" content="{$level++}">
 								</a>
 							</div>
@@ -72,14 +82,24 @@
 										</svg>
 									</i>
 								</span>
-								<div class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-									<a class="breadcrumbs__link" href="{$lang_link}catalog/{$cat->url}" title="{$cat->name|escape}" itemprop="item">
-										<span itemprop="name" class="breadcrumbs__item-name font_13">{$cat->name|escape}</span>
-										<meta itemprop="position" content="{$level++}">
-									</a>
-								</div>
+								{if !$cat@last || $keyword || $page || $brand}
+									<div class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+										<a class="breadcrumbs__link" href="{$lang_link}catalog/{$cat->url}" title="{$cat->name|escape}" itemprop="item">
+											<span itemprop="name" class="breadcrumbs__item-name font_13">{$cat->name|escape}</span>
+											<meta itemprop="position" content="{$level++}">
+										</a>
+									</div>
+								{else}
+									<span class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+										<link href="{$lang_link}catalog/{$cat->url}" itemprop="item">
+										<span>
+											<span itemprop="name" class="breadcrumbs__item-name font_13">{$cat->name|escape}</span>
+											<meta itemprop="position" content="{$level++}">
+										</span>
+									</span>
+								{/if}
 							{/foreach}
-							{if isset($brand)}
+							{if $brand}
 								<span class="breadcrumbs__separator">
 									<i class="svg inline muted-use fill-dark-light" aria-hidden="true">
 										<svg width="7" height="5">
@@ -87,14 +107,15 @@
 										</svg>
 									</i>
 								</span>
-								<div class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-									<a class="breadcrumbs__link" href="{$lang_link}catalog/{$cat->url}/{$brand->url}" title="{$brand->name|escape}" itemprop="item">
+								<span class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+									<link href="{$lang_link}catalog/{$cat->url}/{$brand->url}" itemprop="item">
+									<span>
 										<span itemprop="name" class="breadcrumbs__item-name font_13">{$brand->name|escape}</span>
 										<meta itemprop="position" content="{$level++}">
-									</a>
-								</div>
+									</span>
+								</span>
 							{/if}
-							{if isset($page)}
+							{if $page}
 								<span class="breadcrumbs__separator">
 									<i class="svg inline muted-use fill-dark-light" aria-hidden="true">
 										<svg width="7" height="5">
@@ -102,17 +123,18 @@
 										</svg>
 									</i>
 								</span>
-								<div class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-									<a class="breadcrumbs__link" href="{$lang_link}{$page->url}" title="{$page->header|escape}" itemprop="item">
+								<span class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+									<link href="{$lang_link}{$page->url}" itemprop="item">
+									<span>
 										<span itemprop="name" class="breadcrumbs__item-name font_13">{$page->header|escape}</span>
 										<meta itemprop="position" content="{$level++}">
-									</a>
-								</div>
+									</span>
+								</span>
 							{/if}
-						{elseif isset($brand)}
+						{elseif $brand}
 							<div class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-								<a class="breadcrumbs__link" href="{$lang_link}brands" title="{$lang->global_brands}" itemprop="item">
-									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->global_brands}</span>
+								<a class="breadcrumbs__link" href="{$lang_link}brands" title="{$lang->global_brands|escape}" itemprop="item">
+									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->global_brands|escape}</span>
 									<meta itemprop="position" content="{$level++}">
 								</a>
 							</div>
@@ -123,26 +145,28 @@
 									</svg>
 								</i>
 							</span>
-							<div class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-								<a class="breadcrumbs__link" href="{$lang_link}brands/{$brand->url}" title="{$brand->name|escape}" itemprop="item">
+							<span class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+								<link href="{$lang_link}brands/{$brand->url}" itemprop="item">
+								<span>
 									<span itemprop="name" class="breadcrumbs__item-name font_13">{$brand->name|escape}</span>
 									<meta itemprop="position" content="{$level++}">
-								</a>
-							</div>
-						{elseif isset($wishlist)}
-							<div class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-								<a class="breadcrumbs__link" href="{$lang_link}wishlist/" title="{$lang->wishlist}" itemprop="item">
-									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->wishlist}</span>
+								</span>
+							</span>
+						{elseif $keyword}
+							<span class="breadcrumbs__separator">
+								<i class="svg inline muted-use fill-dark-light" aria-hidden="true">
+									<svg width="7" height="5">
+										<use xlink:href="design/{$settings->theme|escape}/images/svg/sprite/arrows.svg#right-7-5"></use>
+									</svg>
+								</i>
+							</span>
+							<span class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+								<link href="{$lang_link}all-products?keyword={$keyword|escape}" itemprop="item">
+								<span>
+									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->search|escape}</span>
 									<meta itemprop="position" content="{$level++}">
-								</a>
-							</div>
-						{elseif isset($keyword)}
-							<div class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-								<a class="breadcrumbs__link" href="{$lang_link}all-products?keyword={$keyword|escape}" title="{$lang->search}" itemprop="item">
-									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->search}</span>
-									<meta itemprop="position" content="{$level++}">
-								</a>
-							</div>
+								</span>
+							</span>
 						{/if}
 					</div>
 				</div>
@@ -152,26 +176,26 @@
 				<div class="topic__inner">
 					<div class="topic__heading">
 						{* Page Title *}
-						{if isset($keyword)}
-							<h1 id="pagetitle" class="switcher-title">{$lang->search} {$keyword|escape}</h1>
-						{elseif isset($page)}
+						{if $keyword}
+							<h1 id="pagetitle" class="switcher-title">{$lang->search|escape} {$keyword|escape}</h1>
+						{elseif $page}
 							<h1 id="pagetitle" class="switcher-title" data-page="{$page->id}">{$page->name|escape}</h1>
 						{else}
-							{if isset($category) && $category->name_h1}
+							{if $category && $category->name_h1}
 								<h1 id="pagetitle" class="switcher-title" data-category="{$category->id}">
 									{$category->name_h1|escape}
 								</h1>
-							{elseif isset($category) && $category->name}
+							{elseif $category && $category->name}
 								<h1 id="pagetitle" class="switcher-title" data-category="{$category->id}">
 									{$category->name|escape}
 								</h1>
 							{/if}
 
-							{if isset($brand) && $brand->name_h1}
+							{if $brand && $brand->name_h1}
 								<h1 id="pagetitle" class="switcher-title" data-brand="{$brand->id}">
 									{$brand->name_h1|escape}
 								</h1>
-							{elseif isset($brand) && $brand->name}
+							{elseif $brand && $brand->name}
 								<h1 id="pagetitle" class="switcher-title" data-brand="{$brand->id}">
 									{$brand->name|escape}
 								</h1>
@@ -188,7 +212,7 @@
 <!--end-title_content-->
 
 {* Catalog *}
-{if isset($page) && $page->url=='catalog'}
+{if $page && $page->url=='catalog'}
 	{include file='catalog.tpl'}
 {else}
 	<div class="container">
@@ -196,7 +220,7 @@
 			<div class="maxwidth-theme">
 				<div class="col-md-12 col-sm-12 col-xs-12 content-md">
 					<div class="right_block narrow_N catalog_page">
-						{if isset($brand) && $brand->description}
+						{if $brand && $brand->description}
 							<div class="partner-detail">
 								<div class="partner-detail__card bordered outer-rounded-x">
 									{if $brand->image}
@@ -217,25 +241,25 @@
 											</div>
 										</div>
 										<div class="partner-detail__more-detail-text-link active hide">
-											<span class="choise dotted dark_link">{$lang->moredetails}</span>
+											<span class="choise dotted dark_link">{$lang->moredetails|escape}</span>
 										</div>
 									</div>
 								</div>
 							</div>
 						{/if}
 						{* Subcategories *}
-						{if isset($category->subcategories)}
+						{if $category && $category->subcategories}
 							{include file='products/catalog_category.tpl'}
 						{/if}
 						<div class="main-wrapper flexbox flexbox--direction-row">
 							<div class="section-content-wrapper with-leftblock flex-1">
-								{if isset($products)}
+								{if $products}
 									<div class="js_wrapper_items">
 										<div class="js-load-wrapper">
 											<div class="filter-panel sort_header view_table flexbox flexbox--direction-row flexbox--justify-beetwen">
 												<div class="filter-panel__part-left">
 													<div class="line-block filter-panel__main-info">
-														{if isset($category->brands) || isset($features)}
+														{if $category && $category->brands || $features}
 															<div class="line-block__item filter-panel__filter visible-991">
 																<div class="fill-theme-hover dark_link">
 																	<div class="tb-filter-title filter_title active-filter">
@@ -244,7 +268,7 @@
 																				<path data-name="Rectangle 636 copy 5" class="cls-1" d="M574.593,665.783L570,670.4V674l-2-1v-2.6l-4.6-4.614a0.94,0.94,0,0,1-.2-1.354,0.939,0.939,0,0,1,.105-0.16,0.969,0.969,0,0,1,.82-0.269h9.747a0.968,0.968,0,0,1,.82.269,0.94,0.94,0,0,1,.087.132A0.945,0.945,0,0,1,574.593,665.783Zm-8.164.216L569,668.581,571.571,666h-5.142Z" transform="translate(-563 -664)"></path>
 																			</svg>
 																		</i>
-																		<span class="font_upper_md dotted font_bold">{$lang->filter}</span>
+																		<span class="font_upper_md dotted font_bold">{$lang->filter|escape}</span>
 																	</div>
 																	<div class="controls-hr"></div>
 																</div>
@@ -256,17 +280,17 @@
 																	<div class="dropdown-select__title font_14 font_large fill-dark-light bordered rounded-x shadow-hovered shadow-no-border-hovered">
 																		<span>
 																			{if $sort=='position'}
-																				{$lang->default}
+																				{$lang->default|escape}
 																			{elseif $sort=='name'}
-																				{$lang->name_a_z}
+																				{$lang->name_a_z|escape}
 																			{elseif $sort=='name_desc'}
-																				{$lang->name_z_a}
+																				{$lang->name_z_a|escape}
 																			{elseif $sort=='price'}
-																				{$lang->cheap_expensive}
+																				{$lang->cheap_expensive|escape}
 																			{elseif $sort=='price_desc'}
-																				{$lang->expensive_cheap}
+																				{$lang->expensive_cheap|escape}
 																			{elseif $sort=='rate'}
-																				{$lang->by_rating}
+																				{$lang->by_rating|escape}
 																			{/if}
 																		</span>
 																		<i class="svg inline dropdown-select__icon-down" aria-hidden="true">
@@ -280,66 +304,66 @@
 																			<div class="dropdown-select__list-item font_15">
 																				{if $sort=='position'}
 																					<span class="dropdown-menu-item color_222 dropdown-menu-item--current">
-																						<span>{$lang->default}</span>
+																						<span>{$lang->default|escape}</span>
 																					</span>
 																				{else}
 																					<a href="{furl sort=position page=null}" class="dropdown-menu-item dark_link">
-																						<span>{$lang->default}</span>
+																						<span>{$lang->default|escape}</span>
 																					</a>
 																				{/if}
 																			</div>
 																			<div class="dropdown-select__list-item font_15">
 																				{if $sort=='name'}
 																					<span class="dropdown-menu-item color_222 dropdown-menu-item--current">
-																						<span>{$lang->name_a_z}</span>
+																						<span>{$lang->name_a_z|escape}</span>
 																					</span>
 																				{else}
 																					<a href="{furl sort=name page=null}" class="dropdown-menu-item dark_link">
-																						<span>{$lang->name_a_z}</span>
+																						<span>{$lang->name_a_z|escape}</span>
 																					</a>
 																				{/if}
 																			</div>
 																			<div class="dropdown-select__list-item font_15">
 																				{if $sort=='name_desc'}
 																					<span class="dropdown-menu-item color_222 dropdown-menu-item--current">
-																						<span>{$lang->name_z_a}</span>
+																						<span>{$lang->name_z_a|escape}</span>
 																					</span>
 																				{else}
 																					<a href="{furl sort=name_desc page=null}" class="dropdown-menu-item dark_link">
-																						<span>{$lang->name_z_a}</span>
+																						<span>{$lang->name_z_a|escape}</span>
 																					</a>
 																				{/if}
 																			</div>
 																			<div class="dropdown-select__list-item font_15">
 																				{if $sort=='price'}
 																					<span class="dropdown-menu-item color_222 dropdown-menu-item--current">
-																						<span>{$lang->cheap_expensive}</span>
+																						<span>{$lang->cheap_expensive|escape}</span>
 																					</span>
 																				{else}
 																					<a href="{furl sort=price page=null}" class="dropdown-menu-item dark_link">
-																						<span>{$lang->cheap_expensive}</span>
+																						<span>{$lang->cheap_expensive|escape}</span>
 																					</a>
 																				{/if}
 																			</div>
 																			<div class="dropdown-select__list-item font_15">
 																				{if $sort=='price_desc'}
 																					<span class="dropdown-menu-item color_222 dropdown-menu-item--current">
-																						<span>{$lang->expensive_cheap}</span>
+																						<span>{$lang->expensive_cheap|escape}</span>
 																					</span>
 																				{else}
 																					<a href="{furl sort=price_desc page=null}" class="dropdown-menu-item dark_link">
-																						<span>{$lang->expensive_cheap}</span>
+																						<span>{$lang->expensive_cheap|escape}</span>
 																					</a>
 																				{/if}
 																			</div>
 																			<div class="dropdown-select__list-item font_15">
 																				{if $sort=='rate'}
 																					<span class="dropdown-menu-item color_222 dropdown-menu-item--current">
-																						<span>{$lang->by_rating}</span>
+																						<span>{$lang->by_rating|escape}</span>
 																					</span>
 																				{else}
 																					<a href="{furl sort=rate page=null}" class="dropdown-menu-item dark_link">
-																						<span>{$lang->by_rating}</span>
+																						<span>{$lang->by_rating|escape}</span>
 																					</a>
 																				{/if}
 																			</div>
@@ -352,8 +376,8 @@
 												</div>
 												<div class="filter-panel__part-right">
 													<div class="toggle-panel hide-600">
-														{if !isset($smarty.cookies.view) || isset($smarty.cookies.view) && $smarty.cookies.view == 'grid'}
-															<span title="{$lang->grid_display}" class="toggle-panel__item toggle-panel__item--current">
+														{if !isset($smarty.cookies.view) || isset($smarty.cookies.view) && ($smarty.cookies.view == 'grid' || $smarty.cookies.view != 'list' && $smarty.cookies.view != 'price')}
+															<span title="{$lang->grid_display|escape}" class="toggle-panel__item toggle-panel__item--current">
 																<i class="svg inline" aria-hidden="true">
 																	<svg width="10px" height="10px">
 																		<use xlink:href="design/{$settings->theme|escape}/images/svg/catalog/toggle_view.svg#table"></use>
@@ -361,7 +385,7 @@
 																</i>
 															</span>
 														{else}
-															<a rel="nofollow prefetch" onclick="document.cookie='view=grid;path=/';document.location.reload();" href="javascript:;" title="{$lang->grid_display}" class="toggle-panel__item muted-use-no-hover">
+															<a rel="nofollow prefetch" onclick="document.cookie='view=grid;path=/';document.location.reload();" href="javascript:;" title="{$lang->grid_display|escape}" class="toggle-panel__item muted-use-no-hover">
 																<i class="svg inline fill-dark-light" aria-hidden="true">
 																	<svg width="10px" height="10px">
 																		<use xlink:href="design/{$settings->theme|escape}/images/svg/catalog/toggle_view.svg#table"></use>
@@ -370,7 +394,7 @@
 															</a>
 														{/if}
 														{if isset($smarty.cookies.view) && $smarty.cookies.view == 'list'}
-															<span title="{$lang->list_display}" class="toggle-panel__item toggle-panel__item--current">
+															<span title="{$lang->list_display|escape}" class="toggle-panel__item toggle-panel__item--current">
 																<i class="svg inline" aria-hidden="true">
 																	<svg width="10px" height="10px">
 																		<use xlink:href="design/{$settings->theme|escape}/images/svg/catalog/toggle_view.svg#list"></use>
@@ -378,7 +402,7 @@
 																</i>
 															</span>
 														{else}
-															<a rel="nofollow prefetch" onclick="document.cookie='view=list;path=/';document.location.reload();" href="javascript:;" title="{$lang->list_display}" class="toggle-panel__item muted-use-no-hover">
+															<a rel="nofollow prefetch" onclick="document.cookie='view=list;path=/';document.location.reload();" href="javascript:;" title="{$lang->list_display|escape}" class="toggle-panel__item muted-use-no-hover">
 																<i class="svg inline fill-dark-light" aria-hidden="true">
 																	<svg width="10px" height="10px">
 																		<use xlink:href="design/{$settings->theme|escape}/images/svg/catalog/toggle_view.svg#list"></use>
@@ -387,7 +411,7 @@
 															</a>
 														{/if}
 														{if isset($smarty.cookies.view) && $smarty.cookies.view == 'price'}
-															<span title="{$lang->price_display}" class="toggle-panel__item toggle-panel__item--current">
+															<span title="{$lang->price_display|escape}" class="toggle-panel__item toggle-panel__item--current">
 																<i class="svg inline" aria-hidden="true">
 																	<svg width="10px" height="10px">
 																		<use xlink:href="design/{$settings->theme|escape}/images/svg/catalog/toggle_view.svg#price"></use>
@@ -395,7 +419,7 @@
 																</i>
 															</span>
 														{else}
-															<a rel="nofollow prefetch" onclick="document.cookie='view=price;path=/';document.location.reload();" href="javascript:;" title="{$lang->price_display}" class="toggle-panel__item muted-use-no-hover">
+															<a rel="nofollow prefetch" onclick="document.cookie='view=price;path=/';document.location.reload();" href="javascript:;" title="{$lang->price_display|escape}" class="toggle-panel__item muted-use-no-hover">
 																<i class="svg inline fill-dark-light" aria-hidden="true">
 																	<svg width="10px" height="10px">
 																		<use xlink:href="design/{$settings->theme|escape}/images/svg/catalog/toggle_view.svg#price"></use>
@@ -422,11 +446,11 @@
 																			{if $current_page_num < $total_pages_num}
 																				<div class="ajax_load_btn">
 																					<span class="more_text_ajax btn btn-transparent">
-																						{$lang->load_more}
+																						{$lang->load_more|escape}
 																					</span>
 																				</div>
 																			{/if}
-																			{include file='components/chpu_pagination.tpl'}
+																			{include file='paginations/chpu_pagination.tpl'}
 																		</div>
 																	</div>
 																{/if}
@@ -451,11 +475,11 @@
 																			{if $current_page_num < $total_pages_num}
 																				<div class="ajax_load_btn">
 																					<span class="more_text_ajax btn btn-transparent">
-																						{$lang->load_more}
+																						{$lang->load_more|escape}
 																					</span>
 																				</div>
 																			{/if}
-																			{include file='components/chpu_pagination.tpl'}
+																			{include file='paginations/chpu_pagination.tpl'}
 																		</div>
 																	</div>
 																{/if}
@@ -466,7 +490,7 @@
 													<div class="ajax_load table-view">
 														<div class="catalog-items catalog_block_template">
 															<div class="catalog-block" itemscope="" itemtype="http://schema.org/ItemList">
-																<div class="js_append ajax_load block grid-list grid-list--fill-bg grid-list--compact {if isset($category->brands) || isset($features) || isset($category->subcategories)}grid-list--items-4-1200{else}grid-list--items-5-1200{/if} grid-list--items-3-992 grid-list--items-2-768 grid-list--items-2-601">
+																<div class="js_append ajax_load block grid-list grid-list--fill-bg grid-list--compact {if $category && ($category->brands || $features || $category->subcategories)}grid-list--items-4-1200{else}grid-list--items-5-1200{/if} grid-list--items-3-992 grid-list--items-2-768 grid-list--items-2-601">
 																	{foreach $products as $product}
 																		{include file='products/grid.tpl'}
 																	{/foreach}
@@ -477,11 +501,11 @@
 																			{if $current_page_num < $total_pages_num}
 																				<div class="ajax_load_btn">
 																					<span class="more_text_ajax btn btn-transparent">
-																						{$lang->load_more}
+																						{$lang->load_more|escape}
 																					</span>
 																				</div>
 																			{/if}
-																			{include file='components/chpu_pagination.tpl'}
+																			{include file='paginations/chpu_pagination.tpl'}
 																		</div>
 																	</div>
 																{/if}
@@ -490,13 +514,13 @@
 													</div>
 												{/if}
 												{if $current_page_num == 1}
-													{if $page || isset($category) && $category->description}
+													{if $page || $category && $category->description}
 														<div class="group_description_block bottom color_666">
-															{if isset($page->body) && $page->body}
+															{if $page && $page->body}
 																{* Page Body *}
 																{$page->body}
-															{elseif !$noindex_filter && !isset($smarty.get.page) && !isset($smarty.get.sort)}
-																{if isset($category) && $category->description}
+															{elseif !$is_filter && !isset($smarty.get.page) && !isset($smarty.get.sort)}
+																{if $category && $category->description}
 																	{* Category Description *}
 																	{$category->description}
 																{/if}
@@ -512,22 +536,22 @@
 										<div class="no_goods catalog_block_view">
 											<div class="no_products">
 												<div class="wrap_text_empty">
-													<span class="big_text font_24">{$lang->section_empty}</span><br>
-													<span class="middle_text font_14 color_666">{$lang->no_products_text}</span>
+													<span class="big_text font_24">{$lang->section_empty|escape}</span><br>
+													<span class="middle_text font_14 color_666">{$lang->no_products_text|escape}</span>
 												</div>
 											</div>
 										</div>
 									</div>
 								{/if}
 							</div>
-							{if isset($category->brands) && $category->brands || isset($features) && $features || isset($category->subcategories) && $category->subcategories}
+							{if $category && ($category->brands || $features || $category->subcategories)}
 								<div class="left_block">
 									<div class="sticky-block sticky-block--show-N">
-										{if isset($category->subcategories)}
+										{if $category && $category->subcategories}
 											<aside class="sidebar">
 												<div class="slide-block">
 													<div class="slide-block__head title-menu stroke-theme-parent-all color_222 dropdown-select__title fill-dark-light opened" data-id="MENU">
-														{$lang->category}
+														{$lang->category|escape}
 														<i class="svg inline dropdown-select__icon-down" aria-hidden="true">
 															<svg width="7" height="5">
 																<use xlink:href="design/{$settings->theme|escape}/images/svg/sprite/arrows.svg#down-7-5"></use>
@@ -551,17 +575,17 @@
 																						<span data-category="{$c->id}">{$c->name|escape}</span>
 																					</a>
 																				</span>
-																				{if isset($c->subcategories)}
+																				{if $c->subcategories}
 																					<div class="submenu-wrapper">
 																						<ul class="submenu">
 																							{foreach $c->subcategories as $cat}
-																								<li class="{if $category && $category->id == $cat->id}active{/if} {if isset($cat->subcategories)}opened child{/if}">
+																								<li class="{if $category && $category->id == $cat->id}active{/if} {if $cat->subcategories}opened child{/if}">
 																									<span class="bg-opacity-theme-parent-hover link-wrapper font_short fill-theme-parent-all fill-dark-light">
 																										<a href="{$lang_link}catalog/{$cat->url}" class="dark_link sublink rounded-x">
 																											<span data-category="{$cat->id}">{$cat->name|escape}</span>
 																										</a>
 																									</span>
-																									{if isset($cat->subcategories)}
+																									{if $cat->subcategories}
 																										<div class="submenu-wrapper">
 																											<ul class="submenu">
 																												{foreach $cat->subcategories as $cat3}
@@ -591,7 +615,7 @@
 												</div>
 											</aside>
 										{/if}
-										{if isset($category->brands) || isset($features)}
+										{if $category->brands || $features}
 											<div class="sidearea">
 												<div class="tb_filter tb_filter_vertical catalog swipeignore">
 													<div class="smartfilter">
@@ -602,7 +626,7 @@
 																		<path data-name="Rectangle 636 copy 5" class="cls-1" d="M574.593,665.783L570,670.4V674l-2-1v-2.6l-4.6-4.614a0.94,0.94,0,0,1-.2-1.354,0.939,0.939,0,0,1,.105-0.16,0.969,0.969,0,0,1,.82-0.269h9.747a0.968,0.968,0,0,1,.82.269,0.94,0.94,0,0,1,.087.132A0.945,0.945,0,0,1,574.593,665.783Zm-8.164.216L569,668.581,571.571,666h-5.142Z" transform="translate(-563 -664)"></path>
 																	</svg>
 																</i>
-																<span>{$lang->filter}</span>
+																<span>{$lang->filter|escape}</span>
 																<i class="svg inline svg-close close-icons fill-theme-hover fill-use-svg-999" aria-hidden="true">
 																	<svg width="14" height="14">
 																		<use xlink:href="design/{$settings->theme|escape}/images/svg/sprite/header_icons.svg#close-14-14"></use>
@@ -614,9 +638,9 @@
 															{if ($minprice != 0 && $maxprice != 0) && ($minprice != $maxprice)}
 																<form method="post">
 																	<div class="tb_filter_parameters_box dropdown-select active">
-																		<span class="tb_filter_container_modef" data-f="{$lang->show}"></span>
+																		<span class="tb_filter_container_modef" data-f="{$lang->show|escape}"></span>
 																		<div class="tb_filter_parameters_box_title dropdown-select__title fill-dark-light">
-																			{$lang->general_price}
+																			{$lang->general_price|escape}
 																			<i class="svg inline dropdown-select__icon-down" aria-hidden="true">
 																				<svg width="7" height="5">
 																					<use xlink:href="design/{$settings->theme|escape}/images/svg/sprite/arrows.svg#down-7-5"></use>
@@ -652,7 +676,7 @@
 																				<div class="tb_filter_block">
 																					<div class="tb_filter_parameters_box_container flexbox flexbox--direction-row">
 																						<button class="tb_filter_search_reset btn btn-transparent-bg btn-default" type="submit">
-																							{$lang->apply}
+																							{$lang->apply|escape}
 																						</button>
 																					</div>
 																				</div>
@@ -663,12 +687,12 @@
 																	<input type="hidden" name="rate_to" id="rate_to" value="{$currency->rate_to}">
 																</form>
 															{/if}
-															{if !isset($brand)}
-																{if isset($category->brands) && $category->brands}
+															{if !$brand}
+																{if $category->brands}
 																	<div class="tb_filter_parameters_box active" data-expanded="Y" data-prop_code=brand data-property_id="1">
 																		<div class="tb_filter_parameters_box_title dropdown-select__title fill-dark-light">
 																			<div class="tb_filter_parameter_label">
-																				{$lang->global_brands}
+																				{$lang->global_brands|escape}
 																			</div>
 																			<i class="svg inline dropdown-select__icon-down" aria-hidden="true">
 																				<svg width="7" height="5">
@@ -697,7 +721,7 @@
 																					{/foreach}
 																					{if $category->brands|count > 5}
 																						<div class="inner_expand_text font_14">
-																							<span class="expand_block dotted colored-link">{$lang->show_all}</span>
+																							<span class="expand_block dotted colored-link">{$lang->show_all|escape}</span>
 																						</div>
 																					{/if}
 																				</div>
@@ -707,7 +731,7 @@
 																	</div>
 																{/if}
 															{/if}
-															{if isset($features)}
+															{if $features}
 																{foreach $features as $f}
 																	{if $f->is_color}
 																		<div class="tb_filter_parameters_box active" data-expanded="Y" data-prop_code=color data-property_id="2">
@@ -804,7 +828,7 @@
 																						{/foreach}
 																						{if $f->options|count > 5}
 																							<div class="inner_expand_text font_14">
-																								<span class="expand_block dotted colored-link">{$lang->show_all}</span>
+																								<span class="expand_block dotted colored-link">{$lang->show_all|escape}</span>
 																							</div>
 																						{/if}
 																					</div>
@@ -819,7 +843,7 @@
 														<div class="tb_filter_button_box active">
 															<div class="tb_filter_block">
 																<div class="tb_filter_parameters_box_container flexbox flexbox--direction-row">
-																	<a class="tb_filter_search_reset btn btn-transparent-bg btn-default" href="{$lang_link}catalog/{$category->url}">{$lang->reset}</a>
+																	<a class="tb_filter_search_reset btn btn-transparent-bg btn-default" href="{$lang_link}catalog/{$category->url}">{$lang->reset|escape}</a>
 																</div>
 															</div>
 														</div>

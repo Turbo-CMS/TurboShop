@@ -1,10 +1,10 @@
-{if isset($category->brands) || isset($features)}
-	<div class="card card-filter mt-4">
+{if $category && $category->brands || $features}
+	<div class="card card-filter mt-2 mt-md-4">
 		{if ($minprice != 0 && $maxprice != 0) && ($minprice != $maxprice)}
-			<div class="card-header fw-bold text-body">
-				<a class="text-decoration-none" aria-expanded="true" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePrice">
+			<div class="card-header">
+				<a class="text-decoration-none text-body fw-bold" aria-expanded="true" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePrice">
 					<i class="icon-action fa fa-chevron-down"></i>
-					{$lang->general_price}
+					{$lang->global_price|escape}
 				</a>
 			</div>
 			<div class="filter-content collapse show" id="collapsePrice">
@@ -23,19 +23,19 @@
 							<input type="hidden" name="min_price" id="min_price" value="{$current_minprice|convert|regex_replace:'/[ ]/':''|regex_replace:'/[,]/':'.'|floor}">
 							<input type="hidden" name="max_price" id="max_price" value="{$current_maxprice|convert|regex_replace:'/[ ]/':''|regex_replace:'/[,]/':'.'|ceil}">
 							<div class="d-grid gap-2 mt-2">
-								<button type="submit" class="btn btn-outline-primary">{$lang->apply}</button>
+								<button type="submit" class="btn btn-outline-primary">{$lang->apply|escape}</button>
 							</div>
 						</form>
 					</div>
 				</div>
 			</div>
 		{/if}
-		{if !isset($brand)}
-			{if isset($category->brands) && $category->brands}
-				<div class="card-header border-bottom-0 fw-bold text-body">
-					<a href="#" class="text-decoration-none" data-bs-toggle="collapse" data-bs-target="#collapseBrands">
+		{if !$brand}
+			{if $category && $category->brands}
+				<div class="card-header border-bottom-0">
+					<a href="#" class="text-decoration-none text-body fw-bold" data-bs-toggle="collapse" data-bs-target="#collapseBrands">
 						<i class="icon-action fa fa-chevron-down"></i>
-						{$lang->global_brands}
+						{$lang->global_brands|escape}
 					</a>
 				</div>
 				<div class="filter-content collapse show" id="collapseBrands">
@@ -56,8 +56,8 @@
 			{foreach $features as $f}
 				{if $f->is_color}
 					<div class="color-filter">
-						<div class="card-header border-bottom-0 fw-bold text-body">
-							<a href="#" class="text-decoration-none" data-bs-toggle="collapse" data-bs-target="#collapse{$f->id}">
+						<div class="card-header border-bottom-0">
+							<a href="#" class="text-decoration-none text-body fw-bold" data-bs-toggle="collapse" data-bs-target="#collapse{$f->id}">
 								<i class="icon-action fa fa-chevron-down"></i>
 								{$f->name}
 							</a>
@@ -74,8 +74,8 @@
 					</div>
 				{elseif $f->is_size}
 					<div class="size-filter">
-						<div class="card-header border-bottom-0 fw-bold text-body">
-							<a href="#" class="text-decoration-none" data-bs-toggle="collapse" data-bs-target="#collapse{$f->id}">
+						<div class="card-header border-bottom-0">
+							<a href="#" class="text-decoration-none text-body fw-bold" data-bs-toggle="collapse" data-bs-target="#collapse{$f->id}">
 								<i class="icon-action fa fa-chevron-down"></i>
 								{$f->name}
 							</a>
@@ -92,8 +92,8 @@
 					</div>
 				{else}
 					<div class="card-group-item">
-						<div class="card-header border-bottom-0 fw-bold text-body">
-							<a href="#" class="text-decoration-none" data-bs-toggle="collapse" data-bs-target="#collapse{$f->id}">
+						<div class="card-header border-bottom-0">
+							<a href="#" class="text-decoration-none text-body fw-bold" data-bs-toggle="collapse" data-bs-target="#collapse{$f->id}">
 								<i class="icon-action fa fa-chevron-down"></i>
 								{$f->name}
 							</a>
@@ -116,6 +116,6 @@
 		{/if}
 	</div>
 	<div class="d-grid gap-2 card-body my-1">
-		<a class="btn btn-outline-secondary" href="{$lang_link}catalog/{$category->url}">{$lang->reset}</a>
+		<a class="btn btn-outline-secondary" href="{$lang_link}catalog/{$category->url}">{$lang->reset|escape}</a>
 	</div>
 {/if}

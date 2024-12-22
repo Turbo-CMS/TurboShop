@@ -8,7 +8,7 @@ class CouponAdmin extends Turbo
 	{
 		$coupon = new stdClass;
 
-		if ($this->request->isMethod('post')) {
+		if ($this->request->method('post')) {
 			$coupon->id = $this->request->post('id', 'integer');
 			$coupon->code = $this->request->post('code', 'string');
 
@@ -42,7 +42,18 @@ class CouponAdmin extends Turbo
 			}
 		} else {
 			$coupon->id = $this->request->get('id', 'integer');
-			$coupon = $this->coupons->getCoupon($coupon->id);
+
+			if (!empty($coupon->id)) {
+				$coupon = $this->coupons->getCoupon($coupon->id);
+			} else {
+				$coupon->id = null;
+				$coupon->code = '';
+				$coupon->value = null;
+				$coupon->type = null;
+				$coupon->min_order_price = null;
+				$coupon->single = null;
+				$coupon->expire = null;
+			}
 		}
 
 		$this->design->assign('coupon', $coupon);

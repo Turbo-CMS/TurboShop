@@ -18,7 +18,7 @@ class LoginView extends View
 			// Remember Password	
 		} elseif ($this->request->get('action') == 'password_remind') {
 			// Form
-			if ($this->request->isMethod('post') && $this->request->post('email')) {
+			if ($this->request->method('post') && $this->request->post('email')) {
 				$email = $this->request->post('email');
 				$this->design->assign('email', $email);
 				$user = $this->users->getUser($email);
@@ -55,7 +55,7 @@ class LoginView extends View
 
 			return $this->design->fetch('password_remind.tpl');
 			// Login	
-		} elseif ($this->request->isMethod('post') && $this->request->post('login')) {
+		} elseif ($this->request->method('post') && $this->request->post('login')) {
 			$email = $this->request->post('email');
 			$password = $this->request->post('password');
 			$this->design->assign('email', $email);

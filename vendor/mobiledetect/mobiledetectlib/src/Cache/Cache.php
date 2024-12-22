@@ -4,6 +4,9 @@ namespace Detection\Cache;
 
 use Psr\SimpleCache\CacheInterface;
 
+/**
+ * Generic implementation of a cache system using an associative array.
+ */
 class Cache implements CacheInterface
 {
     /**

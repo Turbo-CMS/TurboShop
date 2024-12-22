@@ -17,7 +17,7 @@
 
 <div id="import-error" class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none;"></div>
 
-{if isset($message_error)}
+{if $message_error}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -35,7 +35,7 @@
 					{elseif $message_error == 'duplicated_columns'}
 						{$btr->import_duplicated|escape}: {implode($duplicated_columns, ", ")}
 					{elseif $message_error == 'duplicated_columns_pairs'}
-						{$btr->import_duplicated_pairs}:<BR>
+						{$btr->import_duplicated_pairs|escape}:<BR>
 						{foreach $duplicated_columns_pairs as $pair}
 							{implode($pair, ", ")}
 							{if !$pair@last}<BR>{/if}
@@ -65,7 +65,7 @@
 								<div class="alert alert-primary alert-dismissible" role="alert">
 									<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 									<div class="alert-message">
-										{$btr->import_info}
+										{$btr->import_info|escape}
 									</div>
 								</div>
 								<div class="d-grid gap-2 d-md-flex justify-content-md-end mb-3">
@@ -92,9 +92,9 @@
 															{if in_array($column->value, $columns_names)}
 																{$btr->get_translation('import_field_'|cat:$column->value)}
 															{elseif empty($column->value)}
-																{$btr->import_skip}
+																{$btr->import_skip|escape}
 															{elseif $column->is_nf_selected}
-																{$btr->import_new_feature}
+																{$btr->import_new_feature|escape}
 															{else}
 																{$column->value|escape}
 															{/if}
@@ -114,7 +114,7 @@
 									</div>
 								</div>
 								<select class="selectpicker import-select js-select" data-live-search="true">
-									<optgroup label="{$btr->import_additional}">
+									<optgroup label="{$btr->import_additional|escape}">
 										<option value="" data-label="{$btr->import_skip|escape}">{$btr->import_skip|escape}</option>
 										<option value="" data-label="{$btr->import_new_feature|escape}" class="js-new-feature">
 											{$btr->import_new_feature|escape}
@@ -197,8 +197,8 @@
 
 <script>
 	{literal}
-		var new_feature_label = "{/literal}{$btr->import_new_feature}{literal}";
-		var skip_label = "{/literal}{$btr->import_skip}{literal}";
+		var new_feature_label = "{/literal}{$btr->import_new_feature|escape}{literal}";
+		var skip_label = "{/literal}{$btr->import_skip|escape}{literal}";
 		$(function() {
 			var select_column = $(".js-select");
 			$(".js-select").remove();

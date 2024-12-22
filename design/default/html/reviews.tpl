@@ -1,51 +1,23 @@
 {* Reviews *}
 
-{if isset($page)}
+{if $page}
 	{* Canonical *}
 	{$canonical="/{$page->url}" scope=global}
 {else}
 	{* Meta Title *}
-	{$meta_title = $lang->reviews_global scope=global}
+	{$meta_title = $lang->global_reviews scope=global}
 
 	{* Canonical *}
 	{$canonical="/reviews" scope=global}
 {/if}
 
-{* Breadcrumb *}
-{$level = 1}
-<nav class="mt-4" aria-label="breadcrumb">
-	<ol itemscope itemtype="http://schema.org/BreadcrumbList" class="breadcrumb">
-		<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="breadcrumb-item">
-			<a itemprop="item" class="text-decoration-none" href="{if $lang_link}{$lang_link}{else}/{/if}">
-				<span itemprop="name" title="{$lang->home}"><i class="fal fa-house me-2"></i>{$lang->home}</span>
-			</a>
-			<meta itemprop="position" content="{$level++}">
-		</li>
-		{if isset($page)}
-			<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="breadcrumb-item active" aria-current="page">
-				<a itemprop="item" class="text-decoration-none" href="{$lang_link}{$page->url}">
-					<span itemprop="name">{$page->header|escape}</span>
-				</a>
-				<meta itemprop="position" content="{$level++}">
-			</li>
-		{else}
-			<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="breadcrumb-item active" aria-current="page">
-				<a itemprop="item" class="text-decoration-none" href="{$lang_link}reviews">
-					<span itemprop="name">{$lang->reviews_global}</span>
-				</a>
-				<meta itemprop="position" content="{$level++}">
-			</li>
-		{/if}
-	</ol>
-</nav>
-
 {* Page Title *}
-{if isset($page->name)}
+{if $page}
 	<h1 class="my-4">
 		<span data-page="{$page->id}">{$page->name|escape}</span>
 	</h1>
 {else}
-	<h1 class="my-4">{$lang->reviews_global}</h1>
+	<h1 class="my-4">{$lang->global_reviews|escape}</h1>
 {/if}
 
 {* Rating Wrap *}
@@ -66,7 +38,7 @@
 			<i class="far fa-star"></i>
 		</li>
 	</ul>
-	{if $ratings> 0}
+	{if $ratings > 0}
 		<div class="label-rating">
 			<span class="rater-rating h3">{$ratings|string_format:"%.1f"}</span>
 		</div>
@@ -74,7 +46,9 @@
 </div>
 
 {* Post Body *}
-{$page->body}
+{if $page}
+	{$page->body}
+{/if}
 
 {* Comments *}
 {include file='comments/comments_reviews.tpl'}

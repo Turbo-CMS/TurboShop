@@ -4,14 +4,14 @@ require_once 'api/Turbo.php';
 
 class SettingsAdmin extends Turbo
 {
-	private $allowedImageExtensions = ['png', 'gif', 'jpg', 'jpeg', 'ico'];
+	private $allowedImageExtensions = ['png'];
 
 	public function fetch()
 	{
 		$managers = $this->managers->getManagers();
 		$this->design->assign('managers', $managers);
 
-		if ($this->request->isMethod('post')) {
+		if ($this->request->method('post')) {
 			if ($this->request->post('clear_cache')) {
 				$this->cache->clearAll();
 				$this->design->assign('message_success', 'cache_cleared');
@@ -81,6 +81,7 @@ class SettingsAdmin extends Turbo
 				$this->settings->cached = $this->request->post('cached');
 				$this->settings->cache_type = $this->request->post('cache_type');
 				$this->settings->cache_time = $this->request->post('cache_time');
+				$this->settings->image_quality = $this->request->post('image_quality');
 
 				if ($this->request->post('category_count') == 1) {
 					$this->settings->category_count = 1;

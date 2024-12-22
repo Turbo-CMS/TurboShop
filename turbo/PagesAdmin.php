@@ -16,7 +16,7 @@ class PagesAdmin extends Turbo
 
 		$this->design->assign('menu', $menu);
 
-		if ($this->request->isMethod('post')) {
+		if ($this->request->method('post')) {
 			$positions = $this->request->post('positions');
 			$ids = array_keys($positions);
 			sort($positions);

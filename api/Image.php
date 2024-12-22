@@ -14,13 +14,17 @@ class Image extends Turbo
 	/**
 	 * Resize
 	 */
-	function resize($filename, $is_category = 0, $is_post = 0, $is_article = 0, $is_brands = 0, $is_banners = 0)
+	function resize($filename, $isCategory = 0, $isPost = 0, $isArticle = 0, $isBrands = 0, $isBanners = 0)
 	{
 		list($sourceFile, $width, $height, $setWatermark) = $this->getResizeParams($filename);
 
 		$size = ($width ? $width : 0) . 'x' . ($height ? $height : 0) . ($setWatermark ? "w" : '');
 
-		$imageSizes = explode('|', $this->settings->image_sizes);
+		$imageSizes = [];
+
+		if ($this->settings->image_sizes) {
+			$imageSizes = explode('|', $this->settings->image_sizes);
+		}
 
 		if (!in_array($size, $imageSizes)) {
 			header("http/1.0 404 not found");
@@ -33,39 +37,30 @@ class Image extends Turbo
 			if (!$originalFile) {
 				return false;
 			}
-
-			$resizedFile = $this->addResizeParams($originalFile, $width, $height, $setWatermark);
 		} else {
 			$originalFile = $sourceFile;
 		}
 
 		$resizedFile = $this->addResizeParams($originalFile, $width, $height, $setWatermark);
 
-		switch (true) {
-			case ($is_category == 1):
-				$originalsDir = $this->config->root_dir . $this->config->categories_images_dir;
-				$previewDir = $this->config->root_dir . $this->config->resized_category_images_dir;
-				break;
-			case ($is_brands == 1):
-				$originalsDir = $this->config->root_dir . $this->config->brands_images_dir;
-				$previewDir = $this->config->root_dir . $this->config->resized_brands_images_dir;
-				break;
-			case ($is_banners == 1):
-				$originalsDir = $this->config->root_dir . $this->config->banners_images_dir;
-				$previewDir = $this->config->root_dir . $this->config->resized_banners_images_dir;
-				break;
-			case ($is_post == 1):
-				$originalsDir = $this->config->root_dir . $this->config->posts_images_dir;
-				$previewDir = $this->config->root_dir . $this->config->resized_posts_images_dir;
-				break;
-			case ($is_article == 1):
-				$originalsDir = $this->config->root_dir . $this->config->articles_images_dir;
-				$previewDir = $this->config->root_dir . $this->config->resized_articles_images_dir;
-				break;
-			default:
-				$originalsDir = $this->config->root_dir . $this->config->original_images_dir;
-				$previewDir = $this->config->root_dir . $this->config->resized_images_dir;
-				break;
+		if ($isCategory == 1) {
+			$originalsDir = $this->config->root_dir . $this->config->categories_images_dir;
+			$previewDir = $this->config->root_dir . $this->config->resized_category_images_dir;
+		} elseif ($isBrands == 1) {
+			$originalsDir = $this->config->root_dir . $this->config->brands_images_dir;
+			$previewDir = $this->config->root_dir . $this->config->resized_brands_images_dir;
+		} elseif ($isBanners == 1) {
+			$originalsDir = $this->config->root_dir . $this->config->banners_images_dir;
+			$previewDir = $this->config->root_dir . $this->config->resized_banners_images_dir;
+		} elseif ($isPost == 1) {
+			$originalsDir = $this->config->root_dir . $this->config->posts_images_dir;
+			$previewDir = $this->config->root_dir . $this->config->resized_posts_images_dir;
+		} elseif ($isArticle == 1) {
+			$originalsDir = $this->config->root_dir . $this->config->articles_images_dir;
+			$previewDir = $this->config->root_dir . $this->config->resized_articles_images_dir;
+		} else {
+			$originalsDir = $this->config->root_dir . $this->config->original_images_dir;
+			$previewDir = $this->config->root_dir . $this->config->resized_images_dir;
 		}
 
 		$watermarkOffsetX = $this->settings->watermark_offset_x;
@@ -94,15 +89,10 @@ class Image extends Turbo
 	 */
 	public function addResizeParams($filename, $width = 0, $height = 0, $setWatermark = false)
 	{
-		if (empty($filename) || $filename == null) {
-			return '';
-		}
-
-		$dirname = pathinfo($filename, PATHINFO_DIRNAME);
-		$file = pathinfo($filename, PATHINFO_FILENAME);
-
-		if ('.' != $dirname) {
-			$file = $dirname . '/' . $file;
+		if ('.' != ($dirname = pathinfo($filename, PATHINFO_DIRNAME))) {
+			$file = $dirname . '/' . pathinfo($filename, PATHINFO_FILENAME);
+		} else {
+			$file = pathinfo($filename, PATHINFO_FILENAME);
 		}
 
 		$ext = pathinfo($filename, PATHINFO_EXTENSION);
@@ -110,7 +100,7 @@ class Image extends Turbo
 		if ($width > 0 || $height > 0) {
 			$resizedFilename = $file . '.' . ($width > 0 ? $width : '') . 'x' . ($height > 0 ? $height : '') . ($setWatermark ? 'w' : '') . '.' . $ext;
 		} else {
-			$resizedFilename = $file . '.' . ($setWatermark ? 'w.' : '') . $ext;
+			$resizedFilename = $file . '.' . ($setWatermark ? 'w' : '') . '.' . $ext;
 		}
 
 		return $resizedFilename;
@@ -139,17 +129,20 @@ class Image extends Turbo
 	 */
 	public function downloadImage($filename)
 	{
-		$this->db->query("SELECT 1 FROM __images WHERE filename=? LIMIT 1", $filename);
+		$this->db->query('SELECT * FROM __images WHERE filename=? LIMIT 1', $filename);
+		$row = $this->db->result();
 
-		if (!$this->db->result()) {
+		if (!$row) {
 			return false;
 		}
 
-		$basename = explode('&', pathinfo($filename, PATHINFO_BASENAME));
-		$uploadedFile = array_shift($basename);
-		$base = urldecode(pathinfo($uploadedFile, PATHINFO_FILENAME));
-		$ext = pathinfo($uploadedFile, PATHINFO_EXTENSION);
-		$newName = urldecode($uploadedFile);
+		$parseUrl = parse_url($filename);
+
+		$basename = basename($parseUrl['path']);
+		$base = $this->correctFilename(pathinfo($basename, PATHINFO_FILENAME));
+		$ext = pathinfo($basename, PATHINFO_EXTENSION);
+
+		$newName = $base . '.' . $ext;
 
 		while (file_exists($this->config->root_dir . $this->config->original_images_dir . $newName)) {
 			$newBase = pathinfo($newName, PATHINFO_FILENAME);
@@ -161,7 +154,7 @@ class Image extends Turbo
 			}
 		}
 
-		$this->db->query("UPDATE __images SET filename=? WHERE filename=?", $newName, $filename);
+		$this->db->query('UPDATE __images SET filename=? WHERE filename=?', $newName, $filename);
 
 		fclose(fopen($this->config->root_dir . $this->config->original_images_dir . $newName, 'w'));
 		copy($filename, $this->config->root_dir . $this->config->original_images_dir . $newName);
@@ -174,19 +167,22 @@ class Image extends Turbo
 	 */
 	public function uploadImage($filename, $name)
 	{
-		$name = $this->correctFilename($name);
 		$uploadedFile = $newName = pathinfo($name, PATHINFO_BASENAME);
+
 		$base = pathinfo($uploadedFile, PATHINFO_FILENAME);
+		$base = $this->correctFilename($base);
 		$ext = pathinfo($uploadedFile, PATHINFO_EXTENSION);
+		$newName = $base . '.' . $ext;
 
 		if (in_array(strtolower($ext), $this->allowedExtensions)) {
 			while (file_exists($this->config->root_dir . $this->config->original_images_dir . $newName)) {
 				$newBase = pathinfo($newName, PATHINFO_FILENAME);
 
-				if (preg_match('/_([0-9]+)$/', $newBase, $parts))
+				if (preg_match('/_([0-9]+)$/', $newBase, $parts)) {
 					$newName = $base . '_' . ($parts[1] + 1) . '.' . $ext;
-				else
+				} else {
 					$newName = $base . '_1.' . $ext;
+				}
 			}
 
 			if (move_uploaded_file($filename, $this->config->root_dir . $this->config->original_images_dir . $newName)) {
@@ -200,192 +196,214 @@ class Image extends Turbo
 	/**
 	 * Image Constrain GD
 	 */
-	private function imageConstrainGd($src_file, $dst_file, $max_w, $max_h, $watermark = null, $watermark_offset_x = 0, $watermark_offset_y = 0, $watermark_opacity = 1)
+	private function imageConstrainGd($srcFile, $dstFile, $maxW, $maxH, $watermark = null, $watermarkOffsetX = 0, $watermarkOffsetY = 0, $watermarkOpacity = 1)
 	{
-		$quality = 100;
-
-		list($src_w, $src_h, $src_type) = array_values(is_array(getimagesize($src_file)) ? getimagesize($src_file) : []);
-		$src_type = image_type_to_mime_type($src_type);
-
-		if (empty($src_w) || empty($src_h) || empty($src_type)) {
+		if (!file_exists($srcFile)) {
 			return false;
 		}
 
-		if (!$watermark && ($src_w <= $max_w) && ($src_h <= $max_h)) {
-			if (!copy($src_file, $dst_file)) {
+		$quality = $this->settings->image_quality;
+
+		@list($srcW, $srcH, $srcType) = array_values(getimagesize($srcFile));
+		$srcType = image_type_to_mime_type($srcType);
+
+		if (empty($srcW) || empty($srcH) || empty($srcType)) {
+			return false;
+		}
+
+		if (!$watermark && ($srcW <= $maxW) && ($srcH <= $maxH)) {
+			if (!copy($srcFile, $dstFile)) {
 				return false;
 			}
 
 			return true;
 		}
 
-		list($dst_w, $dst_h) = $this->calcContrainSize($src_w, $src_h, $max_w, $max_h);
-
-		switch ($src_type) {
+		switch ($srcType) {
 			case 'image/jpeg':
-				$src_img = imageCreateFromJpeg($src_file);
+				$srcImg = @imageCreateFromJpeg($srcFile);
 				break;
 			case 'image/gif':
-				$src_img = imageCreateFromGif($src_file);
+				$srcImg = @imageCreateFromGif($srcFile);
 				break;
 			case 'image/png':
-				$src_img = imageCreateFromPng($src_file);
-				imagealphablending($src_img, true);
+				$srcImg = @imageCreateFromPng($srcFile);
+				imagealphablending($srcImg, true);
 				break;
 			default:
 				return false;
 		}
 
-		if (empty($src_img)) {
+		if (empty($srcImg)) {
 			return false;
 		}
 
-		$src_colors = imagecolorstotal($src_img);
+		@list($dstW, $dstH) = $this->calcContrainSize($srcW, $srcH, $maxW, $maxH);
+
+		$srcColors = imagecolorstotal($srcImg);
 
 		if ($this->settings->smart_resize) {
-
-			if ($src_colors > 0 && $src_colors <= 256) {
-				$dst_img = imagecreate($max_w, $max_h);
+			if ($srcColors > 0 && $srcColors <= 256) {
+				$dstImg = imagecreate($maxW, $maxH);
 			} else {
-				$dst_img = imagecreatetruecolor($max_w, $max_h);
+				$dstImg = imagecreatetruecolor($maxW, $maxH);
 			}
 
-			if (empty($dst_img)) {
+			if (empty($dstImg)) {
 				return false;
 			}
 
-			$transparent_index = imagecolortransparent($src_img);
+			$transparentIndex = imagecolortransparent($srcImg);
 
-			if ($transparent_index >= 0 && $transparent_index <= 128) {
-				$t_c = imagecolorsforindex($src_img, $transparent_index);
-				$transparent_index = imagecolorallocate($dst_img, $t_c['red'], $t_c['green'], $t_c['blue']);
+			if ($transparentIndex >= 0 && $transparentIndex <= 128) {
+				$tC = imagecolorsforindex($srcImg, $transparentIndex);
+				$transparentIndex = imagecolorallocate($dstImg, $tC['red'], $tC['green'], $tC['blue']);
 
-				if ($transparent_index === false) {
+				if ($transparentIndex === false) {
 					return false;
 				}
 
-				if (!imagefill($dst_img, 0, 0, $transparent_index)) {
+				if (!imagefill($dstImg, 0, 0, $transparentIndex)) {
 					return false;
 				}
 
-				imagecolortransparent($dst_img, $transparent_index);
-			} elseif ($src_type === 'image/png') {
-				if (!imagealphablending($dst_img, false)) {
+				imagecolortransparent($dstImg, $transparentIndex);
+			} elseif ($srcType === 'image/png') {
+
+				if (!imagealphablending($dstImg, false)) {
 					return false;
 				}
 
-				$transparency = imagecolorallocatealpha($dst_img, 255, 255, 255, 127);
+				$transparency = imagecolorallocatealpha($dstImg, 255, 255, 255, 127);
 
 				if (false === $transparency) {
 					return false;
 				}
 
-				if (!imagefill($dst_img, 0, 0, $transparency)) {
+				if (!imagefill($dstImg, 0, 0, $transparency)) {
 					return false;
 				}
 
-				if (!imagesavealpha($dst_img, true)) {
+				if (!imagesavealpha($dstImg, true)) {
 					return false;
 				}
 			} else {
-				$transparent_index = imagecolorallocate($dst_img, 255, 255, 255);
+				$transparentIndex = imagecolorallocate($dstImg, 255, 255, 255);
 
-				if ($transparent_index === false) {
+				if ($transparentIndex === false) {
 					return false;
 				}
 
-				if (!imagefill($dst_img, 0, 0, $transparent_index)) {
+				if (!imagefill($dstImg, 0, 0, $transparentIndex)) {
 					return false;
 				}
 			}
 
-			$xpos = 0;
-			$ypos = 0;
-			$scale = min($max_w / $src_w, $max_h / $src_h);
+			$xPos = 0;
+			$yPos = 0;
+			$scale = min($maxW / $srcW, $maxH / $srcH);
 
-			if ($scale == 1 && $src_type != 'image/png') {
+			if ($scale == 1 && $srcType != 'image/png') {
 				return false;
 			}
 
-			$new_width = (int) ($src_w * $scale);
-			$new_height = (int) ($src_h * $scale);
-			$xpos = (int) (($max_w - $new_width) / 2);
-			$ypos = (int) (($max_h - $new_height) / 2);
+			$newWidth = (int) ($srcW * $scale);
+			$newHeight = (int) ($srcH * $scale);
 
-			if (!imagecopyresampled($dst_img, $src_img, $xpos, $ypos, 0, 0, $new_width, $new_height, $src_w, $src_h)) {
+			$xPos = (int) (($maxW - $newWidth) / 2);
+			$yPos = (int) (($maxH - $newHeight) / 2);
+
+			if (!imagecopyresampled($dstImg, $srcImg, $xPos, $yPos, 0, 0, $newWidth, $newHeight, $srcW, $srcH)) {
 				return false;
 			}
 
 			if (!empty($watermark) && is_readable($watermark)) {
-				$overlay = imagecreatefrompng($watermark);
-				$owidth = imagesx($overlay);
-				$oheight = imagesy($overlay);
-				$watermark_x = min(($max_w - $owidth) * $watermark_offset_x / 100, $max_w);
-				$watermark_y = min(($max_h - $oheight) * $watermark_offset_y / 100, $max_h);
-				$this->imagecopymergeAlpha($dst_img, $overlay, $watermark_x, $watermark_y, 0, 0, $owidth, $oheight, $watermark_opacity * 100);
+				$overlay = @imagecreatefrompng($watermark);
+
+				if ($overlay === false) {
+					return false;
+				}
+
+				$oWidth = imagesx($overlay);
+				$oHeight = imagesy($overlay);
+
+				$watermarkX = min(($maxW - $oWidth) * $watermarkOffsetX / 100, $maxW);
+				$watermarkY = min(($maxH - $oHeight) * $watermarkOffsetY / 100, $maxH);
+
+				$this->imagecopymergeAlpha($dstImg, $overlay, $watermarkX, $watermarkY, 0, 0, $oWidth, $oHeight, $watermarkOpacity * 100);
 			}
 		} else {
 
-			if ($src_colors > 0 && $src_colors <= 256) {
-				$dst_img = imagecreate($dst_w, $dst_h);
+			if ($srcColors > 0 && $srcColors <= 256) {
+				$dstImg = imagecreate($dstW, $dstH);
 			} else {
-				$dst_img = imagecreatetruecolor($dst_w, $dst_h);
+				$dstImg = imagecreatetruecolor($dstW, $dstH);
 			}
 
-			if (empty($dst_img)) {
+			if (empty($dstImg)) {
 				return false;
 			}
 
-			$transparent_index = imagecolortransparent($src_img);
+			$transparentIndex = imagecolortransparent($srcImg);
 
-			if ($transparent_index >= 0 && $transparent_index <= 128) {
-				$t_c = imagecolorsforindex($src_img, $transparent_index);
-				$transparent_index = imagecolorallocate($dst_img, $t_c['red'], $t_c['green'], $t_c['blue']);
+			if ($transparentIndex >= 0 && $transparentIndex <= 128) {
+				$tC = imagecolorsforindex($srcImg, $transparentIndex);
 
-				if ($transparent_index === false) {
+				$transparentIndex = imagecolorallocate($dstImg, $tC['red'], $tC['green'], $tC['blue']);
+
+				if ($transparentIndex === false) {
 					return false;
 				}
 
-				if (!imagefill($dst_img, 0, 0, $transparent_index)) {
+				if (!imagefill($dstImg, 0, 0, $transparentIndex)) {
 					return false;
 				}
 
-				imagecolortransparent($dst_img, $transparent_index);
-			} elseif ($src_type === 'image/png') {
-				if (!imagealphablending($dst_img, false)) {
+				imagecolortransparent($dstImg, $transparentIndex);
+			} elseif ($srcType === 'image/png') {
+
+				if (!imagealphablending($dstImg, false)) {
 					return false;
 				}
 
-				$transparency = imagecolorallocatealpha($dst_img, 0, 0, 0, 127);
+				$transparency = imagecolorallocatealpha($dstImg, 0, 0, 0, 127);
 
 				if (false === $transparency) {
 					return false;
 				}
 
-				if (!imagefill($dst_img, 0, 0, $transparency)) {
+				if (!imagefill($dstImg, 0, 0, $transparency)) {
 					return false;
 				}
 
-				if (!imagesavealpha($dst_img, true)) {
+				if (!imagesavealpha($dstImg, true)) {
 					return false;
 				}
 			}
 
-			if (!@imagecopyresampled($dst_img, $src_img, 0, 0, 0, 0, $dst_w, $dst_h, $src_w, $src_h)) {
+			if (!imagecopyresampled($dstImg, $srcImg, 0, 0, 0, 0, $dstW, $dstH, $srcW, $srcH)) {
 				return false;
 			}
 
 			if (!empty($watermark) && is_readable($watermark)) {
-				$overlay = imagecreatefrompng($watermark);
-				$owidth = imagesx($overlay);
-				$oheight = imagesy($overlay);
-				$watermark_x = min(($dst_w - $owidth) * $watermark_offset_x / 100, $dst_w);
-				$watermark_y = min(($dst_h - $oheight) * $watermark_offset_y / 100, $dst_h);
-				$this->imagecopymergeAlpha($dst_img, $overlay, $watermark_x, $watermark_y, 0, 0, $owidth, $oheight, $watermark_opacity * 100);
+				$overlay = @imagecreatefrompng($watermark);
+
+				if ($overlay === false) {
+					return false;
+				}
+
+				$oWidth = imagesx($overlay);
+				$oHeight = imagesy($overlay);
+
+				$watermarkX = min(($dstW - $oWidth) * $watermarkOffsetX / 100, $dstW);
+				$watermarkY = min(($dstH - $oHeight) * $watermarkOffsetY / 100, $dstH);
+
+				$this->imagecopymergeAlpha($dstImg, $overlay, $watermarkX, $watermarkY, 0, 0, $oWidth, $oHeight, $watermarkOpacity * 100);
 			}
 		}
 
-		if ('image/png' === $src_type) {
+		if ('image/png' === $srcType) {
+
 			$quality = round(($quality / 100) * 10);
 
 			if ($quality < 1) {
@@ -397,14 +415,14 @@ class Image extends Turbo
 			$quality = 10 - $quality;
 		}
 
-		switch ($src_type) {
+		switch ($srcType) {
 			case 'image/jpeg':
-				return imageJpeg($dst_img, $dst_file, $quality);
+				return imageJpeg($dstImg, $dstFile, $quality);
 			case 'image/gif':
-				return imageGif($dst_img, $dst_file, $quality);
+				return imageGif($dstImg, $dstFile);
 			case 'image/png':
-				imagesavealpha($dst_img, true);
-				return imagePng($dst_img, $dst_file, $quality);
+				imagesavealpha($dstImg, true);
+				return imagePng($dstImg, $dstFile, $quality);
 			default:
 				return false;
 		}
@@ -413,109 +431,83 @@ class Image extends Turbo
 	/**
 	 * Image Constrain Imagick
 	 */
-	private function imageConstrainImagick($src_file, $dst_file, $max_w, $max_h, $watermark = null, $watermark_offset_x = 0, $watermark_offset_y = 0, $watermark_opacity = 1.0, $sharpen = 0.2)
+	private function imageConstrainImagick($srcFile, $dstFile, $maxW, $maxH, $watermark = null, $watermarkOffsetX = 0, $watermarkOffsetY = 0, $watermarkOpacity = 1, $sharpen = 0.2)
 	{
-		$thumb = new Imagick();
-
-		try {
-			if (!$thumb->readImage($src_file)) {
-				return false;
-			}
-		} catch (ImagickException $e) {
+		if (!file_exists($srcFile)) {
 			return false;
 		}
 
-		$src_w = $thumb->getImageWidth();
-		$src_h = $thumb->getImageHeight();
+		$thumb = new Imagick();
 
-		if (!$watermark && ($src_w <= $max_w) && ($src_h <= $max_h)) {
-			if (!copy($src_file, $dst_file)) {
-				return false;
-			}
-
-			return true;
+		if (!$thumb->readImage($srcFile)) {
+			return false;
 		}
 
-		list($dst_w, $dst_h) = $this->calcContrainSize($src_w, $src_h, $max_w, $max_h);
+		$srcW = $thumb->getImageWidth();
+		$srcH = $thumb->getImageHeight();
 
-		$thumb->thumbnailImage(round($dst_w), round($dst_h));
+		if (!$watermark && ($srcW <= $maxW) && ($srcH <= $maxH)) {
+			return copy($srcFile, $dstFile);
+		}
 
-		if ($this->settings->smart_resize) {
+		list($dstW, $dstH) = $this->calcContrainSize($srcW, $srcH, $maxW, $maxH);
+
+		if (!empty($this->settings->smart_resize)) {
 			$canvas = new Imagick();
-			$canvas->newImage($max_w, $max_h, new ImagickPixel("white"));
-
-			if ($watermark && is_readable($watermark)) {
-				$overlay = new Imagick($watermark);
-				$overlay->evaluateImage(Imagick::EVALUATE_MULTIPLY, $watermark_opacity, Imagick::CHANNEL_ALPHA);
-				$owidth = $overlay->getImageWidth();
-				$oheight = $overlay->getImageHeight();
-				$watermark_x = min(($max_w - $owidth) * $watermark_offset_x / 100, $max_w);
-				$watermark_y = min(($max_h - $oheight) * $watermark_offset_y / 100, $max_h);
-			}
-
-			foreach ($thumb as $frame) {
-				$frame->thumbnailImage((int) $dst_w, (int) $dst_h);
-				$frame->setImagePage((int) $dst_w, (int) $dst_h, 0, 0);
-
-				if ($sharpen > 0) {
-					$thumb->adaptiveSharpenImage($sharpen, $sharpen);
-				}
-
-				$canvas->compositeImage($frame, $frame->getImageCompose(), (int) (($max_w - $dst_w) / 2), (int) (($max_h - $dst_h) / 2));
-
-				if (isset($overlay) && is_object($overlay)) {
-					$canvas->compositeImage($overlay, imagick::COMPOSITE_OVER, $watermark_x, $watermark_y);
-				}
-			}
-
-			$canvas->stripImage();
-
-			if (!$canvas->writeImages($dst_file, true)) {
-				return false;
-			}
-
-			$thumb->destroy();
-
-			if (isset($overlay) && is_object($overlay)) {
-				$overlay->destroy();
-			}
-
-			$canvas->destroy();
+			$canvas->newImage($maxW, $maxH, new ImagickPixel("white"));
 		} else {
-			if ($watermark && is_readable($watermark)) {
-				$overlay = new Imagick($watermark);
-				$overlay->evaluateImage(Imagick::EVALUATE_MULTIPLY, $watermark_opacity, Imagick::CHANNEL_ALPHA);
-				$owidth = $overlay->getImageWidth();
-				$oheight = $overlay->getImageHeight();
-				$watermark_x = min(($dst_w - $owidth) * $watermark_offset_x / 100, $dst_w);
-				$watermark_y = min(($dst_h - $oheight) * $watermark_offset_y / 100, $dst_h);
+			$canvas = $thumb;
+		}
+
+		$watermarkX = null;
+		$watermarkY = null;
+
+		if ($watermark && is_readable($watermark)) {
+			$overlay = new Imagick($watermark);
+			$overlay->evaluateImage(Imagick::EVALUATE_MULTIPLY, $watermarkOpacity, Imagick::CHANNEL_ALPHA);
+
+			$oWidth = $overlay->getImageWidth();
+			$oHeight = $overlay->getImageHeight();
+
+			$watermarkX = min(($dstW - $oWidth) * $watermarkOffsetX / 100, $dstW);
+			$watermarkY = min(($dstH - $oHeight) * $watermarkOffsetY / 100, $dstH);
+		}
+
+		foreach ($thumb as $frame) {
+			$frame->thumbnailImage($dstW, $dstH);
+			$frame->setImagePage($dstW, $dstH, 0, 0);
+
+			if ($sharpen > 0) {
+				$frame->adaptiveSharpenImage($sharpen, $sharpen);
 			}
 
-			foreach ($thumb as $frame) {
-				$frame->thumbnailImage(round($dst_w), round($dst_h));
-				$frame->setImagePage(round($dst_w), round($dst_h), 0, 0);
-
-				if ($sharpen > 0) {
-					$thumb->adaptiveSharpenImage($sharpen, $sharpen);
-				}
-
-				if (isset($overlay) && is_object($overlay)) {
-					$frame->compositeImage($overlay, imagick::COMPOSITE_OVER, round($watermark_x), round($watermark_y));
-				}
+			if (isset($overlay)) {
+				$frame->compositeImage($overlay, Imagick::COMPOSITE_OVER, (int) round($watermarkX), (int) round($watermarkY));
 			}
 
-			$thumb->stripImage();
-
-			if (!$thumb->writeImages($dst_file, true)) {
-				return false;
-			}
-
-			$thumb->destroy();
-
-			if (isset($overlay) && is_object($overlay)) {
-				$overlay->destroy();
+			if (!empty($this->settings->smart_resize)) {
+				$canvas->compositeImage($frame, Imagick::COMPOSITE_DEFAULT, (int) (($maxW - $dstW) / 2), (int) (($maxH - $dstH) / 2));
+			} else {
+				$canvas->compositeImage($frame, Imagick::COMPOSITE_DEFAULT, 0, 0);
 			}
 		}
+
+		$canvas->stripImage();
+
+		$quality = $this->settings->image_quality;
+		$canvas->setImageCompressionQuality($quality);
+
+		if (!$canvas->writeImages($dstFile, true)) {
+			return false;
+		}
+
+		$thumb->destroy();
+
+		if (isset($overlay)) {
+			$overlay->destroy();
+		}
+
+		$canvas->destroy();
 
 		return true;
 	}
@@ -523,26 +515,26 @@ class Image extends Turbo
 	/**
 	 * Calc Contrain Size
 	 */
-	function calcContrainSize($src_w, $src_h, $max_w = 0, $max_h = 0)
+	function calcContrainSize($srcW, $srcH, $maxW = 0, $maxH = 0)
 	{
-		if ($src_w == 0 || $src_h == 0) {
+		if ($srcW == 0 || $srcH == 0) {
 			return false;
 		}
 
-		$dst_w = $src_w;
-		$dst_h = $src_h;
+		$dstW = $srcW;
+		$dstH = $srcH;
 
-		if ($src_w > $max_w && $max_w > 0) {
-			$dst_h = $src_h * ($max_w / $src_w);
-			$dst_w = $max_w;
+		if ($srcW > $maxW && $maxW > 0) {
+			$dstH = $srcH * ($maxW / $srcW);
+			$dstW = $maxW;
 		}
 
-		if ($dst_h > $max_h && $max_h > 0) {
-			$dst_w = $dst_w * ($max_h / $dst_h);
-			$dst_h = $max_h;
+		if ($dstH > $maxH && $maxH > 0) {
+			$dstW = $dstW * ($maxH / $dstH);
+			$dstH = $maxH;
 		}
 
-		return [$dst_w, $dst_h];
+		return [round($dstW), round($dstH)];
 	}
 
 	/**
@@ -564,11 +556,19 @@ class Image extends Turbo
 	/**
 	 * Imagecopymerge Alpha
 	 */
-	private function imagecopymergeAlpha($dst_img, $src_img, $dst_x, $dst_y, $src_x, $src_y, $src_w, $src_h, $pct)
+	private function imagecopymergeAlpha($dstI, $srcI, $dstX, $dstY, $srcX, $srcY, $srcW, $srcH, $pct)
 	{
-		$cut = imagecreatetruecolor($src_w, $src_h);
-		imagecopy($cut, $dst_img, 0, 0, $dst_x, $dst_y, $src_w, $src_h);
-		imagecopy($cut, $src_img, 0, 0, $src_x, $src_y, $src_w, $src_h);
-		imagecopymerge($dst_img, $cut, $dst_x, $dst_y, 0, 0, $src_w, $src_h, $pct);
+		$dstX = round($dstX);
+		$dstY = round($dstY);
+		$srcX = round($srcX);
+		$srcY = round($srcY);
+		$srcW = round($srcW);
+		$srcH = round($srcH);
+		$pct = round($pct);
+
+		$cut = imagecreatetruecolor($srcW, $srcH);
+		imagecopy($cut, $dstI, 0, 0, $dstX, $dstY, $srcW, $srcH);
+		imagecopy($cut, $srcI, 0, 0, $srcX, $srcY, $srcW, $srcH);
+		imagecopymerge($dstI, $cut, $dstX, $dstY, 0, 0, $srcW, $srcH, $pct);
 	}
 }

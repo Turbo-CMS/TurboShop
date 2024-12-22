@@ -13,7 +13,7 @@ $turbo = new Turbo();
 
 $output = ['success' => 0, 'value' => 0, 'message' => ''];
 
-if ($turbo->request->isMethod('get') && $turbo->request->get('id') && $turbo->request->get('rate')) {
+if ($turbo->request->method('get') && $turbo->request->get('id') && $turbo->request->get('rate')) {
 	$commentId = $turbo->request->get('id');
 
 	if (!isset($_SESSION['comment_rate_ids'])) {

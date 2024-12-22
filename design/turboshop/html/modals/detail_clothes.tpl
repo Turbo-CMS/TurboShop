@@ -1,4 +1,4 @@
-<span class="jqmClose top-close fill-theme-hover fill-use-svg-999" title="{$lang->close}">
+<span class="jqmClose top-close fill-theme-hover fill-use-svg-999" title="{$lang->close|escape}">
     <i class="svg inline" aria-hidden="true">
         <svg width="14" height="14">
             <use xlink:href="design/{$settings->theme|escape}/images/svg/sprite/header_icons.svg#close-14-14"></use>
@@ -7,23 +7,23 @@
 </span>
 <div class="form popup scrollbar">
     <div class="form-header">
-        <h2 class="line-block--gap">{$lang->sizing}</h2>
+        <h2 class="line-block--gap">{$lang->sizing|escape}</h2>
     </div>
     <div class="form-body">
         <div class="tabs">
             <ul class="nav nav-tabs font_upper_md">
-                <li class="active box-shadow rounded3 bordered"><a href="#man" data-toggle="tab"><span>{$lang->mens_clothing}</span></a></li>
-                <li class="box-shadow rounded3 bordered"><a href="#woman" data-toggle="tab"><span>{$lang->womens_clothing}</span></a></li>
-                <li class="box-shadow rounded3 bordered"><a href="#children" data-toggle="tab"><span>{$lang->baby_clothes}</span></a></li>
+                <li class="active box-shadow rounded3 bordered"><a href="#man" data-toggle="tab"><span>{$lang->mens_clothing|escape}</span></a></li>
+                <li class="box-shadow rounded3 bordered"><a href="#woman" data-toggle="tab"><span>{$lang->womens_clothing|escape}</span></a></li>
+                <li class="box-shadow rounded3 bordered"><a href="#children" data-toggle="tab"><span>{$lang->baby_clothes|escape}</span></a></li>
             </ul>
             <div class="tab-content">
                 <div class="tab-pane active" id="man">
-                    <div class="heading">{$lang->mens_size}</div>
+                    <div class="heading">{$lang->mens_size|escape}</div>
                     <div class="tables-responsive">
                         <table class="table table-bordered table-full-width font_13 color_222">
                             <tbody>
                                 <tr>
-                                    <td class="title"><b>{$lang->chest_cm}</b></td>
+                                    <td class="title"><b>{$lang->chest_cm|escape}</b></td>
                                     <td>86-90</td>
                                     <td>90-94</td>
                                     <td>94-98</td>
@@ -36,7 +36,7 @@
                                     <td>122-126</td>
                                 </tr>
                                 <tr>
-                                    <td class="title"><b>{$lang->waist_cm}</b></td>
+                                    <td class="title"><b>{$lang->waist_cm|escape}</b></td>
                                     <td>74-78</td>
                                     <td>78-82</td>
                                     <td>82-86</td>
@@ -49,7 +49,7 @@
                                     <td>110-114</td>
                                 </tr>
                                 <tr>
-                                    <td class="title"><b>{$lang->hip_circumference_cm}</b></td>
+                                    <td class="title"><b>{$lang->hip_circumference_cm|escape}</b></td>
                                     <td>94-97</td>
                                     <td>97-100</td>
                                     <td>100-103</td>
@@ -62,7 +62,7 @@
                                     <td>121-124</td>
                                 </tr>
                                 <tr>
-                                    <td class="title"><b>{$lang->neck_circumference_cm}</b></td>
+                                    <td class="title"><b>{$lang->neck_circumference_cm|escape}</b></td>
                                     <td>36</td>
                                     <td colspan="2">37-38</td>
                                     <td colspan="2">39-40</td>
@@ -71,7 +71,7 @@
                                     <td colspan="2">45-46</td>
                                 </tr>
                                 <tr class="highlight">
-                                    <td class="title"><b>{$lang->ukrainian_size}</b></td>
+                                    <td class="title"><b>{$lang->ukrainian_size|escape}</b></td>
                                     <td><b>44</b></td>
                                     <td><b>46</b></td>
                                     <td><b>48</b></td>
@@ -84,7 +84,7 @@
                                     <td><b>62</b></td>
                                 </tr>
                                 <tr>
-                                    <td class="title"><b>{$lang->europe_germany}</b></td>
+                                    <td class="title"><b>{$lang->europe_germany|escape}</b></td>
                                     <td><b>44</b></td>
                                     <td><b>46</b></td>
                                     <td><b>48</b></td>
@@ -97,7 +97,7 @@
                                     <td><b>62</b></td>
                                 </tr>
                                 <tr>
-                                    <td class="title"><b>{$lang->germany}</b></td>
+                                    <td class="title"><b>{$lang->germany|escape}</b></td>
                                     <td>86</td>
                                     <td>90</td>
                                     <td>94</td>
@@ -110,7 +110,7 @@
                                     <td>122</td>
                                 </tr>
                                 <tr>
-                                    <td class="title"><b>{$lang->usa_uk}</b></td>
+                                    <td class="title"><b>{$lang->usa_uk|escape}</b></td>
                                     <td>34</td>
                                     <td>36</td>
                                     <td>38</td>
@@ -123,7 +123,7 @@
                                     <td>52</td>
                                 </tr>
                                 <tr>
-                                    <td class="title"><b>{$lang->international}</b></td>
+                                    <td class="title"><b>{$lang->international|escape}</b></td>
                                     <td>XS/S</td>
                                     <td>S</td>
                                     <td>M</td>
@@ -143,11 +143,11 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <div class="heading">{$lang->outerwear}</div>
-                                    <p>{$lang->outerwear_text_1}</p>
-                                    <p>{$lang->outerwear_text_2}</p>
-                                    <p>{$lang->outerwear_text_3}</p>
-                                    <p>{$lang->outerwear_text_4}</p>
+                                    <div class="heading">{$lang->outerwear|escape}</div>
+                                    <p>{$lang->outerwear_text_1|escape}</p>
+                                    <p>{$lang->outerwear_text_2|escape}</p>
+                                    <p>{$lang->outerwear_text_3|escape}</p>
+                                    <p>{$lang->outerwear_text_4|escape}</p>
                                 </td>
                                 <td>
                                     <img src="design/{$settings->theme|escape}/images/table_sizes/1.png" alt="1.png" title="1.png">
@@ -155,9 +155,9 @@
                             </tr>
                             <tr>
                                 <td>
-                                    <div class="heading">{$lang->shirts_and_blouses}</div>
-                                    <p>{$lang->shirts_text_1}</p>
-                                    <p>{$lang->shirts_text_2}</p>
+                                    <div class="heading">{$lang->shirts_and_blouses|escape}</div>
+                                    <p>{$lang->shirts_text_1|escape}</p>
+                                    <p>{$lang->shirts_text_2|escape}</p>
                                 </td>
                                 <td>
                                     <img src="design/{$settings->theme|escape}/images/table_sizes/2.png" alt="2.png" title="2.png">
@@ -167,12 +167,12 @@
                     </table>
                 </div>
                 <div class="tab-pane" id="woman">
-                    <div class="heading">{$lang->womens_size}</div>
+                    <div class="heading">{$lang->womens_size|escape}</div>
                     <div class="tables-responsive">
                         <table class="table table-bordered table-full-width font_13 color_222">
                             <tbody>
                                 <tr>
-                                    <td class="title"><b>{$lang->chest_cm}</b></td>
+                                    <td class="title"><b>{$lang->chest_cm|escape}</b></td>
                                     <td>78-82</td>
                                     <td>82-86</td>
                                     <td>86-90</td>
@@ -185,7 +185,7 @@
                                     <td>114-118</td>
                                 </tr>
                                 <tr>
-                                    <td class="title"><b>{$lang->waist_cm}</b></td>
+                                    <td class="title"><b>{$lang->waist_cm|escape}</b></td>
                                     <td>58-62</td>
                                     <td>62-66</td>
                                     <td>66-70</td>
@@ -198,7 +198,7 @@
                                     <td>94-98</td>
                                 </tr>
                                 <tr>
-                                    <td class="title"><b>{$lang->hip_circumference_cm}</b></td>
+                                    <td class="title"><b>{$lang->hip_circumference_cm|escape}</b></td>
                                     <td>84-88</td>
                                     <td>88-92</td>
                                     <td>92-96</td>
@@ -211,7 +211,7 @@
                                     <td>120-124</td>
                                 </tr>
                                 <tr class="highlight">
-                                    <td class="title"><b>{$lang->ukrainian_size}</b></td>
+                                    <td class="title"><b>{$lang->ukrainian_size|escape}</b></td>
                                     <td><b>40</b></td>
                                     <td><b>42</b></td>
                                     <td><b>44</b></td>
@@ -224,7 +224,7 @@
                                     <td><b>58</b></td>
                                 </tr>
                                 <tr>
-                                    <td class="title"><b>{$lang->europe_germany}</b></td>
+                                    <td class="title"><b>{$lang->europe_germany|escape}</b></td>
                                     <td>32</td>
                                     <td>34</td>
                                     <td>36</td>
@@ -237,7 +237,7 @@
                                     <td>50</td>
                                 </tr>
                                 <tr>
-                                    <td class="title"><b>{$lang->france}</b></td>
+                                    <td class="title"><b>{$lang->france|escape}</b></td>
                                     <td>34</td>
                                     <td>36</td>
                                     <td>38</td>
@@ -250,7 +250,7 @@
                                     <td>52</td>
                                 </tr>
                                 <tr>
-                                    <td class="title"><b>{$lang->italy}</b></td>
+                                    <td class="title"><b>{$lang->italy|escape}</b></td>
                                     <td>36</td>
                                     <td>38</td>
                                     <td>40</td>
@@ -263,7 +263,7 @@
                                     <td>54</td>
                                 </tr>
                                 <tr>
-                                    <td class="title"><b>{$lang->usa}</b></td>
+                                    <td class="title"><b>{$lang->usa|escape}</b></td>
                                     <td>0</td>
                                     <td>2</td>
                                     <td>4</td>
@@ -276,7 +276,7 @@
                                     <td>18</td>
                                 </tr>
                                 <tr>
-                                    <td class="title"><b>{$lang->great_britain}</b></td>
+                                    <td class="title"><b>{$lang->great_britain|escape}</b></td>
                                     <td>4</td>
                                     <td>6</td>
                                     <td>8</td>
@@ -289,7 +289,7 @@
                                     <td>22</td>
                                 </tr>
                                 <tr>
-                                    <td class="title"><b>{$lang->international}</b></td>
+                                    <td class="title"><b>{$lang->international|escape}</b></td>
                                     <td>XXS/XS</td>
                                     <td>XS/S</td>
                                     <td>S</td>
@@ -309,11 +309,11 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <div class="heading">{$lang->outerwear}</div>
-                                    <p>{$lang->outerwear_text_1}</p>
-                                    <p>{$lang->outerwear_text_2}</p>
-                                    <p>{$lang->outerwear_text_3}</p>
-                                    <p>{$lang->outerwear_text_4}</p>
+                                    <div class="heading">{$lang->outerwear|escape}</div>
+                                    <p>{$lang->outerwear_text_1|escape}</p>
+                                    <p>{$lang->outerwear_text_2|escape}</p>
+                                    <p>{$lang->outerwear_text_3|escape}</p>
+                                    <p>{$lang->outerwear_text_4|escape}</p>
                                 </td>
                                 <td>
                                     <img src="design/{$settings->theme|escape}/images/table_sizes/5.png" alt="5.png" title="5.png">
@@ -323,12 +323,12 @@
                     </table>
                 </div>
                 <div class="tab-pane" id="children">
-                    <div class="heading">{$lang->childrens_size}</div>
+                    <div class="heading">{$lang->childrens_size|escape}</div>
                     <div class="tables-responsive">
                         <table class="table table-bordered table-full-width font_13 color_222">
                             <tbody>
                                 <tr>
-                                    <td class="title"><b>{$lang->height_cm}</b></td>
+                                    <td class="title"><b>{$lang->height_cm|escape}</b></td>
                                     <td>50</td>
                                     <td>50/56</td>
                                     <td>56</td>
@@ -353,32 +353,32 @@
                                     <td>110</td>
                                 </tr>
                                 <tr>
-                                    <td class="title"><b>{$lang->age}</b></td>
-                                    <td>1 {$lang->months}</td>
-                                    <td>1-2 {$lang->months}</td>
-                                    <td>2 {$lang->months}</td>
-                                    <td>2-3 {$lang->months}</td>
-                                    <td>3 {$lang->months}</td>
-                                    <td>3-6 {$lang->months}</td>
-                                    <td>6 {$lang->months}</td>
-                                    <td>6-9 {$lang->months}</td>
-                                    <td>9 {$lang->months}</td>
-                                    <td>9-12 {$lang->months}</td>
-                                    <td>12 {$lang->months}</td>
-                                    <td>12-18 {$lang->months}</td>
-                                    <td>12-18 {$lang->months}</td>
-                                    <td>18 {$lang->months}</td>
-                                    <td>18-24 {$lang->months}</td>
-                                    <td>2 {$lang->year}</td>
-                                    <td>2-3 {$lang->year}</td>
-                                    <td>3 {$lang->year}</td>
-                                    <td>3-4 {$lang->year}</td>
-                                    <td>4 {$lang->year}</td>
-                                    <td>4-5 {$lang->years}</td>
-                                    <td>5 {$lang->years}</td>
+                                    <td class="title"><b>{$lang->age|escape}</b></td>
+                                    <td>1 {$lang->months|escape}</td>
+                                    <td>1-2 {$lang->months|escape}</td>
+                                    <td>2 {$lang->months|escape}</td>
+                                    <td>2-3 {$lang->months|escape}</td>
+                                    <td>3 {$lang->months|escape}</td>
+                                    <td>3-6 {$lang->months|escape}</td>
+                                    <td>6 {$lang->months|escape}</td>
+                                    <td>6-9 {$lang->months|escape}</td>
+                                    <td>9 {$lang->months|escape}</td>
+                                    <td>9-12 {$lang->months|escape}</td>
+                                    <td>12 {$lang->months|escape}</td>
+                                    <td>12-18 {$lang->months|escape}</td>
+                                    <td>12-18 {$lang->months|escape}</td>
+                                    <td>18 {$lang->months|escape}</td>
+                                    <td>18-24 {$lang->months|escape}</td>
+                                    <td>2 {$lang->year|escape}</td>
+                                    <td>2-3 {$lang->year|escape}</td>
+                                    <td>3 {$lang->year|escape}</td>
+                                    <td>3-4 {$lang->year|escape}</td>
+                                    <td>4 {$lang->year|escape}</td>
+                                    <td>4-5 {$lang->years|escape}</td>
+                                    <td>5 {$lang->years|escape}</td>
                                 </tr>
                                 <tr>
-                                    <td class="title"><b>{$lang->ukrainian_size}</b></td>
+                                    <td class="title"><b>{$lang->ukrainian_size|escape}</b></td>
                                     <td>50</td>
                                     <td>50/56</td>
                                     <td>56</td>
@@ -403,7 +403,7 @@
                                     <td>110</td>
                                 </tr>
                                 <tr class="highlight">
-                                    <td class="title"><b>{$lang->manufacturer_size}</b></td>
+                                    <td class="title"><b>{$lang->manufacturer_size|escape}</b></td>
                                     <td><b>50</b></td>
                                     <td><b>50/56</b></td>
                                     <td><b>56</b></td>
@@ -435,14 +435,14 @@
                         <tbody>
                             <tr>
                                 <td>
-                                    <div class="heading">{$lang->baby_clothing}</div>
-                                    <p>{$lang->baby_clothing_text_1} {$lang->baby_clothing_text_2}</p>
+                                    <div class="heading">{$lang->baby_clothing|escape}</div>
+                                    <p>{$lang->baby_clothing_text_1|escape} {$lang->baby_clothing_text_2|escape}</p>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <div class="heading">{$lang->overalls_sizes}</div>
-                                    <p>{$lang->overalls_sizes_text_1} {$lang->overalls_sizes_text_2}</p>
+                                    <div class="heading">{$lang->overalls_sizes|escape}</div>
+                                    <p>{$lang->overalls_sizes_text_1|escape} {$lang->overalls_sizes_text_2|escape}</p>
                                 </td>
                             </tr>
                         </tbody>

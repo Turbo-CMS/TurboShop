@@ -1,6 +1,6 @@
-/* Data for table t_theme_settings */
-TRUNCATE TABLE `t_theme_settings`;
-INSERT INTO `t_theme_settings` (`setting_id`, `name`, `value`) VALUES
+/* Data for table __theme_settings */
+TRUNCATE TABLE `__theme_settings`;
+INSERT INTO `__theme_settings` (`setting_id`, `name`, `value`) VALUES
 ('1','colors','#dc2f2f'),
 ('2','custom_color','#5b7fff'),
 ('3','user_color','1'),
@@ -181,5 +181,6 @@ INSERT INTO `t_theme_settings` (`setting_id`, `name`, `value`) VALUES
 ('178','id_menu_sitemap_1','1'),
 ('179','id_menu_sitemap_2','2'),
 ('180','id_menu_sitemap_3','3'),
-('181','id_menu_sitemap_4','4');
+('181','id_menu_sitemap_4','4'),
+('182','header_banners_id','5');
 

@@ -22,7 +22,7 @@ class ImportAdmin extends Import
 
 		setlocale(LC_ALL, $oldLocale);
 
-		if ($this->request->isMethod('post')) {
+		if ($this->request->method('post')) {
 			if ($this->request->files("file") && $this->request->files("file")['error'] == UPLOAD_ERR_OK) {
 				$uploadedName = $this->request->files("file", "tmp_name");
 				$temp = tempnam($this->importFilesDir, 'temp_');

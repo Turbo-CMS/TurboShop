@@ -10,7 +10,7 @@ class CategoryAdmin extends Turbo
 	{
 		$category = new stdClass();
 
-		if ($this->request->isMethod('post')) {
+		if ($this->request->method('post')) {
 			$category->id = $this->request->post('id', 'integer');
 			$category->parent_id = $this->request->post('parent_id', 'integer');
 			$category->name = $this->request->post('name');
@@ -67,7 +67,25 @@ class CategoryAdmin extends Turbo
 			}
 		} else {
 			$category->id = $this->request->get('id', 'integer');
-			$category = $this->categories->getCategory($category->id);
+
+			if (!empty($category->id)) {
+				$category = $this->categories->getCategory($category->id);
+			} else {
+				$category->id = null;
+				$category->name = '';
+				$category->name_h1 = '';
+				$category->url = '';
+				$category->visible = 1;
+				$category->featured = null;
+				$category->image = '';
+				$category->icon = '';
+				$category->code = '';
+				$category->meta_title = '';
+				$category->meta_keywords = '';
+				$category->meta_description = '';
+				$category->description = '';
+				$category->parent_id = null;
+			}
 		}
 
 		$categories = $this->categories->getCategoriesTree();

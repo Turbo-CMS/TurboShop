@@ -1,5 +1,5 @@
 {get_banner var=teasers group=$theme_settings->teasers_banners_id}
-{if isset($teasers->items)}
+{if $teasers && $teasers->items}
 	{if $theme_settings->teasers_type == '1'}
 		<div class="drag-block container TIZERS" data-class="tizers_drag" data-order="{$theme_settings->block_6}">
 			<div class="index-block index-block--padding-top-{$theme_settings->teasers_padding_top} index-block--padding-bottom-{$theme_settings->teasers_padding_bottom} {if $theme_settings->teasers_delimiter}index-block--delimiter{/if} {if $theme_settings->teasers_background}index-block--fon{/if}">

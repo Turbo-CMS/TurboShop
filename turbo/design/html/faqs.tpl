@@ -4,7 +4,7 @@
 	<div class="col-lg-8 col-md-8">
 		<div class="d-md-flex mb-3">
 			<h1 class="d-inline align-middle me-3">
-				{$btr->global_faq|escape}
+				{$btr->global_faq|escape} - {$faqs_count}
 			</h1>
 			<div class="d-grid d-sm-block mt-2 mt-md-0">
 				<a class="btn btn-primary" href="{url module=FAQAdmin return=$smarty.server.REQUEST_URI}"><i data-feather="plus"></i> {$btr->faq_add|escape}</a>
@@ -15,7 +15,7 @@
 		<form class="search mb-3" method="get">
 			<input type="hidden" name="module" value="FAQsAdmin">
 			<div class="input-group">
-				<input name="keyword" class="form-control" placeholder="{$btr->global_search|escape}" type="text" value="{if isset($keyword)}{$keyword|escape}{/if}">
+				<input name="keyword" class="form-control" placeholder="{$btr->global_search|escape}" type="text" value="{$keyword|escape}">
 				<button class="btn btn-primary" type="submit"><i class="align-middle mt-n1" data-feather="search"></i></button>
 			</div>
 		</form>

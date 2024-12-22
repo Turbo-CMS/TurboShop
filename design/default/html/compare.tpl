@@ -1,6 +1,6 @@
 {* Product Comparison *}
 
-{if isset($page)}
+{if $page}
 	{* Canonical *}
 	{$canonical="/{$page->url}" scope=global}
 {else}
@@ -11,41 +11,13 @@
 	{$canonical="/compare" scope=global}
 {/if}
 
-{* Breadcrumb *}
-{$level = 1}
-<nav class="mt-4" aria-label="breadcrumb">
-	<ol itemscope itemtype="http://schema.org/BreadcrumbList" class="breadcrumb">
-		<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="breadcrumb-item">
-			<a itemprop="item" class="text-decoration-none" href="{if $lang_link}{$lang_link}{else}/{/if}">
-				<span itemprop="name" title="{$lang->home}"><i class="fal fa-house me-2"></i>{$lang->home}</span>
-			</a>
-			<meta itemprop="position" content="{$level++}">
-		</li>
-		{if isset($page)}
-			<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="breadcrumb-item active" aria-current="page">
-				<a itemprop="item" class="text-decoration-none" href="{$lang_link}{$page->url}">
-					<span itemprop="name">{$page->header|escape}</span>
-				</a>
-				<meta itemprop="position" content="{$level++}">
-			</li>
-		{else}
-			<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="breadcrumb-item active" aria-current="page">
-				<a itemprop="item" class="text-decoration-none" href="{$lang_link}compare">
-					<span itemprop="name">{$lang->compare}</span>
-				</a>
-				<meta itemprop="position" content="{$level++}">
-			</li>
-		{/if}
-	</ol>
-</nav>
-
 {* Page Title *}
-{if isset($page->name)}
+{if $page}
 	<h1 class="my-4">
 		<span data-page="{$page->id}">{$page->name|escape}</span>
 	</h1>
 {else}
-	<h1 class="my-4">{$lang->compare}</h1>
+	<h1 class="my-4">{$lang->compare|escape}</h1>
 {/if}
 
 {if $products}
@@ -98,7 +70,7 @@
 					{/foreach}
 				</tr>
 			</thead>
-			{if isset($compare_features)}
+			{if $compare_features}
 				{foreach $compare_features as $feature}
 					{if !$feature->is_color}
 						<tr>
@@ -107,7 +79,7 @@
 							</td>
 							{foreach $products as $product}
 								<td>
-									{if isset($product->features)}
+									{if $product->features}
 										{foreach $product->features as $f}
 											{if $f->name == $feature->name}
 												{foreach $f->values as $v}
@@ -126,6 +98,6 @@
 	</div>
 {else}
 	<div class="my-1">
-		{$lang->compare_no_products}
+		{$lang->compare_no_products|escape}
 	</div>
 {/if}

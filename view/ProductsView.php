@@ -8,7 +8,7 @@ class ProductsView extends View
 	private $langLabel = '';
 	private $catalogType = '';
 	private $isWrongParams = 0;
-	private $noIndexFilter = false;
+	private $isFilter = false;
 
 	/**
 	 * SEO Filter
@@ -56,7 +56,7 @@ class ProductsView extends View
 							foreach (explode('_', $paramValues) as $bv) {
 								if (($brand = $this->brands->getBrand((string)$bv)) && !in_array($brand->id, $_GET['b'])) {
 									$_GET['b'][] = $brand->id;
-									$this->noIndexFilter = true;
+									$this->isFilter = true;
 								} else {
 									$this->isWrongParams = 1;
 								}
@@ -80,7 +80,7 @@ class ProductsView extends View
 					default: {
 							if (($feature = $this->features->getFeature($paramName)) && !isset($_GET[$feature->id])) {
 								$_GET[$feature->id] = explode('_', $paramValues);
-								$this->noIndexFilter = true;
+								$this->isFilter = true;
 								if (count($_GET[$feature->id]) == count(array_unique($_GET[$feature->id]))) {
 									$optionTranslits = [];
 									foreach ($this->features->getOptions(['feature_id' => $feature->id]) as $fo) {
@@ -103,7 +103,7 @@ class ProductsView extends View
 			}
 		}
 
-		$this->design->assign('noindex_filter', $this->noIndexFilter);
+		$this->design->assign('is_filter', $this->isFilter);
 		$this->design->smarty->registerPlugin('function', 'furl', [$this, 'filterChpuUrl']);
 	}
 
@@ -480,6 +480,8 @@ class ProductsView extends View
 					$product->variant = $product->variants[0];
 				}
 
+				$product->image = null;
+
 				if (isset($product->images[0])) {
 					$product->image = $product->images[0];
 				}
@@ -495,6 +497,10 @@ class ProductsView extends View
 						$v->compare_price = 0;
 						$this->variants->updateVariant($product->variant->id, $v);
 					}
+				}
+
+				if (!isset($product->features) || !is_array($product->features)) {
+					$product->features = [];
 				}
 
 				if ($productValues = $this->features->getProductOptions(['product_id' => $product->id])) {
@@ -652,9 +658,9 @@ class ProductsView extends View
 			$this->design->assign('meta_title', $keyword);
 		}
 
-		$autoMeta->title = strtr($autoMeta->title, $autoMetaParts);
-		$autoMeta->keywords = strtr($autoMeta->keywords, $autoMetaParts);
-		$autoMeta->description = strtr($autoMeta->description, $autoMetaParts);
+		$autoMeta->title = isset($autoMeta->title) ? strtr($autoMeta->title, $autoMetaParts) : '';
+		$autoMeta->keywords = isset($autoMeta->keywords) ? strtr($autoMeta->keywords, $autoMetaParts) : '';
+		$autoMeta->description = isset($autoMeta->description) ? strtr($autoMeta->description, $autoMetaParts) : '';
 
 		$autoMeta->title = preg_replace("/\{.*\}/", '', $autoMeta->title);
 		$autoMeta->keywords = preg_replace("/\{.*\}/", '', $autoMeta->keywords);

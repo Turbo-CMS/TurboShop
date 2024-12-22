@@ -319,83 +319,68 @@ class Pages extends Turbo
 		$menuId = '';
 		$isVisible = '';
 
-		if (isset($filter['visible'], $filter['menu_id'])) {
-			$query = $this->db->placehold("SELECT COUNT(*) FROM __pages WHERE id=? AND visible=1", (int) $filter['menu_id']);
-			$this->db->query($query);
-
-			if (!$this->db->result('COUNT(*)')) {
-				return false;
-			}
-		}
-
 		if (isset($filter['menu_id'])) {
-			$menuId = $this->db->placehold("AND menu_id=?", (int) $filter['menu_id']);
+			$menuId = "AND menu_id = " . (int)$filter['menu_id'];
 		}
 
 		if (isset($filter['visible'])) {
-			$isVisible = ' AND visible =1 ';
+			$isVisible = "AND visible = 1";
 		}
 
 		$tree = new stdClass();
 		$tree->subpages = [];
 
-		$pointers = [];
-		$pointers[0] = &$tree;
+		$pointers = [0 => &$tree];
 		$pointers[0]->path = [];
 		$pointers[0]->level = 0;
 
 		$langSql = $this->languages->getQuery(['object' => 'page']);
-
 		$query = $this->db->placehold("SELECT *, $langSql->fields FROM __pages p $langSql->join WHERE 1 $menuId $isVisible ORDER BY p.parent_id, p.position");
 
 		if ($this->settings->cached == 1 && empty($_SESSION['admin'])) {
-			if ($result = $this->cache->get($query)) {
-				$pages = $result;
-			} else {
+			$pages = $this->cache->get($query);
+			if (!$pages) {
 				$this->db->query($query);
-				$result = $this->db->results();
-				$this->cache->set($query, $result);
-				$pages = $result;
+				$pages = $this->db->results();
+				$this->cache->set($query, $pages);
 			}
 		} else {
 			$this->db->query($query);
 			$pages = $this->db->results();
 		}
 
-		while (!empty($pages)) {
-			$flag = false;
-
-			foreach ($pages as $k => $page) {
-				if (isset($pointers[$page->parent_id])) {
-					$pointers[$page->id] = $pointers[$page->parent_id]->subpages[] = $page;
-					$curr = $pointers[$page->id];
-					$pointers[$page->id]->path = array_merge((array) $pointers[$page->parent_id]->path, [$curr]);
-					$pointers[$page->id]->level = 1 + $pointers[$page->parent_id]->level;
-					unset($pages[$k]);
-					$flag = true;
-				}
+		foreach ($pages as $page) {
+			if (!isset($page->subpages)) {
+				$page->subpages = [];
 			}
 
-			if (!$flag) {
-				break;
+			$pointers[$page->id] = $page;
+
+			if (isset($pointers[$page->parent_id])) {
+				$pointers[$page->parent_id]->subpages[] = $page;
+				$page->path = array_merge((array)$pointers[$page->parent_id]->path, [$page]);
+				$page->level = $pointers[$page->parent_id]->level + 1;
+			} else {
+				$tree->subpages[] = $page;
+				$page->path = [];
+				$page->level = 0;
 			}
 		}
 
-		$ids = array_reverse(array_keys($pointers));
-
-		foreach ($ids as $id) {
+		foreach (array_reverse(array_keys($pointers)) as $id) {
 			if ($id > 0) {
-				$pointers[$id]->children[] = $id;
+				$page = $pointers[$id];
+				$page->children[] = $id;
 
-				if (isset($pointers[$pointers[$id]->parent_id]->children)) {
-					$pointers[$pointers[$id]->parent_id]->children = array_merge($pointers[$id]->children, $pointers[$pointers[$id]->parent_id]->children);
-				} else {
-					$pointers[$pointers[$id]->parent_id]->children = $pointers[$id]->children;
+				$parent_id = $page->parent_id;
+				if ($parent_id && isset($pointers[$parent_id])) {
+					$pointers[$parent_id]->children = array_merge(
+						$page->children,
+						$pointers[$parent_id]->children ?? []
+					);
 				}
 			}
 		}
-
-		unset($pointers[0], $ids);
 
 		$this->pagesTree = $tree->subpages;
 		$this->allPages = $pointers;

@@ -1,4 +1,4 @@
-{if isset($coupon->code)}
+{if $coupon->code}
 	{$meta_title = $coupon->code scope=global}
 {else}
 	{$meta_title = $btr->coupons_new scope=global}
@@ -6,7 +6,7 @@
 
 <div class="d-md-flex mb-3">
 	<h1 class="d-inline align-middle me-3">
-		{if isset($coupon->code)}
+		{if $coupon->code}
 			{$coupon->code}
 		{else}
 			{$btr->coupons_add|escape}
@@ -14,7 +14,7 @@
 	</h1>
 </div>
 
-{if isset($message_success)}
+{if $message_success}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -37,7 +37,7 @@
 	</div>
 {/if}
 
-{if isset($message_error)}
+{if $message_error}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -73,21 +73,21 @@
 					<div class="turbo-list-body-item">
 						<div class="turbo-list-row">
 							<div class="turbo-list-boding turbo-list-coupon-name">
-								<input class="form-control" name="code" type="text" value="{if isset($coupon->code)}{$coupon->code|escape}{/if}" placeholder="{$btr->coupons_enter_name|escape}">
-								<input name="id" class="name" type="hidden" value="{if isset($coupon->id)}{$coupon->id|escape}{/if}">
+								<input class="form-control" name="code" type="text" value="{$coupon->code|escape}" placeholder="{$btr->coupons_enter_name|escape}">
+								<input name="id" class="name" type="hidden" value="{$coupon->id|escape}">
 							</div>
 							<div class="turbo-list-boding turbo-list-coupon-sale">
 								<div class="input-group">
-									<input class="form-control" name="value" type="text" value="{if isset($coupon->value) && isset($coupon->type) && $coupon->type == 'percentage'}{$coupon->value*1}{elseif isset($coupon->value)}{$coupon->value|escape}{/if}">
+									<input class="form-control" name="value" type="text" value="{if $coupon->type == 'percentage'}{$coupon->value*1}{else}{$coupon->value|escape}{/if}">
 									<select class="js-coupon-sale selectpicker d-none" name="type">
-										<option value="percentage" {if isset($coupon->type) && $coupon->type=='percentage'}selected{/if}>%</option>
-										<option value="absolute" {if isset($coupon->type) && $coupon->type=='absolute'}selected{/if}>{$currency->sign}</option>
+										<option value="percentage" {if $coupon->type=='percentage'}selected{/if}>%</option>
+										<option value="absolute" {if $coupon->type=='absolute'}selected{/if}>{$currency->sign}</option>
 									</select>
 								</div>
 							</div>
 							<div class="turbo-list-boding turbo-list-coupon-condit">
 								<div class="input-group">
-									<input class="form-control" type="text" name="min_order_price" value="{if isset($coupon->min_order_price)}{$coupon->min_order_price|escape}{/if}" placeholder="{$btr->coupons_order_price|escape}">
+									<input class="form-control" type="text" name="min_order_price" value="{$coupon->min_order_price|escape}" placeholder="{$btr->coupons_order_price|escape}">
 									<div class="input-group-text">
 										{$currency->sign}
 									</div>
@@ -95,12 +95,12 @@
 							</div>
 							<div class="turbo-list-boding turbo-list-coupon-disposable">
 								<label class="form-check d-inline-block align-top">
-									<input class="form-check-input" type="checkbox" name="single" value="1" {if isset($coupon->single) && $coupon->single==1}checked{/if}>
+									<input class="form-check-input" type="checkbox" name="single" value="1" {if $coupon->single == 1}checked{/if}>
 								</label>
 							</div>
 							<div class="turbo-list-boding turbo-list-coupon-validity">
 								<div class="input-group">
-									<input class="form-control flatpickr" type="text" name="expire" value="{if isset($coupon->expire)}{$coupon->expire|date}{/if}">
+									<input class="form-control flatpickr" type="text" name="expire" value="{$coupon->expire|date}">
 									<div class="input-group-text">
 										<i class="align-middle" data-feather="calendar"></i>
 									</div>
@@ -108,7 +108,7 @@
 							</div>
 							<div class="turbo-list-boding turbo-list-coupon-disposable">
 								<label class="form-check d-inline-block align-top">
-									<input class="form-check-input" type="checkbox" name="expires" value="1" {if isset($coupon->expire)}checked{/if}>
+									<input class="form-check-input" type="checkbox" name="expires" value="1" {if $coupon->expire}checked{/if}>
 								</label>
 							</div>
 						</div>

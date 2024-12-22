@@ -401,7 +401,6 @@
       <tbody>
         <tr>
           <td class="es-p25t es-p25b" valign="center">
-
             {* Header email *}
             <table class="es-header" cellspacing="0" cellpadding="0" align="center">
               <tbody>
@@ -430,7 +429,6 @@
                 </tr>
               </tbody>
             </table>
-
             <table class="es-content" cellspacing="0" cellpadding="0" align="center">
               <tbody>
                 <tr>
@@ -587,7 +585,6 @@
                 </tr>
               </tbody>
             </table>
-
             <table class="es-content" cellspacing="0" cellpadding="0" align="center">
               <tbody>
                 <tr>
@@ -595,20 +592,20 @@
                     <table class="es-content-body" width="600" cellspacing="0" cellpadding="0" bgcolor="#ffffff" align="center">
                       <tbody>
                         <tr>
-                          <td class="es-p10t es-p0b es-p20r es-p20l" align="left">
-                            <table class="es-left" cellspacing="0" cellpadding="0" align="left">
+                          <td class="es-p30b es-p20r es-p20l" align="left">
+                            <table width="100%" cellspacing="0" cellpadding="0" align="center">
                               <tbody>
                                 <tr>
                                   <td class="es-p20t es-p10b" align="left">
                                     <table class="es-left" cellspacing="0" cellpadding="0" align="left">
                                       <tbody>
                                         <tr>
-                                          <td class="es-m-p0r es-m-p10b" width="100%" valign="top" align="center">
-                                            <table width="100%" cellspacing="0" cellpadding="0">
+                                          <td class="es-m-p0r es-m-p20b" align="left">
+                                            <table class="100%" cellspacing="0" cellpadding="0" align="left">
                                               <tbody>
                                                 <tr>
                                                   <td class="esd-block-text" align="left">
-                                                    <h4>{$btr->email_order_purchases}:</h4>
+                                                    <h4>{$btr->email_order_purchases|escape}:</h4>
                                                   </td>
                                                 </tr>
                                               </tbody>
@@ -619,179 +616,121 @@
                                     </table>
                                   </td>
                                 </tr>
-                              </tbody>
-                            </table>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td class="es-p20r es-p20l" align="left">
-                            <table width="100%" cellspacing="0" cellpadding="0">
-                              <tbody>
                                 <tr>
-                                  <td width="560" valign="top" align="center">
-                                    <table width="100%" cellspacing="0" cellpadding="0">
+                                  <td align="left">
+                                    <table>
                                       <tbody>
-                                        <tr>
-                                          <td class="es-p10b" align="center">
-                                            <table width="100%" height="100%" cellspacing="0" cellpadding="0" border="0">
-                                              <tbody>
-                                                <tr>
-                                                  <td style="border-bottom: 1px solid #dee6ed; background: #dee6ed; height: 1px; width: 100%; margin: 0px;"></td>
-                                                </tr>
-                                              </tbody>
-                                            </table>
-                                          </td>
-                                        </tr>
+                                        <tr style="border-bottom: 1px solid #dee6ed; background: #dee6ed; height: 2px; width: 100%; margin: 0px;"></tr>
+                                        {foreach $purchases as $purchase}
+                                          <tr>
+                                            <td class="es-p10t es-p10b" align="left">
+                                              <table class="es-left" cellspacing="0" cellpadding="0" align="left">
+                                                <tbody>
+                                                  <tr>
+                                                    <td class="es-m-p0r es-m-p20b" width="178" valign="top" align="center">
+                                                      <table width="100%" cellspacing="0" cellpadding="0">
+                                                        <tbody>
+                                                          <tr>
+                                                            <td align="center">
+                                                              <a href="{$config->root_url}/products/{$purchase->product->url}">
+                                                                {if isset($purchase->product->images)}
+                                                                  {$image = $purchase->product->images|first}
+                                                                  <img align="middle" src="{$image->filename|resize:120:120}" alt="{$purchase->product->name|escape}">
+                                                                {else}
+                                                                  <img style="width: 100px; height: 100px;" src="{$config->root_url}/design/{$settings->theme}/images/no-photo.png" alt="{$purchase->product->name|escape}" title="{$purchase->product->name|escape}">
+                                                                {/if}
+                                                              </a>
+                                                            </td>
+                                                          </tr>
+                                                        </tbody>
+                                                      </table>
+                                                    </td>
+                                                  </tr>
+                                                </tbody>
+                                              </table>
+                                              <table width="380px" cellspacing="0" cellpadding="0" align="right">
+                                                <tbody>
+                                                  <tr>
+                                                    <td width="100%" align="left">
+                                                      <table width="100%" cellspacing="0" cellpadding="0">
+                                                        <tbody>
+                                                          <tr>
+                                                            <td>
+                                                              <a href="{$config->root_url}/products/{$purchase->product->url}" style="font-family: 'Trebuchet MS';font-size: 16px;color: #495057;text-decoration: none;line-height: normal;">{$purchase->product_name|escape}</a><br>
+                                                              <span class="es-p5t"><em><span style="color: rgb(128, 128, 128); font-size: 12px;">{$purchase->variant->color|escape} {if $purchase->variant->color && $purchase->variant_name}/{/if} {$purchase->variant_name|escape}</span></em></span>
+                                                              {if $purchase->variant->stock == 0}
+                                                                <div class="es-p5t" style="color: #495057; font-size: 12px;font-weight: 600">{$btr->product_pre_order|escape}</div>
+                                                              {/if}
+                                                            </td>
+                                                            <td style="text-align: center;" width="60">
+                                                              {$purchase->amount} {if isset($purchase->units)}{$purchase->units|escape}{else}{$settings->units}{/if}
+                                                            </td>
+                                                            <td style="text-align: right;" width="100">
+                                                              <b>{$purchase->price|convert:$currency->id}&nbsp;{$currency->sign}</b>
+                                                            </td>
+                                                          </tr>
+                                                        </tbody>
+                                                      </table>
+                                                    </td>
+                                                  </tr>
+                                                </tbody>
+                                              </table>
+                                            </td>
+                                          </tr>
+                                          <tr style="border-bottom: 1px solid #dee6ed; background: #dee6ed; height: 2px; width: 100%; margin: 0px;"></tr>
+                                        {/foreach}
                                       </tbody>
                                     </table>
                                   </td>
                                 </tr>
-                              </tbody>
-                            </table>
-                          </td>
-                        </tr>
-
-                        {foreach $purchases as $purchase}
-                          <tr>
-                            <td class="es-p5t es-p10b es-p20l" align="left">
-                              <table class="es-left" cellspacing="0" cellpadding="0" align="left">
-                                <tbody>
-                                  <tr>
-                                    <td class="es-m-p0r es-m-p20b" width="178" valign="top" align="center">
-                                      <table width="100%" cellspacing="0" cellpadding="0">
-                                        <tbody>
-                                          <tr>
-                                            <td align="center">
-                                              <a href="{$config->root_url}/products/{$purchase->product->url}">
-                                                {if isset($purchase->product->images)}
-                                                  {$image = $purchase->product->images|first}
-                                                  <img src="{$image->filename|resize:120:120}" alt="{$purchase->product->name|escape}">
-                                                {else}
-                                                  <img style="width: 100px; height: 100px;" src="{$config->root_url}/design/{$settings->theme}/images/no-photo.png" alt="{$purchase->product->name|escape}" title="{$purchase->product->name|escape}">
-                                                {/if}
-                                              </a>
-                                            </td>
-                                          </tr>
-                                        </tbody>
-                                      </table>
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                              <table width="380px" cellspacing="0" cellpadding="0" align="right">
-                                <tbody>
-                                  <tr>
-                                    <td width="100%" align="left">
-                                      <table width="100%" cellspacing="0" cellpadding="0">
-                                        <tbody>
-                                          <tr>
-                                            <td align="left">
-                                              <table style="width: 100%;" cellspacing="1" cellpadding="1" border="0">
-                                                <tbody>
-                                                  <tr>
-                                                    <td>
-                                                      <a href="products/{$purchase->product->url}" style="font-family: 'Trebuchet MS';font-size: 16px;color: #495057;text-decoration: none;line-height: normal;">{$purchase->product_name|escape}</a><br />
-                                                      <span class="es-p5t"><em><span style="color: rgb(128, 128, 128); font-size: 12px;">{$purchase->variant->color} {if $purchase->variant->color && $purchase->variant_name}/{/if} {$purchase->variant->name|escape}</span></em></span>
-                                                      {if $purchase->variant->stock == 0}
-                                                        <div class="es-p5t" style="color: #495057; font-size: 12px;font-weight: 600">{$btr->product_pre_order}</div>
-                                                      {/if}
-                                                    </td>
-                                                    <td style="text-align: center;" width="60">
-                                                      {$purchase->amount} {if isset($purchase->units)}{$purchase->units|escape}{else}{$settings->units}{/if}
-                                                    </td>
-                                                    <td style="text-align: center;" width="100">
-                                                      <b>{$purchase->price|convert:$currency->id}&nbsp;{$currency->sign}</b>
-                                                    </td>
-                                                  </tr>
-                                                </tbody>
-                                              </table>
-                                            </td>
-                                          </tr>
-                                        </tbody>
-                                      </table>
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td class="es-p20r es-p20l" align="left">
-                              <table width="100%" cellspacing="0" cellpadding="0">
-                                <tbody>
-                                  <tr>
-                                    <td width="560" valign="top" align="center">
-                                      <table width="100%" cellspacing="0" cellpadding="0">
-                                        <tbody>
-                                          <tr>
-                                            <td class="es-p10b" align="center">
-                                              <table width="100%" height="100%" cellspacing="0" cellpadding="0" border="0">
-                                                <tbody>
-                                                  <tr>
-                                                    <td style="border-bottom: 1px solid #dee6ed; background: #dee6ed; height: 1px; width: 100%; margin: 0px;"></td>
-                                                  </tr>
-                                                </tbody>
-                                              </table>
-                                            </td>
-                                          </tr>
-                                        </tbody>
-                                      </table>
-                                    </td>
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </td>
-                          </tr>
-                        {/foreach}
-                        <tr>
-                          <td class="es-p15t es-p30b es-p40r es-p20l" align="left">
-                            <table width="100%" cellspacing="0" cellpadding="0">
-                              <tbody>
                                 <tr>
-                                  <td width="540" valign="top" align="center">
+                                  <td class="es-p15t" align="left">
                                     <table width="100%" cellspacing="0" cellpadding="0">
                                       <tbody>
                                         <tr>
-                                          <td align="right">
-                                            <table style="width: 500px;" cellspacing="1" cellpadding="1" border="0" align="right">
+                                          <td valign="top" align="center">
+                                            <table width="100%" cellspacing="0" cellpadding="0">
                                               <tbody>
-                                                {if $order->discount}
-                                                  <tr>
-                                                    <td style="text-align: right; font-size: 18px; line-height: 150%;">{$btr->global_discount}:</td>
-                                                    <td style="text-align: right; font-size: 18px; line-height: 150%; color: #495057;">{$order->discount}&nbsp;%</td>
-                                                  </tr>
-                                                {/if}
-
-                                                {if $order->coupon_discount > 0}
-                                                  <tr>
-                                                    <td style="text-align: right; font-size: 18px; line-height: 150%;">{$btr->global_coupon} {$order->coupon_code}:</td>
-                                                    <td style="text-align: right; font-size: 18px; line-height: 150%; color: #495057;">&minus;{$order->coupon_discount}&nbsp;{$currency->sign}</td>
-                                                  </tr>
-                                                {/if}
-
-                                                {if $order->weight > 0}
-                                                  <tr>
-                                                    <td style="text-align: right; font-size: 18px; line-height: 150%;">{$btr->global_weight|escape}:</td>
-                                                    <td style="text-align: right; font-size: 18px; line-height: 150%; color: #495057;">{$order->weight} {$settings->weight_units}</td>
-                                                  </tr>
-                                                {/if}
-
-                                                {if $order->separate_delivery || !$order->separate_delivery && $order->delivery_price > 0}
-                                                  <tr>
-                                                    <td style="text-align: right; font-size: 18px; line-height: 150%;">{$delivery->name|escape}:</td>
-                                                    <td style="text-align: right; font-size: 18px; line-height: 150%; color: #495057;">
-                                                      {if !$order->separate_delivery}{$order->delivery_price|convert:$currency->id}&nbsp;{$currency->sign}{else}{/if}
-                                                    </td>
-                                                  </tr>
-                                                {/if}
-
-                                                <tr class="es-p5t">
-                                                  <td style="text-align: right; font-size: 20px; line-height: 150%;"><strong>{$btr->global_total}:</strong></td>
-                                                  <td style="text-align: right; font-size: 20px; line-height: 150%; color: #dc3545;"><strong>{$order->total_price|convert:$currency->id}&nbsp;{$currency->sign}</strong></td>
+                                                <tr>
+                                                  <td align="right">
+                                                    <table style="width: 500px;" cellspacing="1" cellpadding="1" border="0" align="right">
+                                                      <tbody>
+                                                        {if $order->discount}
+                                                          <tr>
+                                                            <td style="text-align: right; font-size: 18px; line-height: 150%;">{$btr->global_discount|escape}:</td>
+                                                            <td style="text-align: right; font-size: 18px; line-height: 150%; color: #495057;">{$order->discount}&nbsp;%</td>
+                                                          </tr>
+                                                        {/if}
+                                                        {if $order->coupon_discount > 0}
+                                                          <tr>
+                                                            <td style="text-align: right; font-size: 18px; line-height: 150%;">{$btr->global_coupon|escape} {$order->coupon_code}:</td>
+                                                            <td style="text-align: right; font-size: 18px; line-height: 150%; color: #495057;">&minus;{$order->coupon_discount}&nbsp;{$currency->sign}</td>
+                                                          </tr>
+                                                        {/if}
+                                                        {if $order->weight > 0}
+                                                          <tr>
+                                                            <td style="text-align: right; font-size: 18px; line-height: 150%;">{$btr->global_weight|escape}:</td>
+                                                            <td style="text-align: right; font-size: 18px; line-height: 150%; color: #495057;">{$order->weight} {$settings->weight_units}</td>
+                                                          </tr>
+                                                        {/if}
+                                                        {if $delivery && !$order->separate_delivery}
+                                                          <tr>
+                                                            <td style="text-align: right; font-size: 18px; line-height: 150%;">{$delivery->name|escape}:</td>
+                                                            <td style="text-align: right; font-size: 18px; line-height: 150%; color: #495057;">
+                                                              {$order->delivery_price|convert:$currency->id}&nbsp;{$currency->sign}
+                                                            </td>
+                                                          </tr>
+                                                        {/if}
+                                                        <tr class="es-p5t">
+                                                          <td style="text-align: right; font-size: 20px; line-height: 150%;"><strong>{$btr->global_total|escape}:</strong></td>
+                                                          <td style="text-align: right; font-size: 20px; line-height: 150%; color: #dc3545;"><strong>{$order->total_price|convert:$currency->id}&nbsp;{$currency->sign}</strong></td>
+                                                        </tr>
+                                                      </tbody>
+                                                    </table>
+                                                  </td>
                                                 </tr>
                                               </tbody>
                                             </table>
-                                            <p style="line-height: 150%;"><br></p>
                                           </td>
                                         </tr>
                                       </tbody>
@@ -808,7 +747,6 @@
                 </tr>
               </tbody>
             </table>
-
             {* Footer email *}
             <table class="es-footer" cellspacing="0" cellpadding="0" align="center">
               <tbody>
@@ -838,7 +776,6 @@
                 </tr>
               </tbody>
             </table>
-
           </td>
         </tr>
       </tbody>

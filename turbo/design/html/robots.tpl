@@ -2,7 +2,7 @@
 
 <h1 class="h3 mb-3">{$btr->robots_file|escape}</h1>
 
-{if isset($message_error)}
+{if $message_error}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -17,7 +17,7 @@
 	</div>
 {/if}
 
-{if isset($message_success)}
+{if $message_success}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-success alert-dismissible fade show" role="alert">

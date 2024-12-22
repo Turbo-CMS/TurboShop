@@ -8,14 +8,14 @@
 					<div class="phones__phone-more dropdown__item color-theme-hover dropdown__item--first">
 						<a class="phones__phone-link dark_link" rel="nofollow" href="tel:{$theme_settings->phone_1|regex_replace:'/[\s()-]/':''}">
 							{$theme_settings->phone_1|escape}
-							<span class="phones__phone-descript phones__dropdown-title">{$lang->sales_department}</span>
+							<span class="phones__phone-descript phones__dropdown-title">{$lang->sales_department|escape}</span>
 						</a>
 					</div>
 					{if $theme_settings->phone_2}
 						<div class="phones__phone-more dropdown__item color-theme-hover">
 							<a class="phones__phone-link dark_link" rel="nofollow" href="tel:{$theme_settings->phone_2|regex_replace:'/[\s()-]/':''}">
 								{$theme_settings->phone_2|escape}
-								<span class="phones__phone-descript phones__dropdown-title">{$lang->accounting}</span>
+								<span class="phones__phone-descript phones__dropdown-title">{$lang->accounting|escape}</span>
 							</a>
 						</div>
 					{/if}
@@ -23,13 +23,13 @@
 						<div class="phones__phone-more dropdown__item color-theme-hover dropdown__item--last">
 							<a class="phones__phone-link dark_link" rel="nofollow" href="tel:{$theme_settings->phone_3|regex_replace:'/[\s()-]/':''}">
 								{$theme_settings->phone_3|escape}
-								<span class="phones__phone-descript phones__dropdown-title">{$lang->director}</span>
+								<span class="phones__phone-descript phones__dropdown-title">{$lang->director|escape}</span>
 							</a>
 						</div>
 					{/if}
 					<div class="phones__dropdown-item callback-item">
 						<div class="animate-load btn btn-default btn-wide btn-sm" data-event="jqm" data-url="{$lang_link}contact/?tpl=callback" data-name="callback">
-							{$lang->callback}
+							{$lang->callback|escape}
 						</div>
 					</div>
 				</div>
@@ -48,26 +48,26 @@
 					</div>
 					<div class="phones__dropdown-item">
 						<div class="address__title phones__dropdown-title">
-							{$lang->address}
+							{$lang->address|escape}
 						</div>
 						<div class="phones__dropdown-value">
 							<div class="address__text font_short address__text--large">
-								{$lang->office}
+								{$lang->office|escape}
 							</div>
 						</div>
 					</div>
 					<div class="phones__dropdown-item">
 						<div class="schedule__title phones__dropdown-title">
-							{$lang->operating_mode}
+							{$lang->operating_mode|escape}
 						</div>
 						<div class="phones__dropdown-value">
 							<div class="schedule__text">
-								{$lang->operating_mode_text}
+								{$lang->operating_mode_text|escape}
 							</div>
 						</div>
 					</div>
 					<div class="phones__dropdown-item social-item">
-						{include file='components/social.tpl'}
+						{include file='includes/social.tpl'}
 					</div>
 				</div>
 			</div>
@@ -83,7 +83,7 @@
 	{if $module != 'CartView' && $module != 'OrderView'}
 		<div>
 			<div class="phones__callback light-opacity-hover animate-load dark_link banner-light-text menu-light-text hide-1200" data-event="jqm" data-url="{$lang_link}contact/?tpl=callback" data-name="callback">
-				{$lang->callback}
+				{$lang->callback|escape}
 			</div>
 		</div>
 	{/if}

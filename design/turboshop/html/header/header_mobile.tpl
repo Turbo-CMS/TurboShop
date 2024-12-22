@@ -15,7 +15,7 @@
 					</div>
 					<div class="logo no-shrinked line-block__item">
 						<a class="menu-light-icon-fill banner-light-icon-fill" href="{if $lang_link}{$lang_link}{else}/{/if}">
-							{include file='components/logo.tpl'}
+							{include file='includes/logo.tpl'}
 						</a>
 					</div>
 				</div>
@@ -36,7 +36,7 @@
 										</span>
 										<div id="mobilephones" class="phones__dropdown">
 											<div class="mobilephones__menu-dropdown dropdown dropdown--relative">
-												<span class="mobilephones__close fill-dark-light fill-theme-hover" title="{$lang->close}">
+												<span class="mobilephones__close fill-dark-light fill-theme-hover" title="{$lang->close|escape}">
 													<i class="svg inline" aria-hidden="true">
 														<svg width="16" height="16">
 															<use xlink:href="design/{$settings->theme|escape}/images/svg/sprite/header_icons.svg#close-16-16"></use>
@@ -44,13 +44,13 @@
 													</i>
 												</span>
 												<div class="mobilephones__menu-item mobilephones__menu-item--title">
-													<span class="color_222 font_18 font_bold">{$lang->phone}</span>
+													<span class="color_222 font_18 font_bold">{$lang->phone|escape}</span>
 												</div>
 												<div class="mobilephones__menu-item">
 													<div class="link-wrapper bg-opacity-theme-parent-hover fill-theme-parent-all">
 														<a class="dark_link phone" href="tel:{$theme_settings->phone_1|regex_replace:'/[\s()-]/':''}" rel="nofollow">
 															<span class="font_18">{$theme_settings->phone_1|escape}</span>
-															<span class="font_12 color_999 phones__phone-descript">{$lang->sales_department}</span>
+															<span class="font_12 color_999 phones__phone-descript">{$lang->sales_department|escape}</span>
 														</a>
 													</div>
 												</div>
@@ -58,7 +58,7 @@
 													<div class="link-wrapper bg-opacity-theme-parent-hover fill-theme-parent-all">
 														<a class="dark_link phone" href="tel:{$theme_settings->phone_2|regex_replace:'/[\s()-]/':''}" rel="nofollow">
 															<span class="font_18">{$theme_settings->phone_2|escape}</span>
-															<span class="font_12 color_999 phones__phone-descript">{$lang->accounting}</span>
+															<span class="font_12 color_999 phones__phone-descript">{$lang->accounting|escape}</span>
 														</a>
 													</div>
 												</div>
@@ -66,13 +66,13 @@
 													<div class="link-wrapper bg-opacity-theme-parent-hover fill-theme-parent-all">
 														<a class="dark_link phone" href="tel:{$theme_settings->phone_3|regex_replace:'/[\s()-]/':''}" rel="nofollow">
 															<span class="font_18">{$theme_settings->phone_3|escape}</span>
-															<span class="font_12 color_999 phones__phone-descript">{$lang->director}</span>
+															<span class="font_12 color_999 phones__phone-descript">{$lang->director|escape}</span>
 														</a>
 													</div>
 												</div>
 												<div class="mobilephones__menu-item mobilephones__menu-item--callback">
 													<div class="animate-load btn btn-default btn-transparent-border btn-wide" data-event="jqm" data-url="{$lang_link}contact/?tpl=callback" data-name="callback">
-														{$lang->callback}
+														{$lang->callback|escape}
 													</div>
 												</div>
 											</div>
@@ -84,7 +84,7 @@
 					</div>
 					{if $module != 'CartView' && $module != 'OrderView'}
 						<div class="line-block__item icon-block--only_icon">
-							<div class="header-search__mobile banner-light-icon-fill fill-dark-light-block fill-theme-hover color-theme-hover menu-light-icon-fill light-opacity-hover" title="{$lang->search}">
+							<div class="header-search__mobile banner-light-icon-fill fill-dark-light-block fill-theme-hover color-theme-hover menu-light-icon-fill light-opacity-hover" title="{$lang->search|escape}">
 								<i class="svg inline header__icon header-search__icon" aria-hidden="true">
 									<svg width="18" height="18">
 										<use xlink:href="design/{$settings->theme|escape}/images/svg/sprite/header_icons.svg#search-18-18"></use>
@@ -104,7 +104,7 @@
 									</i>
 								</a>
 							{else}
-								<a class="header-cabinet__link fill-theme-hover fill-dark-light-block light-opacity-hover dark_link animate-load" data-event="jqm" title="{$lang->login}" data-url="{$lang_link}user/login/?tpl=auth" data-name="auth" href="{$lang_link}user/login">
+								<a class="header-cabinet__link fill-theme-hover fill-dark-light-block light-opacity-hover dark_link animate-load" data-event="jqm" title="{$lang->login|escape}" data-url="{$lang_link}user/login/?tpl=auth" data-name="auth" href="{$lang_link}user/login">
 									<i class="svg inline header__icon banner-light-icon-fill menu-light-icon-fill" aria-hidden="true">
 										<svg width="18" height="18">
 											<use xlink:href="design/{$settings->theme|escape}/images/svg/sprite/header_icons.svg#log-out-18-18"></use>
@@ -138,7 +138,7 @@
 	</div>
 	<div id="mobilemenu" class="mobile-scroll scrollbar">
 		<div class="mobilemenu mobilemenu_1">
-			<span class="mobilemenu__close fill-dark-light fill-theme-hover" title="{$lang->close}">
+			<span class="mobilemenu__close fill-dark-light fill-theme-hover" title="{$lang->close|escape}">
 				<i class="svg inline" aria-hidden="true">
 					<svg width="16" height="16">
 						<use xlink:href="design/{$settings->theme|escape}/images/svg/sprite/header_icons.svg#close-16-16"></use>
@@ -149,7 +149,7 @@
 				<div class="mobilemenu__item">
 					<div class="logo no-shrinked">
 						<a class="menu-light-icon-fill banner-light-icon-fill" href="{if $lang_link}{$lang_link}{else}/{/if}">
-							{include file='components/logo.tpl'}
+							{include file='includes/logo.tpl'}
 						</a>
 					</div>
 				</div>
@@ -181,14 +181,14 @@
 															<use xlink:href="design/{$settings->theme|escape}/images/svg/sprite/arrows.svg#left-7-12"></use>
 														</svg>
 													</i>
-													{$lang->previous}
+													{$lang->previous|escape}
 												</a>
 											</div>
 										</li>
 										<li class="mobilemenu__menu-item mobilemenu__menu-item--title">
 											<div class="link-wrapper">
 												<a class="dark_link" href="">
-													<span class="font_18 font_bold">{$lang->global_languages}</span>
+													<span class="font_18 font_bold">{$lang->global_languages|escape}</span>
 												</a>
 											</div>
 										</li>
@@ -240,14 +240,14 @@
 															<use xlink:href="design/{$settings->theme|escape}/images/svg/sprite/arrows.svg#left-7-12"></use>
 														</svg>
 													</i>
-													{$lang->previous}
+													{$lang->previous|escape}
 												</a>
 											</div>
 										</li>
 										<li class="mobilemenu__menu-item mobilemenu__menu-item--title">
 											<div class="link-wrapper">
 												<a class="dark_link" href="">
-													<span class="font_18 font_bold">{$lang->currency}</span>
+													<span class="font_18 font_bold">{$lang->currency|escape}</span>
 												</a>
 											</div>
 										</li>
@@ -279,7 +279,7 @@
 												</svg>
 											</i>
 											<span class="icon-block__content">
-												<span class="font_15">{$lang->account}</span>
+												<span class="font_15">{$lang->account|escape}</span>
 												<i class="svg inline down menu-arrow fill-theme-target fill-dark-light-block" aria-hidden="true">
 													<svg width="7" height="5">
 														<use xlink:href="design/{$settings->theme|escape}/images/svg/sprite/arrows.svg#right-7-5"></use>
@@ -289,14 +289,14 @@
 											<span class="toggle_block"></span>
 										</a>
 									{else}
-										<a class="icon-block dark_link bg-opacity-theme-parent-hover fill-theme-parent-all color-theme-parent-all fill-dark-light-block fill-theme-use-svg-hover" href="{$lang_link}user/login" title="{$lang->account}">
+										<a class="icon-block dark_link bg-opacity-theme-parent-hover fill-theme-parent-all color-theme-parent-all fill-dark-light-block fill-theme-use-svg-hover" href="{$lang_link}user/login" title="{$lang->account|escape}">
 											<i class="svg inline cabinet mobilemenu__menu-item-svg fill-theme-target" aria-hidden="true">
 												<svg width="18" height="18">
 													<use xlink:href="design/{$settings->theme|escape}/images/svg/sprite/header_icons.svg#log-out-18-18"></use>
 												</svg>
 											</i>
 											<span class="icon-block__content">
-												<span class="font_15">{$lang->account}</span>
+												<span class="font_15">{$lang->account|escape}</span>
 											</span>
 										</a>
 									{/if}
@@ -311,56 +311,56 @@
 															<use xlink:href="design/{$settings->theme|escape}/images/svg/sprite/arrows.svg#left-7-12"></use>
 														</svg>
 													</i>
-													{$lang->account}
+													{$lang->account|escape}
 												</a>
 											</div>
 										</li>
 										<li class="mobilemenu__menu-item mobilemenu__menu-item--title">
 											<div class="link-wrapper">
 												<a class="dark_link" href="{$lang_link}user" onclick="document.cookie='user=personal;path=/';document.location.reload();">
-													<span class="font_18 font_bold">{$lang->account}</span>
+													<span class="font_18 font_bold">{$lang->account|escape}</span>
 												</a>
 											</div>
 										</li>
 										<li class="mobilemenu__menu-item">
 											<div class="link-wrapper bg-opacity-theme-parent-hover fill-theme-parent-all">
-												<a class="dark_link" href="{$lang_link}user" onclick="document.cookie='user=personal;path=/';document.location.reload();" title="{$lang->my_account}">
-													<span class="font_15">{$lang->my_account}</span>
+												<a class="dark_link" href="{$lang_link}user" onclick="document.cookie='user=personal;path=/';document.location.reload();" title="{$lang->my_account|escape}">
+													<span class="font_15">{$lang->my_account|escape}</span>
 												</a>
 											</div>
 										</li>
 										<li class="mobilemenu__menu-item">
 											<div class="link-wrapper bg-opacity-theme-parent-hover fill-theme-parent-all">
-												<a class="dark_link" href="{$lang_link}user" onclick="document.cookie='user=private;path=/';document.location.reload();" title="{$lang->personal_data}">
-													<span class="font_15">{$lang->personal_data}</span>
+												<a class="dark_link" href="{$lang_link}user" onclick="document.cookie='user=private;path=/';document.location.reload();" title="{$lang->personal_data|escape}">
+													<span class="font_15">{$lang->personal_data|escape}</span>
 												</a>
 											</div>
 										</li>
 										<li class="mobilemenu__menu-item">
 											<div class="link-wrapper bg-opacity-theme-parent-hover fill-theme-parent-all">
-												<a class="dark_link" href="{$lang_link}user" onclick="document.cookie='user=orders;path=/';document.location.reload();" title="{$lang->orders_global}">
-													<span class="font_15">{$lang->orders_global}</span>
+												<a class="dark_link" href="{$lang_link}user" onclick="document.cookie='user=orders;path=/';document.location.reload();" title="{$lang->orders_global|escape}">
+													<span class="font_15">{$lang->orders_global|escape}</span>
 												</a>
 											</div>
 										</li>
 										<li class="mobilemenu__menu-item">
 											<div class="link-wrapper bg-opacity-theme-parent-hover fill-theme-parent-all">
-												<a class="dark_link" href="{$lang_link}wishlist" onclick="document.cookie='user=;path=/';document.location.reload();" title="{$lang->wishlist_products}">
-													<span class="font_15">{$lang->wishlist_products}</span>
+												<a class="dark_link" href="{$lang_link}wishlist" onclick="document.cookie='user=;path=/';document.location.reload();" title="{$lang->wishlist_products|escape}">
+													<span class="font_15">{$lang->wishlist_products|escape}</span>
 												</a>
 											</div>
 										</li>
 										<li class="mobilemenu__menu-item">
 											<div class="link-wrapper bg-opacity-theme-parent-hover fill-theme-parent-all">
-												<a class="dark_link" href="{$lang_link}faq" onclick="document.cookie='user=;path=/';document.location.reload();" title="{$lang->help}">
-													<span class="font_15">{$lang->help}</span>
+												<a class="dark_link" href="{$lang_link}faq" onclick="document.cookie='user=;path=/';document.location.reload();" title="{$lang->help|escape}">
+													<span class="font_15">{$lang->help|escape}</span>
 												</a>
 											</div>
 										</li>
 										<li class="mobilemenu__menu-item">
 											<div class="link-wrapper bg-opacity-theme-parent-hover fill-theme-parent-all">
-												<a class="dark_link" href="{$lang_link}user/logout" title="{$lang->logout}">
-													<span class="font_15">{$lang->logout}</span>
+												<a class="dark_link" href="{$lang_link}user/logout" title="{$lang->logout|escape}">
+													<span class="font_15">{$lang->logout|escape}</span>
 												</a>
 											</div>
 										</li>
@@ -377,8 +377,8 @@
 							{if $categories}
 								<li class="mobilemenu__menu-item mobilemenu__menu-item--parent">
 									<div class="link-wrapper fill-theme-parent-all">
-										<a class="dark_link" href="{$lang_link}catalog" title="{$lang->catalog}">
-											<span class="font_18">{$lang->catalog}</span>
+										<a class="dark_link" href="{$lang_link}catalog" title="{$lang->catalog|escape}">
+											<span class="font_18">{$lang->catalog|escape}</span>
 											<i class="svg inline down menu-arrow bg-opacity-theme-target fill-theme-target fill-dark-light-block" aria-hidden="true">
 												<svg width="7" height="5">
 													<use xlink:href="design/{$settings->theme|escape}/images/svg/sprite/arrows.svg#right-7-5"></use>
@@ -396,14 +396,14 @@
 															<use xlink:href="design/{$settings->theme|escape}/images/svg/sprite/arrows.svg#left-7-12"></use>
 														</svg>
 													</i>
-													{$lang->previous}
+													{$lang->previous|escape}
 												</a>
 											</div>
 										</li>
 										<li class="mobilemenu__menu-item mobilemenu__menu-item--title">
 											<div class="link-wrapper">
 												<a class="dark_link stroke-theme-hover stroke-dark-light mobilemenu__menu-parent-link" href="{$lang_link}catalog">
-													<span class="font_18 font_bold">{$lang->catalog}</span>
+													<span class="font_18 font_bold">{$lang->catalog|escape}</span>
 													<i class="svg inline arrow-parent__item-arrow" aria-hidden="true">
 														<svg width="7" height="12">
 															<use xlink:href="design/{$settings->theme|escape}/images/svg/sprite/arrows.svg#right-7-12"></use>
@@ -414,11 +414,11 @@
 										</li>
 										{foreach $categories as $c}
 											{if $c->visible}
-												<li class="mobilemenu__menu-item {if isset($c->subcategories)}mobilemenu__menu-item--parent{/if}">
+												<li class="mobilemenu__menu-item {if $c->subcategories}mobilemenu__menu-item--parent{/if}">
 													<div class="link-wrapper fill-theme-parent-all">
 														<a class="dark_link" href="{$lang_link}catalog/{$c->url}" title="{$c->name|escape}">
 															<span class="font_15">{$c->name|escape}</span>
-															{if isset($c->subcategories)}
+															{if $c->subcategories}
 																<i class="svg inline down menu-arrow bg-opacity-theme-target fill-theme-target fill-dark-light-block" aria-hidden="true">
 																	<svg width="7" height="5">
 																		<use xlink:href="design/{$settings->theme|escape}/images/svg/sprite/arrows.svg#right-7-5"></use>
@@ -428,7 +428,7 @@
 															{/if}
 														</a>
 													</div>
-													{if isset($c->subcategories)}
+													{if $c->subcategories}
 														<ul class="mobilemenu__menu-dropdown dropdown">
 															<li class="mobilemenu__menu-item mobilemenu__menu-item--back">
 																<div class="link-wrapper stroke-theme-parent-all colored_theme_hover_bg-block color-theme-parent-all">
@@ -438,7 +438,7 @@
 																				<use xlink:href="design/{$settings->theme|escape}/images/svg/sprite/arrows.svg#left-7-12"></use>
 																			</svg>
 																		</i>
-																		{$lang->previous}
+																		{$lang->previous|escape}
 																	</a>
 																</div>
 															</li>
@@ -456,11 +456,11 @@
 															</li>
 															{foreach $c->subcategories as $cat}
 																{if $cat->visible}
-																	<li class="mobilemenu__menu-item {if isset($cat->subcategories)}mobilemenu__menu-item--parent{/if}">
+																	<li class="mobilemenu__menu-item {if $cat->subcategories}mobilemenu__menu-item--parent{/if}">
 																		<div class="link-wrapper fill-theme-parent-all">
 																			<a class="dark_link" href="{$lang_link}catalog/{$cat->url}" title="{$cat->name|escape}">
 																				<span class="font_15">{$cat->name|escape}</span>
-																				{if isset($cat->subcategories)}
+																				{if $cat->subcategories}
 																					<i class="svg inline down menu-arrow bg-opacity-theme-target fill-theme-target fill-dark-light-block" aria-hidden="true">
 																						<svg width="7" height="5">
 																							<use xlink:href="design/{$settings->theme|escape}/images/svg/sprite/arrows.svg#right-7-5"></use>
@@ -470,7 +470,7 @@
 																				{/if}
 																			</a>
 																		</div>
-																		{if isset($cat->subcategories)}
+																		{if $cat->subcategories}
 																			<ul class="mobilemenu__menu-dropdown dropdown">
 																				<li class="mobilemenu__menu-item mobilemenu__menu-item--back">
 																					<div class="link-wrapper stroke-theme-parent-all colored_theme_hover_bg-block color-theme-parent-all">
@@ -480,7 +480,7 @@
 																									<use xlink:href="design/{$settings->theme|escape}/images/svg/sprite/arrows.svg#left-7-12"></use>
 																								</svg>
 																							</i>
-																							{$lang->previous}
+																							{$lang->previous|escape}
 																						</a>
 																					</div>
 																				</li>
@@ -523,11 +523,11 @@
 							{foreach $pages as $p}
 								{if $p->menu_id == 1}
 									{if $p->visible}
-										<li class="mobilemenu__menu-item {if isset($p->subpages)}mobilemenu__menu-item--parent{/if}">
+										<li class="mobilemenu__menu-item {if $p->subpages}mobilemenu__menu-item--parent{/if}">
 											<div class="link-wrapper fill-theme-parent-all">
 												<a class="dark_link" href="{$lang_link}{$p->url}" title="{$p->header}">
 													<span class="font_18">{$p->header}</span>
-													{if isset($p->subpages)}
+													{if $p->subpages}
 														<i class="svg inline down menu-arrow bg-opacity-theme-target fill-theme-target fill-dark-light-block" aria-hidden="true">
 															<svg width="7" height="5">
 																<use xlink:href="design/{$settings->theme|escape}/images/svg/sprite/arrows.svg#right-7-5"></use>
@@ -537,7 +537,7 @@
 													{/if}
 												</a>
 											</div>
-											{if isset($p->subpages)}
+											{if $p->subpages}
 												<ul class="mobilemenu__menu-dropdown dropdown">
 													<li class="mobilemenu__menu-item mobilemenu__menu-item--back">
 														<div class="link-wrapper stroke-theme-parent-all colored_theme_hover_bg-block color-theme-parent-all">
@@ -547,7 +547,7 @@
 																		<use xlink:href="design/{$settings->theme|escape}/images/svg/sprite/arrows.svg#left-7-12"></use>
 																	</svg>
 																</i>
-																{$lang->previous}
+																{$lang->previous|escape}
 															</a>
 														</div>
 													</li>
@@ -565,11 +565,11 @@
 													</li>
 													{foreach $p->subpages as $p2}
 														{if $p2->visible}
-															<li class="mobilemenu__menu-item {if isset($p2->subpages)}mobilemenu__menu-item--parent{/if}">
+															<li class="mobilemenu__menu-item {if $p2->subpages}mobilemenu__menu-item--parent{/if}">
 																<div class="link-wrapper fill-theme-parent-all">
 																	<a class="dark_link" href="{$lang_link}{$p2->url}" title="{$p2->header}">
 																		<span class="font_15">{$p2->header}</span>
-																		{if isset($p2->subpages)}
+																		{if $p2->subpages}
 																			<i class="svg inline down menu-arrow bg-opacity-theme-target fill-theme-target fill-dark-light-block" aria-hidden="true">
 																				<svg width="7" height="5">
 																					<use xlink:href="design/{$settings->theme|escape}/images/svg/sprite/arrows.svg#right-7-5"></use>
@@ -579,7 +579,7 @@
 																		{/if}
 																	</a>
 																</div>
-																{if isset($p2->subpages)}
+																{if $p2->subpages}
 																	<ul class="mobilemenu__menu-dropdown dropdown">
 																		<li class="mobilemenu__menu-item mobilemenu__menu-item--back">
 																			<div class="link-wrapper stroke-theme-parent-all colored_theme_hover_bg-block color-theme-parent-all">
@@ -589,7 +589,7 @@
 																							<use xlink:href="design/{$settings->theme|escape}/images/svg/sprite/arrows.svg#left-7-12"></use>
 																						</svg>
 																					</i>
-																					{$lang->previous}
+																					{$lang->previous|escape}
 																				</a>
 																			</div>
 																		</li>
@@ -654,7 +654,7 @@
 									<a class="dark_link icon-block" href="tel:{$theme_settings->phone_1|regex_replace:'/[\s()-]/':''}" rel="nofollow">
 										<span class="icon-block__content">
 											<span class="font_18">{$theme_settings->phone_1|escape}</span>
-											<span class="font_12 color_999 phones__phone-descript">{$lang->sales_department}</span>
+											<span class="font_12 color_999 phones__phone-descript">{$lang->sales_department|escape}</span>
 											<i class="svg inline down menu-arrow bg-opacity-theme-target fill-theme-target fill-dark-light-block" aria-hidden="true">
 												<svg width="7" height="5">
 													<use xlink:href="design/{$settings->theme|escape}/images/svg/sprite/arrows.svg#right-7-5"></use>
@@ -673,14 +673,14 @@
 														<use xlink:href="design/{$settings->theme|escape}/images/svg/sprite/arrows.svg#left-7-12"></use>
 													</svg>
 												</i>
-												{$lang->previous}
+												{$lang->previous|escape}
 											</a>
 										</div>
 									</li>
 									<li class="mobilemenu__menu-item mobilemenu__menu-item--title">
 										<div class="link-wrapper">
 											<a class="dark_link" href="">
-												<span class="font_18 font_bold">{$lang->phones}</span>
+												<span class="font_18 font_bold">{$lang->phones|escape}</span>
 											</a>
 										</div>
 									</li>
@@ -688,7 +688,7 @@
 										<div class="link-wrapper bg-opacity-theme-parent-hover fill-theme-parent-all">
 											<a class="dark_link phone" href="tel:{$theme_settings->phone_1|regex_replace:'/[\s()-]/':''}" rel="nofollow">
 												<span class="font_18">{$theme_settings->phone_1|escape}</span>
-												<span class="font_12 color_999 phones__phone-descript">{$lang->sales_department}</span>
+												<span class="font_12 color_999 phones__phone-descript">{$lang->sales_department|escape}</span>
 											</a>
 										</div>
 									</li>
@@ -696,7 +696,7 @@
 										<div class="link-wrapper bg-opacity-theme-parent-hover fill-theme-parent-all">
 											<a class="dark_link phone" href="tel:{$theme_settings->phone_2|regex_replace:'/[\s()-]/':''}" rel="nofollow">
 												<span class="font_18">{$theme_settings->phone_2|escape}</span>
-												<span class="font_12 color_999 phones__phone-descript">{$lang->accounting}</span>
+												<span class="font_12 color_999 phones__phone-descript">{$lang->accounting|escape}</span>
 											</a>
 										</div>
 									</li>
@@ -704,13 +704,13 @@
 										<div class="link-wrapper bg-opacity-theme-parent-hover fill-theme-parent-all">
 											<a class="dark_link phone" href="tel:{$theme_settings->phone_3|regex_replace:'/[\s()-]/':''}" rel="nofollow">
 												<span class="font_18">{$theme_settings->phone_3|escape}</span>
-												<span class="font_12 color_999 phones__phone-descript">{$lang->director}</span>
+												<span class="font_12 color_999 phones__phone-descript">{$lang->director|escape}</span>
 											</a>
 										</div>
 									</li>
 									<li class="mobilemenu__menu-item mobilemenu__menu-item--callback">
 										<div class="animate-load btn btn-default btn-transparent-border btn-wide" data-event="jqm" data-url="{$lang_link}contact/?tpl=callback" data-name="callback">
-											{$lang->callback}
+											{$lang->callback|escape}
 										</div>
 									</li>
 								</ul>
@@ -728,7 +728,7 @@
 								<div class="mobilemenu__menu-item-content">
 									<div class="link-wrapper bg-opacity-theme-parent-hover fill-theme-parent-all color-theme-parent-all">
 										<div class="address__text font_short">
-											{$lang->office}
+											{$lang->office|escape}
 										</div>
 									</div>
 								</div>
@@ -737,7 +737,7 @@
 								<div class="mobilemenu__menu-item-content">
 									<div class="link-wrapper bg-opacity-theme-parent-hover fill-theme-parent-all color-theme-parent-all">
 										<div class="schedule__text">
-											{$lang->operating_mode_text}
+											{$lang->operating_mode_text|escape}
 										</div>
 									</div>
 								</div>
@@ -745,7 +745,7 @@
 						</ul>
 					</div>
 					<div>
-						{include file='components/social.tpl'}
+						{include file='includes/social.tpl'}
 					</div>
 				</div>
 			</div>

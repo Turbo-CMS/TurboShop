@@ -6,7 +6,7 @@ class RobotsAdmin extends Turbo
 {
     public function fetch()
     {
-        if ($this->request->isMethod('post')) {
+        if ($this->request->method('post')) {
             $robotsData = $this->request->post('robots');
             $this->getRobots($robotsData, 'write');
         }

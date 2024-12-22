@@ -20,7 +20,7 @@ $turbo->design->setCompiledDir('turbo/design/compiled');
 
 $result = [];
 
-if ($turbo->request->isMethod("post")) {
+if ($turbo->request->method("post")) {
 	$orderId = $turbo->request->post("order_id", "integer");
 	$state = $turbo->request->post("state", "string");
 	$labelId = $turbo->request->post("label_id", "integer");

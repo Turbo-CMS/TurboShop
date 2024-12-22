@@ -123,8 +123,8 @@
 
 <script>
 	var in_process = false;
-	var keyword='{if isset($keyword)}{$keyword|escape}{/if}';
-	var sort='{if isset($sort)}{$sort|escape}{/if}';
+	var keyword='{$keyword|escape}';
+	var sort='{$sort|escape}';
 
 	{literal}
 		$(function() {

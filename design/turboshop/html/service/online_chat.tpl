@@ -45,13 +45,13 @@
 		<div class="chaty-widget-i i-trigger-open">
 			{include file='service/svg_icon.tpl' svgId='messanger'}
 			<div class="chaty-widget-i-title">
-				{$lang->contact_us}
+				{$lang->contact_us|escape}
 			</div>
 		</div>
 		<div class="chaty-widget-i i-trigger-close" data-title="Hide">
 			{include file='service/svg_icon.tpl' svgId='messanger_close'}
 			<div class="chaty-widget-i-title">
-				{$lang->close}
+				{$lang->close|escape}
 			</div>
 		</div>
 	</div>

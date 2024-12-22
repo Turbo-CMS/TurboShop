@@ -1,6 +1,6 @@
 {* Feedback *}
 
-{if isset($page)}
+{if $page}
 	{* Canonical *}
 	{$canonical="/{$page->url}" scope=global}
 {else}
@@ -30,8 +30,8 @@
 				<div id="navigation">
 					<div class="breadcrumbs swipeignore" itemscope="" itemtype="http://schema.org/BreadcrumbList">
 						<div class="breadcrumbs__item" id="tb_breadcrumb_0" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-							<a class="breadcrumbs__link" href="{if $lang_link}{$lang_link}{else}/{/if}" title="{$lang->home}" itemprop="item">
-								<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->home}</span>
+							<a class="breadcrumbs__link" href="{if $lang_link}{$lang_link}{else}/{/if}" title="{$lang->home|escape}" itemprop="item">
+								<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->home|escape}</span>
 								<meta itemprop="position" content="{$level++}">
 							</a>
 						</div>
@@ -42,7 +42,7 @@
 								</svg>
 							</i>
 						</span>
-						{if isset($page)}
+						{if $page}
 							<span class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
 								<link href="{$lang_link}{$page->url}" itemprop="item">
 								<span>
@@ -54,7 +54,7 @@
 							<span class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
 								<link href="{$lang_link}contact" itemprop="item">
 								<span>
-									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->contacts}</span>
+									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->contacts|escape}</span>
 									<meta itemprop="position" content="{$level++}">
 								</span>
 							</span>
@@ -67,12 +67,12 @@
 				<div class="topic__inner">
 					<div class="topic__heading">
 						{* Page Title *}
-						{if isset($page->name)}
+						{if $page}
 							<h1 id="pagetitle" class="switcher-title">
 								<span data-page="{$page->id}">{$page->name|escape}</span>
 							</h1>
 						{else}
-							<h1 id="pagetitle" class="switcher-title">{$lang->contacts}</h1>
+							<h1 id="pagetitle" class="switcher-title">{$lang->contacts|escape}</h1>
 						{/if}
 					</div>
 				</div>
@@ -108,7 +108,7 @@
 												</div>
 											</div>
 										</div>
-										{if isset($page->body)}
+										{if $page && $page->body}
 											<div class="contacts__desc" itemprop="description">
 												{* Page Body *}
 												{$page->body}
@@ -116,23 +116,23 @@
 										{/if}
 										<div class="row">
 											<div class="col-md-12">
-												<h2 class="short">{$lang->global_feedback}</h2>
-												<p>{$lang->feedback_message}</p>
-												{if isset($message_sent)}
+												<h2 class="short">{$lang->global_feedback|escape}</h2>
+												<p>{$lang->feedback_message|escape}</p>
+												{if $message_sent}
 													<div class="alert alert-success" role="alert">
-														{$name|escape}, {$lang->feedback_message_sent}
+														{$name|escape}, {$lang->feedback_message_sent|escape}
 													</div>
 												{/if}
-												{if isset($error)}
+												{if $error}
 													<div class="alert alert-danger" role="alert">
 														{if $error=='captcha'}
-															{$lang->captcha_incorrect}
+															{$lang->captcha_incorrect|escape}
 														{elseif $error=='empty_name'}
-															{$lang->enter_your_name}
+															{$lang->enter_your_name|escape}
 														{elseif $error=='empty_email'}
-															{$lang->enter_your_email}
+															{$lang->enter_your_email|escape}
 														{elseif $error=='empty_text'}
-															{$lang->enter_your_message}
+															{$lang->enter_your_message|escape}
 														{/if}
 													</div>
 												{/if}
@@ -140,15 +140,15 @@
 													<div class="row">
 														<div class="form-group">
 															<div class="col-md-6">
-																<label for="feedback-name">{$lang->name} <span class="required-star">*</span></label>
+																<label for="feedback-name">{$lang->name|escape} <span class="required-star">*</span></label>
 																<div class="input">
-																	<input type="text" value="{if isset($name)}{$name|escape}{/if}" maxlength="100" class="form-control required" name="name" id="feedback-name" required>
+																	<input type="text" value="{$name|escape}" maxlength="100" class="form-control required" name="name" id="feedback-name" required>
 																</div>
 															</div>
 															<div class="col-md-6">
 																<label for="feedback-email">Email <span class="required-star">*</span></label>
 																<div class="input">
-																	<input type="email" type="email" value="{if isset($email)}{$email|escape}{/if}" maxlength="255" class="form-control required" name="email" id="feedback-email" required>
+																	<input type="email" type="email" value="{$email|escape}" maxlength="255" class="form-control required" name="email" id="feedback-email" required>
 																</div>
 															</div>
 														</div>
@@ -156,9 +156,9 @@
 													<div class="row">
 														<div class="form-group">
 															<div class="col-md-12">
-																<label for="feedback-message">{$lang->message} <span class="required-star">*</span></label>
+																<label for="feedback-message">{$lang->message|escape} <span class="required-star">*</span></label>
 																<div class="input">
-																	<textarea maxlength="5000" rows="10" class="form-control required" name="message" id="feedback-message" style="height: 138px;" required>{if isset($message)}{$message|escape}{/if}</textarea>
+																	<textarea maxlength="5000" rows="10" class="form-control required" name="message" id="feedback-message" style="height: 138px;" required>{$message|escape}</textarea>
 																</div>
 															</div>
 														</div>
@@ -166,7 +166,7 @@
 													{if $settings->captcha_feedback}
 														<div class="clearfix fill-animate">
 															<label class="font_14">
-																<span>{$lang->captcha_label}&nbsp;<span class="required-star">*</span></span>
+																<span>{$lang->captcha_label|escape}&nbsp;<span class="required-star">*</span></span>
 															</label>
 														</div>
 														<div class="row">
@@ -183,7 +183,7 @@
 													{/if}
 													<div class="row">
 														<div class="col-md-12">
-															<input type="submit" class="btn btn-default btn-lg" name="feedback" value="{$lang->send}">
+															<input type="submit" class="btn btn-default btn-lg" name="feedback" value="{$lang->send|escape}">
 														</div>
 													</div>
 												</form>
@@ -199,43 +199,43 @@
 											<img class="lazyload" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="design/{$settings->theme|escape}/images/contacts.jpg" alt="{$settings->company_name}">
 										</div>
 										<div class="contact-property contact-property--address">
-											<div class="contact-property__label font_13 color_999">{$lang->main_office}</div>
+											<div class="contact-property__label font_13 color_999">{$lang->main_office|escape}</div>
 											<div itemprop="address" class="contact-property__value color_222">
-												{$lang->office}
+												{$lang->office|escape}
 											</div>
 										</div>
 									</div>
 									<div class="contacts__sticky-panel__info">
 										<div class="contact-property contact-property--address">
-											<div class="contact-property__label font_13 color_999">{$lang->main_office}</div>
+											<div class="contact-property__label font_13 color_999">{$lang->main_office|escape}</div>
 											<div itemprop="address" class="contact-property__value font_18 color_222 switcher-title">
-												{$lang->office}
+												{$lang->office|escape}
 											</div>
 										</div>
 										<div class="contacts__sticky-panel__properties">
 											<div class="contacts__sticky-panel__property">
 												<div class="contact-property contact-property--schedule">
-													<div class="contact-property__label font_13 color_999">{$lang->operating_mode}</div>
+													<div class="contact-property__label font_13 color_999">{$lang->operating_mode|escape}</div>
 													<div class="contact-property__value color_222">
-														{$lang->operating_mode_text}
+														{$lang->operating_mode_text|escape}
 													</div>
 												</div>
 											</div>
 											<div class="contacts__sticky-panel__property">
 												<div class="contact-property contact-property--phones">
-													<div class="contact-property__label font_13 color_999">{$lang->phone}</div>
+													<div class="contact-property__label font_13 color_999">{$lang->phone|escape}</div>
 													<div class="">
 														<div class="contact-property__value dark_link" itemprop="telephone">
-															<a title="{$lang->sales_department}" href="tel:{$theme_settings->phone_1|regex_replace:'/[\s()-]/':''}">{$theme_settings->phone_1|escape}</a>
+															<a title="{$lang->sales_department|escape}" href="tel:{$theme_settings->phone_1|regex_replace:'/[\s()-]/':''}">{$theme_settings->phone_1|escape}</a>
 														</div>
 														{if $theme_settings->phone_2}
 															<div class="contact-property__value dark_link" itemprop="telephone">
-																<a title="{$lang->accounting}" href="tel:{$theme_settings->phone_2|regex_replace:'/[\s()-]/':''}">{$theme_settings->phone_2|escape}</a>
+																<a title="{$lang->accounting|escape}" href="tel:{$theme_settings->phone_2|regex_replace:'/[\s()-]/':''}">{$theme_settings->phone_2|escape}</a>
 															</div>
 														{/if}
 														{if $theme_settings->phone_3}
 															<div class="contact-property__value dark_link" itemprop="telephone">
-																<a title="{$lang->director}" href="tel:{$theme_settings->phone_3|regex_replace:'/[\s()-]/':''}">{$theme_settings->phone_3|escape}</a>
+																<a title="{$lang->director|escape}" href="tel:{$theme_settings->phone_3|regex_replace:'/[\s()-]/':''}">{$theme_settings->phone_3|escape}</a>
 															</div>
 														{/if}
 													</div>
@@ -254,7 +254,7 @@
 										</div>
 										<div class="contacts__sticky-panel__btn-wraper">
 											<span class="">
-												<span class="btn btn-default btn-wide btn-transparent-border bg-theme-target border-theme-target animate-load has-ripple" data-event="jqm" data-url="{$lang_link}contact/?tpl=callback" data-name="callback">{$lang->callback}</span>
+												<span class="btn btn-default btn-wide btn-transparent-border bg-theme-target border-theme-target animate-load has-ripple" data-event="jqm" data-url="{$lang_link}contact/?tpl=callback" data-name="callback">{$lang->callback|escape}</span>
 											</span>
 										</div>
 									</div>

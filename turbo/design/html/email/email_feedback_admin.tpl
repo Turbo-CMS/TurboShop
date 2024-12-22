@@ -1,4 +1,4 @@
-{$subject="`$btr->email_request_from` `$feedback->name|escape`" scope=global}
+{$subject="`$btr->email_request_from` `$feedback->name`" scope=global}
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 

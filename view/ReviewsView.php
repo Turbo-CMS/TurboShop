@@ -13,7 +13,7 @@ class ReviewsView extends View
 		$this->design->assign('comment_rating', 5);
 
 		// Form
-		if ($this->request->isMethod('post') && $this->request->post('comment')) {
+		if ($this->request->method('post') && $this->request->post('comment')) {
 			$comment = new stdClass();
 
 			$comment->name = $this->request->post('name');
@@ -102,6 +102,19 @@ class ReviewsView extends View
 			$children[$comment->parent_id][] = $comment;
 		}
 
+		// Get Comments
+		$comments = $this->comments->getComments($filter);
+
+		$children = [];
+
+		foreach ($this->comments->getComments() as $c) {
+			if (!isset($children[$c->id])) {
+				$children[$c->id] = [];
+			}
+			
+			$children[$c->parent_id][] = $c;
+		}
+
 		// Design
 		$this->design->assign('comments', $comments);
 		$this->design->assign('children', $children);
@@ -142,24 +155,26 @@ class ReviewsView extends View
 		$this->design->assign('auto_meta', $autoMeta);
 
 		// Last Modified
-		$lastModifiedUnix = strtotime($this->settings->lastModifyReviews);
-		$lastModified = gmdate("D, d M Y H:i:s \G\M\T", $lastModifiedUnix);
-		$ifModifiedSince = false;
+		if (isset($lastModifiedUnix)) {
+			$lastModifiedUnix = strtotime($this->settings->lastModifyReviews);
+			$lastModified = gmdate("D, d M Y H:i:s \G\M\T", $lastModifiedUnix);
+			$ifModifiedSince = false;
 
-		if (isset($_ENV['HTTP_IF_MODIFIED_SINCE'])) {
-			$ifModifiedSince = strtotime(substr($_ENV['HTTP_IF_MODIFIED_SINCE'], 5));
+			if (isset($_ENV['HTTP_IF_MODIFIED_SINCE'])) {
+				$ifModifiedSince = strtotime(substr($_ENV['HTTP_IF_MODIFIED_SINCE'], 5));
+			}
+
+			if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
+				$ifModifiedSince = strtotime(substr($_SERVER['HTTP_IF_MODIFIED_SINCE'], 5));
+			}
+
+			if ($ifModifiedSince && $ifModifiedSince >= $lastModifiedUnix) {
+				header($_SERVER['SERVER_PROTOCOL'] . ' 304 Not Modified');
+				exit;
+			}
+
+			header('Last-Modified: ' . $lastModified);
 		}
-
-		if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
-			$ifModifiedSince = strtotime(substr($_SERVER['HTTP_IF_MODIFIED_SINCE'], 5));
-		}
-
-		if ($ifModifiedSince && $ifModifiedSince >= $lastModifiedUnix) {
-			header($_SERVER['SERVER_PROTOCOL'] . ' 304 Not Modified');
-			exit;
-		}
-
-		header('Last-Modified: ' . $lastModified);
 
 		// Display
 		$body = $this->design->fetch('reviews.tpl');

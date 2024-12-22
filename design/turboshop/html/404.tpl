@@ -23,10 +23,10 @@
 								</svg>
 							</div>
 							<div class="description">
-								<div class="subtitle404 option-font-bold">{$lang->page_not_found}</div>
-								<div class="descr_text404">{$lang->text_404}</div>
-								<a class="btn btn-transparent-border btn-lg btn-mainpage has-ripple" onclick="history.back()">{$lang->come_back}</a>
-								<a class="btn btn-default btn-lg btn-mainpage" href="{if $lang_link}{$lang_link}{else}/{/if}"><span>{$lang->to_main}</span></a>
+								<div class="subtitle404 option-font-bold">{$lang->page_not_found|escape}</div>
+								<div class="descr_text404">{$lang->text_404|escape}</div>
+								<a class="btn btn-transparent-border btn-lg btn-mainpage has-ripple" onclick="history.back()">{$lang->come_back|escape}</a>
+								<a class="btn btn-default btn-lg btn-mainpage" href="{if $lang_link}{$lang_link}{else}/{/if}"><span>{$lang->to_main|escape}</span></a>
 							</div>
 						</div>
 					</div>

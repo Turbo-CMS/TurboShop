@@ -1,87 +1,46 @@
 {* List Articles *}
 
 {* Canonical *}
-{if isset($articles_category)}
+{if $articles_category}
 	{$canonical="/articles/{$articles_category->url}" scope=global}
-{elseif isset($keyword)}
+{elseif $keyword}
 	{$canonical="/articles/?keyword={$keyword|escape}" scope=global}
-{elseif isset($author)}
+{elseif $author}
 	{$canonical="/articles/?author={$author|escape}" scope=global}
 {else}
 	{$canonical="/articles" scope=global}
 {/if}
 
-{* Breadcrumb *}
-{$level = 1}
-<nav class="mt-4" aria-label="breadcrumb">
-	<ol itemscope itemtype="https://schema.org/BreadcrumbList" class="breadcrumb">
-		<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item">
-			<a itemprop="item" class="text-decoration-none" href="{if $lang_link}{$lang_link}{else}/{/if}">
-				<span itemprop="name" title="{$lang->home}"><i class="fal fa-house me-2"></i>{$lang->home}</span>
-			</a>
-			<meta itemprop="position" content="{$level++}" />
-		</li>
-		<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item">
-			<a itemprop="item" class="text-decoration-none" href="{$lang_link}articles">
-				<span itemprop="name">{$lang->global_articles}</span>
-			</a>
-			<meta itemprop="position" content="{$level++}" />
-		</li>
-		{if isset($articles_category)}
-			{foreach $articles_category->path as $cat}
-				<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item">
-					<a itemprop="item" class="text-decoration-none" href="{$lang_link}articles/{$cat->url}">
-						<span itemprop="name">{$cat->name|escape}</span>
-					</a>
-					<meta itemprop="position" content="{$level++}" />
-				</li>
-			{/foreach}
-		{elseif isset($keyword)}
-			<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item active">
-				<a itemprop="item" class="text-decoration-none" href="{$lang_link}articles?keyword={$keyword|escape}">
-					<span itemprop="name">{$lang->search}</span>
-				</a>
-				<meta itemprop="position" content="{$level++}" />
-			</li>
-		{elseif isset($author)}
-			<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item active">
-				<a itemprop="item" class="text-decoration-none" href="{$lang_link}articles?author={$author|escape}">
-					<span itemprop="name">{$lang->author}</span>
-				</a>
-				<meta itemprop="position" content="{$level++}" />
-			</li>
-		{/if}
-	</ol>
-</nav>
-
 {if $posts}
 	{* Toolbar *}
 	<div class="btn-toolbar justify-content-between my-4" role="toolbar" aria-label="ArticlesToolbar">
 		{* Title *}
-		{if isset($keyword)}
+		{if $keyword}
 			<h1>#{$keyword|escape}</h1>
-		{elseif isset($author)}
-			<h1>{$lang->author}: {$author|escape}</h1>
-		{elseif isset($page)}
-			<h1 data-page="{$page->id}">{$page->name|escape}</h1>
+		{elseif $author}
+			<h1>{$lang->author|escape}: {$author|escape}</h1>
+		{elseif $page}
+			<h1><span data-page="{$page->id}">{$page->name|escape}</span></h1>
 		{else}
-			<h1 data-articles-category="{$articles_category->id}">
-				{if isset($articles_category->name_h1) && $articles_category->name_h1}
-					{$articles_category->name_h1|escape}
-				{elseif isset($articles_category->name) && $articles_category->name}
-					{$articles_category->name|escape}
+			<h1>
+				{if $articles_category && $articles_category->name_h1}
+					<span data-articles-category="{$articles_category->id}">{$articles_category->name_h1|escape}</span>
+				{elseif $articles_category && $articles_category->name}
+					<span data-articles-category="{$articles_category->id}">{$articles_category->name|escape}</span>
 				{/if}
 			</h1>
 		{/if}
 
 		{* Sort *}
-		<a class="btn btn-outline-secondary dropdown-toggle" href="#" role="button" id="dropdownSortLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			{$lang->sort_by}
-		</a>
-		<div class="dropdown-menu" aria-labelledby="dropdownSortLink">
-			<a class="dropdown-item {if $sort=='position'}active{/if}" href="{url sort=position page=null}">{$lang->default}</a>
-			<a class="dropdown-item {if $sort=='date'}active{/if}" href="{url sort=date page=null}">{$lang->sort_date}</a>
-			<a class="dropdown-item {if $sort=='rate'}active{/if}" href="{url sort=rate page=null}">{$lang->by_rating}</a>
+		<div class="align-self-center">
+			<a class="btn btn-outline-secondary dropdown-toggle" href="#" role="button" id="dropdownSortLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				{$lang->sort_by|escape}
+			</a>
+			<div class="dropdown-menu" aria-labelledby="dropdownSortLink">
+				<a class="dropdown-item {if $sort=='position'}active{/if}" href="{url sort=position page=null}">{$lang->default|escape}</a>
+				<a class="dropdown-item {if $sort=='date'}active{/if}" href="{url sort=date page=null}">{$lang->sort_date|escape}</a>
+				<a class="dropdown-item {if $sort=='rate'}active{/if}" href="{url sort=rate page=null}">{$lang->by_rating|escape}</a>
+			</div>
 		</div>
 	</div>
 
@@ -108,7 +67,7 @@
 						<img class="card-img-top" src="{$post->image|resize_articles:750:300}" alt="{$post->name|escape}">
 					{else}
 						<div class="text-center mt-4">
-							<img style="width: 210px; height: 210px;" src="design/{$settings->theme|escape}/images/no-photo.svg" alt="{$article->name|escape}">
+							<img style="width: 210px; height: 210px;" src="design/{$settings->theme|escape}/images/no-photo.svg" alt="{$post->name|escape}">
 						</div>
 					{/if}
 
@@ -133,7 +92,7 @@
 							{if $post->category->name}
 								<i class="fal fa-edit me-1"></i>
 								<a href="{$lang_link}articles/{$post->category->url}" class="text-decoration-none">
-									{$post->category->name}
+									{$post->category->name|escape}
 								</a>
 							{/if}
 						</div>
@@ -179,16 +138,16 @@
 	{include file='paginations/pagination.tpl'}
 
 	{* Page description *}
-	{if isset($page)}
+	{if $page}
 		{$page->body}
 	{/if}
 
 	{* Category description *}
-	{if isset($articles_category) && $current_page_num == 1}
+	{if $articles_category && $current_page_num == 1}
 		{$articles_category->description}
 	{/if}	
 {else}
 	<div class="mb-3">
-		{$lang->no_articles_found}
+		{$lang->no_articles_found|escape}
 	</div>
 {/if}

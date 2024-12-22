@@ -1,7 +1,7 @@
 {if $comment->approved}
-  {$subject="`$btr->email_comment_new` `$comment->name|escape`" scope=global}
+  {$subject="`$btr->email_comment_new` `$comment->name`" scope=global}
 {else}
-  {$subject="`$btr->email_comment_from` `$comment->name|escape` {$btr->email_comments_unapproved|escape}" scope=global}
+  {$subject="`$btr->email_comment_from` `$comment->name` `$btr->email_comments_unapproved|escape`" scope=global}
 {/if}
 
 <html xmlns="http://www.w3.org/1999/xhtml">

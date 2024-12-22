@@ -410,47 +410,43 @@ class Categories extends Turbo
 			$categories = $this->db->results();
 		}
 
-		$finish = false;
-
-		while (!empty($categories) && !$finish) {
-			$flag = false;
-
-			foreach ($categories as $k => $category) {
-				if (isset($pointers[$category->parent_id])) {
-					$pointers[$category->id] = $pointers[$category->parent_id]->subcategories[] = $category;
-					$curr = $pointers[$category->id];
-					$pointers[$category->id]->path = array_merge((array)$pointers[$category->parent_id]->path, array($curr));
-					$pointers[$category->id]->level = 1 + $pointers[$category->parent_id]->level;
-					unset($categories[$k]);
-					$flag = true;
-				}
+		foreach ($categories as $category) {
+			if (!isset($category->subcategories)) {
+				$category->subcategories = [];
 			}
 
-			if (!$flag) {
-				$finish = true;
+			$pointers[$category->id] = $category;
+
+			if (isset($pointers[$category->parent_id])) {
+				$pointers[$category->parent_id]->subcategories[] = $category;
+				$category->path = $pointers[$category->parent_id]->path;
+				$category->path[] = $category;
+				$category->level = $pointers[$category->parent_id]->level + 1;
+			} else {
+				$tree->subcategories[] = $category;
+				$category->path = [];
+				$category->level = 0;
 			}
 		}
 
-		$ids = array_reverse(array_keys($pointers));
-
-		foreach ($ids as $id) {
+		foreach (array_reverse(array_keys($pointers)) as $id) {
 			if ($id > 0) {
-				$pointers[$id]->children[] = $id;
+				$category = $pointers[$id];
+				$category->children[] = $id;
 
-				if (isset($pointers[$pointers[$id]->parent_id]->children)) {
-					$pointers[$pointers[$id]->parent_id]->children =
-						array_merge($pointers[$id]->children, $pointers[$pointers[$id]->parent_id]->children);
-				} else {
-					$pointers[$pointers[$id]->parent_id]->children = $pointers[$id]->children;
-				}
+				$parent_id = $category->parent_id;
+				if ($parent_id && isset($pointers[$parent_id])) {
+					$pointers[$parent_id]->children = array_merge(
+						$category->children,
+						$pointers[$parent_id]->children ?? []
+					);
 
-				if ($this->settings->category_count && isset($pointers[$pointers[$id]->parent_id]->products_count) && $pointers[$id]->visible) {
-					$pointers[$pointers[$id]->parent_id]->products_count += $pointers[$id]->products_count;
+					if ($this->settings->category_count && $category->visible) {
+						$pointers[$parent_id]->products_count = ($pointers[$parent_id]->products_count ?? 0) + $category->products_count;
+					}
 				}
 			}
 		}
-
-		unset($ids);
 
 		$this->categoriesTree = $tree->subcategories;
 		$this->allCategories = $pointers;

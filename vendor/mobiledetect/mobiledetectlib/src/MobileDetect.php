@@ -19,7 +19,7 @@
  * @author  Nick Ilyin <nick.ilyin@gmail.com>
  * @author: Victor Stanciu <vic.stanciu@gmail.com> (original author)
  *
- * @version 4.8.06
+ * @version 4.8.07
  */
 
 declare(strict_types=1);
@@ -31,6 +31,7 @@ use Detection\Cache\Cache;
 use Detection\Cache\CacheException;
 use Detection\Exception\MobileDetectException;
 use Psr\Cache\InvalidArgumentException;
+use Psr\SimpleCache\CacheInterface;
 
 /**
  * Auto-generated isXXXX() magic methods.
@@ -64,6 +65,7 @@ use Psr\Cache\InvalidArgumentException;
  * @method bool isINQ()
  * @method bool isOnePlus()
  * @method bool isGenericPhone()
+ * @method bool isHuawei()
  * @method bool isiPad()
  * @method bool isNexusTablet()
  * @method bool isGoogleTablet()
@@ -197,6 +199,7 @@ use Psr\Cache\InvalidArgumentException;
  * @method bool iswebOS()
  * @method bool isbadaOS()
  * @method bool isBREWOS()
+ * @method bool isHarmonyOS()
  * @method bool isChrome()
  * @method bool isDolfin()
  * @method bool isOpera()
@@ -218,6 +221,7 @@ use Psr\Cache\InvalidArgumentException;
  * @method bool isNetFront()
  * @method bool isGenericBrowser()
  * @method bool isPaleMoon()
+ * @method bool isHuaweiBrowser()
  * @method bool isWebKit()
  * @method bool isConsole()
  * @method bool isWatch()
@@ -231,12 +235,12 @@ class MobileDetect
      *
      * Replace this with your own implementation.
      */
-    protected Cache $cache;
+    protected CacheInterface $cache;
 
     /**
      * Stores the version number of the current release.
      */
-    protected string $VERSION = '4.8.06';
+    protected string $VERSION = '4.8.07';
 
     protected array $config = [
         // Auto-initialization on HTTP headers from $_SERVER['HTTP...']
@@ -246,7 +250,12 @@ class MobileDetect
         'autoInitOfHttpHeaders' => true,
         // Maximum HTTP User-Agent value allowed.
         // @var int
-        'maximumUserAgentLength' => 500
+        'maximumUserAgentLength' => 500,
+        // Function that creates the cache key. e.g. (base64, sha1, custom fn).
+        'cacheKeyFn' => 'base64_encode',
+        // Cache TTL
+        // @var null|int|\DateInterval
+        'cacheTtl' => 86400,
     ];
 
     /**
@@ -333,6 +342,9 @@ class MobileDetect
         'HTTP_X_ATT_DEVICEID'          => null,
         // Seen this on a HTC.
         'HTTP_UA_CPU'                  => ['matches' => ['ARM']],
+        // See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Sec-CH-UA-Mobile
+        // "?1" means that the device wants a "mobile" experience.
+        'Sec-CH-UA-Mobile'             => ['matches' => ['?1']],
     ];
 
     /**
@@ -466,9 +478,10 @@ class MobileDetect
         'Amoi'  => 'Amoi',
         // http://en.wikipedia.org/wiki/INQ
         'INQ'   => 'INQ',
-        'OnePlus'   => 'ONEPLUS',
+        'OnePlus'   => 'ONEPLUS|CPH2663',
         // @Tapatalk is a mobile app; http://support.tapatalk.com/threads/smf-2-0-2-os-and-browser-detection-plugin-and-tapatalk.15565/#post-79039
         'GenericPhone'  => 'Tapatalk|PDA;|SAGEM|\bmmp\b|pocket|\bpsp\b|symbian|Smartphone|smartfon|treo|up.browser|up.link|vodafone|\bwap\b|nokia|Series40|Series60|S60|SonyEricsson|N900|MAUI.*WAP.*Browser',
+        'Huawei'        => 'HMSCore|Huawei',
     ];
 
     /**
@@ -497,7 +510,7 @@ class MobileDetect
             'SHW-M180S|SHW-M180W|SHW-M300W|SHW-M305W|SHW-M380K|SHW-M380S|SHW-M380W|SHW-M430W|SHW-M480K|SHW-M480S|SHW-M480W|SHW-M485W|SHW-M486W|SHW-M500W|GT-I9228|SCH-P739|SCH-I925|GT-I9200|GT-P5200|GT-P5210',
             'GT-P5113|GT-P8110|GT-N8010|GT-N8005|GT-N8020|GT-P1013|GT-P6201|GT-P7501|GT-N5100|GT-N5105|GT-N5110|SHV-E140K|SHV-E140L|SHV-E140S|SHV-E150S|SHV-E230K|SHV-E230L|SHV-E230S|SHW-M180K|SHW-M180L',
             'SGH-T849|SGH-T859|SGH-T869|SPH-P100|GT-P3100|GT-P3108|GT-P3110|GT-P5100|GT-P5110|GT-P6200|GT-P7320|GT-P7511|GT-N8000|GT-P8510|SGH-I497|SPH-P500|SGH-T779|SCH-I705|SCH-I915|GT-N8013|GT-P3113',
-            'SAMSUNG.*Tablet|Galaxy.*Tab|SC-01C|GT-P1000|GT-P1003|GT-P1010|GT-P3105|GT-P6210|GT-P6800|GT-P6810|GT-P7100|GT-P7300|GT-P7310|GT-P7500|GT-P7510|SCH-I800|SCH-I815|SCH-I905|SGH-I957|SGH-I987',
+            'SAMSUNG.*Tablet|Galaxy.*Tab|SC-01C|GT-P1000|GT-P1003|GT-P1010|GT-P3105|GT-P6210|GT-P6800|GT-P6810|GT-P7100|GT-P7300|GT-P7310|GT-P7500|GT-P7510|SCH-I800|SCH-I815|SCH-I905|SGH-I957|SGH-I987|SM-X300|SM-T630',
         ],
         // http://docs.aws.amazon.com/silk/latest/developerguide/user-agent.html
         'Kindle'            => 'Kindle|Silk.*Accelerated|Android.*\b(KFOT|KFTT|KFJWI|KFJWA|KFOTE|KFSOWI|KFTHWI|KFTHWA|KFAPWI|KFAPWA|WFJWAE|KFSAWA|KFSAWI|KFASWI|KFARWI|KFFOWI|KFGIWI|KFMEWI)\b|Android.*Silk/[0-9.]+ like Chrome/[0-9.]+ (?!Mobile)',
@@ -610,7 +623,7 @@ class MobileDetect
         'bqTablet'          => 'Android.*(bq)?.*\b(Elcano|Curie|Edison|Maxwell|Kepler|Pascal|Tesla|Hypatia|Platon|Newton|Livingstone|Cervantes|Avant|Aquaris ([E|M]10|M8))\b|Maxwell.*Lite|Maxwell.*Plus',
         // http://www.huaweidevice.com/worldwide/productFamily.do?method=index&directoryId=5011&treeId=3290
         // http://www.huaweidevice.com/worldwide/downloadCenter.do?method=index&directoryId=3372&treeId=0&tb=1&type=software (including legacy tablets)
-        'HuaweiTablet'      => 'MediaPad|MediaPad 7 Youth|IDEOS S7|S7-201c|S7-202u|S7-101|S7-103|S7-104|S7-105|S7-106|S7-201|S7-Slim|M2-A01L|BAH-L09|BAH-W09|AGS-L09|CMR-AL19|KOB2-L09|BG2-U01|BG2-W09|BG2-U03',
+        'HuaweiTablet'      => 'MediaPad|MediaPad 7 Youth|IDEOS S7|S7-201c|S7-202u|S7-101|S7-103|S7-104|S7-105|S7-106|S7-201|S7-Slim|M2-A01L|BAH-L09|BAH-W09|AGS-L09|CMR-AL19|KOB2-L09|BG2-U01|BG2-W09|BG2-U03|AGS-W09',
         // Nec or Medias Tab
         'NecTablet'         => '\bN-06D|\bN-08D',
         // Pantech Tablets: http://www.pantechusa.com/phones/
@@ -876,6 +889,7 @@ class MobileDetect
         'webOS'             => 'webOS|hpwOS',
         'badaOS'            => '\bBada\b',
         'BREWOS'            => 'BREW',
+        'HarmonyOS'         => 'HarmonyOS',
     ];
 
     /**
@@ -926,6 +940,7 @@ class MobileDetect
         'GenericBrowser'  => 'NokiaBrowser|OviBrowser|OneBrowser|TwonkyBeamBrowser|SEMC.*Browser|FlyFlow|Minimo|NetFront|Novarra-Vision|MQQBrowser|MicroMessenger',
         // @reference: https://en.wikipedia.org/wiki/Pale_Moon_(web_browser)
         'PaleMoon'        => 'Android.*PaleMoon|Mobile.*PaleMoon',
+        'HuaweiBrowser'   => 'HuaweiBrowser',
     ];
 
     /**
@@ -1028,11 +1043,11 @@ class MobileDetect
      * Construct an instance of this class.
      */
     public function __construct(
-        Cache $cache = null,
+        ?CacheInterface $cache = null,
         array $config = [],
     ) {
         // If no custom cache provided then use our own.
-        $this->cache = $cache == null ? new Cache() : $cache;
+        $this->cache = $cache ?? new Cache();
         // Override config from user.
         $this->config = array_merge($this->config, $config);
 
@@ -1393,7 +1408,7 @@ class MobileDetect
         try {
             $cacheKey = $this->createCacheKey("mobile");
             $cacheItem = $this->cache->get($cacheKey);
-            if (!is_null($cacheItem)) {
+            if ($cacheItem !== null) {
                 return $cacheItem->get();
             }
 
@@ -1402,16 +1417,16 @@ class MobileDetect
                 $this->getUserAgent() === self::$cloudFrontUA &&
                 $this->getHttpHeader('HTTP_CLOUDFRONT_IS_MOBILE_VIEWER') === 'true'
             ) {
-                $this->cache->set($cacheKey, true);
+                $this->cache->set($cacheKey, true, $this->config['cacheTtl']);
                 return true;
             }
 
             if ($this->hasHttpHeaders() && $this->checkHttpHeadersForMobile()) {
-                $this->cache->set($cacheKey, true);
+                $this->cache->set($cacheKey, true, $this->config['cacheTtl']);
                 return true;
             } else {
                 $result = $this->matchUserAgentWithFirstFoundMatchingRule();
-                $this->cache->set($cacheKey, $result);
+                $this->cache->set($cacheKey, $result, $this->config['cacheTtl']);
                 return $result;
             }
         } catch (CacheException $e) {
@@ -1439,7 +1454,7 @@ class MobileDetect
         try {
             $cacheKey = $this->createCacheKey("tablet");
             $cacheItem = $this->cache->get($cacheKey);
-            if (!is_null($cacheItem)) {
+            if ($cacheItem !== null) {
                 return $cacheItem->get();
             }
 
@@ -1448,7 +1463,7 @@ class MobileDetect
                 $this->getUserAgent() === self::$cloudFrontUA &&
                 $this->getHttpHeader('HTTP_CLOUDFRONT_IS_TABLET_VIEWER') === 'true'
             ) {
-                $this->cache->set($cacheKey, true);
+                $this->cache->set($cacheKey, true, $this->config['cacheTtl']);
                 return true;
             }
 
@@ -1459,7 +1474,7 @@ class MobileDetect
                     $regexString = implode("|", $_regex);
                 }
                 if ($this->match($regexString, $this->getUserAgent())) {
-                    $this->cache->set($cacheKey, true);
+                    $this->cache->set($cacheKey, true, $this->config['cacheTtl']);
                     return true;
                 }
 
@@ -1467,20 +1482,20 @@ class MobileDetect
 //                    foreach ($_regex as $regexString) {
 //                        $result = $this->match($regexString, $this->getUserAgent());
 //                        if ($result) {
-//                            $this->cache->set($cacheKey, true);
+//                            $this->cache->set($cacheKey, true, $this->config['cacheTtl']);
 //                            return true;
 //                        }
 //                    }
 //                } else {
 //                    // assume the regex is a "string"
 //                    if ($this->match($_regex, $this->getUserAgent())) {
-//                        $this->cache->set($cacheKey, true);
+//                        $this->cache->set($cacheKey, true, $this->config['cacheTtl']);
 //                        return true;
 //                    }
 //                }
             }
 
-            $this->cache->set($cacheKey, false);
+            $this->cache->set($cacheKey, false, $this->config['cacheTtl']);
             return false;
         } catch (CacheException $e) {
             throw new MobileDetectException("Cache problem in isTablet(): {$e->getMessage()}");
@@ -1508,14 +1523,14 @@ class MobileDetect
         try {
             $cacheKey = $this->createCacheKey($ruleName);
             $cacheItem = $this->cache->get($cacheKey);
-            if (!is_null($cacheItem)) {
+            if ($cacheItem !== null) {
                 return $cacheItem->get();
             }
 
             $result = $this->matchUserAgentWithRule($ruleName);
 
             // Cache save.
-            $this->cache->set($cacheKey, $result);
+            $this->cache->set($cacheKey, $result, $this->config['cacheTtl']);
             return $result;
         } catch (CacheException $e) {
             throw new MobileDetectException("Cache problem in is(): {$e->getMessage()}");
@@ -1687,12 +1702,23 @@ class MobileDetect
         return $this->cache;
     }
 
+    /**
+     * @throws CacheException
+     */
     protected function createCacheKey(string $key): string
     {
         $userAgentKey = $this->hasUserAgent() ? $this->userAgent : '';
         $httpHeadersKey = $this->hasHttpHeaders() ? static::flattenHeaders($this->httpHeaders) : '';
 
-        return base64_encode("$key:$userAgentKey:$httpHeadersKey");
+        $cacheKey = "$key:$userAgentKey:$httpHeadersKey";
+
+        $cacheKeyFn = $this->config['cacheKeyFn'];
+
+        if (!is_callable($cacheKeyFn)) {
+            throw new CacheException('cacheKeyFn is not a function.');
+        }
+
+        return call_user_func($cacheKeyFn, $cacheKey);
     }
 
     public static function flattenHeaders(array $httpHeaders): string

@@ -1,55 +1,27 @@
 {* FAQ Template *}
 
-{if isset($page)}
+{if $page}
 	{* Canonical *}
 	{$canonical="/{$page->url}" scope=global}
 {else}
 	{* Meta Title *}
-	{$meta_title = $lang->faq scope=global}
+	{$meta_title = $lang->faq_name scope=global}
 
 	{* Canonical *}
 	{$canonical="/faq" scope=global}
 {/if}
 
-{* Breadcrumb *}
-{$level = 1}
-<nav class="mt-4" aria-label="breadcrumb">
-	<ol itemscope itemtype="http://schema.org/BreadcrumbList" class="breadcrumb">
-		<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="breadcrumb-item">
-			<a itemprop="item" class="text-decoration-none" href="{if $lang_link}{$lang_link}{else}/{/if}">
-				<span itemprop="name" title="{$lang->home}"><i class="fal fa-house me-2"></i>{$lang->home}</span>
-			</a>
-			<meta itemprop="position" content="{$level++}">
-		</li>
-		{if isset($page)}
-			<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="breadcrumb-item active" aria-current="page">
-				<a itemprop="item" class="text-decoration-none" href="{$lang_link}{$page->url}">
-					<span itemprop="name">{$page->header|escape}</span>
-				</a>
-				<meta itemprop="position" content="{$level++}">
-			</li>
-		{else}
-			<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="breadcrumb-item active" aria-current="page">
-				<a itemprop="item" class="text-decoration-none" href="{$lang_link}faq">
-					<span itemprop="name">{$lang->faq}</span>
-				</a>
-				<meta itemprop="position" content="{$level++}">
-			</li>
-		{/if}
-	</ol>
-</nav>
-
 {* Page Title *}
-{if isset($page->name)}
+{if $page}
 	<h1 class="my-4">
 		<span data-page="{$page->id}">{$page->name|escape}</span>
 	</h1>
 {else}
-	<h1 class="my-4">{$lang->faq}</h1>
+	<h1 class="my-4">{$lang->faq_name|escape}</h1>
 {/if}
 
 {* Page Body *}
-{if isset($page->body)}
+{if $page}
 	{$page->body}
 {/if}
 
@@ -69,5 +41,9 @@
 				</div>
 			</div>
 		{/foreach}
+	</div>
+{else}
+	<div class="mb-3">
+		{$lang->no_faqs_found|escape}
 	</div>
 {/if}

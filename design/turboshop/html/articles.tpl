@@ -18,8 +18,8 @@
 				<div id="navigation">
 					<div class="breadcrumbs swipeignore" itemscope="" itemtype="http://schema.org/BreadcrumbList">
 						<div class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-							<a class="breadcrumbs__link" href="{if $lang_link}{$lang_link}{else}/{/if}" title="{$lang->home}" itemprop="item">
-								<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->home}</span>
+							<a class="breadcrumbs__link" href="{if $lang_link}{$lang_link}{else}/{/if}" title="{$lang->home|escape}" itemprop="item">
+								<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->home|escape}</span>
 								<meta itemprop="position" content="{$level++}">
 							</a>
 						</div>
@@ -30,10 +30,10 @@
 								</svg>
 							</i>
 						</span>
-						{if isset($keyword)}
+						{if $keyword}
 							<div class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-								<a class="breadcrumbs__link" href="{$lang_link}articles" title="{$lang->global_articles}" itemprop="item">
-									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->global_articles}</span>
+								<a class="breadcrumbs__link" href="{$lang_link}articles" title="{$lang->global_articles|escape}" itemprop="item">
+									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->global_articles|escape}</span>
 									<meta itemprop="position" content="{$level++}">
 								</a>
 							</div>
@@ -45,15 +45,16 @@
 								</i>
 							</span>
 							<span class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-								<link href="{$lang_link}articles?keyword={$keyword|escape}" itemprop="item"><span>
-									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->search}</span>
+								<link href="{$lang_link}articles?keyword={$keyword|escape}" itemprop="item">
+								<span>
+									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->search|escape}</span>
 									<meta itemprop="position" content="{$level++}">
 								</span>
 							</span>
-						{elseif isset($author)}
+						{elseif $author}
 							<div class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-								<a class="breadcrumbs__link" href="{$lang_link}articles" title="{$lang->global_articles}" itemprop="item">
-									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->global_articles}</span>
+								<a class="breadcrumbs__link" href="{$lang_link}articles" title="{$lang->global_articles|escape}" itemprop="item">
+									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->global_articles|escape}</span>
 									<meta itemprop="position" content="{$level++}">
 								</a>
 							</div>
@@ -65,15 +66,16 @@
 								</i>
 							</span>
 							<span class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-								<link href="{$lang_link}articles?author={$author|escape}" itemprop="item"><span>
-									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->author}</span>
+								<link href="{$lang_link}articles?author={$author|escape}" itemprop="item">
+								<span>
+									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->author|escape}</span>
 									<meta itemprop="position" content="{$level++}">
 								</span>
 							</span>
-						{elseif isset($articles_category)}
+						{elseif $articles_category}
 							<div class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-								<a class="breadcrumbs__link" href="{$lang_link}articles" title="{$lang->global_articles}" itemprop="item">
-									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->global_articles}</span>
+								<a class="breadcrumbs__link" href="{$lang_link}articles" title="{$lang->global_articles|escape}" itemprop="item">
+									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->global_articles|escape}</span>
 									<meta itemprop="position" content="{$level++}">
 								</a>
 							</div>
@@ -85,17 +87,28 @@
 										</svg>
 									</i>
 								</span>
+								{if !$cat@last || $keyword}
 								<div class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
 									<a class="breadcrumbs__link" href="{$lang_link}articles/{$cat->url}" title="{$cat->name|escape}" itemprop="item">
 										<span itemprop="name" class="breadcrumbs__item-name font_13">{$cat->name|escape}</span>
 										<meta itemprop="position" content="{$level++}">
 									</a>
 								</div>
+								{else}
+									<span class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
+										<link href="{$lang_link}articles/{$cat->url}" itemprop="item">
+										<span>
+											<span itemprop="name" class="breadcrumbs__item-name font_13">{$cat->name|escape}</span>
+											<meta itemprop="position" content="{$level++}">
+										</span>
+									</span>
+								{/if}
 							{/foreach}
 						{else}
 							<span class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-								<link href="{$lang_link}articles" itemprop="item"><span>
-									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->global_articles}</span>
+								<link href="{$lang_link}articles" itemprop="item">
+								<span>
+									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->global_articles|escape}</span>
 									<meta itemprop="position" content="{$level++}">
 								</span>
 							</span>
@@ -108,17 +121,17 @@
 				<div class="topic__inner">
 					<div class="topic__heading">
 						{* Title *}
-						{if isset($keyword)}
+						{if $keyword}
 							<h1 id="pagetitle" class="switcher-title">{$keyword|escape}</h1>
-						{elseif isset($author)}
+						{elseif $author}
 							<h1 id="pagetitle" class="switcher-title">{$author|escape}</>
-							{elseif isset($page)}
+							{elseif $page}
 								<h1 id="pagetitle" class="switcher-title" data-page="{$page->id}">{$page->name|escape}</h1>
 							{else}
 								<h1 id="pagetitle" class="switcher-title" data-articles-category="{$articles_category->id}">
-									{if isset($articles_category->name_h1) && $articles_category->name_h1}
+									{if $articles_category && $articles_category->name_h1}
 										{$articles_category->name_h1|escape}
-									{elseif isset($articles_category->name) && $articles_category->name}
+									{elseif $articles_category && $articles_category->name}
 										{$articles_category->name|escape}
 									{/if}
 								</h1>
@@ -145,7 +158,7 @@
 										<div class="blog-list__item height-100 flexbox color-theme-parent-all">
 											<div class="blog-list__item-image-wrapper">
 												<a class="blog-list__item-link" href="{$lang_link}article/{$post->url}">
-													{if isset($post->image) && $post->image}
+													{if $post->image}
 														<span class="lazyload blog-list__item-image outer-rounded-x" style="background-image:url(data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==);" data-bg="{$post->image|resize_articles:700:464}"></span>
 													{else}
 														<span style="display: flex; justify-content: center; align-items: center;" class="blog-list__item-image outer-rounded-x">
@@ -194,18 +207,18 @@
 										{if $current_page_num < $total_pages_num}
 											<div class="ajax_load_btn">
 												<span class="more_text_ajax btn btn-transparent">
-													{$lang->load_more}
+													{$lang->load_more|escape}
 												</span>
 											</div>
 										{/if}
-										{include file='components/pagination.tpl'}
+										{include file='paginations/pagination.tpl'}
 									</div>
 								</div>
 							{/if}
 						{else}
 							<div class="col-md-12">
 								<div class="alert alert-info">
-									{$lang->no_articles_found}
+									{$lang->no_articles_found|escape}
 								</div>
 							</div>
 						{/if}
@@ -214,43 +227,43 @@
 				<div class="left_block">
 					<div class="sticky-block sticky-block--show-Y">
 						<div class="sidearea">
-							{if isset($articles_categories)}
+							{if $articles_categories}
 								<ul class="nav nav-list side-menu">
-									<li class="{if !isset($articles_category->id) && !isset($keyword)}active{/if} opened child">
+									<li class="{if !$articles_category && !$keyword}active{/if} opened child">
 										<span class="bg-opacity-theme-parent-hover link-wrapper">
-											<a href="{$lang_link}articles" class="dark_link top-level-link rounded-x font_short link-with-flag color-theme-parent-all {if !isset($articles_category->id) && !isset($keyword)}link--active{/if}">
-												<span class="side-menu__link-text">{$lang->all_publications}</span>
+											<a href="{$lang_link}articles" class="dark_link top-level-link rounded-x font_short link-with-flag color-theme-parent-all {if !$articles_category && !$keyword}link--active{/if}">
+												<span class="side-menu__link-text">{$lang->all_publications|escape}</span>
 											</a>
 										</span>
 										<div class="submenu-wrapper">
 											<ul class="submenu">
 												{foreach $articles_categories as $c}
 													{if $c->visible}
-														<li class="{if isset($articles_category->id) && $articles_category->id == $c->id}active{/if} {if isset($c->subcategories)}opened child{/if}">
+														<li class="{if $articles_category && $articles_category->id == $c->id}active{/if} {if $c->subcategories}opened child{/if}">
 															<span class="bg-opacity-theme-parent-hover link-wrapper font_short fill-theme-parent-all fill-dark-light">
-																<a href="{$lang_link}articles/{$c->url}" class="dark_link top-level-link rounded-x link-with-flag {if isset($articles_category->id) && $articles_category->id == $c->id}link--active{/if}">
+																<a href="{$lang_link}articles/{$c->url}" class="dark_link top-level-link rounded-x link-with-flag {if $articles_category && $articles_category->id == $c->id}link--active{/if}">
 																	<span data-articles-category="{$c->id}">{$c->name|escape}</span>
 																</a>
 															</span>
-															{if isset($c->subcategories)}
+															{if $c->subcategories}
 																<div class="submenu-wrapper">
 																	<ul class="submenu">
 																		{foreach $c->subcategories as $cat}
 																			{if $cat->visible}
-																				<li class="{if isset($articles_category->id) && $articles_category->id == $cat->id}active{/if} {if isset($cat->subcategories)}opened child{/if}">
+																				<li class="{if $articles_category && $articles_category->id == $cat->id}active{/if} {if $cat->subcategories}opened child{/if}">
 																					<span class="bg-opacity-theme-parent-hover link-wrapper font_short fill-theme-parent-all fill-dark-light">
-																						<a href="{$lang_link}articles/{$cat->url}" class="dark_link sublink rounded-x sublink--child {if isset($articles_category->id) && $articles_category->id == $cat->id}link--active{/if}">
+																						<a href="{$lang_link}articles/{$cat->url}" class="dark_link sublink rounded-x sublink--child {if $articles_category && $articles_category->id == $cat->id}link--active{/if}">
 																							<span data-articles-category="{$c->id}">{$cat->name|escape}</span>
 																						</a>
 																					</span>
-																					{if isset($cat->subcategories)}
+																					{if $cat->subcategories}
 																						<div class="submenu-wrapper">
 																							<ul class="submenu">
 																								{foreach $cat->subcategories as $cat3}
 																									{if $cat3->visible}
-																										<li class="{if isset($articles_category->id) && $articles_category->id == $cat3->id}active{/if}">
+																										<li class="{if $articles_category && $articles_category->id == $cat3->id}active{/if}">
 																											<span class="bg-opacity-theme-parent-hover link-wrapper font_short fill-theme-parent-all fill-dark-light">
-																												<a href="{$lang_link}articles/{$cat3->url}" class="dark_link sublink rounded-x {if isset($articles_category->id) && $articles_category->id == $cat3->id}link--active{/if}">
+																												<a href="{$lang_link}articles/{$cat3->url}" class="dark_link sublink rounded-x {if $articles_category && $articles_category->id == $cat3->id}link--active{/if}">
 																													<span data-articles-category="{$cat3->id}">{$cat3->name|escape}</span>
 																												</a>
 																											</span>
@@ -294,10 +307,10 @@
 							<div class="subscribe-edit">
 								<div class="subscribe-side-block bordered outer-rounded-x">
 									<div class="subscribe-side-block__text font_weight--500 color_dark font_normal switcher-title">
-										<span>{$lang->subscribe_to_newsletter}</span>
+										<span>{$lang->subscribe_to_newsletter|escape}</span>
 									</div>
 									<div class="subscribe-side-block__button">
-										<div class="btn btn-default btn-wide" data-event="jqm" data-param-type="subscribe" data-url="{$lang_link}blog?tpl=subscribe" data-name="subscribe">{$lang->subscribe}</div>
+										<div class="btn btn-default btn-wide" data-event="jqm" data-param-type="subscribe" data-url="{$lang_link}blog?tpl=subscribe" data-name="subscribe">{$lang->subscribe|escape}</div>
 									</div>
 								</div>
 							</div>

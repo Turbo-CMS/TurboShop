@@ -11,7 +11,7 @@
 									<div class="logo line-block__item no-shrinked">
 										<a class="menu-light-icon-fill banner-light-icon-fill" href="{if $lang_link}{$lang_link}{else}/{/if}">
 											{* Logo *}
-											{include file='components/logo.tpl'}
+											{include file='includes/logo.tpl'}
 										</a>
 									</div>
 								</div>
@@ -147,7 +147,7 @@
 									<div class="logo line-block__item no-shrinked">
 										<a class="menu-light-icon-fill banner-light-icon-fill" href="{if $lang_link}{$lang_link}{else}/{/if}">
 											{* Logo *}
-											{include file='components/logo.tpl'}
+											{include file='includes/logo.tpl'}
 										</a>
 									</div>
 								</div>

@@ -6,7 +6,7 @@ class SeoAdmin extends Turbo
 {
 	public function fetch()
 	{
-		if ($this->request->isMethod('post')) {
+		if ($this->request->method('post')) {
 			$this->seo->update('am_url', $this->request->post('am_url'));
 			$this->seo->update('am_name', $this->request->post('am_name'));
 			$this->seo->update('am_phone', $this->request->post('am_phone'));

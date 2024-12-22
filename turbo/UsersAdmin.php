@@ -6,7 +6,7 @@ class UsersAdmin extends Turbo
 {
 	public function fetch()
 	{
-		if ($this->request->isMethod('post')) {
+		if ($this->request->method('post')) {
 			$ids = $this->request->post('check');
 
 			if (is_array($ids)) {

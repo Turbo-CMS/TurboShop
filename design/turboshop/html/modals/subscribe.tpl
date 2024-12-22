@@ -1,4 +1,4 @@
-<span class="jqmClose top-close fill-theme-hover fill-use-svg-999" title="{$lang->close}">
+<span class="jqmClose top-close fill-theme-hover fill-use-svg-999" title="{$lang->close|escape}">
 	<i class="svg inline" aria-hidden="true">
 		<svg width="14" height="14">
 			<use xlink:href="design/{$settings->theme|escape}/images/svg/sprite/header_icons.svg#close-14-14"></use>
@@ -10,7 +10,7 @@
 		<form name="form_popup_subscribe" method="post" novalidate="novalidate">
 			<div class="form-header">
 				<div class="text">
-					<div class="title font_24 color_222">{$lang->subscribe_newsletter}</div>
+					<div class="title font_24 color_222">{$lang->subscribe_newsletter|escape}</div>
 				</div>
 			</div>
 			<div class="form-body">
@@ -20,7 +20,7 @@
 						<div class="form-group">
 							<label class="font_14"><span>Email&nbsp;<span class="star">*</span></span></label>
 							<div class="input">
-								<input type="email" class="form-control inputtext input-filed" required="" name="email" value="{if isset($email)}{$email|escape}{/if}" aria-required="true">
+								<input type="email" class="form-control inputtext input-filed" required="" name="email" value="{$email|escape}" aria-required="true">
 							</div>
 						</div>
 					</div>
@@ -28,10 +28,10 @@
 			</div>
 			<div class="form-footer clearfix">
 				<div>
-					<button type="submit" name="subscribe" value="{$lang->subscribe}" class="btn btn-default btn-lg has-ripple">{$lang->subscribe}</button>
+					<button type="submit" name="subscribe" value="{$lang->subscribe|escape}" class="btn btn-default btn-lg has-ripple">{$lang->subscribe|escape}</button>
 				</div>
 				<div class="licence_block">
-					<span>{$lang->licenses_text} <a href="{$lang_link}licenses" target="_blank">{$lang->licenses_link}</a></span>
+					<span>{$lang->licenses_text|escape} <a href="{$lang_link}licenses" target="_blank">{$lang->licenses_link|escape}</a></span>
 				</div>
 			</div>
 		</form>

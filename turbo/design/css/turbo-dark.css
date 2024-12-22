@@ -30,6 +30,10 @@ img {
 	background-color: transparent !important;
 }
 
+.tox .tox-notification {
+	width: auto !important;
+}
+
 .pagination .page-link svg {
 	margin-top: -0.2rem !important;
 }
@@ -2638,7 +2642,7 @@ textarea.form-control {
 }
 
 textarea.banner-textarea {
-	min-height: calc(1.9125rem + 152px);
+	min-height: calc(1.9125rem + 77px);
 }
 
 /************************************************************************* categories.tpl  */
@@ -2947,7 +2951,7 @@ textarea.banner-textarea {
 .watermark-image img {
 	max-width: 100%;
 	text-align: center;
-	max-height: 285px;
+	max-height: 200px;
 }
 
 .nested-boxed-watermark {

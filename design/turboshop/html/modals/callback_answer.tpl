@@ -11,9 +11,9 @@
 						</i>
 					</div>
 					<div class="form-send__info">
-						<div class="form-send__info-title switcher-title font_24">{$lang->thank_you}</div>
+						<div class="form-send__info-title switcher-title font_24">{$lang->thank_you|escape}</div>
 						<div class="form-send__info-text">
-							<p>{$lang->text_success}</p>
+							<p>{$lang->text_success|escape}</p>
 						</div>
 					</div>
 				</div>
@@ -21,12 +21,12 @@
 		</div>
 	</div>
 	<div class="form-footer">
-		<div class="btn btn-transparent-border btn-lg jqmClose btn-wide has-ripple">{$lang->close}</div>
+		<div class="btn btn-transparent-border btn-lg jqmClose btn-wide has-ripple">{$lang->close|escape}</div>
 	</div>
 {elseif $condition == 'empty_name'}
-	<div class="alert alert-danger" role="alert">{$lang->enter_your_name}</div>
+	<div class="alert alert-danger" role="alert">{$lang->enter_your_name|escape}</div>
 {elseif $condition == 'empty_phone'}
-	<div class="alert alert-danger" role="alert">{$lang->enter_phone_number}</div>
+	<div class="alert alert-danger" role="alert">{$lang->enter_phone_number|escape}</div>
 {elseif $condition == 'captcha_error'}
-	<div class="alert alert-danger" role="alert">{$lang->captcha_incorrect}</div>
+	<div class="alert alert-danger" role="alert">{$lang->captcha_incorrect|escape}</div>
 {/if}

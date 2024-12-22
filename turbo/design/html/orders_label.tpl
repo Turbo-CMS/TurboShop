@@ -1,4 +1,4 @@
-{if isset($label->id)}
+{if $label->id}
 	{$meta_title = $label->name scope=global}
 {else}
 	{$meta_title =$btr->orders_new_label scope=global}
@@ -6,7 +6,7 @@
 
 <div class="d-md-flex mb-3">
 	<h1 class="d-inline align-middle me-3">
-		{if isset($label->id)}
+		{if $label->id}
 			{$btr->orders_label|escape}: {$label->name|escape}
 		{else}
 			{$btr->orders_new_label|escape}
@@ -14,7 +14,7 @@
 	</h1>
 </div>
 
-{if isset($message_success)}
+{if $message_success}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -47,15 +47,15 @@
 						<div class="col-lg-6 col-md-6 col-sm-12">
 							<div class="mb-3">
 								<div class="form-label">{$btr->global_title|escape}</div>
-								<input class="form-control" name="name" type="text" value="{if isset($label->name)}{$label->name|escape}{/if}">
-								<input name="id" type="hidden" value="{if isset($label->id)}{$label->id|escape}{/if}">
+								<input class="form-control" name="name" type="text" value="{$label->name|escape}">
+								<input name="id" type="hidden" value="{$label->id|escape}">
 							</div>
 						</div>
 						<div class="col-lg-6 col-md-6 col-sm-12">
 							<div class="mb-3">
 								<div class="form-label">{$btr->global_color|escape}</div>
 								<div id="cp" class="input-group color-picker">
-									<input type="text" name="color" value="{if isset($label->color)}{$label->color|escape}{/if}" class="form-control">
+									<input type="text" name="color" value="{$label->color|escape}" class="form-control">
 									<span class="input-group-text add-on"><i></i></span>
 								</div>
 							</div>

@@ -1,6 +1,6 @@
 {* Navigation *}
 <nav itemscope itemtype="https://schema.org/SiteNavigationElement" class="navbar navbar-expand-lg {if isset($smarty.cookies.mode) && $smarty.cookies.mode == 'mode'}navbar-dark bg-body-tertiary{else}navbar-light bg-light{/if} fixed-top shadow">
-	<div class="container">
+	<div class="container-xxl">
 		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMenu" aria-controls="navbarMenu" aria-expanded="false" aria-label="Menu">
 			<span class="navbar-toggler-icon"></span>
 		</button>
@@ -19,11 +19,11 @@
 					{if $p->menu_id == $theme_settings->menu_header_id}
 						{if $p->visible}
 							<li itemprop="name" class="nav-item dropdown {if $page && $page->id == $p->id}active{/if}">
-								<a itemprop="url" class="nav-link {if isset($p->subpages)}dropdown-toggle{/if}" href="{$lang_link}{$p->url}" id="dropdown{$p->id}" data-page="{$p->id}" {if isset($p->subpages)}data-bs-toggle="dropdown" aria-expanded="false" {/if} aria-haspopup="true">{$p->header}</a>
-								{if isset($p->subpages)}
+								<a itemprop="url" class="nav-link {if $p->subpages}dropdown-toggle{/if}" href="{$lang_link}{$p->url}" id="dropdown{$p->id}" data-page="{$p->id}" {if $p->subpages}data-bs-toggle="dropdown" aria-expanded="false" {/if} aria-haspopup="true">{$p->header}</a>
+								{if $p->subpages}
 									<div class="dropdown-menu" aria-labelledby="dropdown{$p->id}">
 										{foreach $p->subpages as $p2}
-											<a itemprop="url" data-page="{$p2->id}" class="dropdown-item" href="{$lang_link}{$p2->url}">{$p2->header}</a>
+											<a itemprop="url" data-page="{$p2->id}" class="dropdown-item {if $page && $page->id == $p2->id}active{/if}" href="{$lang_link}{$p2->url}">{$p2->header}</a>
 										{/foreach}
 									</div>
 								{/if}
@@ -83,9 +83,9 @@
 				{* Login *}
 				{if $user}
 					<li class="nav-item"><a class="nav-link text-decoration-none" href="{$lang_link}user"><i class="fal fa-user text-primary me-2"></i>{$user->name}</a></li>
-					<li class="nav-item"><a class="nav-link text-decoration-none" href="{$lang_link}user/logout"><i class="fal fa-sign-out me-2"></i>{$lang->logout}</a></li>
+					<li class="nav-item"><a class="nav-link text-decoration-none" href="{$lang_link}user/logout"><i class="fal fa-sign-out me-2"></i>{$lang->logout|escape}</a></li>
 				{else}
-					<li class="nav-item me-2"><a class="nav-link text-decoration-none" href="{$lang_link}user/login"><i class="fal fa-user me-2"></i>{$lang->account}</a></li>
+					<li class="nav-item me-2"><a class="nav-link text-decoration-none" href="{$lang_link}user/login"><i class="fal fa-user me-2"></i>{$lang->account|escape}</a></li>
 				{/if}
 				<hr class="text-black-50 d-block d-lg-none">
 			</ul>
@@ -97,7 +97,7 @@
 	</div>
 </nav>
 {* Logo Header *}
-<div class="container pt-4 mt-5">
+<div class="container-xxl pt-4 mt-5">
 	<div class="row justify-content-between mt-2">
 		{* Logo *}
 		<div class="col-lg-6 d-flex align-items-center justify-content-start">
@@ -116,12 +116,12 @@
 		{* Header Contacts *}
 		<div class="col-lg-6">
 			<div class="text-end">
-				<div class="mb-1">{$lang->phone_number}</div>
-				<div class="mb-3">{$lang->contact_details}</div>
+				<div class="mb-1">{$lang->phone_number|escape}</div>
+				<div class="mb-3">{$lang->contact_details|escape}</div>
 				<div class="callback float-end">
 					<a class="btn btn-success btn-sm" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#callbackModal" role="button">
 						<i class="fal fa-headset"></i>
-						<span>{$lang->callback}</span>
+						<span>{$lang->callback|escape}</span>
 					</a>
 				</div>
 			</div>

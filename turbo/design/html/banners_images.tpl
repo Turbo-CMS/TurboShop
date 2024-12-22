@@ -1,18 +1,12 @@
-{if isset($banner)}
+{if $banner}
 	{$meta_title=$banner->name scope=global}
 {else}
-	{$meta_title=$btr->global_banners   scope=global}
+	{$meta_title=$btr->global_banners scope=global}
 {/if}
 
 <div class="d-md-flex mb-3">
 	<h1 class="d-inline align-middle me-3">
-		{if $banners_images_count}
-			{$btr->global_banners} - {$banners_images_count}
-		{elseif isset($keyword)}
-			{$btr->global_banners} - {$banners_images_count}
-		{else}
-			{$btr->banners_images_none|escape}
-		{/if}
+		{$btr->global_banners|escape} - {$banners_images_count}
 	</h1>
 	<div class="d-grid gap-2 d-sm-block mt-2 mt-md-0">
 		<a class="btn btn-primary" href="{url module=BannersImageAdmin return=$smarty.server.REQUEST_URI}"><i data-feather="plus"></i> {$btr->banners_images_add|escape}</a>
@@ -37,17 +31,17 @@
 					<div class="row">
 						<div class="col-md-4 col-lg-4 col-sm-12 mb-3">
 							<select class="selectpicker" onchange="location = this.value;">
-								<option value="{url banner_id=null filter=null}" {if !isset($filter)}{/if}>{$btr->banners_images_all|escape}</option>
-								<option value="{url banner_id=null filter='visible'}" {if isset($filter) && $filter == 'visible'}selected{/if}>{$btr->banners_images_enable|escape}</option>
-								<option value="{url banner_id=null filter='hidden'}" {if isset($filter) && $filter == 'hidden'}selected{/if}>{$btr->banners_images_disable|escape}</option>
+								<option value="{url banner_id=null filter=null}" {if !$filter}{/if}>{$btr->banners_images_all|escape}</option>
+								<option value="{url banner_id=null filter='visible'}" {if $filter == 'visible'}selected{/if}>{$btr->banners_images_enable|escape}</option>
+								<option value="{url banner_id=null filter='hidden'}" {if $filter == 'hidden'}selected{/if}>{$btr->banners_images_disable|escape}</option>
 							</select>
 						</div>
 						{if $banners}
 							<div class="col-md-4 col-lg-4 col-sm-12 mb-3">
 								<select class="selectpicker" onchange="location = this.value;">
-									<option value="{url banner_id=null}" {if !isset($banner->id)}selected{/if}>{$btr->all_groups|escape}</option>
+									<option value="{url banner_id=null}" {if $banner && !$banner->id}selected{/if}>{$btr->global_all_groups|escape}</option>
 									{foreach $banners as $b}
-										<option value="{url keyword=null page=null banner_id=$b->id}" {if isset($banner) && $banner->id == $b->id}selected{/if}>{$b->name|escape}</option>
+										<option value="{url keyword=null page=null banner_id=$b->id}" {if $banner && $banner->id == $b->id}selected{/if}>{$b->name|escape}</option>
 									{/foreach}
 								</select>
 							</div>
@@ -95,9 +89,9 @@
 													<a href="{url module=BannersImageAdmin id=$banners_image->id return=$smarty.server.REQUEST_URI}">
 														{assign var="image" value="{$banners_image->image}"}
 														{if $image|is_svg}
-															<img src="../{$config->banners_images_dir}{$image}">
+															<img src="../{$config->banners_images_dir}{$image}" alt="{$banners_image->name|escape}">
 														{else}
-															<img src="{$image|resize_banners:90:60}">
+															<img src="{$image|resize_banners:90:60}" alt="{$banners_image->name|escape}">
 														{/if}
 													</a>
 												{else}

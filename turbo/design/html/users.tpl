@@ -4,13 +4,7 @@
 	<div class="col-lg-8 col-md-8">
 		<div class="d-md-flex mb-3">
 			<h1 class="d-inline align-middle me-3">
-				{if isset($keyword) && $users_count>0}
-					{$btr->global_users|escape} - {$users_count}
-				{elseif $users_count>0}
-					{$btr->global_users|escape} - {$users_count}
-				{else}
-					{$btr->users_no|escape}
-				{/if}
+				{$btr->global_users|escape} - {$users_count}
 			</h1>
 			{if $users_count > 0}
 				<div class="d-inline-block heading-block text-dark me-3 mb-3 mt-1" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->users_export|escape}">
@@ -23,7 +17,7 @@
 		<form class="search mb-3" method="get">
 			<input type="hidden" name="module" value="UsersAdmin">
 			<div class="input-group">
-				<input name="keyword" class="form-control" placeholder="{$btr->global_search|escape}" type="text" value="{if isset($keyword)}{$keyword|escape}{/if}">
+				<input name="keyword" class="form-control" placeholder="{$btr->global_search|escape}" type="text" value="{$keyword|escape}">
 				<button class="btn btn-primary" type="submit"><i class="align-middle mt-n1" data-feather="search"></i></button>
 			</div>
 		</form>
@@ -57,9 +51,9 @@
 						<div class="col-md-3 col-lg-3 col-sm-12 mb-3">
 							<select class="selectpicker" onchange="location = this.value;">
 								<option value="{url group_id=null}">{$btr->global_filter|escape}</option>
-								{if isset($groups)}
+								{if $groups}
 									{foreach $groups as $g}
-										<option value="{url group_id=$g->id}" {if isset($group->id) && $group->id == $g->id}selected{/if}>{$g->name|escape}</option>
+										<option value="{url group_id=$g->id}" {if $group && $group->id == $g->id}selected{/if}>{$g->name|escape}</option>
 									{/foreach}
 								{/if}
 							</select>
@@ -107,7 +101,7 @@
 												</label>
 											</div>
 											<div class="turbo-list-boding turbo-list-users-name">
-												<a href="{url module=UserAdmin id=$user->id}" class="fw-bold text-body text-decoration-none">
+												<a href="{url module=UserAdmin id=$user->id return=$smarty.server.REQUEST_URI}" class="fw-bold text-body text-decoration-none">
 													{$user->name|escape}
 												</a>
 											</div>
@@ -120,7 +114,7 @@
 												{$user->created|date} | {$user->created|time}
 											</div>
 											<div class="turbo-list-boding turbo-list-users-group">
-												{if isset($groups[$user->group_id])}
+												{if $groups[$user->group_id]}
 													{$groups[$user->group_id]->name|escape}
 												{else}
 													—
@@ -164,7 +158,7 @@
 									</div>
 									<div id="move_to" class="turbo-list-option hidden js-hide-block">
 										<select name="move_group" class="selectpicker">
-											{if isset($groups)}
+											{if $groups}
 												{foreach $groups as $group}
 													<option value="{$group->id}">{$group->name|escape}</option>
 												{/foreach}
@@ -195,9 +189,9 @@
 {javascript minify=true}
 
 <script>
-	var group_id='{if isset($group_id)}{$group_id|escape}{/if}';
-	var keyword='{if isset($keyword)}{$keyword|escape}{/if}';
-	var sort='{if isset($sort)}{$sort|escape}{/if}';
+	var group_id='{$group_id|escape}';
+	var keyword='{$keyword|escape}';
+	var sort='{$sort|escape}';
 </script>
 
 {literal}

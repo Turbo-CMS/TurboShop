@@ -1,6 +1,6 @@
 {* Wishlist *}
 
-{if isset($page)}
+{if $page}
 	{* Canonical *}
 	{$canonical="/{$page->url}" scope=global}
 {else}
@@ -11,49 +11,21 @@
 	{$canonical="/wishlist" scope=global}
 {/if}
 
-{* Breadcrumb *}
-{$level = 1}
-<nav class="mt-4" aria-label="breadcrumb">
-	<ol itemscope itemtype="http://schema.org/BreadcrumbList" class="breadcrumb">
-		<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="breadcrumb-item">
-			<a itemprop="item" class="text-decoration-none" href="{if $lang_link}{$lang_link}{else}/{/if}">
-				<span itemprop="name" title="{$lang->home}"><i class="fal fa-house me-2"></i>{$lang->home}</span>
-			</a>
-			<meta itemprop="position" content="{$level++}">
-		</li>
-		{if isset($page)}
-			<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="breadcrumb-item active" aria-current="page">
-				<a itemprop="item" class="text-decoration-none" href="{$lang_link}{$page->url}">
-					<span itemprop="name">{$page->header|escape}</span>
-				</a>
-				<meta itemprop="position" content="{$level++}">
-			</li>
-		{else}
-			<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="breadcrumb-item active" aria-current="page">
-				<a itemprop="item" class="text-decoration-none" href="{$lang_link}wishlist">
-					<span itemprop="name">{$lang->wishlist}</span>
-				</a>
-				<meta itemprop="position" content="{$level++}">
-			</li>
-		{/if}
-	</ol>
-</nav>
-
 {* Page Title *}
-{if isset($page->name)}
+{if $page}
 	<h1 class="my-4">
 		<span data-page="{$page->id}">{$page->name|escape}</span>
 	</h1>
 {else}
-	<h1 class="my-4">{$lang->wishlist}</h1>
+	<h1 class="my-4">{$lang->wishlist|escape}</h1>
 {/if}
 
-{if isset($products)}
+{if $products}
 	{* View Button *}
 	<div class="btn-toolbar justify-content-between mb-4" role="toolbar" aria-label="toolbarView">
 		<span></span>
 		<div class="btn-group" role="group" aria-label="View">
-			<button onclick="document.cookie='view=grid;path=/';document.location.reload();" type="button" class="btn btn-outline-secondary {if isset($smarty.cookies.view) && $smarty.cookies.view == 'grid'}active{/if}"><i class="fal fa-th"></i></button>
+			<button onclick="document.cookie='view=grid;path=/';document.location.reload();" type="button" class="btn btn-outline-secondary {if !isset($smarty.cookies.view) || $smarty.cookies.view == 'grid' || $smarty.cookies.view != 'list'}active{/if}"><i class="fal fa-th"></i></button>
 			<button onclick="document.cookie='view=list;path=/';document.location.reload();" type="button" class="btn btn-outline-secondary {if isset($smarty.cookies.view) && $smarty.cookies.view == 'list'}active{/if}"><i class="fal fa-th-list"></i></button>
 		</div>
 	</div>
@@ -79,11 +51,11 @@
 	</div>
 {else}
 	<div class="my-1">
-		{$lang->wishlist_no_products}
+		{$lang->wishlist_no_products|escape}
 	</div>
 {/if}
 
 {* Page Body *}
-{if isset($page->body)}
+{if $page}
 	{$page->body}
 {/if}

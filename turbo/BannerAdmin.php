@@ -12,7 +12,7 @@ class BannerAdmin extends Turbo
 		$articlesCategories = $this->articlesCategories->getArticlesCategoriesTree();
 		$banner = new stdClass();
 
-		if ($this->request->isMethod('post')) {
+		if ($this->request->method('post')) {
 			$banner->id = $this->request->post('id', 'integer');
 			$banner->group_id = trim($this->request->post('group_id', 'string'));
 			$banner->name = $this->request->post('name');
@@ -46,16 +46,21 @@ class BannerAdmin extends Turbo
 			$banner->brand_selected = $this->request->post('brands');
 			$banner->page_selected = $this->request->post('pages');
 		} else {
-			$id = $this->request->get('id', 'integer');
+			$banner->id = $this->request->get('id', 'integer');
 
-			if (!empty($id)) {
-				$banner = $this->banners->getBanner((int) $id);
+			if (!empty($banner->id)) {
+				$banner = $this->banners->getBanner((int) $banner->id);
+
 				$banner->articles_category_selected = explode(',', $banner->articles_categories);
 				$banner->category_selected = explode(',', $banner->categories);
 				$banner->brand_selected = explode(',', $banner->brands);
 				$banner->page_selected = explode(',', $banner->pages);
 			} else {
+				$banner->id = null;
+				$banner->name = '';
+				$banner->group_id = '';
 				$banner->visible = 1;
+				$banner->show_all_pages = null;
 			}
 		}
 

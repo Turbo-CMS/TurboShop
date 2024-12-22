@@ -1,5 +1,5 @@
 {if $cart->total_products > 0}
-	<a rel="nofollow" title="{$lang->index_cart}" href="{$lang_link}cart/" class="fill-theme-hover light-opacity-hover dark_link fill-dark-light-block">
+	<a rel="nofollow" title="{$lang->index_cart|escape}" href="{$lang_link}cart/" class="fill-theme-hover light-opacity-hover dark_link fill-dark-light-block">
 		<span class="js-basket-block header-cart__inner icon-block-with-counter--count">
 			<i class="svg inline basket header__icon banner-light-icon-fill menu-light-icon-fill" aria-hidden="true">
 				<svg width="21" height="18">
@@ -10,7 +10,7 @@
 		</span>
 	</a>
 {else}
-	<a rel="nofollow" title="{$lang->index_cart}" href="{$lang_link}cart/" class="fill-theme-hover light-opacity-hover dark_link fill-dark-light-block">
+	<a rel="nofollow" title="{$lang->index_cart|escape}" href="{$lang_link}cart/" class="fill-theme-hover light-opacity-hover dark_link fill-dark-light-block">
 		<span class="js-basket-block header-cart__inner header-cart__inner--empty">
 			<i class="svg inline basket header__icon banner-light-icon-fill menu-light-icon-fill" aria-hidden="true">
 				<svg width="21" height="18">

@@ -22,7 +22,7 @@ class CommentsAdmin extends Turbo
 			$this->design->assign('keyword', $keyword);
 		}
 
-		if ($this->request->isMethod('post')) {
+		if ($this->request->method('post')) {
 
 			if (($ids = $this->request->post('check'))
 				&& is_array($ids)
@@ -63,9 +63,14 @@ class CommentsAdmin extends Turbo
 		}
 
 		$comments = $this->comments->getComments($filter);
+
 		$children = [];
 
 		foreach ($this->comments->getComments() as $c) {
+			if (!isset($children[$c->id])) {
+				$children[$c->id] = [];
+			}
+			
 			$children[$c->parent_id][] = $c;
 		}
 

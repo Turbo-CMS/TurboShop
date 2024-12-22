@@ -1,5 +1,5 @@
 {get_browsed_products var=browsed_products limit=10}
-{if isset($browsed_products)}
+{if $browsed_products}
 	<div class="catalog-viewed">
 		<div class="catalog-viewed__inner">
 			<div class="catalog-viewed-list">
@@ -7,7 +7,7 @@
 					<div class="index-block__title-wrapper index-block__title-wrapper--mb-35">
 						<div class="index-block__part--left">
 							<h3 class="index-block__title switcher-title">
-								<span>{$lang->viewed_products}</span>
+								<span>{$lang->viewed_products|escape}</span>
 							</h3>
 						</div>
 					</div>
@@ -23,7 +23,7 @@
 												<div class="catalog-viewed__item__image__wrap">
 													<div class="catalog-viewed__item__image">
 														<a href="{$lang_link}products/{$product->url}" class="thumb">
-															{if isset($product->image) && $product->image}
+															{if $product->image}
 																<img border="0" src="{$product->image->filename|resize:160:160}" alt="{$product->name|escape}" title="{$product->name|escape}">
 															{else}
 																<img border="0" style="width: 160px; height: 160px;" src="design/{$settings->theme|escape}/images/no-photo.svg" alt="{$product->name|escape}" title="{$product->name|escape}">

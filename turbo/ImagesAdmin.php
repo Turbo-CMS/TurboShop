@@ -28,7 +28,7 @@ class ImagesAdmin extends Turbo
 			closedir($handle);
 		}
 
-		if ($this->request->isMethod('post') && !is_file($imagesDir . '../locked')) {
+		if ($this->request->method('post') && !is_file($imagesDir . '../locked')) {
 			$oldNames = $this->request->post('old_name');
 			$newNames = $this->request->post('new_name');
 

@@ -493,9 +493,9 @@ $get_params = http_build_query($get_params);
 			<div class="modal-content d-flex flex-column h-100">
 				<div class="modal-body d-flex flex-column flex-grow-1">
 					<section class="text-center container">
-						<div class="row py-1">
+						<div class="row">
 							<div class="col-lg-6 col-md-8 mx-auto">
-								<a href="#" class="btn btn-secondary my-2 close-uploader">
+								<a href="#" class="btn btn-secondary mb-3 close-uploader">
 									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left btn-icon">
 										<line x1="19" y1="12" x2="5" y2="12"></line>
 										<polyline points="12 19 5 12 12 5"></polyline>
@@ -514,7 +514,7 @@ $get_params = http_build_query($get_params);
 								<div class="progress-extended"></div>
 							</div>
 							<div class="container-fluid flex-grow-1 d-flex flex-column">
-								<div class="d-grid gap-2 d-sm-flex justify-content-sm-center fileupload-buttonbar my-2">
+								<div class="d-grid gap-2 d-sm-flex justify-content-sm-center fileupload-buttonbar my-3">
 									<button type="button" class="btn btn-secondary px-4 me-sm-3 fileinput-button">
 										<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus btn-icon">
 											<line x1="12" y1="5" x2="12" y2="19"></line>
@@ -792,8 +792,8 @@ $get_params = http_build_query($get_params);
 		?>
 		<!-- header div start -->
 		<nav class="navbar navbar-expand-lg border-bottom">
-			<div class="container-fluid">
-				<span class="navbar-brand"></span>
+			<div class="container-fluid px-0">
+				<span class="navbar-brand m-0"></span>
 				<button class="navbar-toggler mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
 				</button>

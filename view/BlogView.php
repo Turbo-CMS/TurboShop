@@ -59,7 +59,7 @@ class BlogView extends View
 		}
 
 		// Comment Form
-		if ($this->request->isMethod('post') && $this->request->post('comment')) {
+		if ($this->request->method('post') && $this->request->post('comment')) {
 			$comment = new stdClass();
 
 			$comment->name = $this->request->post('name');
@@ -148,6 +148,10 @@ class BlogView extends View
 		$children = [];
 
 		foreach ($this->comments->getComments() as $c) {
+			if (!isset($children[$c->id])) {
+				$children[$c->id] = [];
+			}
+			
 			$children[$c->parent_id][] = $c;
 		}
 
@@ -166,9 +170,9 @@ class BlogView extends View
 
 		$allTags = [];
 
-		foreach ($allPosts as $post) {
+		foreach ($allPosts as $p) {
 			// Get Tags
-			$tags = explode(',', $post->meta_keywords);
+			$tags = explode(',', $p->meta_keywords);
 			$tags = array_map("trim", $tags);
 
 			// Merge Tags
@@ -337,24 +341,26 @@ class BlogView extends View
 		$this->design->assign('auto_meta', $autoMeta);
 
 		// Last Modified
-		$lastModifiedUnix = strtotime($this->settings->lastModifyPosts);
-		$lastModified = gmdate('D, d M Y H:i:s \G\M\T', $lastModifiedUnix);
-		$ifModifiedSince = false;
+		if (isset($lastModifiedUnix)) {
+			$lastModifiedUnix = strtotime($this->settings->lastModifyPosts);
+			$lastModified = gmdate('D, d M Y H:i:s \G\M\T', $lastModifiedUnix);
+			$ifModifiedSince = false;
 
-		if (isset($_ENV['HTTP_IF_MODIFIED_SINCE'])) {
-			$ifModifiedSince = strtotime(substr($_ENV['HTTP_IF_MODIFIED_SINCE'], 5));
+			if (isset($_ENV['HTTP_IF_MODIFIED_SINCE'])) {
+				$ifModifiedSince = strtotime(substr($_ENV['HTTP_IF_MODIFIED_SINCE'], 5));
+			}
+
+			if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
+				$ifModifiedSince = strtotime(substr($_SERVER['HTTP_IF_MODIFIED_SINCE'], 5));
+			}
+
+			if ($ifModifiedSince && $ifModifiedSince >= $lastModifiedUnix) {
+				header($_SERVER['SERVER_PROTOCOL'] . ' 304 Not Modified');
+				exit;
+			}
+
+			header('Last-Modified: ' . $lastModified);
 		}
-
-		if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
-			$ifModifiedSince = strtotime(substr($_SERVER['HTTP_IF_MODIFIED_SINCE'], 5));
-		}
-
-		if ($ifModifiedSince && $ifModifiedSince >= $lastModifiedUnix) {
-			header($_SERVER['SERVER_PROTOCOL'] . ' 304 Not Modified');
-			exit;
-		}
-
-		header('Last-Modified: ' . $lastModified);
 
 		// Display
 		$body = $this->design->fetch('blog.tpl');

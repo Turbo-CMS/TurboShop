@@ -25,7 +25,6 @@ class IndexAdmin extends Turbo
 		'OrdersLabelAdmin'          => 'labels',
 		'UsersAdmin'                => 'users',
 		'UserAdmin'                 => 'users',
-		'ExportUsersAdmin'          => 'users',
 		'GroupsAdmin'               => 'groups',
 		'GroupAdmin'                => 'groups',
 		'CouponsAdmin'              => 'coupons',
@@ -122,27 +121,30 @@ class IndexAdmin extends Turbo
 		$this->design->assign('is_tablet', $isTablet);
 
 		$languages = $this->languages->languages();
-		$this->design->assign('languages', $languages);
 
-		$langId = $this->languages->langId();
-		$this->design->assign('lang_id', $langId);
+		if ($languages) {
+			$this->design->assign('languages', $languages);
 
-		$langLabel = '';
-		$langLink = '';
+			$langId = $this->languages->langId();
+			$this->design->assign('lang_id', $langId);
 
-		if ($langId && $languages) {
-			$langLabel = $languages[$langId]->label;
+			$langLabel = '';
+			$langLink = '';
+
+			if ($langId && isset($languages[$langId])) {
+				$langLabel = $languages[$langId]->label;
+			}
+
+			$firstLang = reset($languages);
+
+			if (isset($firstLang->id) && $firstLang->id != $langId) {
+				$langLink = $langLabel . '/';
+			}
+
+			$this->design->assign('first_lang', $firstLang->id);
+			$this->design->assign('lang_label', $langLabel);
+			$this->design->assign('lang_link', $langLink);
 		}
-
-		$firstLang = reset($languages);
-
-		if (isset($firstLang->id) && ($firstLang->id != $langId)) {
-			$langLink = $langLabel . '/';
-		}
-
-		$this->design->assign('first_lang', $firstLang->id);
-		$this->design->assign('lang_label', $langLabel);
-		$this->design->assign('lang_link', $langLink);
 
 		$this->manager = $this->managers->getManager();
 		$this->design->assign('manager', $this->manager);

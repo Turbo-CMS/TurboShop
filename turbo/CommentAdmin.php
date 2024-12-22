@@ -8,7 +8,7 @@ class CommentAdmin extends Turbo
 	{
 		$comment = new stdClass();
 
-		if ($this->request->isMethod('post')) {
+		if ($this->request->method('post')) {
 			$comment->id = $this->request->post('id', 'integer');
 			$comment->name = $this->request->post('name');
 			$comment->date = date('Y-m-d H:i:s', strtotime($this->request->post('date') . '' . $this->request->post('time')));

@@ -1,6 +1,6 @@
 {* Brands *}
 
-{if isset($page)}
+{if $page}
 	{* Canonical *}
 	{$canonical="/{$page->url}" scope=global}
 {else}
@@ -20,8 +20,8 @@
 					{$level = 1}
 					<div class="breadcrumbs swipeignore" itemscope="" itemtype="http://schema.org/BreadcrumbList">
 						<div class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-							<a class="breadcrumbs__link" href="{if $lang_link}{$lang_link}{else}/{/if}" title="{$lang->home}" itemprop="item">
-								<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->home}</span>
+							<a class="breadcrumbs__link" href="{if $lang_link}{$lang_link}{else}/{/if}" title="{$lang->home|escape}" itemprop="item">
+								<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->home|escape}</span>
 								<meta itemprop="position" content="{$level++}">
 							</a>
 						</div>
@@ -32,7 +32,7 @@
 								</svg>
 							</i>
 						</span>
-						{if isset($page)}
+						{if $page}
 							<span class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
 								<link href="{$lang_link}{$page->url}" itemprop="item">
 								<span>
@@ -44,7 +44,7 @@
 							<span class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
 								<link href="{$lang_link}brands" itemprop="item">
 								<span>
-									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->global_brands}</span>
+									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->global_brands|escape}</span>
 									<meta itemprop="position" content="{$level++}">
 								</span>
 							</span>
@@ -57,10 +57,10 @@
 				<div class="topic__inner">
 					<div class="topic__heading">
 						<h1 id="pagetitle" class="switcher-title">
-							{if isset($page->name)}
+							{if $page}
 								<span data-page="{$page->id}">{$page->name|escape}</span>
 							{else}
-								{$lang->global_brands}
+								{$lang->global_brands|escape}
 							{/if}
 						</h1>
 					</div>
@@ -78,7 +78,7 @@
 			<div class="col-md-12 col-sm-12 col-xs-12 content-md">
 				<div class="right_block narrow_N">
 					{* Page Body *}
-					{if isset($page->body) && $page->body}
+					{if $page && $page->body}
 						<div class="text_before_items">
 							{$page->body}
 						</div>
@@ -117,12 +117,12 @@
 												{if $current_page_num < $total_pages_num}
 													<div class="ajax_load_btn">
 														<span class="more_text_ajax btn btn-transparent">
-															{$lang->load_more}
+															{$lang->load_more|escape}
 														</span>
 													</div>
 												{/if}
 												{* Paginations *}
-												{include file='components/pagination.tpl'}
+												{include file='paginations/pagination.tpl'}
 											</div>
 										</div>
 									</div>
@@ -131,7 +131,7 @@
 						{else}
 							<div class="col-md-12">
 								<div class="alert alert-info">
-									{$lang->no_brands_found}
+									{$lang->no_brands_found|escape}
 								</div>
 							</div>
 						{/if}
@@ -163,7 +163,7 @@
 										<div class="line-block__item">
 											<div class="chip filter-link bg-theme-active color-theme-hover-no-active active" data-letter="all">
 												<div class="chip__label">
-													{$lang->all}
+													{$lang->all|escape}
 												</div>
 											</div>
 										</div>
@@ -237,7 +237,7 @@
 						{else}
 							<div class="col-md-12">
 								<div class="alert alert-info">
-									{$lang->no_brands_found}
+									{$lang->no_brands_found|escape}
 								</div>
 							</div>
 						{/if}

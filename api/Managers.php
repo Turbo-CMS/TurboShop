@@ -168,8 +168,6 @@ class Managers extends Turbo
 		if ($updatedFlag) {
 			file_put_contents($this->passwdFile, implode("\n", $lines));
 
-			$manager->login = '';
-
 			if ($m = $this->getManager($manager->login)) {
 				return $m->login;
 			}

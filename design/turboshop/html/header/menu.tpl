@@ -5,12 +5,12 @@
 			{foreach $pages as $p}
 				{if $p->menu_id == $theme_settings->menu_header_id}
 					{if $p->visible}
-						<div class="header-menu__item unvisible {if $p@first}header-menu__item--first{/if} {if isset($p->subpages)}header-menu__item--dropdown{/if} {if isset($page) && $page && ($page->id == $p->id || in_array($page->id, $p->children))}active{/if}">
+						<div class="header-menu__item unvisible {if $p@first}header-menu__item--first{/if} {if $p->subpages}header-menu__item--dropdown{/if} {if $page && ($page->id == $p->id || in_array($page->id, $p->children))}active{/if}">
 							<a class="header-menu__link header-menu__link--top-level light-opacity-hover fill-theme-hover banner-light-text dark_link" data-page="{$p->id}" href="{$lang_link}{$p->url}">
 								<span class="header-menu__title font_14">
 									{$p->header}
 								</span>
-								{if isset($p->subpages)}
+								{if $p->subpages}
 									<i class="svg inline  header-menu__wide-submenu-right-arrow fill-dark-light-block banner-light-icon-fill" aria-hidden="true">
 										<svg width="7" height="5">
 											<use xlink:href="design/{$settings->theme|escape}/images/svg/sprite/arrows.svg#down-7-5"></use>
@@ -18,15 +18,15 @@
 									</i>
 								{/if}
 							</a>
-							{if isset($p->subpages)}
+							{if $p->subpages}
 								<div class="header-menu__dropdown-menu dropdown-menu-wrapper dropdown-menu-wrapper--visible dropdown-menu-wrapper--woffset">
 									<div class="dropdown-menu-inner rounded-x">
 										<ul class="header-menu__dropdown-menu-inner ">
 											{foreach $p->subpages as $p2}
 												<li class="header-menu__dropdown-item header-menu__dropdown-item--with-dropdown count_ {if $page && $page->id == $p2->id}active{/if}">
-													<a class="font_15 {if isset($page) && $page && ($page->id == $p2->id || in_array($page->id, $p2->children))}dropdown-menu-item--current{/if} dropdown-menu-item dark_link fill-dark-light-block" data-page="{$p2->id}" href="{$lang_link}{$p2->url}">
+													<a class="font_15 {if $page && ($page->id == $p2->id || in_array($page->id, $p2->children))}dropdown-menu-item--current{/if} dropdown-menu-item dark_link fill-dark-light-block" data-page="{$p2->id}" href="{$lang_link}{$p2->url}">
 														{$p2->header}
-														{if isset($p2->subpages)}
+														{if $p2->subpages}
 															<i class="svg inline header-menu__dropdown-right-arrow fill-dark-light-block" aria-hidden="true">
 																<svg width="7" height="5">
 																	<use xlink:href="design/{$settings->theme|escape}/images/svg/sprite/arrows.svg#down-7-5"></use>
@@ -34,7 +34,7 @@
 															</i>
 														{/if}
 													</a>
-													{if isset($p2->subpages)}
+													{if $p2->subpages}
 														<div class="header-menu__dropdown-menu header-menu__dropdown-menu--submenu dropdown-menu-wrapper dropdown-menu-wrapper--visible dropdown-menu-wrapper--woffset">
 															<ul class="dropdown-menu-inner rounded-x">
 																{foreach $p2->subpages as $p3}

@@ -17,7 +17,7 @@ class IndexView extends View
 	public function fetch()
 	{
 		// Subscribe
-		if ($this->request->isMethod('post') && $this->request->post('subscribe')) {
+		if ($this->request->method('post') && $this->request->post('subscribe')) {
 			$email = $this->request->post('subscribe_email');
 			$this->design->assign('email', $email);
 
@@ -36,7 +36,7 @@ class IndexView extends View
 		}
 
 		// Callback
-		if ($this->request->isMethod('post') && $this->request->post('callback')) {
+		if ($this->request->method('post') && $this->request->post('callback')) {
 			$callback = new stdClass();
 
 			$callback->name = $this->request->post('name');
@@ -141,7 +141,11 @@ class IndexView extends View
 		}
 
 		// User Scripts
-		$counters = [];
+		$counters = [
+			'head' => [],
+			'body_top' => [],
+			'body_bottom' => [],
+		];
 
 		foreach ((array)$this->settings->counters as $c) {
 			if (isset($c->position)) {

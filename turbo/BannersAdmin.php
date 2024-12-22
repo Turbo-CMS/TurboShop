@@ -6,7 +6,7 @@ class BannersAdmin extends Turbo
 {
 	public function fetch()
 	{
-		if ($this->request->isMethod('post')) {
+		if ($this->request->method('post')) {
 			$ids = $this->request->post('check');
 
 			if (is_array($ids)) {
@@ -56,8 +56,10 @@ class BannersAdmin extends Turbo
 				$banner->page_selected = explode(',', $banner->pages);
 
 				foreach ($articlesCategories as $c) {
-					if (in_array($c->id, $banner->articles_category_selected)) {
-						$banner->articles_category_show[] = $c;
+					if (isset($c->id)) {
+						if (in_array($c->id, $banner->articles_category_selected)) {
+							$banner->articles_category_show[] = $c;
+						}
 					}
 				}
 

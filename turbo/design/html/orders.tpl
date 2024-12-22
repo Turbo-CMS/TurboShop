@@ -3,15 +3,13 @@
 <div class="row">
 	<div class="col-lg-8 col-md-8">
 		<div class="d-md-flex mb-3">
-			{if $orders_count}
-				<h1 class="d-inline align-middle me-3">
-					{$btr->global_orders|escape} - {$orders_count}
-				</h1>
+			<h1 class="d-inline align-middle me-3">
+				{$btr->global_orders|escape} - {$orders_count}
+			</h1>
+			{if $orders}
 				<div class="d-inline-block heading-block text-dark me-3 mb-3 mt-1" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->orders_export|escape}">
 					<i class="align-middle cursor-pointer" data-feather="file-text"></i>
 				</div>
-			{else}
-				<h1 class="d-inline align-middle me-3">{$btr->orders_no|escape}</h1>
 			{/if}
 			<div class="d-grid d-sm-block mt-2 mt-md-0">
 				<a class="btn btn-primary" href="{url module=OrderAdmin return=$smarty.server.REQUEST_URI}"><i data-feather="plus"></i> {$btr->orders_add|escape}</a>
@@ -22,14 +20,14 @@
 		<form class="search mb-3" method="get">
 			<input type="hidden" name="module" value="OrdersAdmin">
 			<div class="input-group">
-				<input name="keyword" class="form-control" placeholder="{$btr->global_search|escape}" type="text" value="{if isset($keyword)}{$keyword|escape}{/if}">
+				<input name="keyword" class="form-control" placeholder="{$btr->global_search|escape}" type="text" value="{$keyword|escape}">
 				<button class="btn btn-primary" type="submit"><i class="align-middle mt-n1" data-feather="search"></i></button>
 			</div>
 		</form>
 	</div>
 </div>
 
-{if isset($message_error)}
+{if $message_error}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -66,7 +64,7 @@
 					<div class="row mb-3">
 						<div class="col-md-6 col-sm-12">
 							<select name="status" class="selectpicker" onchange="location = this.value;">
-								<option value="{url module=OrdersAdmin status=0 keyword=null id=null page=null label=null}" {if $status==0}selected{/if}>{$btr->global_new_order|escape}</option>
+								<option value="{url module=OrdersAdmin status=0 keyword=null id=null page=null label=null}" {if $status==0 || $keyword}selected{/if}>{$btr->global_new_order|escape}</option>
 								<option value="{url module=OrdersAdmin status=1 keyword=null id=null page=null label=null}" {if $status==1}selected{/if}>{$btr->global_accepted_order|escape}</option>
 								<option value="{url module=OrdersAdmin status=2 keyword=null id=null page=null label=null}" {if $status==2}selected{/if}>{$btr->global_closed_order|escape}</option>
 								<option value="{url module=OrdersAdmin status=3 keyword=null id=null page=null label=null}" {if $status==3}selected{/if}>{$btr->global_canceled_order|escape}</option>
@@ -83,14 +81,14 @@
 							<div class="col-sm-12 col-md-4 col-lg-4">
 								<div class="input-group mb-3">
 									<span class="input-group-text">{$btr->global_from|escape}</span>
-									<input type="text" class="flatpickr form-control" name="from_date" value="{if isset($from_date)}{$from_date}{/if}" autocomplete="off">
+									<input type="text" class="flatpickr form-control" name="from_date" value="{if $from_date}{$from_date}{/if}" autocomplete="off">
 									<span class="input-group-text"><i class="align-middle" data-feather="calendar"></i></span>
 								</div>
 							</div>
 							<div class="col-sm-12 col-md-4 col-lg-4">
 								<div class="input-group mb-3">
 									<span class="input-group-text">{$btr->global_to|escape}</span>
-									<input type="text" class="flatpickr form-control" name="to_date" value="{if isset($to_date)}{$to_date}{/if}" autocomplete="off">
+									<input type="text" class="flatpickr form-control" name="to_date" value="{if $to_date}{$to_date}{/if}" autocomplete="off">
 									<span class="input-group-text"><i class="align-middle" data-feather="calendar"></i></span>
 								</div>
 							</div>
@@ -102,17 +100,17 @@
 					<div class="row">
 						<div class="col-sm-12 col-md-6 col-lg-4 mb-3">
 							<select name="status" class="selectpicker" onchange="location = this.value;">
-								<option value="{url module=OrdersAdmin status=0 keyword=null id=null page=null label=null from_date=null to_date=null}" {if $smarty.get.status && $status == 0 || !$status}selected{/if}>{$btr->global_new_order|escape}</option>
+								<option value="{url module=OrdersAdmin status=0 keyword=null id=null page=null label=null from_date=null to_date=null}" {if $status==0 || $keyword}selected{/if}>{$btr->global_new_order|escape}</option>
 								<option value="{url module=OrdersAdmin status=1 keyword=null id=null page=null label=null from_date=null to_date=null}" {if $status==1}selected{/if}>{$btr->global_accepted_order|escape}</option>
 								<option value="{url module=OrdersAdmin status=2 keyword=null id=null page=null label=null from_date=null to_date=null}" {if $status==2}selected{/if}>{$btr->global_closed_order|escape}</option>
 								<option value="{url module=OrdersAdmin status=3 keyword=null id=null page=null label=null from_date=null to_date=null}" {if $status==3}selected{/if}>{$btr->global_canceled_order|escape}</option>
 								<option value="{url module=OrdersAdmin status=4 keyword=null id=null page=null label=null from_date=null to_date=null}" {if $status==4}selected{/if}>{$btr->global_all|escape}</option>
 							</select>
 						</div>
-						{if isset($labels)}
+						{if $labels}
 							<div class="col-sm-12 col-md-6 col-lg-4 mb-3">
 								<select class="selectpicker" onchange="location = this.value;">
-									<option value="{url label=null}" {if isset($label) && $label->id != $l->id}selected{/if}>{$btr->orders_all_labels|escape}</option>
+									<option value="{url label=null}" selected>{$btr->orders_all_labels|escape}</option>
 									{foreach $labels as $l}
 										<option value="{url label=$l->id}" {if isset($label) && $label->id == $l->id}selected{/if}>{$l->name|escape}</option>
 									{/foreach}
@@ -139,7 +137,7 @@
 								<div class="turbo-list-heading turbo-list-orders-name">{$btr->global_full_name|escape}</div>
 								<div class="turbo-list-heading turbo-list-order-status">{$btr->global_status|escape}</div>
 								<div class="turbo-list-heading turbo-list-order-product-count">{$btr->global_products|escape}</div>
-								<div class="turbo-list-heading turbo-list-orders-price">{$btr->global_sales_amount}</div>
+								<div class="turbo-list-heading turbo-list-orders-price">{$btr->global_sales_amount|escape}</div>
 								<div class="turbo-list-heading turbo-list-order-marker">{$btr->orders_label|escape}</div>
 								<div class="turbo-list-heading turbo-list-delete"></div>
 							</div>
@@ -245,7 +243,7 @@
 														<ul class="option-labels-box">
 															{foreach $labels as $l}
 																<li class="js-ajax-labels badge d-block text-start my-2" data-order-id="{$order->id}" style="background-color: {$l->color|escape}">
-																	<input id="l{$order->id}_{$l->id}" type="checkbox" class="d-none" name="order_labels[]" value="{$l->id}" {if isset($order->labels_ids) && is_array($order->labels_ids) && in_array($l->id,$order->labels_ids)}checked="" {/if}>
+																	<input id="l{$order->id}_{$l->id}" type="checkbox" class="d-none" name="order_labels[]" value="{$l->id}" {if isset($order->labels_ids) && is_array($order->labels_ids) && in_array($l->id, $order->labels_ids)}checked=""{/if}																		>
 																	<label for="l{$order->id}_{$l->id}" class="cursor-pointer w-100"><span class="d-inline-block align-middle ms-3">{$l->name|escape}</span></label>
 																</li>
 															{/foreach}
@@ -407,10 +405,10 @@
 					});
 
 				{/literal}
-					var status = '{if isset($status)}{$status|escape}{/if}',
-					label='{if isset($label)}{$label->id|escape}{/if}',
-					from_date = '{if isset($from_date)}{$from_date}{/if}',
-					to_date = '{if isset($to_date)}{$to_date}{/if}';
+					var status = '{if $status}{$status|escape}{/if}',
+					label='{if $label}{$label->id|escape}{/if}',
+					from_date = '{if $from_date}{$from_date}{/if}',
+					to_date = '{if $to_date}{$to_date}{/if}';
 				{literal}
 
 					$(document).on('click', '.feather-file-text', function() {

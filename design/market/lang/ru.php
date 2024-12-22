@@ -1,0 +1,33 @@
+<?php
+
+$lang['general_settings'] = 'Общие настройки';
+$lang['theme_color'] = 'Оформление';
+$lang['default'] = 'По умолчанию';
+$lang['theme_light'] = 'Светлая';
+$lang['theme_dark'] = 'Тёмная';
+$lang['logo'] = 'Логотип';
+$lang['phone_1'] = 'Телефон 1';
+$lang['phone_2'] = 'Телефон 2';
+$lang['phone_mask'] = 'Маска телефона';
+$lang['email'] = 'Электронная почта';
+$lang['map'] = 'Карта';
+$lang['header'] = 'Шапка';
+$lang['menu_header_1'] = 'ID меню в шапке 1';
+$lang['menu_header_2'] = 'ID меню в шапке 2';
+$lang['main'] = 'Главная страница'; 
+$lang['menu_main_1'] = 'ID меню на главной 1';
+$lang['menu_main_2'] = 'ID меню на главной 2';
+$lang['featured_limit'] = 'Рекомендуемые количество';
+$lang['new_limit'] = 'Новинки количество';
+$lang['discounted_limit'] = 'Акционные количество';
+$lang['hit_limit'] = 'Хиты количество';
+$lang['footer'] = 'Футер';
+$lang['id_menu_footer_1'] = 'ID меню в футере 1';
+$lang['id_menu_footer_2'] = 'ID меню в футере 2';
+$lang['id_menu_footer_3'] = 'ID меню в футере 3';
+$lang['sitemap'] = 'Карта сайта';
+$lang['id_menu_sitemap_1'] = 'ID меню карты сайта 1';
+$lang['id_menu_sitemap_2'] = 'ID меню карты сайта 2';
+$lang['id_menu_sitemap_3'] = 'ID меню карты сайта 3';
+$lang['id_menu_sitemap_4'] = 'ID меню карты сайта 4';
+$lang['id_menu_sitemap_5'] = 'ID меню карты сайта 5';

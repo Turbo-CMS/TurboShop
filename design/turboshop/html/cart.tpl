@@ -11,8 +11,8 @@
 				<div id="navigation">
 					<div class="breadcrumbs swipeignore" itemscope="" itemtype="http://schema.org/BreadcrumbList">
 						<div class="breadcrumbs__item" id="tb_breadcrumb_0" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-							<a class="breadcrumbs__link" href="{if $lang_link}{$lang_link}{else}/{/if}" title="{$lang->home}" itemprop="item">
-								<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->home}</span>
+							<a class="breadcrumbs__link" href="{if $lang_link}{$lang_link}{else}/{/if}" title="{$lang->home|escape}" itemprop="item">
+								<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->home|escape}</span>
 								<meta itemprop="position" content="{$level++}">
 							</a>
 						</div>
@@ -24,8 +24,9 @@
 							</i>
 						</span>
 						<span class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-							<link href="{$lang_link}cart/" itemprop="item"><span>
-								<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->global_cart}</span>
+							<link href="{$lang_link}cart" itemprop="item">
+							<span>
+								<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->global_cart|escape}</span>
 								<meta itemprop="position" content="{$level++}">
 							</span>
 						</span>
@@ -36,18 +37,18 @@
 			<div class="topic">
 				<div class="topic__inner">
 					<div class="topic__heading flexbox--wrap-nowrap">
-						<h1 id="pagetitle" class="switcher-title">{$lang->global_cart}</h1>
+						<h1 id="pagetitle" class="switcher-title">{$lang->global_cart|escape}</h1>
 						{if $cart->purchases}
 							<div class="heading-icons">
 								<div class="item-action item-action--horizontal fill-theme-hover hover-block">
 									<div class="hover-block__item">
-										<div class="print-link btn-heading btn_basket_heading btn_heading--with_title btn_basket_heading--print" title="{$lang->print}">
+										<div class="print-link btn-heading btn_basket_heading btn_heading--with_title btn_basket_heading--print" title="{$lang->print|escape}">
 											<i class="svg colored_theme_hover_bg-el-svg">
 												<svg class="svg-print" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 													<path fill-rule="evenodd" clip-rule="evenodd" d="M6 4H10V2H6V4ZM12 4V2C12 0.895431 11.1046 0 10 0H6C4.89543 0 4 0.895431 4 2V4H3C1.34315 4 0 5.34315 0 7V10C0 11.6569 1.34315 13 3 13H4V14C4 15.1046 4.89543 16 6 16H10C11.1046 16 12 15.1046 12 14V13H13C14.6569 13 16 11.6569 16 10V7C16 5.34315 14.6569 4 13 4H12ZM11 6H5H3C2.44772 6 2 6.44772 2 7V10C2 10.5523 2.44772 11 3 11H4V9C4 8.44772 4.44772 8 5 8H11C11.5523 8 12 8.44772 12 9V11H13C13.5523 11 14 10.5523 14 10V7C14 6.44772 13.5523 6 13 6H11ZM10 14H6V10H10V14Z" fill="#b8b8b8"></path>
 												</svg>
 											</i>
-											<span class="title">{$lang->print}</span>
+											<span class="title">{$lang->print|escape}</span>
 										</div>
 									</div>
 								</div>
@@ -91,7 +92,7 @@
 																				</i>
 																			</div>
 																			<a href="{$lang_link}products/{$purchase->product->url}" class="basket-item-image-link image">
-																				{if isset($purchase->product->images)}
+																				{if $purchase->product->images}
 																					{$image = $purchase->product->images|first}
 																					<img class="basket-item-image js-popup-image lazyload" alt="{$purchase->product->name|escape}" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{$image->filename|resize:160:160}">
 																				{else}
@@ -107,26 +108,26 @@
 																				{if $purchase->variant->compare_price> 0}
 																					<div>
 																						<div class="stickers-basket--item sticker__item sticker__item--aktsiya font_10">
-																							{$lang->badge_sale}
+																							{$lang->badge_sale|escape}
 																						</div>
 																					</div>
 																				{/if}
 																				{if $purchase->product->featured}
 																					<div>
 																						<div class="stickers-basket--item sticker__item sticker__item--recommend font_10">
-																							{$lang->badge_featured}
+																							{$lang->badge_featured|escape}
 																						</div>
 																					</div>
 																				{/if}
 																				{if $purchase->product->is_new}
 																					<div>
-																						<div class="stickers-basket--item sticker__item sticker__item--new font_10">{$lang->badge_new}</div>
+																						<div class="stickers-basket--item sticker__item sticker__item--new font_10">{$lang->badge_new|escape}</div>
 																					</div>
 																				{/if}
 																				{if $purchase->product->is_hit}
 																					<div>
 																						<div class="stickers-basket--item sticker__item sticker__item--khit font_10">
-																							{$lang->badge_hit}
+																							{$lang->badge_hit|escape}
 																						</div>
 																					</div>
 																				{/if}
@@ -139,7 +140,7 @@
 																			<div class="basket-item-block-properties">
 																				{if $purchase->variant->compare_price > $purchase->variant->price && $purchase->variant->price > 0}
 																					<div class="basket-item-property-custom basket-item-property-custom-text">
-																						<div class="basket-item-property-custom-name">{$lang->discount}</div>
+																						<div class="basket-item-property-custom-name">{$lang->discount|escape}</div>
 																						<div class="basket-item-property-custom-value">
 																							{round((($purchase->variant->price-$purchase->variant->compare_price)/$purchase->variant->compare_price)*100, 0)}%
 																						</div>
@@ -147,7 +148,7 @@
 																				{/if}
 																				{if $purchase->variant->color}
 																					<div class="basket-item-property-custom basket-item-property-custom-text">
-																						<div class="basket-item-property-custom-name">{$lang->color}</div>
+																						<div class="basket-item-property-custom-name">{$lang->color|escape}</div>
 																						<div class="basket-item-property-custom-value">
 																							{$purchase->variant->color|escape}
 																						</div>
@@ -155,7 +156,7 @@
 																				{/if}
 																				{if $purchase->variant->name}
 																					<div class="basket-item-property-custom basket-item-property-custom-text">
-																						<div class="basket-item-property-custom-name">{$lang->option}</div>
+																						<div class="basket-item-property-custom-name">{$lang->option|escape}</div>
 																						<div class="basket-item-property-custom-value">
 																							{$purchase->variant->name|escape}
 																						</div>
@@ -211,19 +212,9 @@
 																				{/if}
 																			</div>
 																			<div class="basket-items-list-item-favorite">
-																				{if isset($wishlist) && $wishlist}
+																				{if $wishlist_products && in_array($purchase->product->url, $wishlist_products)}
 																					<div class="item-action item-action--horizontal item-action--favorite active">
-																						<a href="{$lang_link}wishlist/remove/{$purchase->product->url}" rel="nofollow" class="item-action__inner item-action__inner--sm item-action__inner--sm-to-600 fill-theme-use-svg-hover fill-dark-light-block active" title="{$lang->delete}">
-																							<i class="svg inline" aria-hidden="true">
-																								<svg width="18" height="16">
-																									<use xlink:href="design/{$settings->theme|escape}/images/svg/catalog/item_icons.svg#favorite-18-16"></use>
-																								</svg>
-																							</i>
-																						</a>
-																					</div>
-																				{elseif isset($wishlist_products) && in_array($purchase->product->url, $wishlist_products)}
-																					<div class="item-action item-action--horizontal item-action--favorite active">
-																						<a href="{$lang_link}wishlist" class="item-action__inner item-action__inner--sm item-action__inner--sm-to-600 fill-theme-use-svg-hover fill-dark-light-block active" title="{$lang->added_to_wishlist}">
+																						<a href="{$lang_link}wishlist" class="item-action__inner item-action__inner--sm item-action__inner--sm-to-600 fill-theme-use-svg-hover fill-dark-light-block active" title="{$lang->added_to_wishlist|escape}">
 																							<i class="svg inline" aria-hidden="true">
 																								<svg width="18" height="16">
 																									<use xlink:href="design/{$settings->theme|escape}/images/svg/catalog/item_icons.svg#favorite-18-16"></use>
@@ -233,7 +224,7 @@
 																					</div>
 																				{else}
 																					<div class="item-action item-action--horizontal item-action--favorite">
-																						<a href="{$lang_link}wishlist/{$purchase->product->url}" rel="nofollow" class="wishlist item-action__inner item-action__inner--sm item-action__inner--sm-to-600 fill-theme-use-svg-hover fill-dark-light-block" title="{$lang->add_to_wishlist}" data-title_added="{$lang->added_to_wishlist}">
+																						<a href="{$lang_link}wishlist/{$purchase->product->url}" rel="nofollow" class="wishlist item-action__inner item-action__inner--sm item-action__inner--sm-to-600 fill-theme-use-svg-hover fill-dark-light-block" title="{$lang->add_to_wishlist|escape}" data-title_added="{$lang->added_to_wishlist|escape}">
 																							<i class="svg inline" aria-hidden="true">
 																								<svg width="18" height="16">
 																									<use xlink:href="design/{$settings->theme|escape}/images/svg/catalog/item_icons.svg#favorite-18-16"></use>
@@ -267,13 +258,13 @@
 											<div class="col-md-12">
 												{* Delivery *}
 												{if $deliveries}
-													<h3 class="my-4">{$lang->select_delivery_method}:</h3>
+													<h3 class="my-4">{$lang->select_delivery_method|escape}:</h3>
 													<div id="accordionDelivery">
 														{foreach $deliveries as $delivery}
 															<div id="delivery" class="panel item-accordion-wrapper shadow-hovered shadow-no-border-hovered">
 																<div class="card-accordion-head">
 																	<label role="button" class="form-radiobox__label">
-																		<input role="button" type="radio" class="{$delivery->module} form-radiobox__input" onclick="change_payment_method({$delivery->id})" name="delivery_id" value="{$delivery->id}" data-toggle="collapse" data-target="#collapseDelivery-{$delivery->id}" aria-expanded="true" aria-controls="collapseDelivery-{$delivery->id}" {if isset($delivery_id) && $delivery_id==$delivery->id}checked{elseif $delivery@first}checked{/if} id="deliveries-{$delivery->id}">
+																		<input role="button" type="radio" class="{$delivery->module} form-radiobox__input" onclick="change_payment_method({$delivery->id})" name="delivery_id" value="{$delivery->id}" data-toggle="collapse" data-target="#collapseDelivery-{$delivery->id}" aria-expanded="true" aria-controls="collapseDelivery-{$delivery->id}" {if $delivery && $delivery_id==$delivery->id}checked{elseif $delivery@first}checked{/if} id="deliveries-{$delivery->id}">
 																		<span class="form-radiobox__box"></span>
 																		{if $delivery->icon}
 																			<i class="svg inline" aria-hidden="true">
@@ -286,9 +277,9 @@
 																				({$delivery->price|convert}&nbsp;{$currency->sign})
 																			{elseif $cart->total_price >= $delivery->free_from}
 																				{if $delivery->separate_payment}
-																					({$lang->paid_separate})
+																					({$lang->paid_separate|escape})
 																				{else}
-																					({$lang->free})
+																					({$lang->free|escape})
 																				{/if}
 																			{/if}
 																		</span>
@@ -299,11 +290,11 @@
 																		<div class="accordion-body color_666">
 																			<div class="accordion-preview">
 																				{* Description *}
-																				{if isset($delivery->description)}
+																				{if $delivery->description}
 																					{$delivery->description}
 																				{/if}
 																				{* Module *}
-																				{if isset($delivery->ext_module_form)}
+																				{if $delivery->ext_module_form}
 																					{$delivery->ext_module_form}
 																				{/if}
 																			</div>
@@ -314,7 +305,7 @@
 														{/foreach}
 													</div>
 													{* Payments *}
-													<h3 class="my-4">{$lang->select_payment_method}:</h3>
+													<h3 class="my-4">{$lang->select_payment_method|escape}:</h3>
 													<div id="accordionPayment">
 														{foreach $deliveries as $delivery}
 															{if $delivery->payment_methods}
@@ -330,7 +321,7 @@
 																							<img class="icon" style="width: 21px; height: 21px;" src="{$config->payment_images_dir}{$payment_method->icon}" alt="{$payment_method->name|escape}">
 																						</i>
 																					{/if}
-																					<span class="switcher-title color_222 font_18">{$payment_method->name}</span>, {$lang->to_pay_small}
+																					<span class="switcher-title color_222 font_18">{$payment_method->name}</span>, {$lang->to_pay_small|escape}
 																					{$total_price_with_delivery = $cart->total_price}
 																					{if !$delivery->separate_payment && $cart->total_price < $delivery->free_from}
 																						{$total_price_with_delivery = $cart->total_price + $delivery->price}
@@ -356,48 +347,48 @@
 												{/if}
 
 												{* Form Data *}
-												<h3>{$lang->address_recipient}</h3>
-												{if isset($error)}
+												<h3>{$lang->address_recipient|escape}</h3>
+												{if $error}
 													<div class="alert alert-danger" role="alert">
-														{if $error == 'empty_name'}{$lang->enter_your_name}{/if}
-														{if $error == 'empty_email'}{$lang->enter_your_email}{/if}
-														{if $error == 'captcha'}{$lang->captcha_incorrect}{/if}
+														{if $error == 'empty_name'}{$lang->enter_your_name|escape}{/if}
+														{if $error == 'empty_email'}{$lang->enter_your_email|escape}{/if}
+														{if $error == 'captcha'}{$lang->captcha_incorrect|escape}{/if}
 													</div>
 												{/if}
 												<div class="form-group">
-													<label for="cart-name" class="form-label">{$lang->general_full_name}<span class="required-star">*</span></label>
+													<label for="cart-name" class="form-label">{$lang->general_full_name|escape}<span class="required-star">*</span></label>
 													<div class="input">
-														<input type="text" class="form-control" name="name" id="cart-name" value="{if isset($name)}{$name|escape}{/if}" placeholder="{$lang->enter_your_name}" required>
+														<input type="text" class="form-control" name="name" id="cart-name" value="{$name|escape}" placeholder="{$lang->enter_your_name|escape}" required>
 													</div>
 												</div>
 												<div class="form-group">
 													<label for="cart-email" class="form-label">Email<span class="required-star">*</span></label>
 													<div class="input">
-														<input type="text" class="form-control" name="email" id="cart-email" value="{if isset($email)}{$email|escape}{/if}" placeholder="{$lang->enter_your_email}" required>
+														<input type="text" class="form-control" name="email" id="cart-email" value="{$email|escape}" placeholder="{$lang->enter_your_email|escape}" required>
 													</div>
 												</div>
 												<div class="form-group">
-													<label for="cart-phone" class="form-label">{$lang->phone}</label>
+													<label for="cart-phone" class="form-label">{$lang->phone|escape}</label>
 													<div class="input">
-														<input type="text" class="form-control phone" name="phone" id="cart-phone" value="{if isset($phone)}{$phone|escape}{/if}" placeholder="{$lang->enter_phone_number}">
+														<input type="text" class="form-control phone" name="phone" id="cart-phone" value="{$phone|escape}" placeholder="{$lang->enter_phone_number|escape}">
 													</div>
 												</div>
 												<div class="form-group">
-													<label for="cart-address" class="form-label">{$lang->delivery_address}</label>
+													<label for="cart-address" class="form-label">{$lang->delivery_address|escape}</label>
 													<div class="input">
-														<input type="text" class="form-control" name="address" id="cart-address" value="{if isset($address)}{$address|escape}{/if}" placeholder="{$lang->enter_the_address}">
+														<input type="text" class="form-control" name="address" id="cart-address" value="{$address|escape}" placeholder="{$lang->enter_the_address|escape}">
 													</div>
 												</div>
 												<div class="form-group">
-													<label for="cart-comment" class="form-label">{$lang->comment}</label>
+													<label for="cart-comment" class="form-label">{$lang->comment|escape}</label>
 													<div class="input">
-														<textarea class="form-control" name="comment" id="cart-comment" placeholder="{$lang->enter_a_comment}" rows="4">{if isset($comment)}{$comment|escape}{/if}</textarea>
+														<textarea class="form-control" name="comment" id="cart-comment" placeholder="{$lang->enter_a_comment|escape}" rows="4">{$comment|escape}</textarea>
 													</div>
 												</div>
 												{if $settings->captcha_cart}
 													<div class="clearfix fill-animate">
 														<label class="font_14">
-															<span>{$lang->captcha_label}&nbsp;<span class="required-star">*</span></span>
+															<span>{$lang->captcha_label|escape}&nbsp;<span class="required-star">*</span></span>
 														</label>
 													</div>
 													<div class="row">
@@ -423,18 +414,18 @@
 														<div class="basket-checkout-section-left">
 															<div class="basket-checkout-block basket-checkout-total">
 																<div class="basket-checkout-block-total-inner">
-																	<div class="basket-checkout-total-title font_24" id="cart-produts-cost" data-cost="{$cart->total_price|convert}">{$lang->total}</div>
+																	<div class="basket-checkout-total-title font_24" id="cart-produts-cost" data-cost="{$cart->total_price|convert}">{$lang->total|escape}</div>
 																	<div class="basket-coupon-block-total-price-current font_24" id="cart-total-cost">
 																		{$cart->total_price|convert}&nbsp;{$currency->sign}
 																	</div>
 																</div>
 															</div>
 															{* Discount *}
-															{if isset($user->discount)}
+															{if $user && $user->discount}
 																<div class="basket-checkout-block basket-checkout-total-price">
 																	<div class="basket-checkout-total-price-inner font_short">
 																		<div class="basket-checkout-info basket-coupon-total-price-difference">
-																			<div class="basket-checkout-info__name font_15">{$lang->discount}</div>
+																			<div class="basket-checkout-info__name font_15">{$lang->discount|escape}</div>
 																			<div class="basket-checkout-info__value font_15">{$user->discount}&nbsp;%</div>
 																		</div>
 																	</div>
@@ -445,7 +436,7 @@
 																<div class="basket-checkout-block basket-checkout-total-price">
 																	<div class="basket-checkout-total-price-inner font_short">
 																		<div class="basket-checkout-info basket-coupon-total-price-difference">
-																			<div class="basket-checkout-info__name font_15">{$lang->coupon}</div>
+																			<div class="basket-checkout-info__name font_15">{$lang->coupon|escape}</div>
 																			<div class="basket-checkout-info__value font_15">&minus;{$cart->coupon_discount|convert}&nbsp;{$currency->sign}</div>
 																		</div>
 																	</div>
@@ -455,8 +446,8 @@
 															<div class="basket-checkout-block basket-checkout-total-price">
 																<div class="basket-checkout-total-price-inner font_short">
 																	<div class="basket-checkout-info basket-coupon-total-price-difference">
-																		<div class="basket-checkout-info__name font_15">{$lang->global_delivery}</div>
-																		<div class="basket-checkout-info__value text font_15" data-delivery-cost="{$lang->free}" data-delivery-separate="{$lang->paid_separate}" id="cart-delivery-cost"></div>
+																		<div class="basket-checkout-info__name font_15">{$lang->global_delivery|escape}</div>
+																		<div class="basket-checkout-info__value text font_15" data-delivery-cost="{$lang->free|escape}" data-delivery-separate="{$lang->paid_separate|escape}" id="cart-delivery-cost"></div>
 																	</div>
 																</div>
 															</div>
@@ -465,7 +456,7 @@
 																<div class="basket-checkout-block basket-checkout-total-price">
 																	<div class="basket-checkout-total-price-inner font_short">
 																		<div class="basket-checkout-info basket-coupon-total-price-difference">
-																			<div class="basket-checkout-info__name font_15">{$lang->weight}</div>
+																			<div class="basket-checkout-info__name font_15">{$lang->weight|escape}</div>
 																			<div class="basket-checkout-info__value text font_15">{$cart->total_weight} {$settings->weight_units}</div>
 																		</div>
 																	</div>
@@ -475,22 +466,22 @@
 															<div class="basket-checkout-block basket-checkout-total-price">
 																<div class="basket-checkout-total-price-inner font_short">
 																	<div class="basket-checkout-info basket-coupon-total-price-difference">
-																		<div class="basket-checkout-info__name font_15">{$lang->sum}</div>
+																		<div class="basket-checkout-info__name font_15">{$lang->sum|escape}</div>
 																		<div class="basket-checkout-info__value text font_15">{$cart->total_cart|convert}&nbsp;{$currency->sign}</div>
 																	</div>
 																</div>
 															</div>
 															<div class="basket-coupon-section">
 																{* Coupon *}
-																{if isset($cart->coupon->min_order_price) && $cart->coupon->min_order_price > 0}
+																{if $cart->coupon && $cart->coupon->min_order_price > 0}
 																	<div class="alert bordered font_13" role="alert">
-																		{$lang->coupon} {$lang->coupon_valid} {$cart->coupon->min_order_price|convert} {$currency->sign}
+																		{$lang->coupon|escape} {$lang->coupon_valid|escape} {$cart->coupon->min_order_price|convert} {$currency->sign}
 																	</div>
 																{/if}
 																<div class="basket-coupon-block-field">
 																	<div class="form">
 																		<div class="form-group" style="position: relative;">
-																			<input type="text" placeholder="{$lang->promo_code}" class="form-control" name="coupon_code" value="{if isset($cart->coupon->code)}{$cart->coupon->code|escape}{/if}">
+																			<input type="text" placeholder="{$lang->promo_code|escape}" class="form-control" name="coupon_code" value="{$cart->coupon->code|default:''|escape}">
 																			<span class="basket-coupon-block-coupon-btn" onclick="document.cart.submit();">
 																				<i class="svg inline  svg-inline-coupon" aria-hidden="true">
 																					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="10" viewBox="0 0 16 10">
@@ -513,20 +504,20 @@
 															{if $coupon_request}
 																<div class="basket-coupon-alert-section">
 																	<div class="basket-coupon-alert-inner has_coupon">
-																		{if isset($coupon_error)}
+																		{if $coupon_error}
 																			<div class="basket-checkout-info basket-coupon-alert text-danger">
 																				<span class="basket-coupon-text font_15 font_short">
-																					<strong class="color_555">{$lang->coupon_is_invalid}</strong>
+																					<strong class="color_555">{$lang->coupon_is_invalid|escape}</strong>
 																				</span>
 																				<span class="font_15 font_short basket-coupon-info">
 																					<span class="close-link" onclick="document.getElementsByName('coupon_code')[0].value=''; document.cart.submit();"></span>
 																				</span>
 																			</div>
 																		{/if}
-																		{if isset($cart->coupon->valid)}
+																		{if $cart->coupon && $cart->coupon->valid}
 																			<div class="basket-checkout-info basket-coupon-alert text-success">
 																				<span class="basket-coupon-text font_15 font_short">
-																					<strong class="color_555">{$lang->coupon}</strong>
+																					<strong class="color_555">{$lang->coupon|escape}</strong>
 																				</span>
 																				<span class="font_15 font_short basket-coupon-info">
 																					<span class="basket-coupon-info__text">{$cart->coupon->code|escape}</span>
@@ -540,7 +531,7 @@
 														</div>
 														<div class="basket-checkout-section-right">
 															<div class="basket-checkout-block basket-checkout-btn checkout-order">
-																<button type="submit" class="btn btn-lg btn-default basket-btn-checkout" name="checkout">{$lang->checkout}</button>
+																<button type="submit" class="btn btn-lg btn-default basket-btn-checkout" name="checkout">{$lang->checkout|escape}</button>
 															</div>
 														</div>
 													</div>
@@ -548,7 +539,7 @@
 											</div>
 											<div class="basket-total-block__clear">
 												<a href="{url empty=1}" class="delete_all colored_theme_hover_text remove_all_basket font_14 font_large dark_link color_555">
-													{$lang->empty_trash}
+													{$lang->empty_trash|escape}
 												</a>
 											</div>
 										</div>
@@ -561,9 +552,9 @@
 							<div class="tb-sbb-empty-cart-image">
 								<img class="lazyloaded" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="" alt="">
 							</div>
-							<div class="tb-sbb-empty-cart-text">{$lang->cart_no_products}</div>
+							<div class="tb-sbb-empty-cart-text">{$lang->cart_no_products|escape}</div>
 							<div class="tb-sbb-empty-cart-desc">
-								<a href="{if $lang_link}{$lang_link}{else}/{/if}">{$lang->click_here}</a>, {$lang->to_continue_shopping}
+								<a href="{if $lang_link}{$lang_link}{else}/{/if}">{$lang->click_here|escape}</a>, {$lang->to_continue_shopping|escape}
 							</div>
 						</div>
 					{/if}

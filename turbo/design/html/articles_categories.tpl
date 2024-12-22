@@ -37,7 +37,7 @@
 										<div class="js-row {if $level == 1}turbo-list-body-item{/if} js-sort-item body-narrow row-narrow">
 											<div class="turbo-list-row {if $level > 1}js-sort-item{/if} narrow">
 												<input type="hidden" name="positions[{$category->id}]" value="{$category->position}">
-												{if isset($category->subcategories)}
+												{if $category->subcategories}
 													<div class="turbo-list-heading turbo-list-subicon">
 														<a href="javascript:;" class="js-ajax-toggle" data-toggle="0" data-category_id="{$category->id}">
 															<i class="icon-category plus-category"></i>
@@ -59,9 +59,9 @@
 														<a href="{url module=ArticlesCategoryAdmin id=$category->id return=$smarty.server.REQUEST_URI}">
 															{assign var="image" value="{$category->image}"}
 															{if $image|is_svg}
-																<img src="../{$config->categories_images_dir}{$image}" alt="">
+																<img src="../{$config->categories_images_dir}{$image}" alt="{$category->name|escape}">
 															{else} 
-																<img src="{$image|resize_catalog:30:30}" alt="">
+																<img src="{$image|resize_catalog:30:30}" alt="{$category->name|escape}">
 															{/if} 
 														</a>
 													{else}
@@ -94,7 +94,7 @@
 													</button>
 												</div>
 											</div>
-											{if isset($category->subcategories)}
+											{if $category->subcategories}
 												<div class="js-ajax-categories categories-sub-block subcategories-level-{$level} sortable" style="display: none;">
 													{categories_tree articles_categories=$category->subcategories level=$level+1}
 												</div>

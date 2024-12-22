@@ -135,15 +135,15 @@ class Design extends Turbo
 		$resizedFilename = $this->image->addResizeParams($filename, $width, $height, $setWatermark);
 		$resizedFilenameEncoded = $resizedFilename;
 
-		$size = ($width ?: 0) . 'x' . ($height ?: 0) . ($setWatermark ? "w" : '');
+		$size = ($width ? $width : 0) . 'x' . ($height ? $height : 0) . ($setWatermark ? "w" : '');
 
-		static $imageSizes;
+		$imageSizes = [];
 
-		if (!$imageSizes) {
-			$imageSizes = explode('|', $this->settings->image_sizes ?? '');
+		if ($this->settings->image_sizes) {
+			$imageSizes = explode('|', $this->settings->image_sizes);
 		}
 
-		if (!in_array($size, $imageSizes, true)) {
+		if (!in_array($size, $imageSizes)) {
 			$imageSizes[] = $size;
 			$this->settings->image_sizes = implode('|', $imageSizes);
 		}

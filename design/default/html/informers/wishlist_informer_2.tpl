@@ -1,4 +1,4 @@
-{if isset($wishlist_products) && $wishlist_products > 0}
+{if $wishlist_products > 0}
 	<a href="{$lang_link}wishlist" class="text-muted position-relative">
 		<i class="fal fa-heart fs-5"></i>
 		<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary">

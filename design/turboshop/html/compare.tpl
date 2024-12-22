@@ -1,6 +1,6 @@
 {* Compare *}
 
-{if isset($page)}
+{if $page}
 	{* Canonical *}
 	{$canonical="/{$page->url}" scope=global}
 {else}
@@ -20,8 +20,8 @@
 					{$level = 1}
 					<div class="breadcrumbs swipeignore" itemscope="" itemtype="http://schema.org/BreadcrumbList">
 						<div class="breadcrumbs__item" id="tb_breadcrumb_0" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-							<a class="breadcrumbs__link" href="{if $lang_link}{$lang_link}{else}/{/if}" title="{$lang->home}" itemprop="item">
-								<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->home}</span>
+							<a class="breadcrumbs__link" href="{if $lang_link}{$lang_link}{else}/{/if}" title="{$lang->home|escape}" itemprop="item">
+								<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->home|escape}</span>
 								<meta itemprop="position" content="{$level++}">
 							</a>
 						</div>
@@ -32,7 +32,7 @@
 								</svg>
 							</i>
 						</span>
-						{if isset($page)}
+						{if $page}
 							<span class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
 								<link href="{$lang_link}{$page->url}" itemprop="item"><span>
 									<span itemprop="name" class="breadcrumbs__item-name font_13">{$page->header|escape}</span>
@@ -42,7 +42,7 @@
 						{else}
 							<span class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
 								<link href="{$lang_link}compare" itemprop="item"><span>
-									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->compare}</span>
+									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->compare|escape}</span>
 									<meta itemprop="position" content="{$level++}">
 								</span>
 							</span>
@@ -55,10 +55,10 @@
 				<div class="topic__inner">
 					<div class="topic__heading">
 						<h1 id="pagetitle" class="switcher-title">
-							{if isset($page->name)}
+							{if $page}
 								<span data-page="{$page->id}">{$page->name|escape}</span>
 							{else}
-								{$lang->compare}
+								{$lang->compare|escape}
 							{/if}
 						</h1>
 					</div>
@@ -85,7 +85,7 @@
 												<div class="onoff filter sm">
 													<input type="checkbox" id="compare_diff">
 													<label for="compare_diff" class="muted">
-														{$lang->only_differences}
+														{$lang->only_differences|escape}
 													</label>
 												</div>
 											</div>
@@ -100,7 +100,7 @@
 														<div class="catalog-block__wrapper height-100 product">
 															<div class="catalog-block__item bordered bg-theme-parent-hover border-theme-parent-hover js-popup-block">
 																<div class="catalog-block__inner flexbox height-100">
-																	<a href="{$lang_link}compare/remove/{$product->url}" class="remove colored_theme_hover_text stroke-use-grey stroke-theme-use-svg-hover" title="{$lang->delete}">
+																	<a href="{$lang_link}compare/remove/{$product->url}" class="remove colored_theme_hover_text stroke-use-grey stroke-theme-use-svg-hover" title="{$lang->delete|escape}">
 																		<i class="svg inline remove_item" aria-hidden="true">
 																			<svg width="12" height="13">
 																				<use xlink:href="design/{$settings->theme|escape}/images/svg/catalog/item_icons.svg#remove_img"></use>
@@ -111,11 +111,11 @@
 																		<div class="image-list-wrapper js-image-block">
 																			<div class="btn-fast-view rounded-x hide-600">
 																				<div data-event="jqm" class="btn btn-xs btn-default" data-name="fast_view" data-url="{$lang_link}products/{$product->url}?tpl=quickview">
-																					{$lang->quick_view}
+																					{$lang->quick_view|escape}
 																				</div>
 																			</div>
 																			<a href="{$lang_link}products/{$product->url}" class="image-list__link image">
-																				{if isset($product->image)}
+																				{if $product->image}
 																					<img class="lazyload img-responsive rounded-x js-replace-img js-popup-image" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{$product->image->filename|resize:400:400}" data-big="{$product->image->filename|resize:400:400}" alt="{$product->name|escape}" title="{$product->name|escape}" />
 																				{else}
 																					<img style="width: 150px; height: 150px;" class="lazyload img-responsive rounded-x js-replace-img js-popup-image" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="design/{$settings->theme|escape}/images/no-photo.svg" data-big="design/{$settings->theme|escape}/images/no-photo.svg" alt="{$product->name|escape}" title="{$product->name|escape}" />
@@ -169,10 +169,10 @@
 																													{foreach $product->variants as $v}
 																														<input name="variant" value="{$v->id}" type="radio" {if $v@first}checked{/if} style="display:none;">
 																													{/foreach}
-																													<button type="submit" data-result-text="{$lang->added_cart}" class="btn btn-default btn-sm btn-wide to_cart animate-load" value="{$lang->add_cart}" title="{$lang->add_cart}">{$lang->add_cart}</button>
+																													<button type="submit" data-result-text="{$lang->added_cart|escape}" class="btn btn-default btn-sm btn-wide to_cart animate-load" value="{$lang->add_cart|escape}" title="{$lang->add_cart|escape}">{$lang->add_cart|escape}</button>
 																												</form>
 																											{else}
-																												<span class="btn btn-default btn-sm btn-wide disabled">{$lang->add_cart}</span>
+																												<span class="btn btn-default btn-sm btn-wide disabled">{$lang->add_cart|escape}</span>
 																											{/if}
 																										</span>
 																									</div>
@@ -207,7 +207,7 @@
 																{/if}
 															{/foreach}
 															<div class="catalog-small__item bordered flexbox flexbox--row height-100">
-																<a href="{$lang_link}compare/remove/{$product->url}" class="catalog-small__remove remove colored_theme_hover_text stroke-use-grey stroke-theme-use-svg-hover" title="{$lang->delete}">
+																<a href="{$lang_link}compare/remove/{$product->url}" class="catalog-small__remove remove colored_theme_hover_text stroke-use-grey stroke-theme-use-svg-hover" title="{$lang->delete|escape}">
 																	<i class="svg inline remove_item" aria-hidden="true">
 																		<svg width="12" height="13">
 																			<use xlink:href="design/{$settings->theme|escape}/images/svg/catalog/item_icons.svg#remove_img"></use>
@@ -216,7 +216,7 @@
 																</a>
 																<div class="catalog-small__img-wrap">
 																	<a href="{$lang_link}products/{$product->url}" class="image-list__link">
-																		{if isset($product->image)}
+																		{if $product->image}
 																			<img class="lazyload img-responsive rounded-x catalog-small__img" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{$product->image->filename|resize:60:60}" data-big="{$product->image->filename|resize:60:60}" alt="{$product->name|escape}" title="{$product->name|escape}" />
 																		{else}
 																			<img style="width: 60px; height: 60px;" class="lazyload img-responsive rounded-x catalog-small__img" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="design/{$settings->theme|escape}/images/no-photo.svg" data-big="design/{$settings->theme|escape}/images/no-photo.svg" alt="{$product->name|escape}" title="{$product->name|escape}" />
@@ -239,7 +239,7 @@
 					{else}
 						<div class="col-md-12">
 							<div class="alert alert-info">
-								{$lang->compare_no_products}
+								{$lang->compare_no_products|escape}
 							</div>
 						</div>
 					{/if}
@@ -249,25 +249,25 @@
 						<aside class="sidebar">
 							<ul class="nav nav-list side-menu">
 								{foreach $pages as $p}
-									{if $p->menu_id == $page->menu_id}
+									{if $page && $p->menu_id == $page->menu_id}
 										{if $p->visible}
-											<li class="{if $page && $page->id == $p->id}active{/if} {if isset($p->subpages)}opened child{/if}">
+											<li class="{if $page && $page->id == $p->id}active{/if} {if $p->subpages}opened child{/if}">
 												<span class="bg-opacity-theme-parent-hover link-wrapper font_short fill-theme-parent-all fill-dark-light">
 													<a href="{$lang_link}{$p->url}" class="dark_link top-level-link rounded-x link-with-flag {if $page && $page->id == $p->id}link--active{/if}">
 														<span data-page="{$p->id}">{$p->header|escape}</span>
 													</a>
 												</span>
-												{if isset($p->subpages)}
+												{if $p->subpages}
 													<div class="submenu-wrapper">
 														<ul class="submenu">
 															{foreach $p->subpages as $p2}
-																<li class="{if $page && $page->id == $p2->id}active{/if} {if isset($p2->subpages)}opened child{/if}">
+																<li class="{if $page && $page->id == $p2->id}active{/if} {if $p2->subpages}opened child{/if}">
 																	<span class="bg-opacity-theme-parent-hover link-wrapper font_short fill-theme-parent-all fill-dark-light">
 																		<a href="{$lang_link}{$p2->url}" class="dark_link sublink rounded-x {if $page && $page->id == $p2->id}link--active{/if}">
 																			<span data-page="{$p2->id}">{$p2->header|escape}</span>
 																		</a>
 																	</span>
-																	{if isset($p2->subpages)}
+																	{if $p2->subpages}
 																		<div class="submenu-wrapper">
 																			<ul class="submenu">
 																				{foreach $p2->subpages as $p3}

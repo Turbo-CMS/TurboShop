@@ -3,31 +3,6 @@
 {* Canonical *}
 {$canonical="/blog/{$post->url}" scope=global}
 
-{* Breadcrumb *}
-{$level = 1}
-<nav class="mt-4" aria-label="breadcrumb">
-	<ol itemscope itemtype="https://schema.org/BreadcrumbList" class="breadcrumb">
-		<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item">
-			<a itemprop="item" class="text-decoration-none" href="{if $lang_link}{$lang_link}{else}/{/if}">
-				<span itemprop="name" title="{$lang->home}"><i class="fal fa-house me-2"></i>{$lang->home}</span>
-			</a>
-			<meta itemprop="position" content="{$level++}">
-		</li>
-		<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item">
-			<a itemprop="item" class="text-decoration-none" href="{$lang_link}blog">
-				<span itemprop="name">{$lang->global_blog}</span>
-			</a>
-			<meta itemprop="position" content="{$level++}">
-		</li>
-		<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item active" aria-current="page">
-			<a itemprop="item" class="text-decoration-none" href="{$lang_link}blog/{$post->url}">
-				<span itemprop="name">{$post->name|escape}</span>
-			</a>
-			<meta itemprop="position" content="{$level++}">
-		</li>
-	</ol>
-</nav>
-
 <div itemscope itemtype="http://schema.org/BlogPosting">
 	{* Schema.org *}
 	<div itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
@@ -47,7 +22,7 @@
 		<span data-post="{$post->id}">{$post->name|escape}</span>
 	</h1>
 
-	<hr class="text-black-50">
+	<hr>
 
 	{* Date & Time *}
 	<div class="mb-3">
@@ -65,14 +40,14 @@
 		</div>
 	</div>
 
-	<hr class="text-black-50">
+	<hr>
 
 	{if $post->image}
 		{* Image *}
 		<div class="card mb-4">
 			<img itemprop="image" class="img-fluid rounded" src="{$post->image|resize_posts:964:964}" alt="{$post->name|escape}">
 		</div>
-		<hr class="text-black-50">
+		<hr>
 	{/if}
 
 	{* Post Content *}
@@ -81,7 +56,7 @@
 			<div class="table-of-contents bg-body-tertiary rounded open">
 				<div class="table-of-contents-header pt-3 ps-3 pb-2">
 					<h6 class="js-table-of-contents-hide table-of-contents-hide">
-						{$lang->table_of_contents}
+						{$lang->table_of_contents|escape}
 						<i class="icon-action fa fa-chevron-down ms-2"></i>
 					</h6>
 				</div>
@@ -104,7 +79,7 @@
 		<a class="btn vote-button-plus" href="ajax/blog_rate.php?id={$post->id}&rate=up">
 			<i class="fa fa-chevron-up" aria-hidden="true"></i>
 		</a>
-		{if $post->rate>0}
+		{if $post->rate > 0}
 			<div class="btn vote-value pos">{$post->rate}</div>
 		{elseif $post->rate == 0}
 			<div class="btn text-muted vote-value">{$post->rate}</div>
@@ -119,7 +94,7 @@
 
 {* Netx & Prev *}
 {if $prev_post || $next_post}
-	<hr class="text-black-50">
+	<hr>
 	<div class="row">
 		<div class="col-lg-6 col-sm-6 col-6 text-start">
 			{if $prev_post}
@@ -138,7 +113,7 @@
 			{/if}
 		</div>
 	</div>
-	<hr class="text-black-50">
+	<hr>
 {/if}
 
 {* Comments *}

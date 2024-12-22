@@ -21,7 +21,7 @@
 						{* Callback *}
 						<a class="nav-link me-3" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#callbackModal" role="button">
 							<i class="fal fa-headset text-primary me-1"></i>
-							<span class="d-none d-lg-inline-block">{$lang->callback}</span>
+							<span class="d-none d-lg-inline-block">{$lang->callback|escape}</span>
 						</a>
 						{* Languages & Currencies *}
 						{if $languages|count > 1 || $currencies|count > 1}
@@ -124,15 +124,15 @@
 				{* Search *}
 				<div class="col-xxl-7 col-lg-7 d-none d-lg-block">
 					<form class="input-group search-panel my-4" id="search-param" action="{$lang_link}all-products">
-						<button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"><span id="search-concept">{$lang->global_products}</span></button>
+						<button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"><span id="search-concept">{$lang->global_products|escape}</span></button>
 						<ul class="dropdown-menu">
-							<li><a class="dropdown-item active" data-input="products-search" href="#{$lang_link}all-products">{$lang->global_products}</a></li>
-							<li><a class="dropdown-item" data-input="pages-search" href="#{$lang_link}search">{$lang->global_pages}</a></li>
-							<li><a class="dropdown-item" data-input="blog-search" href="#{$lang_link}blog">{$lang->global_blog}</a></li>
-							<li><a class="dropdown-item" data-input="articles-search" href="#{$lang_link}articles">{$lang->global_articles}</a></li>
+							<li><a class="dropdown-item active" data-input="products-search" href="#{$lang_link}all-products">{$lang->global_products|escape}</a></li>
+							<li><a class="dropdown-item" data-input="pages-search" href="#{$lang_link}search">{$lang->global_pages|escape}</a></li>
+							<li><a class="dropdown-item" data-input="blog-search" href="#{$lang_link}blog">{$lang->global_blog|escape}</a></li>
+							<li><a class="dropdown-item" data-input="articles-search" href="#{$lang_link}articles">{$lang->global_articles|escape}</a></li>
 						</ul>
-						<input id="products-search" class="form-control" autocomplete="off" type="text" name="keyword" value="{if isset($keyword)}{$keyword|escape}{/if}" placeholder="{$lang->search}...">
-						<button type="submit" class="btn btn-success"><i class="fal fa-search me-1"></i> {$lang->search}</button>
+						<input id="products-search" class="form-control" autocomplete="off" type="text" name="keyword" value="{if $keyword}{$keyword|escape}{/if}" placeholder="{$lang->search|escape}...">
+						<button type="submit" class="btn btn-success"><i class="fal fa-search me-1"></i> {$lang->search|escape}</button>
 					</form>
 				</div>
 				{* Informers Desktop *}
@@ -196,12 +196,12 @@
 						<form class="input-group search-panel my-4" id="search-param" action="{$lang_link}search">
 							<button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"></button>
 							<ul class="dropdown-menu">
-								<li><a class="dropdown-item active" data-input="pages-search" href="#{$lang_link}search">{$lang->global_pages}</a></li>
-								<li><a class="dropdown-item" data-input="blog-search" href="#{$lang_link}blog">{$lang->global_blog}</a></li>
-								<li><a class="dropdown-item" data-input="articles-search" href="#{$lang_link}articles">{$lang->global_articles}</a></li>
-								<li><a class="dropdown-item" data-input="products-search" href="#{$lang_link}all-products">{$lang->global_products}</a></li>
+								<li><a class="dropdown-item active" data-input="pages-search" href="#{$lang_link}search">{$lang->global_pages|escape}</a></li>
+								<li><a class="dropdown-item" data-input="blog-search" href="#{$lang_link}blog">{$lang->global_blog|escape}</a></li>
+								<li><a class="dropdown-item" data-input="articles-search" href="#{$lang_link}articles">{$lang->global_articles|escape}</a></li>
+								<li><a class="dropdown-item" data-input="products-search" href="#{$lang_link}all-products">{$lang->global_products|escape}</a></li>
 							</ul>
-							<input id="pages-search" class="form-control" autocomplete="off" type="text" name="keyword" value="{if isset($keyword)}{$keyword|escape}{/if}" placeholder="{$lang->search}...">
+							<input id="pages-search" class="form-control" autocomplete="off" type="text" name="keyword" value="{if $keyword}{$keyword|escape}{/if}" placeholder="{$lang->search|escape}...">
 							<button type="submit" class="btn btn-success"><i class="fal fa-search me-1"></i></button>
 						</form>
 					</div>
@@ -209,14 +209,14 @@
 					<div class="d-block d-lg-none mb-4">
 						<a class="btn btn-primary w-100 d-flex justify-content-center align-items-center" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
 							<i class="fal fa-grid-2 me-1"></i>
-							{$lang->all_departments}
+							{$lang->all_departments|escape}
 						</a>
 						<div class="all-departament collapse mt-2" id="collapseExample">
 							<div class="card card-body px-0 py-2">
 								<ul class="mb-0 list-unstyled">
 									{foreach $categories as $c}
 										<li>
-											<a class="dropdown-item {if isset($category->id) && $category->id == $c->id}active{/if}" href="{$lang_link}catalog/{$c->url}">
+											<a class="dropdown-item {if $category && $category->id == $c->id}active{/if}" href="{$lang_link}catalog/{$c->url}">
 												{if $c->code}<i class="fal fa-{$c->code|escape} me-2"></i>{/if}{$c->name|escape}
 											</a>
 										</li>
@@ -229,12 +229,12 @@
 					<div class="dropdown me-3 d-none d-lg-block">
 						<button class="btn btn-primary px-6" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
 							<i class="fal fa-grid-2 me-1"></i>
-							{$lang->all_departments}
+							{$lang->all_departments|escape}
 						</button>
 						<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
 							{foreach $categories as $c}
 								<li>
-									<a class="dropdown-item {if isset($category->id) && $category->id == $c->id}active{/if}" href="{$lang_link}catalog/{$c->url}">
+									<a class="dropdown-item {if $category && $category->id == $c->id}active{/if}" href="{$lang_link}catalog/{$c->url}">
 										{if $c->code}<i class="fal fa-{$c->code|escape} me-2"></i>{/if}<span data-category="{$c->id}">{$c->name|escape}</span>
 									</a>
 								</li>
@@ -248,8 +248,8 @@
 								{if $p->menu_id == $theme_settings->menu_header_id}
 									{if $p->visible}
 										<li class="nav-item dropdown w-100 w-lg-auto {if $page && $page->id == $p->id}active{/if}">
-											<a class="nav-link {if isset($p->subpages)}dropdown-toggle{/if}" href="{$lang_link}{$p->url}" id="dropdown-{$p->id}" {if isset($p->subpages)}data-bs-toggle="dropdown" aria-expanded="false" {/if} aria-haspopup="true"><span data-page="{$p->id}">{$p->header}</span></a>
-											{if isset($p->subpages)}
+											<a class="nav-link {if $p->subpages}dropdown-toggle{/if}" href="{$lang_link}{$p->url}" id="dropdown-{$p->id}" {if $p->subpages}data-bs-toggle="dropdown" aria-expanded="false" {/if} aria-haspopup="true"><span data-page="{$p->id}">{$p->header}</span></a>
+											{if $p->subpages}
 												<ul class="dropdown-menu" aria-labelledby="dropdown-{$p->id}">
 													{foreach $p->subpages as $p2}
 														<li><a class="dropdown-item {if $page && $page->id == $p2->id}active{/if}" href="{$lang_link}{$p2->url}"><span data-page="{$p2->id}">{$p2->header}</span></a></li>

@@ -10,7 +10,7 @@ class PostAdmin extends Turbo
 	{
 		$post = new stdClass();
 
-		if ($this->request->isMethod('post')) {
+		if ($this->request->method('post')) {
 			$post->id = $this->request->post('id', 'integer');
 			$post->name = $this->request->post('name');
 			$post->date = date('Y-m-d', strtotime($this->request->post('date')));
@@ -51,7 +51,22 @@ class PostAdmin extends Turbo
 			}
 		} else {
 			$post->id = $this->request->get('id', 'integer');
-			$post = $this->blog->getPost((int) $post->id);
+
+			if (!empty($post->id)) {
+				$post = $this->blog->getPost((int) $post->id);
+			} else {
+				$post->id = null;
+				$post->name = '';
+				$post->url = '';
+				$post->visible = 1;
+				$post->image = null;
+				$post->date = null;
+				$post->meta_title = '';
+				$post->meta_keywords = '';
+				$post->meta_description = '';
+				$post->annotation = '';
+				$post->text = '';
+			}
 		}
 
 		if (empty($post)) {

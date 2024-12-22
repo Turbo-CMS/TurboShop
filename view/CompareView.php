@@ -51,6 +51,8 @@ class CompareView extends View
 					}
 				}
 
+				$product->image = null;
+
 				if (!empty($product->images)) {
 					$product->image = &$product->images[0];
 				}
@@ -87,6 +89,10 @@ class CompareView extends View
 				}
 
 				if (!is_null($product) && isset($product->id)) {
+					if (!isset($product->features)) {
+						$product->features = []; 
+					}
+
 					if ($productValues = $this->features->getProductOptions(['product_id' => $product->id])) {
 
 						foreach ($productValues as $pv) {
@@ -97,6 +103,9 @@ class CompareView extends View
 							$product->features[$pv->feature_id]->values[] = $pv;
 						}
 					}
+
+					$this->db->query("SELECT SUM(rating)/COUNT(id) AS ratings FROM __comments WHERE id IN (SELECT id FROM __comments WHERE type='product' AND object_id = $product->id AND approved=1 AND admin=0 AND rating > 0)");
+					$product->ratings = floatval($this->db->result('ratings'));
 				}
 
 				if (!empty($product->features)) {

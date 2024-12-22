@@ -9,7 +9,7 @@ class LanguageAdmin extends Turbo
 		$langList = $this->languages->langList();
 		$language = new stdClass();
 
-		if ($this->request->isMethod('post')) {
+		if ($this->request->method('post')) {
 			$lang = $langList[$this->request->post('lang')];
 			$language->id = $this->request->post('id', 'integer');
 			$language->enabled = $this->request->post('enabled', 'boolean');
@@ -37,6 +37,10 @@ class LanguageAdmin extends Turbo
 
 			if (!empty($language->id)) {
 				$language = $this->languages->getLanguage($language->id);
+			} else {
+				$language->id = null;
+				$language->label = null;
+				$language->enabled = 1;
 			}
 		}
 

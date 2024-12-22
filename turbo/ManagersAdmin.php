@@ -6,7 +6,7 @@ class ManagersAdmin extends Turbo
 {
 	public function fetch()
 	{
-		if ($this->request->isMethod('post')) {
+		if ($this->request->method('post')) {
 			$logins = $this->request->post('check');
 
 			if (is_array($logins)) {

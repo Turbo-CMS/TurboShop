@@ -111,7 +111,7 @@ INSERT INTO `t_translations` (`id`, `label`, `lang_ru`, `lang_en`, `lang_ua`) VA
 ('128','search_blog','Поиск в блоге...','Search blog...','Пошук в блозі...'),
 ('129','filter_by_price','Фильтр по цене','Filter by price','Фільтр по ціні'),
 ('130','apply','Применить','Apply','Застосувати'),
-('131','reset','Сбросить','Reset','Скинути'),
+('131','reset','Сбросить','Reset','Скасувати'),
 ('132','global_brands','Бренды','Brands','Бренди'),
 ('133','global_feedback','Обратная связь','Feedback','Зворотній зв\'язок'),
 ('134','feedback_message_sent','ваше сообщение отправлено.','your message has been sent.','ваше повідомлення відправлено.'),
@@ -223,7 +223,7 @@ INSERT INTO `t_translations` (`id`, `label`, `lang_ru`, `lang_en`, `lang_ua`) VA
 ('244','go_to_cart','В корзину','Go to cart','До кошику'),
 ('245','wishlist','Избранное','Wishlist','Обране'),
 ('246','subscribe','Подписаться','Subscribe','Підписатися'),
-('247','subscribe_text','Подписаться <br> на новости и акции','Subscribe <br> to news and promotions','Підписатися <br> на новини та акції'),
+('247','subscribe_text','Подписаться на новости и акции','Subscribe to news and promotions','Підписатися на новини та акції'),
 ('248','error_required','Заполните это поле!','Fill out this field!','Заповніть це поле!'),
 ('249','error_format','Неверный формат!','Wrong format!','Невірний формат!'),
 ('250','online_store','Интернет-магазин','Online store','Інтернет магазин'),
@@ -434,5 +434,7 @@ INSERT INTO `t_translations` (`id`, `label`, `lang_ru`, `lang_en`, `lang_ua`) VA
 ('467','operating_mode_text','Пн - Вс: 11.00 - 19.00','Mon - Sun: 11.00 - 19.00','Пн - Нд: 11.00 - 19.00'),
 ('468','main_office','Центральный офис','Main office','Центральний офіс'),
 ('469','global_banners','Баннеры','Banners','Банери'),
-('470','fast_delivery','Быстрая доставка за 24 часа','Fast delivery within 24 hours','Швидка доставка за 24 години');
+('470','fast_delivery','Быстрая доставка за 24 часа','Fast delivery within 24 hours','Швидка доставка за 24 години'),
+('471','faq_name','Часто задаваемые вопросы','FAQ','Часті питання'),
+('472','no_faqs_found','Вопросы не найдены','No questions found','Запитання не знайдено');
 

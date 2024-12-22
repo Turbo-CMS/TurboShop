@@ -11,29 +11,29 @@
 								<div class="subscribe-block">
 									<div class="subscribe-block__part--left">
 										<div class="subscribe-block__text">
-											<div class="font_short font_weight--600">{$lang->subscribe_text}</div>
+											<div class="font_short font_weight--600">{$lang->subscribe_text|escape}</div>
 										</div>
 									</div>
 									<div class="subscribe-block__part--right">
 										<form method="post" class="subscribe-form">
-											<input type="email" class="form-control subscribe-input required" id="subscribe_email" name="subscribe_email" value="{if isset($email)}{$email|escape}{/if}" placeholder="E-mail" size="30" maxlength="255">
-											{if isset($subscribe_error)}
+											<input type="email" class="form-control subscribe-input required" id="subscribe_email" name="subscribe_email" value="{$email|escape}" placeholder="E-mail" size="30" maxlength="255">
+											{if $subscribe_error}
 												<label class="error" for="subscribe_email">
 													{if $subscribe_error == 'email_exist'}
-														{$lang->already_subscribe}
+														{$lang->already_subscribe|escape}
 													{/if}
 													{if $subscribe_error == 'empty_email'}
-														{$lang->enter_your_email}
+														{$lang->enter_your_email|escape}
 													{/if}
 												</label>
 											{/if}
-											{if isset($subscribe_success)}
+											{if $subscribe_success}
 												<label class="success" for="subscribe_email">
-													{$lang->success_subscribe}
+													{$lang->success_subscribe|escape}
 												</label>
 											{/if}
 											<div class="subscribe-form__save stroke-dark-light-block">
-												<button type="submit" name="subscribe" value="{$lang->subscribe}" class="btn btn-lg subscribe-btn">{$lang->subscribe}</button>
+												<button type="submit" name="subscribe" value="{$lang->subscribe|escape}" class="btn btn-lg subscribe-btn">{$lang->subscribe|escape}</button>
 											</div>
 										</form>
 									</div>
@@ -47,7 +47,7 @@
 										<div class="item-link accordion-close items-child item-link" data-parent="#bottom1" data-target="#bottom1">
 											<div class="item">
 												<div class="title font_weight--600 font_short">
-													<a class="dark_link" href="{$lang_link}shop">{$lang->online_store}</a>
+													<a class="dark_link" href="{$lang_link}shop">{$lang->online_store|escape}</a>
 												</div>
 											</div>
 											<span class="item-link-arrow">
@@ -80,7 +80,7 @@
 										<div class="item-link accordion-close items-child item-link" data-parent="#bottom2" data-target="#bottom2">
 											<div class="item">
 												<div class="title font_weight--600 font_short">
-													<a class="dark_link" href="{$lang_link}catalog">{$lang->catalog}</a>
+													<a class="dark_link" href="{$lang_link}catalog">{$lang->catalog|escape}</a>
 												</div>
 											</div>
 											<span class="item-link-arrow">
@@ -113,7 +113,7 @@
 										<div class="item-link accordion-close  items-child item-link" data-parent="#bottom3" data-target="#bottom3">
 											<div class="item">
 												<div class="title font_weight--600 font_short">
-													<a class="dark_link" href="{$lang_link}info">{$lang->information}</a>
+													<a class="dark_link" href="{$lang_link}info">{$lang->information|escape}</a>
 												</div>
 											</div>
 											<span class="item-link-arrow">
@@ -146,7 +146,7 @@
 										<div class="item-link accordion-close items-child item-link" data-parent="#bottom4" data-target="#bottom4">
 											<div class="item">
 												<div class="title font_weight--600 font_short">
-													<a class="dark_link" href="{$lang_link}help">{$lang->help}</a>
+													<a class="dark_link" href="{$lang_link}help">{$lang->help|escape}</a>
 												</div>
 											</div>
 											<span class="item-link-arrow">
@@ -176,7 +176,7 @@
 						</div>
 					</div>
 					<div class="footer__part footer__part--right footer--mw318 flex-100-767">
-						<div class="footer__title font_weight--600 font_short">{$lang->contacts}</div>
+						<div class="footer__title font_weight--600 font_short">{$lang->contacts|escape}</div>
 						<div class="footer__info">
 							<div class="footer__phone footer__info-item">
 								{* Phones *}
@@ -192,7 +192,7 @@
 							</div>
 							<div class="footer__social footer__info-item">
 								{* Social *}
-								{include file='components/social.tpl'}
+								{include file='includes/social.tpl'}
 							</div>
 						</div>
 					</div>
@@ -255,24 +255,24 @@
 									<div class="subscribe-block subscribe-block--compact">
 										<div class="subscribe-block__part--right">
 											<form method="post" class="subscribe-form" novalidate="novalidate">
-												<input type="email" name="subscribe_email" class="form-control subscribe-input required" placeholder="{$lang->subscribe_newsletter}" value="{if isset($email)}{$email|escape}{/if}" name="subscribe_email" size="30" maxlength="255" aria-required="true">
-												{if isset($subscribe_error)}
+												<input type="email" name="subscribe_email" class="form-control subscribe-input required" placeholder="{$lang->subscribe_newsletter|escape}" value="{$email|escape}" name="subscribe_email" size="30" maxlength="255" aria-required="true">
+												{if $subscribe_error}
 													<label class="error" for="subscribe_email">
 														{if $subscribe_error == 'email_exist'}
-															{$lang->already_subscribe}
+															{$lang->already_subscribe|escape}
 														{/if}
 														{if $subscribe_error == 'empty_email'}
-															{$lang->enter_your_email}
+															{$lang->enter_your_email|escape}
 														{/if}
 													</label>
 												{/if}
-												{if isset($subscribe_success)}
+												{if $subscribe_success}
 													<label class="success" for="subscribe_email">
-														{$lang->success_subscribe}
+														{$lang->success_subscribe|escape}
 													</label>
 												{/if}
 												<div class="subscribe-form__save stroke-dark-light-block">
-													<button type="submit" title="{$lang->subscribe}" name="subscribe" value="{$lang->subscribe}" class="btn btn-lg subscribe-btn">
+													<button type="submit" title="{$lang->subscribe|escape}" name="subscribe" value="{$lang->subscribe|escape}" class="btn btn-lg subscribe-btn">
 														<i class="svg inline subscribe-btn__icon" aria-hidden="true">
 															<svg width="18" height="12">
 																<use xlink:href="design/{$settings->theme|escape}/images/svg/sprite/arrows.svg#left-18-12"></use>
@@ -286,7 +286,7 @@
 								</div>
 							</div>
 							<div class="footer__social flex-1">
-								{include file='components/social.tpl'}
+								{include file='includes/social.tpl'}
 							</div>
 						</div>
 					</div>

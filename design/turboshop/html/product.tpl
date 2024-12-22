@@ -30,8 +30,8 @@
 				<div id="navigation">
 					<div class="breadcrumbs swipeignore" itemscope="" itemtype="http://schema.org/BreadcrumbList">
 						<div class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-							<a class="breadcrumbs__link" href="{if $lang_link}{$lang_link}{else}/{/if}" title="{$lang->home}" itemprop="item">
-								<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->home}</span>
+							<a class="breadcrumbs__link" href="{if $lang_link}{$lang_link}{else}/{/if}" title="{$lang->home|escape}" itemprop="item">
+								<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->home|escape}</span>
 								<meta itemprop="position" content="{$level++}">
 							</a>
 						</div>
@@ -43,8 +43,8 @@
 							</i>
 						</span>
 						<div class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-							<a class="breadcrumbs__link" href="{$lang_link}catalog" title="{$lang->catalog}" itemprop="item">
-								<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->catalog}</span>
+							<a class="breadcrumbs__link" href="{$lang_link}catalog" title="{$lang->catalog|escape}" itemprop="item">
+								<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->catalog|escape}</span>
 								<meta itemprop="position" content="{$level++}">
 							</a>
 						</div>
@@ -70,7 +70,7 @@
 								</i>
 							</span>
 						{/foreach}
-						{if isset($brand)}
+						{if $brand}
 							<div class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
 								<a class="breadcrumbs__link" href="{$lang_link}catalog/{$cat->url}/{$brand->url}" title="{$brand->name|escape}" itemprop="item">
 									<span itemprop="name" class="breadcrumbs__item-name font_13">{$brand->name|escape}</span>
@@ -120,7 +120,7 @@
 											<div class="detail-gallery-big detail-gallery-big--vertical swipeignore image-list__link">
 												<div class="sticky-block">
 													<div class="detail-gallery-big-wrapper">
-														{if isset($product->image)}
+														{if $product->image}
 															<link id="main-product-image" href="{$product->image->filename|resize:700:700}" itemprop="image" />
 														{/if}
 														<div class="gallery-wrapper__aspect-ratio-container">
@@ -135,7 +135,7 @@
 																	</div>
 																	<div class="gallery-slider-thumb js-detail-img-thumb swiper slider-solution gallery-slider-thumb__container--hide-navigation" data-size="{$product->images|count}" data-slide-class-list="gallery__item gallery__item--thumb swiper-slide rounded-x pointer" data-plugin-options='{literal}{"direction":"vertical","init":false,"loop":false,"navigation":{"nextEl":".gallery-slider-thumb-button--next","prevEl":".gallery-slider-thumb-button--prev"},"pagination":false,"slidesPerView":"auto","type":"detail_gallery_thumb","watchSlidesProgress":true,"preloadImages":false,"lazy":{"loadPrevNext":true}}{/literal}'>
 																		<div class="gallery__thumb-wrapper thumb swiper-wrapper">
-																			{if isset($product->image)}
+																			{if $product->image}
 																				{foreach $product->images as $i=>$image name=img}
 																					<div id="thumb-photo-{$smarty.foreach.img.index}" class="gallery__item gallery__item--thumb swiper-slide rounded-x pointer">
 																						<img class="gallery__picture rounded-x swiper-lazy" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{$image->filename|resize:700:700}" alt="{$product->name|escape}" title="{$product->name|escape}" />
@@ -160,8 +160,8 @@
 																{if $product->videos}
 																	{foreach $product->videos as $video}
 																		<div class="video-block popup_video">
-																			<a class="video-block__play video-block__play--static video-block__play--sm bg-theme-after various video_link image dark-color" href="https://www.youtube.com/embed/{$video->vid}" title="{$lang->videos_global}">
-																				<span class="play text-upper">{$lang->videos_global}</span>
+																			<a class="video-block__play video-block__play--static video-block__play--sm bg-theme-after various video_link image dark-color" href="https://www.youtube.com/embed/{$video->vid}" title="{$lang->videos_global|escape}">
+																				<span class="play text-upper">{$lang->videos_global|escape}</span>
 																			</a>
 																		</div>
 																	{/foreach}
@@ -170,7 +170,7 @@
 															<div class="detail-gallery-big-slider-main">
 																<div class="detail-gallery-big-slider big js-detail-img swiper slider-solution slider-solution--show-nav-hover" data-slide-class-list="detail-gallery-big__item detail-gallery-big__item--big swiper-slide" data-plugin-options='{literal}{"direction":"horizontal","init":false,"keyboard":{"enabled":true},"loop":false,"pagination":{"enabled":true,"el":".detail-gallery-big-slider-main .swiper-pagination"},"navigation":{"nextEl":".detail-gallery-big-slider-main .swiper-button-next","prevEl":".detail-gallery-big-slider-main .swiper-button-prev"},"slidesPerView":1,"thumbs":{"swiper":".gallery-slider-thumb"},"type":"detail_gallery_main","preloadImages":false,"lazy":{"loadPrevNext":true}}{/literal}'>
 																	<div class="detail-gallery-big-slider__wrapper swiper-wrapper image">
-																		{if isset($product->image)}
+																		{if $product->image}
 																			{foreach $product->images as $i=>$image name=img}
 																				<div id="big-photo-{$smarty.foreach.img.index}" class="detail-gallery-big__item detail-gallery-big__item--big swiper-slide">
 																					<a href="{$image->filename|resize:700:700:$theme_settings->watermark}" data-fancybox="gallery" class="detail-gallery-big__link popup_link fancy fancy-thumbs" title="{$product->name|escape}">
@@ -212,22 +212,22 @@
 													<div class="sticker sticker--upper">
 														{if $product->variant->compare_price> 0}
 															<div>
-																<div class="sticker__item sticker__item--stock font_10">{$lang->badge_sale}</div>
+																<div class="sticker__item sticker__item--stock font_10">{$lang->badge_sale|escape}</div>
 															</div>
 														{/if}
 														{if $product->featured}
 															<div>
-																<div class="sticker__item sticker__item--recommend font_10">{$lang->badge_featured}</div>
+																<div class="sticker__item sticker__item--recommend font_10">{$lang->badge_featured|escape}</div>
 															</div>
 														{/if}
 														{if $product->is_new}
 															<div>
-																<div class="sticker__item sticker__item--new font_10">{$lang->badge_new}</div>
+																<div class="sticker__item sticker__item--new font_10">{$lang->badge_new|escape}</div>
 															</div>
 														{/if}
 														{if $product->is_hit}
 															<div>
-																<div class="sticker__item sticker__item--hit font_10">{$lang->badge_hit}</div>
+																<div class="sticker__item sticker__item--hit font_10">{$lang->badge_hit|escape}</div>
 															</div>
 														{/if}
 														{if !empty($product->sale_to)}
@@ -254,7 +254,7 @@
 															<div class="catalog-detail__info-tech">
 																<div class="line-block line-block--20 flexbox--wrap js-popup-info">
 																	<div class="line-block__item font_14 color_222">
-																		<div class="rating" title="{if $product->ratings|string_format:'%.1f'|floatval > 0}{$lang->rating} {$product->ratings|string_format:'%.1f'} {$lang->out_of} 5{else}{$lang->no_ratings}{/if}" itemprop="aggregateRating" itemscope="" itemtype="http://schema.org/AggregateRating">
+																		<div class="rating" title="{if $product->ratings|string_format:'%.1f'|floatval > 0}{$lang->rating|escape} {$product->ratings|string_format:'%.1f'} {$lang->out_of|escape} 5{else}{$lang->no_ratings|escape}{/if}" itemprop="aggregateRating" itemscope="" itemtype="http://schema.org/AggregateRating">
 																			<meta itemprop="ratingValue" content="{$product->ratings|string_format:'%.1f'}">
 																			<meta itemprop="reviewCount" content="{$comments_count}">
 																			<meta itemprop="bestRating" content="5">
@@ -282,7 +282,7 @@
 																	{if $product->variant->sku}
 																		<div class="line-block__item font_13 color_999" itemprop="additionalProperty" itemscope="" itemtype="http://schema.org/PropertyValue">
 																			<span class="article">
-																				<meta itemprop="name" content="{$lang->sku}">{$lang->sku}&nbsp;<span class="js-replace-article" data-value="{$product->variant->sku}" itemprop="value">{$product->variant->sku}</span>
+																				<meta itemprop="name" content="{$lang->sku|escape}">{$lang->sku|escape}&nbsp;<span class="js-replace-article" data-value="{$product->variant->sku}" itemprop="value">{$product->variant->sku}</span>
 																			</span>
 																		</div>
 																	{/if}
@@ -292,19 +292,9 @@
 														<div class="line-block__item">
 															<div class="flexbox flexbox--row flexbox--wrap">
 																<div class="js-replace-icons">
-																	{if isset($wishlist) && $wishlist}
+																	{if $wishlist_products && in_array($product->url, $wishlist_products)}
 																		<div class="item-action item-action--horizontal item-action--favorite active">
-																			<a href="{$lang_link}wishlist/remove/{$product->url}" rel="nofollow" class="item-action__inner item-action__inner--md fill-theme-use-svg-hover fill-dark-light-block active" title="{$lang->delete}">
-																				<i class="svg inline" aria-hidden="true">
-																					<svg width="18" height="16">
-																						<use xlink:href="design/{$settings->theme|escape}/images/svg/catalog/item_icons.svg#favorite-18-16"></use>
-																					</svg>
-																				</i>
-																			</a>
-																		</div>
-																	{elseif isset($wishlist_products) && in_array($product->url, $wishlist_products)}
-																		<div class="item-action item-action--horizontal item-action--favorite active">
-																			<a href="{$lang_link}wishlist" class="item-action__inner item-action__inner--md fill-theme-use-svg-hover fill-dark-light-block active" title="{$lang->added_to_wishlist}">
+																			<a href="{$lang_link}wishlist" class="item-action__inner item-action__inner--md fill-theme-use-svg-hover fill-dark-light-block active" title="{$lang->added_to_wishlist|escape}">
 																				<i class="svg inline" aria-hidden="true">
 																					<svg width="18" height="16">
 																						<use xlink:href="design/{$settings->theme|escape}/images/svg/catalog/item_icons.svg#favorite-18-16"></use>
@@ -314,7 +304,7 @@
 																		</div>
 																	{else}
 																		<div class="item-action item-action--horizontal item-action--favorite">
-																			<a href="{$lang_link}wishlist/{$product->url}" rel="nofollow" class="wishlist item-action__inner item-action__inner--md fill-theme-use-svg-hover fill-dark-light-block" title="{$lang->add_to_wishlist}" data-title_added="{$lang->added_to_wishlist}">
+																			<a href="{$lang_link}wishlist/{$product->url}" rel="nofollow" class="wishlist item-action__inner item-action__inner--md fill-theme-use-svg-hover fill-dark-light-block" title="{$lang->add_to_wishlist|escape}" data-title_added="{$lang->added_to_wishlist|escape}">
 																				<i class="svg inline" aria-hidden="true">
 																					<svg width="18" height="16">
 																						<use xlink:href="design/{$settings->theme|escape}/images/svg/catalog/item_icons.svg#favorite-18-16"></use>
@@ -323,9 +313,9 @@
 																			</a>
 																		</div>
 																	{/if}
-																	{if isset($smarty.session.compared_products) && in_array($product->url, $smarty.session.compared_products)}
+																	{if $smarty.session.compared_products && in_array($product->url, $smarty.session.compared_products)}
 																		<div class="item-action item-action--horizontal item-action--compare active">
-																			<a href="{$lang_link}compare" class="item-action__inner item-action__inner--md fill-theme-use-svg-hover fill-dark-light-block active" title="{$lang->added_to_compare}">
+																			<a href="{$lang_link}compare" class="item-action__inner item-action__inner--md fill-theme-use-svg-hover fill-dark-light-block active" title="{$lang->added_to_compare|escape}">
 																				<i class="svg inline" aria-hidden="true">
 																					<svg width="20" height="16">
 																						<use xlink:href="design/{$settings->theme|escape}/images/svg/catalog/item_icons.svg#compare-20-16"></use>
@@ -335,7 +325,7 @@
 																		</div>
 																	{else}
 																		<div class="item-action item-action--horizontal item-action--compare">
-																			<a href="{$lang_link}compare/{$product->url}" rel="nofollow" class="compare item-action__inner item-action__inner--md fill-theme-use-svg-hover fill-dark-light-block" title="{$lang->add_to_compare}" data-title_added="{$lang->added_to_compare}">
+																			<a href="{$lang_link}compare/{$product->url}" rel="nofollow" class="compare item-action__inner item-action__inner--md fill-theme-use-svg-hover fill-dark-light-block" title="{$lang->add_to_compare|escape}" data-title_added="{$lang->added_to_compare|escape}">
 																				<i class="svg inline" aria-hidden="true">
 																					<svg width="20" height="16">
 																						<use xlink:href="design/{$settings->theme|escape}/images/svg/catalog/item_icons.svg#compare-20-16"></use>
@@ -399,7 +389,7 @@
 																				<div class="line-block__item sku-props__inner sku-props--pict">
 																					<div class="sku-props__item">
 																						<div class="sku-props__title color_666">
-																							{$lang->color} : <span class="sku-props__js-size">{$product->variant->color}</span>
+																							{$lang->color|escape} : <span class="sku-props__js-size">{$product->variant->color}</span>
 																						</div>
 																						<div class="line-block line-block--flex-wrap line-block--6 sku-props__values">
 																							{foreach $product->related_products as $related_product}
@@ -413,7 +403,7 @@
 																					</div>
 																				</div>
 																			{/if}
-																			{if isset($product->features)}
+																			{if $product->features}
 																				{foreach $product->features as $f}
 																					{if $f->is_size}
 																						{$sizes = $f->is_size}
@@ -424,7 +414,7 @@
 																				<div class="line-block__item sku-props__inner">
 																					<div class="sku-props__item">
 																						<div class="sku-props__title color_666">
-																							{if $sizes}{$lang->size}{else}{$lang->option}{/if} : <span class="sku-props__js-size">{$product->variant->name}</span>
+																							{if $sizes}{$lang->size|escape}{else}{$lang->option|escape}{/if} : <span class="sku-props__js-size">{$product->variant->name}</span>
 																						</div>
 																						<div class="line-block line-block--flex-wrap line-block--4 sku-props__values">
 																							{foreach $product->variants as $v}
@@ -452,7 +442,7 @@
 																									<use xlink:href="design/{$settings->theme|escape}/images/svg/catalog/item_icons.svg#table_sizes"></use>
 																								</svg>
 																							</i>
-																							<span class="dotted">{$lang->size_table}</span>
+																							<span class="dotted">{$lang->size_table|escape}</span>
 																						</span>
 																					</div>
 																				</div>
@@ -465,9 +455,9 @@
 																	<input name="variant" value="{$v->id}" type="radio" {if $v@first}checked{/if} style="display:none;">
 																{/foreach}
 															{/if}
-															{if isset($product->features)}
+															{if $product->features}
 																<div class="grid-list__item char-side">
-																	<div class="char-side__title font_15 color_222">{$lang->feature}</div>
+																	<div class="char-side__title font_15 color_222">{$lang->feature|escape}</div>
 																	<div class="properties list font_14">
 																		<div class="properties__container properties">
 																			{foreach $product->features|@array_slice:0:5 as $f}
@@ -488,7 +478,7 @@
 																		</div>
 																	</div>
 																	<span class="catalog-detail__pseudo-link catalog-detail__pseudo-link--with-gap pointer dark_link font_13">
-																		<span class="choise dotted" data-block="char">{$lang->all_features}</span>
+																		<span class="choise dotted" data-block="char">{$lang->all_features|escape}</span>
 																	</span>
 																</div>
 															{/if}
@@ -497,14 +487,14 @@
 																	{$product->annotation}
 																</div>
 																<span class="catalog-detail__pseudo-link catalog-detail__pseudo-link--with-gap dark_link pointer font_13">
-																	<span class="choise dotted" data-block="desc">{$lang->all_description}</span>
+																	<span class="choise dotted" data-block="desc">{$lang->all_description|escape}</span>
 																</span>
 															</div>
 															{* Brand *}
-															{if isset($brand) && $brand}
+															{if $brand}
 																<div class="grid-list__item">
 																	<div class="brand-detail flexbox line-block--gap line-block--gap-12">
-																		{if isset($brand->image) && $brand->image}
+																		{if $brand && $brand->image}
 																			<div class="brand-detail-info" itemprop="brand" itemtype="https://schema.org/Brand" itemscope="">
 																				<meta itemprop="name" content="{$brand->name|escape}">
 																				<div class="brand-detail-info__image rounded-x">
@@ -517,12 +507,12 @@
 																		<div class="brand-detail-info__preview line-block line-block--gap line-block--gap-8 flexbox--wrap font_14">
 																			<div class="line-block__item">
 																				<a class="chip chip--transparent bordered" href="{$lang_link}brands/{$brand->url}" target="_blank">
-																					<span class="chip__label">{$lang->all_products} {$brand->name|escape}</span>
+																					<span class="chip__label">{$lang->all_products|escape} {$brand->name|escape}</span>
 																				</a>
 																			</div>
 																			<div class="line-block__item">
 																				<a class="chip chip--transparent bordered" href="{$lang_link}catalog/{$category->url}/{$brand->url}" target="_blank">
-																					<span class="chip__label">{$lang->all_products_category}</span>
+																					<span class="chip__label">{$lang->all_products_category|escape}</span>
 																				</a>
 																			</div>
 																		</div>
@@ -546,7 +536,7 @@
 																					</div>
 																					<div class="tizers-list__item-text-wrapper">
 																						<span class="tizers-list__item-name font_14 color_222">
-																							{$lang->prices_for_brands}
+																							{$lang->prices_for_brands|escape}
 																						</span>
 																					</div>
 																				</div>
@@ -564,7 +554,7 @@
 																					</div>
 																					<div class="tizers-list__item-text-wrapper">
 																						<span class="tizers-list__item-name font_14 color_222">
-																							{$lang->fast_delivery}
+																							{$lang->fast_delivery|escape}
 																						</span>
 																					</div>
 																				</div>
@@ -582,7 +572,7 @@
 																					</div>
 																					<div class="tizers-list__item-text-wrapper">
 																						<span class="tizers-list__item-name font_14 color_222">
-																							{$lang->quality_guarantee}
+																							{$lang->quality_guarantee|escape}
 																						</span>
 																					</div>
 																				</div>
@@ -649,12 +639,12 @@
 																					</div>
 																					<div class="line-block__item">
 																						<span class="item-action item-action--basket">
-																							<button id="add-to-cart" type="submit" data-result-text="{$lang->added_cart}" class="btn btn-default btn-lg btn-wide to_cart animate-load {if !$product->variant->stock}disabled{/if}" data-ratio="1" data-float_ratio="1" data-quantity="1" value="{$lang->add_cart}" title="{$lang->add_cart}" {if !$product->variant->stock}disabled{/if}>{$lang->add_cart}</button>
+																							<button id="add-to-cart" type="submit" data-result-text="{$lang->added_cart|escape}" class="btn btn-default btn-lg btn-wide to_cart animate-load {if !$product->variant->stock}disabled{/if}" data-ratio="1" data-float_ratio="1" data-quantity="1" value="{$lang->add_cart|escape}" title="{$lang->add_cart|escape}" {if !$product->variant->stock}disabled{/if}>{$lang->add_cart|escape}</button>
 																						</span>
 																					</div>
 																					<div class="line-block__item">
 																						<button id="fast-order" type="button" class="btn btn-default btn-wide btn-transparent btn-md btn-ocb animate-load {if !$product->variant->stock}disabled{/if}" data-event="jqm" data-name="ocb" data-url="{$lang_link}products/{$product->url}?tpl=fast_order" {if !$product->variant->stock}disabled{/if}>
-																							{$lang->buy_one_click}
+																							{$lang->buy_one_click|escape}
 																						</button>
 																					</div>
 																				</div>
@@ -668,7 +658,7 @@
 																	<div class="grid-list__item">
 																		<span>
 																			{if $product->variant->stock}
-																				<span class="catalog-detail__pseudo-link status-container color_222 instock" data-stock="{$lang->not_available}" data-default="{$lang->in_stock}">
+																				<span class="catalog-detail__pseudo-link status-container color_222 instock" data-stock="{$lang->not_available|escape}" data-default="{$lang->in_stock|escape}">
 																					<span class="icon-container">
 																						<i class="svg inline pseudo-link__icon status__svg-icon instock" aria-hidden="true">
 																							<svg width="16" height="16">
@@ -678,12 +668,12 @@
 																					</span>
 																					<span class="catalog-detail__pseudo-link-text">
 																						<span class="js-replace-status status-icon instock">
-																							{$lang->in_stock}
+																							{$lang->in_stock|escape}
 																						</span>
 																					</span>
 																				</span>
 																			{else}
-																				<span class="catalog-detail__pseudo-link status-container color_222 nostock" data-stock="{$lang->not_available}" data-default="{$lang->in_stock}">
+																				<span class="catalog-detail__pseudo-link status-container color_222 nostock" data-stock="{$lang->not_available|escape}" data-default="{$lang->in_stock|escape}">
 																					<span class="icon-container">
 																						<i class="svg inline pseudo-link__icon status__svg-icon nostock" aria-hidden="true">
 																							<svg width="16" height="16">
@@ -693,7 +683,7 @@
 																					</span>
 																					<span class="catalog-detail__pseudo-link-text">
 																						<span class="js-replace-status status-icon nostock">
-																							{$lang->not_available}
+																							{$lang->not_available|escape}
 																						</span>
 																					</span>
 																				</span>
@@ -711,10 +701,10 @@
 											<div class="detail-block ordered-block tabs-block">
 												<div class="tabs tabs-history arrow_scroll">
 													<ul class="nav nav-tabs font_14--to-600">
-														<li class="active"><a href="#desc" data-toggle="tab">{$lang->description}</a></li>
-														<li><a href="#reviews" data-toggle="tab" class="counted">{$lang->comments_global} ({$comments_count})</a></li>
-														{if isset($product->features)}<li><a href="#char" data-toggle="tab">{$lang->feature}</a></li>{/if}
-														{if $cms_files}<li><a href="#docs" data-toggle="tab">{$lang->files_global}</a></li>{/if}
+														<li class="active"><a href="#desc" data-toggle="tab">{$lang->description|escape}</a></li>
+														<li><a href="#reviews" data-toggle="tab" class="counted">{$lang->comments_global|escape} ({$comments_count})</a></li>
+														{if $product->features}<li><a href="#char" data-toggle="tab">{$lang->feature|escape}</a></li>{/if}
+														{if $cms_files}<li><a href="#docs" data-toggle="tab">{$lang->files_global|escape}</a></li>{/if}
 													</ul>
 												</div>
 												<div class="tab-content">
@@ -725,7 +715,7 @@
 													</div>
 													<div class="tab-pane EXTENDED" id="reviews">
 														<div class="ordered-block__title switcher-title font_24 font_20--to-600">
-															{$lang->comments_global}
+															{$lang->comments_global|escape}
 															{if $comments}
 																<span class="element-count-wrapper">
 																	<span class="element-count muted font_14">{$comments_count} {$comments_count|plural:$lang->comment_1:$lang->comment_2:$lang->comment_3}</span>
@@ -764,9 +754,9 @@
 																																<div class="row form">
 																																	<div class="col-md-6 col-sm-6">
 																																		<div class="form-group ">
-																																			<label for="user_name">{$lang->name}<span class="required-star">*</span></label>
+																																			<label for="user_name">{$lang->name|escape}<span class="required-star">*</span></label>
 																																			<div class="input">
-																																				<input maxlength="255" size="30" class="form-control required" required="" tabindex="3" type="text" name="name" id="user_name" value="{if isset($comment_text)}{$comment_name|escape}{/if}">
+																																				<input maxlength="255" size="30" class="form-control required" required="" tabindex="3" type="text" name="name" id="user_name" value="{$comment_name|escape}">
 																																			</div>
 																																		</div>
 																																	</div>
@@ -775,39 +765,39 @@
 																															<div class="row form">
 																																<div class="col-md-12">
 																																	<div class="form-group">
-																																		<label class="rating_label" data-hide="">{$lang->your_rating} <span class="required-star">*</span></label>
+																																		<label class="rating_label" data-hide="">{$lang->your_rating|escape} <span class="required-star">*</span></label>
 																																		<div class="votes_block nstar big with-text" data-hide="">
 																																			<div class="ratings">
 																																				<div class="inner_rating rating__star-svg">
-																																					<div class="item-rating rating__star-svg" data-message="{$lang->very_bad}">
+																																					<div class="item-rating rating__star-svg" data-message="{$lang->very_bad|escape}">
 																																						<i class="svg inline" aria-hidden="true">
 																																							<svg width="16" height="16">
 																																								<use xlink:href="design/{$settings->theme|escape}/images/svg/catalog/item_icons.svg#star-13-13"></use>
 																																							</svg>
 																																						</i>
 																																					</div>
-																																					<div class="item-rating rating__star-svg" data-message="{$lang->bad}">
+																																					<div class="item-rating rating__star-svg" data-message="{$lang->bad|escape}">
 																																						<i class="svg inline" aria-hidden="true">
 																																							<svg width="16" height="16">
 																																								<use xlink:href="design/{$settings->theme|escape}/images/svg/catalog/item_icons.svg#star-13-13"></use>
 																																							</svg>
 																																						</i>
 																																					</div>
-																																					<div class="item-rating rating__star-svg" data-message="{$lang->normal}">
+																																					<div class="item-rating rating__star-svg" data-message="{$lang->normal|escape}">
 																																						<i class="svg inline" aria-hidden="true">
 																																							<svg width="16" height="16">
 																																								<use xlink:href="design/{$settings->theme|escape}/images/svg/catalog/item_icons.svg#star-13-13"></use>
 																																							</svg>
 																																						</i>
 																																					</div>
-																																					<div class="item-rating rating__star-svg" data-message="{$lang->fine}">
+																																					<div class="item-rating rating__star-svg" data-message="{$lang->fine|escape}">
 																																						<i class="svg inline" aria-hidden="true">
 																																							<svg width="16" height="16">
 																																								<use xlink:href="design/{$settings->theme|escape}/images/svg/catalog/item_icons.svg#star-13-13"></use>
 																																							</svg>
 																																						</i>
 																																					</div>
-																																					<div class="item-rating rating__star-svg" data-message="{$lang->great}">
+																																					<div class="item-rating rating__star-svg" data-message="{$lang->great|escape}">
 																																						<i class="svg inline" aria-hidden="true">
 																																							<svg width="16" height="16">
 																																								<use xlink:href="design/{$settings->theme|escape}/images/svg/catalog/item_icons.svg#star-13-13"></use>
@@ -816,7 +806,7 @@
 																																					</div>
 																																				</div>
 																																			</div>
-																																			<div class="rating_message muted" data-message="{$lang->no_rating}">{$lang->no_rating}</div>
+																																			<div class="rating_message muted" data-message="{$lang->no_rating|escape}">{$lang->no_rating|escape}</div>
 																																			<input class="hidden" name="rating" value="0" required="" aria-required="true">
 																																		</div>
 																																	</div>
@@ -825,9 +815,9 @@
 																															<div class="row form comment">
 																																<div class="col-md-12">
 																																	<div class="form-group">
-																																		<label for="comment">{$lang->comment}</label>
+																																		<label for="comment">{$lang->comment|escape}</label>
 																																		<div class="input">
-																																			<textarea rows="3" class="form-control" tabindex="3" name="text" id="comment" value="">{if isset($comment_text)}{$comment_text}{/if}</textarea>
+																																			<textarea rows="3" class="form-control" tabindex="3" name="text" id="comment" value="">{$comment_text}</textarea>
 																																		</div>
 																																	</div>
 																																</div>
@@ -835,7 +825,7 @@
 																															{if $settings->captcha_product}
 																																<div class="clearfix fill-animate">
 																																	<label class="font_14">
-																																		<span>{$lang->captcha_label}&nbsp;<span class="required-star">*</span></span>
+																																		<span>{$lang->captcha_label|escape}&nbsp;<span class="required-star">*</span></span>
 																																	</label>
 																																</div>
 																																<div class="row">
@@ -851,7 +841,7 @@
 																																</div>
 																															{/if}
 																															<div class="blog-comment-buttons-wrapper font_15">
-																																<input tabindex="10" class="btn btn-default" value="{$lang->post_review}" type="submit" name="comment" id="post-button">
+																																<input tabindex="10" class="btn btn-default" value="{$lang->post_review|escape}" type="submit" name="comment" id="post-button">
 																															</div>
 																														</div>
 																													</div>
@@ -867,10 +857,10 @@
 																														<div class="filter-panel__sort-form__item dropdown-select dropdown-select--with-dropdown">
 																															<div class="dropdown-select__title font_14 font_large fill-dark-light bordered rounded-x shadow-hovered shadow-no-border-hovered">
 																																<span>
-																																	{if isset($sort) && $sort=='rate'}
-																																		{$lang->popular}
-																																	{elseif isset($sort) && $sort=='date'}
-																																		{$lang->in_order}
+																																	{if $sort=='rate'}
+																																		{$lang->popular|escape}
+																																	{elseif $sort=='date'}
+																																		{$lang->in_order|escape}
 																																	{/if}
 																																</span>
 																																<i class="svg inline dropdown-select__icon-down" aria-hidden="true">
@@ -884,22 +874,22 @@
 																																	<div class="dropdown-select__list-item font_15">
 																																		{if $sort=='rate'}
 																																			<span class="dropdown-menu-item color_222 dropdown-menu-item--current">
-																																				<span>{$lang->popular}</span>
+																																				<span>{$lang->popular|escape}</span>
 																																			</span>
 																																		{else}
 																																			<a href="{url sort=rate page=null}" class="dropdown-menu-item dark_link">
-																																				<span>{$lang->popular}</span>
+																																				<span>{$lang->popular|escape}</span>
 																																			</a>
 																																		{/if}
 																																	</div>
 																																	<div class="dropdown-select__list-item font_15">
 																																		{if $sort=='date'}
 																																			<span class="dropdown-menu-item color_222 dropdown-menu-item--current">
-																																				<span>{$lang->in_order}</span>
+																																				<span>{$lang->in_order|escape}</span>
 																																			</span>
 																																		{else}
 																																			<a href="{url sort=date page=null}" class="dropdown-menu-item dark_link">
-																																				<span>{$lang->in_order}</span>
+																																				<span>{$lang->in_order|escape}</span>
 																																			</a>
 																																		{/if}
 																																	</div>
@@ -912,14 +902,14 @@
 																										</div>
 																									{/if}
 																									{* Error *}
-																									{if isset($error)}
+																									{if $error}
 																										<div class="alert alert-danger" role="alert">
 																											{if $error=='captcha'}
-																												{$lang->captcha_incorrect}
+																												{$lang->captcha_incorrect|escape}
 																											{elseif $error=='empty_name'}
-																												{$lang->enter_your_name}
+																												{$lang->enter_your_name|escape}
 																											{elseif $error=='empty_comment'}
-																												{$lang->enter_a_comment}
+																												{$lang->enter_a_comment|escape}
 																											{/if}
 																										</div>
 																									{/if}
@@ -950,9 +940,9 @@
 																																			<div class="left_info">
 																																				<div class="blog-comment__author color_222 font_16">{$comment->name|escape}</div>
 																																				<div class="blog-comment__date color_999 font_14">
-																																					{$comment->date|date} {$lang->at} {$comment->date|time}
+																																					{$comment->date|date} {$lang->at|escape} {$comment->date|time}
 																																					{if !$comment->approved}
-																																						<span class="text-danger">{$lang->awaiting_moderation}</span>
+																																						<span class="text-danger">{$lang->awaiting_moderation|escape}</span>
 																																					{/if}
 																																				</div>
 																																			</div>
@@ -1002,7 +992,7 @@
 																																			<div class="blog-comment-post__item comment-text__text VIRTUES font_16">{$comment->text|escape|nl2br}</div>
 																																			<div class="blog-comment-post__item blog-comment-meta">
 																																				<span class="rating-vote">
-																																					<a href="ajax/comment_rate.php?id={$comment->id}&rate=up" class="rating-vote__item rating-vote__item-like stroke-dark-light-block dark_link plus {if $comment->rate > 0}active{/if}" data-action="plus" title="{$lang->like}">
+																																					<a href="ajax/comment_rate.php?id={$comment->id}&rate=up" class="rating-vote__item rating-vote__item-like stroke-dark-light-block dark_link plus {if $comment->rate > 0}active{/if}" data-action="plus" title="{$lang->like|escape}">
 																																						<span class="rating-vote__icon">
 																																							<i class="svg inline" aria-hidden="true">
 																																								<svg width="20" height="22">
@@ -1012,7 +1002,7 @@
 																																						</span>
 																																					</a>
 																																					<span class="rating-vote__result {if $comment->rate != 0}active{/if}">{$comment->rate}</span>
-																																					<a href="ajax/comment_rate.php?id={$comment->id}&rate=down" class="rating-vote__item rating-vote__item-dislike stroke-dark-light-block dark_link minus {if $comment->rate < 0}active{/if}" data-action="minus" title="{$lang->dislike}">
+																																					<a href="ajax/comment_rate.php?id={$comment->id}&rate=down" class="rating-vote__item rating-vote__item-dislike stroke-dark-light-block dark_link minus {if $comment->rate < 0}active{/if}" data-action="minus" title="{$lang->dislike|escape}">
 																																						<span class="rating-vote__icon">
 																																							<i class="svg inline" aria-hidden="true">
 																																								<svg width="20" height="22">
@@ -1024,7 +1014,7 @@
 																																				</span>
 																																				{if $level == 0}
 																																					<span class="blog-comment-answer blog-comment-action color_222">
-																																						<a href="javascript:void(0)" class="blog-comment-action__link dotted dark_link font_14" data-id="{$comment->id}">{$lang->add_comment}</a>
+																																						<a href="javascript:void(0)" class="blog-comment-action__link dotted dark_link font_14" data-id="{$comment->id}">{$lang->add_comment|escape}</a>
 																																					</span>
 																																				{/if}
 																																			</div>
@@ -1048,19 +1038,19 @@
 																															{if $current_page_num < $total_pages_num}
 																																<div class="ajax_load_btn">
 																																	<span class="more_text_ajax btn btn-transparent">
-																																		{$lang->load_more}
+																																		{$lang->load_more|escape}
 																																	</span>
 																																</div>
 																															{/if}
 																															{* Paginations *}
-																															{include file='components/pagination.tpl'}
+																															{include file='paginations/pagination.tpl'}
 																														</div>
 																													</div>
 																												</div>
 																											{/if}
 																										{else}
 																											<div class="rounded-x bordered alert-empty">
-																												{$lang->help_other_users}
+																												{$lang->help_other_users|escape}
 																											</div>
 																										{/if}
 																									</div>
@@ -1092,20 +1082,20 @@
 																					{if $comments}
 																						{if $product->ratings|string_format:'%.1f'|floatval > 0}{$product->ratings|string_format:'%.1f'}{else}{$product->ratings|intval}{/if}
 																					{else}
-																						{$lang->no_reviews}
+																						{$lang->no_reviews|escape}
 																					{/if}
 																				</span>
 																			</div>
 																		</div>
 																		<div class="show-comment btn btn-default blog-comment-action__link has-ripple" data-id="0">
-																			{$lang->add_review}
+																			{$lang->add_review|escape}
 																		</div>
 																	</div>
 																</div>
 															</div>
 														</div>
 														{* Features *}
-														{if isset($product->features)}
+														{if $product->features}
 															<div class="tab-pane" id="char">
 																<div class="props_block">
 																	<div class="props_block__wrapper">
@@ -1232,7 +1222,7 @@
 		}
 	});
 </script>
-{if isset($error) || isset($smarty.get.sort)}
+{if $error || isset($smarty.get.sort)}
 	<script>
 		$(document).ready(function() {
 			var activeTab = localStorage.getItem('activeTab');

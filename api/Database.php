@@ -32,30 +32,27 @@ class Database extends Turbo
 		if (!empty($this->mysqli)) {
 			return $this->mysqli;
 		} else {
-			$this->mysqli = new mysqli(
-				$this->config->db_server,
-				$this->config->db_user,
-				$this->config->db_password,
-				$this->config->db_name
-			);
+			$this->mysqli = new mysqli($this->config->db_server, $this->config->db_user, $this->config->db_password, $this->config->db_name);
+		}
 
-			if ($this->mysqli->connect_error) {
-				trigger_error("Could not connect to the database: " . $this->mysqli->connect_error, E_USER_WARNING);
-				return false;
-			} else {
-				if ($this->config->db_charset) {
-					$this->mysqli->set_charset($this->config->db_charset);
-				}
-				if ($this->config->db_sql_mode) {
-					$this->mysqli->query('SET SESSION sql_mode = "' . $this->config->db_sql_mode . '"');
-				}
-				if ($this->config->db_timezone) {
-					$this->mysqli->query('SET time_zone = "' . $this->config->db_timezone . '"');
-				}
-				if ($this->config->debug) {
-					$this->mysqli->query('SET profiling = 1');
-					$this->mysqli->query('SET profiling_history_size = 100');
-				}
+		if ($this->mysqli->connect_error) {
+			throw new \Exception('Error: ' . $this->mysqli->error . '<br />Error No: ' . $this->mysqli->errno);
+		} else {
+			if ($this->config->db_charset) {
+				$this->mysqli->query('SET NAMES ' . $this->config->db_charset);
+			}
+
+			if ($this->config->db_sql_mode) {
+				$this->mysqli->query('SET SESSION SQL_MODE = "' . $this->config->db_sql_mode . '"');
+			}
+
+			if ($this->config->db_timezone) {
+				$this->mysqli->query('SET time_zone = "' . $this->config->db_timezone . '"');
+			}
+
+			if ($this->config->debug) {
+				$this->mysqli->query('SET profiling = 1');
+				$this->mysqli->query('SET profiling_history_size = 100');
 			}
 		}
 
@@ -80,14 +77,13 @@ class Database extends Turbo
 	public function query()
 	{
 		if (is_object($this->res)) {
-			$this->res->free_result();
+			$this->res->free();
 		}
 
-		$query = call_user_func_array(array($this, 'placehold'), func_get_args());
+		$args = func_get_args();
+		$q = call_user_func_array(array($this, 'placehold'), $args);
 
-		$this->res = $this->mysqli->query($query);
-
-		return $this->res;
+		return $this->res = $this->mysqli->query($q);
 	}
 
 	/**
@@ -105,17 +101,13 @@ class Database extends Turbo
 	{
 		$args = func_get_args();
 		$tmpl = array_shift($args);
-		$tmpl = preg_replace('/([^"\'0-9a-z_])__([a-z_]+[^"\'])/i', '$1' . $this->config->db_prefix . '$2', $tmpl);
-
+		$tmpl = preg_replace('/([^"\'0-9a-z_])__([a-z_]+[^"\'])/i', "\$1" . $this->config->db_prefix . "\$2", $tmpl);
+		$tmpl = preg_replace('/\s+/', ' ', $tmpl);
 		if (!empty($args)) {
 			$result = $this->sqlPlaceholderEx($tmpl, $args, $error);
-
 			if ($result === false) {
-				$error = "Placeholder substitution error. Diagnostics: \"$error\"";
-				trigger_error($error, E_USER_WARNING);
-				return false;
+				throw new \Exception('Placeholder substitution error. Diagnostics: ' . $error);
 			}
-
 			return $result;
 		} else {
 			return $tmpl;
@@ -123,15 +115,14 @@ class Database extends Turbo
 	}
 
 	/**
-	 * Returns
+	 * Results
 	 */
 	public function results($field = null)
 	{
 		$results = [];
 
 		if (!$this->res) {
-			trigger_error($this->mysqli->error, E_USER_WARNING);
-			return [];
+			throw new \Exception('Error: ' . $this->mysqli->error . '<br />Error No: ' . $this->mysqli->errno);
 		}
 
 		if ($this->res->num_rows == 0) {
@@ -145,7 +136,6 @@ class Database extends Turbo
 				array_push($results, $row);
 			}
 		}
-
 		return $results;
 	}
 
@@ -155,20 +145,16 @@ class Database extends Turbo
 	public function result($field = null)
 	{
 		if (!$this->res) {
-			throw new \RuntimeException('Could not execute query to database');
+			throw new \Exception('Could not execute query to database');
 		}
-
 		$row = $this->res->fetch_object();
-
-		if ($field != null && isset($row->$field)) {
+		if (!empty($field) && isset($row->$field)) {
 			return $row->$field;
-		}
-
-		if ($field != null && !isset($row->$field)) {
+		} elseif (!empty($field) && !isset($row->$field)) {
 			return false;
+		} else {
+			return $row;
 		}
-
-		return $row;
 	}
 
 	/**
@@ -176,10 +162,6 @@ class Database extends Turbo
 	 */
 	public function insertId()
 	{
-		if (!$this->mysqli instanceof mysqli) {
-			return null;
-		}
-
 		return $this->mysqli->insert_id;
 	}
 
@@ -188,10 +170,6 @@ class Database extends Turbo
 	 */
 	public function numRows()
 	{
-		if (!$this->res) {
-			return null;
-		}
-
 		return $this->res->num_rows;
 	}
 
@@ -200,10 +178,6 @@ class Database extends Turbo
 	 */
 	public function affectedRows()
 	{
-		if (!$this->mysqli) {
-			return null;
-		}
-
 		return $this->mysqli->affected_rows;
 	}
 
@@ -230,9 +204,9 @@ class Database extends Turbo
 		$compiled = [];
 		$p = 0;
 		$i = 0;
-		$hasNamed = false;
+		$has_named = false;
 
-		while (false !== ($start = $p = strpos($tmpl, '?', $p))) {
+		while (false !== ($start = $p = strpos($tmpl, "?", $p))) {
 			switch ($c = substr($tmpl, ++$p, 1)) {
 				case '%':
 				case '@':
@@ -240,7 +214,6 @@ class Database extends Turbo
 					$type = $c;
 					++$p;
 					break;
-
 				default:
 					$type = '';
 					break;
@@ -248,28 +221,21 @@ class Database extends Turbo
 
 			if (preg_match('/^((?:[^\s[:punct:]]|_)+)/', substr($tmpl, $p), $pock)) {
 				$key = $pock[1];
-
 				if ($type != '#') {
-					$hasNamed = true;
+					$has_named = true;
 				}
-
 				$p += strlen($key);
 			} else {
 				$key = $i;
-
 				if ($type != '#') {
-					++$i;
+					$i++;
 				}
 			}
 
-			$compiled[] = [$key, $type, $start, $p - $start];
+			$compiled[] = array($key, $type, $start, $p - $start);
 		}
 
-		return [
-			$compiled,
-			$tmpl,
-			$hasNamed
-		];
+		return array($compiled, $tmpl, $has_named);
 	}
 
 	/**
@@ -286,7 +252,7 @@ class Database extends Turbo
 		list($compiled, $tmpl, $has_named) = $compiled;
 
 		if ($has_named) {
-			$args = @$args[0] ?? null;
+			$args = @$args[0];
 		}
 
 		$p = 0;
@@ -297,7 +263,6 @@ class Database extends Turbo
 			list($key, $type, $start, $length) = $e;
 
 			$out .= substr($tmpl, $p, $start - $p);
-
 			$p = $start + $length;
 
 			$repl = '';
@@ -306,9 +271,10 @@ class Database extends Turbo
 			do {
 				if ($type === '#') {
 					$repl = @constant($key);
-					if ($repl === null) {
+					if (null === $repl) {
 						$error = $errmsg = "UNKNOWN_CONSTANT_$key";
 					}
+					break;
 				}
 
 				if (!isset($args[$key])) {
@@ -317,12 +283,15 @@ class Database extends Turbo
 				}
 
 				$a = $args[$key];
+
 				if ($type === '') {
 					if (is_array($a)) {
 						$error = $errmsg = "NOT_A_SCALAR_PLACEHOLDER_$key";
 						break;
 					}
+
 					$repl = is_int($a) || is_float($a) ? str_replace(',', '.', $a) : "'" . addslashes($a) . "'";
+
 					break;
 				}
 
@@ -342,10 +311,12 @@ class Database extends Turbo
 						} else {
 							$r = "'" . @addslashes($v) . "'";
 						}
+
 						$repl .= ($repl === '' ? "" : ",") . $r;
 					}
 				} elseif ($type === '%') {
-					$lerror = array();
+					$lerror = [];
+
 					foreach ($a as $k => $v) {
 						if (!is_string($k)) {
 							$lerror[$k] = "NOT_A_STRING_KEY_{$k}_FOR_PLACEHOLDER_$key";
@@ -364,6 +335,7 @@ class Database extends Turbo
 
 					if (count($lerror)) {
 						$repl = '';
+
 						foreach ($a as $k => $v) {
 							if (isset($lerror[$k])) {
 								$repl .= ($repl === '' ? "" : ", ") . $lerror[$k];
@@ -372,6 +344,7 @@ class Database extends Turbo
 								$repl .= ($repl === '' ? "" : ", ") . $k . "=?";
 							}
 						}
+
 						$error = $errmsg = $repl;
 					}
 				}
@@ -391,9 +364,9 @@ class Database extends Turbo
 		if ($error) {
 			$out = '';
 			$p = 0;
+
 			foreach ($compiled as $num => $e) {
 				list($key, $type, $start, $length) = $e;
-
 				$out .= substr($tmpl, $p, $start - $p);
 				$p = $start + $length;
 
@@ -406,9 +379,11 @@ class Database extends Turbo
 
 			$out .= substr($tmpl, $p);
 			$errormsg = $out;
+
 			return false;
 		} else {
 			$errormsg = false;
+
 			return $out;
 		}
 	}
@@ -418,23 +393,23 @@ class Database extends Turbo
 	 */
 	public function dump($filename)
 	{
-		$handle = fopen($filename, 'w');
-		$query = $this->placehold("SHOW FULL TABLES LIKE '__%';");
-		$result = $this->mysqli->query($query);
+		$h = fopen($filename, 'w');
+		$q = $this->placehold("SHOW FULL TABLES LIKE '__%';");
+		$result = $this->mysqli->query($q);
 
-		while ($table = $result->fetch_row()) {
-			if ($table[1] == 'BASE TABLE') {
-				$this->dumpTable($table[0], $handle);
+		while ($row = $result->fetch_row()) {
+			if ($row[1] == 'BASE TABLE') {
+				$this->dumpTable($row[0], $h);
 			}
 		}
 
-		fclose($handle);
+		fclose($h);
 	}
 
 	/**
 	 * Restore
 	 */
-	function restore($filename)
+	public function restore($filename)
 	{
 		$templine = '';
 		$h = fopen($filename, 'r');
@@ -442,11 +417,12 @@ class Database extends Turbo
 		if ($h) {
 			while (!feof($h)) {
 				$line = fgets($h);
+
 				if (substr($line, 0, 2) != '--' && $line != '') {
 					$templine .= $line;
 
 					if (substr(trim($line), -1, 1) == ';') {
-						$this->mysqli->query($templine) or print('Error performing query \'<b>' . $templine . '</b>\': ' . $this->mysqli->error . '<br/><br/>');
+						$this->query($templine) or print('Error performing query \'<b>' . $templine . '</b>\': ' . $this->mysqli->error . '<br/><br/>');
 						$templine = '';
 					}
 				}
@@ -465,8 +441,9 @@ class Database extends Turbo
 		$result = $this->mysqli->query($sql);
 
 		if ($result) {
-			fwrite($h, "/* Data for table $table */\n");
-			fwrite($h, "TRUNCATE TABLE `$table`;\n");
+			$tableNoPrefix = preg_replace('/^(' . $this->config->db_prefix . ')/i', "__", $table);
+			fwrite($h, "/* Data for table $tableNoPrefix */\n");
+			fwrite($h, "TRUNCATE TABLE `$tableNoPrefix`;\n");
 
 			$numRows = $result->num_rows;
 			$numFields = $this->mysqli->field_count;
@@ -477,16 +454,17 @@ class Database extends Turbo
 				$meta = $result->fetch_fields();
 
 				foreach ($meta as $m) {
-					$fieldType[] = $m->type;
-					$fieldName[] = $m->name;
+					array_push($fieldType, $m->type);
+					array_push($fieldName, $m->name);
 				}
 
 				$fields = implode('`, `', $fieldName);
-				fwrite($h, "INSERT INTO `$table` (`$fields`) VALUES\n");
-
+				fwrite($h, "INSERT INTO `$tableNoPrefix` (`$fields`) VALUES\n");
 				$index = 0;
+
 				while ($row = $result->fetch_row()) {
 					fwrite($h, "(");
+
 					for ($i = 0; $i < $numFields; $i++) {
 						if (is_null($row[$i])) {
 							fwrite($h, "null");
@@ -508,17 +486,22 @@ class Database extends Turbo
 					}
 
 					fwrite($h, ")");
+
 					if ($index < $numRows - 1) {
 						fwrite($h, ",");
 					} else {
 						fwrite($h, ";");
 					}
+
 					fwrite($h, "\n");
+
 					$index++;
 				}
 			}
+
 			$result->free();
 		}
+
 		fwrite($h, "\n");
 	}
 }

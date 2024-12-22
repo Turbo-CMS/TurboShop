@@ -10,7 +10,7 @@ class BannersImageAdmin extends Turbo
 	{
 		$bannersImage = new stdClass();
 
-		if ($this->request->isMethod('post')) {
+		if ($this->request->method('post')) {
 			$bannersImage->id = $this->request->post('id', 'integer');
 			$bannersImage->name = $this->request->post('name');
 			$bannersImage->visible = $this->request->post('visible', 'boolean');
@@ -20,6 +20,7 @@ class BannersImageAdmin extends Turbo
 			$bannersImage->color = $this->request->post('color');
 			$bannersImage->style = $this->request->post('style');
 			$bannersImage->code = $this->request->post('code');
+			$bannersImage->side = $this->request->post('side');
 			$bannersImage->title = $this->request->post('title');
 			$bannersImage->alt = $this->request->post('alt');
 			$bannersImage->description = $this->request->post('description');
@@ -59,7 +60,26 @@ class BannersImageAdmin extends Turbo
 			$bannersImage = $this->banners->getBannersImage((int) $bannersImage->id);
 		} else {
 			$bannersImage->id = $this->request->get('id', 'integer');
-			$bannersImage = $this->banners->getBannersImage((int) $bannersImage->id);
+			
+			if (!empty($bannersImage->id)) {
+				$bannersImage = $this->banners->getBannersImage((int) $bannersImage->id);
+			} else {
+				$bannersImage->id = null;
+				$bannersImage->name = '';
+				$bannersImage->banner_id = null;
+				$bannersImage->visible = 1;
+				$bannersImage->url = null;
+				$bannersImage->color = null;
+				$bannersImage->style = null;
+				$bannersImage->side = null;
+				$bannersImage->code = null;
+				$bannersImage->button = '';
+				$bannersImage->alt = '';
+				$bannersImage->title = '';
+				$bannersImage->description = '';
+				$bannersImage->image = null;
+				$bannersImage->background = null;
+			}
 		}
 
 		$banners = $this->banners->getBanners();

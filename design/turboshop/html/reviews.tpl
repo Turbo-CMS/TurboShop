@@ -1,6 +1,6 @@
 {* Reviews *}
 
-{if isset($page)}
+{if $page}
 	{* Canonical *}
 	{$canonical="/{$page->url}" scope=global}
 {else}
@@ -20,8 +20,8 @@
 				<div id="navigation">
 					<div class="breadcrumbs swipeignore" itemscope="" itemtype="http://schema.org/BreadcrumbList">
 						<div class="breadcrumbs__item" id="tb_breadcrumb_0" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-							<a class="breadcrumbs__link" href="{if $lang_link}{$lang_link}{else}/{/if}" title="{$lang->home}" itemprop="item">
-								<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->home}</span>
+							<a class="breadcrumbs__link" href="{if $lang_link}{$lang_link}{else}/{/if}" title="{$lang->home|escape}" itemprop="item">
+								<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->home|escape}</span>
 								<meta itemprop="position" content="{$level++}">
 							</a>
 						</div>
@@ -32,7 +32,7 @@
 								</svg>
 							</i>
 						</span>
-						{if isset($page)}
+						{if $page}
 							<span class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
 								<link href="{$lang_link}{$page->url}" itemprop="item">
 								<span>
@@ -44,7 +44,7 @@
 							<span class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
 								<link href="{$lang_link}reviews" itemprop="item">
 								<span>
-									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->reviews_global}</span>
+									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->reviews_global|escape}</span>
 									<meta itemprop="position" content="{$level++}">
 								</span>
 							</span>
@@ -57,12 +57,12 @@
 				<div class="topic__inner">
 					<div class="topic__heading">
 						{* Page Title *}
-						{if isset($page->name)}
+						{if $page}
 							<h1 id="pagetitle" class="switcher-title">
 								<span data-page="{$page->id}">{$page->name|escape}</span>
 							</h1>
 						{else}
-							<h1 id="pagetitle" class="switcher-title">{$lang->reviews_global}</h1>
+							<h1 id="pagetitle" class="switcher-title">{$lang->reviews_global|escape}</h1>
 						{/if}
 					</div>
 				</div>
@@ -104,7 +104,7 @@
 								<div class="reviews-info__col">
 									<div class="reviews-info__text">
 										{* Page Body *}
-										{if isset($page->body)}
+										{if $page && $page->body}
 											{$page->body}
 										{/if}
 									</div>
@@ -113,7 +113,7 @@
 									<div class="reviews-info__btn-wrapper order-info-btns">
 										<div>
 											<div class="btn btn-default btn-lg min_width--300 blog-comment-action__link" data-id="0">
-												{$lang->add_review}
+												{$lang->add_review|escape}
 											</div>
 										</div>
 									</div>
@@ -133,9 +133,9 @@
 												<div class="row form">
 													<div class="col-md-6 col-sm-6">
 														<div class="form-group ">
-															<label for="user_name">{$lang->name}<span class="required-star">*</span></label>
+															<label for="user_name">{$lang->name|escape}<span class="required-star">*</span></label>
 															<div class="input">
-																<input maxlength="255" size="30" class="form-control required" required="" tabindex="3" type="text" name="name" id="user_name" value="{if isset($comment_text)}{$comment_name|escape}{/if}">
+																<input maxlength="255" size="30" class="form-control required" required="" tabindex="3" type="text" name="name" id="user_name" value="{$comment_name|escape}">
 															</div>
 														</div>
 													</div>
@@ -144,39 +144,39 @@
 											<div class="row form">
 												<div class="col-md-12">
 													<div class="form-group">
-														<label class="rating_label" data-hide="">{$lang->your_rating} <span class="required-star">*</span></label>
+														<label class="rating_label" data-hide="">{$lang->your_rating|escape} <span class="required-star">*</span></label>
 														<div class="votes_block nstar big with-text" data-hide="">
 															<div class="ratings">
 																<div class="inner_rating rating__star-svg">
-																	<div class="item-rating rating__star-svg" data-message="{$lang->very_bad}">
+																	<div class="item-rating rating__star-svg" data-message="{$lang->very_bad|escape}">
 																		<i class="svg inline" aria-hidden="true">
 																			<svg width="16" height="16">
 																				<use xlink:href="design/{$settings->theme|escape}/images/svg/catalog/item_icons.svg#star-13-13"></use>
 																			</svg>
 																		</i>
 																	</div>
-																	<div class="item-rating rating__star-svg" data-message="{$lang->bad}">
+																	<div class="item-rating rating__star-svg" data-message="{$lang->bad|escape}">
 																		<i class="svg inline" aria-hidden="true">
 																			<svg width="16" height="16">
 																				<use xlink:href="design/{$settings->theme|escape}/images/svg/catalog/item_icons.svg#star-13-13"></use>
 																			</svg>
 																		</i>
 																	</div>
-																	<div class="item-rating rating__star-svg" data-message="{$lang->normal}">
+																	<div class="item-rating rating__star-svg" data-message="{$lang->normal|escape}">
 																		<i class="svg inline" aria-hidden="true">
 																			<svg width="16" height="16">
 																				<use xlink:href="design/{$settings->theme|escape}/images/svg/catalog/item_icons.svg#star-13-13"></use>
 																			</svg>
 																		</i>
 																	</div>
-																	<div class="item-rating rating__star-svg" data-message="{$lang->fine}">
+																	<div class="item-rating rating__star-svg" data-message="{$lang->fine|escape}">
 																		<i class="svg inline" aria-hidden="true">
 																			<svg width="16" height="16">
 																				<use xlink:href="design/{$settings->theme|escape}/images/svg/catalog/item_icons.svg#star-13-13"></use>
 																			</svg>
 																		</i>
 																	</div>
-																	<div class="item-rating rating__star-svg" data-message="{$lang->great}">
+																	<div class="item-rating rating__star-svg" data-message="{$lang->great|escape}">
 																		<i class="svg inline" aria-hidden="true">
 																			<svg width="16" height="16">
 																				<use xlink:href="design/{$settings->theme|escape}/images/svg/catalog/item_icons.svg#star-13-13"></use>
@@ -185,7 +185,7 @@
 																	</div>
 																</div>
 															</div>
-															<div class="rating_message muted" data-message="{$lang->no_rating}">{$lang->no_rating}</div>
+															<div class="rating_message muted" data-message="{$lang->no_rating|escape}">{$lang->no_rating|escape}</div>
 															<input class="hidden" name="rating" value="0" required="" aria-required="true">
 														</div>
 													</div>
@@ -194,9 +194,9 @@
 											<div class="row form comment">
 												<div class="col-md-12">
 													<div class="form-group">
-														<label for="comment">{$lang->comment}</label>
+														<label for="comment">{$lang->comment|escape}</label>
 														<div class="input">
-															<textarea rows="3" class="form-control" tabindex="3" name="text" id="comment" value="">{if isset($comment_text)}{$comment_text}{/if}</textarea>
+															<textarea rows="3" class="form-control" tabindex="3" name="text" id="comment" value="">{$comment_text}</textarea>
 														</div>
 													</div>
 												</div>
@@ -204,7 +204,7 @@
 											{if $settings->captcha_review}
 												<div class="clearfix fill-animate">
 													<label class="font_14">
-														<span>{$lang->captcha_label}&nbsp;<span class="required-star">*</span></span>
+														<span>{$lang->captcha_label|escape}&nbsp;<span class="required-star">*</span></span>
 													</label>
 												</div>
 												<div class="row">
@@ -220,7 +220,7 @@
 												</div>
 											{/if}
 											<div class="blog-comment-buttons-wrapper font_15">
-												<input tabindex="10" class="btn btn-default" value="{$lang->post_review}" type="submit" name="comment" id="post-button">
+												<input tabindex="10" class="btn btn-default" value="{$lang->post_review|escape}" type="submit" name="comment" id="post-button">
 											</div>
 										</div>
 									</div>
@@ -231,14 +231,14 @@
 					<div class="review-list-inner review-list-inner--view-list">
 						<div class="js_append review-list-inner__list grid-list grid-list--items-1">
 							{* Error *}
-							{if isset($error)}
+							{if $error}
 								<div class="alert alert-danger" role="alert">
 									{if $error=='captcha'}
-										{$lang->captcha_incorrect}
+										{$lang->captcha_incorrect|escape}
 									{elseif $error=='empty_name'}
-										{$lang->enter_your_name}
+										{$lang->enter_your_name|escape}
 									{elseif $error=='empty_comment'}
-										{$lang->enter_a_comment}
+										{$lang->enter_a_comment|escape}
 									{/if}
 								</div>
 							{/if}
@@ -253,7 +253,7 @@
 														<div class="review-list-inner__line">
 															<div class="review-list-inner__name-wrapper">
 																<div class="review-list-inner__label">
-																	<span class="review-list-inner__date-active font_14 color_999">{$comment->date|date} {$lang->at} {$comment->date|time}</span>
+																	<span class="review-list-inner__date-active font_14 color_999">{$comment->date|date} {$lang->at|escape} {$comment->date|time}</span>
 																</div>
 																<div class="review-list-inner__name switcher-title">
 																	{$comment->name|escape}
@@ -317,7 +317,7 @@
 								{/foreach}
 							{else}
 								<div class="rounded-x bordered alert-empty">
-									{$lang->no_reviews}
+									{$lang->no_reviews|escape}
 								</div>
 							{/if}
 						</div>
@@ -328,12 +328,12 @@
 										{if $current_page_num < $total_pages_num}
 											<div class="ajax_load_btn">
 												<span class="more_text_ajax btn btn-transparent">
-													{$lang->load_more}
+													{$lang->load_more|escape}
 												</span>
 											</div>
 										{/if}
 										{* Paginations *}
-										{include file='components/pagination.tpl'}
+										{include file='paginations/pagination.tpl'}
 									</div>
 								</div>
 							</div>
@@ -347,23 +347,23 @@
 								{foreach $pages as $p}
 									{if $p->menu_id == $page->menu_id}
 										{if $p->visible}
-											<li class="{if $page && $page->id == $p->id}active{/if} {if isset($p->subpages)}opened child{/if}">
+											<li class="{if $page && $page->id == $p->id}active{/if} {if $p->subpages}opened child{/if}">
 												<span class="bg-opacity-theme-parent-hover link-wrapper font_short fill-theme-parent-all fill-dark-light">
 													<a href="{$lang_link}{$p->url}" class="dark_link top-level-link rounded-x link-with-flag {if $page && $page->id == $p->id}link--active{/if}">
 														<span data-page="{$p->id}">{$p->header|escape}</span>
 													</a>
 												</span>
-												{if isset($p->subpages)}
+												{if $p->subpages}
 													<div class="submenu-wrapper">
 														<ul class="submenu">
 															{foreach $p->subpages as $p2}
-																<li class="{if $page && $page->id == $p2->id}active{/if} {if isset($p2->subpages)}opened child{/if}">
+																<li class="{if $page && $page->id == $p2->id}active{/if} {if $p2->subpages}opened child{/if}">
 																	<span class="bg-opacity-theme-parent-hover link-wrapper font_short fill-theme-parent-all fill-dark-light">
 																		<a href="{$lang_link}{$p2->url}" class="dark_link sublink rounded-x {if $page && $page->id == $p2->id}link--active{/if}">
 																			<span data-page="{$p2->id}">{$p2->header|escape}</span>
 																		</a>
 																	</span>
-																	{if isset($p2->subpages)}
+																	{if $p2->subpages}
 																		<div class="submenu-wrapper">
 																			<ul class="submenu">
 																				{foreach $p2->subpages as $p3}

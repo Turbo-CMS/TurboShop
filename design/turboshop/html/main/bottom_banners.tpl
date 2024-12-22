@@ -1,5 +1,5 @@
 {get_banner var=bottom_banners group=$theme_settings->bottom_banners_id}
-{if isset($bottom_banners->items)}
+{if $bottom_banners && $bottom_banners->items}
 	{foreach $bottom_banners->items as $b}
 		<div class="drag-block container BOTTOM_BANNERS" data-class="bottom_banners_drag" data-order="{$theme_settings->block_7}">
 			<div class="index-block index-block--padding-top-{$theme_settings->bottom_banners_padding_top} index-block--padding-bottom-{$theme_settings->bottom_banners_padding_bottom} {if $theme_settings->bottom_banners_delimiter}index-block--delimiter{/if} {if $theme_settings->bottom_banners_background}index-block--fon{/if}">

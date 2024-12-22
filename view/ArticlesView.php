@@ -59,7 +59,7 @@ class ArticlesView extends View
 		}
 
 		// Comment Form
-		if ($this->request->isMethod('post') && $this->request->post('comment')) {
+		if ($this->request->method('post') && $this->request->post('comment')) {
 			$comment = new stdClass();
 
 			$comment->name = $this->request->post('name');
@@ -149,6 +149,10 @@ class ArticlesView extends View
 		$children = [];
 
 		foreach ($this->comments->getComments() as $c) {
+			if (!isset($children[$c->id])) {
+				$children[$c->id] = [];
+			}
+			
 			$children[$c->parent_id][] = $c;
 		}
 
@@ -171,9 +175,9 @@ class ArticlesView extends View
 
 		$allTags = [];
 
-		foreach ($allPosts as $post) {
+		foreach ($allPosts as $p) {
 			// Get Tags
-			$tags = explode(',', $post->meta_keywords);
+			$tags = explode(',', $p->meta_keywords);
 			$tags = array_map("trim", $tags);
 
 			// Merge Tags

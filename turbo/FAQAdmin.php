@@ -8,7 +8,7 @@ class FAQAdmin extends Turbo
 	{
 		$faq = new stdClass();
 
-		if ($this->request->isMethod('post')) {
+		if ($this->request->method('post')) {
 			$faq->id = $this->request->post('id', 'integer');
 			$faq->name = $this->request->post('name');
 			$faq->visible = $this->request->post('visible', 'boolean');
@@ -25,7 +25,15 @@ class FAQAdmin extends Turbo
 			}
 		} else {
 			$faq->id = $this->request->get('id', 'integer');
-			$faq = $this->faq->getFaq((int) $faq->id);
+			
+			if (!empty($faq->id)) {
+				$faq = $this->faq->getFaq((int) $faq->id);
+			} else {
+				$faq->id = null;
+				$faq->name = '';
+				$faq->visible = 1;
+				$faq->answer = '';
+			}
 		}
 
 		$this->design->assign('faq', $faq);

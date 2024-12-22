@@ -8,7 +8,7 @@ class OrdersLabelAdmin extends Turbo
 	{
 		$label = new stdClass();
 
-		if ($this->request->isMethod('post')) {
+		if ($this->request->method('post')) {
 			$label->id = $this->request->post('id', 'integer');
 			$label->name = $this->request->post('name');
 			$label->color = $this->request->post('color');
@@ -25,9 +25,14 @@ class OrdersLabelAdmin extends Turbo
 				$this->design->assign('message_success', 'updated');
 			}
 		} else {
-			$id = $this->request->get('id', 'integer');
-			if (!empty($id)) {
-				$label = $this->orders->getLabel(intval($id));
+			$label->id = $this->request->get('id', 'integer');
+
+			if (!empty($label->id)) {
+				$label = $this->orders->getLabel((int) $label->id);
+			} else {
+				$label->id = null;
+				$label->name = '';
+				$label->color = null;
 			}
 		}
 

@@ -1,0 +1,33 @@
+<?php
+
+$lang['general_settings'] = 'General settings';
+$lang['theme_color'] = 'Theme color';
+$lang['default'] = 'Default';
+$lang['theme_light'] = 'Light';
+$lang['theme_dark'] = 'Dark';
+$lang['logo'] = 'Logo';
+$lang['phone_1'] = 'Phone 1';
+$lang['phone_2'] = 'Phone 2';
+$lang['phone_mask'] = 'Phone mask';
+$lang['email'] = 'E-mail';
+$lang['map'] = 'Map';
+$lang['header'] = 'Header';
+$lang['menu_header_1'] = 'ID menu header 1';
+$lang['menu_header_2'] = 'ID menu header 2';
+$lang['main'] = 'Main page';
+$lang['menu_main_1'] = 'ID menu main 1';
+$lang['menu_main_2'] = 'ID menu main 2';
+$lang['featured_limit'] = 'Featured limit';
+$lang['new_limit'] = 'New limit';
+$lang['discounted_limit'] = 'Discounted limit';
+$lang['hit_limit'] = 'Hits limit';
+$lang['footer'] = 'Footer';
+$lang['id_menu_footer_1'] = 'ID menu footer 1';
+$lang['id_menu_footer_2'] = 'ID menu footer 2';
+$lang['id_menu_footer_3'] = 'ID menu footer 3';
+$lang['sitemap'] = 'Sitemap';
+$lang['id_menu_sitemap_1'] = 'ID menu sitemap 1';
+$lang['id_menu_sitemap_2'] = 'ID menu sitemap 2';
+$lang['id_menu_sitemap_3'] = 'ID menu sitemap 3';
+$lang['id_menu_sitemap_4'] = 'ID menu sitemap 4';
+$lang['id_menu_sitemap_5'] = 'ID menu sitemap 5';

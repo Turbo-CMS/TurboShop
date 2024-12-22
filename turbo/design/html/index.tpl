@@ -105,13 +105,13 @@
 						<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('OrdersAdmin', 'OrderAdmin', 'OrdersLabelsAdmin', 'OrdersLabelAdmin'))}active{/if}">
 							<a data-bs-target="#orders" data-bs-toggle="collapse" {if isset($smarty.get.module) && in_array($smarty.get.module, array('OrdersAdmin', 'OrderAdmin', 'OrdersLabelsAdmin', 'OrdersLabelAdmin'))}class="sidebar-link" aria-expanded="true" {else}class="sidebar-link collapsed" aria-expanded="false"{/if}>
 								<i class="align-middle" data-feather="shopping-cart"></i>
-								<span class="align-middle">{$btr->global_orders}</span>
+								<span class="align-middle">{$btr->global_orders|escape}</span>
 								{if $new_orders_counter}<span class="sidebar-badge badge bg-primary">{$new_orders_counter}</span>{/if}
 							</a>
 							<ul id="orders" class="sidebar-dropdown list-unstyled collapse {if isset($smarty.get.module) && in_array($smarty.get.module, array('OrdersAdmin', 'OrderAdmin', 'OrdersLabelsAdmin', 'OrdersLabelAdmin'))}show{/if}" data-bs-parent="#sidebar">
 								{if in_array('orders', $manager->permissions)}
 									<li class="sidebar-item {if isset($status) && $status==0 || isset($order->status) && $order->status==0}active{/if}">
-										<a class="sidebar-link" href="index.php?module=OrdersAdmin&status=0">{$btr->global_new_order}</a>
+										<a class="sidebar-link" href="index.php?module=OrdersAdmin&status=0">{$btr->global_new_order|escape}</a>
 									</li>
 									<li class="sidebar-item {if isset($status) && $status==1 || isset($order->status) && $order->status==1}active{/if}">
 										<a class="sidebar-link" href="index.php?module=OrdersAdmin&status=1">{$btr->global_accepted_order|escape}</a>
@@ -123,14 +123,14 @@
 										<a class="sidebar-link" href="index.php?module=OrdersAdmin&status=3">{$btr->global_canceled_order|escape}</a>
 									</li>
 								{/if}
-								{if isset($keyword)}
+								{if $keyword}
 									<li class="sidebar-item active">
 										<a class="sidebar-link" href="{url module=OrdersAdmin keyword=$keyword id=null label=null}">{$btr->global_search|escape}</a>
 									</li>
 								{/if}
 								{if in_array('labels', $manager->permissions)}
 									<li class="sidebar-item {if isset($smarty.get.module) && in_array($smarty.get.module, array('OrdersLabelsAdmin', 'OrdersLabelAdmin'))}active{/if}">
-										<a class="sidebar-link" href="index.php?module=OrdersLabelsAdmin">{$btr->global_labels}</a>
+										<a class="sidebar-link" href="index.php?module=OrdersLabelsAdmin">{$btr->global_labels|escape}</a>
 									</li>
 								{/if}
 							</ul>

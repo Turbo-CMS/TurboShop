@@ -11,9 +11,9 @@
                         </i>
                     </div>
                     <div class="form-send__info">
-                        <div class="form-send__info-title switcher-title font_24">{$lang->thank_you}</div>
+                        <div class="form-send__info-title switcher-title font_24">{$lang->thank_you|escape}</div>
                         <div class="form-send__info-text">
-                            {$lang->success_subscribe}
+                            {$lang->success_subscribe|escape}
                         </div>
                     </div>
                 </div>
@@ -21,12 +21,12 @@
         </div>
     </div>
     <div class="form-footer">
-        <div class="btn btn-transparent-border btn-lg jqmClose btn-wide has-ripple">{$lang->close}</div>
+        <div class="btn btn-transparent-border btn-lg jqmClose btn-wide has-ripple">{$lang->close|escape}</div>
     </div>
 {elseif $condition == 'empty_email'}
-    <div class="text-danger">{$lang->enter_your_email}</div>
+    <div class="text-danger">{$lang->enter_your_email|escape}</div>
 {elseif $condition == 'wrong_email'}
-    <div class="text-danger">{$lang->error_format}</div>
+    <div class="text-danger">{$lang->error_format|escape}</div>
 {elseif $condition == 'email_exists'}
-    <div class="text-danger">{$lang->already_subscribe}</div>
+    <div class="text-danger">{$lang->already_subscribe|escape}</div>
 {/if}

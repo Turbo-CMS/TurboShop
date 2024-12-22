@@ -67,24 +67,26 @@ class BrandsView extends View
 		$this->design->assign('auto_meta', $autoMeta);
 
 		// Last Modified
-		$lastModifiedUnix = strtotime($this->settings->lastModifyBrands);
-		$lastModified = gmdate('D, d M Y H:i:s \G\M\T', $lastModifiedUnix);
-		$ifModifiedSince = false;
+		if (isset($lastModifiedUnix)) {
+			$lastModifiedUnix = strtotime($this->settings->lastModifyBrands);
+			$lastModified = gmdate('D, d M Y H:i:s \G\M\T', $lastModifiedUnix);
+			$ifModifiedSince = false;
 
-		if (isset($_ENV['HTTP_IF_MODIFIED_SINCE'])) {
-			$ifModifiedSince = strtotime(substr($_ENV['HTTP_IF_MODIFIED_SINCE'], 5));
+			if (isset($_ENV['HTTP_IF_MODIFIED_SINCE'])) {
+				$ifModifiedSince = strtotime(substr($_ENV['HTTP_IF_MODIFIED_SINCE'], 5));
+			}
+
+			if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
+				$ifModifiedSince = strtotime(substr($_SERVER['HTTP_IF_MODIFIED_SINCE'], 5));
+			}
+
+			if ($ifModifiedSince && $ifModifiedSince >= $lastModifiedUnix) {
+				header($_SERVER['SERVER_PROTOCOL'] . ' 304 Not Modified');
+				exit;
+			}
+
+			header('Last-Modified: ' . $lastModified);
 		}
-
-		if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE'])) {
-			$ifModifiedSince = strtotime(substr($_SERVER['HTTP_IF_MODIFIED_SINCE'], 5));
-		}
-
-		if ($ifModifiedSince && $ifModifiedSince >= $lastModifiedUnix) {
-			header($_SERVER['SERVER_PROTOCOL'] . ' 304 Not Modified');
-			exit;
-		}
-
-		header('Last-Modified: ' . $lastModified);
 
 		// Display
 		return $this->design->fetch('brands.tpl');

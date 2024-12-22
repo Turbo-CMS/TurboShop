@@ -6,7 +6,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{$lang->password_remind_title}</title>
+  <title>{$lang->password_remind_title|escape}</title>
   <meta name="x-apple-disable-message-reformatting">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta content="telephone=no" name="format-detection">
@@ -442,29 +442,29 @@
                                       <tbody>
                                         <tr>
                                           <td class="es-p10t es-p15b" align="center">
-                                            <h1>{$lang->password_remind_title}</h1>
+                                            <h1>{$lang->password_remind_title|escape}</h1>
                                           </td>
                                         </tr>
                                         <tr>
                                           <td class="es-p5t es-p5b es-p40r es-p40l" align="center">
-                                            <p>{$user->name|escape} , {$lang->on_the_site}
+                                            <p>{$user->name|escape} , {$lang->on_the_site|escape}
                                               <a href="{$config->root_url}/{$lang_link}">{$settings->site_name}</a>
-                                              {$lang->email_password_reply}
+                                              {$lang->email_password_reply|escape}
                                             </p>
-                                            <p> {$lang->email_password_change}:</p>
+                                            <p> {$lang->email_password_change|escape}:</p>
                                           </td>
                                         </tr>
                                         <tr>
                                           <td class="es-p5t es-p10b" align="center">
                                             <a class="es-button" target="_blank" href="{$config->root_url}/{$lang_link}user/password_remind/{$code}">
-                                              {$lang->change_password}
+                                              {$lang->change_password|escape}
                                             </a>
                                           </td>
                                         </tr>
                                         <tr>
                                           <td class="es-p15t es-p10b" align="center">
                                             <div style="font-size: 12px;color: #495057;">
-                                              <em>* {$lang->email_password_text}</em>
+                                              <em>* {$lang->email_password_text|escape}</em>
                                             </div>
                                           </td>
                                         </tr>

@@ -3,41 +3,6 @@
 {* Canonical *}
 {$canonical="/article/{$post->url}" scope=global}
 
-{* Breadcrumb *}
-{$level = 1}
-<nav class="mt-4" aria-label="breadcrumb">
-	<ol itemscope itemtype="https://schema.org/BreadcrumbList" class="breadcrumb">
-		<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item">
-			<a itemprop="item" class="text-decoration-none" href="{if $lang_link}{$lang_link}{else}/{/if}">
-				<span itemprop="name" title="{$lang->home}"><i class="fal fa-house me-2"></i>{$lang->home}</span>
-			</a>
-			<meta itemprop="position" content="{$level++}">
-		</li>
-		<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item">
-			<a itemprop="item" class="text-decoration-none" href="{$lang_link}articles">
-				<span itemprop="name">{$lang->global_articles}</span>
-			</a>
-			<meta itemprop="position" content="{$level++}">
-		</li>
-		{if isset($articles_category)}
-			{foreach $articles_category->path as $cat}
-				<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item">
-					<a itemprop="item" class="text-decoration-none" href="{$lang_link}articles/{$cat->url}">
-						<span itemprop="name">{$cat->name|escape}</span>
-					</a>
-					<meta itemprop="position" content="{$level++}">
-				</li>
-			{/foreach}
-		{/if}
-		<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item active">
-			<a itemprop="item" class="text-decoration-none" href="{$lang_link}article/{$post->url}">
-				<span itemprop="name">{$post->name|escape}</span>
-			</a>
-			<meta itemprop="position" content="{$level++}">
-		</li>
-	</ol>
-</nav>
-
 <div itemscope itemtype="http://schema.org/Article">
 	{* Schema.org *}
 	<div itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
@@ -57,7 +22,7 @@
 		<span data-article="{$post->id}">{$post->name|escape}</span>
 	</h1>
 
-	<hr class="text-black-50">
+	<hr>
 
 	{* Date & Time *}
 	<div class="mb-3">
@@ -81,14 +46,14 @@
 		</div>
 	</div>
 
-	<hr class="text-black-50">
+	<hr>
 
 	{* Image *}
 	{if $post->image}
 		<div class="card mb-4">
 			<img itemprop="image" class="img-fluid rounded" src="{$post->image|resize_articles:964:964}" alt="{$post->name|escape}">
 		</div>
-		<hr class="text-black-50">
+		<hr>
 	{/if}
 
 	{* Table of Content *}
@@ -97,7 +62,7 @@
 			<div class="table-of-contents bg-body-tertiary rounded open">
 				<div class="table-of-contents-header pt-3 ps-3 pb-2">
 					<h6 class="js-table-of-contents-hide table-of-contents-hide">
-						{$lang->table_of_contents}
+						{$lang->table_of_contents|escape}
 						<i class="icon-action fa fa-chevron-down ms-1"></i>
 					</h6>
 				</div>
@@ -136,7 +101,7 @@
 
 {* Prev & Next *}
 {if $prev_post || $next_post}
-	<hr class="text-black-50">
+	<hr>
 	<div class="row">
 		<div class="col-lg-6 col-sm-6 col-6 text-start">
 			{if $prev_post}
@@ -156,7 +121,7 @@
 		</div>
 	</div>
 
-	<hr class="text-black-50">
+	<hr>
 {/if}
 
 {* Comments *}

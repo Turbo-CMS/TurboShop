@@ -12,7 +12,7 @@
 	{/if}
 </h1>
 
-{if isset($message_success)}
+{if $message_success}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -37,7 +37,7 @@
 	</div>
 {/if}
 
-{if isset($message_error)}
+{if $message_error}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -65,14 +65,14 @@
 						<div class="col-lg-10 col-md-9 col-sm-12">
 							<div class="translate-container mb-3">
 								<div class="form-label">{$btr->global_title|escape} <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
-								<input class="form-control mb-h translate-input" name="name" type="text" value="{if isset($payment_method->name)}{$payment_method->name|escape}{/if}">
+								<input class="form-control mb-h translate-input" name="name" type="text" value="{$payment_method->name|escape}">
 								<input name="id" type="hidden" value="{$payment_method->id|escape}">
 							</div>
 						</div>
 						<div class="col-lg-2 col-md-3 col-sm-12">
 							<div class="d-flex justify-content-center align-content-center flex-wrap flex-md-column h-100">
 								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
-									<input class="form-check-input ms-2" type="checkbox" id="enabled" name="enabled" value="1" type="checkbox" {if isset($payment_method->enabled) && $payment_method->enabled}checked=""{/if}>
+									<input class="form-check-input ms-2" type="checkbox" id="enabled" name="enabled" value="1" type="checkbox" {if $payment_method->enabled}checked=""{/if}>
 									<label class="form-check-label ms-2" for="enabled">{$btr->global_enable|escape}</label>
 								</div>
 							</div>
@@ -107,7 +107,7 @@
 											<select name="module" class="selectpicker">
 												<option value='null'>{$btr->global_method_manual|escape}</option>
 												{foreach $payment_modules as $payment_module}
-													<option value="{$payment_module@key|escape}" {if isset($payment_method->module) && $payment_method->module == $payment_module@key}selected{/if}>{$payment_module->name|escape}</option>
+													<option value="{$payment_module@key|escape}" {if $payment_method->module == $payment_module@key}selected{/if}>{$payment_module->name|escape}</option>
 												{/foreach}
 											</select>
 										</div>
@@ -117,7 +117,7 @@
 											<div class="form-label">{$btr->global_currency|escape}</div>
 											<select name="currency_id" class="selectpicker">
 												{foreach $currencies as $currency}
-													<option value="{$currency->id}" {if isset($payment_method->currency_id) && $currency->id == $payment_method->currency_id}selected{/if}>{$currency->name|escape}</option>
+													<option value="{$currency->id}" {if $currency->id == $payment_method->currency_id}selected{/if}>{$currency->name|escape}</option>
 												{/foreach}
 											</select>
 										</div>
@@ -142,7 +142,7 @@
 														{$option = $setting->options|@first}
 														<div class="col-lg-6 d-flex align-items-center">
 															<div class="form-check form-switch mb-3 mt-lg-3 mt-0">
-																<input class="form-check-input me-2" type="checkbox" id="payment-settings-{$option->value|escape}" name="payment_settings[{$setting->variable}]" value="{$option->value|escape}" {if $option->value==$payment_settings[$setting->variable]}checked{/if}>
+																<input class="form-check-input me-2" type="checkbox" id="payment-settings-{$option->value|escape}" name="payment_settings[{$setting->variable}]" value="{$option->value|escape}" {if isset($payment_settings[$setting->variable]) && $option->value==$payment_settings[$setting->variable]}checked{/if}>
 																<label class="form-check-label" for="payment-settings-{$option->value|escape}">{$setting->name|escape}</label>
 															</div>
 														</div>
@@ -150,7 +150,7 @@
 														<div class="col-lg-6">
 															<div class="mb-3">
 																<div class="form-label" for="{$setting->variable}">{$setting->name|escape}</div>
-																<input name="payment_settings[{$setting->variable}]" class="form-control" type="text" value="{if isset($payment_settings[$setting->variable])}{$payment_settings[$setting->variable]|escape}{/if}" id="{$setting->variable}">
+																<input name="payment_settings[{$setting->variable}]" class="form-control" type="text" value="{$payment_settings[$setting->variable]|default:''|escape}" id="{$setting->variable}">
 															</div>
 														</div>
 													{/if}
@@ -183,8 +183,8 @@
 				<div class="collapse-card">
 					<div class="card-body">
 						<ul class="checkout-images-list mb-1">
-							<li class="checkout-image-item border-image-item-two {if isset($payment_method->icon) && $payment_method->icon}border{/if}">
-								{if isset($payment_method->icon) && $payment_method->icon}
+							<li class="checkout-image-item border-image-item-two {if $payment_method->icon}border{/if}">
+								{if $payment_method->icon}
 									<input type="hidden" class="js-accept-delete-two" name="delete_icon" value="">
 									<div class="js-parent-image-two">
 										<div class="checkout-image image-wrapper js-image-wrapper-two text-xs-center">
@@ -195,7 +195,7 @@
 								{else}
 									<div class="js-parent-image-two"></div>
 								{/if}
-								<div class="js-upload-image-two dropzone-block-image {if isset($payment_method->icon) && $payment_method->icon}d-none{/if}">
+								<div class="js-upload-image-two dropzone-block-image {if $payment_method->icon}d-none{/if}">
 									<i class="align-middle" data-feather="plus"></i>
 									<input class="dropzone-image-two" name="icon" type="file">
 								</div>
@@ -206,7 +206,7 @@
 							</li>
 						</ul>
 						<div class="form-label">{$btr->icon_code|escape}</div>
-						<input class="form-control" name="code" type="text" value="{if isset($payment_method->code)}{$payment_method->code|escape}{/if}">
+						<input class="form-control" name="code" type="text" value="{if $payment_method->code}{$payment_method->code|escape}{/if}">
 					</div>
 				</div>
 			</div>
@@ -258,7 +258,7 @@
 				</div>
 				<div class="collapse-card">
 					<div class="card-body">
-						<textarea name="description" id="js-editor" class="editor js-editor-class">{if isset($payment_method->description)}{$payment_method->description|escape}{/if}</textarea>
+						<textarea name="description" id="js-editor" class="editor js-editor-class">{$payment_method->description|escape}</textarea>
 						<div class="row">
 							<div class="col-12">
 								<div class="d-grid d-sm-block mt-3">

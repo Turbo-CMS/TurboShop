@@ -12,7 +12,7 @@ class UserView extends View
 		}
 
 		// Form
-		if ($this->request->isMethod('post') && $this->request->post('name')) {
+		if ($this->request->method('post') && $this->request->post('name')) {
 			$name = $this->request->post('name');
 			$email = $this->request->post('email');
 			$phone = $this->request->post('phone');

@@ -428,6 +428,10 @@
 			<variable>landing_pages_header_id</variable>
 			<name>{$lang->landing_pages_id}</name>
 		</settings>
+		<settings>
+			<variable>header_banners_id</variable>
+			<name>{$lang->grup_id}</name>
+		</settings>
 	</group>
 	<group type="sort">
         <name>{$lang->main_page}</name>

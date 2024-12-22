@@ -1,11 +1,11 @@
 {* FAQ *}
 
-{if isset($page)}
+{if $page}
 	{* Canonical *}
 	{$canonical="/{$page->url}" scope=global}
 {else}
 	{* Meta Title *}
-	{$meta_title = $lang->faq scope=global}
+	{$meta_title = $lang->faq_name scope=global}
 
 	{* Canonical *}
 	{$canonical="/faq" scope=global}
@@ -20,8 +20,8 @@
 				<div id="navigation">
 					<div class="breadcrumbs swipeignore" itemscope="" itemtype="http://schema.org/BreadcrumbList">
 						<div class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-							<a class="breadcrumbs__link" href="{if $lang_link}{$lang_link}{else}/{/if}" title="{$lang->home}" itemprop="item">
-								<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->home}</span>
+							<a class="breadcrumbs__link" href="{if $lang_link}{$lang_link}{else}/{/if}" title="{$lang->home|escape}" itemprop="item">
+								<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->home|escape}</span>
 								<meta itemprop="position" content="{$level++}">
 							</a>
 						</div>
@@ -32,7 +32,7 @@
 								</svg>
 							</i>
 						</span>
-						{if isset($page)}
+						{if $page}
 							<span class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
 								<link href="{$lang_link}{$page->url}" itemprop="item">
 								<span>
@@ -44,7 +44,7 @@
 							<span class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
 								<link href="{$lang_link}faq" itemprop="item">
 								<span>
-									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->faq}</span>
+									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->faq_name|escape}</span>
 									<meta itemprop="position" content="{$level++}">
 								</span>
 							</span>
@@ -57,10 +57,10 @@
 				<div class="topic__inner">
 					<div class="topic__heading">
 						{* Page Title *}
-						{if isset($page->name)}
+						{if $page}
 							<h1 id="pagetitle" class="switcher-title"><span data-page="{$page->id}">{$page->name|escape}</span></h1>
 						{else}
-							<h1 id="pagetitle" class="switcher-title">{$lang->faq}</h1>
+							<h1 id="pagetitle" class="switcher-title">{$lang->faq_name|escape}</h1>
 						{/if}
 					</div>
 				</div>
@@ -77,7 +77,7 @@
 			<div class="col-md-12 col-sm-12 col-xs-12 content-md">
 				<div class="right_block narrow_Y">
 					{* Page Body *}
-					{if isset($page->body)}
+					{if $page && $page->body}
 						<div class="text_before_items">
 							<div>
 								{$page->body}
@@ -119,29 +119,33 @@
 										{if $current_page_num < $total_pages_num}
 											<div class="ajax_load_btn">
 												<span class="more_text_ajax btn btn-transparent">
-													{$lang->load_more}
+													{$lang->load_more|escape}
 												</span>
 											</div>
 										{/if}
 										{* Paginations *}
-										{include file='components/pagination.tpl'}
+										{include file='paginations/pagination.tpl'}
 									</div>
 								</div>
 							</div>
 						{/if}
+					{else}
+						<div class="alert alert-info">
+							{$lang->no_faqs_found|escape}
+						</div>
 					{/if}
 					<div class="rounded-x grey-bg order-block__wrapper">
 						<div class="order-info-block">
 							<div class="line-block line-block--align-normal line-block--40">
 								<div class="line-block__item flex-1">
-									<h3>{$lang->ask_question}</h3>
-									{$lang->text_faq}
+									<h3>{$lang->ask_question|escape}</h3>
+									{$lang->text_faq|escape}
 								</div>
 								<div class="line-block__item order-info-btns">
 									<div class="line-block line-block--align-normal line-block--12">
 										<div class="line-block__item">
 											<span class="btn btn-default btn-lg min_width--300" data-event="jqm" data-url="{$lang_link}contact/?tpl=feedback_modal" data-name="question">
-												<span>{$lang->write_message}</span>
+												<span>{$lang->write_message|escape}</span>
 											</span>
 										</div>
 									</div>
@@ -157,23 +161,23 @@
 								{foreach $pages as $p}
 									{if $p->menu_id == $page->menu_id}
 										{if $p->visible}
-											<li class="{if $page && $page->id == $p->id}active{/if} {if isset($p->subpages)}opened child{/if}">
+											<li class="{if $page && $page->id == $p->id}active{/if} {if $p->subpages}opened child{/if}">
 												<span class="bg-opacity-theme-parent-hover link-wrapper font_short fill-theme-parent-all fill-dark-light">
 													<a href="{$lang_link}{$p->url}" class="dark_link top-level-link rounded-x link-with-flag {if $page && $page->id == $p->id}link--active{/if}">
 														<span data-page="{$p->id}">{$p->header|escape}</span>
 													</a>
 												</span>
-												{if isset($p->subpages)}
+												{if $p->subpages}
 													<div class="submenu-wrapper">
 														<ul class="submenu">
 															{foreach $p->subpages as $p2}
-																<li class="{if $page && $page->id == $p2->id}active{/if} {if isset($p2->subpages)}opened child{/if}">
+																<li class="{if $page && $page->id == $p2->id}active{/if} {if $p2->subpages}opened child{/if}">
 																	<span class="bg-opacity-theme-parent-hover link-wrapper font_short fill-theme-parent-all fill-dark-light">
 																		<a href="{$lang_link}{$p2->url}" class="dark_link sublink rounded-x {if $page && $page->id == $p2->id}link--active{/if}">
 																			<span data-page="{$p2->id}">{$p2->header|escape}</span>
 																		</a>
 																	</span>
-																	{if isset($p2->subpages)}
+																	{if $p2->subpages}
 																		<div class="submenu-wrapper">
 																			<ul class="submenu">
 																				{foreach $p2->subpages as $p3}

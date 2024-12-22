@@ -1,6 +1,6 @@
 {* Feedback Page *}
 
-{if isset($page)}
+{if $page}
 	{* Canonical *}
 	{$canonical="/{$page->url}" scope=global}
 {else}
@@ -11,53 +11,25 @@
 	{$canonical="/contact" scope=global}
 {/if}
 
-{* Breadcrumb *}
-{$level = 1}
-<nav class="mt-4" aria-label="breadcrumb">
-	<ol itemscope itemtype="http://schema.org/BreadcrumbList" class="breadcrumb">
-		<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="breadcrumb-item">
-			<a itemprop="item" class="text-decoration-none" href="{if $lang_link}{$lang_link}{else}/{/if}">
-				<span itemprop="name" title="{$lang->home}"><i class="fal fa-house me-2"></i>{$lang->home}</span>
-			</a>
-			<meta itemprop="position" content="{$level++}">
-		</li>
-		{if isset($page)}
-			<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="breadcrumb-item active" aria-current="page">
-				<a itemprop="item" class="text-decoration-none" href="{$lang_link}{$page->url}">
-					<span itemprop="name">{$page->header|escape}</span>
-				</a>
-				<meta itemprop="position" content="{$level++}">
-			</li>
-		{else}
-			<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="breadcrumb-item active" aria-current="page">
-				<a itemprop="item" class="text-decoration-none" href="{$lang_link}contact">
-					<span itemprop="name">{$lang->contacts}</span>
-				</a>
-				<meta itemprop="position" content="{$level++}">
-			</li>
-		{/if}
-	</ol>
-</nav>
-
 {* Page Title *}
-{if isset($page->name)}
+{if $page}
 	<h1 class="my-4">
 		<span data-page="{$page->id}">{$page->name|escape}</span>
 	</h1>
 {else}
-	<h1 class="my-4">{$lang->contacts}</h1>
+	<h1 class="my-4">{$lang->contacts|escape}</h1>
 {/if}
 
 {* Page Body *}
-{if isset($page->body)}
+{if $page}
 	{$page->body}
 {/if}
 
 {* Address *}
-<p><i class="fal fa-location-dot"></i> <span class="fw-bold">{$lang->address}:</span> {$lang->contact_details}</class=>
+<p><i class="fal fa-location-dot"></i> <span class="fw-bold">{$lang->address|escape}:</span> {$lang->contact_details|escape}</class=>
 
 {* Phone *}
-<p><i class="fal fa-mobile"></i> <span class="fw-bold">{$lang->phone}:</span>: {$lang->phone_number}</p>
+<p><i class="fal fa-mobile"></i> <span class="fw-bold">{$lang->phone|escape}:</span>: {$lang->phone_number|escape}</p>
 
 {* Map *}
 {if $theme_settings->map}
@@ -66,58 +38,58 @@
 	</div>
 {/if}
 
-<h2>{$lang->global_feedback}</h2>
+<h2>{$lang->global_feedback|escape}</h2>
 
-{if isset($message_sent)}
+{if $message_sent}
 	<div class="alert alert-success" role="alert">
-		{$name|escape}, {$lang->feedback_message_sent}
+		{$name|escape}, {$lang->feedback_message_sent|escape}
 	</div>
 {else}
-	{if isset($error)}
+	{if $error}
 		<div class="alert alert-danger" role="alert">
 			{if $error=='captcha'}
-				{$lang->captcha_incorrect}
+				{$lang->captcha_incorrect|escape}
 			{elseif $error=='empty_name'}
-				{$lang->enter_your_name}
+				{$lang->enter_your_name|escape}
 			{elseif $error=='empty_email'}
-				{$lang->enter_your_email}
+				{$lang->enter_your_email|escape}
 			{elseif $error=='empty_text'}
-				{$lang->enter_your_message}
+				{$lang->enter_your_message|escape}
 			{/if}
 		</div>
 	{/if}
 	<form class="form-horizontal needs-validation mt-4" role="form" method="post" novalidate>
 		<div class="mb-3">
-			<label for="feedback-name" class="form-label">{$lang->name}<span class="text-danger">*</span></label>
-			<input type="text" class="form-control" name="name" id="feedback-name" value="{if isset($name)}{$name|escape}{/if}" placeholder="{$lang->enter_your_name}" required>
-			<div class="invalid-feedback">{$lang->enter_your_name}</div>
+			<label for="feedback-name" class="form-label">{$lang->name|escape}<span class="text-danger">*</span></label>
+			<input type="text" class="form-control" name="name" id="feedback-name" value="{$name|escape}" placeholder="{$lang->enter_your_name|escape}" required>
+			<div class="invalid-feedback">{$lang->enter_your_name|escape}</div>
 		</div>
 		<div class="mb-3">
 			<label for="feedback-email" class="form-label">Email<span class="text-danger">*</span></label>
-			<input type="email" class="form-control" name="email" id="feedback-email" value="{if isset($email)}{$email|escape}{/if}" placeholder="{$lang->enter_your_email}" maxlength="255" required>
-			<div class="invalid-feedback">{$lang->enter_your_email}</div>
+			<input type="email" class="form-control" name="email" id="feedback-email" value="{$email|escape}" placeholder="{$lang->enter_your_email|escape}" maxlength="255" required>
+			<div class="invalid-feedback">{$lang->enter_your_email|escape}</div>
 		</div>
 		<div class="mb-3">
-			<label for="feedback-message" class="form-label">{$lang->message}<span class="text-danger">*</span></label>
-			<textarea class="form-control" name="message" id="feedback-message" placeholder="{$lang->enter_your_message}" rows="4" required>{if isset($message)}{$message|escape}{/if}</textarea>
-			<div class="invalid-feedback">{$lang->enter_your_message}</div>
+			<label for="feedback-message" class="form-label">{$lang->message|escape}<span class="text-danger">*</span></label>
+			<textarea class="form-control" name="message" id="feedback-message" placeholder="{$lang->enter_your_message|escape}" rows="4" required>{$message|escape}</textarea>
+			<div class="invalid-feedback">{$lang->enter_your_message|escape}</div>
 		</div>
 		{if $settings->captcha_feedback}
 			<div class="row">
-				<label for="captcha" class="form-label">{$lang->captcha}<span class="text-danger">*</span></label>
+				<label for="captcha" class="form-label">{$lang->captcha|escape}<span class="text-danger">*</span></label>
 				<div class="col-md-2 pb-3">
 					{get_captcha var="captcha_feedback"}
 					<div class="secret-number">{$captcha_feedback[0]|escape} + ? = {$captcha_feedback[1]|escape}</div>
 				</div>
 				<div class="col-md-10">
-					<input type="text" id="captcha" class="form-control" name="captcha_code" value="" placeholder="{$lang->enter_captcha}" autocomplete="off" required>
-					<div class="invalid-feedback">{$lang->enter_captcha}</div>
+					<input type="text" id="captcha" class="form-control" name="captcha_code" value="" placeholder="{$lang->enter_captcha|escape}" autocomplete="off" required>
+					<div class="invalid-feedback">{$lang->enter_captcha|escape}</div>
 				</div>
 			</div>
 		{/if}
 		<div class="mt-3">
 			<div class="col-sm-offset-2">
-				<input type="submit" class="btn btn-primary" name="feedback" value="{$lang->send}">
+				<input type="submit" class="btn btn-primary" name="feedback" value="{$lang->send|escape}">
 			</div>
 		</div>
 	</form>

@@ -6,8 +6,9 @@ class ManagerAdmin extends Turbo
 {
 	public function fetch()
 	{
-		if ($this->request->isMethod('post')) {
-			$manager = new stdClass();
+		$manager = new stdClass();
+
+		if ($this->request->method('post')) {
 			$manager->oldLogin = $this->request->post('old_login');
 			$manager->login = $this->request->post('login');
 
@@ -45,6 +46,9 @@ class ManagerAdmin extends Turbo
 
 			if (!empty($login)) {
 				$manager = $this->managers->getManager($login);
+			} else {
+				$manager->login = null;
+				$manager->permissions = null;
 			}
 		}
 

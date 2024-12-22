@@ -313,6 +313,12 @@ class Template extends BaseCompiler {
 	 */
 	private $noCacheStackDepth = 0;
 
+	/**
+	 * disabled auto-escape (when set to true, the next variable output is not auto-escaped)
+	 *
+	 * @var boolean
+	 */
+	private $raw_output = false;
 
 	/**
 	 * Initialize compiler
@@ -368,7 +374,7 @@ class Template extends BaseCompiler {
 	 * @throws CompilerException
 	 * @throws Exception
 	 */
-	public function compileTemplateSource(\Smarty\Template $template, \Smarty\Compiler\Template $parent_compiler = null) {
+	public function compileTemplateSource(\Smarty\Template $template, ?\Smarty\Compiler\Template $parent_compiler = null) {
 		try {
 			// save template object in compiler class
 			$this->template = $template;
@@ -1485,5 +1491,22 @@ class Template extends BaseCompiler {
 	 */
 	public function getTagStack(): array {
 		return $this->_tag_stack;
+	}
+
+	/**
+	 * Should the next variable output be raw (true) or auto-escaped (false)
+	 * @return bool
+	 */
+	public function isRawOutput(): bool {
+		return $this->raw_output;
+	}
+
+	/**
+	 * Should the next variable output be raw (true) or auto-escaped (false)
+	 * @param bool $raw_output
+	 * @return void
+	 */
+	public function setRawOutput(bool $raw_output): void {
+		$this->raw_output = $raw_output;
 	}
 }

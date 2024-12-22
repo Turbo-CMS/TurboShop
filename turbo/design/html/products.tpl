@@ -1,4 +1,4 @@
-{if isset($category)}
+{if $category}
 	{$meta_title=$category->name scope=global}
 {else}
 	{$meta_title=$btr->global_products scope=global}
@@ -8,16 +8,10 @@
 	<div class="col-lg-8 col-md-8">
 		<div class="d-md-flex mb-3">
 			<h1 class="d-inline align-middle me-3">
-				{if $products_count}
-					{if isset($category->name) || isset($brand->name)}
-						{if isset($category)}{$category->name|escape}{/if} {if isset($brand)}{$brand->name|escape}{/if} - {$products_count}
-					{elseif isset($keyword)}
-						{$btr->global_products|escape} - {$products_count}
-					{else}
-						{$btr->global_products|escape} - {$products_count}
-					{/if}
+				{if $category || $brand}
+					{$category->name|default:''|escape} {$brand->name|default:''|escape} - {$products_count}
 				{else}
-					{$btr->products_no|escape}
+					{$btr->global_products|escape} - {$products_count}
 				{/if}
 			</h1>
 			<div class="d-grid d-sm-block mt-2 mt-md-0">
@@ -29,7 +23,7 @@
 		<form class="search mb-3" method="get">
 			<input type="hidden" name="module" value="ProductsAdmin">
 			<div class="input-group">
-				<input name="keyword" class="form-control" placeholder="{$btr->global_search|escape}" type="text" value="{if isset($keyword)}{$keyword|escape}{/if}">
+				<input name="keyword" class="form-control" placeholder="{$btr->global_search|escape}" type="text" value="{$keyword|escape}">
 				<button class="btn btn-primary" type="submit"><i class="align-middle mt-n1" data-feather="search"></i></button>
 			</div>
 		</form>
@@ -54,26 +48,26 @@
 					<div class="row">
 						<div class="col-md-3 col-lg-3 col-sm-12 mb-3">
 							<select id="id-filter" name="products_filter" class="selectpicker" data-live-search="true" data-size="10" onchange="location = this.value;">
-								<option value="{url brand_id=null category_id=null keyword=null page=null limit=null filter=null}" {if !isset($filter)}selected{/if}>{$btr->global_all_products|escape}</option>
-								<option value="{url keyword=null brand_id=null category_id=null page=null limit=null filter='featured'}" {if isset($filter) && $filter == 'featured'}selected{/if}>{$btr->products_bestsellers|escape}</option>
-								<option value="{url keyword=null brand_id=null category_id=null page=null limit=null filter='new'}" {if isset($filter) && $filter == 'new'}selected{/if}>{$btr->global_new|escape}</option>
-								<option value="{url keyword=null brand_id=null category_id=null page=null limit=null filter='hit'}" {if isset($filter) && $filter == 'hit'}selected{/if}>{$btr->global_hit|escape}</option>
-								<option value="{url keyword=null brand_id=null category_id=null page=null limit=null filter='discounted'}" {if isset($filter) && $filter == 'discounted'}selected{/if}>{$btr->products_discount|escape}</option>
-								<option value="{url keyword=null brand_id=null category_id=null page=null limit=null filter='to_xml'}" {if isset($filter) && $filter == 'to_xml'}selected{/if}>{$btr->global_xml|escape}</option>
-								<option value="{url keyword=null brand_id=null category_id=null page=null limit=null filter='visible'}" {if isset($filter) && $filter == 'visible'}selected{/if}>{$btr->products_enable|escape}</option>
-								<option value="{url keyword=null brand_id=null category_id=null page=null limit=null filter='hidden'}" {if isset($filter) && $filter == 'hidden'}selected{/if}>{$btr->products_disable|escape}</option>
-								<option value="{url keyword=null brand_id=null category_id=null page=null limit=null filter='outofstock'}" {if isset($filter) && $filter == 'outofstock'}selected{/if}>{$btr->products_out_of_stock|escape}</option>
+								<option value="{url brand_id=null category_id=null keyword=null page=null limit=null filter=null}" {if !$filter}selected{/if}>{$btr->global_all_products|escape}</option>
+								<option value="{url keyword=null brand_id=null category_id=null page=null limit=null filter='featured'}" {if $filter == 'featured'}selected{/if}>{$btr->products_bestsellers|escape}</option>
+								<option value="{url keyword=null brand_id=null category_id=null page=null limit=null filter='new'}" {if $filter == 'new'}selected{/if}>{$btr->global_new|escape}</option>
+								<option value="{url keyword=null brand_id=null category_id=null page=null limit=null filter='hit'}" {if $filter == 'hit'}selected{/if}>{$btr->global_hit|escape}</option>
+								<option value="{url keyword=null brand_id=null category_id=null page=null limit=null filter='discounted'}" {if $filter == 'discounted'}selected{/if}>{$btr->products_discount|escape}</option>
+								<option value="{url keyword=null brand_id=null category_id=null page=null limit=null filter='to_xml'}" {if $filter == 'to_xml'}selected{/if}>{$btr->global_xml|escape}</option>
+								<option value="{url keyword=null brand_id=null category_id=null page=null limit=null filter='visible'}" {if $filter == 'visible'}selected{/if}>{$btr->products_enable|escape}</option>
+								<option value="{url keyword=null brand_id=null category_id=null page=null limit=null filter='hidden'}" {if $filter == 'hidden'}selected{/if}>{$btr->products_disable|escape}</option>
+								<option value="{url keyword=null brand_id=null category_id=null page=null limit=null filter='outofstock'}" {if $filter == 'outofstock'}selected{/if}>{$btr->products_out_of_stock|escape}</option>
 							</select>
 						</div>
 						<div class="col-md-3 col-lg-3 col-sm-12 mb-3">
 							<select id="id-categories" name="categories_filter" title="{$btr->global_category_filter|escape}" class="selectpicker" data-live-search="true" data-size="10" onchange="location = this.value;">
-								<option value="{url keyword=null brand_id=null page=null limit=null category_id=null}" {if !isset($category)}selected{/if}>{$btr->global_all_categories|escape}</option>
+								<option value="{url keyword=null brand_id=null page=null limit=null category_id=null}" {if !$category}selected{/if}>{$btr->global_all_categories|escape}</option>
 								{function name=category_select level=0}
 									{foreach $categories as $c}
-										<option value='{url keyword=null brand_id=null page=null limit=null category_id=$c->id}' {if isset($category) && $category->id == $c->id}selected{/if}>
+										<option value='{url keyword=null brand_id=null page=null limit=null category_id=$c->id}' {if $category && $category->id == $c->id}selected{/if}>
 											{section sp $level}--{/section} {$c->name|escape}
 										</option>
-										{if isset($c->subcategories)}
+										{if $c->subcategories}
 											{category_select categories=$c->subcategories level=$level+1}
 										{/if}
 									{/foreach}
@@ -83,9 +77,9 @@
 						</div>
 						<div class="col-md-3 col-lg-3 col-sm-12 mb-3">
 							<select id="id-brands" name="brands_filter" title="{$btr->global_brand_filter|escape}" class="selectpicker" data-live-search="true" data-size="10" onchange="location = this.value;">
-								<option value="{url keyword=null brand_id=null page=null limit=null category_id=null}" {if !isset($brand)}selected{/if}>{$btr->global_all_brands|escape}</option>
+								<option value="{url keyword=null brand_id=null page=null limit=null category_id=null}" {if !$brand}selected{/if}>{$btr->global_all_brands|escape}</option>
 								{foreach $brands as $b}
-									<option value="{url keyword=null page=null limit=null brand_id=$b->id}" brand_id="{$b->id}" {if isset($brand) && $brand->id == $b->id}selected{/if}>{$b->name}</option>
+									<option value="{url keyword=null page=null limit=null brand_id=$b->id}" brand_id="{$b->id}" {if $brand && $brand->id == $b->id}selected{/if}>{$b->name}</option>
 								{/foreach}
 							</select>
 						</div>
@@ -131,7 +125,7 @@
 												{$image = $product->images|@first}
 												{if $image}
 													<a href="{url module=ProductAdmin id=$product->id return=$smarty.server.REQUEST_URI}">
-														<img src="{$image->filename|escape|resize:45:45}" alt="{$product->name|escape}"></a>
+														<img src="{$image->filename|resize:45:45}" alt="{$product->name|escape}"></a>
 												{else}
 													<a href="{url module=ProductAdmin id=$product->id return=$smarty.server.REQUEST_URI}">
 														<i class="align-middle" data-feather="camera"></i>
@@ -148,7 +142,7 @@
 												<div class="d-block d-lg-none mt-1">
 													<span class="text-primary fw-bold">
 														{$product->variants[0]->oprice}
-														{if isset($currencies[$product->variants[0]->currency_id])}
+														{if $currencies[$product->variants[0]->currency_id]}
 															{$currencies[$product->variants[0]->currency_id]->code|escape}
 														{/if}
 													</span>
@@ -168,7 +162,7 @@
 												<div class="input-group">
 													<input class="form-control {if $product->variants[0]->compare_price > 0}text-danger{/if}" type="text" name="price[{$product->variants[0]->id}]" value="{$product->variants[0]->oprice}">
 													<span class="input-group-text">
-														{if isset($currencies[$product->variants[0]->currency_id])}
+														{if $currencies[$product->variants[0]->currency_id]}
 															{$currencies[$product->variants[0]->currency_id]->sign|escape}
 														{else}
 															{$currency->sign}
@@ -231,7 +225,7 @@
 																<div class="input-group">
 																	<input class="form-control {if $product->variants[0]->compare_price > 0}text-danger{/if}" type="text" name="price[{$variant->id}]" value="{$variant->oprice}">
 																	<span class="input-group-text">
-																		{if isset($currencies[$variant->currency_id])}
+																		{if $currencies[$variant->currency_id]}
 																			{$currencies[$variant->currency_id]->sign|escape}
 																		{else}
 																			{$currency->sign}
@@ -306,7 +300,7 @@
 												{function name=category_select_btn level=0}
 													{foreach $categories as $category}
 														<option value="{$category->id}">{section sp $level}--{/section} {$category->name|escape}</option>
-														{if isset($category->subcategories)}
+														{if $category->subcategories}
 															{category_select_btn categories=$category->subcategories level=$level+1}
 														{/if}
 													{/foreach}
@@ -379,21 +373,20 @@
 				}
 			});
 
-			$(document).on("click", ".js-copy", function() {
-				$('.js-form-list input[type="checkbox"][name*="check"]').attr('checked', false);
-				$(this).closest(".js-form-list").find('select[name="action"] option[value=duplicate]').attr('selected', true);
-				$(this).closest(".js-row").find('input[type="checkbox"][name*="check"]').attr('checked', true);
-				$(this).closest(".js-row").find('input[type="checkbox"][name*="check"]').click();
-				$(this).closest(".js-form-list").submit();
+			$(document).on('click', '.js-copy', function() {
+				const checkbox = $(this).closest('.js-row').find('input[type="checkbox"][name*="check"]');
+				checkbox.prop('checked', true).trigger('change');
+				$(this).closest('.js-form-list').find('select[name="action"] option[value="duplicate"]').prop('selected', true);
+				$(this).closest('.js-form-list').submit();
 			});
 
-			$("input[name*=stock]").focus(function() {
+			$('input[name*=stock]').focus(function() {
 				if ($(this).val() == '∞')
 					$(this).val('');
 				return false;
 			});
 
-			$("input[name*=stock]").blur(function() {
+			$('input[name*=stock]').blur(function() {
 				if ($(this).val() == '')
 					$(this).val('∞');
 			});

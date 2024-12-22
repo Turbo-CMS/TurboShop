@@ -39,7 +39,7 @@
 		<div class="col-12 col-md-6 col-xxl">
 			<div class="card">
 				<div class="card-header">
-					<h5 class="card-title mb-0">{$btr->system_server_ip}</h5>
+					<h5 class="card-title mb-0">{$btr->system_server_ip|escape}</h5>
 				</div>
 				<div class="collapse-card">
 					<div class="card-body">

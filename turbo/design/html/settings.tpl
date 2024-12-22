@@ -4,7 +4,7 @@
 	{$btr->global_settings_title|escape}
 </h1>
 
-{if isset($message_success)}
+{if $message_success}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -278,7 +278,7 @@
 							<div class="js-trace col-12 d-none">
 								<div class="alert alert-primary alert-dismissible mb-2" role="alert">
 									<div class="alert-message">
-										<h4 class="alert-heading">{$btr->settings_notify_test_smtp_trace}</h4>
+										<h4 class="alert-heading">{$btr->settings_notify_test_smtp_trace|escape}</h4>
 										<div class="js-test-smtp-trace"></div>
 									</div>
 								</div>
@@ -829,23 +829,36 @@
 								<div class="row">
 									<div class="col-xl-3 col-lg-4 col-md-6 my-2">
 										<div class="form-check form-switch form-check-reverse form-check-inline">
-											<input class="form-check-input ms-2" id="smart-resize" name="smart_resize" value="1" type="checkbox" {if $settings->smart_resize}checked="" {/if}>
+											<input class="form-check-input ms-2" id="smart-resize" name="smart_resize" value="1" type="checkbox" {if $settings->smart_resize}checked=""{/if}>
 											<label class="form-check-label" for="smart-resize">{$btr->settings_precise_resizing_images|escape}</label>
 										</div>
 									</div>
 									<div class="col-xl-3 col-lg-4 col-md-6 my-2">
 										<div class="form-check form-switch form-check-reverse form-check-inline">
-											<input class="form-check-input ms-2" id="webp-support" name="webp_support" value="1" type="checkbox" {if $settings->webp_support}checked="" {/if}>
+											<input class="form-check-input ms-2" id="webp-support" name="webp_support" value="1" type="checkbox" {if $settings->webp_support}checked=""{/if}>
 											<label class="form-check-label" for="webp-support">{$btr->settings_enable_webp|escape}</label>
 										</div>
 									</div>
 									<div class="col-xl-3 col-lg-4 col-md-6 my-2">
 										<div class="form-check form-switch form-check-reverse form-check-inline">
-											<input class="form-check-input ms-2" id="watermark-enable" name="watermark_enable" value="1" type="checkbox" {if $settings->watermark_enable}checked="" {/if}>
+											<input class="form-check-input ms-2" id="watermark-enable" name="watermark_enable" value="1" type="checkbox" {if $settings->watermark_enable}checked=""{/if}>
 											<label class="form-check-label" for="watermark-enable">{$btr->settings_watermark_enable|escape}</label>
 										</div>
 									</div>
-
+									<div class="col-xl-3 col-lg-4 col-md-6 my-2 js-range-wrap">
+										<div class="form-label">
+											{$btr->settings_image_quality|escape}
+											<span class="font-weight-bold js-show-range">{$settings->image_quality|escape}</span>
+										</div>
+										<div class="raiting-boxed">
+											<input class="js-range-value" type="hidden" value="{$settings->image_quality|escape}" name="image_quality">
+											<input class="js-range form-range" type="range" min="0" max="100" step="1" value="{$settings->image_quality|escape}">
+											<div class="raiting-range-number">
+												<span class="float-start">0</span>
+												<span class="float-end">100</span>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>

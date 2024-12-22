@@ -11,15 +11,15 @@
 							</svg>
 						</i>
 						<span class="header-menu__title font_14">
-							{$lang->catalog}
+							{$lang->catalog|escape}
 						</span>
 					</a>
 					<div class="header-menu__dropdown-menu dropdown-menu-wrapper dropdown-menu-wrapper--visible">
 						<div class="dropdown-menu-inner rounded-x">
 							<div class="header-menu__wide-limiter scrollbar">
-								{get_banner var=banner_5 group='5'}
-								{if isset($banner_5->items)}
-									{foreach $banner_5->items as $b}
+								{get_banner var=header_banners group=$theme_settings->header_banners_id}
+								{if $header_banners && $header_banners->items}
+									{foreach $header_banners->items as $b}
 										<div class="header-menu__wide-right-part">
 											<div class="side_banners">
 												<div class="side_banners__item">
@@ -71,15 +71,15 @@
 														</svg>
 													</i>
 												</a>
-												{if isset($c->subcategories)}
+												{if $c->subcategories}
 													<ul class="header-menu__wide-submenu">
 														{foreach $c->subcategories as $cat name=collapsed}
 															{if $cat->visible}
-																<li class="header-menu__wide-submenu-item {if $smarty.foreach.collapsed.iteration > 3}collapsed{/if} {if isset($cat->subcategories)}header-menu__wide-submenu-item--with-dropdown{/if} {if $cat@last}header-menu__wide-submenu-item--last{/if}" {if $smarty.foreach.collapsed.iteration > 3}style="display: none;" {/if}>
+																<li class="header-menu__wide-submenu-item {if $smarty.foreach.collapsed.iteration > 3}collapsed{/if} {if $cat->subcategories}header-menu__wide-submenu-item--with-dropdown{/if} {if $cat@last}header-menu__wide-submenu-item--last{/if}" {if $smarty.foreach.collapsed.iteration > 3}style="display: none;" {/if}>
 																	<span class="header-menu__wide-submenu-item-inner">
 																		<a class="font_15 dark_link fill-theme-hover fill-dark-light-block header-menu__wide-child-link" href="{$lang_link}catalog/{$cat->url}">
 																			<span class="header-menu__wide-submenu-item-name" data-category="{$cat->id}">{$cat->name|escape}</span>
-																			{if isset($cat->subcategories)}
+																			{if $cat->subcategories}
 																				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 																				<span class="toggle_block">
 																					<i class="svg inline down header-menu__wide-submenu-right-arrow menu-arrow bg-opacity-theme-target fill-theme-target" aria-hidden="true">
@@ -95,7 +95,7 @@
 																				</i>
 																			{/if}
 																		</a>
-																		{if isset($cat->subcategories)}
+																		{if $cat->subcategories}
 																			<div class="submenu-wrapper" style="display:none">
 																				<ul class="header-menu__wide-submenu">
 																					{foreach $cat->subcategories as $cat3}
@@ -114,20 +114,20 @@
 																		{/if}
 																	</span>
 																</li>
-																{if $smarty.foreach.collapsed.iteration > 3}
-																	<li class="header-menu__wide-submenu-item--more_items">
-																		<span class="dark_link with_dropdown font_15 fill-dark-light-block svg">
-																			{$lang->more}
-																			<i class="svg inline  menu-arrow" aria-hidden="true">
-																				<svg width="7" height="5">
-																					<use xlink:href="design/{$settings->theme|escape}/images/svg/sprite/arrows.svg#down-7-5"></use>
-																				</svg>
-																			</i>
-																		</span>
-																	</li>
-																{/if}
 															{/if}
 														{/foreach}
+														{if $smarty.foreach.collapsed.iteration > 3}
+															<li class="header-menu__wide-submenu-item--more_items">
+																<span class="dark_link with_dropdown font_15 fill-dark-light-block svg">
+																	{$lang->more|escape}
+																	<i class="svg inline  menu-arrow" aria-hidden="true">
+																		<svg width="7" height="5">
+																			<use xlink:href="design/{$settings->theme|escape}/images/svg/sprite/arrows.svg#down-7-5"></use>
+																		</svg>
+																	</i>
+																</span>
+															</li>
+														{/if}
 													</ul>
 												{/if}
 											</div>
@@ -174,7 +174,7 @@
 							</svg>
 						</i>
 						<span class="header-menu__title font_14">
-							{$lang->catalog}
+							{$lang->catalog|escape}
 						</span>
 					</a>
 					<div class="header-menu__dropdown-menu dropdown-menu-wrapper dropdown-menu-wrapper--visible">
@@ -216,7 +216,7 @@
 																</span>
 															</a>
 														</div>
-														{if isset($c->subcategories)}
+														{if $c->subcategories}
 															<div class="parent-items__info">
 																<div class="header-menu__many-items">
 																	<ul class="header-menu__dropdown-menu-inner header-menu__dropdown-menu--grids">
@@ -260,7 +260,7 @@
 																								</svg>
 																							</i>
 																						</a>
-																						{if isset($cat->subcategories)}
+																						{if $cat->subcategories}
 																							<ul class="header-menu__wide-submenu">
 																								{foreach $cat->subcategories as $cat3 name=collapsed}
 																									{if $cat3->visible}
@@ -276,7 +276,7 @@
 																								{if $smarty.foreach.collapsed.iteration > 4}
 																									<li class="header-menu__wide-submenu-item--more_items">
 																										<span class="dark_link with_dropdown font_15 fill-dark-light-block svg">
-																											{$lang->more}
+																											{$lang->more|escape}
 																											<i class="svg inline menu-arrow" aria-hidden="true">
 																												<svg width="7" height="5">
 																													<use xlink:href="design/{$settings->theme|escape}/images/svg/sprite/arrows.svg#down-7-5"></use>

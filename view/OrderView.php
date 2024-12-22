@@ -45,7 +45,7 @@ class OrderView extends View
 			return false;
 		}
 
-		if ($this->request->isMethod('post')) {
+		if ($this->request->method('post')) {
 			if ($paymentMethodId = $this->request->post('payment_method_id', 'integer')) {
 				$this->orders->updateOrder($order->id, ['payment_method_id' => $paymentMethodId]);
 				$order = $this->orders->getOrder((int)$order->id);

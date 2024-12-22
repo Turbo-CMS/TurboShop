@@ -1,4 +1,4 @@
-<span class="jqmClose top-close fill-theme-hover fill-use-svg-999" title="{$lang->close}">
+<span class="jqmClose top-close fill-theme-hover fill-use-svg-999" title="{$lang->close|escape}">
 	<i class="svg inline" aria-hidden="true">
 		<svg width="14" height="14">
 			<use xlink:href="design/{$settings->theme|escape}/images/svg/sprite/header_icons.svg#close-14-14"></use>
@@ -10,7 +10,7 @@
 		<div class="form popup flex-grow-1">
 			<div class="form-header">
 				<div class="text">
-					<div class="title switcher-title font_24 color_222">{$lang->fast_order}</div>
+					<div class="title switcher-title font_24 color_222">{$lang->fast_order|escape}</div>
 				</div>
 			</div>
 			<form method="post" id="one_click_buy_form" novalidate="novalidate">
@@ -18,14 +18,14 @@
 				<input type="hidden" name="IsFastOrder" value="true">
 				<div class="form-body">
 					<div class="error-container"></div>
-					{if isset($call_error)}
+					{if $call_error}
 						<div class="alert alert-danger" role="alert">
 							{if $call_error == 'empty_name'}
-								{$lang->enter_your_name}
+								{$lang->enter_your_name|escape}
 							{elseif $call_error == 'empty_phone'}
-								{$lang->enter_phone_number}
+								{$lang->enter_phone_number|escape}
 							{elseif $call_error == 'captcha'}
-								{$lang->captcha_incorrect}
+								{$lang->captcha_incorrect|escape}
 							{else}
 								{$call_error}
 							{/if}
@@ -36,12 +36,12 @@
 							<div class="form-group fill-animate">
 								<label class="font_14" for="one_click_buy_id_FIO">
 									<span>
-										{$lang->name}
+										{$lang->name|escape}
 										<span class="required-star">*</span>
 									</span>
 								</label>
 								<div class="input">
-									<input type="text" class="form-control required inputtext" name="name" value="{if isset($user->name)}{$user->name|escape}{elseif isset($name)}{$name|escape}{/if}" id="one_click_buy_id_FIO">
+									<input type="text" class="form-control required inputtext" name="name" value="{if $user && $user->name}{$user->name|escape}{elseif $name}{$name|escape}{/if}" id="one_click_buy_id_FIO">
 								</div>
 							</div>
 						</div>
@@ -51,12 +51,12 @@
 							<div class="form-group fill-animate">
 								<label class="font_14" for="one_click_buy_id_PHONE">
 									<span>
-										{$lang->phone}
+										{$lang->phone|escape}
 										<span class="required-star">*</span>
 									</span>
 								</label>
 								<div class="input">
-									<input type="text" class="form-control required inputtext phone phone" name="phone" value="{if isset($user->phone)}{$user->phone|escape}{elseif isset($phone)}{$phone|escape}{/if}" id="one_click_buy_id_PHONE">
+									<input type="text" class="form-control required inputtext phone phone" name="phone" value="{if $user && $user->phone}{$user->phone|escape}{elseif $phone}{$phone|escape}{/if}" id="one_click_buy_id_PHONE">
 								</div>
 							</div>
 						</div>
@@ -71,7 +71,7 @@
 									</span>
 								</label>
 								<div class="input">
-									<input type="text" class="form-control required inputtext" name="email" value="{if isset($user->email)}{$user->email|escape}{elseif isset($email)}{$email|escape}{/if}" id="one_click_buy_id_EMAIL">
+									<input type="text" class="form-control required inputtext" name="email" value="{if $user && $user->email}{$user->email|escape}{elseif $email}{$email|escape}{/if}" id="one_click_buy_id_EMAIL">
 								</div>
 							</div>
 						</div>
@@ -81,11 +81,11 @@
 							<div class="form-group fill-animate">
 								<label class="font_14" for="one_click_buy_id_ADDRESS">
 									<span>
-										{$lang->address}
+										{$lang->address|escape}
 									</span>
 								</label>
 								<div class="input">
-									<input type="text" class="form-control inputtext" name="address" value="{if isset($user->address)}{$user->address|escape}{elseif isset($address)}{$address|escape}{/if}" id="one_click_buy_id_ADDRESS">
+									<input type="text" class="form-control inputtext" name="address" value="{if $user && $user->address}{$user->address|escape}{elseif $address}{$address|escape}{/if}" id="one_click_buy_id_ADDRESS">
 								</div>
 							</div>
 						</div>
@@ -95,7 +95,7 @@
 							<div class="form-group fill-animate">
 								<label class="font_14" for="one_click_buy_id_COMMENT">
 									<span>
-										{$lang->comments_order}
+										{$lang->comments_order|escape}
 									</span>
 								</label>
 								<div class="input">
@@ -107,7 +107,7 @@
 					{if $settings->captcha_fastorder}
 						<div class="clearfix fill-animate">
 							<label class="font_14">
-								<span>{$lang->captcha_label}&nbsp;<span class="required-star">*</span></span>
+								<span>{$lang->captcha_label|escape}&nbsp;<span class="required-star">*</span></span>
 							</label>
 						</div>
 						<div class="row">
@@ -125,13 +125,13 @@
 				</div>
 				<div class="form-footer clearfix">
 					<div>
-						<button type="submit" id="one_click_buy_form_button" class="btn btn-default btn-lg btn-wide" value="{$lang->send}" name="checkout">
-							<span>{$lang->send}</span>
+						<button type="submit" id="one_click_buy_form_button" class="btn btn-default btn-lg btn-wide" value="{$lang->send|escape}" name="checkout">
+							<span>{$lang->send|escape}</span>
 						</button>
 					</div>
 					<div class="licence_block">
 						<label for="licenses_popup_8">
-							<span>{$lang->licenses_text} <a href="{$lang_link}licenses" target="_blank">{$lang->licenses_link}</a></span>
+							<span>{$lang->licenses_text|escape} <a href="{$lang_link}licenses" target="_blank">{$lang->licenses_link|escape}</a></span>
 						</label>
 					</div>
 				</div>

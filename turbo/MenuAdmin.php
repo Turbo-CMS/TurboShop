@@ -6,7 +6,7 @@ class MenuAdmin extends Turbo
 {
 	public function fetch()
 	{
-		if ($this->request->isMethod('post')) {
+		if ($this->request->method('post')) {
 			foreach ($this->request->post('menu') as $n => $va) {
 				foreach ($va as $i => $v) {
 					if (empty($menus[$i])) {

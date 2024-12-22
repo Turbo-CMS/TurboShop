@@ -9,7 +9,7 @@
 							<div class="line-block line-block--40">
 								<div class="logo line-block__item no-shrinked">
 									<a class="menu-light-icon-fill banner-light-icon-fill" href="{if $lang_link}{$lang_link}{else}/{/if}">
-										{include file='components/logo.tpl'}
+										{include file='includes/logo.tpl'}
 									</a>
 								</div>
 							</div>
@@ -25,7 +25,7 @@
 														<use xlink:href="design/{$settings->theme|escape}/images/svg/sprite/header_icons.svg#burger-16-16"></use>
 													</svg>
 												</i>
-												<span class="header-menu__title font_14">{$lang->catalog}</span>
+												<span class="header-menu__title font_14">{$lang->catalog|escape}</span>
 											</a>
 											<div data-nlo="menu-fixed"></div>
 										</div>

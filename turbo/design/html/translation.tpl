@@ -25,7 +25,7 @@
 	</div>
 {/if}
 
-{if isset($message_success)}
+{if $message_success}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -48,7 +48,7 @@
 	</div>
 {/if}
 
-{if isset($message_error)}
+{if $message_error}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -85,7 +85,7 @@
 							<div class="col-12">
 								<div class="mb-3">
 									<div class="form-label">{$btr->translation_name|escape}</div>
-									<input name="label" class="form-control" type="text" value="{if isset($translation->label)}{$translation->label}{/if}" {if $locked_theme}readonly=""{/if}>
+									<input name="label" class="form-control" type="text" value="{$translation->label}" {if $locked_theme}readonly=""{/if}>
 								</div>
 							</div>
 						</div>
@@ -99,7 +99,7 @@
 											</div>
 											{$lang->name|escape}
 										</div>
-										<textarea id="lang_{if $lang->label == 'ua'}uk{else}{$lang->label}{/if}" name="lang_{$lang->label}" class="form-control {if $smarty.foreach.lg.first}first-lang{/if}" rows="5" {if $locked_theme}readonly=""{/if}>{if isset($translation->lang_{$lang->label})}{$translation->lang_{$lang->label}}{/if}</textarea>
+										<textarea id="lang_{if $lang->label == 'ua'}uk{else}{$lang->label}{/if}" name="lang_{$lang->label}" class="form-control {if $smarty.foreach.lg.first}first-lang{/if}" rows="5" {if $locked_theme}readonly=""{/if}>{$translation->lang_{$lang->label}|default:''}</textarea>
 									</div>
 								</div>
 							{/foreach}

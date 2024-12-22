@@ -18,7 +18,7 @@
 
 			{if $current_page>1}
 				<li class="page-item chevron-icon">
-					<a id="PrevLink" class="page-link" href="{url page=$current_page-1}"><i class="align-middle" data-feather="chevron-left"></i></a>
+					<a id="PrevLink" class="page-link px-2" href="{url page=$current_page-1}"><i class="align-middle" data-feather="chevron-left"></i></a>
 				</li>
 			{/if}
 
@@ -43,7 +43,7 @@
 
 			{if $current_page<$pages_count}
 				<li class="page-item chevron-icon">
-					<a id="NextLink" class="page-link" href="{url page=$current_page+1}"><i class="align-middle" data-feather="chevron-right"></i></a>
+					<a id="NextLink" class="page-link px-2" href="{url page=$current_page+1}"><i class="align-middle" data-feather="chevron-right"></i></a>
 				</li>
 			{/if}
 

@@ -1,7 +1,7 @@
 {* Recommended Products Type 1 *}
 {if $theme_settings->view_recommended_products == '1'}
 	<div class="detail-block ordered-block associated">
-		<h3 class="switcher-title">{$lang->you_may_also_like}</h3>
+		<h3 class="switcher-title">{$lang->you_may_also_like|escape}</h3>
 		<div class="ajax-pagination-wrapper" data-class="associated-list-inner">
 			<!-- items-container -->
 			<div class="catalog-items catalog_block_template">
@@ -40,7 +40,7 @@
 {* Recommended Products Type 2 *}
 {if $theme_settings->view_recommended_products == '2'}
 	<div class="detail-block ordered-block associated">
-		<h3 class="switcher-title">{$lang->you_may_also_like}</h3>
+		<h3 class="switcher-title">{$lang->you_may_also_like|escape}</h3>
 		<div class="ajax-pagination-wrapper" data-class="associated-list-inner">
 			<!-- items-container -->
 			<div class="catalog-items catalog_block_template">

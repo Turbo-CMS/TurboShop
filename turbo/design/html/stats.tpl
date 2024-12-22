@@ -26,14 +26,14 @@
 							<div class="col-sm-12 col-md-4 col-lg-4">
 								<div class="input-group mb-3">
 									<span class="input-group-text">{$btr->global_from|escape}</span>
-									<input type="text" class="flatpickr form-control" name="date_from" value="{if isset($date_from)}{$date_from}{/if}" autocomplete="off">
+									<input type="text" class="flatpickr form-control" name="date_from" value="{$date_from}" autocomplete="off">
 									<span class="input-group-text"><i class="align-middle" data-feather="calendar"></i></span>
 								</div>
 							</div>
 							<div class="col-sm-12 col-md-4 col-lg-4">
 								<div class="input-group mb-3">
 									<span class="input-group-text">{$btr->global_to|escape}</span>
-									<input type="text" class="flatpickr form-control" name="date_to" value="{if isset($date_to)}{$date_to}{/if}" autocomplete="off">
+									<input type="text" class="flatpickr form-control" name="date_to" value="{$date_to}" autocomplete="off">
 									<span class="input-group-text"><i class="align-middle" data-feather="calendar"></i></span>
 								</div>
 							</div>
@@ -46,17 +46,17 @@
 						<div class="col-md-3 col-lg-3 col-sm-12 mb-3 mb-md-0">
 							<select class="selectpicker" data-live-search="true" data-size="10" onchange="location = this.value;">
 								<option {if !isset($smarty.get.status)}selected{/if} value="{url status=null}">{$btr->reportstats_all_statuses|escape}</option>
-								<option value="{url module=StatsAdmin status=1 keyword=null id=null page=null label=null from_date=null to_date=null}" {if isset($status) && $status==1}selected{/if}>{$btr->global_new_order|escape}</option>
-								<option value="{url module=StatsAdmin status=2 keyword=null id=null page=null label=null from_date=null to_date=null}" {if isset($status) && $status==2}selected{/if}>{$btr->global_accepted_order|escape}</option>
-								<option value="{url module=StatsAdmin status=3 keyword=null id=null page=null label=null from_date=null to_date=null}" {if isset($status) && $status==3}selected{/if}>{$btr->global_closed_order|escape}</option>
-								<option value="{url module=StatsAdmin status=4 keyword=null id=null page=null label=null from_date=null to_date=null}" {if isset($status) && $status==4}selected{/if}>{$btr->global_canceled_order|escape}</option>
+								<option value="{url module=StatsAdmin status=1 keyword=null id=null page=null label=null from_date=null to_date=null}" {if $status==1}selected{/if}>{$btr->global_new_order|escape}</option>
+								<option value="{url module=StatsAdmin status=2 keyword=null id=null page=null label=null from_date=null to_date=null}" {if $status==2}selected{/if}>{$btr->global_accepted_order|escape}</option>
+								<option value="{url module=StatsAdmin status=3 keyword=null id=null page=null label=null from_date=null to_date=null}" {if $status==3}selected{/if}>{$btr->global_closed_order|escape}</option>
+								<option value="{url module=StatsAdmin status=4 keyword=null id=null page=null label=null from_date=null to_date=null}" {if $status==4}selected{/if}>{$btr->global_canceled_order|escape}</option>
 							</select>
 						</div>
 						<div class="col-md-3 col-lg-3 col-sm-12 mb-3 mb-md-0">
 							<select class="selectpicker" data-live-search="true" data-size="10" onchange="location = this.value;">
-								<option {if !isset($label)}selected{/if} value="{url label=null}">{$btr->reportstats_all_orders|escape}</option>
+								<option {if !$label}selected{/if} value="{url label=null}">{$btr->reportstats_all_orders|escape}</option>
 								{foreach $labels as $l}
-									<option value="{url keyword=null id=null page=null from_date=null to_date=null label={$l->id}}" {if isset($label) && $label->id==$l->id}selected{/if}>{$l->name}</option>
+									<option value="{url keyword=null id=null page=null from_date=null to_date=null label={$l->id}}" {if $label && $label->id==$l->id}selected{/if}>{$l->name}</option>
 								{/foreach}
 							</select>
 						</div>
@@ -148,11 +148,11 @@
 			function drawChart() {
 				var serie = [];
 				serie.push([{/literal}'{$btr->global_date|escape}', '{$btr->global_new_order|escape}, {$currency->sign|escape}', '{$btr->global_accepted_order|escape}, {$currency->sign|escape}', '{$btr->global_closed_order|escape}, {$currency->sign|escape}', '{$btr->global_canceled_order|escape}, {$currency->sign|escape}'{literal}]); 
-			{/literal}
-			{foreach $stat as $s}
-				serie.push(['{$s.title}', {$s.new}, {$s.confirm}, {$s.complite}, {$s.delete}]);
-			{/foreach}
-			{literal}
+				{/literal}
+					{foreach $stat as $s}
+						serie.push(['{$s.title}', {$s.new}, {$s.confirm}, {$s.complite}, {$s.delete}]);
+					{/foreach}
+				{literal}
 				var options = {
 					legend: {position: "bottom", textStyle: {fontName: 'Inter', color: '#a7abb1'}},
 					bar: {groupWidth: '90%'},
@@ -172,11 +172,11 @@
 			function drawChartOrders() {
 				var serie = [];
 				serie.push([{/literal}'{$btr->global_date|escape}', '{$btr->global_new_order|escape}', '{$btr->global_accepted_order|escape}', '{$btr->global_closed_order|escape}', '{$btr->global_canceled_order|escape}'{literal}]); 
-			{/literal}
-			{foreach $stat_orders as $s}
-				serie.push(['{$s.title}', {$s.new}, {$s.confirm}, {$s.complite}, {$s.delete}]); 
-			{/foreach}
-			{literal}
+				{/literal}
+					{foreach $stat_orders as $s}
+						serie.push(['{$s.title}', {$s.new}, {$s.confirm}, {$s.complite}, {$s.delete}]); 
+					{/foreach}
+				{literal}
 				var options = {
 					legend: {position: "bottom", textStyle: {fontName: 'Inter', color: '#a7abb1'}},
 					bar: {groupWidth: '90%'},
@@ -201,11 +201,11 @@
 			function drawChart() {
 				var serie = [];
 				serie.push([{/literal}'{$btr->global_date|escape}', '{$btr->global_new_order|escape}, {$currency->sign|escape}', '{$btr->global_accepted_order|escape}, {$currency->sign|escape}', '{$btr->global_closed_order|escape}, {$currency->sign|escape}', '{$btr->global_canceled_order|escape}, {$currency->sign|escape}'{literal}]); 
-			{/literal}
-				{foreach $stat as $s}
-					serie.push(['{$s.title}', {$s.new}, {$s.confirm}, {$s.complite}, {$s.delete}]);
-				{/foreach}
-			{literal}
+				{/literal}
+					{foreach $stat as $s}
+						serie.push(['{$s.title}', {$s.new}, {$s.confirm}, {$s.complite}, {$s.delete}]);
+					{/foreach}
+				{literal}
 				var options = {
 					legend: { position: "bottom", textStyle: {fontName: 'Inter', color: '#6c757d'}},
 					bar: {groupWidth: '90%'},
@@ -225,11 +225,11 @@
 			function drawChartOrders() {
 				var serie = [];
 				serie.push([{/literal}'{$btr->global_date|escape}', '{$btr->global_new_order|escape}', '{$btr->global_accepted_order|escape}', '{$btr->global_closed_order|escape}', '{$btr->global_canceled_order|escape}'{literal}]); 
-			{/literal}
-			{foreach $stat_orders as $s}
-				serie.push(['{$s.title}', {$s.new}, {$s.confirm}, {$s.complite}, {$s.delete}]); 
-			{/foreach}
-			{literal}
+				{/literal}
+					{foreach $stat_orders as $s}
+						serie.push(['{$s.title}', {$s.new}, {$s.confirm}, {$s.complite}, {$s.delete}]); 
+					{/foreach}
+				{literal}
 				var options = {
 					legend: { position: "bottom", textStyle: {fontName: 'Inter', color: '#6c757d'}},
 					bar: {groupWidth: '90%'},

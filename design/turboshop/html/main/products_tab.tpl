@@ -11,8 +11,8 @@
 						<div class="index-block__title-wrapper index-block__title-wrapper--with-center-block index-block__title-wrapper--mb-35">
 							<div class="index-block__part--left">
 								<h3 class="index-block__title switcher-title">
-									<a class="index-block__link-wrapper dark_link stroke-theme-hover" href="{$lang_link}featured" title="{$lang->best_products}">
-										<span>{$lang->best_products}</span>
+									<a class="index-block__link-wrapper dark_link stroke-theme-hover" href="{$lang_link}featured" title="{$lang->best_products|escape}">
+										<span>{$lang->best_products|escape}</span>
 										<span class="index-block__link">
 											<span class="index-block__arrow">
 												<i class="svg inline " aria-hidden="true">
@@ -31,28 +31,28 @@
 										{if $hit_products}
 											<div class="line-block__item">
 												<div class="chip tab-nav__item bg-theme-active color-theme-hover-no-active active clicked" data-action="/{$lang_link}catalog/?tpl=hit" data-code="HIT">
-													<span class="chip__label">{$lang->badge_hit}</span>
+													<span class="chip__label">{$lang->badge_hit|escape}</span>
 												</div>
 											</div>
 										{/if}
 										{if $featured_products}
 											<div class="line-block__item">
 												<div class="chip tab-nav__item bg-theme-active color-theme-hover-no-active {if !$hit_products}active clicked{/if}" data-action="/{$lang_link}catalog/?tpl=recommend" data-code="RECOMMEND">
-													<span class="chip__label">{$lang->badge_featured}</span>
+													<span class="chip__label">{$lang->badge_featured|escape}</span>
 												</div>
 											</div>
 										{/if}
 										{if $new_products}
 											<div class="line-block__item">
 												<div class="chip tab-nav__item bg-theme-active color-theme-hover-no-active {if !$featured_products && !$hit_products}active clicked{/if}" data-action="/{$lang_link}catalog/?tpl=new" data-code="NEW">
-													<span class="chip__label">{$lang->badge_new}</span>
+													<span class="chip__label">{$lang->badge_new|escape}</span>
 												</div>
 											</div>
 										{/if}
 										{if $discounted_products}
 											<div class="line-block__item">
 												<div class="chip tab-nav__item bg-theme-active color-theme-hover-no-active {if !$new_products && !$featured_products && !$hit_products}active clicked{/if}" data-action="/{$lang_link}catalog/?tpl=stock" data-code="STOCK">
-													<span class="chip__label">{$lang->badge_sale}</span>
+													<span class="chip__label">{$lang->badge_sale|escape}</span>
 												</div>
 											</div>
 										{/if}

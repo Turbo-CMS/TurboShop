@@ -10,7 +10,7 @@ class DeliveryAdmin extends Turbo
 	{
 		$delivery = new stdClass();
 
-		if ($this->request->isMethod('post')) {
+		if ($this->request->method('post')) {
 			$delivery->id = $this->request->post('id', 'integer');
 			$delivery->enabled = $this->request->post('enabled', 'boolean');
 			$delivery->name = $this->request->post('name');
@@ -60,6 +60,17 @@ class DeliveryAdmin extends Turbo
 				$delivery = $this->delivery->getDelivery($delivery->id);
 				$deliverySettings =  $this->delivery->getDeliverySettings($delivery->id);
 			} else {
+				$delivery->id = null;
+				$delivery->name = '';
+				$delivery->enabled = 1;
+				$delivery->module = null;
+				$delivery->icon = null;
+				$delivery->code = null;
+				$delivery->price = null;
+				$delivery->separate_payment  = null;
+				$delivery->free_from  = null;
+				$delivery->description  = '';
+
 				$deliverySettings = [];
 			}
 

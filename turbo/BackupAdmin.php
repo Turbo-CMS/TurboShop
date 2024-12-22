@@ -10,7 +10,7 @@ class BackupAdmin extends Turbo
 	{
 		$dir = 'turbo/files/backup/';
 
-		if ($this->request->isMethod('post')) {
+		if ($this->request->method('post')) {
 			switch ($this->request->post('action')) {
 				case 'create': {
 						$filename = $dir . 'turbo_' . date("Y_m_d_G_i_s") . '.zip';

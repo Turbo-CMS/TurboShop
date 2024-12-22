@@ -9,7 +9,7 @@
 			</i>
 		</button>
 		<div class="search-input-div">
-			<input class="search-input font_16 banner-light-text form-control input_search" id="title-search-input" type="text" name="keyword" value="{$keyword|escape}" placeholder="{$lang->find}" size="40" maxlength="50" autocomplete="off" />
+			<input class="search-input font_16 banner-light-text form-control input_search" id="title-search-input" type="text" name="keyword" value="{$keyword|escape}" placeholder="{$lang->find|escape}" size="40" maxlength="50" autocomplete="off" />
 		</div>
 		<div class="search-button-div">
 			<button class="btn btn--no-rippple btn-clear-search fill-dark-light-block banner-light-icon-fill light-opacity-hover" type="reset" name="rs">
@@ -23,13 +23,13 @@
 				<div class="dropdown-select__title font_14 font_large fill-dark-light banner-light-text">
 					<span>
 						{if isset($smarty.cookies.searchtitle_type) && $smarty.cookies.searchtitle_type == 'all'}
-							{$lang->all_search}
+							{$lang->all_search|escape}
 						{elseif isset($smarty.cookies.searchtitle_type) && $smarty.cookies.searchtitle_type == 'blog'}
-							{$lang->global_blog}
+							{$lang->global_blog|escape}
 						{elseif isset($smarty.cookies.searchtitle_type) && $smarty.cookies.searchtitle_type == 'article'}
-							{$lang->global_articles}
+							{$lang->global_articles|escape}
 						{else}
-							{$lang->catalog}
+							{$lang->catalog|escape}
 						{/if}
 					</span>
 					<i class="svg inline dropdown-select__icon-down banner-light-icon-fill" aria-hidden="true">
@@ -42,22 +42,22 @@
 					<div class="dropdown-menu-inner rounded-x">
 						<div class="dropdown-select__list-item font_15">
 							<span class="dropdown-menu-item dark_link" data-type="all">
-								<span>{$lang->all_site}</span>
+								<span>{$lang->all_site|escape}</span>
 							</span>
 						</div>
 						<div class="dropdown-select__list-item font_15">
 							<span class="dropdown-menu-item dark_link" data-type="blog">
-								<span>{$lang->by_blog}</span>
+								<span>{$lang->by_blog|escape}</span>
 							</span>
 						</div>
 						<div class="dropdown-select__list-item font_15">
 							<span class="dropdown-menu-item dark_link" data-type="article">
-								<span>{$lang->by_article}</span>
+								<span>{$lang->by_article|escape}</span>
 							</span>
 						</div>
 						<div class="dropdown-select__list-item font_15">
 							<span class="dropdown-menu-item color_222 dropdown-menu-item--current" data-type="catalog">
-								<span>{$lang->by_catalog}</span>
+								<span>{$lang->by_catalog|escape}</span>
 							</span>
 						</div>
 					</div>

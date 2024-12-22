@@ -1,0 +1,146 @@
+/* No validate */
+
+.form-control.no-validate:valid {
+	padding-right: 0rem;
+	background: none;
+}
+
+.form-select.no-validate:valid:not([multiple]):not([size]) {
+	--bs-form-select-bg-icon: none;
+}
+
+.form-check-input.no-validate:valid,
+.form-select.no-validate:valid:not([multiple]):not([size]),
+.form-control.no-validate:valid {
+	border-color: var(--bs-border-color-translucent);
+}
+
+.form-control.no-validate:valid:focus,
+.form-select.no-validate:valid:not([multiple]):not([size]):focus {
+	border-color: #86b7fe;
+	box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25)
+}
+
+.form-check-input.no-validate:valid:checked {
+	background-color: #0d6efd;
+	border-color: #0d6efd;
+}
+
+.form-check-input.no-validate:valid:focus {
+	box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+	border-color: #86b7fe;
+}
+
+.form-select.no-validate:valid:not([multiple]):not([size]) {
+	--bs-form-select-bg-icon: none;
+}
+
+/* Delivery & Payments */
+
+.accordion-bottom {
+	border-bottom: none !important;
+}
+
+/* Table */
+
+table.cart-table thead tr th+th {
+	text-align: center;
+}
+
+table.cart-table tbody td {
+	padding: 20px 4px 20px 0;
+	vertical-align: middle;
+}
+
+table.cart-table tbody td span,
+table.cart-table tbody td img {
+	display: inline-block;
+	vertical-align: middle;
+	height: auto;
+}
+
+table.cart-table tbody td img {
+	margin-right: 20px;
+}
+
+table.cart-table tbody td+td {
+	width: 24%;
+	text-align: center;
+}
+
+table.cart-table tbody td:last-child {
+	width: 15%;
+	padding: 20px 0 20px 4px;
+	text-align: center;
+}
+
+table.cart-table tbody td .btn-delete-item {
+	float: right
+}
+
+table.cart-table tbody td span,
+table.cart-table tbody td img {
+	display: inline-block;
+	vertical-align: middle;
+}
+
+@media (max-width:1199px) {
+	table.cart-table tbody td img {
+		margin: 0 20px 20px 0;
+	}
+}
+
+@media (max-width:639px) {
+
+	table.table.cart-table,
+	table.table.cart-table thead,
+	table.table.cart-table tbody,
+	table.table.cart-table th,
+	table.table.cart-table td,
+	table.table.cart-table tr {
+		display: block;
+	}
+
+	table.table.cart-table thead tr {
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+
+	table.cart-table tbody td:last-child,
+	table.table.cart-table td {
+		border: none;
+		position: relative;
+		padding-left: 50%;
+		white-space: normal;
+		text-align: left;
+		width: 100%;
+	}
+
+	table.cart-table tbody td:last-child {
+		overflow: hidden;
+	}
+
+	table.cart-table tbody tr td {
+		width: auto;
+	}
+
+	table.table.cart-table td:before {
+		position: absolute;
+		top: 34%;
+		left: 6px;
+		width: 45%;
+		padding-right: 10px;
+		white-space: nowrap;
+		text-align: left;
+		font-weight: bold;
+	}
+
+	table.table.cart-table td:before {
+		content: attr(data-title);
+	}
+
+	table.cart-table tbody td .btn-delete-item {
+		float: left;
+	}
+}

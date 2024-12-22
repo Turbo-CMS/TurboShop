@@ -7,13 +7,13 @@
                         {if $order->status != 3}
                             <div class="orders__order__wrapper grid-list__item grid-list-border-outer">
                                 <div class="orders__order outer-rounded-x bordered shadow-hovered shadow-hovered-f600 shadow-no-border-hovered color-theme-parent-all">
-                                    <a class="item-link-absolute" href="{$lang_link}order/{$order->url}" title="{$lang->order_from} {$order->date|date}"></a>
+                                    <a class="item-link-absolute" href="{$lang_link}order/{$order->url}" title="{$lang->order_from|escape} {$order->date|date}"></a>
                                     <div class="orders__order__inner">
                                         <div class="orders__order__body">
                                             <div class="orders__order__body-left">
                                                 <div class="orders__order__tds">
                                                     <div class="orders__order__title">
-                                                        <a href="{$lang_link}order/{$order->url}" class="dark_link color-theme-target">{$lang->order_from} {$order->date|date}</a>
+                                                        <a href="{$lang_link}order/{$order->url}" class="dark_link color-theme-target">{$lang->order_from|escape} {$order->date|date}</a>
                                                     </div>
                                                     <div class="orders__order__nps">
                                                         <div class="orders__order__number">
@@ -21,20 +21,20 @@
                                                         </div>
                                                         {if $order->paid == 1}
                                                             <div class="order__pay-status personal-color--green">
-                                                                {$lang->paid}
+                                                                {$lang->paid|escape}
                                                             </div>
                                                         {/if}
                                                         {if $order->status == 0}
                                                             <div class="order__pay-status personal-color--red">
-                                                                {$lang->waiting_processing}
+                                                                {$lang->waiting_processing|escape}
                                                             </div>
                                                         {elseif $order->status == 1}
                                                             <div class="order__pay-status personal-color--red">
-                                                                {$lang->in_processing}
+                                                                {$lang->in_processing|escape}
                                                             </div>
                                                         {elseif $order->status == 2}
                                                             <div class="order__pay-status personal-color--red">
-                                                                {$lang->completed}
+                                                                {$lang->completed|escape}
                                                             </div>
                                                         {/if}
                                                     </div>
@@ -51,7 +51,7 @@
                                                                     </i>
                                                                 </div>
                                                                 <span class="order__status__value dark_link dotted">
-                                                                    {if $order->status == 0}{$lang->accepted_name}{elseif $order->status == 1}{$lang->in_processing_name}{elseif $order->status == 2}{$lang->completed_name}{/if}{if $order->paid == 1}, {$lang->paid}{else}, {$lang->payment_awaited}{/if}
+                                                                    {if $order->status == 0}{$lang->accepted_name|escape}{elseif $order->status == 1}{$lang->in_processing_name|escape}{elseif $order->status == 2}{$lang->completed_name|escape}{/if}{if $order->paid == 1}, {$lang->paid|escape}{else}, {$lang->payment_awaited|escape}{/if}
                                                                 </span>
                                                             </div>
                                                             <div class="order__status__steps">
@@ -76,8 +76,8 @@
                                                                                         <div class="xpopover--order-status__step-progress__line"></div>
                                                                                     </div>
                                                                                     <div class="xpopover--order-status__step-info">
-                                                                                        <div class="xpopover--order-status__step-name">{$lang->accepted_name}{if $order->paid == 1}, {$lang->paid}{else}, {$lang->payment_awaited}{/if}</div>
-                                                                                        <div class="xpopover--order-status__step-dsc font_14 color_999">{$lang->accepted_text}</div>
+                                                                                        <div class="xpopover--order-status__step-name">{$lang->accepted_name|escape}{if $order->paid == 1}, {$lang->paid|escape}{else}, {$lang->payment_awaited|escape}{/if}</div>
+                                                                                        <div class="xpopover--order-status__step-dsc font_14 color_999">{$lang->accepted_text|escape}</div>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="xpopover--order-status__step {if $order->status == 1}mark{/if}">
@@ -92,8 +92,8 @@
                                                                                         <div class="xpopover--order-status__step-progress__line"></div>
                                                                                     </div>
                                                                                     <div class="xpopover--order-status__step-info">
-                                                                                        <div class="xpopover--order-status__step-name">{$lang->in_processing_name}</div>
-                                                                                        <div class="xpopover--order-status__step-dsc font_14 color_999">{$lang->in_processing_text}</div>
+                                                                                        <div class="xpopover--order-status__step-name">{$lang->in_processing_name|escape}</div>
+                                                                                        <div class="xpopover--order-status__step-dsc font_14 color_999">{$lang->in_processing_text|escape}</div>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="xpopover--order-status__step {if $order->status == 2}mark{/if}">
@@ -108,8 +108,8 @@
                                                                                         <div class="xpopover--order-status__step-progress__line"></div>
                                                                                     </div>
                                                                                     <div class="xpopover--order-status__step-info">
-                                                                                        <div class="xpopover--order-status__step-name">{$lang->completed_name}</div>
-                                                                                        <div class="xpopover--order-status__step-dsc font_14 color_999">{$lang->completed_text}</div>
+                                                                                        <div class="xpopover--order-status__step-name">{$lang->completed_name|escape}</div>
+                                                                                        <div class="xpopover--order-status__step-dsc font_14 color_999">{$lang->completed_text|escape}</div>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
@@ -153,7 +153,7 @@
                                                 <div class="orders__order__buttons">
                                                     <div class="line-block line-block--8-vertical flexbox--direction-column line-block--align-normal">
                                                         <div class="line-block__item">
-                                                            <a href="{$lang_link}order/{$order->url}" class="btn btn-default btn-sm btn-wide">{$lang->view_order}</a>
+                                                            <a href="{$lang_link}order/{$order->url}" class="btn btn-default btn-sm btn-wide">{$lang->view_order|escape}</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -170,6 +170,6 @@
     </div>
 {else}
     <div class="alert alert-info">
-        {$lang->no_orders}
+        {$lang->no_orders|escape}
     </div>
 {/if}

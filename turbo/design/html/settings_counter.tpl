@@ -4,7 +4,7 @@
 	<h1 class="d-inline align-middle me-3">{$btr->user_scripts|escape}</h1>
 </div>
 
-{if isset($message_success)}
+{if $message_success}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -41,7 +41,7 @@
 												<div class="col-md-12">
 													<div class="mb-3">
 														<div class="form-label">{$btr->counters_counter_name|escape}</div>
-														<input name="counters[name][]" class="form-control" value="{if isset($c->name)}{$c->name|escape}{/if}">
+														<input name="counters[name][]" class="form-control" value="{$c->name|default:''|escape}">
 													</div>
 												</div>
 												<div class="col-md-12">
@@ -61,7 +61,7 @@
 												<div class="col-md-12">
 													<div class="mb-3">
 														<div class="form-label">{$btr->counters_counter_code|escape}</div>
-														<textarea name="counters[code][]" class="form-control turbo-textarea">{if isset($c->code)}{$c->code|escape}{/if}</textarea>
+														<textarea name="counters[code][]" class="form-control turbo-textarea">{$c->code|default:''|escape}</textarea>
 													</div>
 												</div>
 											</div>

@@ -8,7 +8,7 @@ class SettingsCounterAdmin extends Turbo
 	{
 		$counters = [];
 
-		if ($this->request->isMethod('post')) {
+		if ($this->request->method('post')) {
 			if ($this->request->post('counters')) {
 				foreach ($this->request->post('counters') as $n => $co) {
 					foreach ($co as $i => $c) {

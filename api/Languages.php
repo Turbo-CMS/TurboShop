@@ -47,10 +47,10 @@ class Languages extends Turbo
 	{
 		$fields['files'] = ['name'];
 		$fields['features'] = ['name'];
+		$fields['options'] = ['value'];
 		$fields['faq'] = ['name', 'answer'];
 		$fields['variants'] = ['name', 'color'];
 		$fields['currencies'] = ['name', 'sign'];
-		$fields['options'] = ['value', 'feature_id'];
 		$fields['delivery'] = ['name', 'description'];
 		$fields['payment_methods'] = ['name', 'description'];
 		$fields['banners_images'] = ['name', 'alt', 'title', 'description', 'button'];
@@ -483,8 +483,12 @@ class Languages extends Turbo
 
 		if (!empty($filter['keyword'])) {
 			$keywords = explode(' ', $filter['keyword']);
+			$keywordFilter = '';
 			foreach ($keywords as $keyword) {
-				$keywordFilter .= $this->db->placehold('AND ' . $lg . ' LIKE "%' . $this->db->escape(trim($keyword)) . '%" OR label LIKE "%' . $this->db->escape(trim($keyword)) . '%" ');
+				$trimmedKeyword = trim($keyword);
+				if (!empty($trimmedKeyword)) {
+					$keywordFilter .= $this->db->placehold('AND (' . $lg . ' LIKE "%' . $this->db->escape($trimmedKeyword) . '%" OR label LIKE "%' . $this->db->escape($trimmedKeyword) . '%") ');
+				}
 			}
 		}
 
@@ -535,8 +539,12 @@ class Languages extends Turbo
 
 		if (!empty($filter['keyword'])) {
 			$keywords = explode(' ', $filter['keyword']);
+			$keywordFilter = '';
 			foreach ($keywords as $keyword) {
-				$keywordFilter .= $this->db->placehold('AND ' . $lg . ' LIKE "%' . $this->db->escape(trim($keyword)) . '%" OR label LIKE "%' . $this->db->escape(trim($keyword)) . '%" ');
+				$trimmedKeyword = trim($keyword);
+				if (!empty($trimmedKeyword)) {
+					$keywordFilter .= $this->db->placehold('AND (' . $lg . ' LIKE "%' . $this->db->escape($trimmedKeyword) . '%" OR label LIKE "%' . $this->db->escape($trimmedKeyword) . '%") ');
+				}
 			}
 		}
 

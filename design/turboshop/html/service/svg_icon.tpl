@@ -1,6 +1,6 @@
-{if !isset($width)}{assign var="width" value="40"}{/if}
-{if !isset($height)}{assign var="height" value="40"}{/if}
-{if !isset($fill)}{assign var="fill" value="#000000"}{/if}
+{if !$width}{assign var="width" value="40"}{/if}
+{if !$height}{assign var="height" value="40"}{/if}
+{if !$fill}{assign var="fill" value="#000000"}{/if}
 
 {if $svgId == "viber"}
 	<svg width="39" height="39" viewBox="0 0 39 39" fill="none" xmlns="http://www.w3.org/2000/svg">

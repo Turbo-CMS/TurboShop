@@ -1,6 +1,6 @@
 {* Search *}
 
-{if isset($page)}
+{if $page}
 	{* Canonical *}
 	{$canonical="/{$page->url}" scope=global}
 {else}
@@ -20,8 +20,8 @@
 				<div id="navigation">
 					<div class="breadcrumbs swipeignore" itemscope="" itemtype="http://schema.org/BreadcrumbList">
 						<div class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-							<a class="breadcrumbs__link" href="{if $lang_link}{$lang_link}{else}/{/if}" title="{$lang->home}" itemprop="item">
-								<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->home}</span>
+							<a class="breadcrumbs__link" href="{if $lang_link}{$lang_link}{else}/{/if}" title="{$lang->home|escape}" itemprop="item">
+								<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->home|escape}</span>
 								<meta itemprop="position" content="{$level++}">
 							</a>
 						</div>
@@ -32,7 +32,7 @@
 								</svg>
 							</i>
 						</span>
-						{if isset($page)}
+						{if $page}
 							<span class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
 								<link href="{$lang_link}{$page->url}" itemprop="item">
 								<span>
@@ -44,7 +44,7 @@
 							<span class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
 								<link href="{$lang_link}search" itemprop="item">
 								<span>
-									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->search}</span>
+									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->search|escape}</span>
 									<meta itemprop="position" content="{$level++}">
 								</span>
 							</span>
@@ -57,10 +57,10 @@
 				<div class="topic__inner">
 					<div class="topic__heading">
 						{* Page Title *}
-						{if isset($page->name)}
+						{if $page}
 							<h1 id="pagetitle" class="switcher-title"><span data-page="{$page->id}">{$page->name|escape}</span></h1>
 						{else}
-							<h1 id="pagetitle" class="switcher-title">{$lang->search}</h1>
+							<h1 id="pagetitle" class="switcher-title">{$lang->search|escape}</h1>
 						{/if}
 					</div>
 				</div>
@@ -77,7 +77,7 @@
 			<div class="col-md-12 col-sm-12 col-xs-12 content-md">
 				<div class="right_block narrow_N catalog_page search_page">
 					<div class="search-page">
-						{if isset($keyword)}
+						{if $keyword}
 							{if $pages_search}
 								<hr>
 								{foreach $pages_search as $page}
@@ -101,14 +101,14 @@
 							{else}
 								<div class="main-wrapper flexbox flexbox--direction-row">
 									<div class="section-content-wrapper flex-1">
-										<div class="alert alert-info">{$lang->nothing_found}</div>
+										<div class="alert alert-info">{$lang->nothing_found|escape}</div>
 									</div>
 								</div>
 							{/if}
 						{else}
 							<div class="main-wrapper flexbox flexbox--direction-row">
 								<div class="section-content-wrapper flex-1">
-									<div class="alert alert-info">{$lang->search_text}</div>
+									<div class="alert alert-info">{$lang->search_text|escape}</div>
 								</div>
 							</div>
 						{/if}

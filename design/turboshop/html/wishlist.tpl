@@ -1,6 +1,6 @@
 {* Wishlist *}
 
-{if isset($page)}
+{if $page}
 	{* Canonical *}
 	{$canonical="/{$page->url}" scope=global}
 {else}
@@ -20,8 +20,8 @@
 					{$level = 1}
 					<div class="breadcrumbs swipeignore" itemscope="" itemtype="http://schema.org/BreadcrumbList">
 						<div class="breadcrumbs__item" id="tb_breadcrumb_0" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-							<a class="breadcrumbs__link" href="{if $lang_link}{$lang_link}{else}/{/if}" title="{$lang->home}" itemprop="item">
-								<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->home}</span>
+							<a class="breadcrumbs__link" href="{if $lang_link}{$lang_link}{else}/{/if}" title="{$lang->home|escape}" itemprop="item">
+								<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->home|escape}</span>
 								<meta itemprop="position" content="{$level++}">
 							</a>
 						</div>
@@ -32,7 +32,7 @@
 								</svg>
 							</i>
 						</span>
-						{if isset($page)}
+						{if $page}
 							<span class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
 								<link href="{$lang_link}{$page->url}" itemprop="item"><span>
 									<span itemprop="name" class="breadcrumbs__item-name font_13">{$page->header|escape}</span>
@@ -42,7 +42,7 @@
 						{else}
 							<span class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
 								<link href="{$lang_link}wishlist" itemprop="item"><span>
-									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->wishlist}</span>
+									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->wishlist|escape}</span>
 									<meta itemprop="position" content="{$level++}">
 								</span>
 							</span>
@@ -55,10 +55,10 @@
 				<div class="topic__inner">
 					<div class="topic__heading">
 						<h1 id="pagetitle" class="switcher-title">
-							{if isset($page->name)}
+							{if $page}
 								<span data-page="{$page->id}">{$page->name|escape}</span>
 							{else}
-								{$lang->wishlist}
+								{$lang->wishlist|escape}
 							{/if}
 						</h1>
 					</div>
@@ -77,7 +77,7 @@
 				<div class="right_block narrow_Y">
 					<div class="personal__wrapper">
 						<div class="personal__block personal__block--favorite-products">
-							{if isset($products)}
+							{if $products}
 								<!-- items-container -->
 								<div class="catalog-items catalog_block_template">
 									<div class="catalog-block" itemscope="" itemtype="http://schema.org/ItemList">
@@ -92,7 +92,7 @@
 							{else}
 								<div class="col-md-12">
 									<div class="alert alert-info">
-										{$lang->wishlist_no_products}
+										{$lang->wishlist_no_products|escape}
 									</div>
 								</div>
 							{/if}
@@ -106,55 +106,55 @@
 								{if $user}
 									<li>
 										<span class="bg-opacity-theme-parent-hover link-wrapper font_short fill-theme-parent-all fill-dark-light">
-											<a href="{$lang_link}user" onclick="document.cookie='user=personal;path=/';document.location.reload();" class="dark_link top-level-link rounded-x link--active link-with-flag">{$lang->my_account}</a>
+											<a href="{$lang_link}user" onclick="document.cookie='user=personal;path=/';document.location.reload();" class="dark_link top-level-link rounded-x link--active link-with-flag">{$lang->my_account|escape}</a>
 										</span>
 									</li>
 									<li>
 										<span class="bg-opacity-theme-parent-hover link-wrapper font_short fill-theme-parent-all fill-dark-light">
-											<a href="{$lang_link}user" onclick="document.cookie='user=private;path=/';document.location.reload();" class="dark_link top-level-link rounded-x link--active link-with-flag">{$lang->personal_data}</a>
+											<a href="{$lang_link}user" onclick="document.cookie='user=private;path=/';document.location.reload();" class="dark_link top-level-link rounded-x link--active link-with-flag">{$lang->personal_data|escape}</a>
 										</span>
 									</li>
 									<li>
 										<span class="bg-opacity-theme-parent-hover link-wrapper font_short fill-theme-parent-all fill-dark-light">
-											<a href="{$lang_link}user" onclick="document.cookie='user=orders;path=/';document.location.reload();" class="dark_link top-level-link rounded-x link--active link-with-flag">{$lang->orders_global}</a>
+											<a href="{$lang_link}user" onclick="document.cookie='user=orders;path=/';document.location.reload();" class="dark_link top-level-link rounded-x link--active link-with-flag">{$lang->orders_global|escape}</a>
 										</span>
 									</li>
 									<li class="active opened">
 										<span class="bg-opacity-theme-parent-hover link-wrapper font_short fill-theme-parent-all fill-dark-light">
-											<a href="{$lang_link}wishlist" class="dark_link top-level-link rounded-x link--active link-with-flag">{$lang->wishlist_products}</a>
+											<a href="{$lang_link}wishlist" class="dark_link top-level-link rounded-x link--active link-with-flag">{$lang->wishlist_products|escape}</a>
 										</span>
 									</li>
 									<li>
 										<span class="bg-opacity-theme-parent-hover link-wrapper font_short fill-theme-parent-all fill-dark-light">
-											<a href="{$lang_link}faq" class="dark_link top-level-link rounded-x link-with-flag">{$lang->help}</a>
+											<a href="{$lang_link}faq" class="dark_link top-level-link rounded-x link-with-flag">{$lang->help|escape}</a>
 										</span>
 									</li>
 									<li>
 										<span class="bg-opacity-theme-parent-hover link-wrapper font_short fill-theme-parent-all fill-dark-light">
-											<a href="{$lang_link}user/logout" class="dark_link top-level-link rounded-x link-with-flag">{$lang->logout}</a>
+											<a href="{$lang_link}user/logout" class="dark_link top-level-link rounded-x link-with-flag">{$lang->logout|escape}</a>
 										</span>
 									</li>
 								{else}
 									{foreach $pages as $p}
-										{if $p->menu_id == $page->menu_id}
+										{if $page && $p->menu_id == $page->menu_id}
 											{if $p->visible}
-												<li class="{if $page && $page->id == $p->id}active{/if} {if isset($p->subpages)}opened child{/if}">
+												<li class="{if $page && $page->id == $p->id}active{/if} {if $p->subpages}opened child{/if}">
 													<span class="bg-opacity-theme-parent-hover link-wrapper font_short fill-theme-parent-all fill-dark-light">
 														<a href="{$lang_link}{$p->url}" class="dark_link top-level-link rounded-x link-with-flag {if $page && $page->id == $p->id}link--active{/if}">
 															<span data-page="{$p->id}">{$p->header|escape}</span>
 														</a>
 													</span>
-													{if isset($p->subpages)}
+													{if $p->subpages}
 														<div class="submenu-wrapper">
 															<ul class="submenu">
 																{foreach $p->subpages as $p2}
-																	<li class="{if $page && $page->id == $p2->id}active{/if} {if isset($p2->subpages)}opened child{/if}">
+																	<li class="{if $page && $page->id == $p2->id}active{/if} {if $p2->subpages}opened child{/if}">
 																		<span class="bg-opacity-theme-parent-hover link-wrapper font_short fill-theme-parent-all fill-dark-light">
 																			<a href="{$lang_link}{$p2->url}" class="dark_link sublink rounded-x {if $page && $page->id == $p2->id}link--active{/if}">
 																				<span data-page="{$p2->id}">{$p2->header|escape}</span>
 																			</a>
 																		</span>
-																		{if isset($p2->subpages)}
+																		{if $p2->subpages}
 																			<div class="submenu-wrapper">
 																				<ul class="submenu">
 																					{foreach $p2->subpages as $p3}

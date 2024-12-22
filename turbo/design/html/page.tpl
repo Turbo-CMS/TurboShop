@@ -1,4 +1,4 @@
-{if isset($page->id)}
+{if $page->id}
 	{$meta_title = $page->name scope=global}
 {else}
 	{$meta_title = $btr->page_new scope=global}
@@ -6,13 +6,13 @@
 
 <div class="d-md-flex mb-3">
 	<h1 class="d-inline align-middle me-3">
-		{if !isset($page->id)}
+		{if !$page->id}
 			{$btr->page_add|escape}
 		{else}
 			{$page->name|escape}
 		{/if}
 	</h1>
-	{if isset($page->id)}
+	{if $page->id}
 		<div class="d-grid gap-2 d-sm-block mt-2 mt-md-0">
 			<a class="btn btn-primary" target="_blank" href="../{$lang_link}{$page->url}">
 				<i class="align-middle mt-n1" data-feather="external-link"></i>
@@ -22,7 +22,7 @@
 	{/if}
 </div>
 
-{if isset($message_success)}
+{if $message_success}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -45,7 +45,7 @@
 	</div>
 {/if}
 
-{if isset($message_error)}
+{if $message_error}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -76,22 +76,22 @@
 						<div class="col-lg-10 col-md-9 col-sm-12">
 							<div class="translate-container mb-3">
 								<div class="form-label">{$btr->global_title|escape} <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
-								<input class="form-control translate-input" name="name" type="text" value="{if isset($page->name)}{$page->name|escape}{/if}">
-								<input name="id" type="hidden" value="{if isset($page->id)}{$page->id|escape}{/if}">
+								<input class="form-control translate-input" name="name" type="text" value="{$page->name|escape}">
+								<input name="id" type="hidden" value="{$page->id|escape}">
 							</div>
 							<div class="translate-container mb-3">
 								<div class="form-label">{$btr->page_menu_name|escape} <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
-								<input class="form-control translate-input" name="header" type="text" value="{if isset($page->header)}{$page->header|escape}{/if}">
+								<input class="form-control translate-input" name="header" type="text" value="{$page->header|escape}">
 							</div>
 							<div class="row">
 								<div class="col-xs-12 col-lg-6 col-md-10">
 									<div class="mt-2 mb-3 mb-h">
 										<div class="input-group">
 											<span class="input-group-text">URL</span>
-											<input name="url" class="js-meta-field form-control js-url {if isset($page->id)}js-disabled{/if}" {if isset($page->id)}readonly="" {/if} type="text" value="{if isset($page->url)}{$page->url|escape}{/if}">
-											<input type="checkbox" id="block-translit" class="d-none" value="1" {if isset($page->id)}checked="" {/if}>
+											<input name="url" class="js-meta-field form-control js-url {if $page->id}js-disabled{/if}" {if $page->id}readonly=""{/if} type="text" value="{$page->url|escape}">
+											<input type="checkbox" id="block-translit" class="d-none" value="1" {if $page->id}checked=""{/if}>
 											<span class="input-group-text js-disable-url">
-												{if isset($page->id)}
+												{if $page->id}
 													<i class="url-lock"></i>
 												{else}
 													<i class="url-lock url-unlock"></i>
@@ -105,7 +105,7 @@
 						<div class="col-lg-2 col-md-3 col-sm-12">
 							<div class="d-flex justify-content-center align-content-center flex-wrap flex-md-column h-100">
 								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
-									<input class="form-check-input ms-2" type="checkbox" id="visible" name="visible" value="1" type="checkbox" {if isset($page->visible) && $page->visible}checked="" {/if}>
+									<input class="form-check-input ms-2" type="checkbox" id="visible" name="visible" value="1" type="checkbox" {if $page->visible}checked=""{/if}>
 									<label class="form-check-label ms-2" for="visible">{$btr->global_enable|escape}</label>
 								</div>
 							</div>
@@ -164,16 +164,16 @@
 							<div class="col-lg-6 col-md-6">
 								<div class="translate-container mb-3">
 									<div class="form-label">Meta-title <span id="js-meta-title-counter"></span> <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
-									<input name="meta_title" class="form-control js-meta-field mb-h translate-input" type="text" value="{if isset($page->meta_title)}{$page->meta_title|escape}{/if}">
+									<input name="meta_title" class="form-control js-meta-field mb-h translate-input" type="text" value="{$page->meta_title|escape}">
 								</div>
 								<div class="translate-container mb-3">
 									<div class="form-label">Meta-keywords <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
-									<input name="meta_keywords" class="form-control js-meta-field mb-h translate-input" type="text" value="{if isset($page->meta_keywords)}{$page->meta_keywords|escape}{/if}">
+									<input name="meta_keywords" class="form-control js-meta-field mb-h translate-input" type="text" value="{$page->meta_keywords|escape}">
 								</div>
 							</div>
 							<div class="translate-container col-lg-6 col-md-6 pl-0">
 								<div class="form-label">Meta-description <span id="js-meta-description-counter"></span> <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
-								<textarea name="meta_description" class="form-control turbo-textarea js-meta-field translate-input">{if isset($page->meta_description)}{$page->meta_description|escape}{/if}</textarea>
+								<textarea name="meta_description" class="form-control turbo-textarea js-meta-field translate-input">{$page->meta_description|escape}</textarea>
 							</div>
 						</div>
 					</div>
@@ -196,7 +196,7 @@
 				</div>
 				<div class="collapse-card">
 					<div class="card-body">
-						<textarea name="body" id="js-editor" class="editor">{if isset($page->body)}{$page->body|escape}{/if}</textarea>
+						<textarea name="body" id="js-editor" class="editor">{$page->body|escape}</textarea>
 						<div class="row">
 							<div class="col-12">
 								<div class="d-grid d-sm-block mt-3">
@@ -230,7 +230,7 @@
 			url: 'ajax/get_pages.php',
 			data: {
 				'menu_id': option.val(),
-				'exclude': {if isset($page->id)}{$page->id}{else}0{/if},
+				'exclude': {if $page->id}{$page->id}{else}0{/if},
 				'session_id': '{$smarty.session.id}'
 			},
 			success: function(data) {
@@ -241,7 +241,7 @@
 						option.val(row.id);
 						option.addClass(row.class);
 						option.html(row.text);
-						{if isset($page->id)}if (row.id == {$page->parent_id})
+						{if $page->id}if (row.id == {$page->parent_id})
 						option.prop('selected', true);{/if}
 						$('#parent_id').append(option);
 						$('.selectpicker').selectpicker('refresh');

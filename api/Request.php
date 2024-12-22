@@ -11,18 +11,48 @@ class Request extends Turbo
 
 		$_POST = $this->stripslashesRecursive($_POST);
 		$_GET = $this->stripslashesRecursive($_GET);
+		$_COOKIE = $this->stripslashesRecursive($_COOKIE);
+		$_REQUEST = $this->stripslashesRecursive($_REQUEST);
 	}
 
 	/**
-	 * Is Method
+	 * Method
 	 */
-	public function isMethod($method = null)
+	public function method($method = null)
 	{
 		if ($method !== null) {
 			return strtolower($_SERVER['REQUEST_METHOD']) == strtolower($method);
 		}
 
 		return $_SERVER['REQUEST_METHOD'];
+	}
+
+	/**
+	 * Input Filter
+	 */
+	private function _inputFilter($val, $type = null)
+	{
+		if ($type == 'string') {
+			return preg_replace('/[^\p{L}\p{Nd}\d\s_\-\.\%\s]/ui', '', strval($val));
+		}
+
+		if ($type == 'integer' || $type == 'int') {
+			return intval($val);
+		}
+
+		if ($type == 'float' || $type == 'floatval') {
+			return floatval($val);
+		}
+
+		if ($type == 'boolean' || $type == 'bool') {
+			return !empty($val);
+		}
+
+		if (is_callable($type)) {
+			return $type($val);
+		}
+
+		return $val;
 	}
 
 	/**
@@ -40,19 +70,7 @@ class Request extends Turbo
 			$val = reset($val);
 		}
 
-		if ($type == 'string') {
-			return preg_replace('/[^\p{L}\p{Nd}\d\s_\-\.\%\s]/ui', '', strval($val));
-		}
-
-		if ($type == 'integer') {
-			return (int) $val;
-		}
-
-		if ($type == 'boolean') {
-			return !empty($val);
-		}
-
-		return $val;
+		return $this->_inputFilter($val, $type);
 	}
 
 	/**
@@ -68,19 +86,7 @@ class Request extends Turbo
 			$val = file_get_contents('php://input');
 		}
 
-		if ($type == 'string') {
-			return preg_replace('/[^\p{L}\p{Nd}\d\s_\-\.\%\s]/ui', '', strval($val));
-		}
-
-		if ($type == 'integer') {
-			return (int) $val;
-		}
-
-		if ($type == 'boolean') {
-			return !empty($val);
-		}
-
-		return $val;
+		return $this->_inputFilter($val, $type);
 	}
 
 	/**
@@ -138,38 +144,31 @@ class Request extends Turbo
 		$url = @parse_url($_SERVER["REQUEST_URI"]);
 		$query = [];
 
-		if (isset($url['query']) && !empty($url['query'])) {
+		if (isset($url['query'])) {
 			parse_str($url['query'], $query);
 		}
 
-		if (!is_null($query)) {
-			foreach ($query as &$v) {
-				if (!is_array($v)) {
-					$v = stripslashes(urldecode($v));
-				}
+		foreach ($query as &$v) {
+			if (!is_array($v)) {
+				$v = stripslashes(urldecode($v));
 			}
 		}
 
-		foreach ($params as $name => $value) {
-			$query[$name] = $value;
-		}
+		$query = array_merge($query, $params);
 
-		$queryIsEmpty = true;
-		foreach ($query as $name => $value) {
-			if ($value !== '' && $value !== null) {
-				$queryIsEmpty = false;
-			}
-		}
+		$url['query'] = http_build_query(array_filter($query, function ($value) {
+			return $value !== '' && $value !== null;
+		}));
 
-		if (!$queryIsEmpty) {
-			$url['query'] = http_build_query($query);
-		} else {
-			$url['query'] = null;
-		}
+		return http_build_url(null, $url);
+	}
 
-		$result = http_build_url(null, $url);
-
-		return $result;
+	/**
+	 * Ajax
+	 */
+	public function ajax()
+	{
+		return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && (strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest');
 	}
 }
 
@@ -200,7 +199,7 @@ if (!function_exists('http_build_url')) {
 			$flags |= HTTP_URL_STRIP_PATH;
 			$flags |= HTTP_URL_STRIP_QUERY;
 			$flags |= HTTP_URL_STRIP_FRAGMENT;
-		} else if ($flags & HTTP_URL_STRIP_AUTH) {
+		} elseif ($flags & HTTP_URL_STRIP_AUTH) {
 			$flags |= HTTP_URL_STRIP_USER;
 			$flags |= HTTP_URL_STRIP_PASS;
 		}
@@ -219,28 +218,32 @@ if (!function_exists('http_build_url')) {
 
 		if ($flags & HTTP_URL_REPLACE) {
 			foreach ($keys as $key) {
-				if (isset($parts[$key]))
+				if (isset($parts[$key])) {
 					$parseUrl[$key] = $parts[$key];
+				}
 			}
 		} else {
 			if (isset($parts['path']) && ($flags & HTTP_URL_JOIN_PATH)) {
-				if (isset($parseUrl['path']))
+				if (isset($parseUrl['path'])) {
 					$parseUrl['path'] = rtrim(str_replace(basename($parseUrl['path']), '', $parseUrl['path']), '/') . '/' . ltrim($parts['path'], '/');
-				else
+				} else {
 					$parseUrl['path'] = $parts['path'];
+				}
 			}
 
 			if (isset($parts['query']) && ($flags & HTTP_URL_JOIN_QUERY)) {
-				if (isset($parseUrl['query']))
+				if (isset($parseUrl['query'])) {
 					$parseUrl['query'] .= '&' . $parts['query'];
-				else
+				} else {
 					$parseUrl['query'] = $parts['query'];
+				}
 			}
 		}
 
 		foreach ($keys as $key) {
-			if ($flags & (int)constant('HTTP_URL_STRIP_' . strtoupper($key)))
+			if ($flags & (int)constant('HTTP_URL_STRIP_' . strtoupper($key))) {
 				unset($parseUrl[$key]);
+			}
 		}
 
 		$newUrl = $parseUrl;
@@ -255,33 +258,40 @@ if (!function_exists('http_build_url')) {
 	}
 }
 
+/**
+ * Build Query
+ */
 if (!function_exists('http_build_query')) {
-	function http_build_query($data, $prefix = null, $sep = '', $key = '')
-	{
-		$ret = [];
+    function http_build_query($data, $prefix = null, $sep = '', $key = '')
+    {
+        $ret = [];
 
-		foreach ((array)$data as $k => $v) {
-			$k = urlencode($k);
+        foreach ((array)$data as $k => $v) {
+            $k = urlencode($k);
 
-			if (is_int($k) && $prefix != null) {
-				$k = $prefix . $k;
-			};
+            if (is_int($k) && $prefix != null) {
+                $k = $prefix . $k;
+            }
 
-			if (!empty($key)) {
-				$k = $key . "[" . $k . "]";
-			};
+            if (!empty($key)) {
+                $k = $key . "[" . $k . "]";
+            }
 
-			if (is_array($v) || is_object($v)) {
-				array_push($ret, http_build_query($v, "", $sep, $k));
-			} else {
-				array_push($ret, $k . "=" . urlencode($v));
-			};
-		};
+            if (is_array($v) || is_object($v)) {
+                array_push($ret, http_build_query($v, "", $sep, $k));
+            } else {
+                if ($v !== null) {
+                    array_push($ret, $k . "=" . urlencode($v));
+                } else {
+                    array_push($ret, $k . "=");
+                }
+            }
+        }
 
-		if (empty($sep)) {
-			$sep = ini_get("arg_separator.output");
-		};
+        if (empty($sep)) {
+            $sep = ini_get("arg_separator.output");
+        }
 
-		return implode($sep, $ret);
-	};
+        return implode($sep, $ret);
+    }
 }

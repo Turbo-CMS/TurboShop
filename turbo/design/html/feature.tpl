@@ -1,4 +1,4 @@
-{if isset($feature->id)}
+{if $feature->id}
 	{$meta_title = $feature->name scope=global}
 {else}
 	{$meta_title = $btr->feature_new scope=global}
@@ -6,7 +6,7 @@
 
 <div class="d-md-flex mb-3">
 	<h1 class="d-inline align-middle me-3">
-		{if !isset($feature->id)}
+		{if !$feature->id}
 			{$btr->feature_add|escape}
 		{else}
 			{$feature->name|escape}
@@ -14,7 +14,7 @@
 	</h1>
 </div>
 
-{if isset($message_success)}
+{if $message_success}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -39,7 +39,7 @@
 	</div>
 {/if}
 
-{if isset($message_error)}
+{if $message_error}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -68,18 +68,18 @@
 						<div class="col-lg-10 col-md-9 col-sm-12">
 							<div class="translate-container mb-3">
 								<div class="form-label">{$btr->global_title|escape} <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
-								<input class="form-control translate-input" name="name" type="text" value="{if isset($feature->name)}{$feature->name|escape}{/if}">
-								<input name="id" type="hidden" value="{if isset($feature->id)}{$feature->id|escape}{/if}">
+								<input class="form-control translate-input" name="name" type="text" value="{$feature->name|escape}">
+								<input name="id" type="hidden" value="{$feature->id|escape}">
 							</div>
 							<div class="row">
 								<div class="col-xs-12 col-lg-6 col-md-6">
 									<div class="mt-2 mb-3">
 										<div class="input-group">
 											<span class="input-group-text">URL</span>
-											<input name="url" class="form-control js-url {if isset($feature->id)}js-disabled{/if}" {if isset($feature->id)}readonly=""{/if} type="text" value="{if isset($feature->url)}{$feature->url|escape}{/if}">
-											<input type="checkbox" id="block-translit" class="d-none" value="1" {if isset($feature->id)}checked="" {/if}>
+											<input name="url" class="form-control js-url {if $feature->id}js-disabled{/if}" {if $feature->id}readonly=""{/if} type="text" value="{$feature->url|escape}">
+											<input type="checkbox" id="block-translit" class="d-none" value="1" {if $feature->id}checked="" {/if}>
 											<span class="input-group-text js-disable-url">
-												{if isset($feature->id)}
+												{if $feature->id}
 													<i class="url-lock"></i>
 												{else}
 													<i class="url-lock url-unlock"></i>
@@ -91,7 +91,7 @@
 								<div class="col-lg-6 col-md-6 col-xs-12">
 									<div class="d-flex justify-content-center align-content-start flex-wrap flex-md-column h-100">
 										<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
-											<input class="form-check-input ms-2" type="checkbox" id="url-in-product" name="url_in_product" value="1" type="checkbox" {if isset($feature->url_in_product) && $feature->url_in_product}checked=""{/if}>
+											<input class="form-check-input ms-2" type="checkbox" id="url-in-product" name="url_in_product" value="1" type="checkbox" {if $feature->url_in_product}checked=""{/if}>
 											<label class="form-check-label ms-2" for="url-in-product">{$btr->feature_url_in_product|escape}</label>
 										</div>
 									</div>
@@ -101,15 +101,15 @@
 						<div class="col-lg-2 col-md-3 col-sm-12">
 							<div class="d-flex justify-content-center align-content-center flex-wrap flex-md-column h-100">
 								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
-									<input class="form-check-input ms-2" type="checkbox" id="in-filter" name="in_filter" value="1" type="checkbox" {if isset($feature->in_filter) && $feature->in_filter}checked=""{/if}>
+									<input class="form-check-input ms-2" type="checkbox" id="in-filter" name="in_filter" value="1" type="checkbox" {if $feature->in_filter}checked=""{/if}>
 									<label class="form-check-label ms-2" for="in-filter">{$btr->feature_filter|escape}</label>
 								</div>
 								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
-									<input class="form-check-input ms-2" type="checkbox" id="is-color" name="is_color" value="1" type="checkbox" {if isset($feature->is_color) && $feature->is_color}checked=""{/if}>
+									<input class="form-check-input ms-2" type="checkbox" id="is-color" name="is_color" value="1" type="checkbox" {if $feature->is_color}checked=""{/if}>
 									<label class="form-check-label ms-2" for="is-color">{$btr->color_filter|escape}</label>
 								</div>
 								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
-									<input class="form-check-input ms-2" type="checkbox" id="is-size" name="is_size" value="1" type="checkbox" {if isset($feature->is_size) && $feature->is_size}checked=""{/if}>
+									<input class="form-check-input ms-2" type="checkbox" id="is-size" name="is_size" value="1" type="checkbox" {if $feature->is_size}checked=""{/if}>
 									<label class="form-check-label ms-2" for="is-size">{$btr->size_filter|escape}</label>
 								</div>
 							</div>
@@ -151,8 +151,8 @@
 								<select class="selectpicker js-select-all-categories px-0 d-none" multiple name="feature_categories[]" size="15" data-selected-text-format="count">
 									{function name=category_select level=0}
 										{foreach $categories as $category}
-											<option value="{$category->id}" {if in_array($category->id, $feature_categories)}selected{/if} {if isset($category->single_name)}category_name="{$category->single_name}" {/if}>{section name=sp loop=$level}--{/section} {$category->name}</option>
-											{if isset($category->subcategories)}
+											<option value="{$category->id}" {if in_array($category->id, $feature_categories)}selected{/if} {if isset($category->single_name)}category_name="{$category->single_name}"{/if}>{section name=sp loop=$level}--{/section} {$category->name}</option>
+											{if $category->subcategories}
 												{category_select categories=$category->subcategories level=$level+1}
 											{/if}
 										{/foreach}
@@ -166,7 +166,7 @@
 			</div>
 		</div>
 	</div>
-	{if isset($feature->id) && $feature_categories}
+	{if $feature->id && $feature_categories}
 		<div class="row">
 			<div class="col-lg-12 col-md-12">
 				<div class="card mh-210px">
@@ -187,9 +187,9 @@
 									<div class="turbo-list tb-related-list">
 										<div class="turbo-list-head">
 											<div class="turbo-list-heading turbo-list-drag"></div>
-											<div class="turbo-list-heading feature-value-name">{$btr->global_value}</div>
-											<div class="turbo-list-heading feature-value-translit text-center">{$btr->feature_value_translit}</div>
-											<div class="turbo-list-heading feature-value-products-num text-center">{$btr->feature_value_products_num}</div>
+											<div class="turbo-list-heading feature-value-name">{$btr->global_value|escape}</div>
+											<div class="turbo-list-heading feature-value-translit text-center">{$btr->feature_value_translit|escape}</div>
+											<div class="turbo-list-heading feature-value-products-num text-center">{$btr->feature_value_products_num|escape}</div>
 											<div class="turbo-list-heading turbo-list-delete"></div>
 										</div>
 										<div class="turbo-list-body sortable js-values-list">
@@ -202,8 +202,8 @@
 															<i class="align-middle" transform="rotate(-45)" data-feather="maximize-2"></i>
 														</div>
 														<div class="turbo-list-boding feature-value-name">
-															<div class="form-label d-block d-md-none">{$btr->global_value}</div>
-															{if isset($feature->is_color) && $feature->is_color}
+															<div class="form-label d-block d-md-none">{$btr->global_value|escape}</div>
+															{if $feature->is_color}
 																<div class="input-group color-picker">
 																	<input type="text" class="form-control" name="options[value][]" value="{$option->value|escape}">
 																	<span class="input-group-text add-on"><i></i></span>
@@ -216,11 +216,11 @@
 															{/if}
 														</div>
 														<div class="turbo-list-boding feature-value-translit">
-															<div class="form-label d-block d-md-none">{$btr->feature_value_translit}</div>
+															<div class="form-label d-block d-md-none">{$btr->feature_value_translit|escape}</div>
 															<input type="text" class="form-control" name="options[translit][]" value="{$option->translit|escape}">
 														</div>
 														<div class="turbo-list-boding feature-value-products-num">
-															<div class="form-label d-block d-md-none">{$btr->feature_value_products_num}</div>
+															<div class="form-label d-block d-md-none">{$btr->feature_value_products_num|escape}</div>
 															<a href="index.php?module=ProductsAdmin&features[{$feature->id}]={$option->translit|escape}" class="form-control text-body text-decoration-none" target="_blank" disabled>{$option->count|escape}</a>
 														</div>
 														<div class="turbo-list-setting feature-save">
@@ -242,8 +242,8 @@
 														<i class="align-middle" transform="rotate(-45)" data-feather="maximize-2"></i>
 													</div>
 													<div class="turbo-list-boding feature-value-name">
-														<div class="form-label d-block d-md-none">{$btr->global_value}</div>
-														{if isset($feature->is_color) && $feature->is_color}
+														<div class="form-label d-block d-md-none">{$btr->global_value|escape}</div>
+														{if $feature->is_color}
 															<div class="input-group input-color">
 																<input type="text" class="form-control" name="options[value][]" value="">
 																<span class="input-group-text add-on"><i></i></span>
@@ -256,11 +256,11 @@
 														{/if}
 													</div>
 													<div class="turbo-list-boding feature-value-translit">
-														<div class="form-label d-block d-md-none">{$btr->feature_value_translit}</div>
+														<div class="form-label d-block d-md-none">{$btr->feature_value_translit|escape}</div>
 														<input type="text" class="form-control" name="options[translit][]" value="">
 													</div>
 													<div class="turbo-list-boding feature-value-products-num">
-														<div class="form-label d-block d-md-none">{$btr->feature_value_products_num}</div>
+														<div class="form-label d-block d-md-none">{$btr->feature_value_products_num|escape}</div>
 														<a href="#" class="form-control text-body text-decoration-none" disabled>0</a>
 													</div>
 													<div class="turbo-list-setting feature-save">
@@ -289,7 +289,7 @@
 		</div>
 	{/if}
 	<div class="row">
-		{if isset($feature->id) && $feature_categories}
+		{if $feature->id && $feature_categories}
 			<div class="col-md-6">
 				<div class="d-grid d-md-block">
 					<button type="button" class="js-add-value btn btn-success mt-3">

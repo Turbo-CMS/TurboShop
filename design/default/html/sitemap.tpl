@@ -1,6 +1,6 @@
 {* Sitemap *}
 
-{if isset($page)}
+{if $page}
 	{* Canonical *}
 	{$canonical="/{$page->url}" scope=global}
 {else}
@@ -11,52 +11,24 @@
 	{$canonical="/sitemap" scope=global}
 {/if}
 
-{* Breadcrumb *}
-{$level = 1}
-<nav class="mt-4" aria-label="breadcrumb">
-	<ol itemscope itemtype="http://schema.org/BreadcrumbList" class="breadcrumb">
-		<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="breadcrumb-item">
-			<a itemprop="item" class="text-decoration-none" href="{if $lang_link}{$lang_link}{else}/{/if}">
-				<span itemprop="name" title="{$lang->home}"><i class="fal fa-house me-2"></i>{$lang->home}</span>
-			</a>
-			<meta itemprop="position" content="{$level++}">
-		</li>
-		{if isset($page)}
-			<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="breadcrumb-item active" aria-current="page">
-				<a itemprop="item" class="text-decoration-none" href="{$lang_link}{$page->url}">
-					<span itemprop="name">{$page->header|escape}</span>
-				</a>
-				<meta itemprop="position" content="{$level++}">
-			</li>
-		{else}
-			<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="breadcrumb-item active" aria-current="page">
-				<a itemprop="item" class="text-decoration-none" href="{$lang_link}sitemap">
-					<span itemprop="name">{$lang->sitemap}</span>
-				</a>
-				<meta itemprop="position" content="{$level++}">
-			</li>
-		{/if}
-	</ol>
-</nav>
-
 {* Page Title *}
-{if isset($page->name)}
+{if $page}
 	<h1 class="my-4">
 		<span data-page="{$page->id}">{$page->name|escape}</span>
 	</h1>
 {else}
-	<h1 class="my-4">{$lang->sitemap}</h1>
+	<h1 class="my-4">{$lang->sitemap|escape}</h1>
 {/if}
 
 {* Page Body *}
-{if isset($page->body)}
+{if $page}
 	{$page->body}
 {/if}
 
 <div class="row">
 	{* Pages *}
-	<div class="col-md-4 col-lg-4 mb-4">
-		<h2 class="my-4">{$lang->about_shop}</h2>
+	<div class="col-sm-6 col-md-4 col-lg-4 mb-4">
+		<h2 class="my-4">{$lang->about_shop|escape}</h2>
 		<ul>
 			{foreach $pages as $p1}
 				{if $p1->menu_id == $theme_settings->id_menu_sitemap_1}
@@ -72,8 +44,8 @@
 		</ul>
 	</div>
 
-	<div class="col-md-4 col-lg-4 mb-4">
-		<h2 class="my-4">{$lang->catalog}</h2>
+	<div class="col-sm-6 col-md-4 col-lg-4 mb-4">
+		<h2 class="my-4">{$lang->catalog|escape}</h2>
 		<ul>
 			{foreach $pages as $p2}
 				{if $p2->menu_id == $theme_settings->id_menu_sitemap_2}
@@ -89,8 +61,8 @@
 		</ul>
 	</div>
 
-	<div class="col-md-4 col-lg-4 mb-4">
-		<h2 class="my-4">{$lang->information}</h2>
+	<div class="col-sm-6 col-md-4 col-lg-4 mb-4">
+		<h2 class="my-4">{$lang->information|escape}</h2>
 		<ul>
 			{foreach $pages as $p3}
 				{if $p3->menu_id == $theme_settings->id_menu_sitemap_3}
@@ -106,8 +78,8 @@
 		</ul>
 	</div>
 
-	<div class="col-md-4 col-lg-4 mb-4">
-		<h2 class="my-4">{$lang->help}</h2>
+	<div class="col-sm-6 col-md-4 col-lg-4 mb-4">
+		<h2 class="my-4">{$lang->help|escape}</h2>
 		<ul>
 			{foreach $pages as $p4}
 				{if $p4->menu_id == $theme_settings->id_menu_sitemap_4}
@@ -123,8 +95,8 @@
 		</ul>
 	</div>
 	
-	<div class="col-md-4 col-lg-4 mb-4">
-		<h2 class="my-4">{$lang->confidentiality}</h2>
+	<div class="col-sm-6 col-md-4 col-lg-4 mb-4">
+		<h2 class="my-4">{$lang->confidentiality|escape}</h2>
 		<ul>
 			{foreach $pages as $p5}
 				{if $p5->menu_id == $theme_settings->id_menu_sitemap_5}
@@ -142,8 +114,8 @@
 
 	{* Blog *}
 	{if $posts}
-		<div class="col-md-4 col-lg-4 mb-4">
-			<h2 class="my-4">{$lang->global_blog}</h2>
+		<div class="col-sm-6 col-md-4 col-lg-4 mb-4">
+			<h2 class="my-4">{$lang->global_blog|escape}</h2>
 			<ul>
 				{foreach $posts as $p}
 					<li>
@@ -158,8 +130,8 @@
 
 	{* Products *}
 	{if $cats}
-		<div class="col-md-4 col-lg-4 mb-4">
-			<h2 class="my-4">{$lang->global_products}</h2>
+		<div class="col-sm-6 col-md-4 col-lg-4 mb-4">
+			<h2 class="my-4">{$lang->global_products|escape}</h2>
 			{function name=cat_prod}
 				{if $prod}
 					<ul>
@@ -184,7 +156,7 @@
 									<a class="text-decoration-none" href="{$lang_link}catalog/{$c->url}">
 										<strong>{$c->name}</strong>
 									</a>
-									{if isset($c->subcategories)}
+									{if $c->subcategories}
 										{cat_tree cats=$c->subcategories}
 									{/if}
 									{cat_prod prod=$c->products}
@@ -200,8 +172,8 @@
 
 	{* Articles *}
 	{if $articles_cats}
-		<div class="col-md-4 col-lg-4 mb-4">
-			<h2 class="my-4">{$lang->global_articles}</h2>
+		<div class="col-sm-6 col-md-4 col-lg-4 mb-4">
+			<h2 class="my-4">{$lang->global_articles|escape}</h2>
 			{function name=cat_art}
 				{if $articles}
 					<ul>
@@ -226,7 +198,7 @@
 									<a class="text-decoration-none" href="{$lang_link}articles/{$c->url}">
 										<strong>{$c->name}</strong>
 									</a>
-									{if isset($c->subcategories)}
+									{if $c->subcategories}
 										{articles_cat_tree articles_cats=$c->subcategories}
 									{/if}
 									{cat_art articles=$c->articles}

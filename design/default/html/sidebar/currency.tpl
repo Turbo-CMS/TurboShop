@@ -1,6 +1,6 @@
 {if $currencies|count > 1}
 	<div class="card mb-4">
-		<div class="card-header fw-bold">{$lang->currency}</div>
+		<div class="card-header fw-bold">{$lang->currency|escape}</div>
 		<div class="card-body">
 			<select role="button" class="form-select" onchange="location.href=this.value" size="1" aria-label="Select currency">
 				{foreach $currencies as $c}

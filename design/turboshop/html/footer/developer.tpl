@@ -1,6 +1,6 @@
 <div class="footer__developer footer__part-item font_14 color_999">
-	<a href="#" id="developer" class="developer" target="_blank" title="{$lang->powered_by} TurboCMS">
-		<div class="developer__title">{$lang->powered_by}</div>
+	<a href="#" id="developer" class="developer" target="_blank" title="{$lang->powered_by|escape} TurboCMS">
+		<div class="developer__title">{$lang->powered_by|escape}</div>
 		<div class="developer__logo developer__logo--svg">
 			<i class="svg inline svg-inline-developer_logo" aria-hidden="true">
 				<svg width="166px" height="25.75px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 166 25.75">

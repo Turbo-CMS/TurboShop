@@ -1,0 +1,116 @@
+/* Table of contents */
+
+.table-of-contents {
+	margin-bottom: 30px
+}
+
+.table-of-contents-hide {
+	cursor: pointer
+}
+
+.table-of-contents-hide i {
+	font-size: 14px;
+}
+
+.table-of-contents-hide i:after {
+	margin-left: 12px
+}
+
+.table-of-contents-hide:hover {
+	opacity: .9
+}
+
+.table-of-contents.open .table-of-contents-list {
+	display: block
+}
+
+.table-of-contents.open .table-of-contents-hide .icon-action {
+	transform: rotate(180deg) translateZ(0px);
+	transition: transform 0.4s ease 0s, -webkit-transform 0.4s ease 0s;
+}
+
+.table-of-contents-list {
+	margin-top: 0
+}
+
+.table-of-contents-list>ol>li:before {
+	width: 1.5em
+}
+
+.table-of-contents-list>ol>li>ol>li {
+	font-size: 0.92em
+}
+
+.table-of-contents-list>ol>li>ol>li:before {
+	width: 2.5em
+}
+
+.table-of-contents-list>ol>li>ol>li>ol>li {
+	font-size: 0.88em
+}
+
+.table-of-contents-list>ol>li>ol>li>ol>li:before {
+	width: 3em
+}
+
+.table-of-contents ol {
+	margin: 0 30px 0;
+	padding: 0 0 15px 0;
+	list-style: none
+}
+
+.table-of-contents ol>li>ol {
+	padding: 0;
+}
+
+.table-of-contents ol>li>ol>li>ol {
+	padding: 0;
+}
+
+.table-of-contents ol li {
+	padding-left: 0;
+	margin-bottom: 0
+}
+
+.table-of-contents ol li a {
+	text-decoration: none
+}
+
+.table-of-contents ol li:before {
+	display: inline-block;
+	content: counter(point) ". ";
+	opacity: .5;
+	margin-right: 5px;
+	margin-left: 0
+}
+
+.table-of-contents>ol>li {
+	counter-increment: point;
+	counter-reset: sublist;
+	margin-top: .4em;
+	margin-bottom: .2em
+}
+
+.table-of-contents>ol>li>ol>li {
+	counter-reset: sublist3;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	margin-left: 0px
+}
+
+.table-of-contents>ol>li>ol>li:before {
+	content: counter(point) "." counter(sublist) ". ";
+	counter-increment: sublist
+}
+
+.table-of-contents {
+	margin-top: 0.3em;
+	margin-bottom: 0.7em;
+	margin-left: 0px
+}
+
+.table-of-contents>ol>li>ol>li>ol>li:before {
+	content: counter(point) "." counter(sublist) "." counter(sublist3) ". ";
+	counter-increment: sublist3;
+	width: 40px
+}

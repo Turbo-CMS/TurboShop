@@ -24,7 +24,7 @@ class OrdersAdmin extends Turbo
 			$this->design->assign('label', $label);
 		}
 
-		if ($this->request->isMethod('post')) {
+		if ($this->request->method('post')) {
 			$ids = $this->request->post('check');
 
 			if (is_array($ids)) {

@@ -1,6 +1,6 @@
 {* Login *}
 
-{if isset($page)}
+{if $page}
 	{* Canonical *}
 	{$canonical="/{$page->url}" scope=global}
 {else}
@@ -25,8 +25,8 @@
 				<div id="navigation">
 					<div class="breadcrumbs swipeignore" itemscope="" itemtype="http://schema.org/BreadcrumbList">
 						<div class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-							<a class="breadcrumbs__link" href="{if $lang_link}{$lang_link}{else}/{/if}" title="{$lang->home}" itemprop="item">
-								<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->home}</span>
+							<a class="breadcrumbs__link" href="{if $lang_link}{$lang_link}{else}/{/if}" title="{$lang->home|escape}" itemprop="item">
+								<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->home|escape}</span>
 								<meta itemprop="position" content="{$level++}">
 							</a>
 						</div>
@@ -37,7 +37,7 @@
 								</svg>
 							</i>
 						</span>
-						{if isset($page)}
+						{if $page}
 							<span class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
 								<link href="{$lang_link}{$page->url}" itemprop="item">
 								<span>
@@ -49,7 +49,7 @@
 							<span class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
 								<link href="{$lang_link}user/login" itemprop="item">
 								<span>
-									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->authorization}</span>
+									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->authorization|escape}</span>
 									<meta itemprop="position" content="{$level++}">
 								</span>
 							</span>
@@ -62,10 +62,10 @@
 				<div class="topic__inner">
 					<div class="topic__heading">
 						{* Page Title *}
-						{if isset($page->name)}
+						{if $page}
 							<h1 id="pagetitle" class="switcher-title"><span data-page="{$page->id}">{$page->name|escape}</span></h1>
 						{else}
-							<h1 id="pagetitle" class="switcher-title">{$lang->authorization}</h1>
+							<h1 id="pagetitle" class="switcher-title">{$lang->authorization|escape}</h1>
 						{/if}
 					</div>
 				</div>
@@ -84,19 +84,19 @@
 					<div class="pk-page">
 						<div class="form">
 							<div class="top-text">
-								{$lang->authorization_text}
+								{$lang->authorization_text|escape}
 							</div>
 						</div>
 					</div>
 					<div class="auth-page pk-page">
 						<div class="auth form-block">
 							<div class="form">
-								{if isset($error)}
+								{if $error}
 									<div class="alert alert-danger" role="alert">
 										{if $error == 'login_incorrect'}
-											{$lang->wrong_login_password}
+											{$lang->wrong_login_password|escape}
 										{elseif $error == 'user_disabled'}
-											{$lang->not_activated}
+											{$lang->not_activated|escape}
 										{else}
 											{$error}
 										{/if}
@@ -105,13 +105,13 @@
 								<form id="auth-page-form" class="validate" method="post" target="_top" novalidate="novalidate">
 									<div class="form-body">
 										<div class="form-group fill-animate" data-sid="USER_LOGIN_POPUP">
-											<label class="font_14" for="USER_LOGIN_POPUP"><span>{$lang->login} <span class="required-star">*</span></span></label>
+											<label class="font_14" for="USER_LOGIN_POPUP"><span>{$lang->login|escape} <span class="required-star">*</span></span></label>
 											<div class="input">
-												<input type="text" name="email" id="USER_LOGIN_POPUP" class="form-control required input-filed" maxlength="50" value="{if isset($email)}{$email|escape}{/if}" autocomplete="on" tabindex="1" aria-required="true" aria-invalid="false">
+												<input type="text" name="email" id="USER_LOGIN_POPUP" class="form-control required input-filed" maxlength="50" value="{$email|escape}" autocomplete="on" tabindex="1" aria-required="true" aria-invalid="false">
 											</div>
 										</div>
 										<div class="form-group fill-animate" data-sid="USER_PASSWORD_POPUP">
-											<label class="font_14" for="USER_PASSWORD_POPUP"><span>{$lang->password} <span class="required-star">*</span></span></label>
+											<label class="font_14" for="USER_PASSWORD_POPUP"><span>{$lang->password|escape} <span class="required-star">*</span></span></label>
 											<div class="input eye-password">
 												<input type="password" name="password" id="USER_PASSWORD_POPUP" class="form-control required" maxlength="50" value="" autocomplete="on" tabindex="2" aria-required="true">
 											</div>
@@ -121,21 +121,21 @@
 										<div class="auth__bottom-action">
 											<div class="line-block line-block--20 flexbox--wrap flexbox--justify-beetwen">
 												<div class="line-block__item font_14">
-													<a class="forgot" href="{$lang_link}user/password_remind" tabindex="3">{$lang->forgot_password}</a>
+													<a class="forgot" href="{$lang_link}user/password_remind" tabindex="3">{$lang->forgot_password|escape}</a>
 												</div>
 											</div>
 										</div>
 										<div class="auth__bottom-btns">
 											<div class="line-block line-block--align-normal line-block--16-vertical flexbox--direction-column flexbox--justify-beetwen">
 												<div class="line-block__item">
-													<button type="submit" class="btn btn-default btn-lg btn-wide auth__bottom-btn has-ripple" name="login" value="{$lang->login}" tabindex="4">
-														<span>{$lang->login}</span>
+													<button type="submit" class="btn btn-default btn-lg btn-wide auth__bottom-btn has-ripple" name="login" value="{$lang->login|escape}" tabindex="4">
+														<span>{$lang->login|escape}</span>
 													</button>
 												</div>
 												<div class="line-block__item">
 													<!--noindex-->
 													<a href="{$lang_link}user/register" rel="nofollow" class="btn btn-default btn-transparent btn-lg btn-wide auth__bottom-btn has-ripple" tabindex="6">
-														{$lang->registration}
+														{$lang->registration|escape}
 													</a>
 													<!--/noindex-->
 												</div>
@@ -144,7 +144,7 @@
 										</div>
 										<div class="licence_block">
 											<label for="licenses_auth">
-												<span>{$lang->licenses_text} <a href="{$lang_link}licenses" target="_blank">{$lang->licenses_link}</a></span>
+												<span>{$lang->licenses_text|escape} <a href="{$lang_link}licenses" target="_blank">{$lang->licenses_link|escape}</a></span>
 											</label>
 										</div>
 									</div>

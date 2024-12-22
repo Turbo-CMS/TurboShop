@@ -16,7 +16,7 @@
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasCart" aria-labelledby="offcanvasCartLabel">
 	<div class="offcanvas-header border-bottom">
 		<div class="text-start">
-			<h5 id="offcanvasCartLabel" class="mb-0 fs-4">{$lang->global_cart}</h5>
+			<h5 id="offcanvasCartLabel" class="mb-0 fs-4">{$lang->global_cart|escape}</h5>
 		</div>
 		<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 	</div>

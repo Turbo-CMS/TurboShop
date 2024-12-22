@@ -8,7 +8,7 @@ class PageAdmin extends Turbo
 	{
 		$page = new stdClass();
 
-		if ($this->request->isMethod('post')) {
+		if ($this->request->method('post')) {
 			$page->id = $this->request->post('id', 'integer');
 			$page->parent_id = $this->request->post('parent_id', 'integer');
 			$page->name = $this->request->post('name');
@@ -35,13 +35,21 @@ class PageAdmin extends Turbo
 				}
 			}
 		} else {
-			$id = $this->request->get('id', 'integer');
+			$page->id = $this->request->get('id', 'integer');
 
-			if (!empty($id)) {
-				$page = $this->pages->getPage($id);
+			if (!empty($page->id)) {
+				$page = $this->pages->getPage($page->id);
 			} else {
-				$page->menu_id = $this->request->get('menu_id');
+				$page->id = null;
+				$page->name = '';
+				$page->header = '';
+				$page->url = '';
 				$page->visible = 1;
+				$page->menu_id = $this->request->get('menu_id');
+				$page->meta_title = '';
+				$page->meta_keywords = '';
+				$page->meta_description = '';
+				$page->body = '';
 			}
 		}
 
@@ -51,10 +59,10 @@ class PageAdmin extends Turbo
 		$this->design->assign('menus', $menus);
 
 		if (isset($page->menu_id)) {
-			$menu_id = $page->menu_id;
+			$menuId = $page->menu_id;
 		}
 
-		if (empty($menu_id) || !$menu = $this->pages->getMenu($menu_id)) {
+		if (empty($menuId) || !$menu = $this->pages->getMenu($menuId)) {
 			$menu = reset($menus);
 		}
 

@@ -8,7 +8,7 @@ class OrderAdmin extends Turbo
 	{
 		$order = new stdClass();
 
-		if ($this->request->isMethod('post')) {
+		if ($this->request->method('post')) {
 			$order->id = $this->request->post('id', 'integer');
 			$order->name = $this->request->post('name');
 			$order->email = $this->request->post('email');
@@ -126,7 +126,7 @@ class OrderAdmin extends Turbo
 			}
 		} else {
 			$order->id = $this->request->get('id', 'integer');
-			$order = $this->orders->getOrder(intval($order->id));
+			$order = $this->orders->getOrder((int) $order->id);
 
 			$orderLabels = [];
 
@@ -151,11 +151,11 @@ class OrderAdmin extends Turbo
 
 			$products = [];
 
-			foreach ($this->products->getProducts(['ids' => $productsIds]) as $product) {
+			foreach ($this->products->getProducts(['id' => $productsIds]) as $product) {
 				$products[$product->id] = $product;
 			}
 
-			$images = $this->products->getImages(['productId' => $productsIds]);
+			$images = $this->products->getImages(['product_id' => $productsIds]);
 
 			foreach ($images as $image) {
 				$products[$image->product_id]->images[] = $image;
@@ -191,6 +191,22 @@ class OrderAdmin extends Turbo
 
 		if (empty($order->id)) {
 			$order = new stdClass();
+
+			$order->id = null;
+			$order->status = null;
+			$order->discount = null;
+			$order->coupon_code = null;
+			$order->coupon_discount = null;
+			$order->weight = null;
+			$order->delivery_price = null;
+			$order->separate_delivery = null;
+			$order->total_price = null;
+			$order->paid = null;
+			$order->date = null;
+			$order->comment = '';
+			$order->ip = null;
+			$order->lang_id = '';
+			$order->note = '';
 
 			if (empty($order->phone)) {
 				$order->phone = $this->request->get('phone', 'string');

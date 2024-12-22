@@ -10,8 +10,8 @@
 							<div class="index-block__title-wrapper index-block__title-wrapper--mb-35">
 								<div class="index-block__part--left">
 									<h3 class="index-block__title switcher-title">
-										<a class="index-block__link-wrapper dark_link stroke-theme-hover" href="{$lang_link}brands" title="{$lang->all_brands}">
-											<span>{$lang->global_brands}</span>
+										<a class="index-block__link-wrapper dark_link stroke-theme-hover" href="{$lang_link}brands" title="{$lang->all_brands|escape}">
+											<span>{$lang->global_brands|escape}</span>
 											<span class="index-block__link">
 												<span class="index-block__arrow">
 													<i class="svg inline" aria-hidden="true">
@@ -60,8 +60,8 @@
 							<div class="index-block__title-wrapper index-block__title-wrapper--mb-35">
 								<div class="index-block__part--left">
 									<h3 class="index-block__title switcher-title">
-										<a class="index-block__link-wrapper dark_link stroke-theme-hover" href="{$lang_link}brands" title="{$lang->all_brands}">
-											<span>{$lang->global_brands}</span>
+										<a class="index-block__link-wrapper dark_link stroke-theme-hover" href="{$lang_link}brands" title="{$lang->all_brands|escape}">
+											<span>{$lang->global_brands|escape}</span>
 											<span class="index-block__link">
 												<span class="index-block__arrow">
 													<i class="svg inline" aria-hidden="true">

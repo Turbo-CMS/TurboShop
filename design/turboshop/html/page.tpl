@@ -15,8 +15,8 @@
 					<div id="navigation">
 						<div class="breadcrumbs swipeignore" itemscope="" itemtype="http://schema.org/BreadcrumbList">
 							<div class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-								<a class="breadcrumbs__link" href="{if $lang_link}{$lang_link}{else}/{/if}" title="{$lang->home}" itemprop="item">
-									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->home}</span>
+								<a class="breadcrumbs__link" href="{if $lang_link}{$lang_link}{else}/{/if}" title="{$lang->home|escape}" itemprop="item">
+									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->home|escape}</span>
 									<meta itemprop="position" content="{$level++}">
 								</a>
 							</div>
@@ -57,7 +57,7 @@
 				<div class="col-md-12 col-sm-12 col-xs-12 content-md">
 					<div class="right_block narrow_Y">
 						{* Page Body *}
-						{if isset($page->body)}
+						{if $page}
 							{$page->body}
 						{/if}
 					</div>
@@ -68,23 +68,23 @@
 									{foreach $pages as $p}
 										{if $p->menu_id == $page->menu_id}
 											{if $p->visible}
-												<li class="{if $page && $page->id == $p->id}active{/if} {if isset($p->subpages)}opened child{/if}">
+												<li class="{if $page && $page->id == $p->id}active{/if} {if $p->subpages}opened child{/if}">
 													<span class="bg-opacity-theme-parent-hover link-wrapper font_short fill-theme-parent-all fill-dark-light">
 														<a href="{$lang_link}{$p->url}" class="dark_link top-level-link rounded-x link-with-flag {if $page && $page->id == $p->id}link--active{/if}">
 															<span data-page="{$p->id}">{$p->header|escape}</span>
 														</a>
 													</span>
-													{if isset($p->subpages)}
+													{if $p->subpages}
 														<div class="submenu-wrapper">
 															<ul class="submenu">
 																{foreach $p->subpages as $p2}
-																	<li class="{if $page && $page->id == $p2->id}active{/if} {if isset($p2->subpages)}opened child{/if}">
+																	<li class="{if $page && $page->id == $p2->id}active{/if} {if $p2->subpages}opened child{/if}">
 																		<span class="bg-opacity-theme-parent-hover link-wrapper font_short fill-theme-parent-all fill-dark-light">
 																			<a href="{$lang_link}{$p2->url}" class="dark_link sublink rounded-x {if $page && $page->id == $p2->id}link--active{/if}">
 																				<span data-page="{$p2->id}">{$p2->header|escape}</span>
 																			</a>
 																		</span>
-																		{if isset($p2->subpages)}
+																		{if $p2->subpages}
 																			<div class="submenu-wrapper">
 																				<ul class="submenu">
 																					{foreach $p2->subpages as $p3}

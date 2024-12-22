@@ -6,7 +6,7 @@
 
 <div id="import-error" class="alert alert-danger alert-dismissible fade show" role="alert" style="display: none;"></div>
 
-{if isset($message_error)}
+{if $message_error}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -107,7 +107,7 @@
 														</div>
 														<div class="turbo-list-boding turbo-list-import-value js-row">
 															<select class="selectpicker import-select js-select" data-live-search="true" name="yml_params[{$pkey}]">
-																<optgroup label="{$btr->import_additional}">
+																<optgroup label="{$btr->import_additional|escape}">
 																	<option id="import-skip" data-content="<span class='text-danger'>{$btr->import_skip|escape}</span>" value="">{$btr->import_skip|escape}</option>
 																	<option id="import-new-feature" data-content="<span class='text-success'>{$btr->import_new_feature}</span>" value="{$pkey}">{$btr->import_new_feature|escape}</option>
 																</optgroup>
@@ -305,7 +305,7 @@
 		});
 		$('.js-new-all').click(function() {
 			$('.js-select').find('#import-skip').remove();
-			$('.js-select #import-new-feature').after('<option id="import-skip" data-content="<span class=&quot;text-danger&quot;>{/literal}{$btr->import_skip}{literal}</span>" value="">{/literal}{$btr->import_skip}{literal}</option>');
+			$('.js-select #import-new-feature').after('<option id="import-skip" data-content="<span class=&quot;text-danger&quot;>{/literal}{$btr->import_skip|escape}{literal}</span>" value="">{/literal}{$btr->import_skip|escape}{literal}</option>');
 			$('.js-select').selectpicker('refresh');
 		});
 	{/literal}

@@ -1,5 +1,5 @@
 {get_banner var=big_banners group=$theme_settings->big_banners_id}
-{if $big_banners->items}
+{if $big_banners && $big_banners->items}
 	{* Big Banner Type 1 *}
 	{if $theme_settings->big_banners_type == '1'}
 		<div class="drag-block container BIG_BANNER_INDEX" data-class="big_banner_index_drag" data-order="{$theme_settings->block_1}">

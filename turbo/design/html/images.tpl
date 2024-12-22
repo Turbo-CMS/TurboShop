@@ -2,7 +2,7 @@
 
 <h1 class="mb-3">{$btr->images_theme|escape} {$theme|escape}</h1>
 
-{if isset($message_error)}
+{if $message_error}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -160,11 +160,19 @@
 	</div>
 
 	{* Fancybox *}
-	{css id="fancybox" include=["turbo/design/js/fancybox/jquery.fancybox.min.css"]}{/css}
+	{css id="fancybox" include=["turbo/design/js/fancybox/fancybox.css"]}{/css}
 	{stylesheet minify=true}
 
-	{js id="fancybox" priority=99 include=["turbo/design/js/fancybox/jquery.fancybox.min.js"]}{/js}
+	{js id="fancybox" priority=99 include=["turbo/design/js/fancybox/fancybox.umd.js"]}{/js}
 	{javascript minify=true}
+
+	<script>
+		Fancybox.bind("[data-fancybox]", {
+			Thumbs: {
+				type: false,
+			},
+		});
+	</script>
 
 	{literal}
 		<script>

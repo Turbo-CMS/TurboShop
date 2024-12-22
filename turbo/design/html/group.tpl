@@ -1,4 +1,4 @@
-{if isset($group->id)}
+{if $group->id}
 	{$meta_title = $group->name scope=global}
 {else}
 	{$meta_title = $btr->user_group_new scope=global}
@@ -6,7 +6,7 @@
 
 <div class="d-md-flex mb-3">
 	<h1 class="d-inline align-middle me-3">
-		{if !isset($group->id)}
+		{if !$group->id}
 			{$btr->user_group_add|escape}
 		{else}
 			{$group->name|escape}
@@ -14,7 +14,7 @@
 	</h1>
 </div>
 
-{if isset($message_success)}
+{if $message_success}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -39,7 +39,7 @@
 	</div>
 {/if}
 
-{if isset($message_error)}
+{if $message_error}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -66,15 +66,15 @@
 						<div class="col-lg-6 col-md-12">
 							<div class="mb-3">
 								<div class="form-label">{$btr->user_group_name|escape}</div>
-								<input class="form-control" name="name" type="text" value="{if isset($group->name)}{$group->name|escape}{/if}">
-								<input name="id" type="hidden" value="{if isset($group->id)}{$group->id|escape}{/if}">
+								<input class="form-control" name="name" type="text" value="{$group->name|escape}">
+								<input name="id" type="hidden" value="{$group->id|escape}">
 							</div>
 						</div>
 						<div class="col-lg-6 col-md-12">
 							<div class="mb-3">
 								<div class="form-label">{$btr->global_discount|escape}</div>
 								<div class="input-group">
-									<input name="discount" class="form-control" type="text" value="{if isset($group->discount)}{$group->discount*1}{/if}">
+									<input name="discount" class="form-control" type="text" value="{if $group->discount}{$group->discount*1|escape}{/if}">
 									<span class="input-group-text">%</span>
 								</div>
 							</div>

@@ -367,20 +367,23 @@ class Features extends Turbo
 	public function addOption($option)
 	{
 		$option = (object) $option;
+		$option->value = trim($option->value);
+
+		$result = $this->languages->getDescription($option, 'option', false);
+
+		if (empty($option->value) && !empty($result->description->value)) {
+			$option->value = $result->description->value;
+		}
 
 		if (empty($option->value) || empty($option->feature_id)) {
 			return false;
 		}
-
-		$option->value = trim($option->value);
 
 		if (empty($option->translit)) {
 			$option->translit = $this->translit($option->value);
 		}
 
 		$option->translit = $this->translit($option->translit);
-
-		$result = $this->languages->getDescription($option, 'option', false);
 
 		if ($this->db->query("INSERT INTO __options SET ?%", $option)) {
 			$id = $this->db->insertId();
@@ -390,7 +393,6 @@ class Features extends Turbo
 			}
 
 			if (!empty($result->description)) {
-
 				if (!empty($option->feature_id)) {
 					$result->description->feature_id = $option->feature_id;
 				}

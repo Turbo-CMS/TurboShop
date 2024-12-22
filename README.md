@@ -6,7 +6,7 @@
 
 ## Server Requirements
 - Apache
-- PHP 7+ > 8+
+- PHP 8+
 - MySQL 
 
 ## Download

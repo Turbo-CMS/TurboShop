@@ -4,7 +4,7 @@
 
 <h1 class="h3 mb-3">{$btr->global_theme|escape} {$theme}, {$btr->global_folder|escape} {if isset($smarty.get.dir)}{$smarty.get.dir}{else}html{/if}, {$btr->global_template|escape} {$template_file}</h1>
 
-{if isset($message_error)}
+{if $message_error}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-danger alert-dismissible fade show" role="alert">

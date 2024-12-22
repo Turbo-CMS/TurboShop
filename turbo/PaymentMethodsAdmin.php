@@ -6,7 +6,7 @@ class PaymentMethodsAdmin extends Turbo
 {
 	public function fetch()
 	{
-		if ($this->request->isMethod('post')) {
+		if ($this->request->method('post')) {
 			$positions = $this->request->post('positions', []);
 			$ids = array_keys($positions);
 			sort($positions);

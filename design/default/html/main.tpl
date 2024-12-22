@@ -14,13 +14,13 @@
 {/if}
 
 {* Page Title *}
-{if isset($page->header)}
+{if $page}
 	<h1>
 		<span data-page="{$page->id}">{$page->name|escape}</span>
 	</h1>
 {/if}
 
 {* Page Body *}
-{if isset($page->body)}
+{if $page}
 	{$page->body}
 {/if}

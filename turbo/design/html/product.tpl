@@ -1,4 +1,4 @@
-{if isset($product->id)}
+{if $product->id}
 	{$meta_title = $product->name scope=global}
 {else}
 	{$meta_title = $btr->product_new scope=global}
@@ -6,13 +6,13 @@
 
 <div class="d-md-flex mb-3">
 	<h1 class="d-inline align-middle me-3">
-		{if !isset($product->id)}
+		{if !$product->id}
 			{$btr->product_add|escape}
 		{else}
 			{$product->name|escape}
 		{/if}
 	</h1>
-	{if isset($product->id)}
+	{if $product->id}
 		<div class="d-grid d-sm-block mt-2 mt-md-0">
 			<a class="btn btn-primary" target="_blank" href="../{$lang_link}products/{$product->url}">
 				<i class="align-middle mt-n1" data-feather="external-link"></i>
@@ -22,7 +22,7 @@
 	{/if}
 </div>
 
-{if isset($message_success)}
+{if $message_success}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -47,7 +47,7 @@
 	</div>
 {/if}
 
-{if isset($message_error)}
+{if $message_error}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -85,18 +85,18 @@
 						<div class="col-lg-9 col-md-8 col-sm-12">
 							<div class="translate-container mb-3">
 								<div class="form-label">{$btr->global_title|escape} <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
-								<input class="form-control translate-input" name="name" type="text" value="{if isset($product->name)}{$product->name|escape}{/if}">
-								<input name="id" type="hidden" value="{if isset($product->id)}{$product->id|escape}{/if}">
+								<input class="form-control translate-input" name="name" type="text" value="{$product->name|escape}">
+								<input name="id" type="hidden" value="{$product->id|escape}">
 							</div>
 							<div class="row">
 								<div class="col-xs-12 col-lg-8 col-md-12">
 									<div class="mb-3">
 										<div class="input-group">
 											<span class="input-group-text">URL</span>
-											<input name="url" class="js-meta-field form-control js-url" type="text" value="{if isset($product->url)}{$product->url|escape}{/if}" {if isset($product->id)}readonly{/if}>
-											<input type="checkbox" id="block-translit" class="d-none" value="1" {if isset($product->id)}checked="" {/if}>
+											<input name="url" class="js-meta-field form-control js-url" type="text" value="{$product->url|escape}" {if $product->id}readonly{/if}>
+											<input type="checkbox" id="block-translit" class="d-none" value="1" {if $product->id}checked=""{/if}>
 											<span class="input-group-text js-disable-url">
-												{if isset($product->id)}
+												{if $product->id}
 													<i class="url-lock"></i>
 												{else}
 													<i class="url-lock url-unlock"></i>
@@ -110,23 +110,23 @@
 						<div class="col-lg-3 col-md-4 col-sm-12">
 							<div class="d-flex justify-content-center align-content-center flex-wrap flex-md-column h-100">
 								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
-									<input class="form-check-input ms-2" type="checkbox" id="visible" name="visible" value="1" type="checkbox" {if isset($product->visible) && $product->visible}checked=""{/if}>
+									<input class="form-check-input ms-2" type="checkbox" id="visible" name="visible" value="1" type="checkbox" {if $product->visible}checked=""{/if}>
 									<label class="form-check-label ms-2" for="visible">{$btr->global_enable|escape}</label>
 								</div>
 								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
-									<input class="form-check-input ms-2" type="checkbox" id="featured" name="featured" value="1" type="checkbox" {if isset($product->featured) && $product->featured}checked=""{/if}>
+									<input class="form-check-input ms-2" type="checkbox" id="featured" name="featured" value="1" type="checkbox" {if $product->featured}checked=""{/if}>
 									<label class="form-check-label ms-2" for="featured">{$btr->global_bestseller|escape}</label>
 								</div>
 								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
-									<input class="form-check-input ms-2" type="checkbox" id="new" name="is_new" value="1" type="checkbox" {if isset($product->is_new) && $product->is_new}checked=""{/if}>
+									<input class="form-check-input ms-2" type="checkbox" id="new" name="is_new" value="1" type="checkbox" {if $product->is_new}checked=""{/if}>
 									<label class="form-check-label ms-2" for="new">{$btr->global_new|escape}</label>
 								</div>
 								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
-									<input class="form-check-input ms-2" type="checkbox" id="hit" name="is_hit" value="1" type="checkbox" {if isset($product->is_hit) && $product->is_hit}checked=""{/if}>
+									<input class="form-check-input ms-2" type="checkbox" id="hit" name="is_hit" value="1" type="checkbox" {if $product->is_hit}checked=""{/if}>
 									<label class="form-check-label ms-2" for="hit">{$btr->global_hit|escape}</label>
 								</div>
 								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
-									<input class="form-check-input ms-2" type="checkbox" id="export" name="to_xml" value="1" type="checkbox" {if isset($product->to_xml) && $product->to_xml}checked=""{/if}>
+									<input class="form-check-input ms-2" type="checkbox" id="export" name="to_xml" value="1" type="checkbox" {if $product->to_xml}checked=""{/if}>
 									<label class="form-check-label ms-2" for="export">{$btr->feature_xml|escape}</label>
 								</div>
 							</div>
@@ -204,14 +204,14 @@
 					<div class="card-body">
 						<div class="mb-3">
 							<div class="form-label">{$btr->product_sale_to|escape}</div>
-							<input id="sale-to" name="sale_to" class="form-control flatpickr-datetime" type="text" value="{if isset($product->sale_to)}{$product->sale_to}{/if}">
+							<input id="sale-to" name="sale_to" class="form-control flatpickr-datetime" type="text" value="{$product->sale_to}">
 						</div>
 						<div class="mb-3" {if !$brands}style="display:none;"{/if}>
 							<div class="form-label">{$btr->global_brand|escape}</div>
 							<select name="brand_id" class="selectpicker mb-1 js-meta-brand" data-live-search="true">
-								<option value="0" {if !isset($product->brand_id)}selected="" {/if}>{$btr->global_not_set|escape}</option>
+								<option value="0" {if !$product->brand_id}selected=""{/if}>{$btr->global_not_set|escape}</option>
 								{foreach $brands as $brand}
-									<option value="{$brand->id}" {if isset($product->brand_id) && $product->brand_id == $brand->id}selected=""{/if} data-brand-name="{$brand->name|escape}">{$brand->name|escape}</option>
+									<option value="{$brand->id}" {if $product->brand_id == $brand->id}selected=""{/if} data-brand-name="{$brand->name|escape}">{$brand->name|escape}</option>
 								{/foreach}
 							</select>
 						</div>
@@ -227,7 +227,7 @@
 														{function name=category_select level=0}
 															{foreach $categories as $category}
 																<option value="{$category->id}" {if isset($selected->id) && $category->id == $selected->id}selected{/if} category-name="{$category->name|escape}">{section name=sp loop=$level}--{/section} {$category->name|escape}</option>
-																{if isset($category->subcategories)}
+																{if $category->subcategories}
 																	{category_select categories=$category->subcategories selected=$selected level=$level+1}
 																{/if}
 															{/foreach}
@@ -267,7 +267,7 @@
 							<div class="turbo-list-body sortable variants-listadd">
 								{foreach $product_variants as $variant}
 									<div class="turbo-list-body-item variants-list-item">
-										<div class="turbo-list-row {if isset($variant->attachment) && $variant->attachment || isset($variant->attachment_url) && $variant->attachment_url}mb-0{/if}">
+										<div class="turbo-list-row {if $variant->attachment || $variant->attachment_url}mb-0{/if}">
 											<div class="turbo-list-boding variants-item-drag">
 												<div class="form-label"></div>
 												<div class="move-zone">
@@ -276,46 +276,46 @@
 											</div>
 											<div class="turbo-list-boding variants-item-sku">
 												<div class="form-label">{$btr->global_sku|escape}</div>
-												<input class="form-control" name="variants[sku][]" type="text" value="{if isset($variant->sku)}{$variant->sku|escape}{/if}">
+												<input class="form-control" name="variants[sku][]" type="text" value="{$variant->sku|escape}">
 											</div>
 											<div class="turbo-list-boding variants-item-name translate-container">
 												<div class="form-label">{$btr->global_title|escape} <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
-												<input name="variants[id][]" type="hidden" value="{if isset($variant->id)}{$variant->id|escape}{/if}">
-												<input class="form-control translate-input-card translate-input" name="variants[name][]" type="text" value="{if isset($variant->name)}{$variant->name|escape}{/if}">
+												<input name="variants[id][]" type="hidden" value="{$variant->id|escape}">
+												<input class="form-control translate-input-card translate-input" name="variants[name][]" type="text" value="{$variant->name|escape}">
 											</div>
 											<div class="turbo-list-boding variants-item-height color-picker">
 												<div class="form-label"></div>
-												<input name="variants[color_code][]" type="hidden" value="{if isset($variant->color_code)}{$variant->color_code|escape}{/if}">
+												<input name="variants[color_code][]" type="hidden" value="{$variant->color_code|escape}">
 												<div class="add-on colorPicker-picker" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->select_color|escape}"></div>
 											</div>
 											<div class="turbo-list-boding variants-item-color translate-container">
 												<div class="form-label">{$btr->global_color|escape} <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
-												<input name="variants[color][]" class="form-control translate-input-card translate-input" type="text" value="{if isset($variant->color)}{$variant->color|escape}{/if}">
+												<input name="variants[color][]" class="form-control translate-input-card translate-input" type="text" value="{$variant->color|escape}">
 											</div>
 											<div class="turbo-list-boding variants-item-price">
-												<div class="form-label">{$btr->global_price|escape}, {if isset($variant->currency_id) && isset($currencies[$variant->currency_id])}{$currencies[$variant->currency_id]->sign|escape}{else}{$currency->sign}{/if}</div>
-												<input class="form-control" name="variants[price][]" type="text" value="{if isset($variant->oprice)}{$variant->oprice|escape}{/if}">
+												<div class="form-label">{$btr->global_price|escape}, {if $variant->currency_id && $currencies[$variant->currency_id]}{$currencies[$variant->currency_id]->sign|escape}{else}{$currency->sign}{/if}</div>
+												<input class="form-control" name="variants[price][]" type="text" value="{$variant->oprice|escape}">
 											</div>
 											<div class="turbo-list-boding variants-item-discount">
-												<div class="form-label">{$btr->global_old_price|escape}, {if isset($variant->currency_id) && isset($currencies[$variant->currency_id])}{$currencies[$variant->currency_id]->sign|escape}{else}{$currency->sign}{/if}</div>
-												<input class="form-control text-secondary" name="variants[compare_price][]" type="text" value="{if isset($variant->compare_oprice)}{$variant->compare_oprice|escape}{/if}">
+												<div class="form-label">{$btr->global_old_price|escape}, {if $variant->currency_id && $currencies[$variant->currency_id]}{$currencies[$variant->currency_id]->sign|escape}{else}{$currency->sign}{/if}</div>
+												<input class="form-control text-secondary" name="variants[compare_price][]" type="text" value="{$variant->compare_oprice|escape}">
 											</div>
 											<div class="turbo-list-boding variants-item-currency">
 												<div class="form-label">{$btr->global_currency|escape}</div>
 												<select name="variants[currency_id][]" class="selectpicker">
 													{foreach $currencies as $c}
-														<option value="{$c->id}" {if isset($variant->currency_id) && $c->id == $variant->currency_id}selected="" {/if}>{$c->code|escape}</option>
+														<option value="{$c->id}" {if $c->id == $variant->currency_id}selected="" {/if}>{$c->code|escape}</option>
 													{/foreach}
 												</select>
 											</div>
 											<div class="turbo-list-boding variants-item-weight">
 												<div class="form-label">{$btr->global_weight|escape}, {$settings->weight_units}</div>
-												<input class="form-control" name="variants[weight][]" type="text" value="{if isset($variant->weight)}{$variant->weight|escape}{/if}">
+												<input class="form-control" name="variants[weight][]" type="text" value="{if $variant->weight}{$variant->weight|escape}{/if}">
 											</div>
 											<div class="turbo-list-boding variants-item-amount">
 												<div class="form-label">{$btr->global_qty|escape}</div>
 												<div class="input-group">
-													<input class="form-control" name="variants[stock][]" type="text" value="{if isset($variant->infinity) || isset($variant->stock) && $variant->stock == ''}∞{else}{if isset($variant->stock)}{$variant->stock|escape}{/if}{/if}">
+													<input class="form-control" name="variants[stock][]" type="text" value="{if $variant->infinity || $variant->stock == ''}∞{else}{$variant->stock|escape}{/if}">
 													<span class="input-group-text">
 														{$settings->units|escape}
 													</span>
@@ -340,17 +340,17 @@
 												</div>
 											{/if}
 										</div>
-										<div class="turbo-list-row browse-attachment" {if (!isset($variant->attachment) || !$variant->attachment) && (!isset($variant->attachment_url) || !$variant->attachment_url)}style="display:none;" {/if}>
+										<div class="turbo-list-row browse-attachment" {if !$variant->attachment && !$variant->attachment_url}style="display:none;"{/if}>
 											<div class="turbo-list-boding variants-item-drag"></div>
 											<div class="turbo-list-boding attachment-url">
 												<div class="form-label mb-1">{$btr->global_file_link|escape}</div>
-												<input class="form-control" type="text" name="variants[attachment_url][]" value="{if isset($variant->attachment_url)}{$variant->attachment_url|escape}{/if}">
+												<input class="form-control" type="text" name="variants[attachment_url][]" value="{$variant->attachment_url|escape}">
 											</div>
-											<div class="turbo-list-boding download-attachment" {if isset($variant->attachment) && $variant->attachment}style="display:none;" {/if}>
+											<div class="turbo-list-boding download-attachment" {if $variant->attachment}style="display:none;" {/if}>
 												<div for="download-attachment" class="form-label mb-1">{$btr->global_attachment|escape}</div>
 												<input class="form-control" type="file" name="attachment[]" id="download-attachment">
 											</div>
-											{if isset($variant->attachment) && $variant->attachment}
+											{if $variant->attachment}
 												<div class="turbo-list-boding">
 													<div class="form-label"></div>
 													<input type="hidden" name="delete_attachment[]">
@@ -477,7 +477,7 @@
 				</div>
 				<div class="collapse-card">
 					<div class="card-body features-wrap js-features-wrap">
-						{if isset($features)}
+						{if $features}
 							{foreach $features as $feature}
 								<div class="js-feature-block-{$feature->id}">
 									{assign var="feature_id" value=$feature->id}
@@ -756,11 +756,11 @@
 					<div class="card-body">
 						<label for="ratingRange" class="form-label">
 							{$btr->product_rating_value|escape}
-							<span class="js-show-rating">{if isset($product->rating)}{$product->rating}{/if}</span>
+							<span class="js-show-rating">{$product->rating}</span>
 						</label>
 						<div class="raiting-boxed mb-4">
-							<input class="js-rating-value" type="hidden" value="{if isset($product->rating)}{$product->rating}{/if}" name="rating">
-							<input class="js-rating form-range" id="ratingRange" type="range" min="1" max="5" step="0.1" value="{if isset($product->rating)}{$product->rating}{/if}">
+							<input class="js-rating-value" type="hidden" value="{$product->rating}" name="rating">
+							<input class="js-rating form-range" id="ratingRange" type="range" min="1" max="5" step="0.1" value="{$product->rating}">
 							<div class="raiting-range-number">
 								<span class="float-start">1</span>
 								<span class="float-end">5</span>
@@ -768,7 +768,7 @@
 						</div>
 						<div class="mb-1">
 							<div class="form-label">{$btr->product_rating_number|escape}</div>
-							<input type="text" class="form-control" name="votes" value="{if isset($product->votes)}{$product->votes}{/if}">
+							<input type="text" class="form-control" name="votes" value="{$product->votes}">
 						</div>
 					</div>
 				</div>
@@ -920,16 +920,16 @@
 							<div class="col-lg-6 col-md-6">
 								<div class="translate-container mb-3">
 									<div class="form-label translate-button">Meta-title <span id="js-meta-title-counter"></span> <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
-									<input name="meta_title" class="form-control js-meta-field mb-h translate-input" type="text" value="{if isset($product->meta_title)}{$product->meta_title|escape}{/if}">
+									<input name="meta_title" class="form-control js-meta-field mb-h translate-input" type="text" value="{$product->meta_title|escape}">
 								</div>
 								<div class="translate-container mb-3">
 									<div class="form-label translate-button">Meta-keywords <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
-									<input name="meta_keywords" class="form-control js-meta-field mb-h translate-input" type="text" value="{if isset($product->meta_keywords)}{$product->meta_keywords|escape}{/if}">
+									<input name="meta_keywords" class="form-control js-meta-field mb-h translate-input" type="text" value="{$product->meta_keywords|escape}">
 								</div>
 							</div>
 							<div class="translate-container col-lg-6 col-md-6">
 								<div class="form-label">Meta-description <span id="js-meta-description-counter"></span> <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
-								<textarea name="meta_description" class="form-control turbo-textarea js-meta-field translate-input">{if isset($product->meta_description)}{$product->meta_description|escape}{/if}</textarea>
+								<textarea name="meta_description" class="form-control turbo-textarea js-meta-field translate-input">{$product->meta_description|escape}</textarea>
 							</div>
 						</div>
 					</div>
@@ -946,10 +946,10 @@
 				</ul>
 				<div class="tab-content">
 					<div class="tab-pane active show" id="tab-1" role="tabpanel">
-						<textarea name="annotation" id="annotation" class="editor">{if isset($product->annotation)}{$product->annotation|escape}{/if}</textarea>
+						<textarea name="annotation" id="annotation" class="editor">{$product->annotation|escape}</textarea>
 					</div>
 					<div class="tab-pane" id="tab-2" role="tabpanel">
-						<textarea id="js-editor" name="body" class="editor js-editor-class">{if isset($product->body)}{$product->body|escape}{/if}</textarea>
+						<textarea id="js-editor" name="body" class="editor js-editor-class">{$product->body|escape}</textarea>
 					</div>
 				</div>
 			</div>
@@ -972,19 +972,27 @@
 {js id="autocomplete" priority=99 include=["turbo/design/js/autocomplete/jquery.autocomplete-min.js"]}{/js}
 {javascript minify=true}
 
-{* Fancybox *}
-{css id="fancybox" include=["turbo/design/js/fancybox/jquery.fancybox.min.css"]}{/css}
-{stylesheet minify=true}
-
-{js id="fancybox" priority=99 include=["turbo/design/js/fancybox/jquery.fancybox.min.js"]}{/js}
-{javascript minify=true}
-
 {* Colorpicker *}
 {css id="colorpicker" include=["turbo/design/js/colorpicker/css/bootstrap-colorpicker.min.css"]}{/css}
 {stylesheet minify=true}
 
 {js id="colorpicker" priority=99 include=["turbo/design/js/colorpicker/js/bootstrap-colorpicker.min.js"]}{/js}
 {javascript minify=true}
+
+{* Fancybox *}
+{css id="fancybox" include=["turbo/design/js/fancybox/fancybox.css"]}{/css}
+{stylesheet minify=true}
+
+{js id="fancybox" priority=99 include=["turbo/design/js/fancybox/fancybox.umd.js"]}{/js}
+{javascript minify=true}
+
+<script>
+	Fancybox.bind("[data-fancybox]", {
+		Thumbs: {
+			type: false,
+		},
+	});
+</script>
 
 {literal}
 	<script>

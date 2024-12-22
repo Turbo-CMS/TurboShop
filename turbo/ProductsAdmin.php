@@ -71,7 +71,7 @@ class ProductsAdmin extends Turbo
 			$this->design->assign('keyword', $keyword);
 		}
 
-		if ($this->request->isMethod('post')) {
+		if ($this->request->method('post')) {
 			$prices = $this->request->post('price');
 			$stocks = $this->request->post('stock');
 
@@ -94,7 +94,7 @@ class ProductsAdmin extends Turbo
 				$this->products->updateProduct($ids[$i], ['position' => $position]);
 			}
 
-			if ($this->request->isMethod('post')) {
+			if ($this->request->method('post')) {
 				$prices = $this->request->post('price');
 				$stocks = $this->request->post('stock');
 

@@ -7,7 +7,7 @@
 					{$c->name}
 				</a>
 				<ul class="list-group list-group-flush mb-1">
-					{if isset($c->subcategories)}
+					{if $c->subcategories}
 						{foreach $c->subcategories as $cat}
 							{if $cat->visible}
 								<li class="list-group-item">
@@ -26,6 +26,6 @@
 </div>
 
 {* Page Body *}
-{if isset($page->body)}
+{if $page}
 	<div class="mt-5">{$page->body}</div>
 {/if}

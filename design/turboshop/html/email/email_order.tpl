@@ -6,7 +6,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{$lang->email_order_title} {$order->id}</title>
+  <title>{$lang->email_order_title|escape} {$order->id}</title>
   <meta name="x-apple-disable-message-reformatting">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta content="telephone=no" name="format-detection">
@@ -443,18 +443,18 @@
                                       <tbody>
                                         <tr>
                                           <td class="es-p10t es-p15b" align="center">
-                                            <h1>{$lang->email_order_heading} <span class="es-number-order">№ {$order->id}</span><br></h1>
+                                            <h1>{$lang->email_order_heading|escape} <span class="es-number-order">№ {$order->id}</span><br></h1>
                                           </td>
                                         </tr>
                                         <tr>
                                           <td class="es-p10t es-p0b es-p30r es-p30l" align="center">
-                                            <p>{$lang->email_comment_hello} <i>{$order->name|escape}</i>. {$lang->email_order_message} <strong>№{$order->id}</strong> {$lang->email_from} <strong>{$order->date|date}:{$order->date|time}.</strong> {$lang->email_order_text_status}</p>
-                                            <span class="es-status-color">{if $order->status == 0}{$lang->waiting_processing}{elseif $order->status == 1}{$lang->in_processing}{elseif $order->status == 2}{$lang->completed}{elseif $order->status == 3}{$lang->canceled}{/if}</span>
+                                            <p>{$lang->email_comment_hello|escape} <i>{$order->name|escape}</i>. {$lang->email_order_message|escape} <strong>№{$order->id}</strong> {$lang->email_from|escape} <strong>{$order->date|date}:{$order->date|time}.</strong> {$lang->email_order_text_status|escape}</p>
+                                            <span class="es-status-color">{if $order->status == 0}{$lang->waiting_processing|escape}{elseif $order->status == 1}{$lang->in_processing|escape}{elseif $order->status == 2}{$lang->completed|escape}{elseif $order->status == 3}{$lang->canceled|escape}{/if}</span>
                                           </td>
                                         </tr>
                                         <tr>
                                           <td class="es-p15t es-p10b" align="center">
-                                            <a href="{$config->root_url}/order/{$order->url}" class="es-button" target="_blank">{$lang->email_order_button}</a>
+                                            <a href="{$config->root_url}/order/{$order->url}" class="es-button" target="_blank">{$lang->email_order_button|escape}</a>
                                           </td>
                                         </tr>
                                       </tbody>
@@ -491,7 +491,7 @@
                                               <tbody>
                                                 <tr>
                                                   <td class="esd-block-text" align="left">
-                                                    <h4>{$lang->order_details}:</h4>
+                                                    <h4>{$lang->order_details|escape}:</h4>
                                                   </td>
                                                 </tr>
                                               </tbody>
@@ -507,31 +507,31 @@
                                     <table class="es-table-infobox" cellspacing="1" cellpadding="1" border="0" align="left">
                                       <tbody>
                                         <tr valign="top">
-                                          <td class="es-p5t es-p5b" width="180px"><span>{$lang->email_order_number}:</span></td>
+                                          <td class="es-p5t es-p5b" width="180px"><span>{$lang->email_order_number|escape}:</span></td>
                                           <td class="es-p5t es-p5b"><span>№ {$order->id}</span></td>
                                         </tr>
                                         <tr valign="top">
-                                          <td class="es-p5t es-p5b" width="180px"><span>{$lang->order_date}:</span></td>
+                                          <td class="es-p5t es-p5b" width="180px"><span>{$lang->order_date|escape}:</span></td>
                                           <td class="es-p5t es-p5b"><span>{$order->date|date}:{$order->date|time}</span></td>
                                         </tr>
                                         <tr valign="top">
-                                          <td class="es-p5t es-p5b" width="180px"><span>{$lang->email_order_status}:</span></td></br>
-                                          <td class="es-p5t es-p5b"><span>{if $order->status == 0}{$lang->waiting_processing}{elseif $order->status == 1}{$lang->in_processing}{elseif $order->status == 2}{$lang->completed}{elseif $order->status == 3}{$lang->canceled}{/if}</span></td>
+                                          <td class="es-p5t es-p5b" width="180px"><span>{$lang->email_order_status|escape}:</span></td>
+                                          <td class="es-p5t es-p5b"><span>{if $order->status == 0}{$lang->waiting_processing|escape}{elseif $order->status == 1}{$lang->in_processing|escape}{elseif $order->status == 2}{$lang->completed|escape}{elseif $order->status == 3}{$lang->canceled|escape}{/if}</span></td>
                                         </tr>
                                         <tr valign="top">
-                                          <td class="es-p5t es-p5b" width="180px"><span>{$lang->general_payment}:</span></td>
+                                          <td class="es-p5t es-p5b" width="180px"><span>{$lang->global_payment|escape}:</span></td>
                                           <td class="es-p5t es-p5b">
                                             <span>
                                               {if $order->paid == 1}
-                                                <font color="green">{$lang->paid}</font>
+                                                <font color="green">{$lang->paid|escape}</font>
                                               {else}
-                                                {$lang->not_paid}
+                                                {$lang->not_paid|escape}
                                               {/if}
                                             </span>
                                           </td>
                                         </tr>
                                         <tr valign="top">
-                                          <td class="es-p5t es-p5b" width="180px"><span>{$lang->general_full_name}:</span></td>
+                                          <td class="es-p5t es-p5b" width="180px"><span>{$lang->name|escape}:</span></td>
                                           <td class="es-p5t es-p5b"><span>{$order->name|escape}</span></td>
                                         </tr>
                                         <tr valign="top">
@@ -540,19 +540,19 @@
                                         </tr>
                                         {if $order->phone}
                                           <tr valign="top">
-                                            <td class="es-p5t es-p5b" width="180px"><span>{$lang->phone}:</span></td>
+                                            <td class="es-p5t es-p5b" width="180px"><span>{$lang->phone|escape}:</span></td>
                                             <td class="es-p5t es-p5b"><span>{$order->phone|escape}</span></td>
                                           </tr>
                                         {/if}
                                         {if $order->address}
                                           <tr valign="top">
-                                            <td class="es-p5t es-p5b" width="180px"><span>{$lang->delivery_address}:</span></td>
+                                            <td class="es-p5t es-p5b" width="180px"><span>{$lang->address|escape}:</span></td>
                                             <td class="es-p5t es-p5b"><span>{$order->address|escape}</span></td>
                                           </tr>
                                         {/if}
                                         {if $order->comment}
                                           <tr valign="top">
-                                            <td class="es-p5t es-p5b" width="180px"><span>{$lang->comment}:</span></td>
+                                            <td class="es-p5t es-p5b" width="180px"><span>{$lang->comment|escape}:</span></td>
                                             <td class="es-p5t es-p5b"><span>{$order->comment|escape|nl2br}</span></td>
                                           </tr>
                                         {/if}
@@ -590,7 +590,7 @@
                                               <tbody>
                                                 <tr>
                                                   <td class="esd-block-text" align="left">
-                                                    <h4>{$lang->you_ordered}:</h4>
+                                                    <h4>{$lang->you_ordered|escape}:</h4>
                                                   </td>
                                                 </tr>
                                               </tbody>
@@ -602,36 +602,10 @@
                                   </td>
                                 </tr>
                                 <tr>
-                                  <td class="" align="left">
+                                  <td align="left">
                                     <table>
                                       <tbody>
-                                        <tr>
-                                          <td class="" align="left">
-                                            <table width="100%" cellspacing="0" cellpadding="0">
-                                              <tbody>
-                                                <tr>
-                                                  <td width="560" valign="top" align="center">
-                                                    <table width="100%" cellspacing="0" cellpadding="0">
-                                                      <tbody>
-                                                        <tr>
-                                                          <td class="es-p10b" align="center">
-                                                            <table width="100%" height="100%" cellspacing="0" cellpadding="0" border="0">
-                                                              <tbody>
-                                                                <tr>
-                                                                  <td style="border-bottom: 1px solid #dee6ed; background: #dee6ed; height: 1px; width: 100%; margin: 0px;"></td>
-                                                                </tr>
-                                                              </tbody>
-                                                            </table>
-                                                          </td>
-                                                        </tr>
-                                                      </tbody>
-                                                    </table>
-                                                  </td>
-                                                </tr>
-                                              </tbody>
-                                            </table>
-                                          </td>
-                                        </tr>
+                                        <tr style="border-bottom: 1px solid #dee6ed; background: #dee6ed; height: 2px; width: 100%; margin: 0px;"></tr>
                                         {foreach $purchases as $purchase}
                                           <tr>
                                             <td class="es-p10t es-p10b" align="left">
@@ -699,33 +673,7 @@
                                               </table>
                                             </td>
                                           </tr>
-                                          <tr>
-                                            <td class="" align="left">
-                                              <table width="100%" cellspacing="0" cellpadding="0">
-                                                <tbody>
-                                                  <tr>
-                                                    <td width="560" valign="top" align="center">
-                                                      <table width="100%" cellspacing="0" cellpadding="0">
-                                                        <tbody>
-                                                          <tr>
-                                                            <td class="es-p10b" align="center">
-                                                              <table width="100%" height="100%" cellspacing="0" cellpadding="0" border="0">
-                                                                <tbody>
-                                                                  <tr>
-                                                                    <td style="border-bottom: 1px solid #dee6ed; background: #dee6ed; height: 1px; width: 100%; margin: 0px;"></td>
-                                                                  </tr>
-                                                                </tbody>
-                                                              </table>
-                                                            </td>
-                                                          </tr>
-                                                        </tbody>
-                                                      </table>
-                                                    </td>
-                                                  </tr>
-                                                </tbody>
-                                              </table>
-                                            </td>
-                                          </tr>
+                                          <tr style="border-bottom: 1px solid #dee6ed; background: #dee6ed; height: 2px; width: 100%; margin: 0px;"></tr>
                                         {/foreach}
                                       </tbody>
                                     </table>
@@ -745,19 +693,19 @@
                                                       <tbody>
                                                         {if $order->discount}
                                                           <tr>
-                                                            <td style="text-align: right; font-size: 18px; line-height: 150%;">{$lang->discount}:</td>
+                                                            <td style="text-align: right; font-size: 18px; line-height: 150%;">{$lang->discount|escape}:</td>
                                                             <td style="text-align: right; font-size: 18px; line-height: 150%; color: #495057;">{$order->discount}&nbsp;%</td>
                                                           </tr>
                                                         {/if}
-                                                        {if $order->coupon_discount>0}
+                                                        {if $order->coupon_discount > 0}
                                                           <tr>
-                                                            <td style="text-align: right; font-size: 18px; line-height: 150%;">{$lang->coupon} {$order->coupon_code}:</td>
+                                                            <td style="text-align: right; font-size: 18px; line-height: 150%;">{$lang->coupon|escape} {$order->coupon_code}:</td>
                                                             <td style="text-align: right; font-size: 18px; line-height: 150%; color: #495057;">&minus;{$order->coupon_discount}&nbsp;{$currency->sign}</td>
                                                           </tr>
                                                         {/if}
-                                                        {if $order->weight>0}
+                                                        {if $order->weight > 0}
                                                           <tr>
-                                                            <td style="text-align: right; font-size: 18px; line-height: 150%;">{$lang->weight}:</td>
+                                                            <td style="text-align: right; font-size: 18px; line-height: 150%;">{$lang->weight|escape}:</td>
                                                             <td style="text-align: right; font-size: 18px; line-height: 150%; color: #495057;">{$order->weight} {$settings->weight_units}</td>
                                                           </tr>
                                                         {/if}
@@ -770,7 +718,7 @@
                                                           </tr>
                                                         {/if}
                                                         <tr class="es-p5t">
-                                                          <td style="text-align: right; font-size: 20px; line-height: 150%;"><strong>{$lang->total}:</strong></td>
+                                                          <td style="text-align: right; font-size: 20px; line-height: 150%;"><strong>{$lang->total|escape}:</strong></td>
                                                           <td style="text-align: right; font-size: 20px; line-height: 150%; color: #dc3545;"><strong>{$order->total_price|convert:$currency->id}&nbsp;{$currency->sign}</strong></td>
                                                         </tr>
                                                       </tbody>

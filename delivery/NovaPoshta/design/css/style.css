@@ -52,7 +52,6 @@ html[data-bs-theme="dark"] .select2-container--bootstrap-5 .select2-dropdown .se
 
 html[data-bs-theme="dark"] .select2-container--bootstrap-5 .select2-dropdown {
 	color: #dee2e6 !important;
-	border: 1px solid #495057 !important;
 	background-color: var(--bs-body-bg);
 }
 

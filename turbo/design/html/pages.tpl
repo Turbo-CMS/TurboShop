@@ -1,7 +1,7 @@
-{$meta_title = {$menu->name} scope=global}
+{$meta_title = $menu->name scope=global}
 
 <div class="d-md-flex mb-3">
-	<h1 class="d-inline align-middle me-3">{$menu->name}</h1>
+	<h1 class="d-inline align-middle me-3">{$menu->name|escape}</h1>
 	<div class="d-grid gap-2 d-sm-block mt-2 mt-md-0">
 		<a class="btn btn-primary" href="{url module=PageAdmin return=$smarty.server.REQUEST_URI}"><i data-feather="plus"></i> {$btr->pages_add|escape}</a>
 	</div>
@@ -37,7 +37,7 @@
 										<div class="js-row {if $level == 1}turbo-list-body-item{/if} js-sort-item body-narrow row-narrow">
 											<div class="turbo-list-row {if $level > 1}js-sort-item{/if} narrow">
 												<input type="hidden" name="positions[{$page->id}]" value="{$page->position}">
-												{if isset($page->subpages)}
+												{if $page->subpages}
 													<div class="turbo-list-heading turbo-list-subicon">
 														<a href="javascript:;" class="js-ajax-toggle" data-toggle="0" data-category_id="{$page->id}">
 															<i class="icon-category plus-category"></i>
@@ -79,7 +79,7 @@
 													</button>
 												</div>
 											</div>
-											{if isset($page->subpages)}
+											{if $page->subpages}
 												<div class="js-ajax-categories categories-sub-block subcategories-level-{$level} sortable" style="display: none;">
 													{pages_tree pages=$page->subpages level=$level+1}
 												</div>

@@ -4,13 +4,13 @@ require_once 'api/Turbo.php';
 
 class BrandAdmin extends Turbo
 {
-	private $allowedImageExtensions = ['png', 'gif', 'jpg', 'jpeg', 'ico'];
+	private $allowedImageExtensions = ['png', 'gif', 'jpg', 'jpeg', 'ico', 'svg'];
 
 	public function fetch()
 	{
 		$brand = new stdClass();
 
-		if ($this->request->isMethod('post')) {
+		if ($this->request->method('post')) {
 			$brand->id = $this->request->post('id', 'integer');
 			$brand->name = $this->request->post('name');
 			$brand->name_h1 = $this->request->post('name_h1');
@@ -56,7 +56,22 @@ class BrandAdmin extends Turbo
 			}
 		} else {
 			$brand->id = $this->request->get('id', 'integer');
-			$brand = $this->brands->getBrand($brand->id);
+
+			if (!empty($brand->id)) {
+				$brand = $this->brands->getBrand($brand->id);
+			} else {
+				$brand->id = null;
+				$brand->name = '';
+				$brand->name_h1 = '';
+				$brand->header = '';
+				$brand->url = '';
+				$brand->meta_title = '';
+				$brand->meta_keywords = '';
+				$brand->meta_description = '';
+				$brand->description = '';
+				$brand->visible = 1;
+				$brand->image = '';
+			}
 		}
 
 		$this->design->assign('brand', $brand);

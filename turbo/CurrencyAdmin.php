@@ -6,7 +6,7 @@ class CurrencyAdmin extends Turbo
 {
 	public function fetch()
 	{
-		if ($this->request->isMethod('post')) {
+		if ($this->request->method('post')) {
 			$currencies = [];
 
 			foreach ((array) $this->request->post('currency') as $n => $va) {

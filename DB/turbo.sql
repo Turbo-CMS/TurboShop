@@ -121,6 +121,7 @@ CREATE TABLE `t_banners_images` (
   `color` varchar(7) COLLATE utf8mb4_unicode_ci NOT NULL,
   `style` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `side` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `button` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `image` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `background` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
@@ -132,26 +133,26 @@ CREATE TABLE `t_banners_images` (
 -- Dumping data for table `t_banners_images`
 --
 
-INSERT INTO `t_banners_images` (`id`, `banner_id`, `name`, `alt`, `title`, `description`, `url`, `color`, `style`, `code`, `button`, `image`, `background`, `position`, `visible`) VALUES
-(1, 1, 'Google Home Smart Speaker', 'Google Home Smart Speaker', 'Google Home Smart Speaker', 'starting at $129.00', '/', '', '', '', 'Shop Now', 'hero-slide01.png', '', 1, 1),
-(2, 1, 'Modern Powerful Vaio Laptop', 'Modern Powerful Vaio Laptop', 'Modern Powerful Vaio Laptop', 'for only $1,459.99', '/', '', '', '', 'Shop Now', 'hero-slide02.png', '', 2, 1),
-(3, 1, 'Wireless Beats Studio by Dr.Dre', 'Wireless Beats Studio by Dr.Dre', 'Wireless Beats Studio by Dr.Dre', 'starting at $349.50', '/', '#ffffff', 'light', '', 'Shop Now', 'hero-slide03.png', '', 3, 1),
-(4, 2, 'Bicycles<br>for city traffic', 'Bicycles for city traffic', 'Bicycles for city traffic', 'Conquer new territories on bicycles! Mountain, folding, city or two-suspension - there is everything.', '/', '#ffffff', 'light', '', 'Shop Now', 'image_1.png', 'background_1.jpg', 7, 1),
-(5, 2, 'Week of discounts<br>on children\'s products', 'Week of discounts on children\'s products', 'Week of discounts on children\'s products', 'Soft and educational toys, strollers, car seats and other products at discounted prices. Only until the end of the week. Don\'t miss out on the benefits!', '/', '#ffffff', 'dark', '', 'Get it now', 'image_2.png', 'background_2.jpg', 6, 1),
-(6, 2, 'Tools for construction and repair', 'Tools for construction and repair', 'Tools for construction and repair', 'Saws, hammer drills, drills, accessories and other tools. Suitable for professionals and home use. Safe, reliable, high quality.', '', '#ffffff', 'light', 'btn-transparent-bg', 'Go to catalog', 'image_3.png', 'background_3.jpg', 5, 1),
-(8, 3, 'Smart electronics for running', 'Smart electronics for running', 'Smart electronics for running', 'Sports and devices', 'catalog/gadgets', '#ffffff', 'light', '', '', 'gadgets.jpg', '', 13, 1),
-(9, 3, 'Cooking utensils', 'Cooking utensils', 'Cooking utensils', 'New', '', '#ffffff', 'light', '', '', 'cooking.jpg', '', 12, 1),
-(7, 2, 'Connections change the world', 'Connections change the world', 'Connections change the world', 'Stay mobile 24/7 with our new smartphones. Design for every taste, professional camera and powerful processor!', 'catalog/smartphones', '#ffffff', 'light', '', 'Select smartphone', 'image_4.png', 'background_4.jpg', 4, 1),
-(10, 4, 'Fast delivery', '', '', 'Fast delivery within 24 hours', 'deliveries', '#ffffff', 'light', '', '', 'delivery.svg', '', 16, 1),
-(11, 4, 'Customer service', '', '', 'We answer customer questions within 10 minutes', '/', '#ffffff', 'light', '', '', 'service.svg', '', 15, 1),
-(12, 4, 'Bonuses for purchases', '', '', 'We give gifts and discounts up to 70% to all customers', '', '#ffffff', 'light', '', '', 'purchases.svg', '', 14, 1),
-(13, 4, 'Affordable prices', '', '', 'We work directly with leading manufacturers', '', '#ffffff', 'light', '', '', 'prices.svg', '', 17, 1),
-(14, 5, '', '', '', '', '/', '#ffffff', 'light', '', '', 'shoes.jpg', '', 18, 1),
-(15, 6, '', '', '', '', '/', '#ffffff', 'light', '', '', 'bottom_banners.jpg', '', 19, 1),
-(16, 3, 'Everything you need to conquer mountain peaks by bike', 'Everything you need to conquer mountain peaks by bike', 'Everything you need to conquer mountain peaks by bike', 'Bicycles', '/', '', 'light', '', '', 'bike.jpg', '', 11, 1),
-(17, 3, 'Motorcycle parts', 'Motorcycle parts', 'Motorcycle parts', 'Motorcycles', '/', '', 'light', '', '', 'moto.jpg', '', 10, 1),
-(18, 3, 'Pet products', 'Pet products', 'Pet products', 'Care and health', '/', '', 'light', '', '', 'pets.jpg', '', 9, 1),
-(19, 3, 'Stylish looks for summer', 'Stylish looks for summer', 'Stylish looks for summer', 'Women', '/', '', 'light', '', '', 'clothes.jpg', '', 8, 1);
+INSERT INTO `t_banners_images` (`id`, `banner_id`, `name`, `alt`, `title`, `description`, `url`, `color`, `style`, `code`, `side`, `button`, `image`, `background`, `position`, `visible`) VALUES
+(1, 1, 'Google Home Smart Speaker', 'Google Home Smart Speaker', 'Google Home Smart Speaker', 'starting at $129.00', '/', '', '', '', '', 'Shop Now', 'hero-slide01.png', '', 1, 1),
+(2, 1, 'Modern Powerful Vaio Laptop', 'Modern Powerful Vaio Laptop', 'Modern Powerful Vaio Laptop', 'for only $1,459.99', '/', '', '', '', 'right', 'Shop Now', 'hero-slide02.png', '', 2, 1),
+(3, 1, 'Wireless Beats Studio by Dr.Dre', 'Wireless Beats Studio by Dr.Dre', 'Wireless Beats Studio by Dr.Dre', 'starting at $349.50', '/', '', '', '', 'left', 'Shop Now', 'hero-slide03.png', '', 3, 1),
+(4, 2, 'Bicycles<br>for city traffic', 'Bicycles for city traffic', 'Bicycles for city traffic', 'Conquer new territories on bicycles! Mountain, folding, city or two-suspension - there is everything.', '/', '#ffffff', 'light', '', '', 'Shop Now', 'image_1.png', 'background_1.jpg', 7, 1),
+(5, 2, 'Week of discounts<br>on children\'s products', 'Week of discounts on children\'s products', 'Week of discounts on children\'s products', 'Soft and educational toys, strollers, car seats and other products at discounted prices. Only until the end of the week. Don\'t miss out on the benefits!', '/', '#ffffff', 'dark', '', '', 'Get it now', 'image_2.png', 'background_2.jpg', 6, 1),
+(6, 2, 'Tools for construction and repair', 'Tools for construction and repair', 'Tools for construction and repair', 'Saws, hammer drills, drills, accessories and other tools. Suitable for professionals and home use. Safe, reliable, high quality.', '', '#ffffff', 'light', 'btn-transparent-bg', '', 'Go to catalog', 'image_3.png', 'background_3.jpg', 5, 1),
+(8, 3, 'Smart electronics for running', 'Smart electronics for running', 'Smart electronics for running', 'Sports and devices', 'catalog/gadgets', '#ffffff', 'light', '', '', '', 'gadgets.jpg', '', 13, 1),
+(9, 3, 'Cooking utensils', 'Cooking utensils', 'Cooking utensils', 'New', '', '#ffffff', 'light', '', '', '', 'cooking.jpg', '', 12, 1),
+(7, 2, 'Connections change the world', 'Connections change the world', 'Connections change the world', 'Stay mobile 24/7 with our new smartphones. Design for every taste, professional camera and powerful processor!', 'catalog/smartphones', '#ffffff', 'light', '', '', 'Select smartphone', 'image_4.png', 'background_4.jpg', 4, 1),
+(10, 4, 'Fast delivery', '', '', 'Fast delivery within 24 hours', 'deliveries', '#ffffff', 'light', '', '', '', 'delivery.svg', '', 16, 1),
+(11, 4, 'Customer service', '', '', 'We answer customer questions within 10 minutes', '/', '#ffffff', 'light', '', '', '', 'service.svg', '', 15, 1),
+(12, 4, 'Bonuses for purchases', '', '', 'We give gifts and discounts up to 70% to all customers', '', '#ffffff', 'light', '', '', '', 'purchases.svg', '', 14, 1),
+(13, 4, 'Affordable prices', '', '', 'We work directly with leading manufacturers', '', '#ffffff', 'light', '', '', '', 'prices.svg', '', 17, 1),
+(14, 5, '', '', '', '', '/', '#ffffff', 'light', '', '', '', 'shoes.jpg', '', 18, 1),
+(15, 6, '', '', '', '', '/', '#ffffff', 'light', '', '', '', 'bottom_banners.jpg', '', 19, 1),
+(16, 3, 'Everything you need to conquer mountain peaks by bike', 'Everything you need to conquer mountain peaks by bike', 'Everything you need to conquer mountain peaks by bike', 'Bicycles', '/', '', 'light', '', '', '', 'bike.jpg', '', 11, 1),
+(17, 3, 'Motorcycle parts', 'Motorcycle parts', 'Motorcycle parts', 'Motorcycles', '/', '', 'light', '', '', '', 'moto.jpg', '', 10, 1),
+(18, 3, 'Pet products', 'Pet products', 'Pet products', 'Care and health', '/', '', 'light', '', '', '', 'pets.jpg', '', 9, 1),
+(19, 3, 'Stylish looks for summer', 'Stylish looks for summer', 'Stylish looks for summer', 'Women', '/', '', 'light', '', '', '', 'clothes.jpg', '', 8, 1);
 
 -- --------------------------------------------------------
 
@@ -1855,9 +1856,9 @@ INSERT INTO `t_lang_pages` (`lang_id`, `lang_label`, `page_id`, `name`, `meta_ti
 (3, '', 24, 'Смартфони Apple', 'Смартфони Apple', 'Смартфони Apple представлені в широкому асортименті', 'Смартфони Apple', '<p>Смартфони Apple представлені в широкому асортименті</p>', 'Смартфони Apple'),
 (3, '', 23, 'Смартфони на Android', 'Смартфони на Android', 'Телефони на «Андроїд» забезпечені величезною кількістю незаперечних переваг, які виділяють їх на тлі продукції конкурентів. Такий смартфон підійде людині, якого нервує нав\'язливе фірмове ПО і віджети, з наявністю яких доводиться миритися', 'Смартфони на Android', '<p>Телефони на &laquo;Андроїд&raquo; забезпечені величезною кількістю незаперечних переваг, які виділяють їх на тлі продукції конкурентів. Такий смартфон підійде людині, якого нервує нав\'язливе фірмове ПО і віджети, з наявністю яких доводиться миритися.</p>\r\n<p>Купівля смартфона Android - відмінне рішення і для тих, хто бажає швидко отримувати оновлення й пакети користуватися всіма можливостями, наданими ОС. Багато відомих виробників, конкуруючи один з одним, пропонують покупцям нові моделі телефонів на Android в будь-яких цінових категоріях.</p>', 'Смартфони на Android'),
 (1, '', 24, 'Смартфоны Apple', 'Смартфоны Apple', 'Смартфоны Apple представлены в широком ассортименте', 'Смартфоны Apple', '<p>Смартфоны Apple представлены в широком ассортименте</p>', 'Смартфоны Apple'),
-(1, '', 25, 'FAQ', 'FAQ', 'FAQ', 'FAQ', '', 'FAQ'),
+(1, '', 25, 'Часто задаваемые вопросы', 'Часто задаваемые вопросы', 'Часто задаваемые вопросы', 'Часто задаваемые вопросы', '', 'Часто задаваемые вопросы'),
 (2, '', 25, 'FAQ', 'FAQ', 'FAQ', 'FAQ', '', 'FAQ'),
-(3, '', 25, 'FAQ', 'FAQ', 'FAQ', 'FAQ', '', 'FAQ'),
+(3, '', 25, 'Часті питання', 'Часті питання', 'Часті питання', 'Часті питання', '', 'Часті питання'),
 (1, '', 26, 'Отзывы', 'Отзывы', 'Отзывы', 'Отзывы', '<p>Мы благодарны нашим клиентам за оказанное доверие и положительные отзывы о сотрудничестве с нашим интернет-магазином. Если хотите, можем помочь и вам: подберем подходящие товары и сопутствующие услуги. Просто свяжитесь с нами!</p>', 'Отзывы'),
 (2, '', 26, 'Reviews', 'Reviews', 'Reviews', 'Reviews', '<p>We are grateful to our customers for their trust and positive feedback on cooperation with our online store. If you want, we can help you too: we will select suitable products and related services. Just contact us!</p>', 'Reviews'),
 (3, '', 26, 'Відгуки', 'Відгуки', 'Відгуки', 'Відгуки', '<p>Ми вдячні нашим клієнтам за довіру та позитивні відгуки про співпрацю з нашим інтернет-магазином. Якщо хочете, можемо допомогти і вам: підберемо відповідні товари та супутні послуги. Просто зв\'яжіться з нами!</p>', 'Відгуки'),
@@ -3671,10 +3672,11 @@ INSERT INTO `t_settings` (`setting_id`, `name`, `value`) VALUES
 (66, 'images_sharpen', '50'),
 (67, 'lastModifyReviews', '2024-08-22 01:14:19'),
 (68, 'theme', 'turboshop'),
-(69, 'image_sizes', '|240x310|56x56|72x72|160x160|700x464|45x45|200x100|1200x1200|800x600|700x700|120x120|1920x660|1080x1080|40x40|150x50|694x463|1919x180|150x25|330x300|1500x738|400x300|30x30|180x100|50x50|35x35|90x60|800x400|240x240|550x440|125x42|750x300|570x570|800x800w|300x300|95x95|75x25|116x116|170x170|400x400|60x60|100x40'),
+(69, 'image_sizes', '|240x310|56x56|72x72|160x160|700x464|45x45|200x100|1200x1200|800x600|700x700|120x120|1920x660|1080x1080|40x40|150x50|694x463|1919x180|150x25|330x300|1500x738|400x300|30x30|180x100|50x50|35x35|90x60|800x400|240x240|550x440|125x42|750x300|570x570|800x800w|300x300|95x95|75x25|116x116|170x170|400x400|60x60|100x40|64x64|1000x1000w|800x800|96x96|80x80|340x340'),
 (70, 'lastModifyPosts', '2024-08-22 01:14:49'),
 (71, 'lastModifyFAQ', '2024-08-22 01:15:02'),
-(72, 'lastModifyBrands', '2024-08-22 01:20:44');
+(72, 'lastModifyBrands', '2024-08-22 01:20:44'),
+(73, 'image_quality', '90');
 
 -- --------------------------------------------------------
 
@@ -3929,7 +3931,8 @@ INSERT INTO `t_theme_settings` (`setting_id`, `name`, `value`) VALUES
 (178, 'id_menu_sitemap_1', '1'),
 (179, 'id_menu_sitemap_2', '2'),
 (180, 'id_menu_sitemap_3', '3'),
-(181, 'id_menu_sitemap_4', '4');
+(181, 'id_menu_sitemap_4', '4'),
+(182, 'header_banners_id', '5');
 
 -- --------------------------------------------------------
 
@@ -4061,7 +4064,7 @@ INSERT INTO `t_translations` (`id`, `label`, `lang_ru`, `lang_en`, `lang_ua`) VA
 (128, 'search_blog', 'Поиск в блоге...', 'Search blog...', 'Пошук в блозі...'),
 (129, 'filter_by_price', 'Фильтр по цене', 'Filter by price', 'Фільтр по ціні'),
 (130, 'apply', 'Применить', 'Apply', 'Застосувати'),
-(131, 'reset', 'Сбросить', 'Reset', 'Скинути'),
+(131, 'reset', 'Сбросить', 'Reset', 'Скасувати'),
 (132, 'global_brands', 'Бренды', 'Brands', 'Бренди'),
 (133, 'global_feedback', 'Обратная связь', 'Feedback', 'Зворотній зв\'язок'),
 (134, 'feedback_message_sent', 'ваше сообщение отправлено.', 'your message has been sent.', 'ваше повідомлення відправлено.'),
@@ -4123,7 +4126,7 @@ INSERT INTO `t_translations` (`id`, `label`, `lang_ru`, `lang_en`, `lang_ua`) VA
 (191, 'on_the_site', 'на сайте', 'on the site', 'на сайті'),
 (192, 'email_password_reply', 'был сделан запрос на восстановление вашего пароля.', 'a request was made to recover your password.', 'був зроблений запит на відновлення вашого пароля.'),
 (193, 'email_password_change', 'Вы можете изменить пароль, перейдя по следующей ссылке', 'You can change your password by following the link below', 'Ви можете змінити пароль, перейшовши за наступним посиланням'),
-(194, 'email_password_text', 'Эта ссылка действует в течение нескольких минут. <br> Если это письмо пришло вам по ошибке, проигнорируйте его.', 'This link is effective for a few minutes. <br> If you received this error in error, ignore it.', 'Це посилання діє протягом декількох хвилин. <br>  Якщо цей лист прийшло вам помилково, ігноруйте його.'),
+(194, 'email_password_text', 'Эта ссылка действует в течение нескольких минут. <br> Если это письмо пришло вам по ошибке, проигнорируйте его.', 'This link is effective for a few minutes. <br> If you received this error in error, ignore it.', 'Це посилання діє протягом декількох хвилин. <br> Якщо цей лист прийшло вам помилково, ігноруйте його.'),
 (226, 'email_order_status', 'Статус заказа', 'Order status', 'Статус замовлення'),
 (196, 'not_paid', 'не оплачен', 'not paid', 'не сплачено'),
 (197, 'canceled', 'отменен', 'canceled', 'скасований'),
@@ -4173,7 +4176,7 @@ INSERT INTO `t_translations` (`id`, `label`, `lang_ru`, `lang_en`, `lang_ua`) VA
 (244, 'go_to_cart', 'В корзину', 'Go to cart', 'До кошику'),
 (245, 'wishlist', 'Избранное', 'Wishlist', 'Обране'),
 (246, 'subscribe', 'Подписаться', 'Subscribe', 'Підписатися'),
-(247, 'subscribe_text', 'Подписаться <br> на новости и акции', 'Subscribe <br> to news and promotions', 'Підписатися <br> на новини та акції'),
+(247, 'subscribe_text', 'Подписаться на новости и акции', 'Subscribe to news and promotions', 'Підписатися на новини та акції'),
 (248, 'error_required', 'Заполните это поле!', 'Fill out this field!', 'Заповніть це поле!'),
 (249, 'error_format', 'Неверный формат!', 'Wrong format!', 'Невірний формат!'),
 (250, 'online_store', 'Интернет-магазин', 'Online store', 'Інтернет магазин'),
@@ -4344,7 +4347,7 @@ INSERT INTO `t_translations` (`id`, `label`, `lang_ru`, `lang_en`, `lang_ua`) VA
 (427, 'hip_circumference_cm', 'Обхват бедер (см)', 'Hip circumference (cm)', 'Обхват стегон (см)'),
 (428, 'neck_circumference_cm', 'Обхват шеи (см)', 'Neck circumference (cm)', 'Обхват шиї (см)'),
 (429, 'ukrainian_size', 'Украинский размер (UA)', 'Ukrainian size (UA)', 'Український розмір (UA)'),
-(430, 'europe_germany', 'Европа / Германия (EUR / GER)', 'Europe  / Germany (EUR / GER)', 'Європа / Німеччина (EUR / GER)'),
+(430, 'europe_germany', 'Европа / Германия (EUR / GER)', 'Europe / Germany (EUR / GER)', 'Європа / Німеччина (EUR / GER)'),
 (431, 'germany', 'Германия (GER)', 'Germany (GER)', 'Німеччина (GER)'),
 (432, 'usa_uk', 'США / Великобритания (USA / UK)', 'USA / Great Britain (USA / UK)', 'США / Великобританія (USA / UK)'),
 (433, 'international', 'Международный (INT)', 'International (INT)', 'Міжнародний (INT)'),
@@ -4384,7 +4387,9 @@ INSERT INTO `t_translations` (`id`, `label`, `lang_ru`, `lang_en`, `lang_ua`) VA
 (467, 'operating_mode_text', 'Пн - Вс: 11.00 - 19.00', 'Mon - Sun: 11.00 - 19.00', 'Пн - Нд: 11.00 - 19.00'),
 (468, 'main_office', 'Центральный офис', 'Main office', 'Центральний офіс'),
 (469, 'global_banners', 'Баннеры', 'Banners', 'Банери'),
-(470, 'fast_delivery', 'Быстрая доставка за 24 часа', 'Fast delivery within 24 hours', 'Швидка доставка за 24 години');
+(470, 'fast_delivery', 'Быстрая доставка за 24 часа', 'Fast delivery within 24 hours', 'Швидка доставка за 24 години'),
+(471, 'faq_name', 'Часто задаваемые вопросы', 'FAQ', 'Часті питання'),
+(472, 'no_faqs_found', 'Вопросы не найдены', 'No questions found', 'Запитання не знайдено');
 
 -- --------------------------------------------------------
 
@@ -5143,7 +5148,7 @@ ALTER TABLE `t_seo`
 -- AUTO_INCREMENT for table `t_settings`
 --
 ALTER TABLE `t_settings`
-  MODIFY `setting_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
+  MODIFY `setting_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=74;
 
 --
 -- AUTO_INCREMENT for table `t_subscribes`
@@ -5155,13 +5160,13 @@ ALTER TABLE `t_subscribes`
 -- AUTO_INCREMENT for table `t_theme_settings`
 --
 ALTER TABLE `t_theme_settings`
-  MODIFY `setting_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=182;
+  MODIFY `setting_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=183;
 
 --
 -- AUTO_INCREMENT for table `t_translations`
 --
 ALTER TABLE `t_translations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=471;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=473;
 
 --
 -- AUTO_INCREMENT for table `t_users`

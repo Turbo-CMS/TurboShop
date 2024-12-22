@@ -15,7 +15,7 @@
 		<form class="search mb-3" method="get">
 			<input type="hidden" name="module" value="FeaturesAdmin">
 			<div class="input-group">
-				<input name="keyword" class="form-control" placeholder="{$btr->global_search|escape}" type="text" value="{if isset($keyword)}{$keyword|escape}{/if}">
+				<input name="keyword" class="form-control" placeholder="{$btr->global_search|escape}" type="text" value="{$keyword|escape}">
 				<button class="btn btn-primary" type="submit"><i class="align-middle mt-n1" data-feather="search"></i></button>
 			</div>
 		</form>
@@ -40,13 +40,13 @@
 					<div class="row">
 						<div class="col-md-3 col-lg-3 col-sm-12 mb-3">
 							<select id="id_categories" name="categories_filter" title="{$btr->global_category_filter|escape}" class="selectpicker" data-live-search="true" data-size="10" onchange="location = this.value;">
-								<option value="{url keyword=null brand_id=null page=null limit=null category_id=null}" {if !isset($category)}selected{/if}>{$btr->global_all_categories|escape}</option>
+								<option value="{url keyword=null brand_id=null page=null limit=null category_id=null}" {if !$category}selected{/if}>{$btr->global_all_categories|escape}</option>
 								{function name=category_select level=0}
 									{foreach $categories as $c}
-										<option value="{url category_id=$c->id}" {if isset($category) && $category->id == $c->id}selected{/if}>
+										<option value="{url category_id=$c->id}" {if $category && $category->id == $c->id}selected{/if}>
 											{section sp $level}--{/section} {$c->name|escape}
 										</option>
-										{if isset($c->subcategories)}
+										{if $c->subcategories}
 											{category_select categories=$c->subcategories level=$level+1}
 										{/if}
 									{/foreach}

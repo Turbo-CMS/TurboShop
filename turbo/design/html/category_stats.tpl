@@ -3,10 +3,10 @@
 <div class="d-md-flex mb-3">
 	<h1 class="d-inline align-middle me-3">
 		{$btr->category_stats_sales|escape}
-		{if isset($category->name)}
+		{if $category && $category->name}
 			{$category->name|escape}
 		{/if}
-		{if isset($brand->name)}
+		{if $brand && $brand->name}
 			{$brand->name|escape}
 		{/if}
 	</h1>
@@ -33,14 +33,14 @@
 							<div class="col-sm-12 col-md-4 col-lg-4">
 								<div class="input-group mb-3">
 									<span class="input-group-text">{$btr->global_from|escape}</span>
-									<input type="text" class="flatpickr form-control" name="date_from" value="{if isset($date_from)}{$date_from}{/if}" autocomplete="off">
+									<input type="text" class="flatpickr form-control" name="date_from" value="{$date_from}" autocomplete="off">
 									<span class="input-group-text"><i class="align-middle" data-feather="calendar"></i></span>
 								</div>
 							</div>
 							<div class="col-sm-12 col-md-4 col-lg-4">
 								<div class="input-group mb-3">
 									<span class="input-group-text">{$btr->global_to|escape}</span>
-									<input type="text" class="flatpickr form-control" name="date_to" value="{if isset($date_to)}{$date_to}{/if}" autocomplete="off">
+									<input type="text" class="flatpickr form-control" name="date_to" value="{$date_to}" autocomplete="off">
 									<span class="input-group-text"><i class="align-middle" data-feather="calendar"></i></span>
 								</div>
 							</div>
@@ -52,13 +52,13 @@
 					<div class="row">
 						<div class="col-md-4 col-lg-4 col-sm-12 mb-3">
 							<select id="id_categories" name="categories_filter" title="{$btr->global_category_filter|escape}" class="selectpicker" data-live-search="true" data-size="10" onchange="location = this.value;">
-								<option value="{url brand=null category=null}" {if !isset($category)}selected{/if}>{$btr->global_all_categories|escape}</option>
+								<option value="{url brand=null category=null}" {if !$category}selected{/if}>{$btr->global_all_categories|escape}</option>
 								{function name=category_select level=0}
 									{foreach $categories as $c}
-										<option value='{url brand=null category=$c->id}' {if isset($smarty.get.category) && $smarty.get.category == $c->id}selected{/if}>
+										<option value="{url brand=null category=$c->id}" {if $category && $smarty.get.category == $c->id}selected{/if}>
 											{section sp $level}--{/section} {$c->name|escape}
 										</option>
-										{if isset($c->subcategories)}
+										{if $c->subcategories}
 											{category_select categories=$c->subcategories level=$level+1}
 										{/if}
 									{/foreach}
@@ -68,9 +68,9 @@
 						</div>
 						<div class="col-lg-4 col-md-4 col-sm-12 mb-3">
 							<select onchange="location = this.value;" class="selectpicker">
-								<option value="{url brand=null}" {if !isset($brand)}selected{/if}>{$btr->global_all_brands|escape}</option>
+								<option value="{url brand=null}" {if !$brand}selected{/if}>{$btr->global_all_brands|escape}</option>
 								{foreach $brands as $b}
-									<option value="{url brand=$b->id}" {if isset($brand) && $brand->id == $b->id}selected{/if}>{$b->name|escape}</option>
+									<option value="{url brand=$b->id}" {if $brand && $brand->id == $b->id}selected{/if}>{$b->name|escape}</option>
 								{/foreach}
 							</select>
 						</div>
@@ -115,12 +115,12 @@
 											{$category->price|number_format:2:".":""} {$currency->sign}
 										</div>
 										<div class="turbo-list-boding turbo-list-categorystats-setting text-body">
-											{$category->amount} {$btr->reportstats_units}
+											{$category->amount} {$btr->reportstats_units|escape}
 										</div>
 									</div>
 								</div>
 							{/if}
-							{if isset($category->subcategories)}
+							{if $category->subcategories}
 								{categories_list_tree categories=$category->subcategories level=$level+1}
 							{/if}
 						{/foreach}
@@ -140,16 +140,16 @@
 </div>
 
 <script>
-	{if isset($category)}
+	{if $category}
 		var category = {$category->id};
 	{/if}
-	{if isset($brand)}
+	{if $brand}
 		var brand = {$brand->id};
 	{/if}
-	{if isset($date_from)}
+	{if $date_from}
 		var date_from = '{$date_from}';
 	{/if}
-	{if isset($date_to)}
+	{if $date_to}
 		var date_to = '{$date_to}';
 	{/if}
 </script>

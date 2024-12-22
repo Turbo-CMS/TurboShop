@@ -3,27 +3,19 @@
 {* Meta Title *}
 {$meta_title = "`$lang->email_order_title` `$order->id`" scope=global}
 
-{* Breadcrumb *}
-<nav class="mt-4" aria-label="breadcrumb">
-	<ol class="breadcrumb">
-		<li class="breadcrumb-item"><a href="{if $lang_link}{$lang_link}{else}/{/if}"><i class="fal fa-house me-2"></i>{$lang->home}</a></li>
-		<li class="breadcrumb-item active" aria-current="page">{$lang->order_page}</li>
-	</ol>
-</nav>
-
 {* Page Title *}
 <h1 class="my-4">
-	{$lang->email_order_title}{$order->id}
+	{$lang->email_order_title|escape}{$order->id}
 	{if $order->status == 0}
-		{$lang->accepted}
+		{$lang->accepted|escape}
 	{/if}
 	{if $order->status == 1}
-		{$lang->in_processing}
+		{$lang->in_processing|escape}
 	{elseif $order->status == 2}
-		{$lang->completed}
+		{$lang->completed|escape}
 	{/if}
 	{if $order->paid == 1}
-		(<span class="text-success">{$lang->paid}</span>)
+		(<span class="text-success">{$lang->paid|escape}</span>)
 	{/if}
 </h1>
 
@@ -33,10 +25,10 @@
 		<thead>
 			<tr>
 				<th>&nbsp;</th>
-				<th>{$lang->general_name}</th>
-				<th>{$lang->general_price}</th>
-				<th>{$lang->number}</th>
-				<th>{$lang->sum}</th>
+				<th>{$lang->global_name|escape}</th>
+				<th>{$lang->global_price|escape}</th>
+				<th>{$lang->number|escape}</th>
+				<th>{$lang->sum|escape}</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -44,7 +36,7 @@
 				<tr>
 					<td class="text-center">
 						<a href="{$lang_link}products/{$purchase->product->url}">
-							{if isset($purchase->product->images)}
+							{if $purchase->product->images}
 								{$image = $purchase->product->images|first}
 								<img src="{$image->filename|resize:116:116}" alt="{$purchase->product->name|escape}">
 							{else}
@@ -52,19 +44,19 @@
 							{/if}
 						</a>
 					</td>
-					<td data-title="{$lang->general_name}">
+					<td data-title="{$lang->global_name|escape}">
 						<a class="text-decoration-none" href="{$lang_link}products/{$purchase->product->url}">{$purchase->product->name|escape}</a></br>
 						{$purchase->variant->color|escape} {if $purchase->variant->color && $purchase->variant->name}/{/if} {$purchase->variant->name|escape}
 						{if $order->paid && $purchase->variant->attachment}
-							<a class="btn btn-success btn-sm mt-3" href="{$lang_link}order/{$order->url}/{$purchase->variant->attachment}"><i class="fal fa-arrow-down-to-square me-1"></i>{$lang->download}</a>
+							<a class="btn btn-success btn-sm mt-3" href="{$lang_link}order/{$order->url}/{$purchase->variant->attachment}"><i class="fal fa-arrow-down-to-square me-1"></i>{$lang->download|escape}</a>
 						{/if}
 						{if $order->paid && $purchase->variant->attachment_url}
-							<a class="btn btn-primary btn-sm mt-3" href="{$purchase->variant->attachment_url}" target="_blank"><i class="fal fa-arrow-up-right-from-square me-1"></i>{$lang->download}</a>
+							<a class="btn btn-primary btn-sm mt-3" href="{$purchase->variant->attachment_url}" target="_blank"><i class="fal fa-arrow-up-right-from-square me-1"></i>{$lang->download|escape}</a>
 						{/if}
 					</td>
-					<td data-title="{$lang->general_price}">{($purchase->price)|convert}&nbsp;{$currency->sign}</td>
-					<td data-title="{$lang->number}">&times; {$purchase->amount}&nbsp;{$settings->units}</td>
-					<td data-title="{$lang->sum}"><strong>{($purchase->price*$purchase->amount)|convert}&nbsp;{$currency->sign}</strong></td>
+					<td data-title="{$lang->global_price|escape}">{($purchase->price)|convert}&nbsp;{$currency->sign}</td>
+					<td data-title="{$lang->number|escape}">&times; {$purchase->amount}&nbsp;{$settings->units}</td>
+					<td data-title="{$lang->sum|escape}"><strong>{($purchase->price*$purchase->amount)|convert}&nbsp;{$currency->sign}</strong></td>
 				</tr>
 			{/foreach}
 		</tbody>
@@ -75,7 +67,7 @@
 		<div class="cart-foot text-end">
 			<div class="cart-total">
 				<div class="order-total">
-					<strong>{$lang->weight}:</strong>
+					<strong>{$lang->weight|escape}:</strong>
 					<strong>{$order->weight} {$settings->weight_units}</strong>
 				</div>
 			</div>
@@ -86,7 +78,7 @@
 	<div class="cart-foot text-end">
 		<div class="cart-total">
 			<div class="order-total">
-				<strong>{$lang->sum}:</strong>
+				<strong>{$lang->sum|escape}:</strong>
 				{$total_sum = $order->total_price - $order->delivery_price + $order->coupon_discount + $order->discount}
 				<strong>{$total_sum|convert}&nbsp;{$currency->sign}</strong>
 			</div>
@@ -98,7 +90,7 @@
 		<div class="cart-foot text-end">
 			<div class="cart-total">
 				<div class="order-total">
-					<strong>{$lang->discount}:</strong>
+					<strong>{$lang->discount|escape}:</strong>
 					<strong>{$order->discount}&nbsp;%</strong>
 				</div>
 			</div>
@@ -110,7 +102,7 @@
 		<div class="cart-foot text-end">
 			<div class="cart-total">
 				<div class="order-total">
-					<strong>{$lang->coupon}:</strong>
+					<strong>{$lang->coupon|escape}:</strong>
 					<strong>&minus;{$order->coupon_discount|convert}&nbsp;{$currency->sign}</strong>
 				</div>
 			</div>
@@ -122,7 +114,7 @@
 		<div class="cart-foot text-end">
 			<div class="cart-total">
 				<div class="order-total">
-					<strong>{$lang->global_delivery}:</strong>
+					<strong>{$lang->global_delivery|escape}:</strong>
 					<strong>{$order->delivery_price|convert}&nbsp;{$currency->sign}</strong>
 				</div>
 			</div>
@@ -133,8 +125,8 @@
 			<div class="cart-foot text-end">
 				<div class="cart-total">
 					<div class="order-total">
-						<strong>{$lang->global_delivery}:</strong>
-						<strong>{$lang->paid_separate}</strong>
+						<strong>{$lang->global_delivery|escape}:</strong>
+						<strong>{$lang->paid_separate|escape}</strong>
 					</div>
 				</div>
 			</div>
@@ -143,8 +135,8 @@
 			<div class="cart-foot text-end">
 				<div class="cart-total">
 					<div class="order-total">
-						<strong>{$lang->global_delivery}:</strong>
-						<strong>{$lang->free}</strong>
+						<strong>{$lang->global_delivery|escape}:</strong>
+						<strong>{$lang->free|escape}</strong>
 					</div>
 				</div>
 			</div>
@@ -155,29 +147,29 @@
 	<div class="cart-foot text-end">
 		<div class="cart-total">
 			<div class="order-total h5">
-				<strong>{$lang->total}:</strong>
+				<strong>{$lang->total|escape}:</strong>
 				<strong>{$order->total_price|convert}&nbsp;{$currency->sign}</strong>
 			</div>
 		</div>
 	</div>
 
 	{* Order Details *}
-	<h2>{$lang->order_details}</h2>
+	<h2>{$lang->order_details|escape}</h2>
 	<table class="table table-bordered">
 		<tbody>
 			<tr>
 				<td scope="row">
-					{$lang->order_date}
+					{$lang->order_date|escape}
 				</td>
 				<td>
-					{$order->date|date} {$lang->at}
+					{$order->date|date} {$lang->at|escape}
 					{$order->date|time}
 				</td>
 			</tr>
 			{if $order->name}
 				<tr>
 					<td scope="row">
-						{$lang->name}
+						{$lang->name|escape}
 					</td>
 					<td>
 						{$order->name|escape}
@@ -197,7 +189,7 @@
 			{if $order->phone}
 				<tr>
 					<td scope="row">
-						{$lang->phone}
+						{$lang->phone|escape}
 					</td>
 					<td>
 						{$order->phone|escape}
@@ -207,7 +199,7 @@
 			{if $delivery}
 				<tr>
 					<td scope="row">
-						{$lang->delivery_method}
+						{$lang->delivery_method|escape}
 					</td>
 					<td>
 						{$delivery->name|escape}
@@ -217,7 +209,7 @@
 			{if $order->address}
 				<tr>
 					<td scope="row">
-						{$lang->delivery_address}
+						{$lang->delivery_address|escape}
 					</td>
 					<td>
 						{$order->address|escape}
@@ -227,7 +219,7 @@
 			{if $order->comment}
 				<tr>
 					<td scope="row">
-						{$lang->comment}
+						{$lang->comment|escape}
 					</td>
 					<td>
 						{$order->comment|escape|nl2br}
@@ -239,9 +231,9 @@
 
 	{if !$order->paid}
 		{* Choosing Payment Method *}
-		{if $payment_methods && !isset($payment_method) && $order->total_price>0}
+		{if !$payment_method && $order->total_price > 0}
 			<form method="post">
-				<h2>{$lang->select_a_payment_method}</h2>
+				<h2>{$lang->select_a_payment_method|escape}</h2>
 				<div id="accordion">
 					{foreach $payment_methods as $payment_method}
 						<div class="card my-2">
@@ -255,7 +247,7 @@
 											{elseif $payment_method->code}
 												<i class="fal fa-{$payment_method->code|escape} me-1 align-middle"></i>
 											{/if}
-											{$payment_method->name}, {$lang->to_pay_small} {$order->total_price|convert:$payment_method->currency_id}&nbsp;{$all_currencies[$payment_method->currency_id]->sign}
+											{$payment_method->name}, {$lang->to_pay_small|escape} {$order->total_price|convert:$payment_method->currency_id}&nbsp;{$all_currencies[$payment_method->currency_id]->sign}
 										</label>
 									</div>
 								</h5>
@@ -271,13 +263,13 @@
 					{/foreach}
 				</div>
 				<div class="mt-3">
-					<input type="submit" class="btn btn-success btn-lg float-end" value="{$lang->finish_the_order}">
+					<input type="submit" class="btn btn-success btn-lg float-end" value="{$lang->finish_the_order|escape}">
 				</div>
 			</form>
 			{* Selected Payment Method *}
 		{elseif $payment_method}
 			<h2 class="mb-3">
-				{$lang->payment_method} &mdash;
+				{$lang->payment_method|escape} &mdash;
 				{if $payment_method->icon}
 					<img class="mt-n1 align-middle" style="width: 32px; height: 32px;" src="{$config->payment_images_dir}{$payment_method->icon}" alt="{$payment_method->name|escape}">
 				{elseif $payment_method->code}
@@ -286,11 +278,11 @@
 				{$payment_method->name}
 			</h2>
 			<form method="post">
-				<input type="submit" class="btn btn-primary mb-3" name="reset_payment_method" value="{$lang->choose_payment}">
+				<input type="submit" class="btn btn-primary mb-3" name="reset_payment_method" value="{$lang->choose_payment|escape}">
 			</form>
 			<div class="mb-3">{$payment_method->description}</div>
 			<h2 class="mb-3">
-				{$lang->to_pay} {$order->total_price|convert:$payment_method->currency_id}&nbsp;{$all_currencies[$payment_method->currency_id]->sign}
+				{$lang->to_pay|escape} {$order->total_price|convert:$payment_method->currency_id}&nbsp;{$all_currencies[$payment_method->currency_id]->sign}
 			</h2>
 			{* Payment Module *}
 			{checkoutForm order_id=$order->id module=$payment_method->module}

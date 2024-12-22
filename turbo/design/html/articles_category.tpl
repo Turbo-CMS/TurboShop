@@ -1,4 +1,4 @@
-{if isset($category->id)}
+{if $category->id}
 	{$meta_title = $category->name scope=global}
 {else}
 	{$meta_title = $btr->category_new scope=global}
@@ -6,13 +6,13 @@
 
 <div class="d-md-flex mb-3">
 	<h1 class="d-inline align-middle me-3">
-		{if !isset($category->id)}
+		{if !$category->id}
 			{$btr->category_add|escape}
 		{else}
 			{$category->name|escape}
 		{/if}
 	</h1>
-	{if isset($category->id)}
+	{if $category->id}
 		<div class="d-grid gap-2 d-sm-block mt-2 mt-md-0">
 			<a class="btn btn-primary" target="_blank" href="../{$lang_link}articles/{$category->url}">
 				<i class="align-middle mt-n1" data-feather="external-link"></i>
@@ -22,7 +22,7 @@
 	{/if}
 </div>
 
-{if isset($message_success)}
+{if $message_success}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -47,7 +47,7 @@
 	</div>
 {/if}
 
-{if isset($message_error)}
+{if $message_error}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -78,22 +78,22 @@
 						<div class="col-lg-10 col-md-9 col-sm-12">
 							<div class="translate-container mb-3">
 								<div class="form-label">{$btr->global_title|escape} <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
-								<input class="form-control translate-input" name="name" type="text" value="{if isset($category->name)}{$category->name|escape}{/if}">
-								<input name="id" type="hidden" value="{if isset($category->id)}{$category->id|escape}{/if}">
+								<input class="form-control translate-input" name="name" type="text" value="{$category->name|escape}">
+								<input name="id" type="hidden" value="{$category->id|escape}">
 							</div>
 							<div class="translate-container mb-3">
 								<div class="form-label">{$btr->global_h1|escape} <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
-								<input name="name_h1" class="form-control translate-input" type="text" value="{if isset($category->name_h1)}{$category->name_h1|escape}{/if}">
+								<input name="name_h1" class="form-control translate-input" type="text" value="{$category->name_h1|escape}">
 							</div>
 							<div class="row">
 								<div class="col-12 col-lg-6 col-md-12">
 									<div class="mt-2 mb-3 mb-h">
 										<div class="input-group">
 											<span class="input-group-text">URL</span>
-											<input name="url" class="js-meta-field form-control js-url {if isset($category->id)}js-disabled{/if}" {if isset($category->id)}readonly=""{/if} type="text" value="{if isset($category->url)}{$category->url|escape}{/if}">
-											<input type="checkbox" id="block-translit" class="d-none" value="1" {if isset($category->id)}checked=""{/if}>
+											<input name="url" class="js-meta-field form-control js-url {if $category->id}js-disabled{/if}" {if $category->id}readonly=""{/if} type="text" value="{$category->url|escape}">
+											<input type="checkbox" id="block-translit" class="d-none" value="1" {if $category->id}checked=""{/if}>
 											<span class="input-group-text js-disable-url">
-												{if isset($category->id)}
+												{if $category->id}
 													<i class="url-lock"></i>
 												{else}
 													<i class="url-lock url-unlock"></i>
@@ -106,12 +106,12 @@
 									<div class="input-group mt-2 mb-3 mb-h">
 										<span class="w-100">
 											<select name="parent_id" class="selectpicker">
-												<option value='0'>{$btr->category_root|escape}</option>
+												<option value="0">{$btr->category_root|escape}</option>
 												{function name=category_select level=0}
 													{foreach $articles_categories as $cat}
-														{if isset($category) || isset($cat) && $category->id != $cat->id}
-															<option value='{$cat->id}' {if isset($category->parent_id) && $category->parent_id == $cat->id}selected{/if}>{section name=sp loop=$level}--{/section} {$cat->name}</option>
-															{if isset($cat->subcategories)}
+														{if $category->id != $cat->id}
+															<option value="{$cat->id}" {if $category->parent_id == $cat->id}selected{/if}>{section name=sp loop=$level}--{/section} {$cat->name}</option>
+															{if $cat->subcategories}
 																{category_select articles_categories=$cat->subcategories level=$level+1}
 															{/if}
 														{/if}
@@ -127,7 +127,7 @@
 						<div class="col-lg-2 col-md-3 col-sm-12">
 							<div class="d-flex justify-content-center align-content-center flex-wrap flex-md-column h-100">
 								<div class="form-check form-switch form-check-reverse ms-2 mb-2 mb-sm-1">
-									<input class="form-check-input ms-2" type="checkbox" id="visible" name="visible" value="1" type="checkbox" {if isset($category->visible) && $category->visible}checked=""{/if}>
+									<input class="form-check-input ms-2" type="checkbox" id="visible" name="visible" value="1" type="checkbox" {if $category->visible}checked=""{/if}>
 									<label class="form-check-label ms-2" for="visible">{$btr->global_enable|escape}</label>
 								</div>
 							</div>
@@ -153,8 +153,8 @@
 				<div class="collapse-card">
 					<div class="card-body">
 						<ul class="category-images-list">
-							<li class="category-image-item border-image-item {if isset($category->image) && $category->image}border{/if}">
-								{if isset($category->image) && $category->image}
+							<li class="category-image-item border-image-item {if $category->image}border{/if}">
+								{if $category->image}
 									<input type="hidden" class="js-accept-delete" name="delete_image" value="">
 									<div class="js-parent-image">
 										<div class="category-image image-wrapper js-image-wrapper text-xs-center">
@@ -170,7 +170,7 @@
 								{else}
 									<div class="js-parent-image"></div>
 								{/if}
-								<div class="js-upload-image dropzone-block-image {if isset($category->image) && $category->image}d-none{/if}">
+								<div class="js-upload-image dropzone-block-image {if $category->image}d-none{/if}">
 									<i class="align-middle" data-feather="plus"></i>
 									<input class="dropzone-image" name="image" type="file">
 								</div>
@@ -202,16 +202,16 @@
 							<div class="col-lg-6 col-md-6">
 								<div class="translate-container mb-3">
 									<div class="form-label">Meta-title <span id="js-meta-title-counter"></span> <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
-									<input name="meta_title" class="form-control js-meta-field mb-h translate-input" type="text" value="{if isset($category->meta_title)}{$category->meta_title|escape}{/if}">
+									<input name="meta_title" class="form-control js-meta-field mb-h translate-input" type="text" value="{$category->meta_title|escape}">
 								</div>
 								<div class="translate-container mb-3">
 									<div class="form-label">Meta-keywords <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
-									<input name="meta_keywords" class="form-control js-meta-field mb-h translate-input" type="text" value="{if isset($category->meta_keywords)}{$category->meta_keywords|escape}{/if}">
+									<input name="meta_keywords" class="form-control js-meta-field mb-h translate-input" type="text" value="{$category->meta_keywords|escape}">
 								</div>
 							</div>
 							<div class="translate-container col-lg-6 col-md-6">
 								<div class="form-label">Meta-description <span id="js-meta-description-counter"></span> <span class="translate-button" role="button" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="{$btr->global_translation|escape}">{include file='svg_icon.tpl' svgId='translate'}</span></div>
-								<textarea name="meta_description" class="form-control turbo-textarea js-meta-field translate-input">{if isset($category->meta_description)}{$category->meta_description|escape}{/if}</textarea>
+								<textarea name="meta_description" class="form-control turbo-textarea js-meta-field translate-input">{$category->meta_description|escape}</textarea>
 							</div>
 						</div>
 					</div>
@@ -234,7 +234,7 @@
 				</div>
 				<div class="collapse-card">
 					<div class="card-body">
-						<textarea id="js-editor" name="description" class="editor js-editor-class">{if isset($category->description)}{$category->description|escape}{/if}</textarea>
+						<textarea id="js-editor" name="description" class="editor js-editor-class">{$category->description|escape}</textarea>
 						<div class="row">
 							<div class="col-12">
 								<div class="d-grid d-sm-block mt-3">

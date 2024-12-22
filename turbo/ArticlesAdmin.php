@@ -6,7 +6,7 @@ class ArticlesAdmin extends Turbo
 {
 	public function fetch()
 	{
-		if ($this->request->isMethod('post')) {
+		if ($this->request->method('post')) {
 			$positions = $this->request->post('positions');
 			$ids = array_keys($positions);
 			sort($positions);
@@ -54,11 +54,17 @@ class ArticlesAdmin extends Turbo
 		$categoryId = $this->request->get('category_id', 'integer');
 		$category = $this->articlesCategories->getArticlesCategory($categoryId);
 
-		$this->design->assign('category', $category);
-
 		if ($categoryId && $category) {
-			$filter['category_id'] = $category->children;
+			if (property_exists($category, 'children')) {
+				$filter['category_id'] = $category->children;
+			} else {
+				$filter['category_id'] = [];
+			}
+		} else {
+			$category = null;
 		}
+
+		$this->design->assign('category', $category);
 
 		$keyword = $this->request->get('keyword', 'string');
 

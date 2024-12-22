@@ -13,7 +13,7 @@ class TranslationAdmin extends Turbo
 
 		$translation = new stdClass();
 
-		if (!$lockedTheme && $this->request->isMethod('post')) {
+		if (!$lockedTheme && $this->request->method('post')) {
 			$translation->id = $this->request->post('id', 'integer');
 			$translation->label = trim($this->request->post('label'));
 			$translation->label = str_replace(' ', '_', $translation->label);
@@ -48,6 +48,9 @@ class TranslationAdmin extends Turbo
 
 			if (!empty($translation->id)) {
 				$translation = $this->languages->getTranslation($translation->id);
+			} else {
+				$translation->id = null;
+				$translation->label = '';
 			}
 		}
 

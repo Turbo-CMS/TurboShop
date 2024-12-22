@@ -9,22 +9,22 @@
 						<div class="sticker sticker--upper">
 							{if $product->variant->compare_price> 0}
 								<div>
-									<div class="sticker__item sticker__item--stock font_10">{$lang->badge_sale}</div>
+									<div class="sticker__item sticker__item--stock font_10">{$lang->badge_sale|escape}</div>
 								</div>
 							{/if}
 							{if $product->featured}
 								<div>
-									<div class="sticker__item sticker__item--recommend font_10">{$lang->badge_featured}</div>
+									<div class="sticker__item sticker__item--recommend font_10">{$lang->badge_featured|escape}</div>
 								</div>
 							{/if}
 							{if $product->is_new}
 								<div>
-									<div class="sticker__item sticker__item--new font_10">{$lang->badge_new}</div>
+									<div class="sticker__item sticker__item--new font_10">{$lang->badge_new|escape}</div>
 								</div>
 							{/if}
 							{if $product->is_hit}
 								<div>
-									<div class="sticker__item sticker__item--hit font_10">{$lang->badge_hit}</div>
+									<div class="sticker__item sticker__item--hit font_10">{$lang->badge_hit|escape}</div>
 								</div>
 							{/if}
 							{if !empty($product->sale_to)}
@@ -41,7 +41,7 @@
 						</div>
 						<div class="btn-fast-view rounded-x hide-600">
 							<div data-event="jqm" class="btn btn-xs btn-default" data-name="fast_view" data-url="{$lang_link}products/{$product->url}?tpl=quickview">
-								{$lang->quick_view}
+								{$lang->quick_view|escape}
 							</div>
 						</div>
 						<a href="{$lang_link}products/{$product->url}" class="image-list__link">
@@ -56,7 +56,7 @@
 								{else}
 									<span class="section-gallery-wrapper__item active">
 										<span class="section-gallery-wrapper__item-nav section-gallery-wrapper__item_hidden"></span>
-										{if isset($product->image) && $product->image}
+										{if $product->image}
 											<img class="lazyload img-responsive js-replace-img ls-is-cached" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{$product->image->filename|resize:700:700}" data-big="{$product->image->filename|resize:700:700}" alt="{$product->name|escape}" title="{$product->name|escape}" />
 										{else}
 											<img class="lazyload img-responsive js-replace-img ls-is-cached" style="width: 170px; height: 170px;" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="design/{$settings->theme|escape}/images/no-photo.svg" data-big="design/{$settings->theme|escape}/images/no-photo.svg" alt="{$product->name|escape}" title="{$product->name|escape}" />
@@ -90,7 +90,7 @@
 							<div class="catalog-list__info-tech">
 								<div class="line-block line-block--12 flexbox--wrap js-popup-info">
 									<div class="line-block__item font_13 font_12--to-600">
-										<div class="rating" title="{if $product->ratings|string_format:'%.1f'|floatval > 0}{$lang->rating} {$product->ratings|string_format:'%.1f'} {$lang->out_of} 5{else}{$lang->no_ratings}{/if}">
+										<div class="rating" title="{if $product->ratings|string_format:'%.1f'|floatval > 0}{$lang->rating|escape} {$product->ratings|string_format:'%.1f'} {$lang->out_of|escape} 5{else}{$lang->no_ratings|escape}{/if}">
 											<div class="line-block line-block--4">
 												<div class="line-block__item flexbox">
 													<i class="svg inline rating__star-svg {if $product->rating > 0}rating__star-svg--filled{/if}" aria-hidden="true">
@@ -103,13 +103,13 @@
 											</div>
 										</div>
 									</div>
-									<div class="line-block__item font_13 js-status-container" data-stock="{$lang->not_available}" data-default="{$lang->in_stock}">
+									<div class="line-block__item font_13 js-status-container" data-stock="{$lang->not_available|escape}" data-default="{$lang->in_stock|escape}">
 										{if $product->variant->stock}
 											<link itemprop="availability" href="https://schema.org/InStock">
-											<span class="js-replace-status status-icon">{$lang->in_stock}</span>
+											<span class="js-replace-status status-icon">{$lang->in_stock|escape}</span>
 										{else}
 											<link itemprop="availability" href="http://schema.org/OutOfStock">
-											<span class="js-replace-status status-icon nostock">{$lang->not_available}</span>
+											<span class="js-replace-status status-icon nostock">{$lang->not_available|escape}</span>
 										{/if}
 									</div>
 								</div>
@@ -119,7 +119,7 @@
 									{$product->annotation}
 								</div>
 							{/if}
-							{if isset($product->features)}
+							{if $product->features}
 								<div class="properties properties--mt-13 js-offers-prop compact-hidden-t600">
 									{foreach $product->features|@array_slice:0:5 as $f}
 										{if !$f->is_color}
@@ -136,15 +136,15 @@
 									{/foreach}
 								</div>
 							{/if}
-							{if isset($product->related_products) && $product->related_products || $product->variants|count > 1}
+							{if $product->related_products || $product->variants|count > 1}
 								<div class="catalog-table__item-wrapper hide-600">
 									<div class="sku-props sku-props--list">
 										<div class="line-block line-block--flex-wrap line-block--24 line-block--align-normal">
-											{if isset($product->related_products) && $product->related_products}
+											{if $product->related_products}
 												<div class="line-block__item sku-props__inner sku-props--pict">
 													<div class="sku-props__item">
 														<div class="sku-props__title color_666">
-															{$lang->color} : <span class="sku-props__js-size">{$product->variant->color}</span>
+															{$lang->color|escape} : <span class="sku-props__js-size">{$product->variant->color}</span>
 														</div>
 														<div class="line-block line-block--flex-wrap line-block--6 sku-props__values">
 															{foreach $product->related_products as $related_product}
@@ -162,7 +162,7 @@
 												<div class="line-block__item sku-props__inner">
 													<div class="sku-props__item">
 														<div class="sku-props__title color_666">
-															{$lang->option} : <span class="sku-props__js-size">{$product->variant->name}</span>
+															{$lang->option|escape} : <span class="sku-props__js-size">{$product->variant->name}</span>
 														</div>
 														<div class="line-block line-block--flex-wrap line-block--4 sku-props__values">
 															{foreach $product->variants as $v}
@@ -227,7 +227,7 @@
 																	<input name="variant" value="{$v->id}" type="radio" {if $v@first}checked{/if} style="display:none;">
 																{/foreach}
 															{/if}
-															<button id="add-to-cart" type="submit" data-result-text="{$lang->added_cart}" class="btn btn-default btn-sm btn-wide to_cart animate-load {if !$product->variant->stock}disabled{/if}" value="{$lang->add_cart}" title="{$lang->add_cart}" {if !$product->variant->stock}disabled{/if}>{$lang->add_cart}</button>
+															<button id="add-to-cart" type="submit" data-result-text="{$lang->added_cart|escape}" class="btn btn-default btn-sm btn-wide to_cart animate-load {if !$product->variant->stock}disabled{/if}" value="{$lang->add_cart|escape}" title="{$lang->add_cart|escape}" {if !$product->variant->stock}disabled{/if}>{$lang->add_cart|escape}</button>
 														</span>
 													</div>
 												</div>
@@ -236,9 +236,9 @@
 									</div>
 								</div>
 								<div class="line-block__item js-replace-icons">
-									{if isset($wishlist) && $wishlist}
+									{if $wishlist}
 										<div class="item-action item-action--horizontal item-action--favorite active">
-											<a href="{$lang_link}wishlist/remove/{$product->url}" rel="nofollow" class="item-action__inner item-action__inner--md fill-theme-use-svg-hover fill-dark-light-block active" title="{$lang->delete}">
+											<a href="{$lang_link}wishlist/remove/{$product->url}" rel="nofollow" class="item-action__inner item-action__inner--md fill-theme-use-svg-hover fill-dark-light-block active" title="{$lang->delete|escape}">
 												<i class="svg inline" aria-hidden="true">
 													<svg width="18" height="16">
 														<use xlink:href="design/{$settings->theme|escape}/images/svg/catalog/item_icons.svg#favorite-18-16"></use>
@@ -246,9 +246,9 @@
 												</i>
 											</a>
 										</div>
-									{elseif isset($wishlist_products) && in_array($product->url, $wishlist_products)}
+									{elseif $wishlist_products && in_array($product->url, $wishlist_products)}
 										<div class="item-action item-action--horizontal item-action--favorite active">
-											<a href="{$lang_link}wishlist" class="item-action__inner item-action__inner--md fill-theme-use-svg-hover fill-dark-light-block active" title="{$lang->added_to_wishlist}">
+											<a href="{$lang_link}wishlist" class="item-action__inner item-action__inner--md fill-theme-use-svg-hover fill-dark-light-block active" title="{$lang->added_to_wishlist|escape}">
 												<i class="svg inline" aria-hidden="true">
 													<svg width="18" height="16">
 														<use xlink:href="design/{$settings->theme|escape}/images/svg/catalog/item_icons.svg#favorite-18-16"></use>
@@ -258,7 +258,7 @@
 										</div>
 									{else}
 										<div class="item-action item-action--horizontal item-action--favorite">
-											<a href="{$lang_link}wishlist/{$product->url}" rel="nofollow" class="wishlist item-action__inner item-action__inner--md fill-theme-use-svg-hover fill-dark-light-block" title="{$lang->add_to_wishlist}" data-title_added="{$lang->added_to_wishlist}">
+											<a href="{$lang_link}wishlist/{$product->url}" rel="nofollow" class="wishlist item-action__inner item-action__inner--md fill-theme-use-svg-hover fill-dark-light-block" title="{$lang->add_to_wishlist|escape}" data-title_added="{$lang->added_to_wishlist|escape}">
 												<i class="svg inline" aria-hidden="true">
 													<svg width="18" height="16">
 														<use xlink:href="design/{$settings->theme|escape}/images/svg/catalog/item_icons.svg#favorite-18-16"></use>
@@ -269,7 +269,7 @@
 									{/if}
 									{if isset($smarty.session.compared_products) && in_array($product->url, $smarty.session.compared_products)}
 										<div class="item-action item-action--horizontal item-action--compare active">
-											<a href="{$lang_link}compare" class="item-action__inner item-action__inner--md fill-theme-use-svg-hover fill-dark-light-block active" title="{$lang->added_to_compare}">
+											<a href="{$lang_link}compare" class="item-action__inner item-action__inner--md fill-theme-use-svg-hover fill-dark-light-block active" title="{$lang->added_to_compare|escape}">
 												<i class="svg inline" aria-hidden="true">
 													<svg width="20" height="16">
 														<use xlink:href="design/{$settings->theme|escape}/images/svg/catalog/item_icons.svg#compare-20-16"></use>
@@ -279,7 +279,7 @@
 										</div>
 									{else}
 										<div class="item-action item-action--horizontal item-action--compare">
-											<a href="{$lang_link}compare/{$product->url}" rel="nofollow" class="compare item-action__inner item-action__inner--md fill-theme-use-svg-hover fill-dark-light-block" title="{$lang->add_to_compare}" data-title_added="{$lang->added_to_compare}">
+											<a href="{$lang_link}compare/{$product->url}" rel="nofollow" class="compare item-action__inner item-action__inner--md fill-theme-use-svg-hover fill-dark-light-block" title="{$lang->add_to_compare|escape}" data-title_added="{$lang->added_to_compare|escape}">
 												<i class="svg inline" aria-hidden="true">
 													<svg width="20" height="16">
 														<use xlink:href="design/{$settings->theme|escape}/images/svg/catalog/item_icons.svg#compare-20-16"></use>

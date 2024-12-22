@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 require_once 'api/Turbo.php';
 require_once 'payment/Fondy/fondy.cls.php';
@@ -33,8 +33,8 @@ class fondy extends Turbo
 			$currency = 'UAH';
 		}
 
-		if ($settings['lang'] == '') {
-			$settings['lang'] = 'ua';
+		if ($settings['fondy_lang'] == '') {
+			$settings['fondy_lang'] = 'ua';
 		}
 
 		$res = [
@@ -45,7 +45,7 @@ class fondy extends Turbo
 			'currency' => $currency,
 			'server_callback_url' => $resultUrl,
 			'response_url' => $resultUrl,
-			'lang' =>  $settings['lang'],
+			'lang' =>  $settings['fondy_lang'],
 			'sender_email' => $order->email
 		];
 

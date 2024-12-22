@@ -9,7 +9,7 @@ class ThemeAdmin extends Turbo
 
 	public function fetch()
 	{
-		if ($this->request->isMethod('post')) {
+		if ($this->request->method('post')) {
 			$this->dirDelete($this->compiledDir, false);
 			$oldNames = $this->request->post('old_name');
 			$newNames = $this->request->post('new_name');

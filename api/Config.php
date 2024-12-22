@@ -4,11 +4,10 @@ require_once 'Turbo.php';
 
 class Config
 {
+	public $version = '5.3.3';
+	public $configFile = 'config/config.php';
 
 	private $vars = [];
-
-	public $version = '5.1.9';
-	public $configFile = 'config/config.php';
 
 	public function __construct()
 	{
@@ -26,18 +25,28 @@ class Config
 		$scriptDir2 = realpath($_SERVER['DOCUMENT_ROOT']);
 		$subdir = trim(substr($scriptDir1, strlen($scriptDir2)), "/\\");
 
+		if (!isset($_SERVER['HTTP_HOST'])) {
+			$_SERVER['HTTP_HOST'] = getenv('HTTP_HOST');
+		}
+
+		$this->vars['host'] = rtrim($_SERVER['HTTP_HOST']);
+
 		$protocol = strtolower(substr($_SERVER["SERVER_PROTOCOL"], 0, 5)) == 'https' ? 'https' : 'http';
 
-		if ($_SERVER["SERVER_PORT"] == 443) {
-			$protocol = 'https';
-		} elseif (isset($_SERVER['HTTPS']) && (($_SERVER['HTTPS'] == 'on') || ($_SERVER['HTTPS'] == '1'))) {
+		if (isset($_SERVER['HTTPS']) && (($_SERVER['HTTPS'] == 'on') || ($_SERVER['HTTPS'] == '1'))) {
 			$protocol = 'https';
 		} elseif (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https' || !empty($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] == 'on') {
+			$protocol = 'https';
+		} elseif (isset($_SERVER['SERVER_PORT']) && '443' == $_SERVER['SERVER_PORT']) {
+			$protocol = 'https';
+		}
+
+		if (isset($_SERVER['HTTP_CF_VISITOR']) && strpos($_SERVER['HTTP_CF_VISITOR'], 'https') !== false) {
 			$protocol = 'https';
 		}
 
 		$this->vars['protocol'] = $protocol;
-		$this->vars['root_url'] = $protocol . '://' . rtrim($_SERVER['HTTP_HOST']);
+		$this->vars['root_url'] = $protocol . '://' . $this->vars['host'];
 
 		if (!empty($subdir)) {
 			$this->vars['root_url'] .= '/' . $subdir;
@@ -52,9 +61,10 @@ class Config
 
 		$this->vars['max_upload_filesize'] = min($maxUpload, $maxPost, $memoryLimit) * 1024 * 1024;
 
-		$s = stat(dirname(dirname(__FILE__)) . '/' . $this->configFile);
-
-		$this->vars['salt'] = md5(md5_file(dirname(dirname(__FILE__)) . '/' . $this->configFile) . $s['dev'] . $s['ino'] . $s['uid'] . $s['mtime']);
+		if (empty($this->vars['salt'])) {
+			$s = stat(dirname(dirname(__FILE__)) . '/' . $this->configFile);
+			$this->vars['salt'] = md5(md5_file(dirname(dirname(__FILE__)) . '/' . $this->configFile) . $s['dev'] . $s['ino'] . $s['uid'] . $s['mtime']);
+		}
 
 		if (!empty($this->vars['php_timezone'])) {
 			date_default_timezone_set($this->vars['php_timezone']);
@@ -70,9 +80,9 @@ class Config
 	{
 		if (isset($this->vars[$name])) {
 			return $this->vars[$name];
+		} else {
+			return null;
 		}
-
-		return null;
 	}
 
 	/**
@@ -106,7 +116,6 @@ class Config
 		if (!empty($token) && $token === $this->token($text)) {
 			return true;
 		}
-
 		return false;
 	}
 }

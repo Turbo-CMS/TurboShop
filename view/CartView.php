@@ -73,7 +73,7 @@ class CartView extends View
 				$this->design->assign('error', 'empty_name');
 			} elseif (empty($order->email)) {
 				$this->design->assign('error', 'empty_email');
-			} elseif ($this->settings->captchaCart && (($_SESSION['captcha_cart'] != $captchaCode || empty($captchaCode)) || empty($_SESSION['captcha_cart']))) {
+			} elseif ($this->settings->captcha_cart && (($_SESSION['captcha_cart'] != $captchaCode || empty($captchaCode)) || empty($_SESSION['captcha_cart']))) {
 				$this->design->assign('error', 'captcha');
 			} else {
 				// Add Order
@@ -155,6 +155,8 @@ class CartView extends View
 		$deliveries = $this->delivery->getDeliveries(['enabled' => 1]);
 
 		foreach ($deliveries as $delivery) {
+			$delivery->ext_module_form = null;
+
 			// Delivery Module
 			$moduleName = $delivery->module;
 			$ext_module_path = "delivery/$moduleName/api/$moduleName.php";

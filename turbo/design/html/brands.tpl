@@ -15,7 +15,7 @@
 		<form class="search mb-3" method="get">
 			<input type="hidden" name="module" value="BrandsAdmin">
 			<div class="input-group">
-				<input name="keyword" class="form-control" placeholder="{$btr->global_search|escape}" type="text" value="{if isset($keyword)}{$keyword|escape}{/if}">
+				<input name="keyword" class="form-control" placeholder="{$btr->global_search|escape}" type="text" value="{$keyword|escape}">
 				<button class="btn btn-primary" type="submit"><i class="align-middle mt-n1" data-feather="search"></i></button>
 			</div>
 		</form>
@@ -52,7 +52,12 @@
 									<div class="turbo-list-boding turbo-list-photo small-photo boding-small turbo-list-brand-photo">
 										{if $brand->image}
 											<a href="{url module=BrandAdmin id=$brand->id return=$smarty.server.REQUEST_URI}">
-												<img src="{$brand->image|resize_brands:30:30}" alt="{$brand->name|escape}">
+												{assign var="image" value="{$brand->image}"}
+												{if $image|is_svg}
+													<img src="../{$config->brands_images_dir}{$image}" alt="{$brand->name|escape}">
+												{else} 
+													<img src="{$brand->image|resize_brands:30:30}" alt="{$brand->name|escape}">
+												{/if} 
 											</a>
 										{else}
 											<a href="{url module=BrandAdmin id=$brand->id return=$smarty.server.REQUEST_URI}">

@@ -89,7 +89,38 @@ class WishlistView extends View
 					$product->variant = reset($variants);
 				}
 
-				$product->commentsCount = $this->comments->countComments(['object_id' => $product->id, 'type' => 'product', 'approved' => 1]);
+				if (!empty($product->sale_to) && strtotime($product->sale_to) <= time()) {
+					$product->sale_to = null;
+
+					if (isset($product->variant) && $product->variant->compare_price) {
+						$product->variant->price = $product->variant->compare_price;
+						$product->variant->compare_price = 0;
+						$v = new stdClass();
+						$v->price = $product->variant->price;
+						$v->compare_price = 0;
+						$this->variants->updateVariant($product->variant->id, $v);
+					}
+				}
+
+				$product->comments_count = $this->comments->countComments(['object_id' => $product->id, 'type' => 'product', 'approved' => 1]);
+
+				$this->db->query("SELECT SUM(rating)/COUNT(id) AS ratings FROM __comments WHERE id IN (SELECT id FROM __comments WHERE type='product' AND object_id = $product->id AND approved=1 AND admin=0 AND rating > 0)");
+				$product->ratings = floatval($this->db->result('ratings'));
+
+				if (!isset($product->features) || !is_array($product->features)) {
+					$product->features = [];
+				}
+
+				if ($productValues = $this->features->getProductOptions(['product_id' => $product->id])) {
+
+					foreach ($productValues as $pv) {
+						if (!isset($product->features[$pv->feature_id])) {
+							$product->features[$pv->feature_id] = $pv;
+						}
+
+						$product->features[$pv->feature_id]->values[] = $pv;
+					}
+				}
 
 				$dataRelatedProducts = [];
 				$relatedIds = $this->products->getRelatedProductIds([$product->id]);

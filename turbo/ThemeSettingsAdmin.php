@@ -9,7 +9,7 @@ class ThemeSettingsAdmin extends Turbo
 		$lockedTheme = is_file('design/' . $this->settings->theme . '/locked');
 		$this->design->assign('locked_theme', $lockedTheme);
 
-		if (!$lockedTheme && $this->request->isMethod('post')) {
+		if (!$lockedTheme && $this->request->method('post')) {
 			$themeSettings = $this->request->post('theme_settings');
 
 			foreach ($themeSettings as $name => $value) {

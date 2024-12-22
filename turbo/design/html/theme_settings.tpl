@@ -2,7 +2,7 @@
 
 <h1 class="mb-3">{$btr->global_theme_settings|escape} {$theme|escape}</h1>
 
-{if isset($message_success)}
+{if $message_success}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -110,7 +110,7 @@
 													<div class="col-lg-6 d-flex align-items-center">
 														<div class="form-check form-switch mb-3 mt-lg-3 mt-0">
 															<input type="hidden" name="theme_settings[{$setting->variable}]" value="0">
-															<input class="form-check-input me-2" type="checkbox" id="theme-settings-{$setting->variable}" name="theme_settings[{$setting->variable}]" value="{$option->value|escape}" {if $option->value==$theme_settings[$setting->variable]}checked{/if}>
+															<input class="form-check-input me-2" type="checkbox" id="theme-settings-{$setting->variable}" name="theme_settings[{$setting->variable}]" value="{$option->value|escape}" {if isset($theme_settings[$setting->variable]) && $option->value==$theme_settings[$setting->variable]}checked{/if}>
 															<label class="form-check-label" for="theme-settings-{$setting->variable}">{$setting->name|escape}</label>
 														</div>
 													</div>
@@ -120,11 +120,11 @@
 															<div class="form-label" for="{$setting->variable}">{$setting->name|escape}</div>
 															{if $setting->variable == "custom_color" || $setting->variable == "more_custom_color"}
 																<div class="input-group color-picker">
-																	<input name="theme_settings[{$setting->variable}]" class="form-control" type="text" value="{if isset($theme_settings[$setting->variable])}{$theme_settings[$setting->variable]|escape}{/if}" id="{$setting->variable}">
+																	<input name="theme_settings[{$setting->variable}]" class="form-control" type="text" value="{$theme_settings[$setting->variable]|default:''|escape}" id="{$setting->variable}">
 																	<span class="input-group-text add-on"><i></i></span>
 																</div>
 															{else}
-																<input name="theme_settings[{$setting->variable}]" class="form-control" type="text" value="{if isset($theme_settings[$setting->variable])}{$theme_settings[$setting->variable]|escape}{/if}" id="{$setting->variable}">
+																<input name="theme_settings[{$setting->variable}]" class="form-control" type="text" value="{$theme_settings[$setting->variable]|default:''|escape}" id="{$setting->variable}">
 															{/if}
 														</div>
 													</div>

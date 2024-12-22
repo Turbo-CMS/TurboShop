@@ -1,8 +1,8 @@
-<div class="container">
+<div class="container mt-auto">
 	<footer class="pt-5 border-top">
 		<div class="row">
 			<div class="col-6 col-md-2 mb-3">
-				<h5>{$lang->about_shop}</h5>
+				<h5>{$lang->about_shop|escape}</h5>
 				<ul class="nav flex-column">
 					{foreach $pages as $p}
 						{if $p->menu_id == $theme_settings->id_menu_footer_1}
@@ -17,7 +17,7 @@
 			</div>
 
 			<div class="col-6 col-md-2 mb-3">
-				<h5>{$lang->information}</h5>
+				<h5>{$lang->information|escape}</h5>
 				<ul class="nav flex-column">
 					{foreach $pages as $p}
 						{if $p->menu_id == $theme_settings->id_menu_footer_2}
@@ -32,9 +32,9 @@
 			</div>
 
 			<div class="col-6 col-md-3 mb-3">
-				<h5>{$lang->contacts}</h5>
+				<h5>{$lang->contacts|escape}</h5>
 				{* Footer Contacts *}
-				<div class="mb-2"><i class="fal fa-map-marker-alt text-body-secondary me-2"></i>{$lang->contact_details}</div>
+				<div class="mb-2"><i class="fal fa-map-marker-alt text-body-secondary me-2"></i>{$lang->contact_details|escape}</div>
 				<div class="mb-2"><i class="fal fa-envelope text-body-secondary me-2"></i>{$theme_settings->email|escape}</div>
 				<div class="mb-2"><i class="fal fa-phone text-body-secondary me-2"></i>{$theme_settings->phone_1|escape}</div>
 				<div class="mb-2"><i class="fal fa-print text-body-secondary me-2"></i>{$theme_settings->phone_2|escape}</div>
@@ -51,27 +51,27 @@
 			{* Subscribe *}
 			<div class="col-md-4 offset-md-1 mb-3">
 				<form class="needs-validation" method="post" novalidate>
-					<h5>{$lang->subscribe_newsletter}</h5>
-					<p>{$lang->subscribe_text}</p>
-					{if isset($subscribe_error)}
+					<h5>{$lang->subscribe_newsletter|escape}</h5>
+					<p>{$lang->subscribe_text|escape}</p>
+					{if $subscribe_error}
 						<label class="error text-danger">
 							{if $subscribe_error == 'email_exist'}
-								{$lang->already_subscribe}
+								{$lang->already_subscribe|escape}
 							{/if}
 							{if $subscribe_error == 'empty_email'}
-								{$lang->enter_your_email}
+								{$lang->enter_your_email|escape}
 							{/if}
 						</label>
 					{/if}
-					{if isset($subscribe_success)}
+					{if $subscribe_success}
 						<label class="success text-success">
-							{$lang->success_subscribe}
+							{$lang->success_subscribe|escape}
 						</label>
 					{/if}
 					<div class="d-flex flex-column flex-sm-row w-100 gap-2">
 						<label for="subscribeEmail" class="visually-hidden">Email</label>
-						<input id="subscribeEmail" type="email" class="form-control {if isset($subscribe_error)}border-danger{/if} {if isset($subscribe_success)}border-success{/if}" name="subscribe_email" value="{if isset($email)}{$email|escape}{/if}" placeholder="{$lang->enter_your_email}" size="20" required>
-						<button class="btn btn-primary" value="{$lang->subscribe}" name="subscribe" type="submit">{$lang->subscribe}</button>
+						<input id="subscribeEmail" type="email" class="form-control {if $subscribe_error}border-danger{/if} {if $subscribe_success}border-success{/if}" name="subscribe_email" value="{$email|escape}" placeholder="{$lang->enter_your_email|escape}" size="20" required>
+						<button class="btn btn-primary" value="{$lang->subscribe|escape}" name="subscribe" type="submit">{$lang->subscribe|escape}</button>
 					</div>
 				</form>
 			</div>

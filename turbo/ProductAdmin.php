@@ -6,6 +6,8 @@ class ProductAdmin extends Turbo
 {
 	public function fetch()
 	{
+		$product = new stdClass();
+
 		$options = [];
 		$productCategories = [];
 		$variants = [];
@@ -16,9 +18,7 @@ class ProductAdmin extends Turbo
 		$files = [];
 		$disallowedExtensions = ['htaccess'];
 
-		if ($this->request->isMethod('post') && !empty($_POST)) {
-			$product = new stdClass();
-
+		if ($this->request->method('post') && !empty($_POST)) {
 			$product->id = $this->request->post('id', 'integer');
 			$product->name = $this->request->post('name');
 			$product->visible = $this->request->post('visible', 'boolean');
@@ -408,12 +408,44 @@ class ProductAdmin extends Turbo
 				$files = $this->files->getFiles(['object_id' => $product->id, 'type' => 'product']);
 			} else {
 				$product = new stdClass();
+				$product->id = null;
+				$product->name = '';
+				$product->url = '';
+				$product->featured = null;
+				$product->is_new = null;
+				$product->is_hit = null;
+				$product->to_xml = null;
 				$product->visible = 1;
+				$product->brand_id = null;
+				$product->sale_to = null;
+				$product->rating = null;
+				$product->votes = null;
+				$product->meta_title = '';
+				$product->meta_keywords = '';
+				$product->meta_description = '';
+				$product->annotation = '';
+				$product->body = '';
 			}
 		}
 
 		if (empty($variants)) {
-			$variants = [1];
+			$variants = [
+				(object)[
+					'sku' => '',
+					'id' => null,
+					'name' => '',
+					'color_code' => null,
+					'color' => '',
+					'attachment_url' => '',
+					'attachment' => null,
+					'currency_id' => null,
+					'oprice' => null,
+					'compare_oprice' => null,
+					'infinity' => null,
+					'stock' => null,
+					'weight' => null,
+				]
+			];
 		}
 
 		if (empty($productCategories)) {
@@ -434,7 +466,7 @@ class ProductAdmin extends Turbo
 				$rProducts[$relatedProduct->related_id] = &$relatedProduct;
 			}
 
-			$tempProducts = $this->products->getProducts(['id' => array_keys($rProducts)]);
+			$tempProducts = $this->products->getProducts(['id' => array_keys($rProducts)]); 
 			foreach ($tempProducts as $tempProduct) {
 				$rProducts[$tempProduct->id] = $tempProduct;
 			}

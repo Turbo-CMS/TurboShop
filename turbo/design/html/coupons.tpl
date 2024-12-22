@@ -2,11 +2,7 @@
 
 <div class="d-md-flex mb-3">
 	<h1 class="d-inline align-middle me-3">
-		{if $coupons_count}
-			{$btr->global_coupons} - {$coupons_count}
-		{else}
-			{$btr->global_coupons}
-		{/if}
+		{$btr->global_coupons|escape} - {$coupons_count}
 	</h1>
 	<div class="d-grid gap-2 d-sm-block mt-2 mt-md-0">
 		<a class="btn btn-primary" href="{url module=CouponAdmin return=$smarty.server.REQUEST_URI}"><i data-feather="plus"></i> {$btr->coupons_add|escape}</a>
@@ -61,7 +57,7 @@
 													{include file='svg_icon.tpl' svgId='infinity'}
 												</span>
 											{/if}
-											{if $coupon->min_order_price>0}
+											{if $coupon->min_order_price > 0}
 												<span class="badge badge-success-light">
 													{$btr->coupons_order_from|escape} {$coupon->min_order_price|escape} {$currency->sign|escape}
 												</span>
@@ -83,7 +79,7 @@
 										{/if}
 									</div>
 									<div class="turbo-list-boding turbo-list-coupon-condit">
-										{if $coupon->min_order_price>0}
+										{if $coupon->min_order_price > 0}
 											{$btr->coupons_order_from|escape} {$coupon->min_order_price|escape} {$currency->sign|escape}
 										{else}
 											-

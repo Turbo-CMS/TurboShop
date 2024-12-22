@@ -114,8 +114,13 @@ class View extends Turbo
 			}
 
 			// Compare
-			$compare_products = isset($_SESSION['compared_products']) ? count($_SESSION['compared_products']) : 0;
+			if (!isset($_SESSION['compared_products'])) {
+				$_SESSION['compared_products'] = [];
+			}
+
+			$compare_products = count($_SESSION['compared_products']);
 			$this->design->assign('compare_products', $compare_products);
+
 
 			// Wishlist
 			if (!empty($_COOKIE['wishlist_products'])) {
@@ -430,7 +435,12 @@ class View extends Turbo
 		if (!empty($params['var'])) {
 			if (isset($params['category_id']) && $params['category_id']) {
 				$category = $this->categories->getCategory((int) $params['category_id']);
-				$params['category_id'] = $category->children;
+
+				if ($category && isset($category->children)) {
+					$params['category_id'] = $category->children;
+				} else {
+					$params['category_id'] = null;
+				}
 			}
 
 			foreach ($this->products->getProducts($params) as $p) {
@@ -457,6 +467,8 @@ class View extends Turbo
 					if (isset($product->variants[0])) {
 						$product->variant = $product->variants[0];
 					}
+
+					$product->image = null;
 
 					if (isset($product->images[0])) {
 						$product->image = $product->images[0];
@@ -547,6 +559,7 @@ class View extends Turbo
 				$products[$product->id] = $product;
 				$products[$product->id]->variants = [];
 				$products[$product->id]->images = [];
+				$products[$product->id]->image = null;
 			}
 
 			$variants = $this->variants->getVariants(['product_id' => $browsedProductsIds]);

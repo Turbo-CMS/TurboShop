@@ -8,7 +8,7 @@ class UserAdmin extends Turbo
 	{
 		$user = new stdClass();
 
-		if ($this->request->isMethod('post')) {
+		if ($this->request->method('post')) {
 			$user->id = $this->request->post('id', 'integer');
 			$user->enabled = $this->request->post('enabled');
 			$user->name = $this->request->post('name');

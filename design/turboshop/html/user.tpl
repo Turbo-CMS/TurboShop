@@ -12,8 +12,8 @@
 				<div id="navigation">
 					<div class="breadcrumbs swipeignore" itemscope="" itemtype="http://schema.org/BreadcrumbList">
 						<div class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-							<a class="breadcrumbs__link" href="{if $lang_link}{$lang_link}{else}/{/if}" title="{$lang->home}" itemprop="item">
-								<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->home}</span>
+							<a class="breadcrumbs__link" href="{if $lang_link}{$lang_link}{else}/{/if}" title="{$lang->home|escape}" itemprop="item">
+								<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->home|escape}</span>
 								<meta itemprop="position" content="{$level++}">
 							</a>
 						</div>
@@ -27,7 +27,7 @@
 						<span class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
 							<link href="{$lang_link}user" itemprop="item">
 							<span>
-								<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->personal_area}</span>
+								<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->personal_area|escape}</span>
 								<meta itemprop="position" content="{$level++}">
 							</span>
 						</span>
@@ -38,7 +38,7 @@
 			<div class="topic">
 				<div class="topic__inner">
 					<div class="topic__heading">
-						<h1 id="pagetitle" class="switcher-title">{$lang->personal_area}</h1>
+						<h1 id="pagetitle" class="switcher-title">{$lang->personal_area|escape}</h1>
 					</div>
 				</div>
 			</div>
@@ -69,32 +69,32 @@
 							<ul class="nav nav-list side-menu">
 								<li {if !isset($smarty.cookies.user) || isset($smarty.cookies.user) && $smarty.cookies.user == 'personal'}class="active opened"{/if}>
 									<span class="bg-opacity-theme-parent-hover link-wrapper font_short fill-theme-parent-all fill-dark-light">
-										<a href="{$lang_link}user" onclick="document.cookie='user=personal;path=/';document.location.reload();" class="dark_link top-level-link rounded-x link--active link-with-flag">{$lang->my_account}</a>
+										<a href="{$lang_link}user" onclick="document.cookie='user=personal;path=/';document.location.reload();" class="dark_link top-level-link rounded-x link--active link-with-flag">{$lang->my_account|escape}</a>
 									</span>
 								</li>
 								<li {if isset($smarty.cookies.user) && $smarty.cookies.user == 'private'}class="active opened"{/if}>
 									<span class="bg-opacity-theme-parent-hover link-wrapper font_short fill-theme-parent-all fill-dark-light">
-										<a href="javascript:void(0)" onclick="document.cookie='user=private;path=/';document.location.reload();" class="dark_link top-level-link rounded-x link--active link-with-flag">{$lang->personal_data}</a>
+										<a href="javascript:void(0)" onclick="document.cookie='user=private;path=/';document.location.reload();" class="dark_link top-level-link rounded-x link--active link-with-flag">{$lang->personal_data|escape}</a>
 									</span>
 								</li>
 								<li {if isset($smarty.cookies.user) && $smarty.cookies.user == 'orders'}class="active opened"{/if}>
 									<span class="bg-opacity-theme-parent-hover link-wrapper font_short fill-theme-parent-all fill-dark-light">
-										<a href="javascript:void(0)" onclick="document.cookie='user=orders;path=/';document.location.reload();" class="dark_link top-level-link rounded-x link--active link-with-flag">{$lang->orders_global}</a>
+										<a href="javascript:void(0)" onclick="document.cookie='user=orders;path=/';document.location.reload();" class="dark_link top-level-link rounded-x link--active link-with-flag">{$lang->orders_global|escape}</a>
 									</span>
 								</li>
 								<li>
 									<span class="bg-opacity-theme-parent-hover link-wrapper font_short fill-theme-parent-all fill-dark-light">
-										<a href="{$lang_link}wishlist" onclick="document.cookie='user=;path=/';document.location.reload();" class="dark_link top-level-link rounded-x link-with-flag">{$lang->wishlist_products}</a>
+										<a href="{$lang_link}wishlist" onclick="document.cookie='user=;path=/';document.location.reload();" class="dark_link top-level-link rounded-x link-with-flag">{$lang->wishlist_products|escape}</a>
 									</span>
 								</li>
 								<li>
 									<span class="bg-opacity-theme-parent-hover link-wrapper font_short fill-theme-parent-all fill-dark-light">
-										<a href="{$lang_link}faq" onclick="document.cookie='user=;path=/';document.location.reload();" class="dark_link top-level-link rounded-x link-with-flag">{$lang->help}</a>
+										<a href="{$lang_link}faq" onclick="document.cookie='user=;path=/';document.location.reload();" class="dark_link top-level-link rounded-x link-with-flag">{$lang->help|escape}</a>
 									</span>
 								</li>
 								<li>
 									<span class="bg-opacity-theme-parent-hover link-wrapper font_short fill-theme-parent-all fill-dark-light">
-										<a href="{$lang_link}user/logout" class="dark_link top-level-link rounded-x link-with-flag">{$lang->logout}</a>
+										<a href="{$lang_link}user/logout" class="dark_link top-level-link rounded-x link-with-flag">{$lang->logout|escape}</a>
 									</span>
 								</li>
 							</ul>

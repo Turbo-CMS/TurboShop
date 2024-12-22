@@ -1,5 +1,5 @@
 {get_banner var=banners_text group=$theme_settings->banners_text_id} 
-{if isset($banners_text->items)}
+{if $banners_text && $banners_text->items}
 	<div class="drag-block container MIDDLE_ADV" data-class="middle_adv_drag" data-order="{$theme_settings->block_5}">
 		<div class="index-block index-block--padding-top-{$theme_settings->banners_text_padding_top} index-block--padding-bottom-{$theme_settings->banners_text_padding_bottom} {if $theme_settings->banners_text_delimiter}index-block--delimiter{/if} {if $theme_settings->banners_text_background}index-block--fon{/if}">
 			<div class="banners-img-with-text-list banners-with-text-template">
@@ -8,8 +8,8 @@
 						<div class="index-block__title-wrapper index-block__title-wrapper--mb-35">
 							<div class="index-block__part--left">
 								<h3 class="index-block__title switcher-title">
-									<a class="index-block__link-wrapper dark_link stroke-theme-hover" href="{$lang_link}" title="{$lang->global_banners}">
-										<span>{$lang->global_banners}</span>
+									<a class="index-block__link-wrapper dark_link stroke-theme-hover" href="{$lang_link}" title="{$lang->global_banners|escape}">
+										<span>{$lang->global_banners|escape}</span>
 										<span class="index-block__link">
 											<span class="index-block__arrow">
 												<i class="svg inline" aria-hidden="true">

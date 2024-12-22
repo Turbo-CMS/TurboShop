@@ -10,7 +10,7 @@ class PaymentMethodAdmin extends Turbo
 	{
 		$paymentMethod = new stdClass();
 
-		if ($this->request->isMethod('post')) {
+		if ($this->request->method('post')) {
 			$paymentMethod->id = $this->request->post('id', 'integer');
 			$paymentMethod->enabled = $this->request->post('enabled', 'boolean');
 			$paymentMethod->name = $this->request->post('name');
@@ -61,6 +61,15 @@ class PaymentMethodAdmin extends Turbo
 				$paymentMethod = $this->payment->getPaymentMethod($paymentMethod->id);
 				$paymentSettings =  $this->payment->getPaymentSettings($paymentMethod->id);
 			} else {
+				$paymentMethod->id = null;
+				$paymentMethod->name = '';
+				$paymentMethod->enabled = 1;
+				$paymentMethod->module = null;
+				$paymentMethod->icon = null;
+				$paymentMethod->code = null;
+				$paymentMethod->currency_id = null;
+				$paymentMethod->description = '';
+
 				$paymentSettings = [];
 			}
 

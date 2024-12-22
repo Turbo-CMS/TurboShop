@@ -8,7 +8,7 @@
 	<base href="{$config->root_url}/">
 	<title>{$btr->global_order_number|escape} {$order->id}</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<meta name="description" content="{if isset($meta_description)}{$meta_description|escape}{/if}">
+	<meta name="description" content="{if $meta_description}{$meta_description|escape}{/if}">
 	<style>
 		body {
 			width: 1000px;
@@ -61,7 +61,7 @@
 		div#purchases {
 			margin-left: 50px;
 			margin-bottom: 20px;
-			min-height: 530px;
+			min-height: 500px;
 			width: 100%;
 			float: left;
 		}
@@ -248,7 +248,7 @@
 				<th>{$btr->global_total|escape}</th>
 				<td class="total">{$order->total_price}&nbsp;{$currency->sign|escape}</td>
 			</tr>
-			{if isset($payment_method)}
+			{if $payment_method}
 				<tr>
 					<td colspan="2">{$btr->order_print_payment|escape} {$payment_method->name}</td>
 				</tr>

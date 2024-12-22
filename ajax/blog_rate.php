@@ -17,7 +17,7 @@ $output = [
 	'message' => '',
 ];
 
-if ($turbo->request->isMethod('get') && $turbo->request->get('id') && $turbo->request->get('rate')) {
+if ($turbo->request->method('get') && $turbo->request->get('id') && $turbo->request->get('rate')) {
 	$postId = $turbo->request->get('id', 'integer');
 
 	if (!isset($_SESSION['post_rate_ids'])) {

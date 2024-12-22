@@ -223,32 +223,32 @@ RewriteRule ^([^/]*)/?$ index.php?module=PageView&page_url=$1 [L,QSA]
 # Article image resizing
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^files/articles/preview/(.+) resize/resize.php?file=$1&is_article=1&token=%{QUERY_STRING}
+RewriteRule ^files/articles/preview/(.+) resize/resize.php?file=$1&is_article=1 [L,QSA]
 
 # Image resizing blog
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^files/posts/preview/(.+) resize/resize.php?file=$1&is_post=1&token=%{QUERY_STRING}
+RewriteRule ^files/posts/preview/(.+) resize/resize.php?file=$1&is_post=1 [L,QSA]
 
 # Image resizing brands
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^files/brands/preview/(.+) resize/resize.php?file=$1&is_brands=1&token=%{QUERY_STRING}
+RewriteRule ^files/brands/preview/(.+) resize/resize.php?file=$1&is_brands=1 [L,QSA]
 
 # Image resizing slider
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^files/slides/preview/(.+) resize/resize.php?file=$1&is_banners=1&token=%{QUERY_STRING}
+RewriteRule ^files/slides/preview/(.+) resize/resize.php?file=$1&is_banners=1 [L,QSA]
 
 # Category image resizing
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^files/categories/preview/(.+) resize/resize.php?file=$1&is_category=1&token=%{QUERY_STRING}
+RewriteRule ^files/categories/preview/(.+) resize/resize.php?file=$1&is_category=1 [L,QSA]
 
 # Resizing pictures of products
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^files/products/(.+) resize/resize.php?file=$1&token=%{QUERY_STRING}
+RewriteRule ^files/products/(.+) resize/resize.php?file=$1 [L,QSA]
 
 # Security
 <IfModule mod_rewrite.c>
@@ -305,7 +305,7 @@ RewriteRule ^files/products/(.+) resize/resize.php?file=$1&token=%{QUERY_STRING}
 	RewriteCond %{QUERY_STRING} ^act=((about|cmd|selfremove|chbd|trojan|backc|massbrowsersploit|exploits|grablogins|upload.*)|((chmod|f)&f=.*))$ [OR]
 	RewriteCond %{QUERY_STRING} ^act=(ls|search|fsbuff|encoder|tools|processes|ftpquickbrute|security|sql|eval|update|feedback|cmd|gofile|mkfile)&d=.*$ [OR]
 	RewriteCond %{QUERY_STRING} ^&?c=(l?v?i?&d=|v&fnot=|setup&ref=|l&r=|d&d=|tree&d|t&d=|e&d=|i&d=|codes|md5crack).*$ [OR]
-	RewriteCond %{QUERY_STRING} ^(.*)([-_a-z]{1,15})=(chmod|chdir|mkdir|rmdir|clear|whoami|uname|unzip|gzip|gunzip|grep|more|umask|telnet|ssh|ftp|head|tail|which|mkmode|touch|logname|edit_file|search_text|find_text|php_eval|download_file|ftp_file_down|ftp_file_up|ftp_brute|mail_file|mysql|mysql_dump|db_query)([^a-zA-Z0-9].+)*$ [OR]
+	RewriteCond %{QUERY_STRING} ^(.*)([-_a-z]{1,15})=(chmod|chdir|mkdir|rmdir|clear|whoami|uname|unzip|gzip|gunzip|grep|more|umask|telnet|ssh|ftp|tail|which|mkmode|touch|logname|edit_file|search_text|find_text|php_eval|download_file|ftp_file_down|ftp_file_up|ftp_brute|mail_file|mysql|mysql_dump|db_query)([^a-zA-Z0-9].+)*$ [OR]
 	RewriteCond %{QUERY_STRING} ^(.*)(wget|shell_exec|passthru|system|exec|popen|proc_open)(.*)$
 	RewriteRule .* - [F]
 </IfModule>

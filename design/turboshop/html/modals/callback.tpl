@@ -1,5 +1,5 @@
 {* Callback Modal *}
-<span class="jqmClose top-close fill-theme-hover fill-use-svg-999" title="{$lang->close}">
+<span class="jqmClose top-close fill-theme-hover fill-use-svg-999" title="{$lang->close|escape}">
 	<i class="svg inline" aria-hidden="true">
 		<svg width="14" height="14">
 			<use xlink:href="design/{$settings->theme|escape}/images/svg/sprite/header_icons.svg#close-14-14"></use>
@@ -10,8 +10,8 @@
 	<div class="form popup callback-form">
 		<div class="form-header">
 			<div class="text">
-				<div class="title switcher-title font_24 color_222">{$lang->callback}</div>
-				<div class="form_desc font_16">{$lang->callback_text}</div>
+				<div class="title switcher-title font_24 color_222">{$lang->callback|escape}</div>
+				<div class="form_desc font_16">{$lang->callback_text|escape}</div>
 			</div>
 		</div>
 		<form name="callback_form" method="POST" enctype="multipart/form-data">
@@ -21,10 +21,10 @@
 					<div class="col-md-12">
 						<div class="form-group fill-animate">
 							<label class="font_14" for="POPUP_NAME">
-								<span>{$lang->name}&nbsp;<span class="required-star">*</span></span>
+								<span>{$lang->name|escape}&nbsp;<span class="required-star">*</span></span>
 							</label>
 							<div class="input">
-								<input type="text" id="POPUP_NAME" class="form-control required" name="name" value="{if isset($callname)}{$callname|escape}{elseif isset($user->name)}{$user->name|escape}{/if}" aria-required="true">
+								<input type="text" id="POPUP_NAME" class="form-control required" name="name" value="{if $callname}{$callname|escape}{elseif $user && $user->name}{$user->name|escape}{/if}" aria-required="true">
 							</div>
 						</div>
 					</div>
@@ -33,10 +33,10 @@
 					<div class="col-md-12">
 						<div class="form-group fill-animate">
 							<label class="font_14" for="POPUP_PHONE">
-								<span>{$lang->phone}&nbsp;<span class="required-star">*</span></span>
+								<span>{$lang->phone|escape}&nbsp;<span class="required-star">*</span></span>
 							</label>
 							<div class="input">
-								<input type="text" id="POPUP_PHONE" class="form-control required phone" name="phone" value="{if isset($callphone)}{$callphone|escape}{elseif isset($user->phone)}{$user->phone|escape}{/if}" aria-required="true">
+								<input type="text" id="POPUP_PHONE" class="form-control required phone" name="phone" value="{if $callphone}{$callphone|escape}{elseif $user && $user->phone}{$user->phone|escape}{/if}" aria-required="true">
 							</div>
 						</div>
 					</div>
@@ -44,7 +44,7 @@
 				{if $settings->captcha_callback}
 					<div class="clearfix fill-animate">
 						<label class="font_14">
-							<span>{$lang->captcha_label}&nbsp;<span class="required-star">*</span></span>
+							<span>{$lang->captcha_label|escape}&nbsp;<span class="required-star">*</span></span>
 						</label>
 					</div>
 					<div class="row">
@@ -62,10 +62,10 @@
 			</div>
 			<div class="form-footer">
 				<div>
-					<input type="submit" class="btn btn-default btn-lg btn-wide" value="{$lang->send}" name="callback">
+					<input type="submit" class="btn btn-default btn-lg btn-wide" value="{$lang->send|escape}" name="callback">
 				</div>
 				<div class="licence_block">
-					<span>{$lang->licenses_text} <a href="{$lang_link}licenses" target="_blank">{$lang->licenses_link}</a></span>
+					<span>{$lang->licenses_text|escape} <a href="{$lang_link}licenses" target="_blank">{$lang->licenses_link|escape}</a></span>
 				</div>
 			</div>
 		</form>

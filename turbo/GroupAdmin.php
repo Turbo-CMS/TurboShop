@@ -8,7 +8,7 @@ class GroupAdmin extends Turbo
 	{
 		$group = new stdClass();
 
-		if ($this->request->isMethod('post')) {
+		if ($this->request->method('post')) {
 			$group->id = $this->request->post('id', 'integer');
 			$group->name = $this->request->post('name');
 			$group->discount = $this->request->post('discount');
@@ -27,10 +27,14 @@ class GroupAdmin extends Turbo
 				$group = $this->users->getGroup((int) $group->id);
 			}
 		} else {
-			$id = $this->request->get('id', 'integer');
+			$group->id = $this->request->get('id', 'integer');
 
-			if (!empty($id)) {
-				$group = $this->users->getgroup((int) $id);
+			if (!empty($group->id)) {
+				$group = $this->users->getgroup((int) $group->id);
+			} else {
+				$group->id = null;
+				$group->name = '';
+				$group->discount = null;
 			}
 		}
 

@@ -40,10 +40,10 @@ class ProductView extends View
 
 		header('Last-Modified: ' . $lastModified);
 
-		// Variants
 		$product->images = $this->products->getImages(['product_id' => $product->id]);
 		$product->image = &$product->images[0];
 
+		// Variants
 		$variants = [];
 
 		foreach ($this->variants->getVariants(['product_id' => $product->id]) as $v) {
@@ -59,6 +59,10 @@ class ProductView extends View
 		}
 
 		// Features
+		if (!isset($product->features)) {
+			$product->features = [];
+		}
+
 		if ($productValues = $this->features->getProductOptions(['product_id' => $product->id])) {
 			foreach ($productValues as $pv) {
 				if (!isset($product->features[$pv->feature_id])) {
@@ -87,7 +91,7 @@ class ProductView extends View
 		$this->design->assign('comment_rating', 5);
 
 		// Comment Form
-		if ($this->request->isMethod('post') && $this->request->post('comment')) {
+		if ($this->request->method('post') && $this->request->post('comment')) {
 			$comment = new stdClass();
 			$comment->name = $this->request->post('name');
 			$comment->text = $this->request->post('text');
@@ -167,11 +171,16 @@ class ProductView extends View
 		$filter['page'] = $currentPage;
 		$filter['limit'] = $itemsPerPage;
 
+		// Get Comments
 		$comments = $this->comments->getComments($filter);
 
 		$children = [];
 
 		foreach ($this->comments->getComments() as $c) {
+			if (!isset($children[$c->id])) {
+				$children[$c->id] = [];
+			}
+			
 			$children[$c->parent_id][] = $c;
 		}
 

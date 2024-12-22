@@ -1,56 +1,31 @@
 {* Blog List *}
 
 {* Canonical *}
-{if isset($keyword)}
+{if $keyword}
 	{$canonical="/blog/?keyword={$keyword|escape}" scope=global}
 {else}
 	{$canonical="/blog" scope=global}
 {/if}
 
-{* Breadcrumb *}
-{$level = 1}
-<nav class="mt-4" aria-label="breadcrumb">
-	<ol itemscope itemtype="http://schema.org/BreadcrumbList" class="breadcrumb">
-		<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="breadcrumb-item">
-			<a itemprop="item" class="text-decoration-none" href="{if $lang_link}{$lang_link}{else}/{/if}">
-				<span itemprop="name" title="{$lang->home}"><i class="fal fa-house me-2"></i>{$lang->home}</span>
-			</a>
-			<meta itemprop="position" content="{$level++}" />
-		</li>
-		<li itemprop="itemListElement" itemscope itemtype="http://schema.org/ListItem" class="breadcrumb-item active" aria-current="page">
-			<a itemprop="item" class="text-decoration-none" href="{$lang_link}blog">
-				<span itemprop="name">{$lang->global_blog}</span>
-			</a>
-			<meta itemprop="position" content="{$level++}" />
-		</li>
-		{if isset($keyword)}
-			<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem" class="breadcrumb-item active">
-				<a itemprop="item" class="text-decoration-none" href="{$lang_link}blog?keyword={$keyword|escape}">
-					<span itemprop="name">{$lang->search}</span>
-				</a>
-				<meta itemprop="position" content="{$level++}" />
-			</li>
-		{/if}
-	</ol>
-</nav>
-
 {if $posts}
 	{* Toolbar *}
 	<div class="btn-toolbar justify-content-between my-4" role="toolbar" aria-label="BlogToolbar">
 		{* Title *}
-		{if isset($keyword)}
+		{if $keyword}
 			<h1>#{$keyword|escape}</h1>
 		{else}
 			<h1 data-page="{$page->id}">{$page->name|escape}</h1>
 		{/if}
 
 		{* Sort *}
-		<a class="btn btn-outline-secondary dropdown-toggle" href="#" role="button" id="dropdownSortLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			{$lang->sort_by}
-		</a>
-		<div class="dropdown-menu" aria-labelledby="dropdownSortLink">
-			<a class="dropdown-item {if $sort=='date'}active{/if}" href="{url sort=date page=null}">{$lang->sort_date}</a>
-			<a class="dropdown-item {if $sort=='rate'}active{/if}" href="{url sort=rate page=null}">{$lang->by_rating}</a>
+		<div class="align-self-center">
+			<a class="btn btn-outline-secondary dropdown-toggle" href="#" role="button" id="dropdownSortLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				{$lang->sort_by|escape}
+			</a>
+			<div class="dropdown-menu" aria-labelledby="dropdownSortLink">
+				<a class="dropdown-item {if $sort=='date'}active{/if}" href="{url sort=date page=null}">{$lang->sort_date|escape}</a>
+				<a class="dropdown-item {if $sort=='rate'}active{/if}" href="{url sort=rate page=null}">{$lang->by_rating|escape}</a>
+			</div>
 		</div>
 	</div>
 	{* Blog List *}
@@ -78,7 +53,7 @@
 							<img class="card-img-top" src="{$post->image|resize_posts:750:300}" alt="{$post->name|escape}">
 						{else}
 							<span class="text-center mt-4">
-								<img style="width: 210px; height: 210px;" src="design/{$settings->theme|escape}/images/no-photo.svg" alt="{$article->name|escape}">
+								<img style="width: 210px; height: 210px;" src="design/{$settings->theme|escape}/images/no-photo.svg" alt="{$post->name|escape}">
 							</span>
 						{/if}
 
@@ -120,7 +95,7 @@
 								<a class="btn vote-button-plus" href="ajax/blog_rate.php?id={$post->id}&rate=up">
 									<i class="fa fa-chevron-up" aria-hidden="true"></i>
 								</a>
-								{if $post->rate>0}
+								{if $post->rate > 0}
 									<div class="btn vote-value pos">{$post->rate}</div>
 								{elseif $post->rate == 0}
 									<div class="btn text-muted vote-value">{$post->rate}</div>
@@ -142,6 +117,6 @@
 	{include file='paginations/pagination.tpl'}
 {else}
 	<div class="mb-3">
-		{$lang->no_post_found}
+		{$lang->no_post_found|escape}
 	</div>
 {/if}

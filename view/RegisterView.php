@@ -14,7 +14,7 @@ class RegisterView extends View
 		$defaultStatus = 1;
 
 		// Form
-		if ($this->request->isMethod('post') && $this->request->post('register')) {
+		if ($this->request->method('post') && $this->request->post('register')) {
 			$name = $this->request->post('name');
 			$email = $this->request->post('email');
 			$phone = $this->request->post('phone');

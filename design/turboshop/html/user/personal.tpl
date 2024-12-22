@@ -33,7 +33,7 @@
 	<div class="grid-list grid-list--fill-bg grid-list--personal">
 		<div class="personal__main-private__wrapper grid-list__item grid-list-border-outer">
 			<div class="personal__main-private bordered outer-rounded-x shadow-hovered shadow-hovered-f600 shadow-no-border-hovered color-theme-parent-all stroke-theme-parent-all">
-				<a class="item-link-absolute" href="javascript:void(0)" onclick="document.cookie='user=private;path=/';document.location.reload();" title="{$lang->personal_data}"></a>
+				<a class="item-link-absolute" href="javascript:void(0)" onclick="document.cookie='user=private;path=/';document.location.reload();" title="{$lang->personal_data|escape}"></a>
 				<div class="personal__main-private__inner">
 					<div class="personal__main-private__top">
 						<span class="main-block__link main-block__link--big stroke-theme-hover stroke-theme-target">
@@ -45,7 +45,7 @@
 								</i>
 							</span>
 						</span>
-						<div class="personal__main-private__title font_clamp--16-14 color-theme-target">{$lang->personal_data}</div>
+						<div class="personal__main-private__title font_clamp--16-14 color-theme-target">{$lang->personal_data|escape}</div>
 						<div class="personal__main-private__value">{$name|escape}</div>
 					</div>
 					<div class="personal__main-private__bottom font_clamp--16-14">
@@ -57,7 +57,7 @@
 								</div>
 							{/if}
 						</div>
-						<a class="personal__main-private__change-password" href="javascript:void(0)" onclick="document.cookie='user=private;path=/';document.location.reload();">{$lang->change_password}</a>
+						<a class="personal__main-private__change-password" href="javascript:void(0)" onclick="document.cookie='user=private;path=/';document.location.reload();">{$lang->change_password|escape}</a>
 					</div>
 				</div>
 			</div>
@@ -77,8 +77,8 @@
 					</i>
 				</div>
 				<div class="personal__main-link__text">
-					<div class="personal__main-link__title switcher-title font_clamp--16-14 color-theme-target font_weight--500">{$lang->wishlist}</div>
-					<div class="personal__main-link__dsc switcher-title font_weight--400 font_13 color_999">{if $wishlist_products > 0}{$wishlist_products|count} {$wishlist_products|count|plural:$lang->products_1:$lang->products_2:$lang->products_3}{else}{$lang->no_products}{/if}</div>
+					<div class="personal__main-link__title switcher-title font_clamp--16-14 color-theme-target font_weight--500">{$lang->wishlist|escape}</div>
+					<div class="personal__main-link__dsc switcher-title font_weight--400 font_13 color_999">{if $wishlist_products > 0}{$wishlist_products|count} {$wishlist_products|count|plural:$lang->products_1:$lang->products_2:$lang->products_3}{else}{$lang->no_products|escape}{/if}</div>
 				</div>
 			</div>
 		</div>
@@ -93,7 +93,7 @@
 					</i>
 				</div>
 				<div class="personal__main-link__text">
-					<div class="personal__main-link__title switcher-title font_clamp--16-14 color-theme-target font_weight--500">{$lang->orders_global}</div>
+					<div class="personal__main-link__title switcher-title font_clamp--16-14 color-theme-target font_weight--500">{$lang->orders_global|escape}</div>
 					<div class="personal__main-link__dsc switcher-title font_weight--400 font_13 color_999">{$orders|count} {$orders|count|plural:$lang->orders_1:$lang->orders_2:$lang->orders_3}</div>
 				</div>
 			</div>
@@ -109,8 +109,8 @@
 					</i>
 				</div>
 				<div class="personal__main-link__text">
-					<div class="personal__main-link__title switcher-title font_clamp--16-14 color-theme-target font_weight--500">{$lang->subscriptions}</div>
-					<div class="personal__main-link__dsc switcher-title font_weight--400 font_13 color_999">{$lang->newsletters_products}</div>
+					<div class="personal__main-link__title switcher-title font_clamp--16-14 color-theme-target font_weight--500">{$lang->subscriptions|escape}</div>
+					<div class="personal__main-link__dsc switcher-title font_weight--400 font_13 color_999">{$lang->newsletters_products|escape}</div>
 				</div>
 			</div>
 		</div>
@@ -125,8 +125,8 @@
 					</i>
 				</div>
 				<div class="personal__main-link__text">
-					<div class="personal__main-link__title switcher-title font_clamp--16-14 color-theme-target font_weight--500">{$lang->profile}</div>
-					<div class="personal__main-link__dsc switcher-title font_weight--400 font_13 color_999">{$lang->personal_data}</div>
+					<div class="personal__main-link__title switcher-title font_clamp--16-14 color-theme-target font_weight--500">{$lang->profile|escape}</div>
+					<div class="personal__main-link__dsc switcher-title font_weight--400 font_13 color_999">{$lang->personal_data|escape}</div>
 				</div>
 			</div>
 		</div>
@@ -141,8 +141,8 @@
 					</i>
 				</div>
 				<div class="personal__main-link__text">
-					<div class="personal__main-link__title switcher-title font_clamp--16-14 color-theme-target font_weight--500">{$lang->help}</div>
-					<div class="personal__main-link__dsc switcher-title font_weight--400 font_13 color_999">{$lang->ask_a_question}</div>
+					<div class="personal__main-link__title switcher-title font_clamp--16-14 color-theme-target font_weight--500">{$lang->help|escape}</div>
+					<div class="personal__main-link__dsc switcher-title font_weight--400 font_13 color_999">{$lang->ask_a_question|escape}</div>
 				</div>
 			</div>
 		</div>
@@ -153,7 +153,7 @@
 		<div class="main-block__title-wrapper">
 			<h3 class="main-block__title switcher-title">
 				<div class="main-block__title-inner">
-					<span>{$lang->new_orders}</span>
+					<span>{$lang->new_orders|escape}</span>
 					{$new_orders_count = 0}
 					{foreach $orders as $order}
 						{if $order->status == 0}
@@ -161,7 +161,7 @@
 						{/if}
 					{/foreach}
 					<span class="main-block__title-count">{$new_orders_count}</span>
-					<a href="javascript:void(0)" onclick="document.cookie='user=orders;path=/';document.location.reload();" class="main-block__link main-block__link stroke-theme-hover stroke-theme-target" title="{$lang->all_orders}">
+					<a href="javascript:void(0)" onclick="document.cookie='user=orders;path=/';document.location.reload();" class="main-block__link main-block__link stroke-theme-hover stroke-theme-target" title="{$lang->all_orders|escape}">
 						<span class="main-block__arrow">
 							<i class="svg inline " aria-hidden="true">
 								<svg width="7" height="12">
@@ -180,11 +180,11 @@
 						{if $order->status == 0}
 							<div class="swiper-slide orders__order__wrapper grid-list__item">
 								<div class="orders__order outer-rounded-x bordered shadow-hovered shadow-hovered-f600 shadow-no-border-hovered color-theme-parent-all">
-									<a class="item-link-absolute" href="{$lang_link}order/{$order->url}" title="{$lang->order_from} {$order->date|date}"></a>
+									<a class="item-link-absolute" href="{$lang_link}order/{$order->url}" title="{$lang->order_from|escape} {$order->date|date}"></a>
 									<div class="orders__order__inner flexbox flexbox--direction-column">
 										<div class="orders__order__tds">
 											<div class="orders__order__title">
-												<a href="{$lang_link}order/{$order->url}" class="dark_link color-theme-target">{$lang->order_from} {$order->date|date}</a>
+												<a href="{$lang_link}order/{$order->url}" class="dark_link color-theme-target">{$lang->order_from|escape} {$order->date|date}</a>
 											</div>
 										</div>
 										<div class="orders__order__body">
@@ -195,20 +195,20 @@
 													</div>
 													{if $order->paid == 1}
 														<div class="order__pay-status personal-color--green">
-															{$lang->paid}
+															{$lang->paid|escape}
 														</div>
 													{/if}
 													{if $order->status == 0}
 														<div class="order__pay-status personal-color--red">
-															{$lang->waiting_processing}
+															{$lang->waiting_processing|escape}
 														</div>
 													{elseif $order->status == 1}
 														<div class="order__pay-status personal-color--red">
-															{$lang->in_processing}
+															{$lang->in_processing|escape}
 														</div>
 													{elseif $order->status == 2}
 														<div class="order__pay-status personal-color--red">
-															{$lang->completed}
+															{$lang->completed|escape}
 														</div>
 													{/if}
 												</div>
@@ -223,7 +223,7 @@
 																</i>
 															</div>
 															<span class="order__status__value dark_link dotted">
-																{if $order->status == 0}{$lang->accepted_name}{elseif $order->status == 1}{$lang->in_processing_name}{elseif $order->status == 2}{$lang->completed_name}{/if}{if $order->paid == 1}, {$lang->paid}{else}, {$lang->payment_awaited}{/if}
+																{if $order->status == 0}{$lang->accepted_name|escape}{elseif $order->status == 1}{$lang->in_processing_name|escape}{elseif $order->status == 2}{$lang->completed_name|escape}{/if}{if $order->paid == 1}, {$lang->paid|escape}{else}, {$lang->payment_awaited|escape}{/if}
 															</span>
 														</div>
 														<div class="order__status__steps">
@@ -248,8 +248,8 @@
 																					<div class="xpopover--order-status__step-progress__line"></div>
 																				</div>
 																				<div class="xpopover--order-status__step-info">
-																					<div class="xpopover--order-status__step-name">{$lang->accepted_name}{if $order->paid == 1}, {$lang->paid}{else}, {$lang->payment_awaited}{/if}</div>
-																					<div class="xpopover--order-status__step-dsc font_14 color_999">{$lang->accepted_text}</div>
+																					<div class="xpopover--order-status__step-name">{$lang->accepted_name|escape}{if $order->paid == 1}, {$lang->paid|escape}{else}, {$lang->payment_awaited|escape}{/if}</div>
+																					<div class="xpopover--order-status__step-dsc font_14 color_999">{$lang->accepted_text|escape}</div>
 																				</div>
 																			</div>
 																			<div class="xpopover--order-status__step {if $order->status == 1}mark{/if}">
@@ -264,8 +264,8 @@
 																					<div class="xpopover--order-status__step-progress__line"></div>
 																				</div>
 																				<div class="xpopover--order-status__step-info">
-																					<div class="xpopover--order-status__step-name">{$lang->in_processing_name}</div>
-																					<div class="xpopover--order-status__step-dsc font_14 color_999">{$lang->in_processing_text}</div>
+																					<div class="xpopover--order-status__step-name">{$lang->in_processing_name|escape}</div>
+																					<div class="xpopover--order-status__step-dsc font_14 color_999">{$lang->in_processing_text|escape}</div>
 																				</div>
 																			</div>
 																			<div class="xpopover--order-status__step {if $order->status == 2}mark{/if}">
@@ -280,8 +280,8 @@
 																					<div class="xpopover--order-status__step-progress__line"></div>
 																				</div>
 																				<div class="xpopover--order-status__step-info">
-																					<div class="xpopover--order-status__step-name">{$lang->completed_name}</div>
-																					<div class="xpopover--order-status__step-dsc font_14 color_999">{$lang->completed_text}</div>
+																					<div class="xpopover--order-status__step-name">{$lang->completed_name|escape}</div>
+																					<div class="xpopover--order-status__step-dsc font_14 color_999">{$lang->completed_text|escape}</div>
 																				</div>
 																			</div>
 																		</div>

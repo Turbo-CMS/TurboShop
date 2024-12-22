@@ -13,7 +13,7 @@
 								</h3>
 								{if $theme_settings->company_text_image}
 									<div class="company-item__text index-block__preview">
-										{if isset($page->body)}
+										{if $page && $page->body}
 											{$page->body}
 										{/if}
 									</div>
@@ -29,7 +29,7 @@
 									</div>
 								{else}
 									<div class="company-item__text index-block__preview">
-										{if isset($page->body)}
+										{if $page && $page->body}
 											{$page->body}
 										{/if}
 									</div>
@@ -38,7 +38,7 @@
 						</div>
 						{if $theme_settings->company_text_button}
 							<div class="index-block__btn">
-								<a href="{$lang_link}{$theme_settings->company_text_url}" class="btn btn-default btn-elg">{$lang->about_shop}</a>
+								<a href="{$lang_link}{$theme_settings->company_text_url}" class="btn btn-default btn-elg">{$lang->about_shop|escape}</a>
 							</div>
 						{/if}
 					</div>

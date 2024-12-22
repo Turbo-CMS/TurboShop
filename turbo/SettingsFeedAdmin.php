@@ -6,7 +6,7 @@ class SettingsFeedAdmin extends Turbo
 {
 	public function fetch()
 	{
-		if ($this->request->isMethod('post')) {
+		if ($this->request->method('post')) {
 			$this->settings->export_export_not_in_stock = $this->request->post('export_export_not_in_stock', 'boolean');
 			$this->settings->export_available_for_retail_store = $this->request->post('export_available_for_retail_store', 'boolean');
 			$this->settings->export_available_for_reservation = $this->request->post('export_available_for_reservation', 'boolean');

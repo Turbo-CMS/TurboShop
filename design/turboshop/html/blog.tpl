@@ -21,8 +21,8 @@
 				<div id="navigation">
 					<div class="breadcrumbs swipeignore" itemscope="" itemtype="http://schema.org/BreadcrumbList">
 						<div class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-							<a class="breadcrumbs__link" href="{if $lang_link}{$lang_link}{else}/{/if}" title="{$lang->home}" itemprop="item">
-								<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->home}</span>
+							<a class="breadcrumbs__link" href="{if $lang_link}{$lang_link}{else}/{/if}" title="{$lang->home|escape}" itemprop="item">
+								<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->home|escape}</span>
 								<meta itemprop="position" content="{$level++}">
 							</a>
 						</div>
@@ -33,10 +33,10 @@
 								</svg>
 							</i>
 						</span>
-						{if isset($keyword)}
+						{if $keyword}
 							<div class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-								<a class="breadcrumbs__link" href="{$lang_link}blog" title="{$lang->global_blog}" itemprop="item">
-									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->global_blog}</span>
+								<a class="breadcrumbs__link" href="{$lang_link}blog" title="{$lang->global_blog|escape}" itemprop="item">
+									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->global_blog|escape}</span>
 									<meta itemprop="position" content="{$level++}">
 								</a>
 							</div>
@@ -48,15 +48,17 @@
 								</i>
 							</span>
 							<span class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-								<link href="{$lang_link}blog?keyword={$keyword|escape}" itemprop="item"><span>
-									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->search}</span>
+								<link href="{$lang_link}blog?keyword={$keyword|escape}" itemprop="item">
+								<span>
+									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->search|escape}</span>
 									<meta itemprop="position" content="{$level++}">
 								</span>
 							</span>
 						{else}
 							<span class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-								<link href="{$lang_link}blog" itemprop="item"><span>
-									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->global_blog}</span>
+								<link href="{$lang_link}blog" itemprop="item">
+								<span>
+									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->global_blog|escape}</span>
 									<meta itemprop="position" content="{$level++}">
 								</span>
 							</span>
@@ -68,7 +70,7 @@
 			<div class="topic">
 				<div class="topic__inner">
 					<div class="topic__heading">
-						{if isset($keyword)}
+						{if $keyword}
 							<h1 id="pagetitle" class="switcher-title">{$keyword|escape}</h1>
 						{else}
 							<h1 id="pagetitle" class="switcher-title" data-page="{$page->id}">{$page->name|escape}</h1>
@@ -95,7 +97,7 @@
 										<div class="blog-list__item height-100 flexbox color-theme-parent-all">
 											<div class="blog-list__item-image-wrapper">
 												<a class="blog-list__item-link" href="{$lang_link}blog/{$post->url}">
-													{if isset($post->image) && $post->image}
+													{if $post->image}
 														<span class="lazyload blog-list__item-image outer-rounded-x" style="background-image:url(data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==);" data-bg="{$post->image|resize_posts:700:464}"></span>
 													{else}
 														<span style="display: flex; justify-content: center; align-items: center;" class="blog-list__item-image outer-rounded-x">
@@ -128,19 +130,19 @@
 										{if $current_page_num < $total_pages_num}
 											<div class="ajax_load_btn">
 												<span class="more_text_ajax btn btn-transparent">
-													{$lang->load_more}
+													{$lang->load_more|escape}
 												</span>
 											</div>
 										{/if}
 										{* Paginations *}
-										{include file='components/pagination.tpl'}
+										{include file='paginations/pagination.tpl'}
 									</div>
 								</div>
 							{/if}
 						{else}
 							<div class="col-md-12">
 								<div class="alert alert-info">
-									{$lang->no_post_found}
+									{$lang->no_post_found|escape}
 								</div>
 							</div>
 						{/if}
@@ -169,10 +171,10 @@
 							<div class="subscribe-edit">
 								<div class="subscribe-side-block bordered outer-rounded-x">
 									<div class="subscribe-side-block__text font_weight--500 color_dark font_normal switcher-title">
-										<span>{$lang->subscribe_to_newsletter}</span>
+										<span>{$lang->subscribe_to_newsletter|escape}</span>
 									</div>
 									<div class="subscribe-side-block__button">
-										<div class="btn btn-default btn-wide" data-event="jqm" data-param-type="subscribe" data-url="{$lang_link}blog?tpl=subscribe" data-name="subscribe">{$lang->subscribe}</div>
+										<div class="btn btn-default btn-wide" data-event="jqm" data-param-type="subscribe" data-url="{$lang_link}blog?tpl=subscribe" data-name="subscribe">{$lang->subscribe|escape}</div>
 									</div>
 								</div>
 							</div>

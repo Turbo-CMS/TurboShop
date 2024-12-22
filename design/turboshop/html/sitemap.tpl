@@ -1,6 +1,6 @@
 {* Sitemap *}
 
-{if isset($page)}
+{if $page}
 	{* Canonical *}
 	{$canonical="/{$page->url}" scope=global}
 {else}
@@ -20,8 +20,8 @@
 				<div id="navigation">
 					<div class="breadcrumbs swipeignore" itemscope="" itemtype="http://schema.org/BreadcrumbList">
 						<div class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
-							<a class="breadcrumbs__link" href="{if $lang_link}{$lang_link}{else}/{/if}" title="{$lang->home}" itemprop="item">
-								<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->home}</span>
+							<a class="breadcrumbs__link" href="{if $lang_link}{$lang_link}{else}/{/if}" title="{$lang->home|escape}" itemprop="item">
+								<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->home|escape}</span>
 								<meta itemprop="position" content="{$level++}">
 							</a>
 						</div>
@@ -32,7 +32,7 @@
 								</svg>
 							</i>
 						</span>
-						{if isset($page)}
+						{if $page}
 							<span class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
 								<link href="{$lang_link}{$page->url}" itemprop="item">
 								<span>
@@ -44,7 +44,7 @@
 							<span class="breadcrumbs__item" itemprop="itemListElement" itemscope="" itemtype="http://schema.org/ListItem">
 								<link href="{$lang_link}sitemap" itemprop="item">
 								<span>
-									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->sitemap}</span>
+									<span itemprop="name" class="breadcrumbs__item-name font_13">{$lang->sitemap|escape}</span>
 									<meta itemprop="position" content="{$level++}">
 								</span>
 							</span>
@@ -57,10 +57,10 @@
 				<div class="topic__inner">
 					<div class="topic__heading">
 						{* Page Title *}
-						{if isset($page->name)}
+						{if $page}
 							<h1 id="pagetitle" class="switcher-title"><span data-page="{$page->id}">{$page->name|escape}</span></h1>
 						{else}
-							<h1 id="pagetitle" class="switcher-title">{$lang->sitemap}</h1>
+							<h1 id="pagetitle" class="switcher-title">{$lang->sitemap|escape}</h1>
 						{/if}
 					</div>
 				</div>
@@ -84,7 +84,7 @@
 										<ul class="map-level-0">
 											<li class="item item-level-0">
 												<div class="map-columns__link-wrapper">
-													<a class="dark_link title-block font_18" href="{$lang_link}shop">{$lang->online_store}</a>
+													<a class="dark_link title-block font_18" href="{$lang_link}shop">{$lang->online_store|escape}</a>
 												</div>
 												<ul class="map-columns__dropdown map-level-1">
 													{foreach $pages as $p1}
@@ -142,7 +142,7 @@
 											</li>
 											<li class="item item-level-0">
 												<div class="map-columns__link-wrapper">
-													<a class="dark_link title-block font_18" href="{$lang_link}catalog">{$lang->catalog}</a>
+													<a class="dark_link title-block font_18" href="{$lang_link}catalog">{$lang->catalog|escape}</a>
 												</div>
 												<ul class="map-columns__dropdown map-level-1">
 													{foreach $pages as $p2}
@@ -200,7 +200,7 @@
 											</li>
 											<li class="item item-level-0">
 												<div class="map-columns__link-wrapper">
-													<a class="dark_link title-block font_18" href="{$lang_link}info">{$lang->information}</a>
+													<a class="dark_link title-block font_18" href="{$lang_link}info">{$lang->information|escape}</a>
 												</div>
 												<ul class="map-columns__dropdown map-level-1">
 													{foreach $pages as $p3}
@@ -258,7 +258,7 @@
 											</li>
 											<li class="item item-level-0">
 												<div class="map-columns__link-wrapper">
-													<a class="dark_link title-block font_18" href="{$lang_link}help">{$lang->help}</a>
+													<a class="dark_link title-block font_18" href="{$lang_link}help">{$lang->help|escape}</a>
 												</div>
 												<ul class="map-columns__dropdown map-level-1">
 													{foreach $pages as $p4}
@@ -318,12 +318,12 @@
 											{if $posts}
 												<li class="item item-level-0">
 													<div class="map-columns__link-wrapper">
-														<a class="dark_link title-block font_18" href="{$lang_link}blog">{$lang->global_blog}</a>
+														<a class="dark_link title-block font_18" href="{$lang_link}blog">{$lang->global_blog|escape}</a>
 													</div>
 													<ul class="map-columns__dropdown map-level-1">
 														<li class="item item-level-1">
 															<div class="map-columns__link-wrapper">
-																<a class="dark_link" href="{$lang_link}blog">{$lang->news}</a>
+																<a class="dark_link" href="{$lang_link}blog">{$lang->news|escape}</a>
 																<i class="svg inline svg-inline- map-columns__dropdown-right-arrow bg-theme-hover fill-dark-light-block" aria-hidden="true">
 																	<svg width="3" height="5" viewBox="0 0 3 5" fill="none" xmlns="http://www.w3.org/2000/svg">
 																		<path d="M3 2.5L0 5L0 0L3 2.5Z" fill="#333333"></path>
@@ -353,7 +353,7 @@
 											{if $articles_cats}
 												<li class="item item-level-0">
 													<div class="map-columns__link-wrapper">
-														<a class="dark_link title-block font_18" href="{$lang_link}articles">{$lang->global_articles}</a>
+														<a class="dark_link title-block font_18" href="{$lang_link}articles">{$lang->global_articles|escape}</a>
 													</div>
 													<ul class="map-columns__dropdown map-level-1">
 														{foreach $articles_cats as $cat}
@@ -456,7 +456,7 @@
 											{if $cats}
 												<li class="item item-level-0">
 													<div class="map-columns__link-wrapper">
-														<a class="dark_link title-block font_18" href="{$lang_link}all-products">{$lang->global_products}</a>
+														<a class="dark_link title-block font_18" href="{$lang_link}all-products">{$lang->global_products|escape}</a>
 													</div>
 													<ul class="map-columns__dropdown map-level-1">
 														{foreach $cats as $cat}

@@ -1,7 +1,7 @@
 {$meta_title=$btr->managers_managers scope=global}
 
 <div class="d-md-flex mb-3">
-	<h1 class="d-inline align-middle me-3">{$btr->managers_managers|escape} - {if isset($managers_count)}{$managers_count}{/if}</h1>
+	<h1 class="d-inline align-middle me-3">{$btr->managers_managers|escape} - {if $managers_count}{$managers_count}{/if}</h1>
 	<div class="d-grid gap-2 d-sm-block mt-2 mt-md-0">
 		<a class="btn btn-primary" href="{url module=ManagerAdmin return=$smarty.server.REQUEST_URI}"><i data-feather="plus"></i> {$btr->managers_add|escape}</a>
 	</div>
@@ -35,7 +35,7 @@
 											</div>
 
 											<div class="turbo-list-boding turbo-list-manager-name">
-												<a class="fw-bold text-body text-decoration-none" href="index.php?module=ManagerAdmin&login={$m->login|urlencode}">
+												<a class="fw-bold text-body text-decoration-none" href="{url module=ManagerAdmin login=$m->login|urlencode return=$smarty.server.REQUEST_URI}">
 													{$m->login|escape}
 												</a>
 											</div>

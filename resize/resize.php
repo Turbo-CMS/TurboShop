@@ -2,43 +2,49 @@
 
 require_once '../api/Turbo.php';
 
-$filename = $_GET['file'] ?? null;
+$filename = $_GET['file'] ?? '';
 
-if (!$filename) {
-	header($_SERVER["SERVER_PROTOCOL"] . "404 Not Found");
-	exit('404 Not Found');
+if (!$filename || basename($filename) !== $filename) {
+	header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found");
+	exit();
 }
 
-$isCategory = (bool)($_GET['is_category'] ?? false);
-$isArticle = (bool)($_GET['is_article'] ?? false);
-$isPost = (bool)($_GET['is_post'] ?? false);
-$isBrands = (bool)($_GET['is_brands'] ?? false);
-$isBanners = (bool)($_GET['is_banners'] ?? false);
+$isCategory = isset($_GET['is_category']);
+$isArticle = isset($_GET['is_article']);
+$isPost = isset($_GET['is_post']);
+$isBrands = isset($_GET['is_brands']);
+$isBanners = isset($_GET['is_banners']);
 
 $turbo = new Turbo();
 
 $resizedFilename = $turbo->image->resize($filename, $isCategory, $isPost, $isArticle, $isBrands, $isBanners);
 
 if (is_readable($resizedFilename)) {
-	header('Content-type: image');
+	header('Content-Type: image');
 	readfile($resizedFilename);
 
 	if ($turbo->settings->webp_support) {
-		$webpFilename = preg_replace('/\.[^.]+$/', '', $resizedFilename) . ".webp";
-		$info = getimagesize($resizedFilename);
+		$webpFilename = preg_replace('/\.[^.]+$/', '', $resizedFilename) . '.webp';
 
 		if (!file_exists($webpFilename)) {
-			if ($info['mime'] == 'image/jpeg') {
-				$imageToConvert = imagecreatefromjpeg($resizedFilename);
-				imagewebp($imageToConvert, $webpFilename, 80);
-			} elseif ($info['mime'] == 'image/png') {
-				$imageToConvert = imagecreatefrompng($resizedFilename);
+			$extension = pathinfo($resizedFilename, PATHINFO_EXTENSION);
+
+			if ($extension === 'jpg' || $extension === 'jpeg') {
+				$imageToConvert = @imagecreatefromjpeg($resizedFilename);
+			} elseif ($extension === 'png') {
+				$imageToConvert = @imagecreatefrompng($resizedFilename);
 				imagepalettetotruecolor($imageToConvert);
+			} else {
+				$imageToConvert = null;
+			}
+
+			if ($imageToConvert) {
 				imagewebp($imageToConvert, $webpFilename, 80);
+				imagedestroy($imageToConvert);
 			}
 		}
 	}
 } else {
-	header($_SERVER["SERVER_PROTOCOL"] . "404 Not Found");
-	exit('404 Not Found');
+	header($_SERVER["SERVER_PROTOCOL"] . " 404 Not Found");
+	exit();
 }

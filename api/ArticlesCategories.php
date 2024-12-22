@@ -40,17 +40,17 @@ class ArticlesCategories extends Turbo
 			$this->initArticlesCategories();
 		}
 
-		foreach ($this->allArticlesCategories as $category) {
-			if (is_int($id) && (int) $category->id == (int) $id) {
-				return $category;
-			}
-
-			if (is_string($id) && $category->url == $id) {
-				return $category;
+		if (is_int($id) && array_key_exists((int)$id, $this->allArticlesCategories)) {
+			return $this->allArticlesCategories[(int)$id];
+		} elseif (is_string($id)) {
+			foreach ($this->allArticlesCategories as $category) {
+				if (isset($category->url) && $category->url == $id) {
+					return $this->getArticlesCategory((int)$category->id);
+				}
 			}
 		}
 
-		return null;
+		return false;
 	}
 
 	/**
@@ -219,9 +219,11 @@ class ArticlesCategories extends Turbo
 	{
 		$tree = new stdClass();
 		$tree->subcategories = [];
+
 		$pointers = [];
 		$pointers[0] = &$tree;
 		$pointers[0]->path = [];
+		$pointers[0]->level = 0;
 
 		$langSql = $this->languages->getQuery(['object' => 'article_category', 'px' => 'c']);
 
@@ -261,42 +263,39 @@ class ArticlesCategories extends Turbo
 			$articlesCategories = $this->db->results();
 		}
 
-		$finish = false;
-
-		while (!empty($articlesCategories) && !$finish) {
-			$flag = false;
-
-			foreach ($articlesCategories as $k => $category) {
-				if (isset($pointers[$category->parent_id])) {
-					$pointers[$category->id] = $pointers[$category->parent_id]->subcategories[] = $category;
-					$curr = $pointers[$category->id];
-					$pointers[$category->id]->path = array_merge((array) $pointers[$category->parent_id]->path, array($curr));
-					unset($articlesCategories[$k]);
-					$flag = true;
-				}
+		foreach ($articlesCategories as $category) {
+			if (!isset($category->subcategories)) {
+				$category->subcategories = [];
 			}
 
-			if (!$flag) {
-				$finish = true;
+			$pointers[$category->id] = $category;
+
+			if (isset($pointers[$category->parent_id])) {
+				$pointers[$category->parent_id]->subcategories[] = $category;
+				$category->path = $pointers[$category->parent_id]->path;
+				$category->path[] = $category;
+				$category->level = $pointers[$category->parent_id]->level + 1;
+			} else {
+				$tree->subcategories[] = $category;
+				$category->path = [];
+				$category->level = 0;
 			}
 		}
 
-		$ids = array_reverse(array_keys($pointers));
-
-		foreach ($ids as $id) {
+		foreach (array_reverse(array_keys($pointers)) as $id) {
 			if ($id > 0) {
-				$pointers[$id]->children[] = $id;
+				$category = $pointers[$id];
+				$category->children[] = $id;
 
-				if (isset($pointers[$pointers[$id]->parent_id]->children)) {
-					$pointers[$pointers[$id]->parent_id]->children = array_merge($pointers[$id]->children, $pointers[$pointers[$id]->parent_id]->children);
-				} else {
-					$pointers[$pointers[$id]->parent_id]->children = $pointers[$id]->children;
+				$parent_id = $category->parent_id;
+				if ($parent_id && isset($pointers[$parent_id])) {
+					$pointers[$parent_id]->children = array_merge(
+						$category->children,
+						$pointers[$parent_id]->children ?? []
+					);
 				}
 			}
 		}
-
-		unset($pointers[0]);
-		unset($ids);
 
 		$this->articlesCategoriesTree = $tree->subcategories;
 		$this->allArticlesCategories = $pointers;

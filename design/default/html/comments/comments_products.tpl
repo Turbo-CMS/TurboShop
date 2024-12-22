@@ -26,27 +26,29 @@
 	</div>
 
 	{* Sort *}
-	<div class="btn-toolbar justify-content-between mb-4" role="toolbar" aria-label="sortComments">
-		{if isset($comments_count)}
+	<div class="d-flex justify-content-between align-items-center border-bottom mb-3">
+		{if $comments_count}
 			{$comments_count} {$comments_count|plural:$lang->comment_1:$lang->comment_2:$lang->comment_3}
 		{/if}
-		<div class="btn-group" role="group" aria-label="btnGroup">
-			<a href="{url sort=rate page=null}" class="sort-comments text-decoration-none me-3 {if isset($sort) && $sort=='rate'}active{/if}">{$lang->popular}</a>
-			<a href="{url sort=date page=null}" class="sort-comments text-decoration-none {if isset($sort) && $sort=='date'}active{/if}">{$lang->in_order}</a>
-		</div>
+		<ul class="nav nav-underline">
+			<li class="nav-item">
+				<a class="nav-link {if $sort=='rate'}active{/if}" aria-current="page" href="{url sort=rate page=null}">{$lang->popular|escape}</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link {if $sort=='date'}active{/if}" aria-current="page" href="{url sort=date page=null}">{$lang->in_order|escape}</a>
+			</li>
+		</ul>
 	</div>
 
-	<hr class="text-black-50">
-
 	{* Error *}
-	{if isset($error)}
+	{if $error}
 		<div class="alert alert-danger my-4" role="alert">
 			{if $error=='captcha'}
-				{$lang->captcha_incorrect}
+				{$lang->captcha_incorrect|escape}
 			{elseif $error=='empty_name'}
-				{$lang->enter_your_name}
+				{$lang->enter_your_name|escape}
 			{elseif $error=='empty_comment'}
-				{$lang->enter_a_comment}
+				{$lang->enter_a_comment|escape}
 			{/if}
 		</div>
 	{/if}
@@ -59,19 +61,19 @@
 				<meta itemprop="name" content="{$product->name|escape}">
 				<meta itemprop="itemreviewed" content="{$product->name|escape}">
 				<a name="comment_{$comment->id}"></a>
-				<div class="media comments {if $level == 1 && $smarty.foreach.tree.first}mt-4{/if}">
+				<div class="d-flex align-items-start {if $level == 1 && $smarty.foreach.tree.first}mt-4{/if}">
 					{if $comment->admin == 1}
 						<i class="fal fa-user-headset fa-2x d-flex me-3 text-primary"></i>
 					{else}
 						<i class="fal fa-user fa-2x d-flex me-3 text-muted"></i>
 					{/if}
-					<div class="media-body">
+					<div class="flex-fill">
 						<h5 class="mt-0 {if $comment->admin == 1}admin text-primary{/if}">{$comment->name|escape}</h5>
 						<div class="small text-muted">
 							<strong itemprop="author">{$comment->name|escape}</strong>
-							{$comment->date|date} {$lang->at} {$comment->date|time}
+							{$comment->date|date} {$lang->at|escape} {$comment->date|time}
 							{if !$comment->approved}
-								<span class="text-danger">{$lang->awaiting_moderation}</span>
+								<span class="text-danger">{$lang->awaiting_moderation|escape}</span>
 							{/if}
 						</div>
 						{if $comment->admin == 0 && $level == 0}
@@ -117,7 +119,7 @@
 						</div>
 						{if $level == 0 && isset($smarty.session.admin) && $smarty.session.admin == 'admin'}
 							<div id="{$comment->id}" class="comments-item-reply comment">
-								<span data-close-text="{$lang->close}" data-reply-text="{$lang->reply}">{$lang->reply}</span>
+								<span data-close-text="{$lang->close|escape}" data-reply-text="{$lang->reply|escape}">{$lang->reply|escape}</span>
 							</div>
 						{/if}
 						{if isset($children[$comment->id])}
@@ -134,12 +136,12 @@
 	{include file='paginations/pagination.tpl'}
 {else}
 	<div class="my-1">
-		{$lang->no_comments}
+		{$lang->no_comments|escape}
 	</div>
 {/if}
 
 {* Coment Form *}
-<a class="btn btn-success mt-2 comments-reply-form" href="#commentForm" role="button" data-close-text="<i class='fal fa-xmark me-2'></i>{$lang->close}" data-comment-text="<i class='fal fa-comment me-2'></i>{$lang->comment_on}"><i class="fa-light fa-comment me-2"></i>{$lang->comment_on}</a>
+<a class="btn btn-success mt-2 comments-reply-form" href="#commentForm" role="button" data-close-text="<i class='fal fa-xmark me-2'></i>{$lang->close|escape}" data-comment-text="<i class='fal fa-comment me-2'></i>{$lang->comment_on|escape}"><i class="fa-light fa-comment me-2"></i>{$lang->comment_on|escape}</a>
 <div class="collapse mb-4" id="commentForm">
 	<form class="form-horizontal needs-validation mt-4" role="form" method="post" novalidate>
 		<input type="hidden" id="hidden">
@@ -156,31 +158,31 @@
 			</span>
 		{/if}
 		<div class="mb-3">
-			<label for="comment" class="form-label">{$lang->comment}<span class="text-danger">*</span></label>
-			<textarea class="form-control" name="text" id="comment" placeholder="{$lang->enter_a_comment}" rows="4" required>{if isset($comment_text)}{$comment_text}{/if}</textarea>
-			<div class="invalid-feedback">{$lang->enter_a_comment}</div>
+			<label for="comment" class="form-label">{$lang->comment|escape}<span class="text-danger">*</span></label>
+			<textarea class="form-control" name="text" id="comment" placeholder="{$lang->enter_a_comment|escape}" rows="4" required>{$comment_text}</textarea>
+			<div class="invalid-feedback">{$lang->enter_a_comment|escape}</div>
 		</div>
 		<div class="mb-3">
-			<label for="comment-name" class="form-label">{$lang->name}<span class="text-danger">*</span></label>
-			<input type="text" class="form-control" id="comment-name" name="name" value="{if isset($comment_text)}{$comment_name|escape}{/if}" placeholder="{$lang->enter_your_name}" required>
-			<div class="invalid-feedback">{$lang->enter_your_name}</div>
+			<label for="comment-name" class="form-label">{$lang->name|escape}<span class="text-danger">*</span></label>
+			<input type="text" class="form-control" id="comment-name" name="name" value="{$comment_name|escape}" placeholder="{$lang->enter_your_name|escape}" required>
+			<div class="invalid-feedback">{$lang->enter_your_name|escape}</div>
 		</div>
 		{if $settings->captcha_product}
 			<div class="row">
-				<label for="captcha" class="form-label">{$lang->captcha}<span class="text-danger">*</span></label>
+				<label for="captcha" class="form-label">{$lang->captcha|escape}<span class="text-danger">*</span></label>
 				<div class="col-md-2 mb-3">
 					{get_captcha var="captcha_product"}
 					<div class="secret-number">{$captcha_product[0]|escape} + ? = {$captcha_product[1]|escape}</div>
 				</div>
 				<div class="col-md-10">
-					<input type="text" id="captcha" class="form-control" name="captcha_code" value="" placeholder="{$lang->enter_captcha}" autocomplete="off" required>
-					<div class="invalid-feedback">{$lang->enter_captcha}</div>
+					<input type="text" id="captcha" class="form-control" name="captcha_code" value="" placeholder="{$lang->enter_captcha|escape}" autocomplete="off" required>
+					<div class="invalid-feedback">{$lang->enter_captcha|escape}</div>
 				</div>
 			</div>
 		{/if}
 		<div class="mt-md-0 mt-3">
 			<div class="col-sm-offset-2">
-				<input type="submit" class="btn btn-primary" name="comment" value="{$lang->send}">
+				<input type="submit" class="btn btn-primary" name="comment" value="{$lang->send|escape}">
 			</div>
 		</div>
 	</form>

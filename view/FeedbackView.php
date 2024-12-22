@@ -8,8 +8,8 @@ class FeedbackView extends View
 	{
 		$feedback = new stdClass();
 
-		// Feedback form
-		if ($this->request->isMethod('post') && $this->request->post('feedback')) {
+		// Feedback Form
+		if ($this->request->method('post') && $this->request->post('feedback')) {
 			$feedback->name = $this->request->post('name');
 			$feedback->email = $this->request->post('email');
 			$feedback->message = $this->request->post('message');

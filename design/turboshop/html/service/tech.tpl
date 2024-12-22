@@ -6,10 +6,10 @@
 		<img src="{$config->root_url}/design/{$settings->theme}/images/logo.png">
 	</div>
 	<div class="site-off-text">
-		{$lang->site_closed}
+		{$lang->site_closed|escape}
 	</div>
 	<div class="site-off-text-small">
-		{$lang->apologize}
+		{$lang->apologize|escape}
 	</div>
 </body>
 

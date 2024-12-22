@@ -8,7 +8,7 @@ class FeatureAdmin extends Turbo
 	{
 		$feature = new stdClass();
 
-		if ($this->request->isMethod('POST')) {
+		if ($this->request->method('post')) {
 			$feature->id = $this->request->post('id', 'integer');
 			$feature->name = $this->request->post('name');
 			$feature->in_filter = (int) $this->request->post('in_filter');
@@ -35,16 +35,19 @@ class FeatureAdmin extends Turbo
 					$feature = $this->features->getFeature($feature->id);
 					$this->design->assign('message_success', 'updated');
 				}
+
 				$this->features->updateFeatureCategories($feature->id, $featureCategories);
 			}
 
 			$options = [];
+
 			if ($this->request->post('options')) {
 				foreach ($this->request->post('options') as $n => $o) {
 					foreach ($o as $i => $v) {
 						if (empty($options[$i])) {
 							$options[$i] = new stdClass;
 						}
+
 						$options[$i]->$n = $v;
 					}
 				}
@@ -60,35 +63,51 @@ class FeatureAdmin extends Turbo
 			}
 
 			$optionsIds = [];
+
 			foreach ($options as $option) {
 				if ($option->value) {
 					$option->feature_id = $feature->id;
+
 					if (!empty($option->id)) {
 						$this->features->updateOption($option->id, $option);
 					} else {
 						unset($option->id);
 						$option->id = $this->features->addOption($option);
 					}
+
 					$optionsIds[] = $option->id;
 				}
 			}
 
 			asort($optionsIds);
 			$i = 0;
+
 			foreach ($optionsIds as $optionsId) {
 				$this->features->updateOption($optionsIds[$i], ['position' => $optionsId]);
 				$i++;
 			}
 		} else {
 			$feature->id = $this->request->get('id', 'integer');
-			$feature = $this->features->getFeature($feature->id);
+
+			if (!empty($feature->id)) {
+				$feature = $this->features->getFeature($feature->id);
+			} else {
+				$feature->id = null;
+				$feature->name = '';
+				$feature->header = '';
+				$feature->url = '';
+				$feature->url_in_product = null;
+				$feature->in_filter = null;
+				$feature->is_color = null;
+				$feature->is_size = null;
+			}
 		}
 
 		if ($feature && $feature->id) {
 			$options = [];
+
 			$filter = ['feature_id' => $feature->id];
 			$filter['limit'] = $this->settings->features_num_admin;
-
 			$filter['page'] = max(1, $this->request->get('page', 'integer'));
 
 			$optionsCount = $this->features->countOptions($filter);
@@ -104,6 +123,7 @@ class FeatureAdmin extends Turbo
 			}
 
 			$filter['page'] = min($filter['page'], $pagesCount);
+
 			$this->design->assign('options_count', $optionsCount);
 			$this->design->assign('pages_count', $pagesCount);
 			$this->design->assign('current_page', $filter['page']);
@@ -116,11 +136,13 @@ class FeatureAdmin extends Turbo
 		}
 
 		$featureCategories = [];
-		if ($feature) {
+
+		if ($feature && !empty($feature->id)) {
 			$featureCategories = $this->features->getFeatureCategories($feature->id);
 		}
 
 		$categories = $this->categories->getCategoriesTree();
+
 		$this->design->assign('categories', $categories);
 		$this->design->assign('feature', $feature);
 		$this->design->assign('feature_categories', $featureCategories);

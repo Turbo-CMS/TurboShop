@@ -1,5 +1,5 @@
 {if isset($smarty.get.module) && $smarty.get.module == "OrderAdmin"}
-	{if isset($labels)}
+	{if $labels}
 		{foreach $labels as $l}
 			{if in_array($l->id, $order_labels)}
 				<span class="badge me-1" style="background-color:{$l->color};">{$l->name|escape}</span>

@@ -4,7 +4,7 @@
 	<h1 class="d-inline align-middle me-3">{$btr->seo_automation_title|escape}</h1>
 </div>
 
-{if isset($message_success)}
+{if $message_success}
 	<div class="row">
 		<div class="col-12">
 			<div class="alert alert-success alert-dismissible fade show" role="alert">

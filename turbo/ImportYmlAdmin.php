@@ -86,7 +86,7 @@ class ImportYmlAdmin extends Turbo
 
 		setlocale(LC_ALL, $oldLocale);
 
-		if ($this->request->isMethod('post') && ($this->request->files("file") || $this->request->post("file_url"))) {
+		if ($this->request->method('post') && ($this->request->files("file") || $this->request->post("file_url"))) {
 
 			$temp = tempnam($this->importFilesDir, 'temp_');
 
@@ -133,7 +133,7 @@ class ImportYmlAdmin extends Turbo
 			}
 
 			@unlink($temp);
-		} elseif ($this->request->isMethod('post') && $this->request->post("file_fields")) {
+		} elseif ($this->request->method('post') && $this->request->post("file_fields")) {
 			$ymlCurrencies = $this->getYmlCurrencies($this->importFilesDir . $this->request->post("file_fields"));
 
 			if (!empty($ymlCurrencies)) {
@@ -156,13 +156,13 @@ class ImportYmlAdmin extends Turbo
 			$this->design->assign('columns_compared',  $this->columnsCompared);
 		}
 
-		if ($this->request->isMethod('post') && $this->isXml($this->importFilesDir . $this->importFile)) {
+		if ($this->request->method('post') && $this->isXml($this->importFilesDir . $this->importFile)) {
 			$filenameYmlSize = $this->humanFilesize(filesize($this->importFilesDir . $this->importFile));
 			$this->design->assign('filename_yml',  $this->importFile);
 			$this->design->assign('filename_yml_size',  $filenameYmlSize);
 		}
 
-		if ($this->request->isMethod('post') && $this->request->post("start_import_yml")) {
+		if ($this->request->method('post') && $this->request->post("start_import_yml")) {
 
 			$ymlParams = $_POST['yml_params'];
 

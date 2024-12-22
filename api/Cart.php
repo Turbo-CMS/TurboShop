@@ -39,6 +39,7 @@ class Cart extends Turbo
 
 				foreach ($this->products->getProducts(['id' => $productsIds, 'limit' => count($productsIds)]) as $p) {
 					$products[$p->id] = $p;
+					$products[$p->id]->images = [];
 				}
 
 				$images = $this->products->getImages(['product_id' => $productsIds]);

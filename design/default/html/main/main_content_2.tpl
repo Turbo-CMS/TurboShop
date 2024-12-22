@@ -3,15 +3,15 @@
 {if $featured_products}
 	<div class="section-heading">
 		<a href="{$lang_link}featured" class="btn btn-outline-primary float-end">
-			{$lang->see_all}
+			{$lang->see_all|escape}
 			<i class="fal fa-chevron-right ms-2"></i>
 		</a>
-		<h2 class="section-title my-2">{$lang->featured_products}</h2>
+		<h2 class="section-title my-2">{$lang->featured_products|escape}</h2>
 	</div>
-	<hr class="text-black-50">
+	<hr>
 	<div class="row">
 		{foreach $featured_products as $product}
-			<div class="col-md-6 col-lg-4 col-xl-3">
+			<div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-xxl-3">
 				{include file='products/grid.tpl'}
 			</div>
 		{/foreach}
@@ -23,15 +23,15 @@
 {if $new_products}
 	<div class="section-heading">
 		<a href="{$lang_link}new" class="btn btn-outline-primary float-end">
-			{$lang->see_all}
+			{$lang->see_all|escape}
 			<i class="fal fa-chevron-right ms-2"></i>
 		</a>
-		<h2 class="section-title my-2">{$lang->new_arrivals}</h2>
+		<h2 class="section-title my-2">{$lang->new_arrivals|escape}</h2>
 	</div>
-	<hr class="text-black-50">
+	<hr>
 	<div class="row">
 		{foreach $new_products as $product}
-			<div class="col-md-6 col-lg-4 col-xl-3">
+			<div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-xxl-3">
 				{include file='products/grid.tpl'}
 			</div>
 		{/foreach}
@@ -43,15 +43,15 @@
 {if $discounted_products}
 	<div class="section-heading">
 		<a href="{$lang_link}sale" class="btn btn-outline-primary float-end">
-			{$lang->see_all}
+			{$lang->see_all|escape}
 			<i class="fal fa-chevron-right ms-2"></i>
 		</a>
-		<h2 class="section-title my-2">{$lang->sale}</h2>
+		<h2 class="section-title my-2">{$lang->sale|escape}</h2>
 	</div>
-	<hr class="text-black-50">
+	<hr>
 	<div class="row">
 		{foreach $discounted_products as $product}
-			<div class="col-md-6 col-lg-4 col-xl-3">
+			<div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-xxl-3">
 				{include file='products/grid.tpl'}
 			</div>
 		{/foreach}
@@ -63,15 +63,15 @@
 {if $hit_products}
 	<div class="section-heading">
 		<a href="{$lang_link}hit" class="btn btn-outline-primary float-end">
-			{$lang->see_all}
+			{$lang->see_all|escape}
 			<i class="fal fa-chevron-right ms-2"></i>
 		</a>
-		<h2 class="section-title my-2">{$lang->bestsellers}</h2>
+		<h2 class="section-title my-2">{$lang->bestsellers|escape}</h2>
 	</div>
-	<hr class="text-black-50">
+	<hr>
 	<div class="row">
 		{foreach $hit_products as $product}
-			<div class="col-md-6 col-lg-4 col-xl-3">
+			<div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 col-xxl-3">
 				{include file='products/grid.tpl'}
 			</div>
 		{/foreach}
@@ -81,13 +81,13 @@
 {* Featured Categories *}
 {get_featured_categories var=featured_categories}
 {if $featured_categories}
-	<h2 class="my-2">{$lang->popular_categories}</h2>
-	<hr class="text-black-50">
+	<h2 class="my-2">{$lang->popular_categories|escape}</h2>
+	<hr>
 	<div class="row">
 		{foreach $categories|@array_slice:0:4 as $c}
 			{if $c->featured}
 				{if $c->visible}
-					<div class="col-lg-3 col-md-6 mb-4"> 
+					<div class="col-sm-6 col-md-6 col-lg-4 col-xl-3 mb-4"> 
 						<div class="card">
 							<div class="img-wrap">
 								{if $c->image}
@@ -111,7 +111,7 @@
 									</a>
 								</div>
 							</div>
-							{if isset($c->subcategories) && $c->subcategories}
+							{if $c->subcategories}
 								<ul id="featured-categories" class="list-group list-group-flush">
 									{foreach $c->subcategories as $cs}
 										{if $cs->featured}
