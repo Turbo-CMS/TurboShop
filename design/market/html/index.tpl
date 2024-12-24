@@ -78,7 +78,7 @@
 					<h2 class="mb-3 fs-5">{$lang->viewed_products|escape}</h2>
 					<div class="row g-0 border-start border-top">
 						{foreach $browsed_products as $product}
-							<div class="col-sm-6 col-md-4 col-lg-4 col-xl-2">
+							<div class="col-6 col-sm-6 col-md-4 col-lg-4 col-xl-2">
 								{include file='products/grid.tpl'}
 							</div>
 						{/foreach}

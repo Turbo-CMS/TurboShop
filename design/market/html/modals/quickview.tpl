@@ -186,7 +186,7 @@
 													</a>
 												{else}
 													<a class="btn btn-lg btn-link compare" href="{$lang_link}compare/{$product->url}">
-														<i class="far fa-scale-balanced text-body-tertiary" data-result-text="{$lang->added_to_compare|escape}" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="{$lang->add_to_compare|escape}"></i>
+														<i class="far fa-scale-balanced text-secondary" data-result-text="{$lang->added_to_compare|escape}" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="{$lang->add_to_compare|escape}"></i>
 													</a>
 												{/if}
 											</div>

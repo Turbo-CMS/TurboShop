@@ -10,7 +10,7 @@
 			<div class="position-absolute top-0 end-0 p-2 d-flex flex-column">
 				{if $wishlist}
 					<a class="btn btn-link" href="{$lang_link}wishlist/remove/{$product->url}">
-						<i class="far fa-xmark text-body-tertiary fs-5" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="{$lang->delete|escape}"></i>
+						<i class="far fa-xmark text-secondary fs-5" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="{$lang->delete|escape}"></i>
 					</a>
 				{elseif $wishlist_products && in_array($product->url, $wishlist_products)}
 					<a class="btn btn-link" href="{$lang_link}wishlist">
@@ -27,11 +27,11 @@
 					</a>
 				{else}
 					<a class="btn btn-link compare" href="{$lang_link}compare/{$product->url}">
-						<i class="far fa-scale-balanced text-body-tertiary" data-result-text="{$lang->added_to_compare|escape}" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="{$lang->add_to_compare|escape}"></i>
+						<i class="far fa-scale-balanced text-secondary" data-result-text="{$lang->added_to_compare|escape}" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="{$lang->add_to_compare|escape}"></i>
 					</a>
 				{/if}
 				<button class="btn btn-link product-card-quickview" type="button" data-url="{$lang_link}products/{$product->url}">
-					<i class="far fa-eye text-body-tertiary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="{$lang->quick_view|escape}"></i>
+					<i class="far fa-eye text-secondary" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="{$lang->quick_view|escape}"></i>
 				</button>
 			</div>
 			<div class="img-wrap">

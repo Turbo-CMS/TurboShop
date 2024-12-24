@@ -1,6 +1,6 @@
 {* Subscribe *}
 
-<div class="container-fluid bg-success mt-auto">
+<div class="container-fluid bg-success mt-auto subscribe">
     <div class="row">
         <div class="col-md-4 offset-md-4">
             <form class="form-group needs-validation py-4" method="post" novalidate>

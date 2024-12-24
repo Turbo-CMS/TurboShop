@@ -4,7 +4,7 @@ require_once 'Turbo.php';
 
 class Config
 {
-	public $version = '5.3.3';
+	public $version = '5.3.5';
 	public $configFile = 'config/config.php';
 
 	private $vars = [];

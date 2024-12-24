@@ -86,6 +86,11 @@ figure {
     border-color: var(--bs-border-color-translucent) !important;
 }
 
+.navbar .form-control:focus,
+.subscribe .form-control:focus {
+    border-color: #6fc4e5 !important;
+}
+
 /* Capcha */
 
 .secret-number {
@@ -181,11 +186,11 @@ figure {
 }
 
 .autocomplete-suggestion:not(:has(.search-img)) {
-	padding-bottom: 0.25rem;
+    padding-bottom: 0.25rem;
 }
 
 .autocomplete-suggestion:not(:has(.search-img)) a {
-	margin-left: 1rem;
+    margin-left: 1rem;
 }
 
 /* Back Top Button */

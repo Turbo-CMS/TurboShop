@@ -18,7 +18,7 @@
 	</div>
 	<div class="row g-0 border-start border-top">
 		{foreach $featured_products as $product}
-			<div class="col-sm-6 col-md-4 col-lg-4 col-xl-3">
+			<div class="col-6 col-sm-6 col-md-4 col-lg-4 col-xl-3">
 				{include file='products/grid.tpl'}
 			</div>
 		{/foreach}
@@ -37,7 +37,7 @@
 	</div>
 	<div class="row g-0 border-start border-top">
 		{foreach $new_products as $product}
-			<div class="col-sm-6 col-md-4 col-lg-4 col-xl-3">
+			<div class="col-6 col-sm-6 col-md-4 col-lg-4 col-xl-3">
 				{include file='products/grid.tpl'}
 			</div>
 		{/foreach}
@@ -56,7 +56,7 @@
 	</div>
 	<div class="row g-0 border-start border-top">
 		{foreach $discounted_products as $product}
-			<div class="col-sm-6 col-md-4 col-lg-4 col-xl-3">
+			<div class="col-6 col-sm-6 col-md-4 col-lg-4 col-xl-3">
 				{include file='products/grid.tpl'}
 			</div>
 		{/foreach}
@@ -75,7 +75,7 @@
 	</div>
 	<div class="row g-0 border-start border-top">
 		{foreach $hit_products as $product}
-			<div class="col-sm-6 col-md-4 col-lg-4 col-xl-3">
+			<div class="col-6 col-sm-6 col-md-4 col-lg-4 col-xl-3">
 				{include file='products/grid.tpl'}
 			</div>
 		{/foreach}

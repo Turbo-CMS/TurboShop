@@ -244,7 +244,7 @@
 														</a>
 													{else}
 														<a class="btn btn-lg btn-link compare" href="{$lang_link}compare/{$product->url}">
-															<i class="far fa-scale-balanced text-body-tertiary" data-result-text="{$lang->added_to_compare|escape}" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="{$lang->add_to_compare|escape}"></i>
+															<i class="far fa-scale-balanced text-secondary" data-result-text="{$lang->added_to_compare|escape}" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="{$lang->add_to_compare|escape}"></i>
 														</a>
 													{/if}
 												</div>
@@ -328,7 +328,7 @@
 				<h2 class="my-3 fs-5">{$lang->related_products|escape}</h2>
 				<div class="row g-0 border-start border-top">
 					{foreach $recommended_products as $product}
-						<div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+						<div class="col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
 							{include file='products/grid.tpl'}
 						</div>
 					{/foreach}
@@ -351,7 +351,7 @@
 					<h2 class="my-3 fs-5">{$lang->products_from_brand|escape}</h2>
 					<div class="row g-0 border-start border-top mb-3">
 						{foreach $brand_products as $product}
-							<div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+							<div class="col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
 								{include file='products/grid.tpl'}
 							</div>
 						{/foreach}
@@ -365,7 +365,7 @@
 				<h2 class="my-3 fs-5">{$lang->products_from_category|escape}</h2>
 				<div class="row g-0 border-start border-top">
 					{foreach $cat_products as $product}
-						<div class="col-sm-6 col-md-4 col-lg-3 col-xl-2">
+						<div class="col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
 							{include file='products/grid.tpl'}
 						</div>
 					{/foreach}

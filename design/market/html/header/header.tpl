@@ -2,8 +2,8 @@
 
 <header>
 	<nav id="navbar" class="navbar navbar-dark fixed-top bg-charcoal">
-		<div class="container-xxl d-flex align-items-center">
-			<button class="navbar-toggler me-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+		<div class="container-xxl d-flex align-items-center flex-nowrap">
+			<button class="navbar-toggler me-3 flex-shrink-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
 
@@ -41,7 +41,7 @@
 				</div>
 			{/if}
 			
-			<div class="list-inline">
+			<div class="list-inline d-flex flex-shrink-0">
 				{* Wishlist Informer *}
 				<span id="wishlist-informer">
 					{include file='informers/wishlist_informer.tpl'}

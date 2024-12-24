@@ -138,7 +138,7 @@
 		$(this).removeClass('compare');
 		$(this).attr('href', 'compare');
 
-		icon.removeClass('text-body-tertiary').addClass('text-primary');
+		icon.removeClass('text-secondary').addClass('text-primary');
 		icon.attr('data-bs-title', icon.data('result-text')).tooltip('dispose').tooltip('show');
 
 		return false;
